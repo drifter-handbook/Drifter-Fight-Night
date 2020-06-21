@@ -22,21 +22,20 @@ public class UDPConnection : IDisposable
     bool killed;
     ConcurrentBag<UDPPacket> received;
 
-    UdpClient senderClient;
-    UdpClient receiverClient;
+    public UdpClient udpClient { get; private set; }
+    object udpLock = new object();
     public IPEndPoint udpSenderEp { get; private set; }
     IPEndPoint udpReceiverSourceEp;
 
     bool sendOnly = false;
 
-    public UDPConnection(string sourceIP, int sourcePort, string destIP, int destPort, bool sendOnly = false)
+    public UDPConnection(UdpClient udpClient, IPAddress destIP, int destPort, bool sendOnly = false)
     {
-        senderClient = new UdpClient();
-        udpSenderEp = new IPEndPoint(IPAddress.Parse(destIP), destPort);
+        this.udpClient = udpClient;
+        udpSenderEp = new IPEndPoint(destIP, destPort);
         if (!sendOnly)
         {
             received = new ConcurrentBag<UDPPacket>();
-            receiverClient = new UdpClient(sourcePort, IPAddress.Parse(sourceIP).AddressFamily);
             thread = new Thread(new ThreadStart(ReceiveData));
             thread.Start();
         }
@@ -48,24 +47,29 @@ public class UDPConnection : IDisposable
         {
             try
             {
-                if (receiverClient != null && receiverClient.Available > 0)
+                lock(udpLock)
                 {
-                    udpReceiverSourceEp = new IPEndPoint(IPAddress.Any, 0);
-                    byte[] data = receiverClient.Receive(ref udpReceiverSourceEp);
-                    received.Add(new UDPPacket() {
-                        address = udpReceiverSourceEp.Address,
-                        port = udpReceiverSourceEp.Port,
-                        data = data
-                    });
+                    if (udpClient != null && udpClient.Available > 0)
+                    {
+                        udpReceiverSourceEp = new IPEndPoint(IPAddress.Any, 0);
+                        byte[] data = udpClient.Receive(ref udpReceiverSourceEp);
+                        received.Add(new UDPPacket()
+                        {
+                            address = udpReceiverSourceEp.Address,
+                            port = udpReceiverSourceEp.Port,
+                            data = data
+                        });
+                    }
                 }
             }
-            catch (SocketException e)
+            catch (SocketException)
             {
-                Debug.Log(e.ToString());
             }
         }
-        senderClient.Close();
-        receiverClient.Close();
+        lock(udpLock)
+        {
+            udpClient.Close();
+        }
     }
 
     // stop the thread
@@ -77,7 +81,10 @@ public class UDPConnection : IDisposable
     // send a packet
     public void Send(byte[] data)
     {
-        senderClient.Send(data, data.Length, udpSenderEp);
+        lock (udpLock)
+        {
+            udpClient.Send(data, data.Length, udpSenderEp);
+        }
     }
 
     // get all packets received

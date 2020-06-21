@@ -1,17 +1,26 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 public class ClientSetupPacket : IGamePacket
 {
-    public string TypeID { get; set; } = "";
+    public string TypeID { get; set; } = "Setup";
 
-    public void LoadBytes()
+    public int ID;
+
+    private class ClientSetupData
     {
-        throw new NotImplementedException();
+        public int ID;
     }
 
-    public byte[] ToBytes()
+    public IGamePacket FromData(string json)
     {
-        throw new NotImplementedException();
+        ClientSetupData data = JsonConvert.DeserializeObject<ClientSetupData>(json);
+        return new ClientSetupPacket() { ID = data.ID };
+    }
+
+    public object ToData()
+    {
+        return new ClientSetupData() { ID = ID };
     }
 }

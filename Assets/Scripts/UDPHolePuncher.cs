@@ -3,35 +3,46 @@ using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using UnityEngine;
+
+public class P2PClient
+{
+    public UdpClient UdpClient;
+    public IPAddress DestIP;
+    public int DestPort;
+}
 
 public class UDPHolePuncher : IDisposable
 {
+    static Random random = new Random();
+    int id = -1;
+
+    UdpClient udpClient;
     IPAddress destAddress;
     public string holePunchingServerName { get; private set; }
     public int holePunchingServerPort { get; private set; }
     bool host;
 
-    List<P2PClient> clients;
-
     Thread thread;
     bool killed = false;
-    ConcurrentBag<P2PClient> received;
+    ConcurrentBag<HolePunchResponse> received;
 
     public bool Failed { get; private set; } = false;
-
+    
+    private class HolePunchID
+    {
+        public int ID = -1;
+    }
     private class HolePunchRequest
     {
+        public int ID = -1;
         public string IP = "";
         public bool Persistent = false;
     }
-    public class P2PClient
+    public class HolePunchResponse
     {
         public int SourcePort = 0;
         public string SourceIP = "";
@@ -42,11 +53,12 @@ public class UDPHolePuncher : IDisposable
 
     public UDPHolePuncher(string destName, string holePunchingServerName, int holePunchingServerPort, bool host)
     {
+        id = random.Next();
         destAddress = IPAddress.Parse(destName);
         this.holePunchingServerName = holePunchingServerName;
         this.holePunchingServerPort = holePunchingServerPort;
         this.host = host;
-        received = new ConcurrentBag<P2PClient>();
+        received = new ConcurrentBag<HolePunchResponse>();
         thread = new Thread(new ThreadStart(ReceiveClientData));
         thread.Start();
     }
@@ -55,13 +67,13 @@ public class UDPHolePuncher : IDisposable
     {
         byte[] data;
         // send UDP to hole punch server to give it your assigned port
-        UdpClient udpClient = new UdpClient();
-        data = Encoding.ASCII.GetBytes("Setup");
+        udpClient = new UdpClient();
+        data = Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(new HolePunchID() { ID = id }));
         udpClient.Send(data, data.Length, holePunchingServerName, holePunchingServerPort);
         Thread.Sleep(100);
 
         // open TCP connection to hole punch server to give it our destination
-        string req = JsonConvert.SerializeObject(new HolePunchRequest() { IP = destAddress.ToString(), Persistent = host });
+        string req = JsonConvert.SerializeObject(new HolePunchRequest() { ID = id, IP = destAddress.ToString(), Persistent = host });
         TcpClient tcpClient = new TcpClient();
         try
         {
@@ -82,6 +94,7 @@ public class UDPHolePuncher : IDisposable
         {
             if (!stream.DataAvailable)
             {
+                Thread.Sleep(50);
                 continue;
             }
             data = new byte[4096];
@@ -92,9 +105,9 @@ public class UDPHolePuncher : IDisposable
             for (int i = 0; i < MAX_CLIENTS_PER_PACKET && s.Contains("\n"); i++)
             {
                 string[] split = s.Split(new[] {"\n"}, 1, StringSplitOptions.None);
-                P2PClient r = JsonConvert.DeserializeObject<P2PClient>(split[0]);
+                HolePunchResponse r = JsonConvert.DeserializeObject<HolePunchResponse>(split[0]);
                 // validate and add to received clients
-                if (r.Error != "")
+                if (r.Error == "")
                 {
                     received.Add(r);
                     // terminate connection if we are not a host, can only receive one server connection
@@ -120,9 +133,12 @@ public class UDPHolePuncher : IDisposable
     public List<P2PClient> ReceiveClients()
     {
         List<P2PClient> clients = new List<P2PClient>();
-        P2PClient client;
-        while (!received.IsEmpty && received.TryTake(out client))
+        HolePunchResponse resp;
+        while (!received.IsEmpty && received.TryTake(out resp))
         {
+            P2PClient client = new P2PClient() { UdpClient = udpClient, DestIP = IPAddress.Parse(resp.DestIP), DestPort = resp.DestPort };
+            byte[] noop = GamePacketUtils.Serialize(new NoOpPacket());
+            client.UdpClient.Send(noop, noop.Length);
             clients.Add(client);
         }
         return clients;

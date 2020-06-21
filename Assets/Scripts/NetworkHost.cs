@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using System.Text;
 using UnityEngine;
 
@@ -8,13 +9,13 @@ public class NetworkHost : MonoBehaviour
     // host ID is 0
     public int id { get; private set; } = 0;
 
-    private class UDPClient
+    private class HostedClient
     {
         public int id = -1;
-        public UDPHolePuncher.P2PClient client;
+        public P2PClient client;
         public UDPConnection connection;
     }
-    List<UDPClient> Clients { get; set; } = new List<UDPClient>();
+    List<HostedClient> Clients { get; set; } = new List<HostedClient>();
     UDPConnection Receiver { get; set; }
     UDPHolePuncher HolePuncher { get; set; }
 
@@ -37,15 +38,15 @@ public class NetworkHost : MonoBehaviour
         while (AcceptingClients)
         {
             // accept clients
-            List<UDPHolePuncher.P2PClient> clients = HolePuncher.ReceiveClients();
-            foreach (UDPHolePuncher.P2PClient client in clients)
+            List<P2PClient> clients = HolePuncher.ReceiveClients();
+            foreach (P2PClient client in clients)
             {
-                UDPConnection conn = new UDPConnection(client.SourceIP, client.SourcePort, client.DestIP, client.DestPort, true);
+                UDPConnection conn = new UDPConnection(client.UdpClient, client.DestIP, client.DestPort, true);
                 if (Receiver == null)
                 {
-                    Receiver = new UDPConnection(client.SourceIP, client.SourcePort, client.DestIP, client.DestPort);
+                    Receiver = new UDPConnection(client.UdpClient, client.DestIP, client.DestPort);
                 }
-                UDPClient newClient = new UDPClient { id = Clients.Count + 1, client = client, connection = conn };
+                HostedClient newClient = new HostedClient { id = Clients.Count + 1, client = client, connection = conn };
                 Clients.Add(newClient);
                 Debug.Log($"Client {newClient.id} connected at {newClient.connection.udpSenderEp.ToString()}");
                 AcceptingClients = false;
@@ -53,11 +54,12 @@ public class NetworkHost : MonoBehaviour
             if (HolePuncher.Failed)
             {
                 Debug.Log($"Failed to connect to server {HolePuncher.holePunchingServerName}:{HolePuncher.holePunchingServerPort}");
+                yield break;
             }
             yield return null;
         }
         // send setup and ID to every client
-        foreach (UDPClient client in Clients)
+        foreach (HostedClient client in Clients)
         {
             Debug.Log($"Sending pings to client at {client.connection.udpSenderEp.ToString()}");
             for (int i = 0; i < 5; i++)
@@ -103,7 +105,7 @@ public class NetworkHost : MonoBehaviour
         */
     }
     // handle clients
-    void HandleClient(UDPClient client)
+    void HandleClient(HostedClient client)
     {
 
     }
@@ -122,7 +124,7 @@ public class NetworkHost : MonoBehaviour
         // kill receiver
         Receiver?.Kill();
         // kill all client connections
-        foreach (UDPClient client in Clients)
+        foreach (HostedClient client in Clients)
         {
             client?.connection.Kill();
         }

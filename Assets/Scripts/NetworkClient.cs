@@ -28,15 +28,16 @@ public class NetworkClient : MonoBehaviour
         // connect to host
         while (Host == null)
         {
-            List<UDPHolePuncher.P2PClient> hosts = HolePuncher.ReceiveClients();
+            List<P2PClient> hosts = HolePuncher.ReceiveClients();
             if (hosts.Count > 0)
             {
-                Host = new UDPConnection(hosts[0].SourceIP, hosts[0].SourcePort, hosts[0].DestIP, hosts[0].DestPort);
+                Host = new UDPConnection(hosts[0].UdpClient, hosts[0].DestIP, hosts[0].DestPort);
                 Debug.Log($"Connected to host at {Host.udpSenderEp.ToString()}");
             }
             if (HolePuncher.Failed)
             {
                 Debug.Log($"Failed to connect to server {HolePuncher.holePunchingServerName}:{HolePuncher.holePunchingServerPort}");
+                yield break;
             }
             yield return null;
         }
