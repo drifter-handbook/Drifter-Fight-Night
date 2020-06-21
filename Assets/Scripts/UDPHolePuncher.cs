@@ -27,7 +27,7 @@ public class UDPHolePuncher : IDisposable
     private class HolePunchRequest
     {
         public string IP = "";
-        public bool Host = false;
+        public bool Persistent = false;
     }
     public class P2PClient
     {
@@ -59,7 +59,7 @@ public class UDPHolePuncher : IDisposable
         Thread.Sleep(100);
 
         // open TCP connection to hole punch server to give it our destination
-        string req = JsonConvert.SerializeObject(new HolePunchRequest() { IP = destAddress.ToString(), Host = host });
+        string req = JsonConvert.SerializeObject(new HolePunchRequest() { IP = destAddress.ToString(), Persistent = host });
         TcpClient tcpClient = new TcpClient();
         tcpClient.Connect(holePunchingServerName, holePunchingServerPort);
         data = Encoding.Default.GetBytes(req);
@@ -74,14 +74,18 @@ public class UDPHolePuncher : IDisposable
             int readBytes = stream.Read(data, 0, data.Length);
             // parse response
             s += Encoding.ASCII.GetString(data, 0, readBytes);
-            for (int i = 0; i < 10 && s.Contains("\n"); i++)
+            const int MAX_CLIENTS_PER_PACKET = 10;
+            for (int i = 0; i < MAX_CLIENTS_PER_PACKET && s.Contains("\n"); i++)
             {
                 string[] split = s.Split(new[] {"\n"}, 1, StringSplitOptions.RemoveEmptyEntries);
                 P2PClient r = JsonConvert.DeserializeObject<P2PClient>(split[0]);
                 // validate and add to received clients
-                if (!(r.SourceIP == "" || r.DestIP == "" || r.SourcePort == 0 || r.DestPort == 0 || r.Error != ""))
+                received.Add(r);
+                // terminate connection if we are not a host, can only receive one server connection
+                if (!host)
                 {
-                    received.Add(r);
+                    Kill();
+                    i = MAX_CLIENTS_PER_PACKET;
                 }
                 s = split[1];
             }

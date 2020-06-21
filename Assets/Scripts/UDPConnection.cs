@@ -9,7 +9,14 @@ using System.Text;
 using System.Threading;
 using UnityEngine;
 
-public class UDPNetwork : IDisposable
+public class UDPPacket
+{
+    public IPAddress address;
+    public int port;
+    public byte[] data;
+}
+
+public class UDPConnection : IDisposable
 {
     Thread thread;
     bool killed;
@@ -20,20 +27,18 @@ public class UDPNetwork : IDisposable
     IPEndPoint udpSenderEp;
     IPEndPoint udpReceiverSourceEp;
 
-    public class UDPPacket
-    {
-        public IPAddress address;
-        public int port;
-        public byte[] data;
-    }
+    bool sendOnly = false;
 
-    public UDPNetwork(string sourceIP, int sourcePort, string destIP, int destPort)
+    public UDPConnection(string sourceIP, int sourcePort, string destIP, int destPort, bool sendOnly = false)
     {
         senderClient = new UdpClient();
         udpSenderEp = new IPEndPoint(IPAddress.Parse(destIP), destPort);
-        receiverClient = new UdpClient(sourcePort, IPAddress.Parse(sourceIP).AddressFamily);
-        thread = new Thread(new ThreadStart(ReceiveData));
-        thread.Start();
+        if (!sendOnly)
+        {
+            receiverClient = new UdpClient(sourcePort, IPAddress.Parse(sourceIP).AddressFamily);
+            thread = new Thread(new ThreadStart(ReceiveData));
+            thread.Start();
+        }
     }
 
     private void ReceiveData()
@@ -77,6 +82,10 @@ public class UDPNetwork : IDisposable
     // get all packets received
     public List<UDPPacket> Receive()
     {
+        if (sendOnly)
+        {
+            throw new InvalidOperationException("Cannot receive data on a send only connection.");
+        }
         List<UDPPacket> packets = new List<UDPPacket>();
         UDPPacket packet;
         while (!received.IsEmpty && received.TryTake(out packet))
