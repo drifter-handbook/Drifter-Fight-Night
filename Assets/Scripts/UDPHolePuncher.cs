@@ -14,8 +14,8 @@ using UnityEngine;
 public class UDPHolePuncher : IDisposable
 {
     IPAddress destAddress;
-    string holePunchingServerName;
-    int holePunchingServerPort;
+    public string holePunchingServerName { get; private set; }
+    public int holePunchingServerPort { get; private set; }
     bool host;
 
     List<P2PClient> clients;
@@ -23,6 +23,8 @@ public class UDPHolePuncher : IDisposable
     Thread thread;
     bool killed = false;
     ConcurrentBag<P2PClient> received;
+
+    public bool Failed { get; private set; } = false;
 
     private class HolePunchRequest
     {
@@ -61,33 +63,53 @@ public class UDPHolePuncher : IDisposable
         // open TCP connection to hole punch server to give it our destination
         string req = JsonConvert.SerializeObject(new HolePunchRequest() { IP = destAddress.ToString(), Persistent = host });
         TcpClient tcpClient = new TcpClient();
-        tcpClient.Connect(holePunchingServerName, holePunchingServerPort);
+        try
+        {
+            tcpClient.Connect(holePunchingServerName, holePunchingServerPort);
+        }
+        catch (SocketException)
+        {
+            Failed = true;
+            return;
+        }
         data = Encoding.Default.GetBytes(req);
         NetworkStream stream = tcpClient.GetStream();
         stream.Write(data, 0, data.Length);
 
         // receive hole punch server responses
         string s = "";
-        while (!killed && stream.DataAvailable)
+        while (!killed)
         {
+            if (!stream.DataAvailable)
+            {
+                continue;
+            }
             data = new byte[4096];
             int readBytes = stream.Read(data, 0, data.Length);
             // parse response
-            s += Encoding.ASCII.GetString(data, 0, readBytes);
+            s += Encoding.ASCII.GetString(data, 0, readBytes).Replace("}", "}\n");
             const int MAX_CLIENTS_PER_PACKET = 10;
             for (int i = 0; i < MAX_CLIENTS_PER_PACKET && s.Contains("\n"); i++)
             {
-                string[] split = s.Split(new[] {"\n"}, 1, StringSplitOptions.RemoveEmptyEntries);
+                string[] split = s.Split(new[] {"\n"}, 1, StringSplitOptions.None);
                 P2PClient r = JsonConvert.DeserializeObject<P2PClient>(split[0]);
                 // validate and add to received clients
-                received.Add(r);
-                // terminate connection if we are not a host, can only receive one server connection
-                if (!host)
+                if (r.Error != "")
                 {
-                    Kill();
-                    i = MAX_CLIENTS_PER_PACKET;
+                    received.Add(r);
+                    // terminate connection if we are not a host, can only receive one server connection
+                    if (!host)
+                    {
+                        Kill();
+                        i = MAX_CLIENTS_PER_PACKET;
+                    }
+                    // remove processed json
+                    s = "";
+                    if (split.Length > 1)
+                    {
+                        s = split[1];
+                    }
                 }
-                s = split[1];
             }
         }
         stream.Close();

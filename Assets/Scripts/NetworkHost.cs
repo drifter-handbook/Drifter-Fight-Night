@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 public class NetworkHost : MonoBehaviour
@@ -17,13 +18,18 @@ public class NetworkHost : MonoBehaviour
     UDPConnection Receiver { get; set; }
     UDPHolePuncher HolePuncher { get; set; }
 
-    public bool AcceptingClients { get; private set; }
+    public bool AcceptingClients { get; private set; } = true;
 
     Coroutine coroutine;
 
+    void Start()
+    {
+        Init();
+    }
+
     public void Init()
     {
-        HolePuncher = new UDPHolePuncher("127.0.0.1", "minecraft.scrollingnumbers.com", 6969, true);
+        HolePuncher = new UDPHolePuncher("68.187.67.135", "minecraft.scrollingnumbers.com", 6969, true);
         coroutine = StartCoroutine(Run());
     }
     IEnumerator Run()
@@ -39,16 +45,52 @@ public class NetworkHost : MonoBehaviour
                 {
                     Receiver = new UDPConnection(client.SourceIP, client.SourcePort, client.DestIP, client.DestPort);
                 }
-                Clients.Add(new UDPClient { id = Clients.Count + 1, client = client, connection = conn });
+                UDPClient newClient = new UDPClient { id = Clients.Count + 1, client = client, connection = conn };
+                Clients.Add(newClient);
+                Debug.Log($"Client {newClient.id} connected at {newClient.connection.udpSenderEp.ToString()}");
+                AcceptingClients = false;
+            }
+            if (HolePuncher.Failed)
+            {
+                Debug.Log($"Failed to connect to server {HolePuncher.holePunchingServerName}:{HolePuncher.holePunchingServerPort}");
             }
             yield return null;
         }
         // send setup and ID to every client
         foreach (UDPClient client in Clients)
         {
-            // client.connection.Send();
+            Debug.Log($"Sending pings to client at {client.connection.udpSenderEp.ToString()}");
+            for (int i = 0; i < 5; i++)
+            {
+                client.connection.Send(Encoding.ASCII.GetBytes("Ping"));
+                yield return new WaitForSeconds(0.1f);
+            }
         }
+        // pong clients
+        List<UDPPacket> packets = Receiver.Receive();
+        foreach (UDPPacket packet in packets)
+        {
+            if (Encoding.ASCII.GetString(packet.data) == "Ping")
+            {
+                Debug.Log($"Ping received from client {packet.address.ToString()}:{packet.port}");
+                Clients[0].connection.Send(Encoding.ASCII.GetBytes("Pong"));
+                break;
+            }
+        }
+        yield return new WaitForSeconds(0.1f);
+        // receive pongs on server
+        packets = Receiver.Receive();
+        foreach (UDPPacket packet in packets)
+        {
+            if (Encoding.ASCII.GetString(packet.data) == "Ping")
+            {
+                Debug.Log($"Pong received from client {packet.address.ToString()}:{packet.port}");
+                break;
+            }
+        }
+        yield return new WaitForSeconds(0.1f);
         // handle packets, by handing them out to each client
+        /*
         while (true)
         {
             List<UDPPacket> packets = Receiver.Receive();
@@ -58,6 +100,7 @@ public class NetworkHost : MonoBehaviour
             }
             yield return null;
         }
+        */
     }
     // handle clients
     void HandleClient(UDPClient client)
@@ -75,13 +118,13 @@ public class NetworkHost : MonoBehaviour
     void OnDestroy()
     {
         // kill hole puncher connection
-        HolePuncher.Kill();
+        HolePuncher?.Kill();
         // kill receiver
-        Receiver.Kill();
+        Receiver?.Kill();
         // kill all client connections
         foreach (UDPClient client in Clients)
         {
-            client.connection.Kill();
+            client?.connection.Kill();
         }
     }
 

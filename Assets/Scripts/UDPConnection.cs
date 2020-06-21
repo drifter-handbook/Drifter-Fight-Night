@@ -24,7 +24,7 @@ public class UDPConnection : IDisposable
 
     UdpClient senderClient;
     UdpClient receiverClient;
-    IPEndPoint udpSenderEp;
+    public IPEndPoint udpSenderEp { get; private set; }
     IPEndPoint udpReceiverSourceEp;
 
     bool sendOnly = false;
@@ -35,6 +35,7 @@ public class UDPConnection : IDisposable
         udpSenderEp = new IPEndPoint(IPAddress.Parse(destIP), destPort);
         if (!sendOnly)
         {
+            received = new ConcurrentBag<UDPPacket>();
             receiverClient = new UdpClient(sourcePort, IPAddress.Parse(sourceIP).AddressFamily);
             thread = new Thread(new ThreadStart(ReceiveData));
             thread.Start();
