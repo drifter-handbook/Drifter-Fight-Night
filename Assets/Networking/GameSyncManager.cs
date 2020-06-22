@@ -66,9 +66,13 @@ public class GameSyncManager : MonoBehaviour
         else
         {
             // send client input every frame
-            client.SendToHost(new InputToHostPacket() {
-                input = networkPlayers[1].GetComponent<playerMovement>().input
-            });
+            if (client.id != -1)
+            {
+                client.SendToHost(new InputToHostPacket()
+                {
+                    input = networkPlayers[1].GetComponent<playerMovement>().input
+                });
+            }
         }
     }
 
@@ -78,7 +82,7 @@ public class GameSyncManager : MonoBehaviour
         foreach (GameObject player in networkPlayers)
         {
             SyncData.players.Add(new SyncToClientPacket.PlayerData() {
-                name = gameObject.name,
+                name = player.gameObject.name,
                 x = player.transform.position.x,
                 y = player.transform.position.y,
                 z = player.transform.position.z,
@@ -89,7 +93,7 @@ public class GameSyncManager : MonoBehaviour
         {
             SyncData.objects.Add(new SyncToClientPacket.ObjectData()
             {
-                name = gameObject.name,
+                name = obj.gameObject.name,
                 x = obj.transform.position.x,
                 y = obj.transform.position.y,
                 z = obj.transform.position.z,

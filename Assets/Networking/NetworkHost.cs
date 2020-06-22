@@ -123,7 +123,10 @@ public class NetworkHost : MonoBehaviour
 
     public void SendToClients(IGamePacket packet)
     {
-
+        foreach (HostedClient client in Clients)
+        {
+            client.connection.Send(GamePacketUtils.Serialize(packet));
+        }
     }
 
     public void FinishAcceptingClients()

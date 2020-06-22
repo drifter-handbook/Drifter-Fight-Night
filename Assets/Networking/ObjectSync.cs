@@ -45,6 +45,6 @@ public class ObjectSync : MonoBehaviour
         oldPos = transform.position;
         oldAngle = transform.eulerAngles.z;
         targetPos = new Vector3(objData.x, objData.y, objData.z);
-        targetAngle = objData.angle;
+        targetAngle = oldAngle + Mathf.DeltaAngle(oldAngle, objData.angle);
     }
 }
