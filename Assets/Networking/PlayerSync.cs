@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerSync : MonoBehaviour
 {
+    bool active;
     public float latency = 0.025f;
     float time = 0f;
     Vector3 oldPos;
@@ -18,6 +19,10 @@ public class PlayerSync : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!active)
+        {
+            return;
+        }
         // lerp
         time = Mathf.MoveTowards(time, latency, Time.deltaTime);
         float t = 0;
@@ -30,6 +35,7 @@ public class PlayerSync : MonoBehaviour
 
     public void SyncTo(SyncToClientPacket.PlayerData playerData)
     {
+        active = true;
         // move from current position to final position in latency seconds
         time = 0f;
         GetComponent<SpriteRenderer>().flipX = playerData.facing;

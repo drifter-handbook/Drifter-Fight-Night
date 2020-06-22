@@ -18,11 +18,11 @@ public class NetworkClient : MonoBehaviour
 
     public void Init(string host)
     {
-        HolePuncher = new UDPHolePuncher(host, "minecraft.scrollingnumbers.com", 6969, false);
-        coroutine = StartCoroutine(Run());
+        coroutine = StartCoroutine(Run(host));
     }
-    IEnumerator Run()
+    IEnumerator ConnectHolePunch(string host)
     {
+        HolePuncher = new UDPHolePuncher(host, "minecraft.scrollingnumbers.com", 6969, false);
         // connect to host
         while (Host == null)
         {
@@ -39,6 +39,10 @@ public class NetworkClient : MonoBehaviour
             }
             yield return null;
         }
+    }
+    IEnumerator Run(string host)
+    {
+        yield return ConnectHolePunch(host);
         // talk to host and receive a client ID
         yield return Setup();
         if (id == -1)

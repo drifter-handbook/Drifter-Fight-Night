@@ -25,11 +25,11 @@ public class NetworkHost : MonoBehaviour
 
     public void Init()
     {
-        HolePuncher = new UDPHolePuncher("68.187.67.135", "minecraft.scrollingnumbers.com", 6969, true);
         coroutine = StartCoroutine(Run());
     }
-    IEnumerator Run()
+    IEnumerator ConnectHolePunch()
     {
+        HolePuncher = new UDPHolePuncher("68.187.67.135", "minecraft.scrollingnumbers.com", 6969, true);
         while (AcceptingClients)
         {
             // accept clients
@@ -53,6 +53,10 @@ public class NetworkHost : MonoBehaviour
             }
             yield return null;
         }
+    }
+    IEnumerator Run()
+    {
+        yield return ConnectHolePunch();
         // receive requests to connect from clients
         List<UDPPacket> packets = Receiver.Receive();
         foreach (UDPPacket packet in packets)

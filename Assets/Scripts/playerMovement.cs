@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 
 public class playerMovement : MonoBehaviour
@@ -20,26 +18,45 @@ public class playerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (input.MoveX > 0)
-        {
-            rb.velocity = 5f * Vector2.left;
-        }
         if (input.MoveX < 0)
         {
-            rb.velocity = 5f * Vector2.right;
+            rb.velocity = new Vector2(-25f, rb.velocity.y);
+        }
+        else if (input.MoveX > 0)
+        {
+            rb.velocity = new Vector2(25f, rb.velocity.y);
+        }
+        else
+        {
+            float x = Mathf.MoveTowards(rb.velocity.x, 0f, 40f * Time.deltaTime);
+            rb.velocity = new Vector2(x, rb.velocity.y);
+        }
+        if (IsGrounded())
+        {
+            numberOfJumps = 2;
         }
         if (input.MoveY > 0)
         {
             if (numberOfJumps > 0)
             {
                 numberOfJumps--;
-                rb.velocity = new Vector2(rb.velocity.x, 10);
+                rb.velocity = new Vector2(rb.velocity.x, 55f);
             }
         }
     }
 
+    RaycastHit2D[] hits = new RaycastHit2D[10];
     public bool IsGrounded()
     {
-        return Physics2D.Raycast(transform.position, Vector3.down, 3.2f + 0.25f);
+        int count = Physics2D.RaycastNonAlloc(transform.position, Vector3.down, hits, 5f);
+        for (int i = 0; i < count; i++)
+        {
+            if (hits[i].collider.gameObject.tag == "Ground")
+            {
+                Debug.Log(hits[i].collider.gameObject.name);
+                return true;
+            }
+        }
+        return false;
     }
 }
