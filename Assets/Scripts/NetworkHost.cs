@@ -11,7 +11,7 @@ public class NetworkHost : MonoBehaviour
 
     private class HostedClient
     {
-        public int id = -1;
+        public int ID = -1;
         public P2PClient client;
         public UDPConnection connection;
     }
@@ -46,9 +46,9 @@ public class NetworkHost : MonoBehaviour
                 {
                     Receiver = new UDPConnection(client.UdpClient, client.DestIP, client.DestPort);
                 }
-                HostedClient newClient = new HostedClient { id = Clients.Count + 1, client = client, connection = conn };
+                HostedClient newClient = new HostedClient { ID = Clients.Count + 1, client = client, connection = conn };
                 Clients.Add(newClient);
-                Debug.Log($"Client {newClient.id} connected at {newClient.connection.udpSenderEp.ToString()}");
+                Debug.Log($"New client {newClient.ID} visible at {newClient.connection.udpSenderEp.ToString()}");
                 AcceptingClients = false;
             }
             if (HolePuncher.Failed)
@@ -58,56 +58,37 @@ public class NetworkHost : MonoBehaviour
             }
             yield return null;
         }
-        // send setup and ID to every client
-        foreach (HostedClient client in Clients)
-        {
-            Debug.Log($"Sending pings to client at {client.connection.udpSenderEp.ToString()}");
-            for (int i = 0; i < 5; i++)
-            {
-                client.connection.Send(Encoding.ASCII.GetBytes("Ping"));
-                yield return new WaitForSeconds(0.1f);
-            }
-        }
-        // pong clients
+        // receive requests to connect from clients
         List<UDPPacket> packets = Receiver.Receive();
         foreach (UDPPacket packet in packets)
         {
-            if (Encoding.ASCII.GetString(packet.data) == "Ping")
+            IGamePacket gamePacket = GamePacketUtils.Deserialize(packet.data);
+            if (gamePacket is ClientSetupPacket)
             {
-                Debug.Log($"Ping received from client {packet.address.ToString()}:{packet.port}");
-                Clients[0].connection.Send(Encoding.ASCII.GetBytes("Pong"));
-                break;
+                // find matching client
+                HostedClient client = Clients.Find(x => x.client.DestIP == packet.address && x.client.DestPort == packet.port);
+                if (client != null)
+                {
+                    Debug.Log($"Connection request received from client #{client.ID}");
+                    client.connection.Send(GamePacketUtils.Serialize(new ClientSetupPacket() { ID = client.ID }));
+                    break;
+                }
             }
         }
-        yield return new WaitForSeconds(0.1f);
-        // receive pongs on server
-        packets = Receiver.Receive();
-        foreach (UDPPacket packet in packets)
-        {
-            if (Encoding.ASCII.GetString(packet.data) == "Ping")
-            {
-                Debug.Log($"Pong received from client {packet.address.ToString()}:{packet.port}");
-                break;
-            }
-        }
-        yield return new WaitForSeconds(0.1f);
-        // handle packets, by handing them out to each client
-        /*
+        // handle client packets
         while (true)
         {
-            List<UDPPacket> packets = Receiver.Receive();
-            foreach (UDPPacket packet in packets)
+            List<UDPPacket> clientPackets = Receiver.Receive();
+            foreach (UDPPacket packet in clientPackets)
             {
-
+                IGamePacket gamePacket = GamePacketUtils.Deserialize(packet.data);
+                if (gamePacket is InputToHostPacket)
+                {
+                    // do things with client input
+                }
             }
             yield return null;
         }
-        */
-    }
-    // handle clients
-    void HandleClient(HostedClient client)
-    {
-
     }
 
     public void FinishAcceptingClients()
