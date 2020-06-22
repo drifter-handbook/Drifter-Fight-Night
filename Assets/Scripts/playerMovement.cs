@@ -19,11 +19,11 @@ public class playerMovement : MonoBehaviour
     {
         if (Input.GetKey("d"))
         {
-            transform.Translate(.1f,0,0);
+            transform.Translate(.3f,0,0);
         }
         if (Input.GetKey("a"))
         {
-            transform.Translate(-.1f, 0, 0);
+            transform.Translate(-.3f, 0, 0);
         }
         if (Input.GetKeyDown("w"))
         {
