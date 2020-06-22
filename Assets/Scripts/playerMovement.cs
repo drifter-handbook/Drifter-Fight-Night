@@ -19,11 +19,11 @@ public class playerMovement : MonoBehaviour
     {
         if (Input.GetKey("d"))
         {
-            transform.Translate(.3f,0,0);
+            transform.Translate(.1f,0,0);
         }
         if (Input.GetKey("a"))
         {
-            transform.Translate(-.3f, 0, 0);
+            transform.Translate(-.1f, 0, 0);
         }
         if (Input.GetKeyDown("w"))
         {
@@ -34,7 +34,7 @@ public class playerMovement : MonoBehaviour
                 v.y = 0.0f;
                 GetComponent<Rigidbody2D>().velocity = v;
 
-                GetComponent<Rigidbody2D>().AddForce(Vector3.up * 1500);
+                GetComponent<Rigidbody2D>().AddForce(Vector3.up * 2500);
             }
         }
     }
