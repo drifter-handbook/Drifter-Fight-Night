@@ -19,11 +19,11 @@ public class playerMovement2 : MonoBehaviour
     {
         if (Input.GetKey("l"))
         {
-            transform.Translate(.1f, 0, 0);
+            transform.Translate(.3f, 0, 0);
         }
         if (Input.GetKey("j"))
         {
-            transform.Translate(-.1f, 0, 0);
+            transform.Translate(-.3f, 0, 0);
         }
         if (Input.GetKeyDown("i"))
         {

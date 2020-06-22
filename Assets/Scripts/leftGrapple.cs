@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class killboxScript : MonoBehaviour
+public class leftGrapple : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -20,8 +20,8 @@ public class killboxScript : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            //Destroy(other.gameObject);
-            other.transform.position = new Vector3(1, 30, 1);
+            other.transform.position = new Vector3(transform.position.x, transform.position.y + 4.0f, 1);
+            other.rigidbody.velocity = Vector3.zero;
         }
     }
 }
