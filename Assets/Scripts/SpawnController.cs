@@ -9,6 +9,7 @@ using UnityEngine;
     [SerializeField][Range(0, 13)] int numSpawns = 2; // Range 13 due to camera size
 
     private void Awake() {
+        numSpawns = 0;
         spawnpoints = new Queue<Transform>();
     }
 
@@ -18,7 +19,7 @@ using UnityEngine;
         if(Object.ReferenceEquals (spawnpoints, null)) {
             spawnpoints = new Queue<Transform>();
         }
-        Debug.Log(spawnpoints);
+
         // TODO: Is this off by 1?
         while(spawnpoints.Count != numSpawns) {
             if(numSpawns > spawnpoints.Count) {
@@ -30,14 +31,20 @@ using UnityEngine;
     }
 
    void CreateSpawnPoint() {
-        // If anyone wants to clean this up please do
+        // Instantiates game object
         Transform newSpawn = new GameObject().transform;
+        // Keep track of it using a queue (allows us to manage order easier)
         spawnpoints.Enqueue(newSpawn);
-        newSpawn.name = "SpawnPoint";
-        bool negative = spawnpoints.Count % 2 != 0;
+        
+        // Initial placement 
         float calculatedPos = Mathf.Ceil(spawnpoints.Count / 2);
-        calculatedPos = negative ? calculatedPos * -1 : calculatedPos;
+        calculatedPos = spawnpoints.Count % 2 != 0 ? calculatedPos * -1 : calculatedPos;
         newSpawn.transform.SetPositionAndRotation(new Vector3(calculatedPos, 0, 0), newSpawn.transform.rotation);
+        
+        // 
+
+        newSpawn.name = "SpawnPoint";    
+        
         newSpawn.transform.parent = this.gameObject.transform;
     }
 
