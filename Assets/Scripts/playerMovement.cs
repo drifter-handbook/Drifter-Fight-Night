@@ -53,7 +53,6 @@ public class playerMovement : MonoBehaviour
         {
             if (hits[i].collider.gameObject.tag == "Ground")
             {
-                Debug.Log(hits[i].collider.gameObject.name);
                 return true;
             }
         }

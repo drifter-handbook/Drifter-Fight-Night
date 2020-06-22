@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using UnityEngine;
@@ -26,6 +27,25 @@ public class NetworkHost : MonoBehaviour
     public void Init()
     {
         coroutine = StartCoroutine(Run());
+    }
+    IEnumerator ConnectLAN()
+    {
+        IPAddress clientAddress = IPAddress.Parse("192.168.1.18");
+        UdpClient udpClient = new UdpClient();
+        byte[] data = GamePacketUtils.Serialize(new NoOpPacket());
+        udpClient.Send(data, data.Length, new IPEndPoint(clientAddress, 7500));
+        Receiver = new UDPConnection(udpClient, clientAddress, 7500);
+        Clients.Add(new HostedClient() {
+            ID = Clients.Count + 1,
+            client = new P2PClient {
+                UdpClient = udpClient,
+                DestIP = clientAddress,
+                DestPort = 7500
+            },
+            connection = Receiver
+        });
+        AcceptingClients = false;
+        yield break;
     }
     IEnumerator ConnectHolePunch()
     {
@@ -56,7 +76,7 @@ public class NetworkHost : MonoBehaviour
     }
     IEnumerator Run()
     {
-        yield return ConnectHolePunch();
+        yield return ConnectLAN();
         // receive requests to connect from clients
         List<UDPPacket> packets = Receiver.Receive();
         foreach (UDPPacket packet in packets)

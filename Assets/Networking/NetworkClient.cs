@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using UnityEngine;
 
@@ -19,6 +21,14 @@ public class NetworkClient : MonoBehaviour
     public void Init(string host)
     {
         coroutine = StartCoroutine(Run(host));
+    }
+    IEnumerator ConnectLAN(string host)
+    {
+        UdpClient udpClient = new UdpClient();
+        byte[] data = GamePacketUtils.Serialize(new NoOpPacket());
+        udpClient.Send(data, data.Length, new IPEndPoint(IPAddress.Parse(host), 7500));
+        Host = new UDPConnection(udpClient, IPAddress.Parse(host), 7500);
+        yield break;
     }
     IEnumerator ConnectHolePunch(string host)
     {
@@ -42,7 +52,7 @@ public class NetworkClient : MonoBehaviour
     }
     IEnumerator Run(string host)
     {
-        yield return ConnectHolePunch(host);
+        yield return ConnectLAN(host);
         // talk to host and receive a client ID
         yield return Setup();
         if (id == -1)
