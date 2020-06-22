@@ -52,7 +52,7 @@ public class NetworkClient : MonoBehaviour
     }
     IEnumerator Run(string host)
     {
-        yield return ConnectLAN(host);
+        yield return ConnectHolePunch(host);
         // talk to host and receive a client ID
         yield return Setup();
         if (id == -1)
@@ -97,6 +97,7 @@ public class NetworkClient : MonoBehaviour
                 IGamePacket gamePacket = GamePacketUtils.Deserialize(packet.data);
                 if (gamePacket is ClientSetupPacket)
                 {
+                    Debug.Log("PACKET GOT THRU");
                     id = ((ClientSetupPacket)gamePacket).ID;
                     Debug.Log($"Connected to host at {packet.address.ToString()}:{packet.port}, we are Client #{id}");
                     SendToHost(gamePacket);

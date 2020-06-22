@@ -34,13 +34,14 @@ public class UDPHolePuncher : IDisposable
     
     private class HolePunchID
     {
-        public int ID = -1;
+        public int PeerPort = -1;
     }
     private class HolePunchRequest
     {
-        public int ID = -1;
-        public string IP = "";
-        public bool Persistent = false;
+        public string RemoteIP = "";
+        public int RemotePeerPort = -1;
+        public int LocalPeerPort = -1;
+        public string ConnectionType = "";
     }
     public class HolePunchResponse
     {
@@ -61,7 +62,7 @@ public class UDPHolePuncher : IDisposable
         received = new ConcurrentBag<HolePunchResponse>();
         // send UDP to hole punch server to give it your assigned port
         udpClient = new UdpClient();
-        byte[] data = Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(new HolePunchID() { ID = id }));
+        byte[] data = Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(new HolePunchID() { PeerPort = host ? 0 : 1 }));
         udpClient.Send(data, data.Length, holePunchingServerName, holePunchingServerPort);
         // start receive thread
         thread = new Thread(new ThreadStart(ReceiveClientData));
@@ -71,7 +72,16 @@ public class UDPHolePuncher : IDisposable
     private void ReceiveClientData()
     {
         // open TCP connection to hole punch server to give it our destination
-        string req = JsonConvert.SerializeObject(new HolePunchRequest() { ID = id, IP = destAddress.ToString(), Persistent = host });
+        string req = JsonConvert.SerializeObject(new HolePunchRequest() {
+            LocalPeerPort = host ? 0 : 1,
+            RemoteIP = destAddress.ToString(),
+            RemotePeerPort = host ? 1 : 0,
+            ConnectionType = host ? "Server" : "Client"
+        });
+        if (!host)
+        {
+            Thread.Sleep(1000);
+        }
         TcpClient tcpClient = new TcpClient();
         try
         {

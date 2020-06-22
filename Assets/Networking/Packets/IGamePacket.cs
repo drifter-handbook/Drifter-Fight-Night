@@ -23,7 +23,7 @@ public static class GamePacketUtils
 {
     const string DELIMITER = "|";
 
-    static List<IGamePacket> types = new List<IGamePacket>() { new NoOpPacket(), new ClientSetupPacket() };
+    static List<IGamePacket> types = new List<IGamePacket>() { new NoOpPacket(), new ClientSetupPacket(), new InputToHostPacket(), new SyncToClientPacket() };
     static Dictionary<string, IGamePacket> namedTypes = new Dictionary<string, IGamePacket>();
     static GamePacketUtils()
     {
@@ -45,7 +45,8 @@ public static class GamePacketUtils
         if (namedTypes.ContainsKey(packet[0]))
         {
             IGamePacket gamePacket = namedTypes[packet[0]].FromData(packet[2]);
-            gamePacket.Timestamp = float.Parse(packet[0]);
+            gamePacket.Timestamp = float.Parse(packet[1]);
+            return gamePacket;
         }
         return null;
     }

@@ -76,23 +76,28 @@ public class NetworkHost : MonoBehaviour
     }
     IEnumerator Run()
     {
-        yield return ConnectLAN();
+        yield return ConnectHolePunch();
         // receive requests to connect from clients
-        List<UDPPacket> packets = Receiver.Receive();
-        foreach (UDPPacket packet in packets)
+        bool finished = false;
+        while (!finished)
         {
-            IGamePacket gamePacket = GamePacketUtils.Deserialize(packet.data);
-            if (gamePacket is ClientSetupPacket)
+            List<UDPPacket> packets = Receiver.Receive();
+            foreach (UDPPacket packet in packets)
             {
-                // find matching client
-                HostedClient client = Clients.Find(x => x.client.DestIP == packet.address && x.client.DestPort == packet.port);
-                if (client != null)
+                IGamePacket gamePacket = GamePacketUtils.Deserialize(packet.data);
+                if (gamePacket is ClientSetupPacket)
                 {
-                    Debug.Log($"Connection request received from client #{client.ID}");
-                    client.connection.Send(GamePacketUtils.Serialize(new ClientSetupPacket() { ID = client.ID }));
-                    break;
+                    // find matching client
+                    HostedClient client = Clients.Find(x => x.client.DestIP.ToString() == packet.address.ToString() && x.client.DestPort == packet.port);
+                    if (client != null)
+                    {
+                        Debug.Log($"Connection request received from client #{client.ID}");
+                        client.connection.Send(GamePacketUtils.Serialize(new ClientSetupPacket() { ID = client.ID }));
+                        finished = true;
+                    }
                 }
             }
+            yield return null;
         }
         // handle client input packets
         float latest = 0;

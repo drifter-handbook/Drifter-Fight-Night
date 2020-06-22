@@ -37,7 +37,7 @@ public class GameSyncManager : MonoBehaviour
         // if we are client
         else
         {
-            client.Init("192.168.1.3");
+            client.Init("68.187.67.135");
             // remove all physics for synced objects
             foreach (GameObject obj in networkPlayers)
             {
