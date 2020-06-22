@@ -382,12 +382,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 23126778}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 17.86, y: 0.50855255, z: 37.502144}
-  m_LocalScale: {x: 0.4313392, y: 0.43364924, z: 2.6278124}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 21.8, y: 13.2, z: 16.28}
+  m_LocalScale: {x: 0.5591754, y: 0.43364924, z: 2.6278124}
   m_Children: []
-  m_Father: {fileID: 2027499953}
-  m_RootOrder: 1
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &43666792
 GameObject:
@@ -405,6 +405,8 @@ GameObject:
   m_Layer: 0
   m_Name: Owl 2
   m_TagString: Player
+  m_Name: Player Icons - Barn Owl (2)
+  m_TagString: Player2
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1151,6 +1153,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -2.3, y: 0.5}
+=======
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
