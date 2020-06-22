@@ -59,19 +59,17 @@ public class UDPHolePuncher : IDisposable
         this.holePunchingServerPort = holePunchingServerPort;
         this.host = host;
         received = new ConcurrentBag<HolePunchResponse>();
+        // send UDP to hole punch server to give it your assigned port
+        udpClient = new UdpClient();
+        byte[] data = Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(new HolePunchID() { ID = id }));
+        udpClient.Send(data, data.Length, holePunchingServerName, holePunchingServerPort);
+        // start receive thread
         thread = new Thread(new ThreadStart(ReceiveClientData));
         thread.Start();
     }
 
     private void ReceiveClientData()
     {
-        byte[] data;
-        // send UDP to hole punch server to give it your assigned port
-        udpClient = new UdpClient();
-        data = Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(new HolePunchID() { ID = id }));
-        udpClient.Send(data, data.Length, holePunchingServerName, holePunchingServerPort);
-        Thread.Sleep(100);
-
         // open TCP connection to hole punch server to give it our destination
         string req = JsonConvert.SerializeObject(new HolePunchRequest() { ID = id, IP = destAddress.ToString(), Persistent = host });
         TcpClient tcpClient = new TcpClient();
@@ -84,7 +82,7 @@ public class UDPHolePuncher : IDisposable
             Failed = true;
             return;
         }
-        data = Encoding.Default.GetBytes(req);
+        byte[] data = Encoding.Default.GetBytes(req);
         NetworkStream stream = tcpClient.GetStream();
         stream.Write(data, 0, data.Length);
 
@@ -138,7 +136,7 @@ public class UDPHolePuncher : IDisposable
         {
             P2PClient client = new P2PClient() { UdpClient = udpClient, DestIP = IPAddress.Parse(resp.DestIP), DestPort = resp.DestPort };
             byte[] noop = GamePacketUtils.Serialize(new NoOpPacket());
-            client.UdpClient.Send(noop, noop.Length);
+            client.UdpClient.Send(noop, noop.Length, new IPEndPoint(client.DestIP, client.DestPort));
             clients.Add(client);
         }
         return clients;
