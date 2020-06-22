@@ -6,6 +6,7 @@ using System.Text;
 public class NoOpPacket : IGamePacket
 {
     public string TypeID { get; set; } = "NoOp";
+    public float Timestamp { get; set; }
 
     private class NoOpData
     {

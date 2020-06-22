@@ -23,11 +23,6 @@ public class NetworkHost : MonoBehaviour
 
     Coroutine coroutine;
 
-    void Start()
-    {
-        Init();
-    }
-
     public void Init()
     {
         HolePuncher = new UDPHolePuncher("68.187.67.135", "minecraft.scrollingnumbers.com", 6969, true);
@@ -75,7 +70,8 @@ public class NetworkHost : MonoBehaviour
                 }
             }
         }
-        // handle client packets
+        // handle client input packets
+        float latest = 0;
         while (true)
         {
             List<UDPPacket> clientPackets = Receiver.Receive();
@@ -84,11 +80,21 @@ public class NetworkHost : MonoBehaviour
                 IGamePacket gamePacket = GamePacketUtils.Deserialize(packet.data);
                 if (gamePacket is InputToHostPacket)
                 {
-                    // do things with client input
+                    // only process most recent packets
+                    if (latest < gamePacket.Timestamp)
+                    {
+                        latest = gamePacket.Timestamp;
+                        GetComponent<GameSyncManager>().SetSyncInput((InputToHostPacket)gamePacket);
+                    }
                 }
             }
             yield return null;
         }
+    }
+
+    public void SendToClients(IGamePacket packet)
+    {
+
     }
 
     public void FinishAcceptingClients()

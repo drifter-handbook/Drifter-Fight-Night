@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class ClientSetupPacket : IGamePacket
 {
     public string TypeID { get; set; } = "Setup";
+    public float Timestamp { get; set; }
 
     public int ID;
 

@@ -6,56 +6,40 @@ using UnityEngine;
 
 public class playerMovement : MonoBehaviour
 {
-    public bool isGrounded = true;
+    public PlayerInputData input { get; set; } = new PlayerInputData();
     public int numberOfJumps = 2;
+
+    Rigidbody2D rb;
+
     // Start is called before the first frame update
     void Start()
     {
-
+        rb = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey("d"))
+        if (input.MoveX > 0)
         {
-            transform.Translate(.1f,0,0);
+            rb.velocity = 5f * Vector2.left;
         }
-        if (Input.GetKey("a"))
+        if (input.MoveX < 0)
         {
-            transform.Translate(-.1f, 0, 0);
+            rb.velocity = 5f * Vector2.right;
         }
-        if (Input.GetKeyDown("w"))
+        if (input.MoveY > 0)
         {
             if (numberOfJumps > 0)
             {
                 numberOfJumps--;
-                Vector3 v = GetComponent<Rigidbody2D>().velocity;
-                v.y = 0.0f;
-                GetComponent<Rigidbody2D>().velocity = v;
-
-                GetComponent<Rigidbody2D>().AddForce(Vector3.up * 2500);
+                rb.velocity = new Vector2(rb.velocity.x, 10);
             }
         }
     }
-    
-    void OnCollisionEnter2D(Collision2D other)
-    {
-       if (other.gameObject.tag == "Ground" && GetComponent<Rigidbody2D>().velocity.y <= 0)
-        {
-            //UnityEngine.Debug.Log("GroundedEnter");
-            isGrounded = true;
-            numberOfJumps = 2;
-      }
-    }
 
-    void OnCollisionExit2D(Collision2D other)
+    public bool IsGrounded()
     {
-       if(other.gameObject.tag == "Ground")
-       {
-            //UnityEngine.Debug.Log("GroundedLeave");
-            isGrounded = false;
-       }
+        return Physics2D.Raycast(transform.position, Vector3.down, 3.2f + 0.25f);
     }
-   // */
 }

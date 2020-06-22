@@ -16,11 +16,6 @@ public class NetworkClient : MonoBehaviour
 
     Coroutine coroutine;
 
-    void Start()
-    {
-        Init("68.187.67.135");
-    }
-
     public void Init(string host)
     {
         HolePuncher = new UDPHolePuncher(host, "minecraft.scrollingnumbers.com", 6969, false);
@@ -52,6 +47,7 @@ public class NetworkClient : MonoBehaviour
             throw new InvalidOperationException($"Failed to connect to host at {Host.udpSenderEp.ToString()}");
         }
         // receive host sync packets
+        float latest = 0;
         while (true)
         {
             List<UDPPacket> hostPackets = Host.Receive();
@@ -60,7 +56,12 @@ public class NetworkClient : MonoBehaviour
                 IGamePacket gamePacket = GamePacketUtils.Deserialize(packet.data);
                 if (gamePacket is SyncToClientPacket)
                 {
-                    // do things with host sync data
+                    // only process most recent packets
+                    if (latest < gamePacket.Timestamp)
+                    {
+                        latest = gamePacket.Timestamp;
+                        GetComponent<GameSyncManager>().SyncFromPacket((SyncToClientPacket)gamePacket);
+                    }
                 }
             }
             yield return null;
@@ -84,12 +85,17 @@ public class NetworkClient : MonoBehaviour
                 {
                     id = ((ClientSetupPacket)gamePacket).ID;
                     Debug.Log($"Connected to host at {packet.address.ToString()}:{packet.port}, we are Client #{id}");
-                    Host.Send(GamePacketUtils.Serialize(gamePacket));
+                    SendToHost(gamePacket);
                     break;
                 }
             }
         }
         yield break;
+    }
+
+    public void SendToHost(IGamePacket packet)
+    {
+        Host.Send(GamePacketUtils.Serialize(packet));
     }
 
     void OnApplicationQuit()

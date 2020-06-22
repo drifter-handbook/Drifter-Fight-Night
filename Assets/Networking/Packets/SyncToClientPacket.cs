@@ -5,24 +5,27 @@ using System.Collections.Generic;
 public class SyncToClientPacket : IGamePacket
 {
     public string TypeID { get; set; } = "Sync";
+    public float Timestamp { get; set; }
 
-    private class PlayerData
+    public class PlayerData
     {
+        public string name = "";
         public float x = 0f;
         public float y = 0f;
         public float z = 0f;
-        public int facing = 0;
+        public bool facing = false;
     }
-    private class ObjectData
+    public class ObjectData
     {
+        public string name = "";
         public float x = 0f;
         public float y = 0f;
         public float z = 0f;
         public float angle = 0f;
     }
 
-    SyncToClientData syncData;
-    private class SyncToClientData
+    public SyncToClientData SyncData;
+    public class SyncToClientData
     {
         public List<PlayerData> players = new List<PlayerData>();
         public List<ObjectData> objects = new List<ObjectData>();
@@ -31,11 +34,11 @@ public class SyncToClientPacket : IGamePacket
     public IGamePacket FromData(string json)
     {
         SyncToClientData data = JsonConvert.DeserializeObject<SyncToClientData>(json);
-        return new SyncToClientPacket() { syncData = data };
+        return new SyncToClientPacket() { SyncData = data };
     }
 
     public object ToData()
     {
-        return syncData;
+        return SyncData;
     }
 }
