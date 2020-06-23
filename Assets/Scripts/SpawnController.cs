@@ -19,8 +19,7 @@ using UnityEngine;
         if(Object.ReferenceEquals (spawnpoints, null)) {
             spawnpoints = new Queue<Transform>();
         }
-
-        // TODO: Is this off by 1?
+        // TODO: Fix reload bug
         while(spawnpoints.Count != numSpawns) {
             if(numSpawns > spawnpoints.Count) {
                 CreateSpawnPoint();
@@ -40,8 +39,6 @@ using UnityEngine;
         float calculatedPos = Mathf.Ceil(spawnpoints.Count / 2);
         calculatedPos = spawnpoints.Count % 2 != 0 ? calculatedPos * -1 : calculatedPos;
         newSpawn.transform.SetPositionAndRotation(new Vector3(calculatedPos, 0, 0), newSpawn.transform.rotation);
-        
-        // 
 
         newSpawn.name = "SpawnPoint";    
         
@@ -49,6 +46,8 @@ using UnityEngine;
     }
 
     void DestroySpawnPoints(){
+        if (spawnpoints.Count < 1) return;
+
         // you are most certainly not allowed to change this variable name
         Transform dannyDeleto = spawnpoints.Dequeue();
         DestroyImmediate(dannyDeleto.gameObject);
