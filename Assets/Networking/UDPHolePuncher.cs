@@ -72,16 +72,14 @@ public class UDPHolePuncher : IDisposable
     private void ReceiveClientData()
     {
         // open TCP connection to hole punch server to give it our destination
-        string req = JsonConvert.SerializeObject(new HolePunchRequest() {
+        HolePunchRequest rq = new HolePunchRequest()
+        {
             LocalPeerPort = host ? 0 : 1,
             RemoteIP = destAddress.ToString(),
             RemotePeerPort = host ? 1 : 0,
             ConnectionType = host ? "Server" : "Client"
-        });
-        if (!host)
-        {
-            Thread.Sleep(1000);
-        }
+        };
+        string req = JsonConvert.SerializeObject(rq);
         TcpClient tcpClient = new TcpClient();
         try
         {
@@ -98,11 +96,20 @@ public class UDPHolePuncher : IDisposable
 
         // receive hole punch server responses
         string s = "";
+        float time = 0;
         while (!killed)
         {
+            const float SERVER_REFRESH_TIME = 10f;
+            if (time > SERVER_REFRESH_TIME)
+            {
+                rq.ConnectionType = "KeepAlive";
+                data = Encoding.Default.GetBytes(JsonConvert.SerializeObject(rq));
+                stream.Write(data, 0, data.Length);
+            }
             if (!stream.DataAvailable)
             {
                 Thread.Sleep(50);
+                time += 50f / 1000;
                 continue;
             }
             data = new byte[4096];

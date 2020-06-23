@@ -260,6 +260,7 @@ GameObject:
   - component: {fileID: 142087252}
   - component: {fileID: 142087253}
   - component: {fileID: 142087256}
+  - component: {fileID: 142087255}
   - component: {fileID: 142087254}
   m_Layer: 0
   m_Name: GameSyncManager
@@ -311,6 +312,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2582514f3e82b7d4791b4e4e46a58d38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &142087255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 142087251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de748ba2ce9338548ba8700a2a8a0763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  status: 0
+  complete: 1
 --- !u!114 &142087256
 MonoBehaviour:
   m_ObjectHideFlags: 0
