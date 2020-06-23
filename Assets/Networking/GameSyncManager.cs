@@ -43,6 +43,10 @@ public class GameSyncManager : MonoBehaviour
             {
                 obj.GetComponent<Rigidbody2D>().simulated = false;
             }
+            foreach (GameObject obj in networkObjects)
+            {
+                obj.GetComponent<Rigidbody2D>().simulated = false;
+            }
             // attach player input to player 2
             GetComponent<PlayerInput>().input = networkPlayers[1].GetComponent<playerMovement>().input;
         }
