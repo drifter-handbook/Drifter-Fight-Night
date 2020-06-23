@@ -1,61 +1,61 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 
 public class playerMovement : MonoBehaviour
 {
-    public bool isGrounded = true;
+    public PlayerInputData input { get; set; } = new PlayerInputData();
     public int numberOfJumps = 2;
+
+    Rigidbody2D rb;
+
     // Start is called before the first frame update
     void Start()
     {
-
+        rb = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey("d"))
+        if (input.MoveX < 0)
         {
-            transform.Translate(.3f,0,0);
+            rb.velocity = new Vector2(-25f, rb.velocity.y);
         }
-        if (Input.GetKey("a"))
+        else if (input.MoveX > 0)
         {
-            transform.Translate(-.3f, 0, 0);
+            rb.velocity = new Vector2(25f, rb.velocity.y);
         }
-        if (Input.GetKeyDown("w"))
+        else
+        {
+            float x = Mathf.MoveTowards(rb.velocity.x, 0f, 40f * Time.deltaTime);
+            rb.velocity = new Vector2(x, rb.velocity.y);
+        }
+        if (IsGrounded())
+        {
+            numberOfJumps = 2;
+        }
+        if (input.MoveY > 0)
         {
             if (numberOfJumps > 0)
             {
                 numberOfJumps--;
-                Vector3 v = GetComponent<Rigidbody2D>().velocity;
-                v.y = 0.0f;
-                GetComponent<Rigidbody2D>().velocity = v;
-
-                GetComponent<Rigidbody2D>().AddForce(Vector3.up * 2500);
+                rb.velocity = new Vector2(rb.velocity.x, 55f);
             }
         }
     }
-    
-    void OnCollisionEnter2D(Collision2D other)
-    {
-       if (other.gameObject.tag == "Ground" && GetComponent<Rigidbody2D>().velocity.y <= 0)
-        {
-            //UnityEngine.Debug.Log("GroundedEnter");
-            isGrounded = true;
-            numberOfJumps = 2;
-      }
-    }
 
-    void OnCollisionExit2D(Collision2D other)
+    RaycastHit2D[] hits = new RaycastHit2D[10];
+    public bool IsGrounded()
     {
-       if(other.gameObject.tag == "Ground")
-       {
-            //UnityEngine.Debug.Log("GroundedLeave");
-            isGrounded = false;
-       }
+        int count = Physics2D.RaycastNonAlloc(transform.position, Vector3.down, hits, 5f);
+        for (int i = 0; i < count; i++)
+        {
+            if (hits[i].collider.gameObject.tag == "Ground")
+            {
+                return true;
+            }
+        }
+        return false;
     }
-   // */
 }
