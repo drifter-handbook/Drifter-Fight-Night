@@ -27,6 +27,8 @@ public class GameController : Singleton<GameController>
         OPTIONS,    // Adjusting game options
     };
 
+    StateType state {get; set;}
+
     public void Pause(bool paused) {
 
     }

@@ -2,15 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/** 
- * This is the class that will be put into a prefab and instantiated 
+
+/**
+ * This deals with all UI inputs
  */
-public class Drifter : MonoBehaviour
+public class UIController : MonoBehaviour
 {
-
-    public DrifterData drifterData;
-    public CharacterController controller;
-
     // Start is called before the first frame update
     void Start()
     {
