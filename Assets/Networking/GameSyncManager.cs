@@ -90,8 +90,10 @@ public class GameSyncManager : MonoBehaviour
                 x = player.transform.position.x,
                 y = player.transform.position.y,
                 z = player.transform.position.z,
-                facing = player.GetComponentInChildren<SpriteRenderer>().flipX
+                facing = player.GetComponentInChildren<SpriteRenderer>().flipX,
+                animatorState = player.GetComponent<playerMovement>().animatorState
             });
+            player.GetComponent<playerMovement>().ResetAnimatorTriggers();
         }
         foreach (GameObject obj in networkObjects)
         {
@@ -115,6 +117,7 @@ public class GameSyncManager : MonoBehaviour
             if (playerData != null)
             {
                 player.GetComponent<PlayerSync>().SyncTo(playerData);
+                player.GetComponent<playerMovement>().SyncAnimatorState(playerData.animatorState);
             }
         }
         foreach (GameObject obj in networkObjects)
