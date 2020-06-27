@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Dynamically creates spawn points for 
-[ExecuteInEditMode] public class SpawnController : MonoBehaviour
+// Dynamically creates spawn points for
+[ExecuteInEditMode] 
+[DisallowMultipleComponent]
+public class SpawnController : MonoBehaviour
 {
     Queue<Transform> spawnpoints;
+    public int example = 0; 
     [SerializeField][Range(0, 13)] int numSpawns = 2; // Range 13 due to camera size
 
     private void Awake() {

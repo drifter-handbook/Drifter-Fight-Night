@@ -4,28 +4,39 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
- 
+
+[DisallowMultipleComponent]
 public class GameController : Singleton<GameController>
 {
     // Prevent instantiation - get instance with GameController.Instance
     protected GameController() {}
 
     // Tree of controllers
-    private Dictionary<string, MonoBehaviour> m_controllers = 
-        new Dictionary<string, MonoBehaviour>();  
+    [SerializeField] UIController uiController;
+    [SerializeField] SpawnController spawnController;
 
+    // Control flow
     public enum StateType 
     {
-        DEFAULT,    // Fall-back state, should never happen
-        WAITING,    // Waiting for other player to finish selecting a character
-        PLAYING,    // In-game
-        PAUSED,     // In-game but one player has paused the game
-        GAMEOVER, 
-        GAMESTART,
-        LOBBY,      // In lobby, connected to server
-        MENU,       // Viewing in-game menu
-        OPTIONS,    // Adjusting game options
+        DEFAULT,        // Fall-back state, should never happen
+        APPLICATION_START,
+        CONNECTING,     // Connecting to multiplayer
+        WAITING,        // Waiting for other player to finish selecting a character
+        MATCH_START,    // Initializing game state
+        PLAYING,        // In-game
+        PAUSED,         // In-game but one player has paused the game
+        MATCH_OVER,     // Match has ended
     };
+
+    StateType state {get; set;}
+
+    private void Awake() {
+        PreLoad();
+    }
+
+    void PreLoad() {
+        
+    }
 
     public void Pause(bool paused) {
 

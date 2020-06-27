@@ -90,7 +90,7 @@ public class GameSyncManager : MonoBehaviour
                 x = player.transform.position.x,
                 y = player.transform.position.y,
                 z = player.transform.position.z,
-                facing = player.GetComponent<SpriteRenderer>().flipX
+                facing = player.GetComponentInChildren<SpriteRenderer>().flipX
             });
         }
         foreach (GameObject obj in networkObjects)

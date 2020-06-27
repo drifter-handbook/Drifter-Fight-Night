@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/** 
+ * This will hold the data for each drifter. It is able to be modified
+ * in the explorer.
+ */
 [CreateAssetMenu(fileName = "DrifterData", menuName = "VirtuaDrifter/DrifterData", order = 51)]
 public class DrifterData : ScriptableObject
 {
