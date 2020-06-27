@@ -11,17 +11,16 @@ public class GameSyncManager : MonoBehaviour
     // objects to sync
     public List<GameObject> networkPlayers;
     public List<GameObject> networkObjects;
+    [SerializeField] private bool IsHost = false;
 
-    public bool IsHost { get; private set; } = false;
+    bool GetIsHost(){
+        return IsHost;
+    }
 
     void Awake()
     {
-        host = GetComponent<NetworkHost>();
-        client = GetComponent<NetworkClient>();
-        if (host != null)
-        {
-            IsHost = true;
-        }
+        host = new NetworkHost();
+        client = new NetworkClient();
     }
 
     // Start is called before the first frame update
