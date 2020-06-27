@@ -25,6 +25,9 @@ public class playerMovement : MonoBehaviour
 
     Rigidbody2D rb;
 
+    [NonSerialized]
+    public bool IsClient = false;
+
     void Start()
     {
         animator = GetComponentInChildren<Animator>();
@@ -126,7 +129,10 @@ public class playerMovement : MonoBehaviour
     // used by host
     private void SetAnimatorTrigger(string s)
     {
-        animator.SetTrigger(s);
+        if (!IsClient)
+        {
+            animator.SetTrigger(s);
+        }
         switch (s)
         {
             case "Attack":
@@ -156,7 +162,10 @@ public class playerMovement : MonoBehaviour
     }
     private void SetAnimatorBool(string s, bool value)
     {
-        animator.SetBool(s, value);
+        if (!IsClient)
+        {
+            animator.SetBool(s, value);
+        }
         switch (s)
         {
             case "Grounded":
@@ -208,7 +217,7 @@ public class playerMovement : MonoBehaviour
     }
 }
 
-public class PlayerAnimatorState
+public class PlayerAnimatorState : ICloneable
 {
     public bool Grounded = false;
     public bool Walking = false;
@@ -218,4 +227,18 @@ public class PlayerAnimatorState
     public bool Jump = false;
     public bool Recovery = false;
     public bool Fall = false;
+
+    public object Clone()
+    {
+        return new PlayerAnimatorState() {
+            Grounded = Grounded,
+            Walking = Walking,
+            Guarding = Guarding,
+            Attack = Attack,
+            Grab = Grab,
+            Jump = Jump,
+            Recovery = Recovery,
+            Fall = Fall
+        };
+    }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Newtonsoft.Json;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -37,11 +38,12 @@ public class GameSyncManager : MonoBehaviour
         // if we are client
         else
         {
-            client.Init("68.187.67.135");
+            client.Init("75.134.27.221");
             // remove all physics for synced objects
             foreach (GameObject obj in networkPlayers)
             {
                 obj.GetComponent<Rigidbody2D>().simulated = false;
+                obj.GetComponent<playerMovement>().IsClient = true;
             }
             foreach (GameObject obj in networkObjects)
             {
@@ -91,7 +93,7 @@ public class GameSyncManager : MonoBehaviour
                 y = player.transform.position.y,
                 z = player.transform.position.z,
                 facing = player.GetComponentInChildren<SpriteRenderer>().flipX,
-                animatorState = player.GetComponent<playerMovement>().animatorState
+                animatorState = (PlayerAnimatorState)player.GetComponent<playerMovement>().animatorState.Clone()
             });
             player.GetComponent<playerMovement>().ResetAnimatorTriggers();
         }

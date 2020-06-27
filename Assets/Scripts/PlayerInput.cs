@@ -36,9 +36,9 @@ public class PlayerInput : MonoBehaviour
         {
             input.MoveY = 1;
         }
-        input.Jump = Input.GetKeyDown(keyBindings.jumpKey);
-        input.Light = Input.GetKeyDown(keyBindings.lightKey);
-        input.Grab = Input.GetKeyDown(keyBindings.grabKey);
+        input.Jump = Input.GetKey(keyBindings.jumpKey);
+        input.Light = Input.GetKey(keyBindings.lightKey);
+        input.Grab = Input.GetKey(keyBindings.grabKey);
         input.Guard = Input.GetKey(keyBindings.guard1Key) || Input.GetKey(keyBindings.guard2Key);
     }
 }

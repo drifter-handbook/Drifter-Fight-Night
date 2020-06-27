@@ -38,7 +38,7 @@ public class PlayerSync : MonoBehaviour
         active = true;
         // move from current position to final position in latency seconds
         time = 0f;
-        GetComponent<SpriteRenderer>().flipX = playerData.facing;
+        GetComponentInChildren<SpriteRenderer>().flipX = playerData.facing;
         oldPos = transform.position;
         targetPos = new Vector3(playerData.x, playerData.y, playerData.z);
     }
