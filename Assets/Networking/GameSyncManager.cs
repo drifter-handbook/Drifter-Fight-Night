@@ -11,6 +11,7 @@ public class GameSyncManager : MonoBehaviour
     // objects to sync
     public List<GameObject> networkPlayers;
     public List<GameObject> networkObjects;
+    [Header("Check box if hosting")]
     [SerializeField] private bool IsHost = false;
 
     bool GetIsHost(){
@@ -19,8 +20,8 @@ public class GameSyncManager : MonoBehaviour
 
     void Awake()
     {
-        host = new NetworkHost();
-        client = new NetworkClient();
+        if (IsHost) { host = gameObject.AddComponent<NetworkHost>(); }
+        else { client = gameObject.AddComponent<NetworkClient>(); }
     }
 
     // Start is called before the first frame update
@@ -51,12 +52,6 @@ public class GameSyncManager : MonoBehaviour
             // attach player input to player 2
             GetComponent<PlayerInput>().input = networkPlayers[1].GetComponent<playerMovement>().input;
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     void FixedUpdate()
