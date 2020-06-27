@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Handles input
 public class PlayerInput : MonoBehaviour
 {
     public PlayerInputData input;
