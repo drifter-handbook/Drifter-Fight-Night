@@ -19,6 +19,9 @@ public class playerMovement : MonoBehaviour
 
     Animator animator;
 
+    // stuns the character for several frames if stunCount > 0
+    int stunCount = 0;
+
     void Start()
     {
         animator = GetComponentInChildren<Animator>();
@@ -27,6 +30,9 @@ public class playerMovement : MonoBehaviour
 
     void Update()
     {
+        // TODO: spawn hitboxes
+        bool canAct = stunCount == 0 && !animator.GetBool("Guarding");
+        bool canGuard = stunCount == 0;
         bool moving = input.MoveX != 0;
         animator.SetBool("Grounded", IsGrounded());
         if (animator.GetBool("Grounded"))
@@ -34,16 +40,17 @@ public class playerMovement : MonoBehaviour
             numberOfJumps = 2;
         }
 
-        if (moving && !input.Guard)
+        if (moving && canAct)
         {
             sprite.flipX = input.MoveX > 0;
         }
 
-        if (input.Grab && !input.Guard)
+        if (input.Grab && canAct)
         {
             animator.SetTrigger("Grab");
+            StartCoroutine(StunFor(0.5f));
         }
-        else if (moving && !input.Guard)
+        else if (moving && canAct)
         {
             if (!animator.GetBool("Walking")) { animator.SetTrigger("Walk"); }
             animator.SetBool("Walking", true);
@@ -54,23 +61,24 @@ public class playerMovement : MonoBehaviour
         }
 
         //attack  //neutral aerial
-        if (input.Light && !input.Guard)
+        if (input.Light && canAct)
         {
             if (animator.GetBool("Grounded"))
             {
                 animator.SetTrigger("Attack");
+                StartCoroutine(StunFor(0.1f));
             } 
             else
             {
                 animator.SetTrigger("Aerial");
+                StartCoroutine(StunFor(0.5f));
             }
         }
-        if (input.Guard) 
+        if (input.Guard && canGuard) 
         {
             //shift is guard 
             if (!animator.GetBool("Guarding"))
             {
-                animator.SetTrigger("Guard");
                 animator.SetBool("Guarding", true);
             }
         }
@@ -79,12 +87,13 @@ public class playerMovement : MonoBehaviour
             animator.SetBool("Guarding", false);
         }
 
-        if (input.Jump && !input.Guard)
+        if (input.Jump && canAct)
         {
             if (input.MoveY > 0)
             {
                 // +up, recovery
                 animator.SetTrigger("Recovery");
+                StartCoroutine(StunFor(0.25f));
             }
             //jump 
             if (numberOfJumps > 0)
@@ -124,5 +133,12 @@ public class playerMovement : MonoBehaviour
         v.y = 0.0f;
         GetComponent<Rigidbody2D>().velocity = v;
         GetComponent<Rigidbody2D>().AddForce(Vector3.up * 2500);
+    }
+
+    private IEnumerator StunFor(float time)
+    {
+        stunCount++;
+        yield return new WaitForSeconds(time);
+        stunCount--;
     }
 }
