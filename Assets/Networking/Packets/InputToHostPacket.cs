@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-public class PlayerInputData
+public class PlayerInputData : ICloneable
 {
     public int MoveX = 0;
     public int MoveY = 0;
@@ -10,6 +10,18 @@ public class PlayerInputData
     public bool Light = false;
     public bool Grab = false;
     public bool Guard = false;
+
+    public object Clone()
+    {
+        return new PlayerInputData() {
+            MoveX = MoveX,
+            MoveY = MoveY,
+            Jump = Jump,
+            Light = Light,
+            Grab = Grab,
+            Guard = Guard
+        };
+    }
 }
 
 public class InputToHostPacket : IGamePacket

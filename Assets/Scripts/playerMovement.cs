@@ -25,10 +25,8 @@ public class playerMovement : MonoBehaviour
 
     Rigidbody2D rb;
 
-    Coroutine delayedJump;
-
     [NonSerialized]
-    public bool IsClient = false;
+    public GameSyncManager sync;
 
     void Start()
     {
@@ -81,7 +79,7 @@ public class playerMovement : MonoBehaviour
             else
             {
                 SetAnimatorTrigger("Aerial");
-                StartCoroutine(StunFor(0.5f));
+                StartCoroutine(StunFor(0.7f));
             }
         }
         if (input.Guard && canGuard) 
@@ -111,13 +109,13 @@ public class playerMovement : MonoBehaviour
                 SetAnimatorTrigger("Jump");
                 //jump needs a little delay so character animations can spend
                 //a frame of two preparing to jump
-                if (delayedJump != null)
-                {
-                    StopCoroutine(delayedJump);
-                    delayedJump = null;
-                }
-                delayedJump = StartCoroutine(DelayedJump());
+                StartCoroutine(DelayedJump());
             }
+        }
+        // we processed key presses for host
+        if (sync != null && sync.GetIsHost())
+        {
+            sync.GetComponent<PlayerInput>()?.ResetKeyDowns();
         }
     }
 
@@ -136,7 +134,7 @@ public class playerMovement : MonoBehaviour
     // used by host
     private void SetAnimatorTrigger(string s)
     {
-        if (!IsClient)
+        if (sync != null && sync.GetIsHost())
         {
             animator.SetTrigger(s);
         }
@@ -169,7 +167,7 @@ public class playerMovement : MonoBehaviour
     }
     private void SetAnimatorBool(string s, bool value)
     {
-        if (!IsClient)
+        if (sync != null && sync.GetIsHost())
         {
             animator.SetBool(s, value);
         }
@@ -214,7 +212,6 @@ public class playerMovement : MonoBehaviour
         v.y = 0.0f;
         rb.velocity = v;
         rb.AddForce(Vector3.up * 2500);
-        delayedJump = null;
     }
 
     private IEnumerator StunFor(float time)
