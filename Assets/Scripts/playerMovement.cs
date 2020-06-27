@@ -8,7 +8,7 @@ public class playerMovement : MonoBehaviour
 {
     public int numberOfJumps = 2;
     public float delayedJumpDuration = 0.05f; // 3 seconds you can change this to whatever you want
-    public float walkSpeed = 0.1f;
+    public float walkSpeed = 15f;
 
     SpriteRenderer sprite;
 
@@ -23,10 +23,13 @@ public class playerMovement : MonoBehaviour
     // stuns the character for several frames if stunCount > 0
     int stunCount = 0;
 
+    Rigidbody2D rb;
+
     void Start()
     {
         animator = GetComponentInChildren<Animator>();
         sprite = GetComponentInChildren<SpriteRenderer>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     void Update()
@@ -54,11 +57,12 @@ public class playerMovement : MonoBehaviour
         else if (moving && canAct)
         {
             SetAnimatorBool("Walking", true);
-            transform.Translate((input.MoveX > 0 ? walkSpeed : -walkSpeed), 0, 0);
+            rb.velocity = new Vector2(input.MoveX > 0 ? walkSpeed : -walkSpeed, rb.velocity.y);
         }
         else
         {
             SetAnimatorBool("Walking", false);
+            rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 40f * Time.deltaTime), rb.velocity.y);
         }
 
         //attack  //neutral aerial
@@ -190,10 +194,10 @@ public class playerMovement : MonoBehaviour
             yield return null;
         }
         numberOfJumps--;
-        Vector3 v = GetComponent<Rigidbody2D>().velocity;
+        Vector3 v = rb.velocity;
         v.y = 0.0f;
-        GetComponent<Rigidbody2D>().velocity = v;
-        GetComponent<Rigidbody2D>().AddForce(Vector3.up * 2500);
+        rb.velocity = v;
+        rb.AddForce(Vector3.up * 2500);
     }
 
     private IEnumerator StunFor(float time)
