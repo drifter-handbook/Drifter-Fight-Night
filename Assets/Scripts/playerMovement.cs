@@ -6,9 +6,9 @@ using UnityEngine;
 
 public class playerMovement : MonoBehaviour
 {
-    public bool isGrounded = false;
-    public bool isWalking = false;
     public int numberOfJumps = 2;
+    public float delayedJumpDuration = 0.05f; // 3 seconds you can change this to whatever you want
+    public float walkSpeed = 0.1f;
 
     public CustomControls keyBindings;
     public SpriteRenderer sprite;
@@ -20,72 +20,34 @@ public class playerMovement : MonoBehaviour
 
     public Animator animator;
 
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-       //Nothing... for now
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        if (animator.GetBool("Grounded") != isGrounded)
+        bool moving = Input.GetKey(keyBindings.leftKey) 
+            || Input.GetKey(keyBindings.rightKey);
+
+        if (moving) sprite.flipX = Input.GetKey(keyBindings.rightKey);
+
+        if (Input.GetKeyDown(keyBindings.grabKey)) animator.SetTrigger("Grab");
+        else if (moving)
         {
-            animator.SetBool("Grounded", isGrounded);
+            if (!animator.GetBool("Walking")) { animator.SetTrigger("Walk"); }
+            animator.SetBool("Walking", true);
+            transform.Translate((sprite.flipX ? walkSpeed : -walkSpeed), 0, 0);
+        }
+       else {
+            animator.SetBool("Walking", false);
         }
 
-        if (animator.GetBool("Walking") != isWalking)
-        {
-            animator.SetBool("Walking", isWalking);
-        }
-
-
-        if (Input.GetKey(keyBindings.leftKey))
-        {
-            sprite.flipX = true;
-        } else if (Input.GetKey(keyBindings.rightKey)){
-            sprite.flipX = true;
-        }
-
-
-        if (Input.GetKeyDown(keyBindings.grabKey))
-        {
-            animator.SetTrigger("Grab");
-        }
-        else if (Input.GetKey(keyBindings.rightKey))
-        {
-            if (!isWalking)
-            {
-                animator.SetTrigger("Walk");
-            }
-            isWalking = true;
-            transform.Translate(.6f, 0, 0);
-        }
-       else if (Input.GetKey(keyBindings.leftKey))
-        {
-            sprite.flipX = false;
-                if (!isWalking)
-                {
-                    animator.SetTrigger("Walk");
-                }
-                isWalking = true;
-                transform.Translate(-.6f, 0, 0);
-     
-        } else {
-            isWalking = false;
-        }
-
-
+        //attack  //neutral aerial
         if (Input.GetKeyDown(keyBindings.lightKey))
         {
-            //attack  //neutral aeriel
-            if (isGrounded)
+            if (animator.GetBool("Grounded"))
             {
                 animator.SetTrigger("Attack");
-            } else
+            } 
+            else
             {
-                animator.SetTrigger("Aeriel");
+                animator.SetTrigger("Aerial");
             }
         }
 
@@ -117,9 +79,9 @@ public class playerMovement : MonoBehaviour
             if (numberOfJumps > 0)
             {
                 animator.SetTrigger("Jump");
-                StartCoroutine(DelayedJump());
                 //jump needs a little delay so character animations can spend
-                //a frame of two preparing to jump\
+                //a frame of two preparing to jump
+                StartCoroutine(DelayedJump());
             }
         }
     }
@@ -129,7 +91,7 @@ public class playerMovement : MonoBehaviour
        if (other.gameObject.tag == "Ground" && GetComponent<Rigidbody2D>().velocity.y <= 0)
         {
             //UnityEngine.Debug.Log("GroundedEnter");
-            isGrounded = true;
+            animator.SetBool("Grounded", true);
             numberOfJumps = 2;
       }
     }
@@ -139,19 +101,18 @@ public class playerMovement : MonoBehaviour
        if(other.gameObject.tag == "Ground")
        {
             //UnityEngine.Debug.Log("GroundedLeave");
-            isGrounded = false;
+            animator.SetBool("Grounded", false);
        }
     }
 
 
     private IEnumerator DelayedJump()
     {
-        float duration = 0.05f; // 3 seconds you can change this 
-                             //to whatever you want
+        
         float normalizedTime = 0;
         while (normalizedTime <= 1f)
         {
-            normalizedTime += Time.deltaTime / duration;
+            normalizedTime += Time.deltaTime / delayedJumpDuration;
             yield return null;
         }
         numberOfJumps--;
