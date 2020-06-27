@@ -25,6 +25,8 @@ public class playerMovement : MonoBehaviour
 
     Rigidbody2D rb;
 
+    Coroutine delayedJump;
+
     [NonSerialized]
     public bool IsClient = false;
 
@@ -109,7 +111,12 @@ public class playerMovement : MonoBehaviour
                 SetAnimatorTrigger("Jump");
                 //jump needs a little delay so character animations can spend
                 //a frame of two preparing to jump
-                StartCoroutine(DelayedJump());
+                if (delayedJump != null)
+                {
+                    StopCoroutine(delayedJump);
+                    delayedJump = null;
+                }
+                delayedJump = StartCoroutine(DelayedJump());
             }
         }
     }
@@ -124,7 +131,7 @@ public class playerMovement : MonoBehaviour
         if (state.Grab) animator.SetTrigger("Grab");
         if (state.Jump) animator.SetTrigger("Jump");
         if (state.Recovery) animator.SetTrigger("Recovery");
-        if (state.Fall) animator.SetTrigger("Fall");
+        if (state.Aerial) animator.SetTrigger("Aerial");
     }
     // used by host
     private void SetAnimatorTrigger(string s)
@@ -147,8 +154,8 @@ public class playerMovement : MonoBehaviour
             case "Recovery":
                 animatorState.Recovery = true;
                 break;
-            case "Fall":
-                animatorState.Fall = true;
+            case "Aerial":
+                animatorState.Aerial = true;
                 break;
         }
     }
@@ -158,7 +165,7 @@ public class playerMovement : MonoBehaviour
         animatorState.Grab = false;
         animatorState.Jump = false;
         animatorState.Recovery = false;
-        animatorState.Fall = false;
+        animatorState.Aerial = false;
     }
     private void SetAnimatorBool(string s, bool value)
     {
@@ -207,6 +214,7 @@ public class playerMovement : MonoBehaviour
         v.y = 0.0f;
         rb.velocity = v;
         rb.AddForce(Vector3.up * 2500);
+        delayedJump = null;
     }
 
     private IEnumerator StunFor(float time)
@@ -226,7 +234,7 @@ public class PlayerAnimatorState : ICloneable
     public bool Grab = false;
     public bool Jump = false;
     public bool Recovery = false;
-    public bool Fall = false;
+    public bool Aerial = false;
 
     public object Clone()
     {
@@ -238,7 +246,7 @@ public class PlayerAnimatorState : ICloneable
             Grab = Grab,
             Jump = Jump,
             Recovery = Recovery,
-            Fall = Fall
+            Aerial = Aerial
         };
     }
 }
