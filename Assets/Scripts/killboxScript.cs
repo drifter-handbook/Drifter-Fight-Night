@@ -18,10 +18,9 @@ public class killboxScript : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.tag == "Player")
+        if (other.gameObject.tag == "Player2")
         {
-            //Destroy(other.gameObject);
-            other.transform.position = new Vector3(1, 30, 1);
+            Destroy(other.gameObject);
         }
     }
 }
