@@ -25,6 +25,8 @@ public class playerMovement : MonoBehaviour
 
     Rigidbody2D rb;
 
+    Coroutine delayedJump;
+
     [NonSerialized]
     public bool IsClient = false;
 
@@ -109,7 +111,12 @@ public class playerMovement : MonoBehaviour
                 SetAnimatorTrigger("Jump");
                 //jump needs a little delay so character animations can spend
                 //a frame of two preparing to jump
-                StartCoroutine(DelayedJump());
+                if (delayedJump != null)
+                {
+                    StopCoroutine(delayedJump);
+                    delayedJump = null;
+                }
+                delayedJump = StartCoroutine(DelayedJump());
             }
         }
     }
@@ -207,6 +214,7 @@ public class playerMovement : MonoBehaviour
         v.y = 0.0f;
         rb.velocity = v;
         rb.AddForce(Vector3.up * 2500);
+        delayedJump = null;
     }
 
     private IEnumerator StunFor(float time)
