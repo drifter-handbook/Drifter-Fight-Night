@@ -10,6 +10,7 @@ public class playerMovement : MonoBehaviour
     public bool isWalking = false;
     public int numberOfJumps = 2;
 
+    public CustomControls keyBindings;
     public SpriteRenderer sprite;
 
     private Vector3 origTransform;
@@ -18,6 +19,8 @@ public class playerMovement : MonoBehaviour
     public PlayerInputData input { get; set; } = new PlayerInputData();
 
     public Animator animator;
+
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -38,19 +41,19 @@ public class playerMovement : MonoBehaviour
         }
 
 
-        if (Input.GetKey("d"))
+        if (Input.GetKey(keyBindings.leftKey))
         {
             sprite.flipX = true;
-        } else if (Input.GetKey("a")){
+        } else if (Input.GetKey(keyBindings.rightKey)){
             sprite.flipX = true;
         }
 
 
-        if (Input.GetKeyDown("g"))
+        if (Input.GetKeyDown(keyBindings.grabKey))
         {
             animator.SetTrigger("Grab");
         }
-        else if (Input.GetKey("d"))
+        else if (Input.GetKey(keyBindings.rightKey))
         {
             if (!isWalking)
             {
@@ -59,7 +62,7 @@ public class playerMovement : MonoBehaviour
             isWalking = true;
             transform.Translate(.6f, 0, 0);
         }
-       else if (Input.GetKey("a"))
+       else if (Input.GetKey(keyBindings.leftKey))
         {
             sprite.flipX = false;
                 if (!isWalking)
@@ -74,7 +77,7 @@ public class playerMovement : MonoBehaviour
         }
 
 
-        if (Input.GetKeyDown("q"))
+        if (Input.GetKeyDown(keyBindings.lightKey))
         {
             //attack  //neutral aeriel
             if (isGrounded)
@@ -86,7 +89,7 @@ public class playerMovement : MonoBehaviour
             }
         }
 
-        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) 
+        if (Input.GetKey(keyBindings.guard1Key) || Input.GetKey(keyBindings.guard2Key)) 
         {
             //shift is guard 
             if (!animator.GetBool("Guarding"))
@@ -100,10 +103,10 @@ public class playerMovement : MonoBehaviour
             animator.SetBool("Guarding", false);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(keyBindings.jumpKey))
         {
 
-            if (Input.GetKey("w"))
+            if (Input.GetKey(keyBindings.upKey))
             {
                 // +up, recovery
                 animator.SetTrigger("Recovery");
