@@ -1,61 +1,160 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 public class playerMovement : MonoBehaviour
 {
-    public PlayerInputData input { get; set; } = new PlayerInputData();
+    public bool isGrounded = false;
+    public bool isWalking = false;
     public int numberOfJumps = 2;
 
-    Rigidbody2D rb;
+    public SpriteRenderer sprite;
 
+    private Vector3 origTransform;
+    private Vector3 flippedTransform;
+
+    public PlayerInputData input { get; set; } = new PlayerInputData();
+
+    public Animator animator;
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+       //Nothing... for now
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (input.MoveX < 0)
+        if (animator.GetBool("Grounded") != isGrounded)
         {
-            rb.velocity = new Vector2(-25f, rb.velocity.y);
+            animator.SetBool("Grounded", isGrounded);
         }
-        else if (input.MoveX > 0)
+
+        if (animator.GetBool("Walking") != isWalking)
         {
-            rb.velocity = new Vector2(25f, rb.velocity.y);
+            animator.SetBool("Walking", isWalking);
         }
-        else
+
+
+        if (Input.GetKey("d"))
         {
-            float x = Mathf.MoveTowards(rb.velocity.x, 0f, 40f * Time.deltaTime);
-            rb.velocity = new Vector2(x, rb.velocity.y);
+            sprite.flipX = true;
+        } else if (Input.GetKey("a")){
+            sprite.flipX = true;
         }
-        if (IsGrounded())
+
+
+        if (Input.GetKeyDown("g"))
         {
-            numberOfJumps = 2;
+            animator.SetTrigger("Grab");
         }
-        if (input.MoveY > 0)
+        else if (Input.GetKey("d"))
         {
+            if (!isWalking)
+            {
+                animator.SetTrigger("Walk");
+            }
+            isWalking = true;
+            transform.Translate(.6f, 0, 0);
+        }
+       else if (Input.GetKey("a"))
+        {
+            sprite.flipX = false;
+                if (!isWalking)
+                {
+                    animator.SetTrigger("Walk");
+                }
+                isWalking = true;
+                transform.Translate(-.6f, 0, 0);
+     
+        } else {
+            isWalking = false;
+        }
+
+
+        if (Input.GetKeyDown("q"))
+        {
+            //attack  //neutral aeriel
+            if (isGrounded)
+            {
+                animator.SetTrigger("Attack");
+            } else
+            {
+                animator.SetTrigger("Aeriel");
+            }
+        }
+
+        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) 
+        {
+            //shift is guard 
+            if (!animator.GetBool("Guarding"))
+            {
+                animator.SetTrigger("Guard");
+                animator.SetBool("Guarding", true);
+            }
+               
+        } else
+        {
+            animator.SetBool("Guarding", false);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+
+            if (Input.GetKey("w"))
+            {
+                // +up, recovery
+                animator.SetTrigger("Recovery");
+            }
+
+
+            //jump 
             if (numberOfJumps > 0)
             {
-                numberOfJumps--;
-                rb.velocity = new Vector2(rb.velocity.x, 55f);
+                animator.SetTrigger("Jump");
+                StartCoroutine(DelayedJump());
+                //jump needs a little delay so character animations can spend
+                //a frame of two preparing to jump\
             }
         }
     }
-
-    RaycastHit2D[] hits = new RaycastHit2D[10];
-    public bool IsGrounded()
+    
+    void OnCollisionEnter2D(Collision2D other)
     {
-        int count = Physics2D.RaycastNonAlloc(transform.position, Vector3.down, hits, 5f);
-        for (int i = 0; i < count; i++)
+       if (other.gameObject.tag == "Ground" && GetComponent<Rigidbody2D>().velocity.y <= 0)
         {
-            if (hits[i].collider.gameObject.tag == "Ground")
-            {
-                return true;
-            }
+            //UnityEngine.Debug.Log("GroundedEnter");
+            isGrounded = true;
+            numberOfJumps = 2;
+      }
+    }
+
+    void OnCollisionExit2D(Collision2D other)
+    {
+       if(other.gameObject.tag == "Ground")
+       {
+            //UnityEngine.Debug.Log("GroundedLeave");
+            isGrounded = false;
+       }
+    }
+
+
+    private IEnumerator DelayedJump()
+    {
+        float duration = 0.05f; // 3 seconds you can change this 
+                             //to whatever you want
+        float normalizedTime = 0;
+        while (normalizedTime <= 1f)
+        {
+            normalizedTime += Time.deltaTime / duration;
+            yield return null;
         }
-        return false;
+        numberOfJumps--;
+        Vector3 v = GetComponent<Rigidbody2D>().velocity;
+        v.y = 0.0f;
+        GetComponent<Rigidbody2D>().velocity = v;
+        GetComponent<Rigidbody2D>().AddForce(Vector3.up * 2500);
     }
 }
