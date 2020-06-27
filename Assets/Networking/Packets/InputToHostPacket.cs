@@ -25,6 +25,7 @@ public class PlayerInputData : ICloneable
 
     public void ResetKeyDowns()
     {
+        Jump = false;
         Light = false;
         Grab = false;
         Guard = false;

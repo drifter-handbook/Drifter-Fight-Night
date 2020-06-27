@@ -36,7 +36,7 @@ public class GameSyncManager : MonoBehaviour
             GetComponent<PlayerInput>().input = networkPlayers[0].GetComponent<playerMovement>().input;
             foreach (GameObject obj in networkPlayers)
             {
-                obj.GetComponent<playerMovement>().sync = this;
+                obj.GetComponent<playerMovement>().IsClient = false;
             }
         }
         // if we are client
@@ -47,7 +47,7 @@ public class GameSyncManager : MonoBehaviour
             foreach (GameObject obj in networkPlayers)
             {
                 obj.GetComponent<Rigidbody2D>().simulated = false;
-                obj.GetComponent<playerMovement>().sync = this;
+                obj.GetComponent<playerMovement>().IsClient = true;
             }
             foreach (GameObject obj in networkObjects)
             {

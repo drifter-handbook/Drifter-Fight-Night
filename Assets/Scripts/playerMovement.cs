@@ -26,7 +26,7 @@ public class playerMovement : MonoBehaviour
     Rigidbody2D rb;
 
     [NonSerialized]
-    public GameSyncManager sync;
+    public bool IsClient;
 
     void Start()
     {
@@ -113,7 +113,7 @@ public class playerMovement : MonoBehaviour
             }
         }
         // we processed key presses for host
-        if (sync != null && sync.GetIsHost())
+        if (!IsClient)
         {
             input.ResetKeyDowns();
         }
@@ -134,7 +134,7 @@ public class playerMovement : MonoBehaviour
     // used by host
     private void SetAnimatorTrigger(string s)
     {
-        if (sync != null && sync.GetIsHost())
+        if (!IsClient)
         {
             animator.SetTrigger(s);
         }
@@ -167,7 +167,7 @@ public class playerMovement : MonoBehaviour
     }
     private void SetAnimatorBool(string s, bool value)
     {
-        if (sync != null && sync.GetIsHost())
+        if (!IsClient)
         {
             animator.SetBool(s, value);
         }
