@@ -76,6 +76,7 @@ public class GameSyncManager : MonoBehaviour
                 {
                     input = (PlayerInputData)networkPlayers[1].GetComponent<playerMovement>().input.Clone()
                 });
+                Debug.Log(networkPlayers[1].GetComponent<playerMovement>().input.Jump);
                 GetComponent<PlayerInput>().input.ResetKeyDowns();
             }
         }
@@ -133,6 +134,6 @@ public class GameSyncManager : MonoBehaviour
 
     public void SetSyncInput(InputToHostPacket input)
     {
-        networkPlayers[1].GetComponent<playerMovement>().input = input.input;
+        networkPlayers[1].GetComponent<playerMovement>().input.CopyFrom(input.input);
     }
 }

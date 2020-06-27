@@ -23,6 +23,16 @@ public class PlayerInputData : ICloneable
         };
     }
 
+    public void CopyFrom(PlayerInputData data)
+    {
+        MoveX = data.MoveX;
+        MoveY = data.MoveY;
+        Jump = data.Jump;
+        Light = data.Light;
+        Grab = data.Grab;
+        Guard = data.Guard;
+    }
+
     public void ResetKeyDowns()
     {
         Jump = false;
