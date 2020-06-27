@@ -22,6 +22,13 @@ public class PlayerInputData : ICloneable
             Guard = Guard
         };
     }
+
+    public void ResetKeyDowns()
+    {
+        Light = false;
+        Grab = false;
+        Guard = false;
+    }
 }
 
 public class InputToHostPacket : IGamePacket

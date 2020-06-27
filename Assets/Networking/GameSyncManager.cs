@@ -76,7 +76,7 @@ public class GameSyncManager : MonoBehaviour
                 {
                     input = (PlayerInputData)networkPlayers[1].GetComponent<playerMovement>().input.Clone()
                 });
-                GetComponent<PlayerInput>().ResetKeyDowns();
+                GetComponent<PlayerInput>().input.ResetKeyDowns();
             }
         }
     }

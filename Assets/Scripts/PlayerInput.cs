@@ -40,11 +40,4 @@ public class PlayerInput : MonoBehaviour
         input.Grab = input.Grab || Input.GetKeyDown(keyBindings.grabKey);
         input.Guard = Input.GetKey(keyBindings.guard1Key) || Input.GetKey(keyBindings.guard2Key);
     }
-
-    public void ResetKeyDowns()
-    {
-        input.Jump = false;
-        input.Light = false;
-        input.Grab = false;
-    }
 }

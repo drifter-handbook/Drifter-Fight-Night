@@ -79,7 +79,7 @@ public class playerMovement : MonoBehaviour
             else
             {
                 SetAnimatorTrigger("Aerial");
-                StartCoroutine(StunFor(0.7f));
+                StartCoroutine(StunFor(0.5f));
             }
         }
         if (input.Guard && canGuard) 
@@ -115,7 +115,7 @@ public class playerMovement : MonoBehaviour
         // we processed key presses for host
         if (sync != null && sync.GetIsHost())
         {
-            sync.GetComponent<PlayerInput>()?.ResetKeyDowns();
+            input.ResetKeyDowns();
         }
     }
 
