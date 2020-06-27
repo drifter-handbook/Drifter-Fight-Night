@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,17 +10,14 @@ public class playerMovement : MonoBehaviour
     public bool isWalking = false;
     public int numberOfJumps = 2;
 
-    public CustomControls keyBindings;
     public SpriteRenderer sprite;
 
     private Vector3 origTransform;
     private Vector3 flippedTransform;
-
-    public PlayerInputData input { get; set; } = new PlayerInputData();
+    public float jumpTimeCounter;
+    public float jumpTime;
 
     public Animator animator;
-
-    
     // Start is called before the first frame update
     void Start()
     {
@@ -41,19 +38,19 @@ public class playerMovement : MonoBehaviour
         }
 
 
-        if (Input.GetKey(keyBindings.leftKey))
+        if (Input.GetKey("d"))
         {
             sprite.flipX = true;
-        } else if (Input.GetKey(keyBindings.rightKey)){
+        } else if (Input.GetKey("a")){
             sprite.flipX = true;
         }
 
 
-        if (Input.GetKeyDown(keyBindings.grabKey))
+        if (Input.GetKeyDown("g"))
         {
             animator.SetTrigger("Grab");
         }
-        else if (Input.GetKey(keyBindings.rightKey))
+        else if (Input.GetKey("d"))
         {
             if (!isWalking)
             {
@@ -62,7 +59,7 @@ public class playerMovement : MonoBehaviour
             isWalking = true;
             transform.Translate(.6f, 0, 0);
         }
-       else if (Input.GetKey(keyBindings.leftKey))
+       else if (Input.GetKey("a"))
         {
             sprite.flipX = false;
                 if (!isWalking)
@@ -71,13 +68,13 @@ public class playerMovement : MonoBehaviour
                 }
                 isWalking = true;
                 transform.Translate(-.6f, 0, 0);
-     
+
         } else {
             isWalking = false;
         }
 
 
-        if (Input.GetKeyDown(keyBindings.lightKey))
+        if (Input.GetKeyDown("q"))
         {
             //attack  //neutral aeriel
             if (isGrounded)
@@ -89,41 +86,49 @@ public class playerMovement : MonoBehaviour
             }
         }
 
-        if (Input.GetKey(keyBindings.guard1Key) || Input.GetKey(keyBindings.guard2Key)) 
+        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
         {
-            //shift is guard 
+            //shift is guard
             if (!animator.GetBool("Guarding"))
             {
                 animator.SetTrigger("Guard");
                 animator.SetBool("Guarding", true);
             }
-               
+
         } else
         {
             animator.SetBool("Guarding", false);
         }
 
-        if (Input.GetKeyDown(keyBindings.jumpKey))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-
-            if (Input.GetKey(keyBindings.upKey))
+            if (Input.GetKey("w"))
             {
                 // +up, recovery
                 animator.SetTrigger("Recovery");
             }
 
 
-            //jump 
+            //jump
             if (numberOfJumps > 0)
             {
+                jumpTimeCounter = jumpTime;
                 animator.SetTrigger("Jump");
                 StartCoroutine(DelayedJump());
                 //jump needs a little delay so character animations can spend
                 //a frame of two preparing to jump\
             }
         }
+        if (Input.GetKey(KeyCode.Space)){
+          if(jumpTimeCounter>0){
+            GetComponent<Rigidbody2D>().AddForce(Vector3.up * 80);
+            jumpTimeCounter -= Time.deltaTime;
+          }
+        }
+
+
     }
-    
+
     void OnCollisionEnter2D(Collision2D other)
     {
        if (other.gameObject.tag == "Ground" && GetComponent<Rigidbody2D>().velocity.y <= 0)
@@ -143,10 +148,9 @@ public class playerMovement : MonoBehaviour
        }
     }
 
-
     private IEnumerator DelayedJump()
     {
-        float duration = 0.05f; // 3 seconds you can change this 
+        float duration = 0.05f; // 3 seconds you can change this
                              //to whatever you want
         float normalizedTime = 0;
         while (normalizedTime <= 1f)
@@ -158,6 +162,6 @@ public class playerMovement : MonoBehaviour
         Vector3 v = GetComponent<Rigidbody2D>().velocity;
         v.y = 0.0f;
         GetComponent<Rigidbody2D>().velocity = v;
-        GetComponent<Rigidbody2D>().AddForce(Vector3.up * 2500);
+        GetComponent<Rigidbody2D>().AddForce(Vector3.up * 1500);
     }
 }
