@@ -97,7 +97,6 @@ public class NetworkClient : MonoBehaviour
                 IGamePacket gamePacket = GamePacketUtils.Deserialize(packet.data);
                 if (gamePacket is ClientSetupPacket)
                 {
-                    Debug.Log("PACKET GOT THRU");
                     id = ((ClientSetupPacket)gamePacket).ID;
                     Debug.Log($"Connected to host at {packet.address.ToString()}:{packet.port}, we are Client #{id}");
                     SendToHost(gamePacket);

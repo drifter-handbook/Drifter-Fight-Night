@@ -23,7 +23,16 @@ public static class GamePacketUtils
 {
     const string DELIMITER = "|";
 
-    static List<IGamePacket> types = new List<IGamePacket>() { new NoOpPacket(), new ClientSetupPacket(), new InputToHostPacket(), new SyncToClientPacket() };
+    static List<IGamePacket> types = new List<IGamePacket>() {
+        new NoOpPacket(),
+        new ClientSetupPacket(),
+        new InputToHostPacket(),
+        new SyncToClientPacket(),
+        new PingPacket(),
+        new CharacterSelectInputPacket(),
+        new CharacterSelectSyncPacket(),
+        new StageSelectSyncPacket()
+    };
     static Dictionary<string, IGamePacket> namedTypes = new Dictionary<string, IGamePacket>();
     static GamePacketUtils()
     {
