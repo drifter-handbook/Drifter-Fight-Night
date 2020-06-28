@@ -78,7 +78,6 @@ public class GameSyncManager : MonoBehaviour
                 {
                     input = (PlayerInputData)networkPlayers[1].GetComponent<playerMovement>().input.Clone()
                 });
-                Debug.Log(networkPlayers[1].GetComponent<playerMovement>().input.Jump);
             }
         }
     }
