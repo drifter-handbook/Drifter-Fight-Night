@@ -24,32 +24,16 @@ public class NetworkHost : MonoBehaviour
 
     Coroutine coroutine;
 
+    public int PlayerID;
+
     public void Init()
     {
         coroutine = StartCoroutine(Run());
     }
-    IEnumerator ConnectLAN()
-    {
-        IPAddress clientAddress = IPAddress.Parse("192.168.1.18");
-        UdpClient udpClient = new UdpClient();
-        byte[] data = GamePacketUtils.Serialize(new NoOpPacket());
-        udpClient.Send(data, data.Length, new IPEndPoint(clientAddress, 7500));
-        Receiver = new UDPConnection(udpClient, clientAddress, 7500);
-        Clients.Add(new HostedClient() {
-            ID = Clients.Count + 1,
-            client = new P2PClient {
-                UdpClient = udpClient,
-                DestIP = clientAddress,
-                DestPort = 7500
-            },
-            connection = Receiver
-        });
-        AcceptingClients = false;
-        yield break;
-    }
     IEnumerator ConnectHolePunch()
     {
-        HolePuncher = new UDPHolePuncher("68.187.67.135", "minecraft.scrollingnumbers.com", 6969, true);
+        HolePuncher = new UDPHolePuncher("68.187.67.135", "minecraft.scrollingnumbers.com", 6969, true, 0);
+        PlayerID = HolePuncher.ID;
         while (AcceptingClients)
         {
             // accept clients
@@ -64,23 +48,9 @@ public class NetworkHost : MonoBehaviour
                 HostedClient newClient = new HostedClient { ID = Clients.Count + 1, client = client, connection = conn };
                 Clients.Add(newClient);
                 Debug.Log($"New client {newClient.ID} visible at {newClient.connection.udpSenderEp.ToString()}");
-                AcceptingClients = false;
             }
-            if (HolePuncher.Failed)
-            {
-                Debug.Log($"Failed to connect to server {HolePuncher.holePunchingServerName}:{HolePuncher.holePunchingServerPort}");
-                yield break;
-            }
-            yield return null;
-        }
-    }
-    IEnumerator Run()
-    {
-        yield return ConnectHolePunch();
-        // receive requests to connect from clients
-        bool finished = false;
-        while (!finished)
-        {
+            // hand out client IDs
+            // receive requests to connect from clients
             List<UDPPacket> packets = Receiver.Receive();
             foreach (UDPPacket packet in packets)
             {
@@ -93,12 +63,21 @@ public class NetworkHost : MonoBehaviour
                     {
                         Debug.Log($"Connection request received from client #{client.ID}");
                         client.connection.Send(GamePacketUtils.Serialize(new ClientSetupPacket() { ID = client.ID }));
-                        finished = true;
                     }
                 }
             }
+            // check for hole punch failure
+            if (HolePuncher.Failed)
+            {
+                Debug.Log($"Failed to connect to server {HolePuncher.holePunchingServerName}:{HolePuncher.holePunchingServerPort}");
+                yield break;
+            }
             yield return null;
         }
+    }
+    IEnumerator Run()
+    {
+        yield return ConnectHolePunch();
         // handle client input packets
         float latest = 0;
         while (true)
@@ -113,7 +92,8 @@ public class NetworkHost : MonoBehaviour
                     if (latest < gamePacket.Timestamp)
                     {
                         latest = gamePacket.Timestamp;
-                        GetComponent<GameSyncManager>().SetSyncInput((InputToHostPacket)gamePacket);
+                        HostedClient client = Clients.Find(x => x.client.DestIP.ToString() == packet.address.ToString() && x.client.DestPort == packet.port);
+                        GetComponent<GameSyncManager>().SetSyncInput((InputToHostPacket)gamePacket, client.ID);
                     }
                 }
             }

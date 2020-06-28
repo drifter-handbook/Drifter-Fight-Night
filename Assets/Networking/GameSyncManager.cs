@@ -14,7 +14,8 @@ public class GameSyncManager : MonoBehaviour
     [Header("Check box if hosting")]
     [SerializeField] private bool IsHost = false;
 
-    public string ClientIP = "68.187.67.135";
+    public string HostIP = "68.187.67.135";
+    public int HostID = 18;
 
     public bool GetIsHost(){
         return IsHost;
@@ -44,7 +45,7 @@ public class GameSyncManager : MonoBehaviour
         // if we are client
         else
         {
-            client.Init(ClientIP);
+            client.Init(HostIP, HostID);
             // remove all physics for synced objects
             foreach (GameObject obj in networkPlayers)
             {
@@ -55,8 +56,6 @@ public class GameSyncManager : MonoBehaviour
             {
                 obj.GetComponent<Rigidbody2D>().simulated = false;
             }
-            // attach player input to player 2
-            GetComponent<PlayerInput>().input = networkPlayers[1].GetComponent<playerMovement>().input;
         }
     }
 
@@ -76,7 +75,7 @@ public class GameSyncManager : MonoBehaviour
             {
                 client.SendToHost(new InputToHostPacket()
                 {
-                    input = (PlayerInputData)networkPlayers[1].GetComponent<playerMovement>().input.Clone()
+                    input = (PlayerInputData)networkPlayers[client.id].GetComponent<playerMovement>().input.Clone()
                 });
             }
         }
@@ -132,8 +131,8 @@ public class GameSyncManager : MonoBehaviour
         }
     }
 
-    public void SetSyncInput(InputToHostPacket input)
+    public void SetSyncInput(InputToHostPacket input, int id)
     {
-        networkPlayers[1].GetComponent<playerMovement>().input.CopyFrom(input.input);
+        networkPlayers[id].GetComponent<playerMovement>().input.CopyFrom(input.input);
     }
 }
