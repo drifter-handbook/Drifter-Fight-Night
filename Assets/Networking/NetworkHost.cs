@@ -20,7 +20,7 @@ public class NetworkHost : MonoBehaviour
     UDPConnection Receiver { get; set; }
     UDPHolePuncher HolePuncher { get; set; }
 
-    public bool AcceptingClients { get; private set; } = true;
+    public bool AcceptingClients = true;
 
     Coroutine coroutine;
 

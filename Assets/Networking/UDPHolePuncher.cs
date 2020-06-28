@@ -112,7 +112,7 @@ public class UDPHolePuncher : IDisposable
         while (!killed)
         {
             const float SERVER_REFRESH_TIME = 10f;
-            if (time > SERVER_REFRESH_TIME)
+            if (time > SERVER_REFRESH_TIME && host)
             {
                 rq.ConnectionType = "KeepAlive";
                 data = Encoding.Default.GetBytes(JsonConvert.SerializeObject(rq));

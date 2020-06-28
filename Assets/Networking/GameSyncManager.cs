@@ -17,7 +17,8 @@ public class GameSyncManager : MonoBehaviour
     public string HostIP = "68.187.67.135";
     public int HostID = 18;
 
-    public bool GetIsHost(){
+    public bool GetIsHost()
+    {
         return IsHost;
     }
 

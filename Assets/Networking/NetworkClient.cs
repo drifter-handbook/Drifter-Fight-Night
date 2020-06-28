@@ -19,10 +19,11 @@ public class NetworkClient : MonoBehaviour
     Coroutine coroutine;
     public int PlayerID;
 
-    int hostID;
+    int hostID = 0;
 
     public void Init(string host, int hostID)
     {
+        this.hostID = hostID;
         coroutine = StartCoroutine(Run(host));
     }
     IEnumerator ConnectHolePunch(string host)
