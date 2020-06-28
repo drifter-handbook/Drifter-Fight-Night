@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 
 public class playerMovement : MonoBehaviour
@@ -9,6 +8,7 @@ public class playerMovement : MonoBehaviour
     public int numberOfJumps = 2;
     public float delayedJumpDuration = 0.05f; // 3 seconds you can change this to whatever you want
     public float walkSpeed = 15f;
+    public float jumpSpeed = 48f;
 
     SpriteRenderer sprite;
 
@@ -16,6 +16,7 @@ public class playerMovement : MonoBehaviour
     private Vector3 flippedTransform;
 
     public PlayerInputData input { get; set; } = new PlayerInputData();
+    PlayerInputData prevInput = new PlayerInputData();
 
     Animator animator;
     public PlayerAnimatorState animatorState { get; set; } = new PlayerAnimatorState();
@@ -34,25 +35,25 @@ public class playerMovement : MonoBehaviour
         sprite = GetComponentInChildren<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
     }
-
+    
     void Update()
     {
+        // get input
+        bool jumpPressed = !prevInput.Jump && input.Jump;
+        bool lightPressed = !prevInput.Light && input.Light;
+        bool grabPressed = !prevInput.Grab && input.Grab;
         // TODO: spawn hitboxes
         bool canAct = stunCount == 0 && !animator.GetBool("Guarding");
         bool canGuard = stunCount == 0;
         bool moving = input.MoveX != 0;
         SetAnimatorBool("Grounded", IsGrounded());
-        if (animator.GetBool("Grounded"))
-        {
-            numberOfJumps = 2;
-        }
 
         if (moving && canAct)
         {
             sprite.flipX = input.MoveX > 0;
         }
 
-        if (input.Grab && canAct)
+        if (grabPressed && canAct)
         {
             SetAnimatorTrigger("Grab");
             StartCoroutine(StunFor(0.5f));
@@ -69,7 +70,7 @@ public class playerMovement : MonoBehaviour
         }
 
         //attack  //neutral aerial
-        if (input.Light && canAct)
+        if (lightPressed && canAct)
         {
             if (animator.GetBool("Grounded"))
             {
@@ -95,7 +96,7 @@ public class playerMovement : MonoBehaviour
             SetAnimatorBool("Guarding", false);
         }
 
-        if (input.Jump && canAct)
+        if (jumpPressed && canAct && rb.velocity.y < 0.8f * jumpSpeed)
         {
             if (input.MoveY > 0)
             {
@@ -104,19 +105,21 @@ public class playerMovement : MonoBehaviour
                 StartCoroutine(StunFor(0.25f));
             }
             //jump 
+            if (animator.GetBool("Grounded"))
+            {
+                numberOfJumps = 2;
+            }
             if (numberOfJumps > 0)
             {
+                numberOfJumps--;
                 SetAnimatorTrigger("Jump");
                 //jump needs a little delay so character animations can spend
                 //a frame of two preparing to jump
                 StartCoroutine(DelayedJump());
             }
         }
-        // we processed key presses for host
-        if (!IsClient)
-        {
-            input.ResetKeyDowns();
-        }
+        // set previous player input
+        prevInput.CopyFrom(input);
     }
 
     // used by clients
@@ -207,11 +210,7 @@ public class playerMovement : MonoBehaviour
             normalizedTime += Time.deltaTime / delayedJumpDuration;
             yield return null;
         }
-        numberOfJumps--;
-        Vector3 v = rb.velocity;
-        v.y = 0.0f;
-        rb.velocity = v;
-        rb.AddForce(Vector3.up * 2500);
+        rb.velocity = new Vector2(rb.velocity.x, jumpSpeed);
     }
 
     private IEnumerator StunFor(float time)

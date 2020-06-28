@@ -32,14 +32,6 @@ public class PlayerInputData : ICloneable
         Grab = data.Grab;
         Guard = data.Guard;
     }
-
-    public void ResetKeyDowns()
-    {
-        Jump = false;
-        Light = false;
-        Grab = false;
-        Guard = false;
-    }
 }
 
 public class InputToHostPacket : IGamePacket
