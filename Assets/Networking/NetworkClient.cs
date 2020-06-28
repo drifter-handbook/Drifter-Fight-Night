@@ -89,7 +89,7 @@ public class NetworkClient : MonoBehaviour
         // Receive Client ID from Host
         for (float time = 0; id == -1 && time < TIMEOUT; time += Time.deltaTime)
         {
-            Host.Send(GamePacketUtils.Serialize(new ClientSetupPacket() { ID = -1 }));
+            SendToHost(new ClientSetupPacket() { ID = -1 });
             yield return null;
             List<UDPPacket> packets = Host.Receive();
             foreach (UDPPacket packet in packets)

@@ -5,7 +5,7 @@ using System.Text;
 
 public class StageSelectSyncPacket : IGamePacket
 {
-    public string TypeID { get; set; } = "CSS"; // get rekt noah
+    public string TypeID { get; set; } = "SSS"; // get rekt noah
     public float Timestamp { get; set; }
 
     StageSelectSyncData Data;

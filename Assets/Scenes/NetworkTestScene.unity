@@ -300,6 +300,7 @@ MonoBehaviour:
   networkObjects:
   - {fileID: 699545643}
   IsHost: 1
+  ClientIP: 68.187.67.135
 --- !u!114 &142087255
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1080,21 +1081,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Player1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3106753082241659641, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
-        type: 3}
-      propertyPath: varyJumpHeightForce
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 3106753082241659641, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
-        type: 3}
-      propertyPath: varyJumpHeightDuration
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3106753082241659641, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
-        type: 3}
-      propertyPath: jumpSpeed
-      value: 32
       objectReference: {fileID: 0}
     - target: {fileID: 3106753082241659643, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}

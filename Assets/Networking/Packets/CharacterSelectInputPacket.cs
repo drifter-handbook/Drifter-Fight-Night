@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class CharacterSelectInputPacket : IGamePacket
 {
-    public string TypeID { get; set; } = "Setup";
+    public string TypeID { get; set; } = "CSI";
     public float Timestamp { get; set; }
 
     public int Character;

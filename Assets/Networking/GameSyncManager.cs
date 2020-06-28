@@ -14,6 +14,8 @@ public class GameSyncManager : MonoBehaviour
     [Header("Check box if hosting")]
     [SerializeField] private bool IsHost = false;
 
+    public string ClientIP = "68.187.67.135";
+
     public bool GetIsHost(){
         return IsHost;
     }
@@ -42,7 +44,7 @@ public class GameSyncManager : MonoBehaviour
         // if we are client
         else
         {
-            client.Init("75.134.27.221");
+            client.Init(ClientIP);
             // remove all physics for synced objects
             foreach (GameObject obj in networkPlayers)
             {
