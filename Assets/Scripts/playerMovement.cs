@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +8,7 @@ public class playerMovement : MonoBehaviour
     public int numberOfJumps = 2;
     public float delayedJumpDuration = 0.05f; // 3 seconds you can change this to whatever you want
     public float walkSpeed = 15f;
-    public float jumpSpeed = 48f;
+    public float jumpSpeed = 32f;
 
     SpriteRenderer sprite;
 
@@ -29,13 +29,18 @@ public class playerMovement : MonoBehaviour
     [NonSerialized]
     public bool IsClient;
 
+    Coroutine varyJumpHeight;
+    public float varyJumpHeightDuration = 0.5f;
+    public float varyJumpHeightForce = 10f;
+
+    // Start is called before the first frame update
     void Start()
     {
         animator = GetComponentInChildren<Animator>();
         sprite = GetComponentInChildren<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
     }
-    
+
     void Update()
     {
         // get input
@@ -76,16 +81,16 @@ public class playerMovement : MonoBehaviour
             {
                 SetAnimatorTrigger("Attack");
                 StartCoroutine(StunFor(0.1f));
-            } 
+            }
             else
             {
                 SetAnimatorTrigger("Aerial");
                 StartCoroutine(StunFor(0.5f));
             }
         }
-        if (input.Guard && canGuard) 
+        if (input.Guard && canGuard)
         {
-            //shift is guard 
+            //shift is guard
             if (!animator.GetBool("Guarding"))
             {
                 SetAnimatorBool("Guarding", true);
@@ -118,6 +123,7 @@ public class playerMovement : MonoBehaviour
                 StartCoroutine(DelayedJump());
             }
         }
+
         // set previous player input
         prevInput.CopyFrom(input);
     }
@@ -204,13 +210,34 @@ public class playerMovement : MonoBehaviour
 
     private IEnumerator DelayedJump()
     {
-        float normalizedTime = 0;
-        while (normalizedTime <= 1f)
+        if (varyJumpHeight != null)
         {
-            normalizedTime += Time.deltaTime / delayedJumpDuration;
+            StopCoroutine(varyJumpHeight);
+        }
+        rb.velocity = new Vector2(rb.velocity.x, 0f);
+        float time = 0;
+        while (time <= delayedJumpDuration)
+        {
+            time += Time.deltaTime;
             yield return null;
         }
         rb.velocity = new Vector2(rb.velocity.x, jumpSpeed);
+        varyJumpHeight = StartCoroutine(VaryJumpHeight());
+    }
+
+    private IEnumerator VaryJumpHeight()
+    {
+        float time = 0f;
+        while (time < varyJumpHeightDuration)
+        {
+            yield return new WaitForFixedUpdate();
+            time += Time.fixedDeltaTime;
+            if (!animator.GetBool("Grounded") && input.Jump)
+            {
+                rb.AddForce(Vector2.up * -Physics2D.gravity * varyJumpHeightForce);
+            }
+        }
+        varyJumpHeight = null;
     }
 
     private IEnumerator StunFor(float time)
@@ -234,7 +261,8 @@ public class PlayerAnimatorState : ICloneable
 
     public object Clone()
     {
-        return new PlayerAnimatorState() {
+        return new PlayerAnimatorState()
+        {
             Grounded = Grounded,
             Walking = Walking,
             Guarding = Guarding,
