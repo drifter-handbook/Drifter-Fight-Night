@@ -152,8 +152,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   numberOfJumps: 2
   delayedJumpDuration: 0.05
-  walkSpeed: 0.1
-  jumpSpeed: 48
+  walkSpeed: 25
+  jumpSpeed: 32
+  varyJumpHeightDuration: 0.2
+  varyJumpHeightForce: 12
 --- !u!50 &3106753082241659639
 Rigidbody2D:
   serializedVersion: 4
