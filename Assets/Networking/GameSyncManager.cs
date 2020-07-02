@@ -87,26 +87,33 @@ public class GameSyncManager : MonoBehaviour
         SyncToClientPacket.SyncToClientData SyncData = new SyncToClientPacket.SyncToClientData();
         foreach (GameObject player in networkPlayers)
         {
-            SyncData.players.Add(new SyncToClientPacket.PlayerData() {
-                name = player.gameObject.name,
-                x = player.transform.position.x,
-                y = player.transform.position.y,
-                z = player.transform.position.z,
-                facing = player.GetComponentInChildren<SpriteRenderer>().flipX,
-                animatorState = (PlayerAnimatorState)player.GetComponent<playerMovement>().animatorState.Clone()
-            });
-            player.GetComponent<playerMovement>().ResetAnimatorTriggers();
+            if (player != null)
+            {
+                SyncData.players.Add(new SyncToClientPacket.PlayerData()
+                {
+                    name = player.gameObject.name,
+                    x = player.transform.position.x,
+                    y = player.transform.position.y,
+                    z = player.transform.position.z,
+                    facing = player.GetComponentInChildren<SpriteRenderer>().flipX,
+                    animatorState = (PlayerAnimatorState)player.GetComponent<playerMovement>().animatorState.Clone()
+                });
+                player.GetComponent<playerMovement>().ResetAnimatorTriggers();
+            }
         }
         foreach (GameObject obj in networkObjects)
         {
-            SyncData.objects.Add(new SyncToClientPacket.ObjectData()
+            if (obj != null)
             {
-                name = obj.gameObject.name,
-                x = obj.transform.position.x,
-                y = obj.transform.position.y,
-                z = obj.transform.position.z,
-                angle = obj.transform.eulerAngles.z
-            });
+                SyncData.objects.Add(new SyncToClientPacket.ObjectData()
+                {
+                    name = obj.gameObject.name,
+                    x = obj.transform.position.x,
+                    y = obj.transform.position.y,
+                    z = obj.transform.position.z,
+                    angle = obj.transform.eulerAngles.z
+                });
+            }
         }
         return new SyncToClientPacket() { Timestamp = Time.time, SyncData = SyncData };
     }
@@ -115,25 +122,31 @@ public class GameSyncManager : MonoBehaviour
     {
         foreach (GameObject player in networkPlayers)
         {
-            SyncToClientPacket.PlayerData playerData = data.SyncData.players.Find(x => x.name == player.name);
-            if (playerData != null)
+            if (player != null)
             {
-                player.GetComponent<PlayerSync>().SyncTo(playerData);
-                player.GetComponent<playerMovement>().SyncAnimatorState(playerData.animatorState);
+                SyncToClientPacket.PlayerData playerData = data.SyncData.players.Find(x => x.name == player.name);
+                if (playerData != null)
+                {
+                    player.GetComponent<PlayerSync>().SyncTo(playerData);
+                    player.GetComponent<playerMovement>().SyncAnimatorState(playerData.animatorState);
+                }
             }
         }
         foreach (GameObject obj in networkObjects)
         {
-            SyncToClientPacket.ObjectData objData = data.SyncData.objects.Find(x => x.name == obj.name);
-            if (objData != null)
+            if (obj != null)
             {
-                obj.GetComponent<ObjectSync>().SyncTo(objData);
+                SyncToClientPacket.ObjectData objData = data.SyncData.objects.Find(x => x.name == obj.name);
+                if (objData != null)
+                {
+                    obj.GetComponent<ObjectSync>().SyncTo(objData);
+                }
             }
         }
     }
 
     public void SetSyncInput(InputToHostPacket input, int id)
     {
-        networkPlayers[id].GetComponent<playerMovement>().input.CopyFrom(input.input);
+        networkPlayers[id]?.GetComponent<playerMovement>().input.CopyFrom(input.input);
     }
 }
