@@ -72,6 +72,7 @@ public class UDPHolePuncher : IDisposable
             socket.Connect(Dns.GetHostEntry(holePunchingServerName).AddressList[0], holePunchingServerPort);
             IPEndPoint endPoint = socket.LocalEndPoint as IPEndPoint;
             ID = endPoint.Address.GetAddressBytes()[3];
+            Debug.Log($"Your PlayerID is {ID}");
         }
         // use it as ID
         byte[] data = Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(new HolePunchID() { PeerPort = ID }));
