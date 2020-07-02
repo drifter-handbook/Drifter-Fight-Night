@@ -97,7 +97,7 @@ public class NetworkClient : MonoBehaviour
                     id = ((ClientSetupPacket)gamePacket).ID;
                     Debug.Log($"Connected to host at {packet.address.ToString()}:{packet.port}, we are Client #{id}");
                     // attach player input to player with ID
-                    GetComponent<PlayerInput>().input = GetComponent<GameSyncManager>().networkPlayers[id].GetComponent<playerMovement>().input;
+                    GetComponent<PlayerInput>().input = new PlayerInputData();
                     SendToHost(gamePacket);
                     break;
                 }

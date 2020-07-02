@@ -82,20 +82,24 @@ public class NetworkHost : MonoBehaviour
     {
         yield return ConnectHolePunch();
         // handle client input packets
-        float latest = 0;
+        Dictionary<int, float> latest = new Dictionary<int, float>();
         while (true)
         {
             List<UDPPacket> clientPackets = Receiver.Receive();
             foreach (UDPPacket packet in clientPackets)
             {
                 IGamePacket gamePacket = GamePacketUtils.Deserialize(packet.data);
+                HostedClient client = Clients.Find(x => x.client.DestIP.ToString() == packet.address.ToString() && x.client.DestPort == packet.port);
                 if (gamePacket is InputToHostPacket)
                 {
-                    // only process most recent packets
-                    if (latest < gamePacket.Timestamp)
+                    if (!latest.ContainsKey(client.ID))
                     {
-                        latest = gamePacket.Timestamp;
-                        HostedClient client = Clients.Find(x => x.client.DestIP.ToString() == packet.address.ToString() && x.client.DestPort == packet.port);
+                        latest[client.ID] = 0f;
+                    }
+                    // only process most recent packets
+                    if (latest[client.ID] < gamePacket.Timestamp)
+                    {
+                        latest[client.ID] = gamePacket.Timestamp;
                         GetComponent<GameSyncManager>().SetSyncInput((InputToHostPacket)gamePacket, client.ID);
                     }
                 }

@@ -76,7 +76,7 @@ public class GameSyncManager : MonoBehaviour
             {
                 client.SendToHost(new InputToHostPacket()
                 {
-                    input = (PlayerInputData)networkPlayers[client.id].GetComponent<playerMovement>().input.Clone()
+                    input = (PlayerInputData)GetComponent<PlayerInput>().input.Clone()
                 });
             }
         }
