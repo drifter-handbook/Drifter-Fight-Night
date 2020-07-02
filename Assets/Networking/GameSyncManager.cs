@@ -147,6 +147,9 @@ public class GameSyncManager : MonoBehaviour
 
     public void SetSyncInput(InputToHostPacket input, int id)
     {
-        networkPlayers[id]?.GetComponent<playerMovement>().input.CopyFrom(input.input);
+        if (input?.input != null)
+        {
+            networkPlayers[id]?.GetComponent<playerMovement>()?.input?.CopyFrom(input?.input);
+        }
     }
 }
