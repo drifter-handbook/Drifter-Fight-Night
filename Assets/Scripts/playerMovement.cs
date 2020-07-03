@@ -1,124 +1,276 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 
 public class playerMovement : MonoBehaviour
 {
     public int numberOfJumps = 2;
     public float delayedJumpDuration = 0.05f; // 3 seconds you can change this to whatever you want
-    public float walkSpeed = 0.1f;
+    public float walkSpeed = 15f;
+    public float jumpSpeed = 32f;
 
-    public CustomControls keyBindings;
-    public SpriteRenderer sprite;
+    SpriteRenderer sprite;
 
     private Vector3 origTransform;
     private Vector3 flippedTransform;
 
     public PlayerInputData input { get; set; } = new PlayerInputData();
+    PlayerInputData prevInput = new PlayerInputData();
 
-    public Animator animator;
+    Animator animator;
+    public PlayerAnimatorState animatorState { get; set; } = new PlayerAnimatorState();
+
+    // stuns the character for several frames if stunCount > 0
+    int stunCount = 0;
+
+    Rigidbody2D rb;
+
+    [NonSerialized]
+    public bool IsClient;
+
+    Coroutine varyJumpHeight;
+    public float varyJumpHeightDuration = 0.5f;
+    public float varyJumpHeightForce = 10f;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        animator = GetComponentInChildren<Animator>();
+        sprite = GetComponentInChildren<SpriteRenderer>();
+        rb = GetComponent<Rigidbody2D>();
+    }
 
     void Update()
     {
-        bool moving = Input.GetKey(keyBindings.leftKey) 
-            || Input.GetKey(keyBindings.rightKey);
+        // get input
+        bool jumpPressed = !prevInput.Jump && input.Jump;
+        bool lightPressed = !prevInput.Light && input.Light;
+        bool grabPressed = !prevInput.Grab && input.Grab;
+        // TODO: spawn hitboxes
+        bool canAct = stunCount == 0 && !animator.GetBool("Guarding");
+        bool canGuard = stunCount == 0;
+        bool moving = input.MoveX != 0;
+        SetAnimatorBool("Grounded", IsGrounded());
 
-        if (moving) sprite.flipX = Input.GetKey(keyBindings.rightKey);
-
-        if (Input.GetKeyDown(keyBindings.grabKey)) animator.SetTrigger("Grab");
-        else if (moving)
+        if (moving && canAct)
         {
-            if (!animator.GetBool("Walking")) { animator.SetTrigger("Walk"); }
-            animator.SetBool("Walking", true);
-            transform.Translate((sprite.flipX ? walkSpeed : -walkSpeed), 0, 0);
+            sprite.flipX = input.MoveX > 0;
         }
-       else {
-            animator.SetBool("Walking", false);
+
+        if (grabPressed && canAct)
+        {
+            SetAnimatorTrigger("Grab");
+            StartCoroutine(StunFor(0.5f));
+        }
+        else if (moving && canAct)
+        {
+            SetAnimatorBool("Walking", true);
+            rb.velocity = new Vector2(input.MoveX > 0 ? walkSpeed : -walkSpeed, rb.velocity.y);
+        }
+        else
+        {
+            SetAnimatorBool("Walking", false);
+            rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 40f * Time.deltaTime), rb.velocity.y);
         }
 
         //attack  //neutral aerial
-        if (Input.GetKeyDown(keyBindings.lightKey))
+        if (lightPressed && canAct)
         {
             if (animator.GetBool("Grounded"))
             {
-                animator.SetTrigger("Attack");
-            } 
+                SetAnimatorTrigger("Attack");
+                StartCoroutine(StunFor(0.1f));
+            }
             else
             {
-                animator.SetTrigger("Aerial");
+                SetAnimatorTrigger("Aerial");
+                StartCoroutine(StunFor(0.5f));
             }
         }
-
-        if (Input.GetKey(keyBindings.guard1Key) || Input.GetKey(keyBindings.guard2Key)) 
+        if (input.Guard && canGuard)
         {
-            //shift is guard 
+            //shift is guard
             if (!animator.GetBool("Guarding"))
             {
-                animator.SetTrigger("Guard");
-                animator.SetBool("Guarding", true);
+                SetAnimatorBool("Guarding", true);
             }
-               
-        } else
+        }
+        else
         {
-            animator.SetBool("Guarding", false);
+            SetAnimatorBool("Guarding", false);
         }
 
-        if (Input.GetKeyDown(keyBindings.jumpKey))
+        if (jumpPressed && canAct && rb.velocity.y < 0.8f * jumpSpeed)
         {
-
-            if (Input.GetKey(keyBindings.upKey))
+            if (input.MoveY > 0)
             {
                 // +up, recovery
-                animator.SetTrigger("Recovery");
+                SetAnimatorTrigger("Recovery");
+                StartCoroutine(StunFor(0.25f));
             }
-
-
             //jump 
+            if (animator.GetBool("Grounded"))
+            {
+                numberOfJumps = 2;
+            }
             if (numberOfJumps > 0)
             {
-                animator.SetTrigger("Jump");
+                numberOfJumps--;
+                SetAnimatorTrigger("Jump");
                 //jump needs a little delay so character animations can spend
                 //a frame of two preparing to jump
                 StartCoroutine(DelayedJump());
             }
         }
+
+        // set previous player input
+        prevInput.CopyFrom(input);
     }
-    
-    void OnCollisionEnter2D(Collision2D other)
+
+    // used by clients
+    public void SyncAnimatorState(PlayerAnimatorState state)
     {
-       if (other.gameObject.tag == "Ground" && GetComponent<Rigidbody2D>().velocity.y <= 0)
+        animator.SetBool("Grounded", state.Grounded);
+        animator.SetBool("Walking", state.Walking);
+        animator.SetBool("Guarding", state.Guarding);
+        if (state.Attack) animator.SetTrigger("Attack");
+        if (state.Grab) animator.SetTrigger("Grab");
+        if (state.Jump) animator.SetTrigger("Jump");
+        if (state.Recovery) animator.SetTrigger("Recovery");
+        if (state.Aerial) animator.SetTrigger("Aerial");
+    }
+    // used by host
+    private void SetAnimatorTrigger(string s)
+    {
+        if (!IsClient)
         {
-            //UnityEngine.Debug.Log("GroundedEnter");
-            animator.SetBool("Grounded", true);
-            numberOfJumps = 2;
-      }
+            animator.SetTrigger(s);
+        }
+        switch (s)
+        {
+            case "Attack":
+                animatorState.Attack = true;
+                break;
+            case "Grab":
+                animatorState.Grab = true;
+                break;
+            case "Jump":
+                animatorState.Jump = true;
+                break;
+            case "Recovery":
+                animatorState.Recovery = true;
+                break;
+            case "Aerial":
+                animatorState.Aerial = true;
+                break;
+        }
     }
-
-    void OnCollisionExit2D(Collision2D other)
+    public void ResetAnimatorTriggers()
     {
-       if(other.gameObject.tag == "Ground")
-       {
-            //UnityEngine.Debug.Log("GroundedLeave");
-            animator.SetBool("Grounded", false);
-       }
+        animatorState.Attack = false;
+        animatorState.Grab = false;
+        animatorState.Jump = false;
+        animatorState.Recovery = false;
+        animatorState.Aerial = false;
+    }
+    private void SetAnimatorBool(string s, bool value)
+    {
+        if (!IsClient)
+        {
+            animator.SetBool(s, value);
+        }
+        switch (s)
+        {
+            case "Grounded":
+                animatorState.Grounded = value;
+                break;
+            case "Walking":
+                animatorState.Walking = value;
+                break;
+            case "Guarding":
+                animatorState.Guarding = value;
+                break;
+        }
     }
 
+    RaycastHit2D[] hits = new RaycastHit2D[10];
+    private bool IsGrounded()
+    {
+        int count = Physics2D.RaycastNonAlloc(transform.position + 3.9f * Vector3.down, Vector3.down, hits, 0.2f);
+        for (int i = 0; i < count; i++)
+        {
+            if (hits[i].collider.gameObject.tag == "Ground")
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 
     private IEnumerator DelayedJump()
     {
-        
-        float normalizedTime = 0;
-        while (normalizedTime <= 1f)
+        if (varyJumpHeight != null)
         {
-            normalizedTime += Time.deltaTime / delayedJumpDuration;
+            StopCoroutine(varyJumpHeight);
+        }
+        rb.velocity = new Vector2(rb.velocity.x, 0f);
+        float time = 0;
+        while (time <= delayedJumpDuration)
+        {
+            time += Time.deltaTime;
             yield return null;
         }
-        numberOfJumps--;
-        Vector3 v = GetComponent<Rigidbody2D>().velocity;
-        v.y = 0.0f;
-        GetComponent<Rigidbody2D>().velocity = v;
-        GetComponent<Rigidbody2D>().AddForce(Vector3.up * 2500);
+        rb.velocity = new Vector2(rb.velocity.x, jumpSpeed);
+        varyJumpHeight = StartCoroutine(VaryJumpHeight());
+    }
+
+    private IEnumerator VaryJumpHeight()
+    {
+        float time = 0f;
+        while (time < varyJumpHeightDuration)
+        {
+            yield return new WaitForFixedUpdate();
+            time += Time.fixedDeltaTime;
+            if (!animator.GetBool("Grounded") && input.Jump)
+            {
+                rb.AddForce(Vector2.up * -Physics2D.gravity * varyJumpHeightForce);
+            }
+        }
+        varyJumpHeight = null;
+    }
+
+    private IEnumerator StunFor(float time)
+    {
+        stunCount++;
+        yield return new WaitForSeconds(time);
+        stunCount--;
+    }
+}
+
+public class PlayerAnimatorState : ICloneable
+{
+    public bool Grounded = false;
+    public bool Walking = false;
+    public bool Guarding = false;
+    public bool Attack = false;
+    public bool Grab = false;
+    public bool Jump = false;
+    public bool Recovery = false;
+    public bool Aerial = false;
+
+    public object Clone()
+    {
+        return new PlayerAnimatorState()
+        {
+            Grounded = Grounded,
+            Walking = Walking,
+            Guarding = Guarding,
+            Attack = Attack,
+            Grab = Grab,
+            Jump = Jump,
+            Recovery = Recovery,
+            Aerial = Aerial
+        };
     }
 }

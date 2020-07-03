@@ -17,22 +17,19 @@ public class NetworkClient : MonoBehaviour
     public UDPHolePuncher HolePuncher { get; private set; }
 
     Coroutine coroutine;
+    public int PlayerID;
 
-    public void Init(string host)
+    int hostID = 0;
+
+    public void Init(string host, int hostID)
     {
+        this.hostID = hostID;
         coroutine = StartCoroutine(Run(host));
-    }
-    IEnumerator ConnectLAN(string host)
-    {
-        UdpClient udpClient = new UdpClient();
-        byte[] data = GamePacketUtils.Serialize(new NoOpPacket());
-        udpClient.Send(data, data.Length, new IPEndPoint(IPAddress.Parse(host), 7500));
-        Host = new UDPConnection(udpClient, IPAddress.Parse(host), 7500);
-        yield break;
     }
     IEnumerator ConnectHolePunch(string host)
     {
-        HolePuncher = new UDPHolePuncher(host, "minecraft.scrollingnumbers.com", 6969, false);
+        HolePuncher = new UDPHolePuncher(host, "minecraft.scrollingnumbers.com", 6969, false, hostID);
+        PlayerID = HolePuncher.ID;
         // connect to host
         while (Host == null)
         {
@@ -89,7 +86,7 @@ public class NetworkClient : MonoBehaviour
         // Receive Client ID from Host
         for (float time = 0; id == -1 && time < TIMEOUT; time += Time.deltaTime)
         {
-            Host.Send(GamePacketUtils.Serialize(new ClientSetupPacket() { ID = -1 }));
+            SendToHost(new ClientSetupPacket() { ID = -1 });
             yield return null;
             List<UDPPacket> packets = Host.Receive();
             foreach (UDPPacket packet in packets)
@@ -97,9 +94,10 @@ public class NetworkClient : MonoBehaviour
                 IGamePacket gamePacket = GamePacketUtils.Deserialize(packet.data);
                 if (gamePacket is ClientSetupPacket)
                 {
-                    Debug.Log("PACKET GOT THRU");
                     id = ((ClientSetupPacket)gamePacket).ID;
                     Debug.Log($"Connected to host at {packet.address.ToString()}:{packet.port}, we are Client #{id}");
+                    // attach player input to player with ID
+                    GetComponent<PlayerInput>().input = new PlayerInputData();
                     SendToHost(gamePacket);
                     break;
                 }
@@ -113,11 +111,15 @@ public class NetworkClient : MonoBehaviour
         Host.Send(GamePacketUtils.Serialize(packet));
     }
 
-    void OnApplicationQuit()
+    void OnDestroy()
     {
         // kill hole puncher connection
         HolePuncher?.Kill();
         // kill connection with host
         Host?.Kill();
+    }
+    void OnApplicationQuit()
+    {
+        OnDestroy();
     }
 }

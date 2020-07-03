@@ -2,13 +2,36 @@
 using System;
 using System.Collections.Generic;
 
-public class PlayerInputData
+public class PlayerInputData : ICloneable
 {
     public int MoveX = 0;
     public int MoveY = 0;
-    public bool Attack1 = false;
-    public bool Attack2 = false;
-    public bool Attack3 = false;
+    public bool Jump = false;
+    public bool Light = false;
+    public bool Grab = false;
+    public bool Guard = false;
+
+    public object Clone()
+    {
+        return new PlayerInputData() {
+            MoveX = MoveX,
+            MoveY = MoveY,
+            Jump = Jump,
+            Light = Light,
+            Grab = Grab,
+            Guard = Guard
+        };
+    }
+
+    public void CopyFrom(PlayerInputData data)
+    {
+        MoveX = data.MoveX;
+        MoveY = data.MoveY;
+        Jump = data.Jump;
+        Light = data.Light;
+        Grab = data.Grab;
+        Guard = data.Guard;
+    }
 }
 
 public class InputToHostPacket : IGamePacket

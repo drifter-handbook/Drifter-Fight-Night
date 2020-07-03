@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using UnityEngine;
 
 public class P2PClient
 {
@@ -17,7 +18,6 @@ public class P2PClient
 
 public class UDPHolePuncher : IDisposable
 {
-    static Random random = new Random();
     int id = -1;
 
     UdpClient udpClient;
@@ -31,7 +31,10 @@ public class UDPHolePuncher : IDisposable
     ConcurrentBag<HolePunchResponse> received;
 
     public bool Failed { get; private set; } = false;
-    
+
+    public int ID = -1;
+    int hostID;
+
     private class HolePunchID
     {
         public int PeerPort = -1;
@@ -52,17 +55,27 @@ public class UDPHolePuncher : IDisposable
         public string Error = "";
     }
 
-    public UDPHolePuncher(string destName, string holePunchingServerName, int holePunchingServerPort, bool host)
+    public UDPHolePuncher(string destName, string holePunchingServerName, int holePunchingServerPort, bool host, int hostID)
     {
-        id = random.Next();
         destAddress = IPAddress.Parse(destName);
         this.holePunchingServerName = holePunchingServerName;
         this.holePunchingServerPort = holePunchingServerPort;
         this.host = host;
+        this.hostID = hostID;
         received = new ConcurrentBag<HolePunchResponse>();
         // send UDP to hole punch server to give it your assigned port
         udpClient = new UdpClient();
-        byte[] data = Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(new HolePunchID() { PeerPort = host ? 0 : 1 }));
+        // get local IP
+        byte[] test = Encoding.ASCII.GetBytes("peepeepoopoo");
+        using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
+        {
+            socket.Connect(Dns.GetHostEntry(holePunchingServerName).AddressList[0], holePunchingServerPort);
+            IPEndPoint endPoint = socket.LocalEndPoint as IPEndPoint;
+            ID = endPoint.Address.GetAddressBytes()[3];
+            Debug.Log($"Your PlayerID is {ID}");
+        }
+        // use it as ID
+        byte[] data = Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(new HolePunchID() { PeerPort = ID }));
         udpClient.Send(data, data.Length, holePunchingServerName, holePunchingServerPort);
         // start receive thread
         thread = new Thread(new ThreadStart(ReceiveClientData));
@@ -72,16 +85,14 @@ public class UDPHolePuncher : IDisposable
     private void ReceiveClientData()
     {
         // open TCP connection to hole punch server to give it our destination
-        string req = JsonConvert.SerializeObject(new HolePunchRequest() {
-            LocalPeerPort = host ? 0 : 1,
-            RemoteIP = destAddress.ToString(),
-            RemotePeerPort = host ? 1 : 0,
-            ConnectionType = host ? "Server" : "Client"
-        });
-        if (!host)
+        HolePunchRequest rq = new HolePunchRequest()
         {
-            Thread.Sleep(1000);
-        }
+            LocalPeerPort = ID,
+            RemoteIP = destAddress.ToString(),
+            RemotePeerPort = hostID,
+            ConnectionType = host ? "Server" : "Client"
+        };
+        string req = JsonConvert.SerializeObject(rq);
         TcpClient tcpClient = new TcpClient();
         try
         {
@@ -98,11 +109,20 @@ public class UDPHolePuncher : IDisposable
 
         // receive hole punch server responses
         string s = "";
+        float time = 0;
         while (!killed)
         {
+            const float SERVER_REFRESH_TIME = 10f;
+            if (time > SERVER_REFRESH_TIME && host)
+            {
+                rq.ConnectionType = "KeepAlive";
+                data = Encoding.Default.GetBytes(JsonConvert.SerializeObject(rq));
+                stream.Write(data, 0, data.Length);
+            }
             if (!stream.DataAvailable)
             {
                 Thread.Sleep(50);
+                time += 50f / 1000;
                 continue;
             }
             data = new byte[4096];

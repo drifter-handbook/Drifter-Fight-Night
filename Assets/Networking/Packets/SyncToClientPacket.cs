@@ -14,6 +14,7 @@ public class SyncToClientPacket : IGamePacket
         public float y = 0f;
         public float z = 0f;
         public bool facing = false;
+        public PlayerAnimatorState animatorState = new PlayerAnimatorState();
     }
     public class ObjectData
     {
