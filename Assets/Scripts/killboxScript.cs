@@ -20,7 +20,8 @@ public class killboxScript : MonoBehaviour
     {
         if (other.gameObject.tag == "Player2")
         {
-            Destroy(other.gameObject);
+            Debug.Log("Destroy(other.gameObject);");
+            
         }
     }
 }
