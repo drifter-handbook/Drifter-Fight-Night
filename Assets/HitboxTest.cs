@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class killboxScript : MonoBehaviour
+public class HitboxTest : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -14,14 +14,5 @@ public class killboxScript : MonoBehaviour
     void Update()
     {
         
-    }
-
-    void OnCollisionEnter2D(Collision2D other)
-    {
-        if (other.gameObject.tag == "Player2")
-        {
-            Debug.Log("Destroy(other.gameObject);");
-            
-        }
     }
 }

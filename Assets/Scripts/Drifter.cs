@@ -9,12 +9,22 @@ public class Drifter : MonoBehaviour
 {
 
     public DrifterData drifterData;
-    public CharacterController controller;
+    public playerMovement movement;
+    public PlayerSync sync;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+
+
+    private void Awake() {
+        if (Object.ReferenceEquals (sync, null)) {
+             sync = gameObject.AddComponent<PlayerSync>();
+        }
+
+        if (Object.ReferenceEquals (movement, null)) {
+            movement = gameObject.AddComponent<playerMovement>();
+        }
+        if (Object.ReferenceEquals (drifterData, null)) {
+            Debug.LogError("No data found for " + this.gameObject.name);
+        }
     }
 
     // Update is called once per frame
