@@ -20,36 +20,20 @@ public class NetworkHost : MonoBehaviour
     UDPConnection Receiver { get; set; }
     UDPHolePuncher HolePuncher { get; set; }
 
-    public bool AcceptingClients { get; private set; } = true;
+    public bool AcceptingClients = true;
 
     Coroutine coroutine;
+
+    public int PlayerID;
 
     public void Init()
     {
         coroutine = StartCoroutine(Run());
     }
-    IEnumerator ConnectLAN()
-    {
-        IPAddress clientAddress = IPAddress.Parse("192.168.1.18");
-        UdpClient udpClient = new UdpClient();
-        byte[] data = GamePacketUtils.Serialize(new NoOpPacket());
-        udpClient.Send(data, data.Length, new IPEndPoint(clientAddress, 7500));
-        Receiver = new UDPConnection(udpClient, clientAddress, 7500);
-        Clients.Add(new HostedClient() {
-            ID = Clients.Count + 1,
-            client = new P2PClient {
-                UdpClient = udpClient,
-                DestIP = clientAddress,
-                DestPort = 7500
-            },
-            connection = Receiver
-        });
-        AcceptingClients = false;
-        yield break;
-    }
     IEnumerator ConnectHolePunch()
     {
-        HolePuncher = new UDPHolePuncher("68.187.67.135", "minecraft.scrollingnumbers.com", 6969, true);
+        HolePuncher = new UDPHolePuncher("68.187.67.135", "minecraft.scrollingnumbers.com", 6969, true, 0);
+        PlayerID = HolePuncher.ID;
         while (AcceptingClients)
         {
             // accept clients
@@ -64,8 +48,28 @@ public class NetworkHost : MonoBehaviour
                 HostedClient newClient = new HostedClient { ID = Clients.Count + 1, client = client, connection = conn };
                 Clients.Add(newClient);
                 Debug.Log($"New client {newClient.ID} visible at {newClient.connection.udpSenderEp.ToString()}");
-                AcceptingClients = false;
             }
+            // hand out client IDs
+            // receive requests to connect from clients
+            if (Receiver != null)
+            {
+                List<UDPPacket> packets = Receiver.Receive();
+                foreach (UDPPacket packet in packets)
+                {
+                    IGamePacket gamePacket = GamePacketUtils.Deserialize(packet.data);
+                    if (gamePacket is ClientSetupPacket)
+                    {
+                        // find matching client
+                        HostedClient client = Clients.Find(x => x.client.DestIP.ToString() == packet.address.ToString() && x.client.DestPort == packet.port);
+                        if (client != null)
+                        {
+                            Debug.Log($"Connection request received from client #{client.ID}");
+                            client.connection.Send(GamePacketUtils.Serialize(new ClientSetupPacket() { ID = client.ID }));
+                        }
+                    }
+                }
+            }
+            // check for hole punch failure
             if (HolePuncher.Failed)
             {
                 Debug.Log($"Failed to connect to server {HolePuncher.holePunchingServerName}:{HolePuncher.holePunchingServerPort}");
@@ -77,43 +81,26 @@ public class NetworkHost : MonoBehaviour
     IEnumerator Run()
     {
         yield return ConnectHolePunch();
-        // receive requests to connect from clients
-        bool finished = false;
-        while (!finished)
-        {
-            List<UDPPacket> packets = Receiver.Receive();
-            foreach (UDPPacket packet in packets)
-            {
-                IGamePacket gamePacket = GamePacketUtils.Deserialize(packet.data);
-                if (gamePacket is ClientSetupPacket)
-                {
-                    // find matching client
-                    HostedClient client = Clients.Find(x => x.client.DestIP.ToString() == packet.address.ToString() && x.client.DestPort == packet.port);
-                    if (client != null)
-                    {
-                        Debug.Log($"Connection request received from client #{client.ID}");
-                        client.connection.Send(GamePacketUtils.Serialize(new ClientSetupPacket() { ID = client.ID }));
-                        finished = true;
-                    }
-                }
-            }
-            yield return null;
-        }
         // handle client input packets
-        float latest = 0;
+        Dictionary<int, float> latest = new Dictionary<int, float>();
         while (true)
         {
             List<UDPPacket> clientPackets = Receiver.Receive();
             foreach (UDPPacket packet in clientPackets)
             {
                 IGamePacket gamePacket = GamePacketUtils.Deserialize(packet.data);
+                HostedClient client = Clients.Find(x => x.client.DestIP.ToString() == packet.address.ToString() && x.client.DestPort == packet.port);
                 if (gamePacket is InputToHostPacket)
                 {
-                    // only process most recent packets
-                    if (latest < gamePacket.Timestamp)
+                    if (!latest.ContainsKey(client.ID))
                     {
-                        latest = gamePacket.Timestamp;
-                        GetComponent<GameSyncManager>().SetSyncInput((InputToHostPacket)gamePacket);
+                        latest[client.ID] = 0f;
+                    }
+                    // only process most recent packets
+                    if (latest[client.ID] < gamePacket.Timestamp)
+                    {
+                        latest[client.ID] = gamePacket.Timestamp;
+                        GetComponent<GameSyncManager>().SetSyncInput((InputToHostPacket)gamePacket, client.ID);
                     }
                 }
             }

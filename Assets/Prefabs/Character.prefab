@@ -114,9 +114,10 @@ GameObject:
   m_Component:
   - component: {fileID: 3106753082241659643}
   - component: {fileID: 3106753082241659641}
+  - component: {fileID: 1401939795787901855}
   - component: {fileID: 3106753082241659639}
   - component: {fileID: 2704295541901204434}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Character
   m_TagString: Player2
   m_Icon: {fileID: 0}
@@ -152,8 +153,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   numberOfJumps: 2
   delayedJumpDuration: 0.05
-  walkSpeed: 0.1
-  jumpSpeed: 48
+  walkSpeed: 25
+  jumpSpeed: 32
+  varyJumpHeightDuration: 0.2
+  varyJumpHeightForce: 12
+--- !u!114 &1401939795787901855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3106753082241659636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b102a14d914f6d64b9348fcb6cc943a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  latency: 0.025
 --- !u!50 &3106753082241659639
 Rigidbody2D:
   serializedVersion: 4
