@@ -207,9 +207,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3106753082241659643}
-  - component: {fileID: 4415614964896468707}
+  - component: {fileID: 5578303729342035337}
   - component: {fileID: 3106753082241659641}
   - component: {fileID: 1401939795787901855}
+  - component: {fileID: 271773049362604864}
   - component: {fileID: 3106753082241659639}
   - component: {fileID: 2704295541901204434}
   m_Layer: 8
@@ -234,7 +235,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4415614964896468707
+--- !u!114 &5578303729342035337
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -246,8 +247,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e92d5051cfb5c649be7e9b52cc084df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  drifterData: {fileID: 0}
+  drifterData: {fileID: 11400000, guid: b653cee11bdea504f8b1eda1a2b8ff35, type: 2}
   movement: {fileID: 3106753082241659641}
+  input: {fileID: 271773049362604864}
   sync: {fileID: 1401939795787901855}
 --- !u!114 &3106753082241659641
 MonoBehaviour:
@@ -280,6 +282,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   latency: 0.025
+--- !u!114 &271773049362604864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3106753082241659636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b53569b7da872d345a265b8f27ec6761, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  keyBindings: {fileID: 11400000, guid: 885ea4674937f97478cc8405e1044828, type: 2}
 --- !u!50 &3106753082241659639
 Rigidbody2D:
   serializedVersion: 4
