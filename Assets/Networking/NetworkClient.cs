@@ -9,7 +9,7 @@ using UnityEngine;
 public class NetworkClient : MonoBehaviour
 {
     // -1 id for unassigned
-    public int id { get; private set; } = -1;
+    public int ID { get; private set; } = -1;
 
     const float TIMEOUT = 3;
 
@@ -52,27 +52,42 @@ public class NetworkClient : MonoBehaviour
         yield return ConnectHolePunch(host);
         // talk to host and receive a client ID
         yield return Setup();
-        if (id == -1)
+        if (ID == -1)
         {
             // failed to communicate with host
             throw new InvalidOperationException($"Failed to connect to host at {Host.udpSenderEp.ToString()}");
         }
         // receive host sync packets
-        float latest = 0;
+        Dictionary<string, float> latest = new Dictionary<string, float>();
         while (true)
         {
             List<UDPPacket> hostPackets = Host.Receive();
             foreach (UDPPacket packet in hostPackets)
             {
                 IGamePacket gamePacket = GamePacketUtils.Deserialize(packet.data);
+                if (!latest.ContainsKey(gamePacket.TypeID))
+                {
+                    latest[gamePacket.TypeID] = 0f;
+                }
                 if (gamePacket is SyncToClientPacket)
                 {
                     // only process most recent packets
-                    if (latest < gamePacket.Timestamp)
+                    if (latest[gamePacket.TypeID] < gamePacket.Timestamp)
                     {
-                        latest = gamePacket.Timestamp;
-                        GetComponent<GameSyncManager>().SyncFromPacket((SyncToClientPacket)gamePacket);
+                        latest[gamePacket.TypeID] = gamePacket.Timestamp;
+                        GetComponent<GameSyncManager>().GameSyncFromPacket((SyncToClientPacket)gamePacket);
                     }
+                    // start game if not yet started
+                    if (!GetComponent<GameSyncManager>().GameStarted)
+                    {
+                        GetComponent<GameSyncManager>().StartGame();
+                    }
+                }
+                if (gamePacket is CharacterSelectSyncPacket)
+                {
+                    CharacterSelectState localCharSelect = GetComponent<MainPlayerSelect>().CharacterSelectState[ID];
+                    GetComponent<MainPlayerSelect>().CharacterSelectState = ((CharacterSelectSyncPacket)gamePacket).Data.Players;
+                    GetComponent<MainPlayerSelect>().CharacterSelectState[ID] = localCharSelect;
                 }
             }
             yield return null;
@@ -84,7 +99,7 @@ public class NetworkClient : MonoBehaviour
         // Send request for a Client ID
         Debug.Log($"Sending connection request to host at {Host.udpSenderEp.ToString()}");
         // Receive Client ID from Host
-        for (float time = 0; id == -1 && time < TIMEOUT; time += Time.deltaTime)
+        for (float time = 0; ID == -1 && time < TIMEOUT; time += Time.deltaTime)
         {
             SendToHost(new ClientSetupPacket() { ID = -1 });
             yield return null;
@@ -94,8 +109,8 @@ public class NetworkClient : MonoBehaviour
                 IGamePacket gamePacket = GamePacketUtils.Deserialize(packet.data);
                 if (gamePacket is ClientSetupPacket)
                 {
-                    id = ((ClientSetupPacket)gamePacket).ID;
-                    Debug.Log($"Connected to host at {packet.address.ToString()}:{packet.port}, we are Client #{id}");
+                    ID = ((ClientSetupPacket)gamePacket).ID;
+                    Debug.Log($"Connected to host at {packet.address.ToString()}:{packet.port}, we are Client #{ID}");
                     // attach player input to player with ID
                     GetComponent<PlayerInput>().input = new PlayerInputData();
                     SendToHost(gamePacket);

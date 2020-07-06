@@ -15,6 +15,9 @@ public class GameSyncManager : MonoBehaviour
     [Header("Check box if hosting")]
     [SerializeField] private bool IsHost = false;
 
+    public bool GameStarted { get; private set; } = false;
+    public int ID => IsHost ? 0 : client.ID;
+
     public string HostIP = "68.187.67.135";
     public int HostID = 18;
 
@@ -32,6 +35,20 @@ public class GameSyncManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // if we are host
+        if (IsHost)
+        {
+            host.Init();
+        }
+        else
+        {
+            client.Init(HostIP, HostID);
+        }
+    }
+
+    public void StartGame()
+    {
+        GameStarted = true;
         // if we are host
         if (IsHost)
         {
@@ -63,27 +80,58 @@ public class GameSyncManager : MonoBehaviour
 
     void FixedUpdate()
     {
-        // if host
-        if (IsHost)
+        // character select
+        if (!GameStarted)
         {
-            // send sync packet every frame
-            host.SendToClients(CreateSyncPacket());
+            // if host
+            if (IsHost)
+            {
+                // send character selection sync packet every frame
+                host.SendToClients(new CharacterSelectSyncPacket() {
+                    Data = new CharacterSelectSyncPacket.CharacterSelectSyncData()
+                    {
+                        Players = GetComponent<MainPlayerSelect>().CharacterSelectState
+                    }
+                });
+            }
+            // if client
+            else
+            {
+                // send client character selection every frame
+                if (client.ID != -1)
+                {
+                    client.SendToHost(new CharacterSelectInputPacket()
+                    {
+                        CharacterSelect = GetComponent<MainPlayerSelect>().CharacterSelectState[client.ID]
+                    });
+                }
+            }
         }
-        // if client
+        // game running
         else
         {
-            // send client input every frame
-            if (client.id != -1)
+            // if host
+            if (IsHost)
             {
-                client.SendToHost(new InputToHostPacket()
+                // send game sync packet every frame
+                host.SendToClients(CreateGameSyncPacket());
+            }
+            // if client
+            else
+            {
+                // send client game input every frame
+                if (client.ID != -1)
                 {
-                    input = (PlayerInputData)GetComponent<PlayerInput>().input.Clone()
-                });
+                    client.SendToHost(new InputToHostPacket()
+                    {
+                        input = (PlayerInputData)GetComponent<PlayerInput>().input.Clone()
+                    });
+                }
             }
         }
     }
 
-    SyncToClientPacket CreateSyncPacket()
+    SyncToClientPacket CreateGameSyncPacket()
     {
         SyncToClientPacket.SyncToClientData SyncData = new SyncToClientPacket.SyncToClientData();
         foreach (GameObject player in networkPlayers)
@@ -119,7 +167,7 @@ public class GameSyncManager : MonoBehaviour
         return new SyncToClientPacket() { Timestamp = Time.time, SyncData = SyncData };
     }
 
-    public void SyncFromPacket(SyncToClientPacket data)
+    public void GameSyncFromPacket(SyncToClientPacket data)
     {
         foreach (GameObject player in networkPlayers)
         {
@@ -146,7 +194,7 @@ public class GameSyncManager : MonoBehaviour
         }
     }
 
-    public void SetSyncInput(InputToHostPacket input, int id)
+    public void SetGameSyncInput(InputToHostPacket input, int id)
     {
         if (input?.input != null)
         {
