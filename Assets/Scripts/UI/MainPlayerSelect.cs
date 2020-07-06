@@ -13,6 +13,9 @@ public class MainPlayerSelect : MonoBehaviour
     public Transform[] selectionObjects = new Transform[4];
     public GameObject[] lockedObjects = new GameObject[4];
     public GameObject GameStartButton;
+
+    public GameObject PlayerProfiles;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,9 +27,13 @@ public class MainPlayerSelect : MonoBehaviour
     {
         picturePosition();
         lockedPictures();
+        ShowPlayerPictures();
+        GameStartButton.SetActive(readyToGo);
         if (Input.GetKeyDown(KeyCode.Return) && readyToGo == true)
+        {
             //Switch to the main game scene
-            SceneManager.LoadScene("NetworkTestScene");
+            GetComponent<GameSyncManager>().StartGame();
+        }
     }
 
     void picturePosition()
@@ -80,6 +87,19 @@ public class MainPlayerSelect : MonoBehaviour
             {
                 lockedObjects[i].SetActive(false);
             }
+        }
+    }
+
+    void ShowPlayerPictures()
+    {
+        List<GameObject> pics = new List<GameObject>();
+        foreach (Transform child in PlayerProfiles.transform)
+        {
+            pics.Add(child.gameObject);
+        }
+        for (int i = 0; i < pics.Count; i++)
+        {
+            pics[i].SetActive(i < CharacterSelectState.Count);
         }
     }
 

@@ -47,8 +47,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2ac46a3903d9004e9b9543ccf8f2292, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  networkPlayers: []
-  networkObjects: []
   IsHost: 1
   HostIP: 107.10.82.25
   HostID: 134
@@ -102,6 +100,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   GameStartButton: {fileID: 0}
+  PlayerProfiles: {fileID: 0}
 --- !u!114 &414843094
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(PlayerInput))]
 public class GameSyncManager : MonoBehaviour
@@ -9,9 +10,10 @@ public class GameSyncManager : MonoBehaviour
     NetworkHost host;
     NetworkClient client;
 
+    // set when game starts
+    NetworkEntityList entities;
+
     // objects to sync
-    public List<GameObject> networkPlayers;
-    public List<GameObject> networkObjects;
     [Header("Check box if hosting")]
     [SerializeField] private bool IsHost = false;
 
@@ -35,6 +37,7 @@ public class GameSyncManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        DontDestroyOnLoad(gameObject);
         // if we are host
         if (IsHost)
         {
@@ -49,14 +52,17 @@ public class GameSyncManager : MonoBehaviour
     public void StartGame()
     {
         GameStarted = true;
+        SceneManager.LoadScene("NetworkTestScene");
+        // find entities
+        entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
         // if we are host
         if (IsHost)
         {
             host.Init();
             // continue to simulate
             // attach player input to player 1
-            GetComponent<PlayerInput>().input = networkPlayers[0].GetComponent<playerMovement>().input;
-            foreach (GameObject obj in networkPlayers)
+            GetComponent<PlayerInput>().input = entities.players[0].GetComponent<playerMovement>().input;
+            foreach (GameObject obj in entities.players)
             {
                 obj.GetComponent<playerMovement>().IsClient = false;
             }
@@ -66,12 +72,12 @@ public class GameSyncManager : MonoBehaviour
         {
             client.Init(HostIP, HostID);
             // remove all physics for synced objects
-            foreach (GameObject obj in networkPlayers)
+            foreach (GameObject obj in entities.players)
             {
                 obj.GetComponent<Rigidbody2D>().simulated = false;
                 obj.GetComponent<playerMovement>().IsClient = true;
             }
-            foreach (GameObject obj in networkObjects)
+            foreach (GameObject obj in entities.objects)
             {
                 obj.GetComponent<Rigidbody2D>().simulated = false;
             }
@@ -134,7 +140,7 @@ public class GameSyncManager : MonoBehaviour
     SyncToClientPacket CreateGameSyncPacket()
     {
         SyncToClientPacket.SyncToClientData SyncData = new SyncToClientPacket.SyncToClientData();
-        foreach (GameObject player in networkPlayers)
+        foreach (GameObject player in entities.players)
         {
             if (player != null)
             {
@@ -150,7 +156,7 @@ public class GameSyncManager : MonoBehaviour
                 player.GetComponent<playerMovement>().ResetAnimatorTriggers();
             }
         }
-        foreach (GameObject obj in networkObjects)
+        foreach (GameObject obj in entities.objects)
         {
             if (obj != null)
             {
@@ -169,7 +175,7 @@ public class GameSyncManager : MonoBehaviour
 
     public void GameSyncFromPacket(SyncToClientPacket data)
     {
-        foreach (GameObject player in networkPlayers)
+        foreach (GameObject player in entities.players)
         {
             if (player != null)
             {
@@ -181,7 +187,7 @@ public class GameSyncManager : MonoBehaviour
                 }
             }
         }
-        foreach (GameObject obj in networkObjects)
+        foreach (GameObject obj in entities.objects)
         {
             if (obj != null)
             {
@@ -196,9 +202,9 @@ public class GameSyncManager : MonoBehaviour
 
     public void SetGameSyncInput(InputToHostPacket input, int id)
     {
-        if (input?.input != null)
+        if (GameStarted && entities != null && input?.input != null)
         {
-            networkPlayers[id]?.GetComponent<playerMovement>()?.input?.CopyFrom(input?.input);
+            entities.players[id]?.GetComponent<playerMovement>()?.input?.CopyFrom(input?.input);
         }
     }
 }
