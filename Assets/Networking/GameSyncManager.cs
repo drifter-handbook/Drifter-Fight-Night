@@ -125,7 +125,7 @@ public class GameSyncManager : MonoBehaviour
             }
         }
         // game running
-        else
+        else if (entities != null)
         {
             // if host
             if (IsHost)
@@ -150,10 +150,6 @@ public class GameSyncManager : MonoBehaviour
 
     SyncToClientPacket CreateGameSyncPacket()
     {
-        if (entities == null)
-        {
-            return;
-        }
         SyncToClientPacket.SyncToClientData SyncData = new SyncToClientPacket.SyncToClientData();
         foreach (GameObject player in entities.players)
         {
