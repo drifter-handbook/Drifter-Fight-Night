@@ -52,7 +52,14 @@ public class GameSyncManager : MonoBehaviour
     public void StartGame()
     {
         GameStarted = true;
-        SceneManager.LoadScene("NetworkTestScene");
+        if (!GameStarted)
+        {
+            StartCoroutine(StartGameCoroutine());
+        }
+    }
+    IEnumerator StartGameCoroutine()
+    {
+        yield return SceneManager.LoadSceneAsync("NetworkTestScene");
         // find entities
         entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
         // if we are host
@@ -87,7 +94,7 @@ public class GameSyncManager : MonoBehaviour
     void FixedUpdate()
     {
         // character select
-        if (!GameStarted)
+        if (!GameStarted && entities != null)
         {
             // if host
             if (IsHost)
