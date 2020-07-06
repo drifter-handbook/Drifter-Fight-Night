@@ -51,11 +51,11 @@ public class GameSyncManager : MonoBehaviour
 
     public void StartGame()
     {
-        GameStarted = true;
         if (!GameStarted)
         {
             StartCoroutine(StartGameCoroutine());
         }
+        GameStarted = true;
     }
     IEnumerator StartGameCoroutine()
     {
