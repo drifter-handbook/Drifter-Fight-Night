@@ -1,25 +1,13 @@
 fileFormatVersion: 2
-guid: 53bdce01a40ccf84a9254f31ead61371
+guid: 406d40a8a68fa2c40840c24e760a5ad9
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4547967667980302071
-    second: LadyParhelionAttack_0
+      213: -2475470836624313583
+    second: LadyParhelionJumpLand_0
   - first:
-      213: -3226430887282375286
-    second: LadyParhelionAttack_1
-  - first:
-      213: 725979096583824347
-    second: LadyParhelionAttack_2
-  - first:
-      213: 6631433986721587177
-    second: LadyParhelionAttack_3
-  - first:
-      213: 2650371503135989730
-    second: LadyParhelionAttack_4
-  - first:
-      213: 1054474453922287938
-    second: LadyParhelionAttack_5
+      213: -6663889279372108963
+    second: LadyParhelionJumpLand_1
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -117,13 +105,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: LadyParhelionAttack_0
+      name: LadyParhelionJumpLand_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 64
-        height: 64
+        height: 124
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -131,20 +119,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 909821c808f52e0c0800000000000000
-      internalID: -4547967667980302071
+      spriteID: 1133b23c36c55add0800000000000000
+      internalID: -2475470836624313583
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: LadyParhelionAttack_1
+      name: LadyParhelionJumpLand_1
       rect:
         serializedVersion: 2
         x: 64
         y: 0
         width: 64
-        height: 64
+        height: 124
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -152,92 +140,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a858f2fc33a6933d0800000000000000
-      internalID: -3226430887282375286
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: LadyParhelionAttack_2
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 0
-        width: 64
-        height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: bd3ec365422331a00800000000000000
-      internalID: 725979096583824347
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: LadyParhelionAttack_3
-      rect:
-        serializedVersion: 2
-        x: 192
-        y: 0
-        width: 64
-        height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 9ef1ef97316970c50800000000000000
-      internalID: 6631433986721587177
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: LadyParhelionAttack_4
-      rect:
-        serializedVersion: 2
-        x: 256
-        y: 0
-        width: 64
-        height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2ef1d3ff6d208c420800000000000000
-      internalID: 2650371503135989730
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: LadyParhelionAttack_5
-      rect:
-        serializedVersion: 2
-        x: 320
-        y: 0
-        width: 64
-        height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 24113c2ddee32ae00800000000000000
-      internalID: 1054474453922287938
+      spriteID: d5bdd78d10c1583a0800000000000000
+      internalID: -6663889279372108963
       vertices: []
       indices: 
       edges: []

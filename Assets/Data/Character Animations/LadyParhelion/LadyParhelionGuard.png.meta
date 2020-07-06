@@ -1,25 +1,31 @@
 fileFormatVersion: 2
-guid: 53bdce01a40ccf84a9254f31ead61371
+guid: e178bf4e3544c4c498749eb2c8a68079
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4547967667980302071
-    second: LadyParhelionAttack_0
+      213: -9121960083651884175
+    second: LadyParhelionGuard_0
   - first:
-      213: -3226430887282375286
-    second: LadyParhelionAttack_1
+      213: 3229652785727397172
+    second: LadyParhelionGuard_1
   - first:
-      213: 725979096583824347
-    second: LadyParhelionAttack_2
+      213: -4113518891132642289
+    second: LadyParhelionGuard_2
   - first:
-      213: 6631433986721587177
-    second: LadyParhelionAttack_3
+      213: -1589292106669340231
+    second: LadyParhelionGuard_3
   - first:
-      213: 2650371503135989730
-    second: LadyParhelionAttack_4
+      213: 3923689358437061982
+    second: LadyParhelionGuard_4
   - first:
-      213: 1054474453922287938
-    second: LadyParhelionAttack_5
+      213: -3770410611866284845
+    second: LadyParhelionGuard_5
+  - first:
+      213: 5124730072008470463
+    second: LadyParhelionGuard_6
+  - first:
+      213: -6158238873995776496
+    second: LadyParhelionGuard_7
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -117,127 +123,169 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: LadyParhelionAttack_0
+      name: LadyParhelionGuard_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 64
         height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 909821c808f52e0c0800000000000000
-      internalID: -4547967667980302071
+      spriteID: 17b03a652a9486180800000000000000
+      internalID: -9121960083651884175
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: LadyParhelionAttack_1
+      name: LadyParhelionGuard_1
       rect:
         serializedVersion: 2
         x: 64
         y: 0
         width: 64
         height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a858f2fc33a6933d0800000000000000
-      internalID: -3226430887282375286
+      spriteID: 43dd121e81802dc20800000000000000
+      internalID: 3229652785727397172
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: LadyParhelionAttack_2
+      name: LadyParhelionGuard_2
       rect:
         serializedVersion: 2
         x: 128
         y: 0
         width: 64
         height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bd3ec365422331a00800000000000000
-      internalID: 725979096583824347
+      spriteID: f0c1e25ec58d9e6c0800000000000000
+      internalID: -4113518891132642289
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: LadyParhelionAttack_3
+      name: LadyParhelionGuard_3
       rect:
         serializedVersion: 2
         x: 192
         y: 0
         width: 64
         height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9ef1ef97316970c50800000000000000
-      internalID: 6631433986721587177
+      spriteID: 9b944a9df33b1f9e0800000000000000
+      internalID: -1589292106669340231
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: LadyParhelionAttack_4
+      name: LadyParhelionGuard_4
       rect:
         serializedVersion: 2
         x: 256
         y: 0
         width: 64
         height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2ef1d3ff6d208c420800000000000000
-      internalID: 2650371503135989730
+      spriteID: e551f92deaeb37630800000000000000
+      internalID: 3923689358437061982
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: LadyParhelionAttack_5
+      name: LadyParhelionGuard_5
       rect:
         serializedVersion: 2
         x: 320
         y: 0
         width: 64
         height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 24113c2ddee32ae00800000000000000
-      internalID: 1054474453922287938
+      spriteID: 3dcc856668fccabc0800000000000000
+      internalID: -3770410611866284845
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LadyParhelionGuard_6
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 0
+        width: 64
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fbfa3d739d2be1740800000000000000
+      internalID: 5124730072008470463
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LadyParhelionGuard_7
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 0
+        width: 64
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 01eea713f5a898aa0800000000000000
+      internalID: -6158238873995776496
       vertices: []
       indices: 
       edges: []
