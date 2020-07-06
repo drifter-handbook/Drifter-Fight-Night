@@ -94,7 +94,7 @@ public class GameSyncManager : MonoBehaviour
     void FixedUpdate()
     {
         // character select
-        if (!GameStarted && entities != null)
+        if (!GameStarted || entities == null)
         {
             // if host
             if (IsHost)
