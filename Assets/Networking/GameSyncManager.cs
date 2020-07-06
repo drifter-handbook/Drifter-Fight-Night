@@ -106,9 +106,14 @@ public class GameSyncManager : MonoBehaviour
                 // send client character selection every frame
                 if (client.ID != -1)
                 {
+                    CharacterSelectState localCharSelect = new CharacterSelectState();
+                    if (client.ID < GetComponent<MainPlayerSelect>().CharacterSelectState.Count)
+                    {
+                        localCharSelect = GetComponent<MainPlayerSelect>().CharacterSelectState[client.ID];
+                    }
                     client.SendToHost(new CharacterSelectInputPacket()
                     {
-                        CharacterSelect = GetComponent<MainPlayerSelect>().CharacterSelectState[client.ID]
+                        CharacterSelect = localCharSelect
                     });
                 }
             }

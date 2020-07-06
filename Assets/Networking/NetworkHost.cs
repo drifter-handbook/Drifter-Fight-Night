@@ -58,14 +58,33 @@ public class NetworkHost : MonoBehaviour
                 foreach (UDPPacket packet in packets)
                 {
                     IGamePacket gamePacket = GamePacketUtils.Deserialize(packet.data);
+                    HostedClient client = Clients.Find(x => x.client.DestIP.ToString() == packet.address.ToString() && x.client.DestPort == packet.port);
                     if (gamePacket is ClientSetupPacket)
                     {
                         // find matching client
-                        HostedClient client = Clients.Find(x => x.client.DestIP.ToString() == packet.address.ToString() && x.client.DestPort == packet.port);
                         if (client != null)
                         {
                             Debug.Log($"Connection request received from client #{client.ID}");
                             client.connection.Send(GamePacketUtils.Serialize(new ClientSetupPacket() { ID = client.ID }));
+                        }
+                    }
+                    // handle character select
+                    Dictionary<string, Dictionary<int, float>> latest = new Dictionary<string, Dictionary<int, float>>();
+                    if (!latest.ContainsKey(gamePacket.TypeID))
+                    {
+                        latest[gamePacket.TypeID] = new Dictionary<int, float>();
+                    }
+                    if (!latest[gamePacket.TypeID].ContainsKey(client.ID))
+                    {
+                        latest[gamePacket.TypeID][client.ID] = 0f;
+                    }
+                    if (gamePacket is CharacterSelectInputPacket)
+                    {
+                        // only process most recent packets
+                        if (latest[gamePacket.TypeID][client.ID] < gamePacket.Timestamp)
+                        {
+                            latest[gamePacket.TypeID][client.ID] = gamePacket.Timestamp;
+                            GetComponent<MainPlayerSelect>().CharacterSelectState[client.ID] = ((CharacterSelectInputPacket)gamePacket).CharacterSelect;
                         }
                     }
                 }
@@ -106,15 +125,6 @@ public class NetworkHost : MonoBehaviour
                     {
                         latest[gamePacket.TypeID][client.ID] = gamePacket.Timestamp;
                         GetComponent<GameSyncManager>().SetGameSyncInput((InputToHostPacket)gamePacket, client.ID);
-                    }
-                }
-                if (gamePacket is CharacterSelectInputPacket)
-                {
-                    // only process most recent packets
-                    if (latest[gamePacket.TypeID][client.ID] < gamePacket.Timestamp)
-                    {
-                        latest[gamePacket.TypeID][client.ID] = gamePacket.Timestamp;
-                        GetComponent<MainPlayerSelect>().CharacterSelectState[client.ID] = ((CharacterSelectInputPacket)gamePacket).CharacterSelect;
                     }
                 }
             }

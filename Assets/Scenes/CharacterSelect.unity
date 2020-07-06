@@ -1725,6 +1725,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 535279768112578375, guid: 51a7fe8af93144342a016b8630123736,
+        type: 3}
+      propertyPath: IsHost
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 535279768112578375, guid: 51a7fe8af93144342a016b8630123736,
+        type: 3}
+      propertyPath: HostIP
+      value: 50.93.222.122
+      objectReference: {fileID: 0}
+    - target: {fileID: 535279768112578375, guid: 51a7fe8af93144342a016b8630123736,
+        type: 3}
+      propertyPath: HostID
+      value: 116
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 51a7fe8af93144342a016b8630123736, type: 3}
 --- !u!1 &520828616

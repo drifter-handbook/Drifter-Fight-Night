@@ -85,9 +85,16 @@ public class NetworkClient : MonoBehaviour
                 }
                 if (gamePacket is CharacterSelectSyncPacket)
                 {
-                    CharacterSelectState localCharSelect = GetComponent<MainPlayerSelect>().CharacterSelectState[ID];
+                    CharacterSelectState localCharSelect = new CharacterSelectState();
+                    if (ID < GetComponent<MainPlayerSelect>().CharacterSelectState.Count)
+                    {
+                        localCharSelect = GetComponent<MainPlayerSelect>().CharacterSelectState[ID];
+                    }
                     GetComponent<MainPlayerSelect>().CharacterSelectState = ((CharacterSelectSyncPacket)gamePacket).Data.Players;
-                    GetComponent<MainPlayerSelect>().CharacterSelectState[ID] = localCharSelect;
+                    if (ID < GetComponent<MainPlayerSelect>().CharacterSelectState.Count)
+                    {
+                        GetComponent<MainPlayerSelect>().CharacterSelectState[ID] = localCharSelect;
+                    }
                 }
             }
             yield return null;
