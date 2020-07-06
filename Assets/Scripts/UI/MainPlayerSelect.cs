@@ -25,6 +25,10 @@ public class MainPlayerSelect : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GetComponent<GameSyncManager>().GameStarted)
+        {
+            return;
+        }
         picturePosition();
         lockedPictures();
         ShowPlayerPictures();

@@ -65,8 +65,8 @@ public class GameSyncManager : MonoBehaviour
         // if we are host
         if (IsHost)
         {
-            host.Init();
-            // continue to simulate
+            // start game
+            host.FinishAcceptingClients();
             // attach player input to player 1
             GetComponent<PlayerInput>().input = entities.players[0].GetComponent<playerMovement>().input;
             foreach (GameObject obj in entities.players)
@@ -77,7 +77,6 @@ public class GameSyncManager : MonoBehaviour
         // if we are client
         else
         {
-            client.Init(HostIP, HostID);
             // remove all physics for synced objects
             foreach (GameObject obj in entities.players)
             {
@@ -151,6 +150,10 @@ public class GameSyncManager : MonoBehaviour
 
     SyncToClientPacket CreateGameSyncPacket()
     {
+        if (entities == null)
+        {
+            return;
+        }
         SyncToClientPacket.SyncToClientData SyncData = new SyncToClientPacket.SyncToClientData();
         foreach (GameObject player in entities.players)
         {
@@ -187,6 +190,10 @@ public class GameSyncManager : MonoBehaviour
 
     public void GameSyncFromPacket(SyncToClientPacket data)
     {
+        if (entities == null)
+        {
+            return;
+        }
         foreach (GameObject player in entities.players)
         {
             if (player != null)
