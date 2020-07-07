@@ -7,7 +7,10 @@ using UnityEngine.SceneManagement;
 public class MainPlayerSelect : MonoBehaviour
 {
     //Column then Row
+
+    // DANNY RETAINO
     public List<CharacterSelectState> CharacterSelectState = new List<CharacterSelectState>() { new CharacterSelectState() };
+
     public bool readyToGo => CharacterSelectState.Count > 1 && CharacterSelectState.TrueForAll(x => x.locked);
 
     public Transform[] selectionObjects = new Transform[4];
