@@ -6,14 +6,19 @@ using UnityEngine.SceneManagement;
 
 public class MainPlayerSelect : MonoBehaviour
 {
-    int numberOfPlayers = 1;
     //Column then Row
-    public int[,] selectionArray = new int[,]{{ 1,1 }, { 1, 1 }, { 1, 1 }, { 1, 1 }};
-    public bool[] locked = new bool[4];
-    public bool readyToGo = false;
+
+    // DANNY RETAINO
+    public List<CharacterSelectState> CharacterSelectState = new List<CharacterSelectState>() { new CharacterSelectState() };
+
+    public bool readyToGo => CharacterSelectState.Count > 1 && CharacterSelectState.TrueForAll(x => x.locked);
+
     public Transform[] selectionObjects = new Transform[4];
     public GameObject[] lockedObjects = new GameObject[4];
     public GameObject GameStartButton;
+
+    public GameObject PlayerProfiles;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,47 +28,54 @@ public class MainPlayerSelect : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GetComponent<GameSyncManager>().GameStarted)
+        {
+            return;
+        }
         picturePosition();
-        checkIfReady();
         lockedPictures();
+        ShowPlayerPictures();
+        GameStartButton.SetActive(readyToGo);
         if (Input.GetKeyDown(KeyCode.Return) && readyToGo == true)
+        {
             //Switch to the main game scene
-            SceneManager.LoadScene("NetworkTestScene");
+            GetComponent<GameSyncManager>().StartGame();
+        }
     }
 
     void picturePosition()
     {
-        for (int i = 0; i < numberOfPlayers; i++)
+        for (int i = 0; i < CharacterSelectState.Count; i++)
         {
-            if (selectionArray[i, 0] == 1 && selectionArray[i, 1] == 1)
+            if (CharacterSelectState[i].y == 0 && CharacterSelectState[i].x == 0)
             {
                 selectionObjects[i].position = new Vector2(-5.86f, 4.52f);
             }
-            else if (selectionArray[i, 0] == 1 && selectionArray[i, 1] == 2)
+            else if (CharacterSelectState[i].y == 0 && CharacterSelectState[i].x == 1)
             {
                 selectionObjects[i].position = new Vector2(-1.78f, 4.52f);
             }
-            else if (selectionArray[i, 0] == 1 && selectionArray[i, 1] == 3)
+            else if (CharacterSelectState[i].y == 0 && CharacterSelectState[i].x == 2)
             {
                 selectionObjects[i].position = new Vector2(3.25f, 4.52f);
             }
-            else if (selectionArray[i, 0] == 1 && selectionArray[i, 1] == 4)
+            else if (CharacterSelectState[i].y == 0 && CharacterSelectState[i].x == 3)
             {
                 selectionObjects[i].position = new Vector2(7.18f, 4.52f);
             }
-            else if (selectionArray[i, 0] == 2 && selectionArray[i, 1] == 1)
+            else if (CharacterSelectState[i].y == 1 && CharacterSelectState[i].x == 0)
             {
                 selectionObjects[i].position = new Vector2(-5.86f, 2.6f);
             }
-            else if (selectionArray[i, 0] == 2 && selectionArray[i, 1] == 2)
+            else if (CharacterSelectState[i].y == 1 && CharacterSelectState[i].x == 1)
             {
                 selectionObjects[i].position = new Vector2(-1.78f, 2.6f);
             }
-            else if (selectionArray[i, 0] == 2 && selectionArray[i, 1] == 3)
+            else if (CharacterSelectState[i].y == 1 && CharacterSelectState[i].x == 2)
             {
                 selectionObjects[i].position = new Vector2(3.25f, 2.6f);
             }
-            else if (selectionArray[i, 0] == 2 && selectionArray[i, 1] == 4)
+            else if (CharacterSelectState[i].y == 1 && CharacterSelectState[i].x == 3)
             {
                 selectionObjects[i].position = new Vector2(7.18f, 2.6f);
             }
@@ -72,9 +84,9 @@ public class MainPlayerSelect : MonoBehaviour
 
     void lockedPictures()
     {
-        for(int i = 0; i < numberOfPlayers; i++)
+        for(int i = 0; i < CharacterSelectState.Count; i++)
         {
-            if (locked[i] == true)
+            if (CharacterSelectState[i].locked == true)
             {
                 lockedObjects[i].SetActive(true);
             }
@@ -85,20 +97,19 @@ public class MainPlayerSelect : MonoBehaviour
         }
     }
 
-    void checkIfReady()
+    void ShowPlayerPictures()
     {
-        for (int i = 0; i < numberOfPlayers; i++)
+        List<GameObject> pics = new List<GameObject>();
+        foreach (Transform child in PlayerProfiles.transform)
         {
-            if (locked[i] == false)
-            {
-                readyToGo = false;
-                GameStartButton.SetActive(false);
-                return;
-            }
+            pics.Add(child.gameObject);
         }
-        readyToGo = true;
-        GameStartButton.SetActive(true);
+        for (int i = 0; i < pics.Count; i++)
+        {
+            pics[i].SetActive(i < CharacterSelectState.Count);
+        }
     }
+
     void RecievePacket()
     {
         //Update Position of each player selection in selectionArray

@@ -3,14 +3,22 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+public class CharacterSelectState
+{
+    public int x = 0;
+    public int y = 0;
+    public bool locked = false;
+}
+
 public class CharacterSelectSyncPacket : IGamePacket
 {
     public string TypeID { get; set; } = "CSS"; // get rekt noah
     public float Timestamp { get; set; }
 
-    CharacterSelectSyncData Data;
-    private class CharacterSelectSyncData
+    public CharacterSelectSyncData Data;
+    public class CharacterSelectSyncData
     {
+        public List<CharacterSelectState> Players = new List<CharacterSelectState>();
     }
 
     public IGamePacket FromData(string json)

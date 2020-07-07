@@ -47,6 +47,7 @@ public class NetworkHost : MonoBehaviour
                 }
                 HostedClient newClient = new HostedClient { ID = Clients.Count + 1, client = client, connection = conn };
                 Clients.Add(newClient);
+                GetComponent<MainPlayerSelect>().CharacterSelectState.Add(new CharacterSelectState());
                 Debug.Log($"New client {newClient.ID} visible at {newClient.connection.udpSenderEp.ToString()}");
             }
             // hand out client IDs
@@ -57,14 +58,33 @@ public class NetworkHost : MonoBehaviour
                 foreach (UDPPacket packet in packets)
                 {
                     IGamePacket gamePacket = GamePacketUtils.Deserialize(packet.data);
+                    HostedClient client = Clients.Find(x => x.client.DestIP.ToString() == packet.address.ToString() && x.client.DestPort == packet.port);
                     if (gamePacket is ClientSetupPacket)
                     {
                         // find matching client
-                        HostedClient client = Clients.Find(x => x.client.DestIP.ToString() == packet.address.ToString() && x.client.DestPort == packet.port);
                         if (client != null)
                         {
                             Debug.Log($"Connection request received from client #{client.ID}");
                             client.connection.Send(GamePacketUtils.Serialize(new ClientSetupPacket() { ID = client.ID }));
+                        }
+                    }
+                    // handle character select
+                    Dictionary<string, Dictionary<int, float>> latest = new Dictionary<string, Dictionary<int, float>>();
+                    if (!latest.ContainsKey(gamePacket.TypeID))
+                    {
+                        latest[gamePacket.TypeID] = new Dictionary<int, float>();
+                    }
+                    if (!latest[gamePacket.TypeID].ContainsKey(client.ID))
+                    {
+                        latest[gamePacket.TypeID][client.ID] = 0f;
+                    }
+                    if (gamePacket is CharacterSelectInputPacket)
+                    {
+                        // only process most recent packets
+                        if (latest[gamePacket.TypeID][client.ID] < gamePacket.Timestamp)
+                        {
+                            latest[gamePacket.TypeID][client.ID] = gamePacket.Timestamp;
+                            GetComponent<MainPlayerSelect>().CharacterSelectState[client.ID] = ((CharacterSelectInputPacket)gamePacket).CharacterSelect;
                         }
                     }
                 }
@@ -82,7 +102,7 @@ public class NetworkHost : MonoBehaviour
     {
         yield return ConnectHolePunch();
         // handle client input packets
-        Dictionary<int, float> latest = new Dictionary<int, float>();
+        Dictionary<string, Dictionary<int, float>> latest = new Dictionary<string, Dictionary<int, float>>();
         while (true)
         {
             List<UDPPacket> clientPackets = Receiver.Receive();
@@ -90,17 +110,21 @@ public class NetworkHost : MonoBehaviour
             {
                 IGamePacket gamePacket = GamePacketUtils.Deserialize(packet.data);
                 HostedClient client = Clients.Find(x => x.client.DestIP.ToString() == packet.address.ToString() && x.client.DestPort == packet.port);
+                if (!latest.ContainsKey(gamePacket.TypeID))
+                {
+                    latest[gamePacket.TypeID] = new Dictionary<int, float>();
+                }
+                if (!latest[gamePacket.TypeID].ContainsKey(client.ID))
+                {
+                    latest[gamePacket.TypeID][client.ID] = 0f;
+                }
                 if (gamePacket is InputToHostPacket)
                 {
-                    if (!latest.ContainsKey(client.ID))
-                    {
-                        latest[client.ID] = 0f;
-                    }
                     // only process most recent packets
-                    if (latest[client.ID] < gamePacket.Timestamp)
+                    if (latest[gamePacket.TypeID][client.ID] < gamePacket.Timestamp)
                     {
-                        latest[client.ID] = gamePacket.Timestamp;
-                        GetComponent<GameSyncManager>().SetSyncInput((InputToHostPacket)gamePacket, client.ID);
+                        latest[gamePacket.TypeID][client.ID] = gamePacket.Timestamp;
+                        GetComponent<GameSyncManager>().SetGameSyncInput((InputToHostPacket)gamePacket, client.ID);
                     }
                 }
             }

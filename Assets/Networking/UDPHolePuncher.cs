@@ -18,8 +18,6 @@ public class P2PClient
 
 public class UDPHolePuncher : IDisposable
 {
-    int id = -1;
-
     UdpClient udpClient;
     IPAddress destAddress;
     public string holePunchingServerName { get; private set; }
