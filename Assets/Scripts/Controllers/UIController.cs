@@ -10,6 +10,10 @@ using UnityEngine;
 public class UIController : MonoBehaviour
 {
 
+    // Character Select Source of truth
+    public List<CharacterSelectState> CharacterSelectState = new List<CharacterSelectState>() { new CharacterSelectState() };
+
+
     public enum Views {
         DEFAULT,            // Fall-back state, should never happen
         NONE,               // Don't show UI
@@ -19,15 +23,6 @@ public class UIController : MonoBehaviour
         PAUSED,             // Pause menu
         POST_MATCH,         // Show summary
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 }

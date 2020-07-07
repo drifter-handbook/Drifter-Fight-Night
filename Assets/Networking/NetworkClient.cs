@@ -86,14 +86,14 @@ public class NetworkClient : MonoBehaviour
                 if (gamePacket is CharacterSelectSyncPacket)
                 {
                     CharacterSelectState localCharSelect = new CharacterSelectState();
-                    if (ID < GetComponent<MainPlayerSelect>().CharacterSelectState.Count)
+                    if (ID < GetComponent<UIController>().CharacterSelectState.Count)
                     {
-                        localCharSelect = GetComponent<MainPlayerSelect>().CharacterSelectState[ID];
+                        localCharSelect = GetComponent<UIController>().CharacterSelectState[ID];
                     }
-                    GetComponent<MainPlayerSelect>().CharacterSelectState = ((CharacterSelectSyncPacket)gamePacket).Data.Players;
-                    if (ID < GetComponent<MainPlayerSelect>().CharacterSelectState.Count)
+                    GetComponent<UIController>().CharacterSelectState = ((CharacterSelectSyncPacket)gamePacket).Data.Players;
+                    if (ID < GetComponent<UIController>().CharacterSelectState.Count)
                     {
-                        GetComponent<MainPlayerSelect>().CharacterSelectState[ID] = localCharSelect;
+                        GetComponent<UIController>().CharacterSelectState[ID] = localCharSelect;
                     }
                 }
             }

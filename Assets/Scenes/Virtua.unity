@@ -402,10 +402,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2ac46a3903d9004e9b9543ccf8f2292, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  networkPlayers:
-  - {fileID: 3106753082958542690}
-  networkObjects:
-  - {fileID: 0}
   IsHost: 1
   HostIP: 68.187.67.135
   HostID: 18
@@ -436,12 +432,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   keyBindings: {fileID: 11400000, guid: 885ea4674937f97478cc8405e1044828, type: 2}
---- !u!1 &3106753082958542690 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7638574618725185666, guid: c4b4e0b8870d3574d95a3c06be60d90c,
-    type: 3}
-  m_PrefabInstance: {fileID: 7638574619039317271}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5156570638415801659
 PrefabInstance:
   m_ObjectHideFlags: 0

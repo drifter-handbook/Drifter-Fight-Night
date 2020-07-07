@@ -47,7 +47,7 @@ public class NetworkHost : MonoBehaviour
                 }
                 HostedClient newClient = new HostedClient { ID = Clients.Count + 1, client = client, connection = conn };
                 Clients.Add(newClient);
-                GetComponent<MainPlayerSelect>().CharacterSelectState.Add(new CharacterSelectState());
+                GetComponent<UIController>().CharacterSelectState.Add(new CharacterSelectState());
                 Debug.Log($"New client {newClient.ID} visible at {newClient.connection.udpSenderEp.ToString()}");
             }
             // hand out client IDs
@@ -84,7 +84,7 @@ public class NetworkHost : MonoBehaviour
                         if (latest[gamePacket.TypeID][client.ID] < gamePacket.Timestamp)
                         {
                             latest[gamePacket.TypeID][client.ID] = gamePacket.Timestamp;
-                            GetComponent<MainPlayerSelect>().CharacterSelectState[client.ID] = ((CharacterSelectInputPacket)gamePacket).CharacterSelect;
+                            GetComponent<UIController>().CharacterSelectState[client.ID] = ((CharacterSelectInputPacket)gamePacket).CharacterSelect;
                         }
                     }
                 }

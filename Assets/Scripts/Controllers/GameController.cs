@@ -4,16 +4,22 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [DisallowMultipleComponent]
 public class GameController : Singleton<GameController>
 {
+
+    // Are we loading from inside the fight scene?
+    // THIS IS A DEV VALUE, CLEAN SHIT UP BEFORE RELEASE >:(
+    public bool isFight = false;
+
     // Prevent instantiation - get instance with GameController.Instance
     protected GameController() {}
 
     // Tree of controllers
-    [SerializeField] UIController uiController;
-    [SerializeField] SpawnController spawnController;
+    UIController uiController;
+    SpawnController spawnController;
 
     // Control flow
     public enum StateType 
@@ -30,12 +36,24 @@ public class GameController : Singleton<GameController>
 
     StateType state {get; set;}
 
+    string[] scenes = {
+        "MenuScene",
+        "BattleScene"
+    };
+
     private void Awake() {
+        DontDestroyOnLoad(this.gameObject);
         PreLoad();
+        if (!isFight) Load("MenuScene");
     }
 
     void PreLoad() {
-        
+        uiController = new UIController();
+        spawnController = new SpawnController();
+    }
+
+    public void Load(string sceneName) {
+        SceneManager.LoadScene(sceneName);
     }
 
     public void Pause(bool paused) {

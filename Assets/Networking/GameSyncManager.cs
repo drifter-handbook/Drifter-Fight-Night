@@ -102,7 +102,7 @@ public class GameSyncManager : MonoBehaviour
                 host.SendToClients(new CharacterSelectSyncPacket() {
                     Data = new CharacterSelectSyncPacket.CharacterSelectSyncData()
                     {
-                        Players = GetComponent<MainPlayerSelect>().CharacterSelectState
+                        Players = GetComponent<UIController>().CharacterSelectState
                     }
                 });
             }
@@ -113,9 +113,9 @@ public class GameSyncManager : MonoBehaviour
                 if (client.ID != -1)
                 {
                     CharacterSelectState localCharSelect = new CharacterSelectState();
-                    if (client.ID < GetComponent<MainPlayerSelect>().CharacterSelectState.Count)
+                    if (client.ID < GetComponent<UIController>().CharacterSelectState.Count)
                     {
-                        localCharSelect = GetComponent<MainPlayerSelect>().CharacterSelectState[client.ID];
+                        localCharSelect = GetComponent<UIController>().CharacterSelectState[client.ID];
                     }
                     client.SendToHost(new CharacterSelectInputPacket()
                     {
