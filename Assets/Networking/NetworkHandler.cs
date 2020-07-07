@@ -99,6 +99,8 @@ public class NetworkHandler
                 if (connectionID >= 0)
                 {
                     IGamePacket packet = GamePacketUtils.Deserialize(udpPacket.data);
+                    packet.address = udpPacket.address;
+                    packet.port = udpPacket.port;
                     // run handlers
                     if (OnReceiveHandlers.ContainsKey(packet.TypeID))
                     {
