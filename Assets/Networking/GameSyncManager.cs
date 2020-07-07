@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(PlayerInput))]
 public class GameSyncManager : MonoBehaviour
@@ -9,11 +10,15 @@ public class GameSyncManager : MonoBehaviour
     NetworkHost host;
     NetworkClient client;
 
+    // set when game starts
+    NetworkEntityList entities;
+
     // objects to sync
-    public List<GameObject> networkPlayers;
-    public List<GameObject> networkObjects;
     [Header("Check box if hosting")]
     [SerializeField] private bool IsHost = false;
+
+    public bool GameStarted { get; private set; } = false;
+    public int ID => IsHost ? 0 : client.ID;
 
     public string HostIP = "68.187.67.135";
     public int HostID = 18;
@@ -32,14 +37,39 @@ public class GameSyncManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        DontDestroyOnLoad(gameObject);
         // if we are host
         if (IsHost)
         {
             host.Init();
-            // continue to simulate
+        }
+        else
+        {
+            client.Init(HostIP, HostID);
+        }
+    }
+
+    public void StartGame()
+    {
+        if (!GameStarted)
+        {
+            StartCoroutine(StartGameCoroutine());
+        }
+        GameStarted = true;
+    }
+    IEnumerator StartGameCoroutine()
+    {
+        yield return SceneManager.LoadSceneAsync("NetworkTestScene");
+        // find entities
+        entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
+        // if we are host
+        if (IsHost)
+        {
+            // start game
+            host.FinishAcceptingClients();
             // attach player input to player 1
-            GetComponent<PlayerInput>().input = networkPlayers[0].GetComponent<playerMovement>().input;
-            foreach (GameObject obj in networkPlayers)
+            GetComponent<PlayerInput>().input = entities.players[0].GetComponent<playerMovement>().input;
+            foreach (GameObject obj in entities.players)
             {
                 obj.GetComponent<playerMovement>().IsClient = false;
             }
@@ -47,14 +77,13 @@ public class GameSyncManager : MonoBehaviour
         // if we are client
         else
         {
-            client.Init(HostIP, HostID);
             // remove all physics for synced objects
-            foreach (GameObject obj in networkPlayers)
+            foreach (GameObject obj in entities.players)
             {
                 obj.GetComponent<Rigidbody2D>().simulated = false;
                 obj.GetComponent<playerMovement>().IsClient = true;
             }
-            foreach (GameObject obj in networkObjects)
+            foreach (GameObject obj in entities.objects)
             {
                 obj.GetComponent<Rigidbody2D>().simulated = false;
             }
@@ -63,30 +92,66 @@ public class GameSyncManager : MonoBehaviour
 
     void FixedUpdate()
     {
-        // if host
-        if (IsHost)
+        // character select
+        if (!GameStarted || entities == null)
         {
-            // send sync packet every frame
-            host.SendToClients(CreateSyncPacket());
-        }
-        // if client
-        else
-        {
-            // send client input every frame
-            if (client.id != -1)
+            // if host
+            if (IsHost)
             {
-                client.SendToHost(new InputToHostPacket()
-                {
-                    input = (PlayerInputData)GetComponent<PlayerInput>().input.Clone()
+                // send character selection sync packet every frame
+                host.SendToClients(new CharacterSelectSyncPacket() {
+                    Data = new CharacterSelectSyncPacket.CharacterSelectSyncData()
+                    {
+                        Players = GetComponent<MainPlayerSelect>().CharacterSelectState
+                    }
                 });
+            }
+            // if client
+            else
+            {
+                // send client character selection every frame
+                if (client.ID != -1)
+                {
+                    CharacterSelectState localCharSelect = new CharacterSelectState();
+                    if (client.ID < GetComponent<MainPlayerSelect>().CharacterSelectState.Count)
+                    {
+                        localCharSelect = GetComponent<MainPlayerSelect>().CharacterSelectState[client.ID];
+                    }
+                    client.SendToHost(new CharacterSelectInputPacket()
+                    {
+                        CharacterSelect = localCharSelect
+                    });
+                }
+            }
+        }
+        // game running
+        else if (entities != null)
+        {
+            // if host
+            if (IsHost)
+            {
+                // send game sync packet every frame
+                host.SendToClients(CreateGameSyncPacket());
+            }
+            // if client
+            else
+            {
+                // send client game input every frame
+                if (client.ID != -1)
+                {
+                    client.SendToHost(new InputToHostPacket()
+                    {
+                        input = (PlayerInputData)GetComponent<PlayerInput>().input.Clone()
+                    });
+                }
             }
         }
     }
 
-    SyncToClientPacket CreateSyncPacket()
+    SyncToClientPacket CreateGameSyncPacket()
     {
         SyncToClientPacket.SyncToClientData SyncData = new SyncToClientPacket.SyncToClientData();
-        foreach (GameObject player in networkPlayers)
+        foreach (GameObject player in entities.players)
         {
             if (player != null)
             {
@@ -102,7 +167,7 @@ public class GameSyncManager : MonoBehaviour
                 player.GetComponent<playerMovement>().ResetAnimatorTriggers();
             }
         }
-        foreach (GameObject obj in networkObjects)
+        foreach (GameObject obj in entities.objects)
         {
             if (obj != null)
             {
@@ -119,9 +184,13 @@ public class GameSyncManager : MonoBehaviour
         return new SyncToClientPacket() { Timestamp = Time.time, SyncData = SyncData };
     }
 
-    public void SyncFromPacket(SyncToClientPacket data)
+    public void GameSyncFromPacket(SyncToClientPacket data)
     {
-        foreach (GameObject player in networkPlayers)
+        if (entities == null)
+        {
+            return;
+        }
+        foreach (GameObject player in entities.players)
         {
             if (player != null)
             {
@@ -133,7 +202,7 @@ public class GameSyncManager : MonoBehaviour
                 }
             }
         }
-        foreach (GameObject obj in networkObjects)
+        foreach (GameObject obj in entities.objects)
         {
             if (obj != null)
             {
@@ -146,11 +215,11 @@ public class GameSyncManager : MonoBehaviour
         }
     }
 
-    public void SetSyncInput(InputToHostPacket input, int id)
+    public void SetGameSyncInput(InputToHostPacket input, int id)
     {
-        if (input?.input != null)
+        if (GameStarted && entities != null && input?.input != null)
         {
-            networkPlayers[id]?.GetComponent<playerMovement>()?.input?.CopyFrom(input?.input);
+            entities.players[id]?.GetComponent<playerMovement>()?.input?.CopyFrom(input?.input);
         }
     }
 }
