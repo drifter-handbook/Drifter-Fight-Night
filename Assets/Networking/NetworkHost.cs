@@ -1,167 +1,155 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class NetworkHost : MonoBehaviour
+public interface NetworkID
 {
-    // host ID is 0
-    public int id { get; private set; } = 0;
+    int PlayerID { get; }
+    bool GameStarted { get; }
+}
 
-    private class HostedClient
+public class NetworkHost : MonoBehaviour, NetworkID
+{
+    public int PlayerID { get; private set; }
+    public NetworkHandler Network { get; set; }
+
+    GameSyncManager sync;
+
+    void Awake()
     {
-        public int ID = -1;
-        public P2PClient client;
-        public UDPConnection connection;
+        sync = GetComponent<GameSyncManager>();
     }
-    List<HostedClient> Clients { get; set; } = new List<HostedClient>();
-    UDPConnection Receiver { get; set; }
-    UDPHolePuncher HolePuncher { get; set; }
 
-    public bool AcceptingClients = true;
-
-    Coroutine coroutine;
-
-    public int PlayerID;
-
-    public void Init()
+    void Start()
     {
-        coroutine = StartCoroutine(Run());
-    }
-    IEnumerator ConnectHolePunch()
-    {
-        HolePuncher = new UDPHolePuncher("68.187.67.135", "minecraft.scrollingnumbers.com", 6969, true, 0);
-        PlayerID = HolePuncher.ID;
-        while (AcceptingClients)
+        // create host network handler
+        Network = new NetworkHandler();
+        // accept clients
+        Network.OnConnect((addr, port, id) =>
         {
-            // accept clients
-            List<P2PClient> clients = HolePuncher.ReceiveClients();
-            foreach (P2PClient client in clients)
-            {
-                UDPConnection conn = new UDPConnection(client.UdpClient, client.DestIP, client.DestPort, true);
-                if (Receiver == null)
-                {
-                    Receiver = new UDPConnection(client.UdpClient, client.DestIP, client.DestPort);
-                }
-                HostedClient newClient = new HostedClient { ID = Clients.Count + 1, client = client, connection = conn };
-                Clients.Add(newClient);
-                GetComponent<MainPlayerSelect>().CharacterSelectState.Add(new CharacterSelectState());
-                Debug.Log($"New client {newClient.ID} visible at {newClient.connection.udpSenderEp.ToString()}");
-            }
-            // hand out client IDs
-            // receive requests to connect from clients
-            if (Receiver != null)
-            {
-                List<UDPPacket> packets = Receiver.Receive();
-                foreach (UDPPacket packet in packets)
-                {
-                    IGamePacket gamePacket = GamePacketUtils.Deserialize(packet.data);
-                    HostedClient client = Clients.Find(x => x.client.DestIP.ToString() == packet.address.ToString() && x.client.DestPort == packet.port);
-                    if (gamePacket is ClientSetupPacket)
-                    {
-                        // find matching client
-                        if (client != null)
-                        {
-                            Debug.Log($"Connection request received from client #{client.ID}");
-                            client.connection.Send(GamePacketUtils.Serialize(new ClientSetupPacket() { ID = client.ID }));
-                        }
-                    }
-                    // handle character select
-                    Dictionary<string, Dictionary<int, float>> latest = new Dictionary<string, Dictionary<int, float>>();
-                    if (!latest.ContainsKey(gamePacket.TypeID))
-                    {
-                        latest[gamePacket.TypeID] = new Dictionary<int, float>();
-                    }
-                    if (!latest[gamePacket.TypeID].ContainsKey(client.ID))
-                    {
-                        latest[gamePacket.TypeID][client.ID] = 0f;
-                    }
-                    if (gamePacket is CharacterSelectInputPacket)
-                    {
-                        // only process most recent packets
-                        if (latest[gamePacket.TypeID][client.ID] < gamePacket.Timestamp)
-                        {
-                            latest[gamePacket.TypeID][client.ID] = gamePacket.Timestamp;
-                            GetComponent<MainPlayerSelect>().CharacterSelectState[client.ID] = ((CharacterSelectInputPacket)gamePacket).CharacterSelect;
-                        }
-                    }
-                }
-            }
-            // check for hole punch failure
-            if (HolePuncher.Failed)
-            {
-                Debug.Log($"Failed to connect to server {HolePuncher.holePunchingServerName}:{HolePuncher.holePunchingServerPort}");
-                yield break;
-            }
-            yield return null;
+            Debug.Log($"New client {id} visible at {addr}:{port}");
+            GetComponent<MainPlayerSelect>().CharacterSelectState.Add(new CharacterSelectState());
+        });
+        // on failure
+        Network.OnFailure(() =>
+        {
+            Debug.Log($"Failed to connect to server {Network.HolePuncher.holePunchingServerName}:{Network.HolePuncher.holePunchingServerPort}");
+        });
+        // hand out client IDs
+        // receive requests to connect from clients
+        Network.OnReceive(new ClientSetupPacket(), (id, packet) =>
+        {
+            Debug.Log($"Connection request received from client #{id}");
+            Network.Send(id, new ClientSetupPacket() { ID = id });
+        });
+        // handle character select
+        Network.OnReceive(new CharacterSelectInputPacket(), (id, packet) =>
+        {
+            GetComponent<MainPlayerSelect>().CharacterSelectState[id] = ((CharacterSelectInputPacket)packet).CharacterSelect;
+        }, true);
+        // handle game input
+        Network.OnReceive(new InputToHostPacket(), (id, packet) =>
+        {
+            SetGameSyncInput((InputToHostPacket)packet, id);
+        }, true);
+        // start connection
+        Network.Connect();
+    }
+
+    void Update()
+    {
+        Network.Update();
+    }
+
+    void FixedUpdate()
+    {
+        if (PlayerID != -1)
+        {
+            return;
         }
-    }
-    IEnumerator Run()
-    {
-        yield return ConnectHolePunch();
-        // handle client input packets
-        Dictionary<string, Dictionary<int, float>> latest = new Dictionary<string, Dictionary<int, float>>();
-        while (true)
+        if (sync.Entities == null)
         {
-            List<UDPPacket> clientPackets = Receiver.Receive();
-            foreach (UDPPacket packet in clientPackets)
+            // send character selection sync packet every frame
+            Network.SendToAll(new CharacterSelectSyncPacket()
             {
-                IGamePacket gamePacket = GamePacketUtils.Deserialize(packet.data);
-                HostedClient client = Clients.Find(x => x.client.DestIP.ToString() == packet.address.ToString() && x.client.DestPort == packet.port);
-                if (!latest.ContainsKey(gamePacket.TypeID))
+                Data = new CharacterSelectSyncPacket.CharacterSelectSyncData()
                 {
-                    latest[gamePacket.TypeID] = new Dictionary<int, float>();
+                    CharacterSelectState = GetComponent<MainPlayerSelect>().CharacterSelectState
                 }
-                if (!latest[gamePacket.TypeID].ContainsKey(client.ID))
-                {
-                    latest[gamePacket.TypeID][client.ID] = 0f;
-                }
-                if (gamePacket is InputToHostPacket)
-                {
-                    // only process most recent packets
-                    if (latest[gamePacket.TypeID][client.ID] < gamePacket.Timestamp)
-                    {
-                        latest[gamePacket.TypeID][client.ID] = gamePacket.Timestamp;
-                        GetComponent<GameSyncManager>().SetGameSyncInput((InputToHostPacket)gamePacket, client.ID);
-                    }
-                }
-            }
-            yield return null;
+            });
+        }
+        else
+        {
+            // send game sync packet every frame
+            Network.SendToAll(CreateGameSyncPacket());
         }
     }
 
-    public void SendToClients(IGamePacket packet)
+    public bool GameStarted { get; private set; } = false;
+    public void StartGame()
     {
-        foreach (HostedClient client in Clients)
+        if (!GameStarted)
         {
-            client.connection.Send(GamePacketUtils.Serialize(packet));
+            StartCoroutine(StartGameCoroutine());
+        }
+        GameStarted = true;
+    }
+    IEnumerator StartGameCoroutine()
+    {
+        yield return SceneManager.LoadSceneAsync("NetworkTestScene");
+        // find entities
+        sync.Entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
+        // start game
+        Network.StopAcceptingConnections();
+        // attach player input to player 1
+        GetComponent<PlayerInput>().input = sync.Entities.players[0].GetComponent<playerMovement>().input;
+        foreach (GameObject obj in sync.Entities.players)
+        {
+            obj.GetComponent<playerMovement>().IsClient = false;
         }
     }
 
-    public void FinishAcceptingClients()
+    SyncToClientPacket CreateGameSyncPacket()
     {
-        AcceptingClients = false;
-        // kill hole puncher connection
-        HolePuncher.Kill();
-    }
-
-    void OnDestroy()
-    {
-        // kill hole puncher connection
-        HolePuncher?.Kill();
-        // kill receiver
-        Receiver?.Kill();
-        // kill all client connections
-        foreach (HostedClient client in Clients)
+        SyncToClientPacket.SyncToClientData SyncData = new SyncToClientPacket.SyncToClientData();
+        foreach (GameObject player in sync.Entities.players)
         {
-            client?.connection.Kill();
+            if (player != null)
+            {
+                SyncData.players.Add(new SyncToClientPacket.PlayerData()
+                {
+                    name = player.gameObject.name,
+                    x = player.transform.position.x,
+                    y = player.transform.position.y,
+                    z = player.transform.position.z,
+                    facing = player.GetComponentInChildren<SpriteRenderer>().flipX,
+                    animatorState = (PlayerAnimatorState)player.GetComponent<playerMovement>().animatorState.Clone()
+                });
+                player.GetComponent<playerMovement>().ResetAnimatorTriggers();
+            }
         }
+        foreach (GameObject obj in sync.Entities.objects)
+        {
+            if (obj != null)
+            {
+                SyncData.objects.Add(new SyncToClientPacket.ObjectData()
+                {
+                    name = obj.gameObject.name,
+                    x = obj.transform.position.x,
+                    y = obj.transform.position.y,
+                    z = obj.transform.position.z,
+                    angle = obj.transform.eulerAngles.z
+                });
+            }
+        }
+        return new SyncToClientPacket() { Timestamp = Time.time, SyncData = SyncData };
     }
 
-    void OnApplicationQuit()
+    void SetGameSyncInput(InputToHostPacket input, int id)
     {
-        OnDestroy();
+        if (sync.Entities != null && input?.input != null)
+        {
+            sync.Entities.players[id]?.GetComponent<playerMovement>()?.input?.CopyFrom(input?.input);
+        }
     }
 }

@@ -11,14 +11,13 @@ using UnityEngine;
 
 public class P2PClient
 {
-    public UdpClient UdpClient;
     public IPAddress DestIP;
     public int DestPort;
 }
 
 public class UDPHolePuncher : IDisposable
 {
-    UdpClient udpClient;
+    public UdpClient udpClient { get; private set; }
     IPAddress destAddress;
     public string holePunchingServerName { get; private set; }
     public int holePunchingServerPort { get; private set; }
@@ -162,9 +161,9 @@ public class UDPHolePuncher : IDisposable
         HolePunchResponse resp;
         while (!received.IsEmpty && received.TryTake(out resp))
         {
-            P2PClient client = new P2PClient() { UdpClient = udpClient, DestIP = IPAddress.Parse(resp.DestIP), DestPort = resp.DestPort };
+            P2PClient client = new P2PClient() { DestIP = IPAddress.Parse(resp.DestIP), DestPort = resp.DestPort };
             byte[] noop = GamePacketUtils.Serialize(new NoOpPacket());
-            client.UdpClient.Send(noop, noop.Length, new IPEndPoint(client.DestIP, client.DestPort));
+            udpClient.Send(noop, noop.Length, new IPEndPoint(client.DestIP, client.DestPort));
             clients.Add(client);
         }
         return clients;

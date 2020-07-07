@@ -11,7 +11,7 @@ public class MainPlayerSelect : MonoBehaviour
     // DANNY RETAINO
     public List<CharacterSelectState> CharacterSelectState = new List<CharacterSelectState>() { new CharacterSelectState() };
 
-    public bool readyToGo => CharacterSelectState.Count > 1 && CharacterSelectState.TrueForAll(x => x.locked);
+    public bool readyToGo => CharacterSelectState.Count > 0 && CharacterSelectState.TrueForAll(x => x.locked);
 
     public Transform[] selectionObjects = new Transform[4];
     public GameObject[] lockedObjects = new GameObject[4];
@@ -28,7 +28,7 @@ public class MainPlayerSelect : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GetComponent<GameSyncManager>().GameStarted)
+        if (!GetComponent<GameSyncManager>().IsHost || GetComponent<NetworkID>().GameStarted)
         {
             return;
         }
@@ -39,7 +39,7 @@ public class MainPlayerSelect : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Return) && readyToGo == true)
         {
             //Switch to the main game scene
-            GetComponent<GameSyncManager>().StartGame();
+            GetComponent<NetworkHost>()?.StartGame();
         }
     }
 

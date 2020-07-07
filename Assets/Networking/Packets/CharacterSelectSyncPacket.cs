@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 
 public class CharacterSelectState
@@ -12,13 +13,16 @@ public class CharacterSelectState
 
 public class CharacterSelectSyncPacket : IGamePacket
 {
+    public IPAddress address { get; set; }
+    public int port { get; set; }
+
     public string TypeID { get; set; } = "CSS"; // get rekt noah
     public float Timestamp { get; set; }
 
     public CharacterSelectSyncData Data;
     public class CharacterSelectSyncData
     {
-        public List<CharacterSelectState> Players = new List<CharacterSelectState>();
+        public List<CharacterSelectState> CharacterSelectState = new List<CharacterSelectState>();
     }
 
     public IGamePacket FromData(string json)

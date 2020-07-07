@@ -1,10 +1,14 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 
 public class PingPacket : IGamePacket
 {
+    public IPAddress address { get; set; }
+    public int port { get; set; }
+
     public string TypeID { get; set; } = "Ping";
     public float Timestamp { get; set; }
 

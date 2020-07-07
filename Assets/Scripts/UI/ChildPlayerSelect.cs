@@ -17,7 +17,7 @@ public class ChildPlayerSelect : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        int ID = GetComponent<GameSyncManager>().ID;
+        int ID = GetComponent<NetworkID>().PlayerID;
         if (ID < 0 || ID >= m.CharacterSelectState.Count)
         {
             return;

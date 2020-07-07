@@ -1,9 +1,13 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Net;
 
 public class ClientSetupPacket : IGamePacket
 {
+    public IPAddress address { get; set; }
+    public int port { get; set; }
+
     public string TypeID { get; set; } = "Setup";
     public float Timestamp { get; set; }
 

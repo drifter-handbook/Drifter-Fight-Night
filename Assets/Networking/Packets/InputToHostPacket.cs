@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Net;
 
 public class PlayerInputData : ICloneable
 {
@@ -36,6 +37,9 @@ public class PlayerInputData : ICloneable
 
 public class InputToHostPacket : IGamePacket
 {
+    public IPAddress address { get; set; }
+    public int port { get; set; }
+
     public string TypeID { get; set; } = "Input";
     public float Timestamp { get; set; }
 

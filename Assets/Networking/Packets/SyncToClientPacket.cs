@@ -1,9 +1,13 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Net;
 
 public class SyncToClientPacket : IGamePacket
 {
+    public IPAddress address { get; set; }
+    public int port { get; set; }
+
     public string TypeID { get; set; } = "Sync";
     public float Timestamp { get; set; }
 

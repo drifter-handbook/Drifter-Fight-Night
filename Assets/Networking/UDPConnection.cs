@@ -24,21 +24,14 @@ public class UDPConnection : IDisposable
 
     public UdpClient udpClient { get; private set; }
     object udpLock = new object();
-    public IPEndPoint udpSenderEp { get; private set; }
     IPEndPoint udpReceiverSourceEp;
 
-    bool sendOnly = false;
-
-    public UDPConnection(UdpClient udpClient, IPAddress destIP, int destPort, bool sendOnly = false)
+    public UDPConnection(UdpClient udpClient)
     {
         this.udpClient = udpClient;
-        udpSenderEp = new IPEndPoint(destIP, destPort);
-        if (!sendOnly)
-        {
-            received = new ConcurrentBag<UDPPacket>();
-            thread = new Thread(new ThreadStart(ReceiveData));
-            thread.Start();
-        }
+        received = new ConcurrentBag<UDPPacket>();
+        thread = new Thread(new ThreadStart(ReceiveData));
+        thread.Start();
     }
 
     private void ReceiveData()
@@ -79,21 +72,17 @@ public class UDPConnection : IDisposable
     }
 
     // send a packet
-    public void Send(byte[] data)
+    public void Send(IPAddress destIP, int destPort, byte[] data)
     {
         lock (udpLock)
         {
-            udpClient.Send(data, data.Length, udpSenderEp);
+            udpClient.Send(data, data.Length, new IPEndPoint(destIP, destPort));
         }
     }
 
     // get all packets received
     public List<UDPPacket> Receive()
     {
-        if (sendOnly)
-        {
-            throw new InvalidOperationException("Cannot receive data on a send only connection.");
-        }
         List<UDPPacket> packets = new List<UDPPacket>();
         UDPPacket packet;
         while (!received.IsEmpty && received.TryTake(out packet))
