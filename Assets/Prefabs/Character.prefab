@@ -249,8 +249,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   drifterData: {fileID: 11400000, guid: b653cee11bdea504f8b1eda1a2b8ff35, type: 2}
   movement: {fileID: 3106753082241659641}
-  input: {fileID: 271773049362604864}
   sync: {fileID: 1401939795787901855}
+  controls: {fileID: 0}
 --- !u!114 &3106753082241659641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -352,7 +352,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8774267968347264039}
   m_Layer: 0
-  m_Name: Damageboxes
+  m_Name: Hitboxes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -385,7 +385,7 @@ GameObject:
   - component: {fileID: 6941340441550975300}
   - component: {fileID: 1627984188795609511}
   m_Layer: 0
-  m_Name: Hitboxes
+  m_Name: Hurtboxes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
