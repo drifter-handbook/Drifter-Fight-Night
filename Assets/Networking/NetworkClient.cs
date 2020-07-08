@@ -95,7 +95,7 @@ public class NetworkClient : MonoBehaviour, NetworkID
 
     void FixedUpdate()
     {
-        if (PlayerID != -1)
+        if (PlayerID == -1)
         {
             return;
         }
@@ -105,6 +105,7 @@ public class NetworkClient : MonoBehaviour, NetworkID
             CharacterSelectState localCharSelect = new CharacterSelectState();
             if (PlayerID < GetComponent<MainPlayerSelect>().CharacterSelectState.Count)
             {
+                Debug.Log(PlayerID);
                 localCharSelect = GetComponent<MainPlayerSelect>().CharacterSelectState[PlayerID];
             }
             Network.SendToAll(new CharacterSelectInputPacket()

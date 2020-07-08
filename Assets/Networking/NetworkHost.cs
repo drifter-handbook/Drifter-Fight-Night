@@ -63,7 +63,7 @@ public class NetworkHost : MonoBehaviour, NetworkID
 
     void FixedUpdate()
     {
-        if (PlayerID != -1)
+        if (PlayerID == -1)
         {
             return;
         }
