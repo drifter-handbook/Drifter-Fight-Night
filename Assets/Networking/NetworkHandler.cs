@@ -91,7 +91,7 @@ public class NetworkHandler
                 int connectionID = -1;
                 foreach (P2PConnection conn in Connections.Values)
                 {
-                    if (conn.DestIP == udpPacket.address && conn.DestPort == udpPacket.port)
+                    if (conn.DestIP.ToString() == udpPacket.address.ToString() && conn.DestPort == udpPacket.port)
                     {
                         connectionID = conn.ID;
                     }
