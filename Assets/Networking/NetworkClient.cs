@@ -53,7 +53,7 @@ public class NetworkClient : MonoBehaviour, NetworkID
             GetComponent<PlayerInput>().input = new PlayerInputData();
         });
         // handle character select
-        Network.OnReceive(new CharacterSelectInputPacket(), (id, packet) =>
+        Network.OnReceive(new CharacterSelectSyncPacket(), (id, packet) =>
         {
             if (PlayerID < 0)
             {

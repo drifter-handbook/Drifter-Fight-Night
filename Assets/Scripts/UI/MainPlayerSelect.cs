@@ -28,7 +28,7 @@ public class MainPlayerSelect : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!GetComponent<GameSyncManager>().IsHost || GetComponent<NetworkID>().GameStarted)
+        if (GetComponent<NetworkID>().GameStarted)
         {
             return;
         }
