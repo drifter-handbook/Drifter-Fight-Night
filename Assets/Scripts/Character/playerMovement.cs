@@ -41,10 +41,6 @@ public class playerMovement : MonoBehaviour
         capsule = GetComponentInChildren<CapsuleCollider2D>();
         rb = GetComponent<Rigidbody2D>();
     }
-
-    void OnCollisionEnter2D(Collision2D collision){
-      Debug.Log("hey");
-    }
     void Update()
     {
         // get input
