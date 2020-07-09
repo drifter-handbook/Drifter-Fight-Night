@@ -28,7 +28,7 @@ public class NetworkHost : MonoBehaviour, NetworkID
         Network.OnConnect((addr, port, id) =>
         {
             Debug.Log($"New client {id} visible at {addr}:{port}");
-            GetComponent<MainPlayerSelect>().CharacterSelectState.Add(new CharacterSelectState());
+            GetComponent<UIController>().CharacterSelectState.Add(new CharacterSelectState());
         });
         // on failure
         Network.OnFailure(() =>
@@ -45,7 +45,7 @@ public class NetworkHost : MonoBehaviour, NetworkID
         // handle character select
         Network.OnReceive(new CharacterSelectInputPacket(), (id, packet) =>
         {
-            GetComponent<MainPlayerSelect>().CharacterSelectState[id] = ((CharacterSelectInputPacket)packet).CharacterSelect;
+            GetComponent<UIController>().CharacterSelectState[id] = ((CharacterSelectInputPacket)packet).CharacterSelect;
         }, true);
         // handle game input
         Network.OnReceive(new InputToHostPacket(), (id, packet) =>
@@ -74,7 +74,7 @@ public class NetworkHost : MonoBehaviour, NetworkID
             {
                 Data = new CharacterSelectSyncPacket.CharacterSelectSyncData()
                 {
-                    CharacterSelectState = GetComponent<MainPlayerSelect>().CharacterSelectState
+                    CharacterSelectState = GetComponent<UIController>().CharacterSelectState
                 }
             });
         }

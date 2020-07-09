@@ -25,6 +25,7 @@ public class playerMovement : MonoBehaviour
     int stunCount = 0;
 
     Rigidbody2D rb;
+    BoxCollider2D col;
 
     [NonSerialized]
     public bool IsClient;
@@ -40,6 +41,7 @@ public class playerMovement : MonoBehaviour
         sprite = GetComponentInChildren<SpriteRenderer>();
         capsule = GetComponentInChildren<CapsuleCollider2D>();
         rb = GetComponent<Rigidbody2D>();
+        col = GetComponent<BoxCollider2D>();
     }
     void Update()
     {
@@ -197,7 +199,7 @@ public class playerMovement : MonoBehaviour
     RaycastHit2D[] hits = new RaycastHit2D[10];
     private bool IsGrounded()
     {
-        int count = Physics2D.RaycastNonAlloc(transform.position + 3.9f * Vector3.down, Vector3.down, hits, 0.2f);
+        int count = Physics2D.RaycastNonAlloc(col.bounds.center + col.bounds.extents.y * Vector3.down, Vector3.down, hits, 0.2f);
         for (int i = 0; i < count; i++)
         {
             if (hits[i].collider.gameObject.tag == "Ground")

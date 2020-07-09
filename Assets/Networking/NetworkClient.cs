@@ -32,7 +32,7 @@ public class NetworkClient : MonoBehaviour, NetworkID
         Network.OnConnect((addr, port, id) =>
         {
             Debug.Log($"Host visible at {addr}:{port}");
-            GetComponent<MainPlayerSelect>().CharacterSelectState.Add(new CharacterSelectState());
+            GetComponent<UIController>().CharacterSelectState.Add(new CharacterSelectState());
             // attempt to connect to host and obtain a PlayerID
             if (ConnectCoroutine == null)
             {
@@ -60,14 +60,14 @@ public class NetworkClient : MonoBehaviour, NetworkID
                 return;
             }
             CharacterSelectState localCharSelect = new CharacterSelectState();
-            if (PlayerID < GetComponent<MainPlayerSelect>().CharacterSelectState.Count)
+            if (PlayerID < GetComponent<UIController>().CharacterSelectState.Count)
             {
-                localCharSelect = GetComponent<MainPlayerSelect>().CharacterSelectState[PlayerID];
+                localCharSelect = GetComponent<UIController>().CharacterSelectState[PlayerID];
             }
-            GetComponent<MainPlayerSelect>().CharacterSelectState = ((CharacterSelectSyncPacket)packet).Data.CharacterSelectState;
-            if (PlayerID < GetComponent<MainPlayerSelect>().CharacterSelectState.Count)
+            GetComponent<UIController>().CharacterSelectState = ((CharacterSelectSyncPacket)packet).Data.CharacterSelectState;
+            if (PlayerID < GetComponent<UIController>().CharacterSelectState.Count)
             {
-                GetComponent<MainPlayerSelect>().CharacterSelectState[PlayerID] = localCharSelect;
+                GetComponent<UIController>().CharacterSelectState[PlayerID] = localCharSelect;
             }
         }, true);
         // handle game input
@@ -103,9 +103,9 @@ public class NetworkClient : MonoBehaviour, NetworkID
         if (sync.Entities == null)
         {
             CharacterSelectState localCharSelect = new CharacterSelectState();
-            if (PlayerID < GetComponent<MainPlayerSelect>().CharacterSelectState.Count)
+            if (PlayerID < GetComponent<UIController>().CharacterSelectState.Count)
             {
-                localCharSelect = GetComponent<MainPlayerSelect>().CharacterSelectState[PlayerID];
+                localCharSelect = GetComponent<UIController>().CharacterSelectState[PlayerID];
             }
             Network.SendToAll(new CharacterSelectInputPacket()
             {
