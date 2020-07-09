@@ -11,7 +11,7 @@ public class playerMovement : MonoBehaviour
     public float jumpSpeed = 32f;
 
     SpriteRenderer sprite;
-
+    CapsuleCollider2D capsule;
     private Vector3 origTransform;
     private Vector3 flippedTransform;
 
@@ -38,9 +38,9 @@ public class playerMovement : MonoBehaviour
     {
         animator = GetComponentInChildren<Animator>();
         sprite = GetComponentInChildren<SpriteRenderer>();
+        capsule = GetComponentInChildren<CapsuleCollider2D>();
         rb = GetComponent<Rigidbody2D>();
     }
-
     void Update()
     {
         // get input
@@ -109,7 +109,7 @@ public class playerMovement : MonoBehaviour
                 SetAnimatorTrigger("Recovery");
                 StartCoroutine(StunFor(0.25f));
             }
-            //jump 
+            //jump
             if (animator.GetBool("Grounded"))
             {
                 numberOfJumps = 2;
