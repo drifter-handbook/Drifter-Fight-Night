@@ -1,22 +1,25 @@
 fileFormatVersion: 2
-guid: 7cb41e2321592664e8a109bd5e2d7a68
+guid: ca151c9c8df994642a94e46993bc0de1
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8027729685160840075
-    second: LadyParhelionJumpStart_0
+      213: 3048036990970735608
+    second: LadyParhelionJumpStart1_0
   - first:
-      213: 371545205788309185
-    second: LadyParhelionJumpStart_1
+      213: -1943047048367245763
+    second: LadyParhelionJumpStart1_1
   - first:
-      213: -6853958842308733892
-    second: LadyParhelionJumpStart_2
+      213: -3643939158559696026
+    second: LadyParhelionJumpStart1_2
   - first:
-      213: 8291446665716226388
-    second: LadyParhelionJumpStart_3
+      213: 8883778817863018090
+    second: LadyParhelionJumpStart1_3
   - first:
-      213: 4788215047389633828
-    second: LadyParhelionJumpStart_4
+      213: 6385253412623077112
+    second: LadyParhelionJumpStart1_4
+  - first:
+      213: -2385114678956505357
+    second: LadyParhelionJumpStart1_5
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -114,7 +117,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: LadyParhelionJumpStart_0
+      name: LadyParhelionJumpStart1_0
       rect:
         serializedVersion: 2
         x: 0
@@ -128,14 +131,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b8bcedcad99386f60800000000000000
-      internalID: 8027729685160840075
+      spriteID: 8fbaf0d7e7dcc4a20800000000000000
+      internalID: 3048036990970735608
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: LadyParhelionJumpStart_1
+      name: LadyParhelionJumpStart1_1
       rect:
         serializedVersion: 2
         x: 64
@@ -149,14 +152,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1c6f209656ef72500800000000000000
-      internalID: 371545205788309185
+      spriteID: d36f2341109e805e0800000000000000
+      internalID: -1943047048367245763
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: LadyParhelionJumpStart_2
+      name: LadyParhelionJumpStart1_2
       rect:
         serializedVersion: 2
         x: 128
@@ -170,14 +173,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c345a0b2fb8d1e0a0800000000000000
-      internalID: -6853958842308733892
+      spriteID: 66bd9e644a02e6dc0800000000000000
+      internalID: -3643939158559696026
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: LadyParhelionJumpStart_3
+      name: LadyParhelionJumpStart1_3
       rect:
         serializedVersion: 2
         x: 192
@@ -191,14 +194,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 459dc1000d2211370800000000000000
-      internalID: 8291446665716226388
+      spriteID: a666ddd34c5894b70800000000000000
+      internalID: 8883778817863018090
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: LadyParhelionJumpStart_4
+      name: LadyParhelionJumpStart1_4
       rect:
         serializedVersion: 2
         x: 256
@@ -212,8 +215,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 42dd6df6738237240800000000000000
-      internalID: 4788215047389633828
+      spriteID: 8fecf34f52afc9850800000000000000
+      internalID: 6385253412623077112
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LadyParhelionJumpStart1_5
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 0
+        width: 64
+        height: 124
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3f64a3c16de56eed0800000000000000
+      internalID: -2385114678956505357
       vertices: []
       indices: 
       edges: []
