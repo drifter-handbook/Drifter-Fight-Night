@@ -11,6 +11,8 @@ public class SyncToClientPacket : IGamePacket
     public string TypeID { get; set; } = "Sync";
     public float Timestamp { get; set; }
 
+    NetworkEntityConverter converter = new NetworkEntityConverter();
+
     public SyncToClientData SyncData;
     public class SyncToClientData
     {
@@ -19,7 +21,7 @@ public class SyncToClientPacket : IGamePacket
 
     public IGamePacket FromData(string json)
     {
-        SyncToClientData data = JsonConvert.DeserializeObject<SyncToClientData>(json);
+        SyncToClientData data = JsonConvert.DeserializeObject<SyncToClientData>(json, converter);
         return new SyncToClientPacket() { SyncData = data };
     }
 
