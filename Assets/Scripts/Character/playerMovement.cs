@@ -39,8 +39,7 @@ public class playerMovement : MonoBehaviour
     // for example, recovery makes the player go up
     IPlayerAttackEffect attackEffect;
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         animator = GetComponentInChildren<Animator>();
         sprite = GetComponentInChildren<SpriteRenderer>();
@@ -49,8 +48,14 @@ public class playerMovement : MonoBehaviour
         col = GetComponent<BoxCollider2D>();
         attackEffect = GetComponent<IPlayerAttackEffect>();
     }
+
     void Update()
     {
+        if (IsClient)
+        {
+            return;
+        }
+
         // get input
         bool jumpPressed = !prevInput.Jump && input.Jump;
         bool lightPressed = !prevInput.Light && input.Light;
@@ -142,11 +147,14 @@ public class playerMovement : MonoBehaviour
         prevInput.CopyFrom(input);
     }
 
+    public bool Walking = false;
     // used by clients
     public void SyncAnimatorState(PlayerAnimatorState state)
     {
+        int ID = GetComponent<INetworkSync>().ID;
         animator.SetBool("Grounded", state.Grounded);
         animator.SetBool("Walking", state.Walking);
+        Walking = state.Walking;
         animator.SetBool("Guarding", state.Guarding);
         if (state.Attack) animator.SetTrigger("Attack");
         if (state.Grab) animator.SetTrigger("Grab");

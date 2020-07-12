@@ -9,7 +9,8 @@ public class NeroSpear : MonoBehaviour
     Rigidbody2D rb;
     SpriteRenderer sr;
 
-    bool active = true;
+    public bool Active { get; set; } = true;
+    public Sprite landed;
 
     // Start is called before the first frame update
     void Start()
@@ -21,7 +22,11 @@ public class NeroSpear : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (active)
+        if (GetComponent<NeroSpearSync>().Active)
+        {
+            return;
+        }
+        if (Active)
         {
             rb.velocity = velocity;
         }
@@ -48,11 +53,12 @@ public class NeroSpear : MonoBehaviour
     {
         if (col.gameObject.tag == "Ground")
         {
-            if (active)
+            if (Active)
             {
                 StartCoroutine(Fade());
             }
-            active = false;
+            Active = false;
+            sr.sprite = landed;
         }
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class NeroSpearSync : MonoBehaviour, INetworkSync
 {
-    bool active;
+    public bool Active { get; private set; }
     public float latency = 0.025f;
     float time = 0f;
     Vector3 oldPos;
@@ -15,8 +15,7 @@ public class NeroSpearSync : MonoBehaviour, INetworkSync
 
     SpriteRenderer sr;
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         sr = GetComponentInChildren<SpriteRenderer>();
     }
@@ -24,7 +23,7 @@ public class NeroSpearSync : MonoBehaviour, INetworkSync
     // Update is called once per frame
     void Update()
     {
-        if (!active)
+        if (!Active)
         {
             return;
         }
@@ -47,6 +46,7 @@ public class NeroSpearSync : MonoBehaviour, INetworkSync
         public float y = 0f;
         public float z = 0f;
         public float alpha = 0f;
+        public bool active = true;
     }
 
     public void Deserialize(INetworkEntityData data)
@@ -54,14 +54,18 @@ public class NeroSpearSync : MonoBehaviour, INetworkSync
         SpearData projData = data as SpearData;
         if (projData != null)
         {
-            if (!active)
+            if (!Active)
             {
                 transform.position = new Vector3(projData.x, projData.y, projData.z);
             }
-            active = true;
+            Active = true;
             // move from current position to final position in latency seconds
             time = 0f;
             sr.color = new Color(sr.color.r, sr.color.g, sr.color.b, projData.alpha);
+            if (!projData.active)
+            {
+                sr.sprite = GetComponent<NeroSpear>().landed;
+            }
             oldPos = transform.position;
             targetPos = new Vector3(projData.x, projData.y, projData.z);
         }
@@ -76,7 +80,8 @@ public class NeroSpearSync : MonoBehaviour, INetworkSync
             x = transform.position.x,
             y = transform.position.y,
             z = transform.position.z,
-            alpha = sr.color.a
+            alpha = sr.color.a,
+            active = GetComponent<NeroSpear>().Active
         };
         return data;
     }

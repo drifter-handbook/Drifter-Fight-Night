@@ -153,10 +153,6 @@ public class NetworkClient : MonoBehaviour, NetworkID
         // create entities
         GameSyncFromPacket(packet);
         // remove all physics for synced objects
-        foreach (GameObject obj in sync.Entities.Players.Values)
-        {
-            obj.GetComponent<playerMovement>().IsClient = true;
-        }
         foreach (GameObject obj in sync.Entities.Entities)
         {
             obj.GetComponent<Rigidbody2D>().simulated = false;
@@ -182,22 +178,31 @@ public class NetworkClient : MonoBehaviour, NetworkID
         // sync objects
         for (int i = 0; i < sync.Entities.Entities.Count; i++)
         {
-            INetworkSync entitySync = sync.Entities.Entities[i]?.GetComponent<INetworkSync>();
-            if (entitySync != null)
+            if (sync.Entities.Entities[i] != null)
             {
-                INetworkEntityData entityData = data.SyncData.entities.Find(x => x.ID == entitySync.ID);
-                // if in packet data and in current entities, sync
-                if (entityData != null)
+                INetworkSync entitySync = sync.Entities.Entities[i].GetComponent<INetworkSync>();
+                if (entitySync != null)
                 {
-                    entitySync.Deserialize(entityData);
+                    INetworkEntityData entityData = data.SyncData.entities.Find(x => x.ID == entitySync.ID);
+                    // if in packet data and in current entities, sync
+                    if (entityData != null)
+                    {
+                        entitySync.Deserialize(entityData);
+                    }
+                    // if not in packet data but in current entities, destroy
+                    else
+                    {
+                        Destroy(((MonoBehaviour)entitySync).gameObject);
+                        sync.Entities.Entities.RemoveAt(i);
+                        i--;
+                    }
                 }
-                // if not in packet data but in current entities, destroy
-                else
-                {
-                    Destroy(((MonoBehaviour)entitySync).gameObject);
-                    sync.Entities.Entities.RemoveAt(i);
-                    i--;
-                }
+            }
+            // if game object null for some reason
+            else
+            {
+                sync.Entities.Entities.RemoveAt(i);
+                i--;
             }
         }
     }

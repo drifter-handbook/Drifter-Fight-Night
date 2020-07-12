@@ -118,10 +118,6 @@ public class NetworkHost : MonoBehaviour, NetworkID
         Network.StopAcceptingConnections();
         // attach player input to player 1
         GetComponent<PlayerInput>().input = sync.Entities.Players[0].GetComponent<playerMovement>().input;
-        foreach (GameObject obj in sync.Entities.Players.Values)
-        {
-            obj.GetComponent<playerMovement>().IsClient = false;
-        }
     }
 
     SyncToClientPacket CreateGameSyncPacket()

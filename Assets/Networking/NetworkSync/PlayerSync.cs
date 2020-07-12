@@ -65,6 +65,7 @@ public class PlayerSync : MonoBehaviour, INetworkSync
             oldPos = transform.position;
             targetPos = new Vector3(playerData.x, playerData.y, playerData.z);
             GetComponent<playerMovement>().SyncAnimatorState(playerData.animatorState);
+            GetComponent<playerMovement>().IsClient = true;
         }
     }
 
