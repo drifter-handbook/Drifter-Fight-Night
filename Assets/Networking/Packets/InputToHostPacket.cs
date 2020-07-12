@@ -9,6 +9,7 @@ public class PlayerInputData : ICloneable
     public int MoveY = 0;
     public bool Jump = false;
     public bool Light = false;
+    public bool Special = false;
     public bool Grab = false;
     public bool Guard = false;
 
@@ -19,6 +20,7 @@ public class PlayerInputData : ICloneable
             MoveY = MoveY,
             Jump = Jump,
             Light = Light,
+            Special = Special,
             Grab = Grab,
             Guard = Guard
         };
@@ -30,6 +32,7 @@ public class PlayerInputData : ICloneable
         MoveY = data.MoveY;
         Jump = data.Jump;
         Light = data.Light;
+        Special = data.Special;
         Grab = data.Grab;
         Guard = data.Guard;
     }

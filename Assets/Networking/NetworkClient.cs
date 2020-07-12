@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -77,12 +78,12 @@ public class NetworkClient : MonoBehaviour, NetworkID
             {
                 return;
             }
-            GameSyncFromPacket((SyncToClientPacket)packet);
             // start game if not yet started
             if (!GameStarted)
             {
-                StartGame();
+                StartGame((SyncToClientPacket)packet);
             }
+            GameSyncFromPacket((SyncToClientPacket)packet);
         }, true);
         // start connection
         Network.Connect();
@@ -136,27 +137,27 @@ public class NetworkClient : MonoBehaviour, NetworkID
     }
 
     public bool GameStarted { get; set; } = false;
-    void StartGame()
+    void StartGame(SyncToClientPacket packet)
     {
         if (!GameStarted)
         {
-            StartCoroutine(StartGameCoroutine());
+            StartCoroutine(StartGameCoroutine(packet));
         }
         GameStarted = true;
     }
-    IEnumerator StartGameCoroutine()
+    IEnumerator StartGameCoroutine(SyncToClientPacket packet)
     {
         yield return SceneManager.LoadSceneAsync("NetworkTestScene");
         // find entities
         sync.Entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
-        // if we are client
+        // create entities
+        GameSyncFromPacket(packet);
         // remove all physics for synced objects
-        foreach (GameObject obj in sync.Entities.players)
+        foreach (GameObject obj in sync.Entities.Players.Values)
         {
-            obj.GetComponent<Rigidbody2D>().simulated = false;
             obj.GetComponent<playerMovement>().IsClient = true;
         }
-        foreach (GameObject obj in sync.Entities.objects)
+        foreach (GameObject obj in sync.Entities.Entities)
         {
             obj.GetComponent<Rigidbody2D>().simulated = false;
         }
@@ -168,26 +169,34 @@ public class NetworkClient : MonoBehaviour, NetworkID
         {
             return;
         }
-        foreach (GameObject player in sync.Entities.players)
+        // if in packet data but not in current entities, create
+        foreach (INetworkEntityData entityData in data.SyncData.entities)
         {
-            if (player != null)
+            if (!sync.Entities.Entities.Any(x => x != null && x.GetComponent<INetworkSync>().ID == entityData.ID))
             {
-                SyncToClientPacket.PlayerData playerData = data.SyncData.players.Find(x => x.name == player.name);
-                if (playerData != null)
-                {
-                    player.GetComponent<PlayerSync>().SyncTo(playerData);
-                    player.GetComponent<playerMovement>().SyncAnimatorState(playerData.animatorState);
-                }
+                GameObject entity = Instantiate(sync.Entities.GetEntityPrefab(entityData.Type));
+                entity.GetComponent<INetworkSync>().ID = entityData.ID;
+                sync.Entities.Entities.Add(entity);
             }
         }
-        foreach (GameObject obj in sync.Entities.objects)
+        // sync objects
+        for (int i = 0; i < sync.Entities.Entities.Count; i++)
         {
-            if (obj != null)
+            INetworkSync entitySync = sync.Entities.Entities[i]?.GetComponent<INetworkSync>();
+            if (entitySync != null)
             {
-                SyncToClientPacket.ObjectData objData = data.SyncData.objects.Find(x => x.name == obj.name);
-                if (objData != null)
+                INetworkEntityData entityData = data.SyncData.entities.Find(x => x.ID == entitySync.ID);
+                // if in packet data and in current entities, sync
+                if (entityData != null)
                 {
-                    obj.GetComponent<ObjectSync>().SyncTo(objData);
+                    entitySync.Deserialize(entityData);
+                }
+                // if not in packet data but in current entities, destroy
+                else
+                {
+                    Destroy(((MonoBehaviour)entitySync).gameObject);
+                    sync.Entities.Entities.RemoveAt(i);
+                    i--;
                 }
             }
         }

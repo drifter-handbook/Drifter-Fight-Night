@@ -26,12 +26,18 @@ public class PlayerInput : MonoBehaviour
             input.MoveX++;
         }
         input.MoveY = 0;
+        if (Input.GetKey(keyBindings.downKey))
+        {
+            // down key does nothing
+            // input.MoveY--;
+        }
         if (Input.GetKey(keyBindings.upKey))
         {
-            input.MoveY = 1;
+            input.MoveY++;
         }
         input.Jump = Input.GetKey(keyBindings.jumpKey);
         input.Light = Input.GetKey(keyBindings.lightKey);
+        input.Special = Input.GetKey(keyBindings.specialKey);
         input.Grab = Input.GetKey(keyBindings.grabKey);
         input.Guard = Input.GetKey(keyBindings.guard1Key) || Input.GetKey(keyBindings.guard2Key);
     }

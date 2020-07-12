@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -99,11 +100,25 @@ public class NetworkHost : MonoBehaviour, NetworkID
         yield return SceneManager.LoadSceneAsync("NetworkTestScene");
         // find entities
         sync.Entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
+        // create players
+        List<string> playerNames = new List<string>() {
+            "Nero",
+            "Nero",
+            "Lady Parhelion",
+            "Spacejam"
+        };
+        for (int i = 0; i < playerNames.Count; i++)
+        {
+            GameObject player = Instantiate(sync.Entities.GetEntityPrefab(playerNames[i]),
+                                            sync.Entities.SpawnPoints[i].transform.position,
+                                            sync.Entities.SpawnPoints[i].transform.rotation);
+            sync.Entities.AddPlayer(i, player);
+        }
         // start game
         Network.StopAcceptingConnections();
         // attach player input to player 1
-        GetComponent<PlayerInput>().input = sync.Entities.players[0].GetComponent<playerMovement>().input;
-        foreach (GameObject obj in sync.Entities.players)
+        GetComponent<PlayerInput>().input = sync.Entities.Players[0].GetComponent<playerMovement>().input;
+        foreach (GameObject obj in sync.Entities.Players.Values)
         {
             obj.GetComponent<playerMovement>().IsClient = false;
         }
@@ -112,34 +127,21 @@ public class NetworkHost : MonoBehaviour, NetworkID
     SyncToClientPacket CreateGameSyncPacket()
     {
         SyncToClientPacket.SyncToClientData SyncData = new SyncToClientPacket.SyncToClientData();
-        foreach (GameObject player in sync.Entities.players)
+        for (int i = 0; i < sync.Entities.Entities.Count; i++)
         {
-            if (player != null)
+            GameObject entity = sync.Entities.Entities[i];
+            if (entity != null)
             {
-                SyncData.players.Add(new SyncToClientPacket.PlayerData()
-                {
-                    name = player.gameObject.name,
-                    x = player.transform.position.x,
-                    y = player.transform.position.y,
-                    z = player.transform.position.z,
-                    facing = player.GetComponentInChildren<SpriteRenderer>().flipX,
-                    animatorState = (PlayerAnimatorState)player.GetComponent<playerMovement>().animatorState.Clone()
-                });
-                player.GetComponent<playerMovement>().ResetAnimatorTriggers();
+                INetworkSync entityData = entity.GetComponent<INetworkSync>();
+                INetworkEntityData data = entityData.Serialize();
+                data.Type = entityData.Type;
+                SyncData.entities.Add(data);
             }
-        }
-        foreach (GameObject obj in sync.Entities.objects)
-        {
-            if (obj != null)
+            // if game object is destroyed
+            else
             {
-                SyncData.objects.Add(new SyncToClientPacket.ObjectData()
-                {
-                    name = obj.gameObject.name,
-                    x = obj.transform.position.x,
-                    y = obj.transform.position.y,
-                    z = obj.transform.position.z,
-                    angle = obj.transform.eulerAngles.z
-                });
+                sync.Entities.Entities.RemoveAt(i);
+                i--;
             }
         }
         return new SyncToClientPacket() { Timestamp = Time.time, SyncData = SyncData };
@@ -149,7 +151,7 @@ public class NetworkHost : MonoBehaviour, NetworkID
     {
         if (sync.Entities != null && input?.input != null)
         {
-            sync.Entities.players[id]?.GetComponent<playerMovement>()?.input?.CopyFrom(input?.input);
+            sync.Entities.Players[id]?.GetComponent<playerMovement>()?.input?.CopyFrom(input?.input);
         }
     }
 }

@@ -9,6 +9,7 @@ public class playerMovement : MonoBehaviour
     public float delayedJumpDuration = 0.05f; // 3 seconds you can change this to whatever you want
     public float walkSpeed = 15f;
     public float jumpSpeed = 32f;
+    public bool flipSprite = false;
 
     SpriteRenderer sprite;
     CapsuleCollider2D capsule;
@@ -34,6 +35,10 @@ public class playerMovement : MonoBehaviour
     public float varyJumpHeightDuration = 0.5f;
     public float varyJumpHeightForce = 10f;
 
+    // attack effects are used to impact player movement during an attack
+    // for example, recovery makes the player go up
+    IPlayerAttackEffect attackEffect;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -42,12 +47,14 @@ public class playerMovement : MonoBehaviour
         capsule = GetComponentInChildren<CapsuleCollider2D>();
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<BoxCollider2D>();
+        attackEffect = GetComponent<IPlayerAttackEffect>();
     }
     void Update()
     {
         // get input
         bool jumpPressed = !prevInput.Jump && input.Jump;
         bool lightPressed = !prevInput.Light && input.Light;
+        bool specialPressed = !prevInput.Special && input.Special;
         bool grabPressed = !prevInput.Grab && input.Grab;
         // TODO: spawn hitboxes
         bool canAct = stunCount == 0 && !animator.GetBool("Guarding");
@@ -57,12 +64,13 @@ public class playerMovement : MonoBehaviour
 
         if (moving && canAct)
         {
-            sprite.flipX = input.MoveX > 0;
+            sprite.flipX = flipSprite ^ (input.MoveX > 0);
         }
 
         if (grabPressed && canAct)
         {
             SetAnimatorTrigger("Grab");
+            StartMovementEffect(attackEffect?.Grab(), 0f);
             StartCoroutine(StunFor(0.5f));
         }
         else if (moving && canAct)
@@ -82,11 +90,13 @@ public class playerMovement : MonoBehaviour
             if (animator.GetBool("Grounded"))
             {
                 SetAnimatorTrigger("Attack");
+                StartMovementEffect(attackEffect?.Light(), 0f);
                 StartCoroutine(StunFor(0.1f));
             }
             else
             {
                 SetAnimatorTrigger("Aerial");
+                StartMovementEffect(attackEffect?.Aerial(), 0f);
                 StartCoroutine(StunFor(0.5f));
             }
         }
@@ -103,14 +113,16 @@ public class playerMovement : MonoBehaviour
             SetAnimatorBool("Guarding", false);
         }
 
+        if (specialPressed && input.MoveY > 0 && canAct)
+        {
+            // recovery
+            SetAnimatorTrigger("Recovery");
+            StartMovementEffect(attackEffect?.Recovery(), 0f);
+            StartCoroutine(StunFor(0.25f));
+        }
+
         if (jumpPressed && canAct && rb.velocity.y < 0.8f * jumpSpeed)
         {
-            if (input.MoveY > 0)
-            {
-                // +up, recovery
-                SetAnimatorTrigger("Recovery");
-                StartCoroutine(StunFor(0.25f));
-            }
             //jump
             if (animator.GetBool("Grounded"))
             {
@@ -242,11 +254,48 @@ public class playerMovement : MonoBehaviour
         varyJumpHeight = null;
     }
 
-    private IEnumerator StunFor(float time)
+    public IEnumerator StunFor(float time)
     {
         stunCount++;
         yield return new WaitForSeconds(time);
         stunCount--;
+    }
+
+    // Super-armor logic
+    private class AttackEffect
+    {
+        public Coroutine Effect;
+        public float SuperArmor;
+        public float Damage;
+    }
+    
+    List<AttackEffect> movementEffects = new List<AttackEffect>();
+    private void StartMovementEffect(IEnumerator ef, float superArmor)
+    {
+        if (ef != null)
+        {
+            movementEffects.Add(new AttackEffect() {
+                Effect = StartCoroutine(ef),
+                SuperArmor = superArmor,
+                Damage = 0
+            });
+        }
+    }
+
+    // call this when launched to damage a movement effect
+    public void DamageSuperArmor(float damage)
+    {
+        for (int i = 0; i < movementEffects.Count; i++)
+        {
+            AttackEffect ef = movementEffects[i];
+            ef.Damage += damage;
+            if (ef.Damage > ef.SuperArmor)
+            {
+                StopCoroutine(ef.Effect);
+                movementEffects.RemoveAt(i);
+                i--;
+            }
+        }
     }
 }
 
