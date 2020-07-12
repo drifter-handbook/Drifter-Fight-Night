@@ -39,6 +39,8 @@ public class playerMovement : MonoBehaviour
     // for example, recovery makes the player go up
     IPlayerAttackEffect attackEffect;
 
+    INetworkSync sync;
+
     void Awake()
     {
         animator = GetComponentInChildren<Animator>();
@@ -47,6 +49,7 @@ public class playerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<BoxCollider2D>();
         attackEffect = GetComponent<IPlayerAttackEffect>();
+        sync = GetComponent<INetworkSync>();
     }
 
     void Update()
@@ -66,6 +69,8 @@ public class playerMovement : MonoBehaviour
         bool canGuard = stunCount == 0;
         bool moving = input.MoveX != 0;
         SetAnimatorBool("Grounded", IsGrounded());
+        // get attack data
+        PlayerAttackData attackData = GameController.Instance.PlayerData.GetAttacks(sync.Type);
 
         if (moving && canAct)
         {
@@ -76,7 +81,7 @@ public class playerMovement : MonoBehaviour
         {
             SetAnimatorTrigger("Grab");
             StartMovementEffect(attackEffect?.Grab(), 0f);
-            StartCoroutine(StunFor(0.5f));
+            StartCoroutine(StunFor(attackData[PlayerAttackType.E_Side].EndLag));
         }
         else if (moving && canAct)
         {
@@ -96,13 +101,13 @@ public class playerMovement : MonoBehaviour
             {
                 SetAnimatorTrigger("Attack");
                 StartMovementEffect(attackEffect?.Light(), 0f);
-                StartCoroutine(StunFor(0.1f));
+                StartCoroutine(StunFor(attackData[PlayerAttackType.Ground_Q_Neutral].EndLag));
             }
             else
             {
                 SetAnimatorTrigger("Aerial");
                 StartMovementEffect(attackEffect?.Aerial(), 0f);
-                StartCoroutine(StunFor(0.5f));
+                StartCoroutine(StunFor(attackData[PlayerAttackType.Aerial_Q_Neutral].EndLag));
             }
         }
         if (input.Guard && canGuard)
@@ -123,7 +128,7 @@ public class playerMovement : MonoBehaviour
             // recovery
             SetAnimatorTrigger("Recovery");
             StartMovementEffect(attackEffect?.Recovery(), 0f);
-            StartCoroutine(StunFor(0.25f));
+            StartCoroutine(StunFor(attackData[PlayerAttackType.W_Up].EndLag));
         }
 
         if (jumpPressed && canAct && rb.velocity.y < 0.8f * jumpSpeed)

@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 [DisallowMultipleComponent]
 public class GameController : Singleton<GameController>
 {
+    public AllPlayerData PlayerData;
 
     // Are we loading from inside the fight scene?
     // THIS IS A DEV VALUE, CLEAN SHIT UP BEFORE RELEASE >:(
