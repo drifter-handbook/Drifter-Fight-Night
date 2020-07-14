@@ -104,14 +104,21 @@ public class NetworkHost : MonoBehaviour, NetworkID
         List<string> playerNames = new List<string>() {
             "Spacejam",
             "Spacejam",
-            "Lady Parhelion",
-            "Nero"
+            "Spacejam",
+            "Spacejam"
+        };
+        List<Color> playerColors = new List<Color>() {
+            Color.white,
+            Color.red,
+            Color.green,
+            Color.blue,
         };
         for (int i = 0; i < playerNames.Count; i++)
         {
             GameObject player = Instantiate(sync.Entities.GetEntityPrefab(playerNames[i]),
                                             sync.Entities.SpawnPoints[i].transform.position,
                                             sync.Entities.SpawnPoints[i].transform.rotation);
+            player.GetComponentInChildren<SpriteRenderer>().color = playerColors[i];
             sync.Entities.AddPlayer(i, player);
         }
         // start game

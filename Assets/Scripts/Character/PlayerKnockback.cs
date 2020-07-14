@@ -63,14 +63,13 @@ public class PlayerKnockback : MonoBehaviour
         // only host processes hits, don't hit ourself, and ignore previously registered attacks
         if (IsHost && hitbox.parent != hurtbox.parent && !oldAttacks.ContainsKey(attackID))
         {
-            Debug.Log("Attack");
             // register new attack
             oldAttacks[attackID] = Time.time;
             // apply damage
             Drifter drifter = GetComponent<Drifter>();
             if (drifter != null)
             {
-                drifter.DamageTaken += attackData.AttackDamage;
+                drifter.DamageTaken += attackData.AttackDamage * (GetComponent<playerMovement>().input.Guard ? 0.35f : 1f);
             }
             // apply knockback
             int facingDir = hitbox.parent.GetComponent<playerMovement>().Facing;
@@ -79,6 +78,10 @@ public class PlayerKnockback : MonoBehaviour
             // how much damage matters to knockback
             const float ARMOR = 180f;
             float damageMultiplier = drifter != null ? (drifter.DamageTaken + ARMOR) / ARMOR : 1f;
+            if (GetComponent<playerMovement>().input.Guard)
+            {
+                damageMultiplier = 0f;
+            }
             GetComponent<Rigidbody2D>().velocity = forceDir.normalized * attackData.Knockback * 4f * damageMultiplier;
             // create hit sparks
             GameObject hitSparks = Instantiate(Entities.GetEntityPrefab("HitSparks"),
