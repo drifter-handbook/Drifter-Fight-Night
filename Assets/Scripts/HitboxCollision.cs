@@ -35,7 +35,7 @@ public class HitboxCollision : MonoBehaviour
         {
             string player = playerType.Type;
             SingleAttackData attackData = GameController.Instance.PlayerData.GetAttacks(player)[AttackType];
-            hurtbox.parent.GetComponent<PlayerKnockback>().RegisterAttackHit(this, hurtbox, AttackID, attackData);
+            hurtbox.parent.GetComponent<PlayerAttacking>().RegisterAttackHit(this, hurtbox, AttackID, attackData);
         }
     }
 }

@@ -158,6 +158,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5156570638340232250, guid: c6335b54d7903ca478353699c205f47c,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 14.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 5156570638340232250, guid: c6335b54d7903ca478353699c205f47c,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 12.65
+      objectReference: {fileID: 0}
     - target: {fileID: 5156570638340232251, guid: c6335b54d7903ca478353699c205f47c,
         type: 3}
       propertyPath: m_SortingLayer
@@ -368,7 +378,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 20.536293
+  orthographic size: 28.36
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2

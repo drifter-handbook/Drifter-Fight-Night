@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum HitSparksEffect
 {
-    NONE, HIT_SPARKS_1
+    NONE, HIT_SPARKS_1, HIT_SPARKS_2
 }
 
 public class HitSparks : MonoBehaviour

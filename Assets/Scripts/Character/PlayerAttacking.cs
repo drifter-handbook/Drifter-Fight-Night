@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerKnockback : MonoBehaviour
+public class PlayerAttacking : MonoBehaviour
 {
     static int nextID = 0;
     // get a new attack ID
@@ -78,16 +78,23 @@ public class PlayerKnockback : MonoBehaviour
             // how much damage matters to knockback
             const float ARMOR = 180f;
             float damageMultiplier = drifter != null ? (drifter.DamageTaken + ARMOR) / ARMOR : 1f;
-            if (GetComponent<PlayerMovement>().input.Guard)
+            Animator anim = GetComponent<Animator>();
+            if (anim != null && anim.GetBool("Guarding"))
             {
                 damageMultiplier = 0f;
             }
-            GetComponent<Rigidbody2D>().velocity = forceDir.normalized * attackData.Knockback * 4f * damageMultiplier;
+            GetComponent<Rigidbody2D>().velocity = forceDir.normalized * attackData.Knockback * 2.75f * damageMultiplier;
             // create hit sparks
             GameObject hitSparks = Instantiate(Entities.GetEntityPrefab("HitSparks"),
                 Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),
                 Quaternion.identity);
             hitSparks.GetComponent<HitSparks>().SetAnimation(HitSparksEffect.HIT_SPARKS_1);
+            if (attackData.AngleOfImpact > 80f)
+            {
+                hitSparks.GetComponent<HitSparks>().SetAnimation(HitSparksEffect.HIT_SPARKS_2);
+                hitSparks.transform.eulerAngles = new Vector3(0, 0, 90f);
+                hitSparks.transform.localScale = new Vector3(0.6f, 0.6f, 0.6f);
+            }
             Entities.AddEntity(hitSparks);
         }
     }

@@ -20,9 +20,6 @@ public class PlayerMovement : MonoBehaviour
     Animator animator;
     public PlayerAnimatorState animatorState { get; set; } = new PlayerAnimatorState();
 
-    // stuns the character for several frames if stunCount > 0
-    int stunCount = 0;
-
     Rigidbody2D rb;
     BoxCollider2D col;
 
@@ -36,10 +33,9 @@ public class PlayerMovement : MonoBehaviour
     // attack effects are used to impact player movement during an attack
     // for example, recovery makes the player go up
     IPlayerAttackEffect attackEffect;
-
     INetworkSync sync;
-
-    PlayerKnockback knockback;
+    PlayerAttacking attacking;
+    PlayerStatus status;
 
     void Awake()
     {
@@ -49,7 +45,8 @@ public class PlayerMovement : MonoBehaviour
         col = GetComponent<BoxCollider2D>();
         attackEffect = GetComponent<IPlayerAttackEffect>();
         sync = GetComponent<INetworkSync>();
-        knockback = GetComponent<PlayerKnockback>();
+        attacking = GetComponent<PlayerAttacking>();
+        status = GetComponent<PlayerStatus>();
     }
 
     void Update()
@@ -65,8 +62,8 @@ public class PlayerMovement : MonoBehaviour
         bool specialPressed = !prevInput.Special && input.Special;
         bool grabPressed = !prevInput.Grab && input.Grab;
         // TODO: spawn hitboxes
-        bool canAct = stunCount == 0 && !animator.GetBool("Guarding");
-        bool canGuard = stunCount == 0;
+        bool canAct = !status.HasStunEffect() && !animator.GetBool("Guarding");
+        bool canGuard = !status.HasStunEffect();
         bool moving = input.MoveX != 0;
         SetAnimatorBool("Grounded", IsGrounded());
         // get attack data
@@ -81,19 +78,24 @@ public class PlayerMovement : MonoBehaviour
         if (grabPressed && canAct)
         {
             SetAnimatorTrigger("Grab");
-            knockback.PerformAttack(PlayerAttackType.E_Side);
+            attacking.PerformAttack(PlayerAttackType.E_Side);
             StartMovementEffect(attackEffect?.Grab(), 0f);
-            StartCoroutine(StunFor(attackData[PlayerAttackType.E_Side].EndLag));
+            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG, attackData[PlayerAttackType.E_Side].EndLag);
         }
         else if (moving && canAct)
         {
             SetAnimatorBool("Walking", true);
             rb.velocity = new Vector2(input.MoveX > 0 ? walkSpeed : -walkSpeed, rb.velocity.y);
         }
-        else
+        else if (!moving && status.HasGroundFriction())
         {
             SetAnimatorBool("Walking", false);
             rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 80f * Time.deltaTime), rb.velocity.y);
+        }
+        else
+        {
+            SetAnimatorBool("Grounded", false);
+            rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 40f * Time.deltaTime), rb.velocity.y);
         }
 
         //attack  //neutral aerial
@@ -102,16 +104,16 @@ public class PlayerMovement : MonoBehaviour
             if (animator.GetBool("Grounded"))
             {
                 SetAnimatorTrigger("Attack");
-                knockback.PerformAttack(PlayerAttackType.Ground_Q_Neutral);
+                attacking.PerformAttack(PlayerAttackType.Ground_Q_Neutral);
                 StartMovementEffect(attackEffect?.Light(), 0f);
-                StartCoroutine(StunFor(attackData[PlayerAttackType.Ground_Q_Neutral].EndLag));
+                status.ApplyStatusEffect(PlayerStatusEffect.END_LAG, attackData[PlayerAttackType.Ground_Q_Neutral].EndLag);
             }
             else
             {
                 SetAnimatorTrigger("Aerial");
-                knockback.PerformAttack(PlayerAttackType.Aerial_Q_Neutral);
+                attacking.PerformAttack(PlayerAttackType.Aerial_Q_Neutral);
                 StartMovementEffect(attackEffect?.Aerial(), 0f);
-                StartCoroutine(StunFor(attackData[PlayerAttackType.Aerial_Q_Neutral].EndLag));
+                status.ApplyStatusEffect(PlayerStatusEffect.END_LAG, attackData[PlayerAttackType.Aerial_Q_Neutral].EndLag);
             }
         }
         if (input.Guard && canGuard)
@@ -131,9 +133,9 @@ public class PlayerMovement : MonoBehaviour
         {
             // recovery
             SetAnimatorTrigger("Recovery");
-            knockback.PerformAttack(PlayerAttackType.W_Up);
+            attacking.PerformAttack(PlayerAttackType.W_Up);
             StartMovementEffect(attackEffect?.Recovery(), 0f);
-            StartCoroutine(StunFor(attackData[PlayerAttackType.W_Up].EndLag));
+            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG, attackData[PlayerAttackType.W_Up].EndLag);
         }
 
         if (jumpPressed && canAct && rb.velocity.y < 0.8f * jumpSpeed)
@@ -270,13 +272,6 @@ public class PlayerMovement : MonoBehaviour
             }
         }
         varyJumpHeight = null;
-    }
-
-    public IEnumerator StunFor(float time)
-    {
-        stunCount++;
-        yield return new WaitForSeconds(time);
-        stunCount--;
     }
 
     // Super-armor logic
