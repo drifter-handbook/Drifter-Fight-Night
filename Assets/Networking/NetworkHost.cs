@@ -129,7 +129,7 @@ public class NetworkHost : MonoBehaviour, NetworkID
         // start game
         Network.StopAcceptingConnections();
         // attach player input to player 1
-        GetComponent<PlayerInput>().input = sync.Entities.Players[0].GetComponent<playerMovement>().input;
+        GetComponent<PlayerInput>().input = sync.Entities.Players[0].GetComponent<PlayerMovement>().input;
     }
 
     SyncToClientPacket CreateGameSyncPacket()
@@ -159,7 +159,7 @@ public class NetworkHost : MonoBehaviour, NetworkID
     {
         if (sync.Entities != null && input?.input != null)
         {
-            sync.Entities.Players[id]?.GetComponent<playerMovement>()?.input?.CopyFrom(input?.input);
+            sync.Entities.Players[id]?.GetComponent<PlayerMovement>()?.input?.CopyFrom(input?.input);
         }
     }
 }

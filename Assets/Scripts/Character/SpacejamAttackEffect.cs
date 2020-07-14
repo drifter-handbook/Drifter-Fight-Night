@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpacejamAttackEffect : MonoBehaviour, IPlayerAttackEffect
 {
-    playerMovement movement;
+    PlayerMovement movement;
     Rigidbody2D rb;
     SpriteRenderer sr;
     NetworkEntityList Entities;
@@ -12,7 +12,7 @@ public class SpacejamAttackEffect : MonoBehaviour, IPlayerAttackEffect
 
     public void Start()
     {
-        movement = GetComponent<playerMovement>();
+        movement = GetComponent<PlayerMovement>();
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponentInChildren<SpriteRenderer>();
         Entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();

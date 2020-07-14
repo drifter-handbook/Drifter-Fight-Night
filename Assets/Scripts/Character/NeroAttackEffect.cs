@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class NeroAttackEffect : MonoBehaviour, IPlayerAttackEffect
 {
-    playerMovement movement;
+    PlayerMovement movement;
     Rigidbody2D rb;
     float gravityScale;
 
@@ -13,7 +13,7 @@ public class NeroAttackEffect : MonoBehaviour, IPlayerAttackEffect
 
     public void Start()
     {
-        movement = GetComponent<playerMovement>();
+        movement = GetComponent<PlayerMovement>();
         rb = GetComponent<Rigidbody2D>();
         gravityScale = rb.gravityScale;
         Entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();

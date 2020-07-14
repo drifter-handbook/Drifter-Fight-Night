@@ -69,16 +69,16 @@ public class PlayerKnockback : MonoBehaviour
             Drifter drifter = GetComponent<Drifter>();
             if (drifter != null)
             {
-                drifter.DamageTaken += attackData.AttackDamage * (GetComponent<playerMovement>().input.Guard ? 0.35f : 1f);
+                drifter.DamageTaken += attackData.AttackDamage * (GetComponent<PlayerMovement>().input.Guard ? 0.35f : 1f);
             }
             // apply knockback
-            int facingDir = hitbox.parent.GetComponent<playerMovement>().Facing;
+            int facingDir = hitbox.parent.GetComponent<PlayerMovement>().Facing;
             // rotate direction by angle of impact
             Vector2 forceDir = Quaternion.Euler(0, 0, attackData.AngleOfImpact * facingDir) * (facingDir * Vector2.right);
             // how much damage matters to knockback
             const float ARMOR = 180f;
             float damageMultiplier = drifter != null ? (drifter.DamageTaken + ARMOR) / ARMOR : 1f;
-            if (GetComponent<playerMovement>().input.Guard)
+            if (GetComponent<PlayerMovement>().input.Guard)
             {
                 damageMultiplier = 0f;
             }

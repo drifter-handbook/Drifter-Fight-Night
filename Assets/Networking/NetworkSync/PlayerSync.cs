@@ -64,8 +64,8 @@ public class PlayerSync : MonoBehaviour, INetworkSync
             GetComponentInChildren<SpriteRenderer>().flipX = playerData.facing;
             oldPos = transform.position;
             targetPos = new Vector3(playerData.x, playerData.y, playerData.z);
-            GetComponent<playerMovement>().SyncAnimatorState(playerData.animatorState);
-            GetComponent<playerMovement>().IsClient = true;
+            GetComponent<PlayerMovement>().SyncAnimatorState(playerData.animatorState);
+            GetComponent<PlayerMovement>().IsClient = true;
         }
     }
 
@@ -79,9 +79,9 @@ public class PlayerSync : MonoBehaviour, INetworkSync
             y = transform.position.y,
             z = transform.position.z,
             facing = GetComponentInChildren<SpriteRenderer>().flipX,
-            animatorState = (PlayerAnimatorState)GetComponent<playerMovement>().animatorState.Clone()
+            animatorState = (PlayerAnimatorState)GetComponent<PlayerMovement>().animatorState.Clone()
         };
-        GetComponent<playerMovement>().ResetAnimatorTriggers();
+        GetComponent<PlayerMovement>().ResetAnimatorTriggers();
         return data;
     }
 }

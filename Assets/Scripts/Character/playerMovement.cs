@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class playerMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     public int numberOfJumps = 2;
     public float delayedJumpDuration = 0.05f; // 3 seconds you can change this to whatever you want
