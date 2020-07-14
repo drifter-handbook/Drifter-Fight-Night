@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NeroSpearSync : MonoBehaviour, INetworkSync
+public class SpacejamBellSync : MonoBehaviour, INetworkSync
 {
     public bool Active { get; private set; }
     public float latency = 0.025f;
@@ -10,12 +10,14 @@ public class NeroSpearSync : MonoBehaviour, INetworkSync
     Vector3 oldPos;
     Vector3 targetPos;
 
-    public string Type { get; private set; } = "NeroSpear";
+    public string Type { get; private set; } = "SpacejamBell";
     public int ID { get; set; } = NetworkEntityList.NextID;
+
+    SpriteRenderer sr;
 
     void Awake()
     {
-
+        sr = GetComponentInChildren<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -35,7 +37,7 @@ public class NeroSpearSync : MonoBehaviour, INetworkSync
         transform.position = Vector3.Lerp(oldPos, targetPos, t);
     }
 
-    public class SpearData : INetworkEntityData
+    public class BellData : INetworkEntityData
     {
         public string Type { get; set; } = "";
         public int ID { get; set; }
@@ -43,12 +45,11 @@ public class NeroSpearSync : MonoBehaviour, INetworkSync
         public float x = 0f;
         public float y = 0f;
         public float z = 0f;
-        public bool active = true;
     }
 
     public void Deserialize(INetworkEntityData data)
     {
-        SpearData projData = data as SpearData;
+        BellData projData = data as BellData;
         if (projData != null)
         {
             if (!Active)
@@ -58,7 +59,6 @@ public class NeroSpearSync : MonoBehaviour, INetworkSync
             Active = true;
             // move from current position to final position in latency seconds
             time = 0f;
-            GetComponent<Animator>().SetBool("Active", projData.active);
             oldPos = transform.position;
             targetPos = new Vector3(projData.x, projData.y, projData.z);
         }
@@ -66,14 +66,13 @@ public class NeroSpearSync : MonoBehaviour, INetworkSync
 
     public INetworkEntityData Serialize()
     {
-        SpearData data = new SpearData()
+        BellData data = new BellData()
         {
             name = gameObject.name,
             ID = ID,
             x = transform.position.x,
             y = transform.position.y,
             z = transform.position.z,
-            active = GetComponent<NeroSpear>().Active
         };
         return data;
     }

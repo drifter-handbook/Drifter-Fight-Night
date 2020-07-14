@@ -91,7 +91,7 @@ public class playerMovement : MonoBehaviour
         else
         {
             SetAnimatorBool("Walking", false);
-            rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 40f * Time.deltaTime), rb.velocity.y);
+            rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 120f * Time.deltaTime), rb.velocity.y);
         }
 
         //attack  //neutral aerial
