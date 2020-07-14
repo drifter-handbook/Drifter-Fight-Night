@@ -22,13 +22,12 @@ public class HitSparks : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        anim.SetInteger("Animation", (int)Effect);
     }
 
     public void SetAnimation(HitSparksEffect ef)
     {
         Effect = ef;
-        anim.SetInteger("Animation", (int)ef);
     }
 
     IEnumerator DestroyAfter(float duration)

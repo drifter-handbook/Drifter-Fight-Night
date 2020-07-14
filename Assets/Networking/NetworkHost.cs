@@ -103,9 +103,9 @@ public class NetworkHost : MonoBehaviour, NetworkID
         // create players
         List<string> playerNames = new List<string>() {
             "Spacejam",
-            "Nero",
+            "Spacejam",
             "Lady Parhelion",
-            "Spacejam"
+            "Nero"
         };
         for (int i = 0; i < playerNames.Count; i++)
         {

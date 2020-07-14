@@ -9,6 +9,7 @@ public class NeroAttackEffect : MonoBehaviour, IPlayerAttackEffect
     float gravityScale;
 
     NetworkEntityList Entities;
+    PlayerKnockback knockback;
 
     public void Start()
     {
@@ -16,6 +17,7 @@ public class NeroAttackEffect : MonoBehaviour, IPlayerAttackEffect
         rb = GetComponent<Rigidbody2D>();
         gravityScale = rb.gravityScale;
         Entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
+        knockback = GetComponent<PlayerKnockback>();
     }
 
     public IEnumerator<object> Aerial()
@@ -44,6 +46,12 @@ public class NeroAttackEffect : MonoBehaviour, IPlayerAttackEffect
         rb.velocity = new Vector2(rb.velocity.x, 1.5f * movement.jumpSpeed);
         rb.gravityScale = gravityScale;
         GameObject neroSpear = Instantiate(Entities.GetEntityPrefab("NeroSpear"), transform.position, transform.rotation);
+        foreach (HitboxCollision hitbox in neroSpear.GetComponentsInChildren<HitboxCollision>())
+        {
+            hitbox.parent = gameObject;
+            hitbox.AttackID = knockback.AttackID;
+            hitbox.AttackType = knockback.AttackType;
+        }
         Entities.AddEntity(neroSpear);
         yield break;
     }

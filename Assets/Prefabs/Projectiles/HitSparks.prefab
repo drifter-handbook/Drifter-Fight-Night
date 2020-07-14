@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 886038037622806685}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 10, y: 10, z: 1}
+  m_LocalScale: {x: 15, y: 15, z: 1}
   m_Children: []
   m_Father: {fileID: 886038037650924183}
   m_RootOrder: 0
@@ -69,7 +69,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 100
   m_Sprite: {fileID: 8131159774568469380, guid: 7a378cd46afb46d499b5ae66851eccf3,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -92,6 +92,8 @@ GameObject:
   m_Component:
   - component: {fileID: 886038037650924183}
   - component: {fileID: 2013787868}
+  - component: {fileID: 8012199535608389117}
+  - component: {fileID: 44505905792809059}
   m_Layer: 0
   m_Name: HitSparks
   m_TagString: Untagged
@@ -133,3 +135,28 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &8012199535608389117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 886038037650924176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e075f0eed68b80647880c9b1fbad428c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &44505905792809059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 886038037650924176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52763a3dae42edf428bc70d626193427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  latency: 0.025

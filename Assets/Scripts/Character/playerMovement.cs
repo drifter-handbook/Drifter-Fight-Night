@@ -12,9 +12,7 @@ public class playerMovement : MonoBehaviour
     public bool flipSprite = false;
 
     SpriteRenderer sprite;
-    CapsuleCollider2D capsule;
-    private Vector3 origTransform;
-    private Vector3 flippedTransform;
+    public int Facing { get; private set; } = 1;
 
     public PlayerInputData input { get; set; } = new PlayerInputData();
     PlayerInputData prevInput = new PlayerInputData();
@@ -41,15 +39,17 @@ public class playerMovement : MonoBehaviour
 
     INetworkSync sync;
 
+    PlayerKnockback knockback;
+
     void Awake()
     {
         animator = GetComponentInChildren<Animator>();
         sprite = GetComponentInChildren<SpriteRenderer>();
-        capsule = GetComponentInChildren<CapsuleCollider2D>();
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<BoxCollider2D>();
         attackEffect = GetComponent<IPlayerAttackEffect>();
         sync = GetComponent<INetworkSync>();
+        knockback = GetComponent<PlayerKnockback>();
     }
 
     void Update()
@@ -75,11 +75,13 @@ public class playerMovement : MonoBehaviour
         if (moving && canAct)
         {
             sprite.flipX = flipSprite ^ (input.MoveX > 0);
+            Facing = (input.MoveX > 0) ? 1 : -1;
         }
 
         if (grabPressed && canAct)
         {
             SetAnimatorTrigger("Grab");
+            knockback.PerformAttack(PlayerAttackType.E_Side);
             StartMovementEffect(attackEffect?.Grab(), 0f);
             StartCoroutine(StunFor(attackData[PlayerAttackType.E_Side].EndLag));
         }
@@ -91,7 +93,7 @@ public class playerMovement : MonoBehaviour
         else
         {
             SetAnimatorBool("Walking", false);
-            rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 120f * Time.deltaTime), rb.velocity.y);
+            rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 80f * Time.deltaTime), rb.velocity.y);
         }
 
         //attack  //neutral aerial
@@ -100,12 +102,14 @@ public class playerMovement : MonoBehaviour
             if (animator.GetBool("Grounded"))
             {
                 SetAnimatorTrigger("Attack");
+                knockback.PerformAttack(PlayerAttackType.Ground_Q_Neutral);
                 StartMovementEffect(attackEffect?.Light(), 0f);
                 StartCoroutine(StunFor(attackData[PlayerAttackType.Ground_Q_Neutral].EndLag));
             }
             else
             {
                 SetAnimatorTrigger("Aerial");
+                knockback.PerformAttack(PlayerAttackType.Aerial_Q_Neutral);
                 StartMovementEffect(attackEffect?.Aerial(), 0f);
                 StartCoroutine(StunFor(attackData[PlayerAttackType.Aerial_Q_Neutral].EndLag));
             }
@@ -127,6 +131,7 @@ public class playerMovement : MonoBehaviour
         {
             // recovery
             SetAnimatorTrigger("Recovery");
+            knockback.PerformAttack(PlayerAttackType.W_Up);
             StartMovementEffect(attackEffect?.Recovery(), 0f);
             StartCoroutine(StunFor(attackData[PlayerAttackType.W_Up].EndLag));
         }

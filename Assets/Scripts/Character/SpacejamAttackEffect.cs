@@ -8,6 +8,7 @@ public class SpacejamAttackEffect : MonoBehaviour, IPlayerAttackEffect
     Rigidbody2D rb;
     SpriteRenderer sr;
     NetworkEntityList Entities;
+    PlayerKnockback knockback;
 
     public void Start()
     {
@@ -15,6 +16,7 @@ public class SpacejamAttackEffect : MonoBehaviour, IPlayerAttackEffect
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponentInChildren<SpriteRenderer>();
         Entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
+        knockback = GetComponent<PlayerKnockback>();
     }
 
     public IEnumerator<object> Aerial()
@@ -30,8 +32,14 @@ public class SpacejamAttackEffect : MonoBehaviour, IPlayerAttackEffect
     public IEnumerator<object> Light()
     {
         float range = 6f;
-        Vector3 pos = (sr.flipX ^ movement.flipSprite ? 1f : -1f) * Vector3.right * range + 1f * Vector3.down;
+        Vector3 pos = movement.Facing * Vector3.right * range + 1f * Vector3.down;
         GameObject spacejamBell = Instantiate(Entities.GetEntityPrefab("SpacejamBell"), transform.position + pos, transform.rotation);
+        foreach (HitboxCollision hitbox in spacejamBell.GetComponentsInChildren<HitboxCollision>())
+        {
+            hitbox.parent = gameObject;
+            hitbox.AttackID = knockback.AttackID;
+            hitbox.AttackType = knockback.AttackType;
+        }
         Entities.AddEntity(spacejamBell);
         yield break;
     }

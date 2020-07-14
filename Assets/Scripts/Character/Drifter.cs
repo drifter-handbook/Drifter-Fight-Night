@@ -14,6 +14,8 @@ public class Drifter : MonoBehaviour
     public PlayerSync sync;
     public CustomControls controls;
 
+    public float DamageTaken = 0f;
+
     private void OnValidate() {
         if (Object.ReferenceEquals (sync, null)) {
              sync = gameObject.GetComponent<PlayerSync>();
