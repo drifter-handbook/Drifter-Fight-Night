@@ -60,6 +60,11 @@ public class NetworkHost : MonoBehaviour, NetworkID
     void Update()
     {
         Network.Update();
+        if (GameStarted && Input.GetKeyDown(KeyCode.P))
+        {
+            GameStarted = false;
+            StartGame();
+        }
     }
 
     void FixedUpdate()
