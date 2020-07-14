@@ -83,7 +83,11 @@ public class PlayerAttacking : MonoBehaviour
             {
                 damageMultiplier = 0f;
             }
-            GetComponent<Rigidbody2D>().velocity = forceDir.normalized * attackData.Knockback * 2.75f * damageMultiplier;
+            GetComponent<Rigidbody2D>().velocity = forceDir.normalized * attackData.Knockback * 2.35f * damageMultiplier;
+            // stun player
+            float stunMultiplier = Mathf.Lerp(1f, damageMultiplier, 0.5f);
+            GetComponent<PlayerStatus>()?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, stunMultiplier * attackData.HitStun);
+            GetComponent<PlayerMovement>()?.DamageSuperArmor(stunMultiplier * attackData.HitStun);
             // create hit sparks
             GameObject hitSparks = Instantiate(Entities.GetEntityPrefab("HitSparks"),
                 Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),
