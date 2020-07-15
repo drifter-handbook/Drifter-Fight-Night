@@ -72,7 +72,8 @@ public class PlayerAttacking : MonoBehaviour
                 drifter.DamageTaken += attackData.AttackDamage * (GetComponent<PlayerMovement>().input.Guard ? 0.35f : 1f);
             }
             // apply knockback
-            int facingDir = hitbox.parent.GetComponent<PlayerMovement>().Facing;
+            float facingDir = Mathf.Sign(hurtbox.parent.transform.position.x - hitbox.parent.transform.position.x);
+            facingDir = facingDir == 0 ? 1 : facingDir;
             // rotate direction by angle of impact
             Vector2 forceDir = Quaternion.Euler(0, 0, attackData.AngleOfImpact * facingDir) * (facingDir * Vector2.right);
             // how much damage matters to knockback
@@ -98,6 +99,11 @@ public class PlayerAttacking : MonoBehaviour
                 hitSparks.GetComponent<HitSparks>().SetAnimation(HitSparksEffect.HIT_SPARKS_2);
                 hitSparks.transform.eulerAngles = new Vector3(0, 0, 90f);
                 hitSparks.transform.localScale = new Vector3(0.6f, 0.6f, 0.6f);
+            }
+            else if (attackData.Knockback > 18f)
+            {
+                hitSparks.GetComponent<HitSparks>().SetAnimation(HitSparksEffect.HIT_SPARKS_2);
+                hitSparks.transform.localScale = new Vector3(facingDir * 0.7f, 0.7f, 0.7f);
             }
             Entities.AddEntity(hitSparks);
         }
