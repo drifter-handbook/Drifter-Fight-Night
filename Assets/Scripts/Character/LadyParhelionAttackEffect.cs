@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NeroAttackEffect : MonoBehaviour, IPlayerAttackEffect
+public class LadyParhelionAttackEffect : MonoBehaviour, IPlayerAttackEffect
 {
     PlayerMovement movement;
     Rigidbody2D rb;
@@ -37,22 +37,14 @@ public class NeroAttackEffect : MonoBehaviour, IPlayerAttackEffect
 
     public IEnumerator<object> Recovery()
     {
-        yield return new WaitForSeconds(0.12f);
-        // pause in air for half a second
+        Debug.Log("RUNNING");
+        // move diagonally
         rb.gravityScale = 0f;
-        rb.velocity = Vector2.zero;
-        yield return new WaitForSeconds(0.12f);
+        rb.velocity = (Vector2.right * movement.Facing * 4f + Vector2.up).normalized * 65f;
+        yield return new WaitForSeconds(0.6f);
         // jump upwards and create spear projectile
-        rb.velocity = new Vector2(rb.velocity.x, 1.5f * movement.jumpSpeed);
+        rb.velocity = Vector2.zero;
         rb.gravityScale = gravityScale;
-        GameObject neroSpear = Instantiate(Entities.GetEntityPrefab("NeroSpear"), transform.position, transform.rotation);
-        foreach (HitboxCollision hitbox in neroSpear.GetComponentsInChildren<HitboxCollision>(true))
-        {
-            hitbox.parent = gameObject;
-            hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
-        }
-        Entities.AddEntity(neroSpear);
         yield break;
     }
 

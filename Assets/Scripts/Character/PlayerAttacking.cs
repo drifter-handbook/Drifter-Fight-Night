@@ -41,7 +41,7 @@ public class PlayerAttacking : MonoBehaviour
     {
         AttackType = attackType;
         AttackID = NextID;
-        foreach (HitboxCollision hitbox in GetComponentsInChildren<HitboxCollision>())
+        foreach (HitboxCollision hitbox in GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.AttackID = AttackID;
             hitbox.AttackType = AttackType;
@@ -52,7 +52,7 @@ public class PlayerAttacking : MonoBehaviour
     public void MultiHitAttack()
     {
         AttackID = NextID;
-        foreach (HitboxCollision hitbox in GetComponentsInChildren<HitboxCollision>())
+        foreach (HitboxCollision hitbox in GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.AttackID = AttackID;
         }

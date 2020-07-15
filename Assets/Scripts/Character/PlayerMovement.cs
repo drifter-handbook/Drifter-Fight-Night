@@ -77,8 +77,8 @@ public class PlayerMovement : MonoBehaviour
 
         if (grabPressed && canAct)
         {
-            SetAnimatorTrigger("Grab");
             attacking.PerformAttack(PlayerAttackType.E_Side);
+            SetAnimatorTrigger("Grab");
             StartMovementEffect(attackEffect?.Grab(), 0f);
             status.ApplyStatusEffect(PlayerStatusEffect.END_LAG, attackData[PlayerAttackType.E_Side].EndLag);
         }
@@ -103,15 +103,15 @@ public class PlayerMovement : MonoBehaviour
         {
             if (animator.GetBool("Grounded"))
             {
-                SetAnimatorTrigger("Attack");
                 attacking.PerformAttack(PlayerAttackType.Ground_Q_Neutral);
+                SetAnimatorTrigger("Attack");
                 StartMovementEffect(attackEffect?.Light(), 0f);
                 status.ApplyStatusEffect(PlayerStatusEffect.END_LAG, attackData[PlayerAttackType.Ground_Q_Neutral].EndLag);
             }
             else
             {
-                SetAnimatorTrigger("Aerial");
                 attacking.PerformAttack(PlayerAttackType.Aerial_Q_Neutral);
+                SetAnimatorTrigger("Aerial");
                 StartMovementEffect(attackEffect?.Aerial(), 0f);
                 status.ApplyStatusEffect(PlayerStatusEffect.END_LAG, attackData[PlayerAttackType.Aerial_Q_Neutral].EndLag);
             }
@@ -132,8 +132,8 @@ public class PlayerMovement : MonoBehaviour
         if (specialPressed && input.MoveY > 0 && canAct)
         {
             // recovery
-            SetAnimatorTrigger("Recovery");
             attacking.PerformAttack(PlayerAttackType.W_Up);
+            SetAnimatorTrigger("Recovery");
             StartMovementEffect(attackEffect?.Recovery(), 0f);
             status.ApplyStatusEffect(PlayerStatusEffect.END_LAG, attackData[PlayerAttackType.W_Up].EndLag);
         }
@@ -305,6 +305,7 @@ public class PlayerMovement : MonoBehaviour
             if (ef.Damage > ef.SuperArmor)
             {
                 StopCoroutine(ef.Effect);
+                attackEffect.Reset();
                 movementEffects.RemoveAt(i);
                 i--;
             }

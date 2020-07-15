@@ -6,4 +6,5 @@ public interface IPlayerAttackEffect
     IEnumerator<object> Light();
     IEnumerator<object> Aerial();
     IEnumerator<object> Grab();
+    void Reset();
 }
