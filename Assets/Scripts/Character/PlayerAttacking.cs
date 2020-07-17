@@ -28,7 +28,8 @@ public class PlayerAttacking : MonoBehaviour
     {
         Entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
         StartCoroutine(CleanupOldAttacks());
-        IsHost = GameController.Instance.GetComponent<GameSyncManager>().IsHost;
+        GameSyncManager sync = GameController.Instance?.GetComponent<GameSyncManager>();
+        IsHost = sync == null || sync.IsHost;
     }
 
     // Update is called once per frame

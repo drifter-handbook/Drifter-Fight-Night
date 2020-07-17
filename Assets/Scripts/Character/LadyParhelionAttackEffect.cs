@@ -37,7 +37,6 @@ public class LadyParhelionAttackEffect : MonoBehaviour, IPlayerAttackEffect
 
     public IEnumerator<object> Recovery()
     {
-        Debug.Log("RUNNING");
         // move diagonally
         rb.gravityScale = 0f;
         rb.velocity = (Vector2.right * movement.Facing * 4f + Vector2.up).normalized * 65f;

@@ -45,7 +45,7 @@ public class GameController : Singleton<GameController>
     private void Awake() {
         DontDestroyOnLoad(this.gameObject);
         PreLoad();
-        if (!isFight) Load("MenuScene");
+        // if (!isFight) Load("MenuScene");
     }
 
     void PreLoad() {

@@ -304,7 +304,10 @@ public class PlayerMovement : MonoBehaviour
             ef.Damage += damage;
             if (ef.Damage > ef.SuperArmor)
             {
-                StopCoroutine(ef.Effect);
+                if (ef.Effect != null)
+                {
+                    StopCoroutine(ef.Effect);
+                }
                 attackEffect.Reset();
                 movementEffects.RemoveAt(i);
                 i--;
