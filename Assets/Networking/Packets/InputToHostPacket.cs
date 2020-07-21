@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Net;
 
 public class PlayerInputData : ICloneable
 {
@@ -8,6 +9,7 @@ public class PlayerInputData : ICloneable
     public int MoveY = 0;
     public bool Jump = false;
     public bool Light = false;
+    public bool Special = false;
     public bool Grab = false;
     public bool Guard = false;
 
@@ -18,6 +20,7 @@ public class PlayerInputData : ICloneable
             MoveY = MoveY,
             Jump = Jump,
             Light = Light,
+            Special = Special,
             Grab = Grab,
             Guard = Guard
         };
@@ -29,6 +32,7 @@ public class PlayerInputData : ICloneable
         MoveY = data.MoveY;
         Jump = data.Jump;
         Light = data.Light;
+        Special = data.Special;
         Grab = data.Grab;
         Guard = data.Guard;
     }
@@ -36,6 +40,9 @@ public class PlayerInputData : ICloneable
 
 public class InputToHostPacket : IGamePacket
 {
+    public IPAddress address { get; set; }
+    public int port { get; set; }
+
     public string TypeID { get; set; } = "Input";
     public float Timestamp { get; set; }
 

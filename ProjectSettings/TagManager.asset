@@ -9,6 +9,7 @@ TagManager:
   - Killzone
   - Player2
   - NetworkEntityList
+  - tag
   layers:
   - Default
   - TransparentFX
@@ -19,8 +20,8 @@ TagManager:
   - 
   - 
   - Player
-  - 
-  - 
+  - Hitbox
+  - Hurtbox
   - 
   - 
   - 
@@ -43,6 +44,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 592851037
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0

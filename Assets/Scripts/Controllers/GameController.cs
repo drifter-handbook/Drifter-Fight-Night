@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 [DisallowMultipleComponent]
 public class GameController : Singleton<GameController>
 {
+    public AllPlayerData PlayerData;
 
     // Are we loading from inside the fight scene?
     // THIS IS A DEV VALUE, CLEAN SHIT UP BEFORE RELEASE >:(
@@ -44,12 +45,12 @@ public class GameController : Singleton<GameController>
     private void Awake() {
         DontDestroyOnLoad(this.gameObject);
         PreLoad();
-        if (!isFight) Load("MenuScene");
+        // if (!isFight) Load("MenuScene");
     }
 
     void PreLoad() {
-        uiController = new UIController();
-        spawnController = new SpawnController();
+        uiController = gameObject.AddComponent<UIController>();
+        spawnController = gameObject.AddComponent<SpawnController>();
     }
 
     public void Load(string sceneName) {
@@ -74,6 +75,7 @@ public class GameController : Singleton<GameController>
         // Create appropriate spawn points
         // Create player characters & give them an input
         // Yeet into world and allow playing the game
+        GetComponent<NetworkHost>()?.StartGame();
     }
 
     public void ShowMenu() {

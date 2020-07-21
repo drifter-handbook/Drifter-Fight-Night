@@ -1,40 +1,27 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Net;
 
 public class SyncToClientPacket : IGamePacket
 {
+    public IPAddress address { get; set; }
+    public int port { get; set; }
+
     public string TypeID { get; set; } = "Sync";
     public float Timestamp { get; set; }
 
-    public class PlayerData
-    {
-        public string name = "";
-        public float x = 0f;
-        public float y = 0f;
-        public float z = 0f;
-        public bool facing = false;
-        public PlayerAnimatorState animatorState = new PlayerAnimatorState();
-    }
-    public class ObjectData
-    {
-        public string name = "";
-        public float x = 0f;
-        public float y = 0f;
-        public float z = 0f;
-        public float angle = 0f;
-    }
+    NetworkEntityConverter converter = new NetworkEntityConverter();
 
     public SyncToClientData SyncData;
     public class SyncToClientData
     {
-        public List<PlayerData> players = new List<PlayerData>();
-        public List<ObjectData> objects = new List<ObjectData>();
+        public List<INetworkEntityData> entities = new List<INetworkEntityData>();
     }
 
     public IGamePacket FromData(string json)
     {
-        SyncToClientData data = JsonConvert.DeserializeObject<SyncToClientData>(json);
+        SyncToClientData data = JsonConvert.DeserializeObject<SyncToClientData>(json, converter);
         return new SyncToClientPacket() { SyncData = data };
     }
 
@@ -43,3 +30,4 @@ public class SyncToClientPacket : IGamePacket
         return SyncData;
     }
 }
+

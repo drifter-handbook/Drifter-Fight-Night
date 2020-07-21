@@ -10,7 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 300831260}
   - component: {fileID: 300831261}
-  m_Layer: 0
+  - component: {fileID: 7688281774863332295}
+  m_Layer: 9
   m_Name: Primary
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,6 +48,19 @@ CircleCollider2D:
   m_Offset: {x: -0.2, y: 0}
   serializedVersion: 2
   m_Radius: 0.25
+--- !u!114 &7688281774863332295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 300831259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parent: {fileID: 3106753082241659636}
 --- !u!1 &1853559347
 GameObject:
   m_ObjectHideFlags: 0
@@ -57,7 +71,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1853559348}
   - component: {fileID: 1853559349}
-  m_Layer: 0
+  - component: {fileID: 1210285445774866172}
+  m_Layer: 9
   m_Name: Secondary
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,6 +109,66 @@ CircleCollider2D:
   m_Offset: {x: 0.09, y: -0.14}
   serializedVersion: 2
   m_Radius: 0.125
+--- !u!114 &1210285445774866172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1853559347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parent: {fileID: 3106753082241659636}
+--- !u!1 &2038013260033882049
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 986045182707079716}
+  - component: {fileID: 5798512003942249155}
+  m_Layer: 0
+  m_Name: Guardbox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &986045182707079716
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2038013260033882049}
+  m_LocalRotation: {x: 0, y: 0, z: 0.69528586, w: 0.7187333}
+  m_LocalPosition: {x: 0.045, y: -0.142, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5306829202166808911}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 88.1}
+--- !u!70 &5798512003942249155
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2038013260033882049}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 0.33, y: 0.33}
+  m_Direction: 0
 --- !u!1 &2496518287981053905
 GameObject:
   m_ObjectHideFlags: 0
@@ -125,6 +200,7 @@ Transform:
   m_Children:
   - {fileID: 6941340441550975300}
   - {fileID: 8774267968347264039}
+  - {fileID: 986045182707079716}
   m_Father: {fileID: 3106753082241659643}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -213,6 +289,8 @@ GameObject:
   - component: {fileID: 271773049362604864}
   - component: {fileID: 3106753082241659639}
   - component: {fileID: 2704295541901204434}
+  - component: {fileID: 1589272871137191243}
+  - component: {fileID: 8182132679057442092}
   m_Layer: 8
   m_Name: Character
   m_TagString: Player
@@ -251,6 +329,7 @@ MonoBehaviour:
   movement: {fileID: 3106753082241659641}
   sync: {fileID: 1401939795787901855}
   controls: {fileID: 0}
+  DamageTaken: 0
 --- !u!114 &3106753082241659641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -267,8 +346,10 @@ MonoBehaviour:
   delayedJumpDuration: 0.05
   walkSpeed: 25
   jumpSpeed: 32
+  flipSprite: 0
   varyJumpHeightDuration: 0.2
   varyJumpHeightForce: 12
+  Walking: 0
 --- !u!114 &1401939795787901855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -282,6 +363,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   latency: 0.025
+  NetworkSyncType: 
 --- !u!114 &271773049362604864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -342,6 +424,30 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 12, y: 15}
   m_EdgeRadius: 0
+--- !u!114 &1589272871137191243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3106753082241659636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0064c0426948755458fd52f16f260aa6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8182132679057442092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3106753082241659636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0c70948fef8b0047aa95727076efea8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4227067111414324707
 GameObject:
   m_ObjectHideFlags: 0
@@ -351,7 +457,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8774267968347264039}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Hitboxes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -384,7 +490,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6941340441550975300}
   - component: {fileID: 1627984188795609511}
-  m_Layer: 0
+  - component: {fileID: 8371682803259408103}
+  m_Layer: 10
   m_Name: Hurtboxes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -421,3 +528,16 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.33, y: 0.33}
   m_Direction: 0
+--- !u!114 &8371682803259408103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7083992111526413055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c303c2a3e41d8ad428934a942403f36f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parent: {fileID: 3106753082241659636}
