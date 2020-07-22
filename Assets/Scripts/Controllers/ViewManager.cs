@@ -39,7 +39,13 @@ public class ViewManager : MonoBehaviour
 
     public void ShowView(string name){
         views[currentView].gameObject.SetActive(false);
+        currentView = name;
         views[name].gameObject.SetActive(true);
+    }
+
+    // May be moved to game controller?
+    public void Exit() {
+        Application.Quit();
     }
 
 }
