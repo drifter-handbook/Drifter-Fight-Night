@@ -26,9 +26,6 @@ public class Drifter : MonoBehaviour
         }
     }
 
-    private void Awake() {
-    }
-
     private void Start() {
          
         if (Object.ReferenceEquals (drifterData, null)) {

@@ -9,11 +9,7 @@ using UnityEngine.SceneManagement;
 [DisallowMultipleComponent]
 public class GameController : Singleton<GameController>
 {
-    public AllPlayerData PlayerData;
-
-    // Are we loading from inside the fight scene?
-    // THIS IS A DEV VALUE, CLEAN SHIT UP BEFORE RELEASE >:(
-    public bool isFight = false;
+    public AllPlayerData PlayerData; 
 
     // Prevent instantiation - get instance with GameController.Instance
     protected GameController() {}
@@ -22,30 +18,14 @@ public class GameController : Singleton<GameController>
     UIController uiController;
     SpawnController spawnController;
 
-    // Control flow
-    public enum StateType 
-    {
-        DEFAULT,        // Fall-back state, should never happen
-        APPLICATION_START,
-        CONNECTING,     // Connecting to multiplayer
-        WAITING,        // Waiting for other player to finish selecting a character
-        MATCH_START,    // Initializing game state
-        PLAYING,        // In-game
-        PAUSED,         // In-game but one player has paused the game
-        MATCH_OVER,     // Match has ended
-    };
-
-    StateType state {get; set;}
-
-    string[] scenes = {
-        "MenuScene",
-        "BattleScene"
-    };
+    
+    // Bout them multipule players
+    public bool isHost;
+    public string hostIP;
 
     private void Awake() {
         DontDestroyOnLoad(this.gameObject);
         PreLoad();
-        // if (!isFight) Load("MenuScene");
     }
 
     void PreLoad() {
@@ -58,30 +38,16 @@ public class GameController : Singleton<GameController>
         SceneManager.LoadScene(sceneName);
     }
 
-    public void Pause(bool paused) {
-
-    }
-
-    public void Connect() { // Evans
-
-    }
-
     public void ChooseYerDrifter() {
-        
+        //EVANS: HANDSHAKE
+        Load("CharacterSelect");
     }
 
-    public void BeginMatch() { // Lyn
+    public void BeginMatch() {
         // Get player count & choices
         // Create appropriate spawn points
         // Create player characters & give them an input
         // Yeet into world and allow playing the game
         GetComponent<NetworkHost>()?.StartGame();
-    }
-
-    public void ShowMenu() {
-
-    }
-
-    public void ShowOptions() {
     }
 }
