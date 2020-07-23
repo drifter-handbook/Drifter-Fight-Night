@@ -14,12 +14,7 @@ public class NetworkHost : MonoBehaviour, NetworkID
     public int PlayerID { get; private set; }
     public NetworkHandler Network { get; set; }
 
-    GameSyncManager sync;
-
-    void Awake()
-    {
-        sync = GetComponent<GameSyncManager>();
-    }
+    NetworkEntityList entities = GameController.Instance.Entities;
 
     void Start()
     {
@@ -73,7 +68,7 @@ public class NetworkHost : MonoBehaviour, NetworkID
         {
             return;
         }
-        if (sync.Entities == null)
+        if (entities == null)
         {
             // send character selection sync packet every frame
             Network.SendToAll(new CharacterSelectSyncPacket()
@@ -104,7 +99,7 @@ public class NetworkHost : MonoBehaviour, NetworkID
     {
         yield return SceneManager.LoadSceneAsync("NetworkTestScene");
         // find entities
-        sync.Entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
+        entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
         // create players
         List<string> playerNames = new List<string>() {
             "Lady Parhelion",
@@ -120,24 +115,24 @@ public class NetworkHost : MonoBehaviour, NetworkID
         };
         for (int i = 0; i < playerNames.Count; i++)
         {
-            GameObject player = Instantiate(sync.Entities.GetEntityPrefab(playerNames[i]),
-                                            sync.Entities.SpawnPoints[i].transform.position,
-                                            sync.Entities.SpawnPoints[i].transform.rotation);
+            GameObject player = Instantiate(entities.GetEntityPrefab(playerNames[i]),
+                                            entities.SpawnPoints[i].transform.position,
+                                            entities.SpawnPoints[i].transform.rotation);
             player.GetComponentInChildren<SpriteRenderer>().color = playerColors[i];
-            sync.Entities.AddPlayer(i, player);
+            entities.AddPlayer(i, player);
         }
         // start game
         Network.StopAcceptingConnections();
         // attach player input to player 1
-        GetComponent<PlayerInput>().input = sync.Entities.Players[0].GetComponent<PlayerMovement>().input;
+        GetComponent<PlayerInput>().input = entities.Players[0].GetComponent<PlayerMovement>().input;
     }
 
     SyncToClientPacket CreateGameSyncPacket()
     {
         SyncToClientPacket.SyncToClientData SyncData = new SyncToClientPacket.SyncToClientData();
-        for (int i = 0; i < sync.Entities.Entities.Count; i++)
+        for (int i = 0; i < entities.Entities.Count; i++)
         {
-            GameObject entity = sync.Entities.Entities[i];
+            GameObject entity = entities.Entities[i];
             if (entity != null)
             {
                 INetworkSync entityData = entity.GetComponent<INetworkSync>();
@@ -148,7 +143,7 @@ public class NetworkHost : MonoBehaviour, NetworkID
             // if game object is destroyed
             else
             {
-                sync.Entities.Entities.RemoveAt(i);
+                entities.Entities.RemoveAt(i);
                 i--;
             }
         }
@@ -157,9 +152,9 @@ public class NetworkHost : MonoBehaviour, NetworkID
 
     void SetGameSyncInput(InputToHostPacket input, int id)
     {
-        if (sync.Entities != null && input?.input != null)
+        if (entities != null && input?.input != null)
         {
-            sync.Entities.Players[id]?.GetComponent<PlayerMovement>()?.input?.CopyFrom(input?.input);
+            entities.Players[id]?.GetComponent<PlayerMovement>()?.input?.CopyFrom(input?.input);
         }
     }
 }

@@ -138,7 +138,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -4122902540134344098, guid: 9cc07214d6f78214c8ebcda2c8246e4f,
+  m_Sprite: {fileID: -5522321572728165401, guid: 0d3451e90cd9f35489572f742ee89d1a,
     type: 3}
   m_Type: 0
   m_PreserveAspect: 1
@@ -158,6 +158,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8918532560033638643}
+  - component: {fileID: 7261025855837868914}
   m_Layer: 5
   m_Name: Figurine
   m_TagString: Untagged
@@ -186,3 +187,19 @@ RectTransform:
   m_AnchoredPosition: {x: -0, y: -30}
   m_SizeDelta: {x: 100, y: 150.03506}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!70 &7261025855837868914
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8918532560033638642}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -11.84}
+  m_Size: {x: 81, y: 115.5}
+  m_Direction: 0

@@ -19,12 +19,7 @@ public class NetworkClient : MonoBehaviour, NetworkID
     const float ConnectTimeout = 3;
     Coroutine ConnectCoroutine;
 
-    GameSyncManager sync;
-
-    void Awake()
-    {
-        sync = GetComponent<GameSyncManager>();
-    }
+    NetworkEntityList entities = GameController.Instance.Entities;
 
     void Start()
     {
@@ -101,7 +96,7 @@ public class NetworkClient : MonoBehaviour, NetworkID
             return;
         }
         // send char select input to host
-        if (sync.Entities == null)
+        if (entities == null)
         {
             CharacterSelectState localCharSelect = new CharacterSelectState();
             if (PlayerID < GetComponent<UIController>().CharacterSelectState.Count)
@@ -149,11 +144,11 @@ public class NetworkClient : MonoBehaviour, NetworkID
     {
         yield return SceneManager.LoadSceneAsync("NetworkTestScene");
         // find entities
-        sync.Entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
+        entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
         // create entities
         GameSyncFromPacket(packet);
         // remove all physics for synced objects
-        foreach (GameObject obj in sync.Entities.Entities)
+        foreach (GameObject obj in entities.Entities)
         {
             obj.GetComponent<Rigidbody2D>().simulated = false;
         }
@@ -161,26 +156,26 @@ public class NetworkClient : MonoBehaviour, NetworkID
 
     void GameSyncFromPacket(SyncToClientPacket data)
     {
-        if (sync.Entities == null)
+        if (entities == null)
         {
             return;
         }
         // if in packet data but not in current entities, create
         foreach (INetworkEntityData entityData in data.SyncData.entities)
         {
-            if (!sync.Entities.Entities.Any(x => x != null && x.GetComponent<INetworkSync>().ID == entityData.ID))
+            if (!entities.Entities.Any(x => x != null && x.GetComponent<INetworkSync>().ID == entityData.ID))
             {
-                GameObject entity = Instantiate(sync.Entities.GetEntityPrefab(entityData.Type));
+                GameObject entity = Instantiate(entities.GetEntityPrefab(entityData.Type));
                 entity.GetComponent<INetworkSync>().ID = entityData.ID;
-                sync.Entities.Entities.Add(entity);
+                entities.Entities.Add(entity);
             }
         }
         // sync objects
-        for (int i = 0; i < sync.Entities.Entities.Count; i++)
+        for (int i = 0; i < entities.Entities.Count; i++)
         {
-            if (sync.Entities.Entities[i] != null)
+            if (entities.Entities[i] != null)
             {
-                INetworkSync entitySync = sync.Entities.Entities[i].GetComponent<INetworkSync>();
+                INetworkSync entitySync = entities.Entities[i].GetComponent<INetworkSync>();
                 if (entitySync != null)
                 {
                     INetworkEntityData entityData = data.SyncData.entities.Find(x => x.ID == entitySync.ID);
@@ -193,7 +188,7 @@ public class NetworkClient : MonoBehaviour, NetworkID
                     else
                     {
                         Destroy(((MonoBehaviour)entitySync).gameObject);
-                        sync.Entities.Entities.RemoveAt(i);
+                        entities.Entities.RemoveAt(i);
                         i--;
                     }
                 }
@@ -201,7 +196,7 @@ public class NetworkClient : MonoBehaviour, NetworkID
             // if game object null for some reason
             else
             {
-                sync.Entities.Entities.RemoveAt(i);
+                entities.Entities.RemoveAt(i);
                 i--;
             }
         }

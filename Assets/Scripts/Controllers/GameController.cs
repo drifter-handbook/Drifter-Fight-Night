@@ -20,8 +20,13 @@ public class GameController : Singleton<GameController>
 
     
     // Bout them multipule players
+    [Header("Check box if hosting")]
     public bool isHost;
-    public string hostIP;
+    public NetworkEntityList Entities; // set when game 
+    [Header("Don't ship with this.")]
+    public string hostIP = "68.187.67.135";
+    public int HostID = 18;
+    public int playerNumber; // used for UI indexing and other stuff maybe
 
     private void Awake() {
         DontDestroyOnLoad(this.gameObject);
@@ -41,6 +46,20 @@ public class GameController : Singleton<GameController>
     public void ChooseYerDrifter() {
         //EVANS: HANDSHAKE
         Load("CharacterSelect");
+    }
+
+    void BeginHandshake(){ // I almost named this IWantAGoodCleanFight and you should be thankful I didn't
+        // if we are host
+        if (isHost)
+        {
+            gameObject.AddComponent<NetworkHost>();
+        }
+        else
+        {
+            NetworkClient client = gameObject.AddComponent<NetworkClient>();
+            client.Host = hostIP;
+            client.HostID = HostID;
+        }
     }
 
     public void BeginMatch() {

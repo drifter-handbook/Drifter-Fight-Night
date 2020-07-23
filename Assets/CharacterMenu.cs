@@ -6,17 +6,20 @@ using UnityEngine.UI;
 // Shows players and selected character [View]
 public class CharacterMenu : MonoBehaviour
 {
-    // Hardcode these so we don't lose them to the source control gods
-    public List<Color> playerColorPool = new List<Color> {
-        new Color(255,   0,   0),
-        new Color(255, 204,   0),
-        new Color( 32, 221,  30),
-        new Color( 19, 179, 231),
-        new Color(185,  16, 255),
-        new Color(255,  16, 144),
-        new Color(255, 140,  42),
-        new Color(  0, 255, 221),
-    };
+    // Make a note of these so we don't lose them to the source control gods
+    // (You will have to modify the alpha value in inspector because -\_(o.o)_/-)
+    // public List<Color> playerColorPool = new List<Color> {
+    //     new Color(255,   0,   0, 1f),
+    //     new Color(255, 204,   0, 1f),
+    //     new Color( 32, 221,  30, 1f),
+    //     new Color( 19, 179, 231, 1f),
+    //     new Color(185,  16, 255, 1f),
+    //     new Color(255,  16, 144, 1f),
+    //     new Color(255, 140,  42, 1f),
+    //     new Color(  0, 255, 221, 1f),
+    // };
+
+    public List<Color> playerColorPool = new List<Color>();
 
     public List<GameObject> figurines;
     public GameObject leftPanel;
