@@ -40,10 +40,10 @@ public class MasterHit : MonoBehaviour, IMasterHit
     public void cancelTheRecovery(){
 
     }
-    void callTheAttackEffect(){
+    public void callTheAttackEffect(){
         //call the Attack here (using the parent)
     }
-    void callTheMovementEffect(){
+    public void callTheMovementEffect(){
         //call the movement caused by the attack here (in order to force move)
     }
 }

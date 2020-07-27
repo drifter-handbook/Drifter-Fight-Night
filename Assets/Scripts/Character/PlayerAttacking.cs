@@ -21,15 +21,13 @@ public class PlayerAttacking : MonoBehaviour
     NetworkEntityList Entities;
 
     // ignore all hits if client
-    bool IsHost = false;
+    bool IsHost = GameController.Instance.isHost;
 
     // Start is called before the first frame update
     void Start()
     {
         Entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
         StartCoroutine(CleanupOldAttacks());
-        GameSyncManager sync = GameController.Instance?.GetComponent<GameSyncManager>();
-        IsHost = sync == null || sync.IsHost;
     }
 
     // Update is called once per frame

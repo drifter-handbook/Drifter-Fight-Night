@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 8676352996291465654}
   - component: {fileID: 8676352996291465653}
   - component: {fileID: 8676352996291465608}
-  - component: {fileID: 8676352996291465655}
   - component: {fileID: 8676352996291465609}
+  - component: {fileID: 8851936783626537253}
   m_Layer: 0
   m_Name: LucilleJohnson
   m_TagString: Untagged
@@ -47,7 +47,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerData: {fileID: 11400000, guid: 04b59cfe6c0acdc4e88c6e85a3b5a9a0, type: 2}
-  isFight: 0
+  isHost: 0
+  Entities: {fileID: 0}
+  hostIP: 68.187.67.135
+  HostID: 18
+  playerNumber: 0
 --- !u!114 &8676352996291465608
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61,22 +65,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   keyBindings: {fileID: 11400000, guid: 885ea4674937f97478cc8405e1044828, type: 2}
---- !u!114 &8676352996291465655
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8676352996291465652}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2ac46a3903d9004e9b9543ccf8f2292, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Entities: {fileID: 0}
-  IsHost: 1
-  HostIP: 107.10.82.25
-  HostID: 134
 --- !u!114 &8676352996291465609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91,3 +79,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   status: 0
   complete: 1
+--- !u!114 &8851936783626537253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8676352996291465652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bf870fe7f680d94184e23e9d289f9b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
