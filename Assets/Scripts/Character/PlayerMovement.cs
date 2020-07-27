@@ -48,7 +48,30 @@ public class PlayerMovement : MonoBehaviour
         attacking = GetComponent<PlayerAttacking>();
         status = GetComponent<PlayerStatus>();
     }
-
+    void doGrab(PlayerAttackData attackData){
+        attacking.PerformAttack(PlayerAttackType.E_Side);
+        SetAnimatorTrigger("Grab");
+        StartMovementEffect(attackEffect?.Grab(), 0f);
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG, attackData[PlayerAttackType.E_Side].EndLag);
+    }
+    void doGroundLight(PlayerAttackData attackData){
+        attacking.PerformAttack(PlayerAttackType.Ground_Q_Neutral);
+        SetAnimatorTrigger("Attack");
+        StartMovementEffect(attackEffect?.Light(), 0f);
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG, attackData[PlayerAttackType.Ground_Q_Neutral].EndLag);
+    }
+    void doAerialLight(PlayerAttackData attackData){
+        attacking.PerformAttack(PlayerAttackType.Aerial_Q_Neutral);
+        SetAnimatorTrigger("Aerial");
+        StartMovementEffect(attackEffect?.Aerial(), 0f);
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG, attackData[PlayerAttackType.Aerial_Q_Neutral].EndLag);
+    }
+    void doRecovery(PlayerAttackData attackData){
+        attacking.PerformAttack(PlayerAttackType.W_Up);
+        SetAnimatorTrigger("Recovery");
+        StartMovementEffect(attackEffect?.Recovery(), 0f);
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG, attackData[PlayerAttackType.W_Up].EndLag);
+    }
     void Update()
     {
         if (IsClient)
@@ -77,10 +100,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (grabPressed && canAct)
         {
-            attacking.PerformAttack(PlayerAttackType.E_Side);
-            SetAnimatorTrigger("Grab");
-            StartMovementEffect(attackEffect?.Grab(), 0f);
-            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG, attackData[PlayerAttackType.E_Side].EndLag);
+            doGrab(attackData);
         }
         else if (moving && canAct)
         {
@@ -103,17 +123,11 @@ public class PlayerMovement : MonoBehaviour
         {
             if (animator.GetBool("Grounded"))
             {
-                attacking.PerformAttack(PlayerAttackType.Ground_Q_Neutral);
-                SetAnimatorTrigger("Attack");
-                StartMovementEffect(attackEffect?.Light(), 0f);
-                status.ApplyStatusEffect(PlayerStatusEffect.END_LAG, attackData[PlayerAttackType.Ground_Q_Neutral].EndLag);
+                doGroundLight(attackData);
             }
             else
             {
-                attacking.PerformAttack(PlayerAttackType.Aerial_Q_Neutral);
-                SetAnimatorTrigger("Aerial");
-                StartMovementEffect(attackEffect?.Aerial(), 0f);
-                status.ApplyStatusEffect(PlayerStatusEffect.END_LAG, attackData[PlayerAttackType.Aerial_Q_Neutral].EndLag);
+                doAerialLight(attackData);
             }
         }
         if (input.Guard && canGuard)
@@ -132,10 +146,7 @@ public class PlayerMovement : MonoBehaviour
         if (specialPressed && input.MoveY > 0 && canAct)
         {
             // recovery
-            attacking.PerformAttack(PlayerAttackType.W_Up);
-            SetAnimatorTrigger("Recovery");
-            StartMovementEffect(attackEffect?.Recovery(), 0f);
-            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG, attackData[PlayerAttackType.W_Up].EndLag);
+            doRecovery(attackData);
         }
 
         if (jumpPressed && canAct && rb.velocity.y < 0.8f * jumpSpeed)
@@ -281,7 +292,7 @@ public class PlayerMovement : MonoBehaviour
         public float SuperArmor;
         public float Damage;
     }
-    
+
     List<AttackEffect> movementEffects = new List<AttackEffect>();
     private void StartMovementEffect(IEnumerator ef, float superArmor)
     {

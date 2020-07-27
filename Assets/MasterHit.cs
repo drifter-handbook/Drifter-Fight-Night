@@ -10,15 +10,35 @@ public class MasterHit : MonoBehaviour, IMasterHit
     // Start is called before the first frame update
     void Start()
     {
-        attacking = parent.GetComponent<PlayerAttacking>();
-        playerMovement = parent.GetComponent<PlayerMovement>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        attacking = parent.GetComponent<PlayerAttacking>();
-        playerMovement = parent.GetComponent<PlayerMovement>();
+    }
+    public void callTheAerial(){
+
+    }
+    public void cancelTheAerial(){
+
+    }
+    public void callTheLight(){
+
+    }
+    public void cancelTheLight(){
+
+    }
+    public void callTheGrab(){
+
+    }
+    public void cancelTheGrab(){
+
+    }
+    public void callTheRecovery(){
+
+    }
+    public void cancelTheRecovery(){
+
     }
     void callTheAttackEffect(){
         //call the Attack here (using the parent)
