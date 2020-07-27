@@ -22,6 +22,7 @@ public class ViewManager : MonoBehaviour
 
     void Awake()
     {
+        views = new Dictionary<string, Transform>();
         if (views.Count <= 0) {
             foreach (var child in this.gameObject.GetComponentsInDirectChildren<Transform>())
             {

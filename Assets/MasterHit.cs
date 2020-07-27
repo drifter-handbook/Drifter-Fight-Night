@@ -20,10 +20,10 @@ public class MasterHit : MonoBehaviour, IMasterHit
         attacking = parent.GetComponent<PlayerAttacking>();
         playerMovement = parent.GetComponent<PlayerMovement>();
     }
-    void callTheAttackEffect(){
+    public void callTheAttackEffect(){
         //call the Attack here (using the parent)
     }
-    void callTheMovementEffect(){
+    public void callTheMovementEffect(){
         //call the movement caused by the attack here (in order to force move)
     }
 }
