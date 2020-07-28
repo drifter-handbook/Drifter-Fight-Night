@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: PixelTrail
-  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 4800000, guid: 736df64c5121c784cbe86bd238c2a591, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -75,3 +75,6 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _InsideFarColor: {r: 0.2, g: 0.2, b: 1, a: 1}
+    - _InsideNearColor: {r: 0.5, g: 1, b: 1, a: 1}
+    - _OutsideColor: {r: 1, g: 1, b: 1, a: 1}
