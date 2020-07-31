@@ -12,11 +12,15 @@ public class CharacterCard : MonoBehaviour
     {
         // TODO: Show specific character based on selection
         Transform card = Instantiate(GameController.Instance.characterCardPrefab).transform;
+        card.GetChild(0).GetComponent<Image>().color = color;
+        Animate(card);
+        return card;
+    }
+
+    public static void Animate(Transform card) {
         card.localScale = new Vector3(1, 1, 1);
         card.localPosition = new Vector3(card.transform.localPosition.x, card.transform.localPosition.y, 0);
-        card.GetChild(0).GetComponent<Image>().color = color;
-
-        return card;
+        
     }
 
     public static void SetCharacter(Transform card, Sprite sprite, string name) {

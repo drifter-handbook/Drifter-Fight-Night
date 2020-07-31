@@ -11,11 +11,4 @@ public class UIController : MonoBehaviour
     public List<CharacterSelectState> CharacterSelectState = 
         new List<CharacterSelectState>() { new CharacterSelectState() };
     
-    public bool Join() {
-        if (GameController.Instance.SceneName != "CharacterSelect") return false;
-        CharacterMenu menu = GameObject.Find("CharacterMenu").GetComponent<CharacterMenu>();
-        if (Object.ReferenceEquals(menu, null)) return false;
-        return menu.AddPlayerCard();
-    }
-    
 }

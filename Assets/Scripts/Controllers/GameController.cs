@@ -54,7 +54,7 @@ public class GameController : Singleton<GameController>
     }
 
     public void ChooseYerDrifter() {
-        // HANDSHAKE HERE
+        BeginHandshake();
         Load("CharacterSelect");
     }
 
@@ -72,6 +72,7 @@ public class GameController : Singleton<GameController>
         }
     }
 
+    // Only the host gets to see this guy
     public void BeginMatch() {
         // Get player count & choices
         // Create appropriate spawn points

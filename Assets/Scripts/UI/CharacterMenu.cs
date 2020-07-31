@@ -31,9 +31,12 @@ public class CharacterMenu : MonoBehaviour
     private const int PANEL_MAX_PLAYERS = 4; 
 
     //try to add player, return false if over max
-    public bool AddPlayerCard()
+    public bool AddPlayerCard(PlayerData player)
     {
         if(connectedPlayers > maxPlayers) return false;
+        
+        player.PlayerColor = colorList[0];
+        player.PlayerIndex = connectedPlayers - 1;
 
         // TODO: Show specific character based on selection
         Transform card = CharacterCard.CreatePlayerCard(colorList[0]);
@@ -42,7 +45,7 @@ public class CharacterMenu : MonoBehaviour
         Transform parent = (connectedPlayers <= PANEL_MAX_PLAYERS) ? 
             leftPanel.transform : rightPanel.transform;
 
-        card.SetParent(parent);
+        card.SetParent(parent, false);
 
         connectedPlayers++;
         
@@ -69,11 +72,4 @@ public class CharacterMenu : MonoBehaviour
         Destroy(parent.GetChild(index % PANEL_MAX_PLAYERS).gameObject);
         connectedPlayers--;
     }
-
-    public void debugAddPlayer()
-    {
-        //buttons apparently need void returns, ignore me
-        AddPlayerCard();
-    }
-
 }
