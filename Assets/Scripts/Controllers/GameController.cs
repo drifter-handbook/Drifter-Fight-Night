@@ -15,9 +15,11 @@ public class GameController : Singleton<GameController>
     protected GameController() {}
 
     // Tree of controllers
-    UIController uiController;
-    SpawnController spawnController;
+    public UIController uiController {get; private set;}
+    public SpawnController spawnController {get; private set;}
 
+    // Useful prefabs
+    public GameObject characterCardPrefab;
     
     // Bout them multipule players
     [Header("Check box if hosting")]
@@ -27,6 +29,8 @@ public class GameController : Singleton<GameController>
     public string hostIP = "68.187.67.135";
     public int HostID = 18;
     public int playerNumber; // used for UI indexing and other stuff maybe
+
+    public string SceneName {get; protected set;}
 
     private void Awake() {
         DontDestroyOnLoad(this.gameObject);
@@ -41,10 +45,16 @@ public class GameController : Singleton<GameController>
     public void Load(string sceneName) {
         if (SceneManager.GetActiveScene().name == sceneName) return;
         SceneManager.LoadScene(sceneName);
+        SceneName = sceneName;
+    }
+
+    // use if SceneName is desynced
+    public string GetSceneName() {
+        return SceneManager.GetActiveScene().name;
     }
 
     public void ChooseYerDrifter() {
-        //EVANS: HANDSHAKE
+        // HANDSHAKE HERE
         Load("CharacterSelect");
     }
 
