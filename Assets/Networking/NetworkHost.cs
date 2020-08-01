@@ -15,6 +15,8 @@ public class NetworkHost : MonoBehaviour, NetworkID
     public NetworkHandler Network { get; set; }
 
     NetworkEntityList entities = GameController.Instance.Entities;
+    List<CharacterSelectState> CharacterSelectStates; // single source of truth
+
 
     void Start()
     {
@@ -24,12 +26,14 @@ public class NetworkHost : MonoBehaviour, NetworkID
         Network.OnConnect((addr, port, id) =>
         {
             Debug.Log($"New client {id} visible at {addr}:{port}");
-            GetComponent<UIController>().CharacterSelectState.Add(new CharacterSelectState());
+            CharacterSelectStates.Add(new CharacterSelectState());
         });
         // on failure
         Network.OnFailure(() =>
         {
-            Debug.Log($"Failed to connect to server {Network.HolePuncher.holePunchingServerName}:{Network.HolePuncher.holePunchingServerPort}");
+            Debug.Log($"Failed to connect to server" +
+            $" {Network.HolePuncher.holePunchingServerName}:" +
+            $" {Network.HolePuncher.holePunchingServerPort}");
         });
         // hand out client IDs
         // receive requests to connect from clients
@@ -41,7 +45,7 @@ public class NetworkHost : MonoBehaviour, NetworkID
         // handle character select
         Network.OnReceive(new CharacterSelectInputPacket(), (id, packet) =>
         {
-            GetComponent<UIController>().CharacterSelectState[id] = ((CharacterSelectInputPacket)packet).CharacterSelect;
+            CharacterSelectStates[id] = ((CharacterSelectInputPacket)packet).CharacterSelect;
         }, true);
         // handle game input
         Network.OnReceive(new InputToHostPacket(), (id, packet) =>
@@ -75,7 +79,7 @@ public class NetworkHost : MonoBehaviour, NetworkID
             {
                 Data = new CharacterSelectSyncPacket.CharacterSelectSyncData()
                 {
-                    CharacterSelectState = GetComponent<UIController>().CharacterSelectState
+                    CharacterSelectState = CharacterSelectStates
                 }
             });
         }
@@ -115,9 +119,11 @@ public class NetworkHost : MonoBehaviour, NetworkID
         };
         for (int i = 0; i < playerNames.Count; i++)
         {
-            GameObject player = Instantiate(entities.GetEntityPrefab(playerNames[i]),
-                                            entities.SpawnPoints[i].transform.position,
-                                            entities.SpawnPoints[i].transform.rotation);
+            GameObject player = Instantiate(
+                entities.GetEntityPrefab(playerNames[i]),
+                entities.SpawnPoints[i].transform.position,
+                entities.SpawnPoints[i].transform.rotation
+            );
             player.GetComponentInChildren<SpriteRenderer>().color = playerColors[i];
             entities.AddPlayer(i, player);
         }

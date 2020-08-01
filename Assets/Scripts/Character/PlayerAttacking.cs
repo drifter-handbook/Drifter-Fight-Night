@@ -10,7 +10,7 @@ public class PlayerAttacking : MonoBehaviour
 
     // current attack ID and Type, used for outgoing attacks
     public int AttackID { get; private set; }
-    public PlayerAttackType AttackType { get; private set; }
+    public DrifterAttackType AttackType { get; private set; }
 
     // keep track of what attacks we've already processed
     // AttackID -> Timestamp
@@ -21,7 +21,7 @@ public class PlayerAttacking : MonoBehaviour
     NetworkEntityList Entities;
 
     // ignore all hits if client
-    bool IsHost = GameController.Instance.isHost;
+    bool IsHost = GameController.Instance.IsHost;
 
     // Start is called before the first frame update
     void Start()
@@ -33,10 +33,10 @@ public class PlayerAttacking : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-    public void PerformAttack(PlayerAttackType attackType)
+    public void PerformAttack(DrifterAttackType attackType)
     {
         AttackType = attackType;
         AttackID = NextID;

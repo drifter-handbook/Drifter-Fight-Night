@@ -16,34 +16,44 @@ public class MasterHit : MonoBehaviour, IMasterHit
     void Update()
     {
     }
-    public void callTheAerial(){
+    public void callTheAerial()
+    {
 
     }
-    public void cancelTheAerial(){
+    public void cancelTheAerial()
+    {
 
     }
-    public void callTheLight(){
+    public void callTheLight()
+    {
 
     }
-    public void cancelTheLight(){
+    public void cancelTheLight()
+    {
 
     }
-    public void callTheGrab(){
+    public void callTheGrab()
+    {
 
     }
-    public void cancelTheGrab(){
+    public void cancelTheGrab()
+    {
 
     }
-    public void callTheRecovery(){
+    public void callTheRecovery()
+    {
 
     }
-    public void cancelTheRecovery(){
+    public void cancelTheRecovery()
+    {
 
     }
-    public void callTheAttackEffect(){
+    public void callTheAttackEffect()
+    {
         //call the Attack here (using the parent)
     }
-    public void callTheMovementEffect(){
+    public void callTheMovementEffect()
+    {
         //call the movement caused by the attack here (in order to force move)
     }
 }

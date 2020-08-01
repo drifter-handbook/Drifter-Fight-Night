@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public enum PlayerAttackType
+public enum DrifterAttackType
 {
     Null,
     Ground_Q_Side, Ground_Q_Down, Ground_Q_Up, Ground_Q_Neutral,
@@ -15,16 +15,16 @@ public enum PlayerAttackType
 
 // collection of data on all attacks a player has
 [CreateAssetMenu(fileName = "AttackData", menuName = "VirtuaDrifter/AttackData", order = 69)]
-public class PlayerAttackData : ScriptableObject
+public class DrifterAttackData : ScriptableObject
 {
     [Serializable]
     public class SingleAttack
     {
-        public PlayerAttackType attack;
+        public DrifterAttackType attack;
         public SingleAttackData attackData;
     }
     public List<SingleAttack> Attacks = new List<SingleAttack>();
-    Dictionary<PlayerAttackType, SingleAttackData> AttackMap = new Dictionary<PlayerAttackType, SingleAttackData>();
+    Dictionary<DrifterAttackType, SingleAttackData> AttackMap = new Dictionary<DrifterAttackType, SingleAttackData>();
 
     void OnEnable()
     {
@@ -34,7 +34,7 @@ public class PlayerAttackData : ScriptableObject
         }
     }
 
-    public SingleAttackData this[PlayerAttackType attackType]
+    public SingleAttackData this[DrifterAttackType attackType]
     {
         get { return AttackMap[attackType]; }
     }

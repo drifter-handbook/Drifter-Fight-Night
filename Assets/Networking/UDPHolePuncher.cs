@@ -129,7 +129,7 @@ public class UDPHolePuncher : IDisposable
             const int MAX_CLIENTS_PER_PACKET = 10;
             for (int i = 0; i < MAX_CLIENTS_PER_PACKET && s.Contains("\n"); i++)
             {
-                string[] split = s.Split(new[] {"\n"}, 1, StringSplitOptions.None);
+                string[] split = s.Split(new[] { "\n" }, 1, StringSplitOptions.None);
                 HolePunchResponse r = JsonConvert.DeserializeObject<HolePunchResponse>(split[0]);
                 // validate and add to received clients
                 if (r.Error == "")

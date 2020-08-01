@@ -40,7 +40,7 @@ public class UDPConnection : IDisposable
         {
             try
             {
-                lock(udpLock)
+                lock (udpLock)
                 {
                     if (udpClient != null && udpClient.Available > 0)
                     {
@@ -59,7 +59,7 @@ public class UDPConnection : IDisposable
             {
             }
         }
-        lock(udpLock)
+        lock (udpLock)
         {
             udpClient.Close();
         }

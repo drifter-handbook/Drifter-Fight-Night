@@ -8,13 +8,13 @@ public class HitboxCollision : MonoBehaviour
     INetworkSync playerType;
 
     public int AttackID { get; set; }
-    public PlayerAttackType AttackType { get; set; }
+    public DrifterAttackType AttackType { get; set; }
 
     // Start is called before the first frame update
     CapsuleCollider2D capsule;
     void Start()
     {
-      capsule = GetComponentInChildren<CapsuleCollider2D>();
+        capsule = GetComponentInChildren<CapsuleCollider2D>();
         playerType = parent.GetComponent<INetworkSync>();
     }
 
@@ -25,8 +25,8 @@ public class HitboxCollision : MonoBehaviour
     }
     void OnTriggerEnter2D(Collider2D collider)
     {
-       Debug.Log("hi");
-     }
+        Debug.Log("hi");
+    }
 
     void OnTriggerStay2D(Collider2D collider)
     {
@@ -34,7 +34,7 @@ public class HitboxCollision : MonoBehaviour
         if (hurtbox != null)
         {
             string player = playerType.Type;
-            SingleAttackData attackData = GameController.Instance.PlayerData.GetAttacks(player)[AttackType];
+            SingleAttackData attackData = GameController.Instance.AllData.GetAttacks(player)[AttackType];
             hurtbox.parent.GetComponent<PlayerAttacking>().RegisterAttackHit(this, hurtbox, AttackID, attackData);
         }
     }

@@ -76,7 +76,7 @@ public class HitSparksSync : MonoBehaviour, INetworkSync
             y = transform.position.y,
             z = transform.position.z,
             effect = (int)GetComponent<HitSparks>().Effect,
-    };
+        };
         return data;
     }
 }

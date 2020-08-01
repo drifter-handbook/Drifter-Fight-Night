@@ -9,7 +9,7 @@ public class HurtboxCollision : MonoBehaviour
     CapsuleCollider2D capsule;
     void Start()
     {
-      capsule = GetComponentInChildren<CapsuleCollider2D>();
+        capsule = GetComponentInChildren<CapsuleCollider2D>();
     }
 
     // Update is called once per frame
@@ -19,6 +19,6 @@ public class HurtboxCollision : MonoBehaviour
     }
     void OnTriggerEnter2D(Collider2D collider)
     {
-       Debug.Log("hi");
-     }
+        Debug.Log("hi");
+    }
 }

@@ -1,15 +1,18 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Figurine : MonoBehaviour {
+public class Figurine : MonoBehaviour
+{
     public Image image;
     public string drifterName;
 
-    void OnMouseOver() {
+    void OnMouseOver()
+    {
         // populate the card
     }
 
-    void OnMouseDown() {
+    void OnMouseDown()
+    {
         // tell network the selection
     }
 

@@ -4,13 +4,6 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text;
 
-public class CharacterSelectState
-{
-    public int x = 0;
-    public int y = 0;
-    public bool locked = false;
-}
-
 public class CharacterSelectSyncPacket : IGamePacket
 {
     public IPAddress address { get; set; }

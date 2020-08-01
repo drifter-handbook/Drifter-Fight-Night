@@ -20,26 +20,31 @@ public class NetworkClient : MonoBehaviour, NetworkID
     Coroutine ConnectCoroutine;
 
     NetworkEntityList entities = GameController.Instance.Entities;
+    List<CharacterSelectState> CharacterSelectStates; // single source of truth
 
     void Start()
     {
         Network = new NetworkHandler(Host, HostID);
+        CharacterSelectStates = GetComponent<GameController>().CharacterSelectStates;
+
         // accept clients
         Network.OnConnect((addr, port, id) =>
         {
             Debug.Log($"Host visible at {addr}:{port}");
-            GetComponent<UIController>().CharacterSelectState.Add(new CharacterSelectState());
+            CharacterSelectStates.Add(new CharacterSelectState());
             // attempt to connect to host and obtain a PlayerID
             if (ConnectCoroutine == null)
             {
                 ConnectCoroutine = StartCoroutine(ConnectToHost());
             }
         });
+
         // on failure
         Network.OnFailure(() =>
         {
             Debug.Log($"Failed to connect to server {Network.HolePuncher.holePunchingServerName}:{Network.HolePuncher.holePunchingServerPort}");
         });
+
         // handle client setup
         Network.OnReceive(new ClientSetupPacket(), (id, packet) =>
         {
@@ -48,6 +53,7 @@ public class NetworkClient : MonoBehaviour, NetworkID
             // attach player input to player with ID
             GetComponent<PlayerInput>().input = new PlayerInputData();
         });
+
         // handle character select
         Network.OnReceive(new CharacterSelectSyncPacket(), (id, packet) =>
         {
@@ -56,14 +62,14 @@ public class NetworkClient : MonoBehaviour, NetworkID
                 return;
             }
             CharacterSelectState localCharSelect = new CharacterSelectState();
-            if (PlayerID < GetComponent<UIController>().CharacterSelectState.Count)
+            if (PlayerID < CharacterSelectStates.Count)
             {
-                localCharSelect = GetComponent<UIController>().CharacterSelectState[PlayerID];
+                localCharSelect = CharacterSelectStates[PlayerID];
             }
-            GetComponent<UIController>().CharacterSelectState = ((CharacterSelectSyncPacket)packet).Data.CharacterSelectState;
-            if (PlayerID < GetComponent<UIController>().CharacterSelectState.Count)
+            CharacterSelectStates = ((CharacterSelectSyncPacket)packet).Data.CharacterSelectState;
+            if (PlayerID < CharacterSelectStates.Count)
             {
-                GetComponent<UIController>().CharacterSelectState[PlayerID] = localCharSelect;
+                CharacterSelectStates[PlayerID] = localCharSelect;
             }
         }, true);
         // handle game input
@@ -99,9 +105,9 @@ public class NetworkClient : MonoBehaviour, NetworkID
         if (entities == null)
         {
             CharacterSelectState localCharSelect = new CharacterSelectState();
-            if (PlayerID < GetComponent<UIController>().CharacterSelectState.Count)
+            if (PlayerID < CharacterSelectStates.Count)
             {
-                localCharSelect = GetComponent<UIController>().CharacterSelectState[PlayerID];
+                localCharSelect = CharacterSelectStates[PlayerID];
             }
             Network.SendToAll(new CharacterSelectInputPacket()
             {

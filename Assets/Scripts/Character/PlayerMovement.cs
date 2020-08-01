@@ -48,29 +48,33 @@ public class PlayerMovement : MonoBehaviour
         attacking = GetComponent<PlayerAttacking>();
         status = GetComponent<PlayerStatus>();
     }
-    void doGrab(PlayerAttackData attackData){
-        attacking.PerformAttack(PlayerAttackType.E_Side);
+    void doGrab(DrifterAttackData attackData)
+    {
+        attacking.PerformAttack(DrifterAttackType.E_Side);
         SetAnimatorTrigger("Grab");
         StartMovementEffect(attackEffect?.Grab(), 0f);
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG, attackData[PlayerAttackType.E_Side].EndLag);
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG, attackData[DrifterAttackType.E_Side].EndLag);
     }
-    void doGroundLight(PlayerAttackData attackData){
-        attacking.PerformAttack(PlayerAttackType.Ground_Q_Neutral);
+    void doGroundLight(DrifterAttackData attackData)
+    {
+        attacking.PerformAttack(DrifterAttackType.Ground_Q_Neutral);
         SetAnimatorTrigger("Attack");
         StartMovementEffect(attackEffect?.Light(), 0f);
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG, attackData[PlayerAttackType.Ground_Q_Neutral].EndLag);
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG, attackData[DrifterAttackType.Ground_Q_Neutral].EndLag);
     }
-    void doAerialLight(PlayerAttackData attackData){
-        attacking.PerformAttack(PlayerAttackType.Aerial_Q_Neutral);
+    void doAerialLight(DrifterAttackData attackData)
+    {
+        attacking.PerformAttack(DrifterAttackType.Aerial_Q_Neutral);
         SetAnimatorTrigger("Aerial");
         StartMovementEffect(attackEffect?.Aerial(), 0f);
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG, attackData[PlayerAttackType.Aerial_Q_Neutral].EndLag);
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG, attackData[DrifterAttackType.Aerial_Q_Neutral].EndLag);
     }
-    void doRecovery(PlayerAttackData attackData){
-        attacking.PerformAttack(PlayerAttackType.W_Up);
+    void doRecovery(DrifterAttackData attackData)
+    {
+        attacking.PerformAttack(DrifterAttackType.W_Up);
         SetAnimatorTrigger("Recovery");
         StartMovementEffect(attackEffect?.Recovery(), 0f);
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG, attackData[PlayerAttackType.W_Up].EndLag);
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG, attackData[DrifterAttackType.W_Up].EndLag);
     }
     void Update()
     {
@@ -90,7 +94,7 @@ public class PlayerMovement : MonoBehaviour
         bool moving = input.MoveX != 0;
         SetAnimatorBool("Grounded", IsGrounded());
         // get attack data
-        PlayerAttackData attackData = GameController.Instance.PlayerData.GetAttacks(sync.Type);
+        DrifterAttackData attackData = GameController.Instance.AllData.GetAttacks(sync.Type);
 
         if (moving && canAct)
         {
@@ -298,7 +302,8 @@ public class PlayerMovement : MonoBehaviour
     {
         if (ef != null)
         {
-            movementEffects.Add(new AttackEffect() {
+            movementEffects.Add(new AttackEffect()
+            {
                 Effect = StartCoroutine(ef),
                 SuperArmor = superArmor,
                 Damage = 0

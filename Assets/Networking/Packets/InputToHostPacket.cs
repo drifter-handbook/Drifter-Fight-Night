@@ -15,7 +15,8 @@ public class PlayerInputData : ICloneable
 
     public object Clone()
     {
-        return new PlayerInputData() {
+        return new PlayerInputData()
+        {
             MoveX = MoveX,
             MoveY = MoveY,
             Jump = Jump,

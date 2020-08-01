@@ -11,17 +11,17 @@ public class DrifterData : ScriptableObject
 {
     [Header("UI Info")]
     [SerializeField] string readableName;
-    float damageTaken {get; set;} = 0;
-    
+    float damageTaken { get; set; } = 0;
+
     [Header("Movement")]
     [SerializeField] int jumps;
     [SerializeField] float weight;
     [SerializeField] float runSpeed;
     [SerializeField] float walkSpeed;
 
-    public string ReadableName { get { return readableName; }}
-    public int Jumps { get { return jumps; }}
-    public float Weight { get { return weight; }}
-    public float RunSpeed { get { return runSpeed; }}
-    public float WalkSpeed { get { return walkSpeed; }}
+    public string ReadableName { get { return readableName; } }
+    public int Jumps { get { return jumps; } }
+    public float Weight { get { return weight; } }
+    public float RunSpeed { get { return runSpeed; } }
+    public float WalkSpeed { get { return walkSpeed; } }
 }

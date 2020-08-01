@@ -17,13 +17,15 @@ public class CharacterCard : MonoBehaviour
         return card;
     }
 
-    public static void Animate(Transform card) {
+    public static void Animate(Transform card)
+    {
         card.localScale = new Vector3(1, 1, 1);
         card.localPosition = new Vector3(card.transform.localPosition.x, card.transform.localPosition.y, 0);
-        
+
     }
 
-    public static void SetCharacter(Transform card, Sprite sprite, string name) {
+    public static void SetCharacter(Transform card, Sprite sprite, string name)
+    {
         card.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = sprite;
         card.transform.GetChild(1).GetComponent<Text>().text = name;
     }

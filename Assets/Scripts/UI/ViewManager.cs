@@ -4,17 +4,18 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
 
+// TODO: Rename to Menu Manager
 // Handles the menu logic flow and sends important stuff back to the game controller to disseminate
 public class ViewManager : MonoBehaviour
 {
     [SerializeField]
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
     [Help("All views must be registered by being children of this game object!", UnityEditor.MessageType.Warning)]
-    #endif
+#endif
     Transform startingMenu;
-    
+
     GameController lucille = GameController.Instance;
-    
+
     public string hostIP; // TODO: Don't hardcode an IP when we ship the game 🤔
 
     string currentView;
@@ -24,12 +25,14 @@ public class ViewManager : MonoBehaviour
     {
         views = new Dictionary<string, Transform>();
         lucille = GameController.Instance;
-        if (views.Count <= 0) {
+        if (views.Count <= 0)
+        {
             foreach (var child in this.gameObject.GetComponentsInDirectChildren<Transform>())
             {
                 child.gameObject.SetActive(false);
 
-                if (views.ContainsKey(child.gameObject.name)) {
+                if (views.ContainsKey(child.gameObject.name))
+                {
                     Debug.LogWarning("Views already contains key " + child.gameObject.name + "!");
                     continue;
                 }
@@ -41,27 +44,32 @@ public class ViewManager : MonoBehaviour
         currentView = startingMenu.gameObject.name;
     }
 
-    public Transform GetView(string name) {
+    public Transform GetView(string name)
+    {
         return views[name];
     }
 
-    public void ShowView(string name){
+    public void ShowView(string name)
+    {
         views[currentView].gameObject.SetActive(false);
         currentView = name;
         views[name].gameObject.SetActive(true);
     }
 
-    public void SetIP(string ip) {
-         lucille.hostIP = ip;
+    public void SetIP(string ip)
+    {
+        lucille.hostIP = ip;
     }
 
-    public void GoToCharacterSelect(bool isHost){
-        lucille.isHost = isHost;
+    public void GoToCharacterSelect(bool isHost)
+    {
+        lucille.IsHost = isHost;
         lucille.ChooseYerDrifter();
     }
 
     // May be moved to game controller?
-    public void Exit() {
+    public void Exit()
+    {
         Application.Quit();
     }
 }
