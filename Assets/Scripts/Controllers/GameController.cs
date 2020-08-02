@@ -17,7 +17,7 @@ public struct ConnectedPlayer
 }
 
 [DisallowMultipleComponent]
-public class GameController : Singleton<GameController>
+public class GameController : MonoBehaviour
 {
     //* Serialized members
     [Header("Check box if hosting")]
@@ -40,11 +40,22 @@ public class GameController : Singleton<GameController>
     //* Variables
     string SceneName { get; set; }
 
-
+    //* This is a singleton (& the only singleton)
     protected GameController() { } // Get instance with GameController.Instance
+    private static GameController instance;
+    public static GameController Instance { get { return instance; } }
 
     private void Awake()
     {
+        if (instance != null && instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            instance = this;
+        }
+
         DontDestroyOnLoad(this.gameObject);
         PreLoad();
     }

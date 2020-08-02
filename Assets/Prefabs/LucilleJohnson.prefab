@@ -12,10 +12,9 @@ GameObject:
   - component: {fileID: 8676352996291465653}
   - component: {fileID: 8676352996291465608}
   - component: {fileID: 8676352996291465609}
-  - component: {fileID: 8851936783626537253}
   m_Layer: 0
   m_Name: LucilleJohnson
-  m_TagString: Untagged
+  m_TagString: GameController
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -46,14 +45,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 728bac8c0153ea64db36c3294a7de50f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerData: {fileID: 11400000, guid: 04b59cfe6c0acdc4e88c6e85a3b5a9a0, type: 2}
-  characterCardPrefab: {fileID: 4003946031545901092, guid: d6b1f0eec583ffb43bd3b968435124d3,
-    type: 3}
-  isHost: 0
-  Entities: {fileID: 0}
+  IsHost: 0
   hostIP: 68.187.67.135
   HostID: 18
-  playerNumber: 0
+  AllData: {fileID: 0}
+  CharacterSelectStates:
+  - {fileID: 0}
+  Entities: {fileID: 0}
+  characterCardPrefab: {fileID: 4003946031545901092, guid: d6b1f0eec583ffb43bd3b968435124d3,
+    type: 3}
 --- !u!114 &8676352996291465608
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81,15 +81,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   status: 0
   complete: 1
---- !u!114 &8851936783626537253
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8676352996291465652}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8bf870fe7f680d94184e23e9d289f9b3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
