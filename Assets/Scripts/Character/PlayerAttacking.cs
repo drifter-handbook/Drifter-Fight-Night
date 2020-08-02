@@ -42,6 +42,7 @@ public class PlayerAttacking : MonoBehaviour
         AttackID = NextID;
         foreach (HitboxCollision hitbox in GetComponentsInChildren<HitboxCollision>(true))
         {
+            hitbox.GetComponent<Collider2D>().enabled = false;
             hitbox.AttackID = AttackID;
             hitbox.AttackType = AttackType;
         }

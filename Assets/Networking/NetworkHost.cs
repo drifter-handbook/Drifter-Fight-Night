@@ -160,7 +160,7 @@ public class NetworkHost : MonoBehaviour, NetworkID
 
     void SetGameSyncInput(InputToHostPacket input, int id)
     {
-        if (entities != null && input?.input != null)
+        if (entities != null && input?.input != null && entities.Players[id] != null)
         {
             entities.Players[id]?.GetComponent<PlayerMovement>()?.input?.CopyFrom(input?.input);
         }
