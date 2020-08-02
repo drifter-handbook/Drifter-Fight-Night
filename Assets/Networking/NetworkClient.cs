@@ -57,6 +57,8 @@ public class NetworkClient : MonoBehaviour, NetworkID
         // handle character select
         Network.OnReceive(new CharacterSelectSyncPacket(), (id, packet) =>
         {
+            // TODO: Add UI to networking when done
+            return;
             if (PlayerID < 0)
             {
                 return;
@@ -104,6 +106,8 @@ public class NetworkClient : MonoBehaviour, NetworkID
         // send char select input to host
         if (entities == null)
         {
+            // TODO: Add UI to networking when done
+            return;
             CharacterSelectState localCharSelect = new CharacterSelectState();
             if (PlayerID < CharacterSelectStates.Count)
             {
