@@ -233,8 +233,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 728bac8c0153ea64db36c3294a7de50f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiController: {fileID: 0}
-  spawnController: {fileID: 0}
+  IsHost: 0
+  hostIP: 107.10.82.25
+  HostID: 182
+  AllData: {fileID: 0}
+  Entities: {fileID: 0}
+  characterCardPrefab: {fileID: 0}
 --- !u!4 &436048359
 Transform:
   m_ObjectHideFlags: 0

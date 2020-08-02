@@ -107,7 +107,7 @@ PlatformEffector2D:
   m_RotationalOffset: 0
   m_UseOneWay: 1
   m_UseOneWayGrouping: 0
-  m_SurfaceArc: 180
+  m_SurfaceArc: 140
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
@@ -301,7 +301,7 @@ PlatformEffector2D:
   m_RotationalOffset: 0
   m_UseOneWay: 1
   m_UseOneWayGrouping: 0
-  m_SurfaceArc: 180
+  m_SurfaceArc: 140
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
@@ -873,7 +873,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6237f21e42b45e43b2c2349712e8fef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deathAngle: 0
 --- !u!1 &5156570638018759565
 GameObject:
   m_ObjectHideFlags: 0
@@ -1001,7 +1000,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6237f21e42b45e43b2c2349712e8fef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deathAngle: 270
 --- !u!1 &5156570638392709057
 GameObject:
   m_ObjectHideFlags: 0
@@ -1052,7 +1050,7 @@ PlatformEffector2D:
   m_RotationalOffset: 0
   m_UseOneWay: 1
   m_UseOneWayGrouping: 0
-  m_SurfaceArc: 180
+  m_SurfaceArc: 140
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
@@ -1152,7 +1150,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6237f21e42b45e43b2c2349712e8fef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deathAngle: 90
 --- !u!1 &5156570638435360621
 GameObject:
   m_ObjectHideFlags: 0
@@ -1201,7 +1198,7 @@ PlatformEffector2D:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RotationalOffset: 0
-  m_UseOneWay: 1
+  m_UseOneWay: 0
   m_UseOneWayGrouping: 0
   m_SurfaceArc: 180
   m_UseSideFriction: 0
@@ -1417,7 +1414,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6237f21e42b45e43b2c2349712e8fef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deathAngle: 180
 --- !u!1 &5156570639183135475
 GameObject:
   m_ObjectHideFlags: 0
