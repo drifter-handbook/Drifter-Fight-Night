@@ -36,6 +36,7 @@ public class PlayerMovement : MonoBehaviour
     INetworkSync sync;
     PlayerAttacking attacking;
     PlayerStatus status;
+    IMasterHit hit;
 
     void Awake()
     {
@@ -47,9 +48,11 @@ public class PlayerMovement : MonoBehaviour
         sync = GetComponent<INetworkSync>();
         attacking = GetComponent<PlayerAttacking>();
         status = GetComponent<PlayerStatus>();
+        hit = GetComponentInChildren<IMasterHit>();
     }
     void doGrab(DrifterAttackData attackData)
     {
+        hit?.callTheGrab();
         attacking.PerformAttack(DrifterAttackType.E_Side);
         SetAnimatorTrigger("Grab");
         StartMovementEffect(attackEffect?.Grab(), 0f);
@@ -57,6 +60,7 @@ public class PlayerMovement : MonoBehaviour
     }
     void doGroundLight(DrifterAttackData attackData)
     {
+        hit?.callTheLight();
         attacking.PerformAttack(DrifterAttackType.Ground_Q_Neutral);
         SetAnimatorTrigger("Attack");
         StartMovementEffect(attackEffect?.Light(), 0f);
@@ -64,6 +68,7 @@ public class PlayerMovement : MonoBehaviour
     }
     void doAerialLight(DrifterAttackData attackData)
     {
+        hit?.callTheAerial();
         attacking.PerformAttack(DrifterAttackType.Aerial_Q_Neutral);
         SetAnimatorTrigger("Aerial");
         StartMovementEffect(attackEffect?.Aerial(), 0f);
@@ -71,6 +76,7 @@ public class PlayerMovement : MonoBehaviour
     }
     void doRecovery(DrifterAttackData attackData)
     {
+        hit?.callTheRecovery();
         attacking.PerformAttack(DrifterAttackType.W_Up);
         SetAnimatorTrigger("Recovery");
         StartMovementEffect(attackEffect?.Recovery(), 0f);
