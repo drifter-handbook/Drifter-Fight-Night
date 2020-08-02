@@ -21,7 +21,7 @@ public class PlayerAttacking : MonoBehaviour
     NetworkEntityList Entities;
 
     // ignore all hits if client
-    bool IsHost = GameController.Instance.IsHost;
+    bool IsHost => GameController.Instance.IsHost;
 
     // Start is called before the first frame update
     void Start()
