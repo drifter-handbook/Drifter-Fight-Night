@@ -108,7 +108,7 @@ public class NetworkHost : MonoBehaviour, NetworkID
         entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
         // create players
         List<string> playerNames = new List<string>() {
-            "Swordfrog",
+            "Spacejam",
             "Nero",
             "Lady Parhelion",
             "Ryyke"

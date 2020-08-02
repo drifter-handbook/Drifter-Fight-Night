@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HitSparksSync : MonoBehaviour, INetworkSync
+public class DeathExplosionSync : MonoBehaviour, INetworkSync
 {
     public bool Active { get; private set; }
     public float latency = 0.025f;
@@ -10,7 +10,7 @@ public class HitSparksSync : MonoBehaviour, INetworkSync
     Vector3 oldPos;
     Vector3 targetPos;
 
-    public string Type { get; private set; } = "HitSparks";
+    public string Type { get; private set; } = "DeathExplosion";
     public int ID { get; set; } = NetworkEntityList.NextID;
 
     Animator anim;
@@ -37,7 +37,7 @@ public class HitSparksSync : MonoBehaviour, INetworkSync
         transform.position = Vector3.Lerp(oldPos, targetPos, t);
     }
 
-    public class HitSparksData : INetworkEntityData
+    public class DeathExplosionData : INetworkEntityData
     {
         public string Type { get; set; } = "";
         public int ID { get; set; }
@@ -46,19 +46,16 @@ public class HitSparksSync : MonoBehaviour, INetworkSync
         public float y = 0f;
         public float z = 0f;
         public float angle = 0f;
-        public float scale = 0f;
-        public int effect = 0;
     }
 
     public void Deserialize(INetworkEntityData data)
     {
-        HitSparksData objData = data as HitSparksData;
+        DeathExplosionData objData = data as DeathExplosionData;
         if (objData != null)
         {
             if (!Active)
             {
                 transform.position = new Vector3(objData.x, objData.y, objData.z);
-                transform.localScale = objData.scale * Vector3.one;
                 transform.eulerAngles = new Vector3(0f, 0f, objData.angle);
             }
             Active = true;
@@ -66,23 +63,25 @@ public class HitSparksSync : MonoBehaviour, INetworkSync
             time = 0f;
             oldPos = transform.position;
             targetPos = new Vector3(objData.x, objData.y, objData.z);
-            anim.SetInteger("Animation", objData.effect);
         }
     }
 
     public INetworkEntityData Serialize()
     {
-        HitSparksData data = new HitSparksData()
+        DeathExplosionData data = new DeathExplosionData()
         {
             name = gameObject.name,
             ID = ID,
             x = transform.position.x,
             y = transform.position.y,
             z = transform.position.z,
-            angle = transform.eulerAngles.z,
-            scale = transform.localScale.x,
-            effect = (int)GetComponent<HitSparks>().Effect,
+            angle = transform.eulerAngles.z
         };
         return data;
+    }
+
+    public void Cleanup()
+    {
+        Destroy(gameObject);
     }
 }

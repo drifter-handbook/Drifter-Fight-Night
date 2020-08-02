@@ -45,6 +45,8 @@ public class NetworkEntityConverter : Newtonsoft.Json.Converters.CustomCreationC
                 return new SpacejamBellSync.BellData();
             case "HitSparks":
                 return new HitSparksSync.HitSparksData();
+            case "DeathExplosion":
+                return new DeathExplosionSync.DeathExplosionData();
         }
         throw new InvalidOperationException(string.Format("The entity type {0} is not supported!", type));
     }

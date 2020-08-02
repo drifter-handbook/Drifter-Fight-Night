@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class killboxScript : MonoBehaviour
 {
+    public float deathAngle;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,8 +22,14 @@ public class killboxScript : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            Debug.Log("Destroy(other.gameObject);");
-
+            Destroy(other.gameObject);
+            // create death explosion
+            NetworkEntityList Entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
+            GameObject deathExplosion = Instantiate(Entities.GetEntityPrefab("DeathExplosion"),
+                other.transform.position,
+                Quaternion.identity);
+            deathExplosion.transform.eulerAngles = new Vector3(0f, 0f, deathAngle);
+            Entities.AddEntity(deathExplosion);
         }
     }
 }
