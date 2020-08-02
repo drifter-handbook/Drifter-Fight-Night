@@ -63,6 +63,7 @@ public class GameController : MonoBehaviour
     void PreLoad()
     {
         // Do something!
+        BeginHandshake();
     }
 
     public void Load(string sceneName)
@@ -106,5 +107,13 @@ public class GameController : MonoBehaviour
         // Create player characters & give them an input
         // Yeet into world and allow playing the game
         GetComponent<NetworkHost>()?.StartGame();
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            GetComponent<NetworkHost>()?.StartGame();
+        }
     }
 }
