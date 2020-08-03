@@ -21,12 +21,26 @@ public class killboxScript : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            Destroy(other.gameObject);
+
+
             // create death explosion
             NetworkEntityList Entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
             GameObject deathExplosion = Instantiate(Entities.GetEntityPrefab("DeathExplosion"),
                 other.transform.position,
                 Quaternion.identity);
+
+            if (Entities.hasStocks(other.gameObject))
+            {
+                other.transform.position = new Vector2(0, 25);
+                //other.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                UnityEngine.Debug.Log("Stock Deducted");
+            }
+            else
+            {
+                Destroy(other.gameObject);
+            }
+            
+
             // calculate angle
             Vector2 center = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2));
             List<Vector2> bounds = new List<Vector2>()
