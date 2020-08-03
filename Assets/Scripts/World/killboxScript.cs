@@ -31,8 +31,8 @@ public class killboxScript : MonoBehaviour
 
             if (Entities.hasStocks(other.gameObject))
             {
+                other.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
                 other.transform.position = new Vector2(0, 25);
-                //other.GetComponent<Rigidbody>().velocity = Vector3.zero;
                 UnityEngine.Debug.Log("Stock Deducted");
             }
             else
