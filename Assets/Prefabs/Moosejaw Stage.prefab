@@ -69,7 +69,7 @@ GameObject:
   - component: {fileID: 756179633}
   - component: {fileID: 756179632}
   m_Layer: 0
-  m_Name: MoosejawPlatform (1)
+  m_Name: MoosejawPlatformLeft
   m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -83,14 +83,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 756179630}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.1, y: 2.65, z: 95.452644}
+  m_LocalPosition: {x: -9.5, y: -1, z: 95.452644}
   m_LocalScale: {x: -0.5591754, y: 0.43364924, z: 2.6278124}
   m_Children:
   - {fileID: 862085227}
   - {fileID: 826892659}
   - {fileID: 1587847242}
   m_Father: {fileID: 5156570639183135474}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!251 &756179633
 PlatformEffector2D:
@@ -263,7 +263,7 @@ GameObject:
   - component: {fileID: 1318394765}
   - component: {fileID: 1318394764}
   m_Layer: 0
-  m_Name: MoosejawPlatform (2)
+  m_Name: MoosejawPlatformTop
   m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -277,14 +277,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1318394762}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -18, y: 8, z: 95.452644}
+  m_LocalPosition: {x: 5.5, y: 6, z: 95.452644}
   m_LocalScale: {x: 0.5591754, y: 0.43364924, z: 2.6278124}
   m_Children:
   - {fileID: 562122737}
   - {fileID: 1501725547}
   - {fileID: 1910816517}
   m_Father: {fileID: 5156570639183135474}
-  m_RootOrder: 5
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!251 &1318394765
 PlatformEffector2D:
@@ -720,7 +720,7 @@ Transform:
   - {fileID: 5156570638178631839}
   - {fileID: 5156570638616692422}
   m_Father: {fileID: 5156570639183135474}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5156570637720607462
 GameObject:
@@ -732,6 +732,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5156570637720607461}
   - component: {fileID: 5156570637720607460}
+  - component: {fileID: 2504163230790832075}
   m_Layer: 0
   m_Name: MapSprite
   m_TagString: Untagged
@@ -803,6 +804,31 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!68 &2504163230790832075
+EdgeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5156570637720607462}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_EdgeRadius: 0
+  m_Points:
+  - {x: -2.5533676, y: 0.4483372}
+  - {x: -2.5467343, y: 0.5967935}
+  - {x: 2.5378711, y: 0.5967935}
+  - {x: 2.53641, y: 0.4483372}
+  - {x: 2.0755014, y: -0.16103409}
+  - {x: 1.5511906, y: -0.5428246}
+  - {x: -1.3492345, y: -0.5376142}
+  - {x: -1.9995273, y: -0.17918816}
+  - {x: -2.5507002, y: 0.45427576}
 --- !u!1 &5156570637747085167
 GameObject:
   m_ObjectHideFlags: 0
@@ -829,8 +855,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5156570637747085167}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 58.07573, y: 22.183607, z: 74.70213}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 64.1, y: 5.89, z: 74.70213}
+  m_LocalScale: {x: 1, y: 0.8, z: 1}
   m_Children: []
   m_Father: {fileID: 5156570637442938336}
   m_RootOrder: 0
@@ -956,8 +982,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5156570638178631833}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.12426758, y: -28.91639, z: 74.70213}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 1.6, y: -31.61, z: 74.70213}
+  m_LocalScale: {x: 0.865, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5156570637442938336}
   m_RootOrder: 2
@@ -1012,7 +1038,7 @@ GameObject:
   - component: {fileID: 5156570638392709063}
   - component: {fileID: 5156570638392709056}
   m_Layer: 0
-  m_Name: MoosejawPlatform
+  m_Name: MoosejawPlatformRight
   m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1026,14 +1052,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5156570638392709057}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 30.47, y: 2.65, z: 95.452644}
+  m_LocalPosition: {x: 20.5, y: -1, z: 95.452644}
   m_LocalScale: {x: 0.5591754, y: 0.43364924, z: 2.6278124}
   m_Children:
   - {fileID: 5156570637297226530}
   - {fileID: 5156570638018759564}
   - {fileID: 5156570637297592664}
   m_Father: {fileID: 5156570639183135474}
-  m_RootOrder: 0
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!251 &5156570638392709063
 PlatformEffector2D:
@@ -1106,8 +1132,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5156570638415516887}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.12426758, y: 36.68361, z: 74.70213}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 1.43, y: 43.2, z: 74.70213}
+  m_LocalScale: {x: 0.865, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5156570637442938336}
   m_RootOrder: 1
@@ -1159,8 +1185,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5156570638435360609}
-  - component: {fileID: 5156570638435360611}
-  - component: {fileID: 5156570638435360620}
+  - component: {fileID: 3057107646034982017}
   m_Layer: 0
   m_Name: MoosejawMainPlatform
   m_TagString: Ground
@@ -1176,36 +1201,17 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5156570638435360621}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 9.4, y: -5.4, z: 95.452644}
+  m_LocalPosition: {x: 5.5, y: -7.74, z: 95.452644}
   m_LocalScale: {x: 2.414808, y: 0.4336492, z: 2.6278124}
   m_Children:
   - {fileID: 5156570638499960682}
   - {fileID: 5156570638436173333}
   - {fileID: 5156570637720607461}
   m_Father: {fileID: 5156570639183135474}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!251 &5156570638435360611
-PlatformEffector2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5156570638435360621}
-  m_Enabled: 1
-  m_UseColliderMask: 1
-  m_ColliderMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RotationalOffset: 0
-  m_UseOneWay: 0
-  m_UseOneWayGrouping: 0
-  m_SurfaceArc: 180
-  m_UseSideFriction: 0
-  m_UseSideBounce: 0
-  m_SideArc: 1
---- !u!61 &5156570638435360620
-BoxCollider2D:
+--- !u!68 &3057107646034982017
+EdgeCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1215,21 +1221,20 @@ BoxCollider2D:
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_UsedByEffector: 1
+  m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 5.12, y: 1.92}
-    newSize: {x: 24, y: 7.5}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 24, y: 7.5}
   m_EdgeRadius: 0
+  m_Points:
+  - {x: -11.537308, y: 3.973075}
+  - {x: 11.747722, y: 3.636249}
+  - {x: 11.756948, y: 0.4571498}
+  - {x: 9.526711, y: -17.357122}
+  - {x: 6.2104497, y: -29.713108}
+  - {x: -6.486418, y: -29.812517}
+  - {x: -9.633372, y: -15.465904}
+  - {x: -11.534937, y: 0.4024198}
+  - {x: -11.542096, y: 3.8448415}
 --- !u!1 &5156570638436173334
 GameObject:
   m_ObjectHideFlags: 0
@@ -1313,7 +1318,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5156570638499960683}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -12, y: 0, z: 0}
+  m_LocalPosition: {x: -12.289, y: 0.42, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5156570638435360609}
@@ -1370,8 +1375,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5156570638616692417}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -51.07573, y: 22.183607, z: 74.70213}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -60.91, y: 5.9, z: 74.70213}
+  m_LocalScale: {x: 1, y: 0.8, z: 1}
   m_Children: []
   m_Father: {fileID: 5156570637442938336}
   m_RootOrder: 3
@@ -1441,12 +1446,12 @@ Transform:
   m_LocalPosition: {x: -10.475733, y: 5.216393, z: -79.172646}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 5156570638392709061}
-  - {fileID: 5156570638435360609}
   - {fileID: 5156570637442938336}
   - {fileID: 5156570638340232250}
-  - {fileID: 756179631}
+  - {fileID: 5156570638435360609}
   - {fileID: 1318394763}
+  - {fileID: 5156570638392709061}
+  - {fileID: 756179631}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1465,12 +1470,12 @@ PrefabInstance:
     - target: {fileID: 2679157069034588556, guid: cc6149921e5f11441af906d846e8070e,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.5
+      value: 5.46
       objectReference: {fileID: 0}
     - target: {fileID: 2679157069034588556, guid: cc6149921e5f11441af906d846e8070e,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.67
+      value: -0.16
       objectReference: {fileID: 0}
     - target: {fileID: 2679157069034588556, guid: cc6149921e5f11441af906d846e8070e,
         type: 3}
@@ -1500,7 +1505,7 @@ PrefabInstance:
     - target: {fileID: 2679157069034588556, guid: cc6149921e5f11441af906d846e8070e,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2679157069034588556, guid: cc6149921e5f11441af906d846e8070e,
         type: 3}
@@ -1516,6 +1521,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2679157069034588556, guid: cc6149921e5f11441af906d846e8070e,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 11.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2679157069034588556, guid: cc6149921e5f11441af906d846e8070e,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 10.95
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cc6149921e5f11441af906d846e8070e, type: 3}
