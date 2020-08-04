@@ -660,7 +660,7 @@ GameObject:
   - component: {fileID: 1000163871}
   m_Layer: 5
   m_Name: Canvas
-  m_TagString: Untagged
+  m_TagString: CombatUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -722,7 +722,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
-  m_SortingLayerID: 0
+  m_SortingLayerID: 1157974985
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!224 &1000163874
@@ -1174,8 +1174,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1232850341074944074, guid: 908190fe8f231ad4bb5bb812f06be118,
         type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -182.47997
+      propertyPath: m_LocalPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8805985096238330664, guid: 908190fe8f231ad4bb5bb812f06be118,
         type: 3}

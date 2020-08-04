@@ -56,7 +56,7 @@ public class NetworkEntityList : MonoBehaviour
     {
         AddEntity(player);
         Players[playerID] = player;
-        Stocks[player] = 2;
+        Stocks[player] = 3;
     }
 
     public void AddEntity(GameObject entity)
@@ -66,8 +66,11 @@ public class NetworkEntityList : MonoBehaviour
 
     public bool hasStocks(GameObject character)
     {
+        if (character == null || !Stocks.ContainsKey(character))
+        {
+            return false;
+        }
         if (Stocks[character] > 0) {
-            --Stocks[character];
             return true;
         }
         return false;

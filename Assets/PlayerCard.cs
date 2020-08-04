@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -29,7 +30,7 @@ public class PlayerCard : MonoBehaviour
         for(int i = 1; i< MAX_STOCKS; i++)
         {
             GameObject newStock = Instantiate(stock, new Vector3(0,0), Quaternion.identity);
-            newStock.transform.parent = stockHolder.transform;
+            newStock.transform.SetParent(stockHolder.transform, false);
             newStock.transform.localScale = new Vector3(1, 1, 1);
             newStock.GetComponent<Image>().sprite = stockImage;
             currStocks++;
@@ -47,15 +48,17 @@ public class PlayerCard : MonoBehaviour
         {
             return;
         }
+        currStocks -= num;
 
         if (stockHolder.transform.childCount < num)
         {
             num = stockHolder.transform.childCount;
         }
-
-        for(int i = 0; i<num; i++)
+        Debug.Log("Running2");
+        for (int i = 0; i<num; i++)
         {
-            Destroy(stockHolder.transform.GetChild(0));
+            Debug.Log("Runnin3");
+            Destroy(stockHolder.transform.GetChild(0).gameObject);
         }
 
     }
@@ -65,6 +68,15 @@ public class PlayerCard : MonoBehaviour
     {
         this.face.GetComponent<Image>().sprite = face;
         this.stockImage = stock;
+    }
+
+    internal void removeToStock(int stocks)
+    {
+        if (currStocks > stocks)
+        {
+            Debug.Log("Running");
+            removeStock();
+        }
     }
 
     public void setPercent(float sentPercent)

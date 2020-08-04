@@ -13,6 +13,7 @@ TagManager:
   - Primary
   - Secondary
   - Extra
+  - CombatUI
   layers:
   - Default
   - TransparentFX
@@ -52,4 +53,7 @@ TagManager:
     locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: UI
+    uniqueID: 1157974985
     locked: 0
