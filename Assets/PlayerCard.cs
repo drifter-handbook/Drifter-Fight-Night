@@ -54,10 +54,8 @@ public class PlayerCard : MonoBehaviour
         {
             num = stockHolder.transform.childCount;
         }
-        Debug.Log("Running2");
         for (int i = 0; i<num; i++)
         {
-            Debug.Log("Runnin3");
             Destroy(stockHolder.transform.GetChild(0).gameObject);
         }
 
@@ -74,7 +72,6 @@ public class PlayerCard : MonoBehaviour
     {
         if (currStocks > stocks)
         {
-            Debug.Log("Running");
             removeStock();
         }
     }

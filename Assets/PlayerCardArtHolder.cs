@@ -28,7 +28,6 @@ public class PlayerCardArtHolder : MonoBehaviour
             playerCards = new PlayerCard[drifters.Length];
 
             int i = 0; //i know i know i just like foreach ok
-            Debug.Log(drifters.Length);
             foreach (Drifter drifter in drifters)
             {
                 GameObject newCard = Instantiate(summaryCardPrefab, transform.position, transform.rotation);
