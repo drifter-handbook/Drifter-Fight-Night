@@ -67,7 +67,7 @@ public class PlayerSync : MonoBehaviour, INetworkSync
             if (!active)
             {
                 transform.position = new Vector3(playerData.x, playerData.y, playerData.z);
-                gameObject.GetComponent<SpriteRenderer>().color = playerData.color;
+                gameObject.GetComponentInChildren<SpriteRenderer>().color = playerData.color;
             }
             active = true;
             // move from current position to final position in latency seconds
@@ -98,7 +98,7 @@ public class PlayerSync : MonoBehaviour, INetworkSync
             animatorState = (PlayerAnimatorState)GetComponent<PlayerMovement>().animatorState.Clone(),
             stocks = Entities.Stocks.ContainsKey(gameObject) ? Entities.Stocks[gameObject] : 0,
             damageTaken = gameObject.GetComponent<Drifter>().DamageTaken,
-            color = gameObject.GetComponent<SpriteRenderer>().color
+            color = gameObject.GetComponentInChildren<SpriteRenderer>().color
         };
         GetComponent<PlayerMovement>().ResetAnimatorTriggers();
         return data;
