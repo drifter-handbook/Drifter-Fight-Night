@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum PlayerStatusEffect
 {
-    END_LAG, KNOCKBACK
+    END_LAG, KNOCKBACK, INVULN
 }
 
 public class PlayerStatus : MonoBehaviour
@@ -22,7 +22,10 @@ public class PlayerStatus : MonoBehaviour
     {
 
     }
-
+    public bool HasInulvernability(PlayerStatusEffect ef)
+    {
+        return HasStatusEffect(PlayerStatusEffect.INVULN);
+    }
     public bool HasStatusEffect(PlayerStatusEffect ef)
     {
         return statusEffects.ContainsKey(ef) && statusEffects[ef] > 0;

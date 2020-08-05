@@ -21,26 +21,19 @@ public class killboxScript : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-
-
             // create death explosion
             NetworkEntityList Entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
             GameObject deathExplosion = Instantiate(Entities.GetEntityPrefab("DeathExplosion"),
                 other.transform.position,
                 Quaternion.identity);
-
-            if (Entities.hasStocks(other.gameObject))
-            {
-                other.transform.position = new Vector2(0, 25);
-                //other.GetComponent<Rigidbody>().velocity = Vector3.zero;
-                UnityEngine.Debug.Log("Stock Deducted");
-            }
-            else
-            {
-                Destroy(other.gameObject);
-            }
-            
-
+            // calculate pos
+            Vector2 minPos = Camera.main.ScreenToWorldPoint(new Vector3(0f, 0f));
+            Vector2 maxPos = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height));
+            deathExplosion.transform.position = new Vector3(
+                Mathf.Clamp(deathExplosion.transform.position.x, minPos.x, maxPos.x),
+                Mathf.Clamp(deathExplosion.transform.position.y, minPos.y, maxPos.y),
+                deathExplosion.transform.position.z
+            );
             // calculate angle
             Vector2 center = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2));
             List<Vector2> bounds = new List<Vector2>()
@@ -71,6 +64,23 @@ public class killboxScript : MonoBehaviour
             }
             deathExplosion.transform.eulerAngles = new Vector3(0f, 0f, bestAngle);
             Entities.AddEntity(deathExplosion);
+
+            // respawn
+            if (other.gameObject != null && Entities.Stocks.ContainsKey(other.gameObject))
+            {
+                Entities.Stocks[other.gameObject]--;
+                other.gameObject.GetComponent<Drifter>().DamageTaken = 0f;
+            }
+            if (Entities.hasStocks(other.gameObject))
+            {
+                other.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+                other.transform.position = new Vector2(0, 25);
+                UnityEngine.Debug.Log("Stock Deducted");
+            }
+            else
+            {
+                Destroy(other.gameObject);
+            }
         }
     }
 }

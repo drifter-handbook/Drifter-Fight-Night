@@ -32,7 +32,7 @@ public class HitboxCollision : MonoBehaviour
     {
         Debug.Log("name " + name + " " + (gameObject.activeSelf || gameObject.activeInHierarchy));
         HurtboxCollision hurtbox = collider.GetComponent<HurtboxCollision>();
-        if (hurtbox != null)
+        if (hurtbox != null && AttackType != DrifterAttackType.Null)
         {
             string player = playerType.Type;
             SingleAttackData attackData = GameController.Instance.AllData.GetAttacks(player)[AttackType];

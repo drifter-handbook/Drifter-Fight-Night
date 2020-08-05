@@ -15,6 +15,13 @@ public class PlayerSync : MonoBehaviour, INetworkSync
     public string Type { get { return NetworkSyncType; } }
     public int ID { get; set; } = NetworkEntityList.NextID;
 
+    NetworkEntityList Entities;
+
+    void Awake()
+    {
+        Entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -46,7 +53,10 @@ public class PlayerSync : MonoBehaviour, INetworkSync
         public float y = 0f;
         public float z = 0f;
         public bool facing = false;
+        public int stocks = 0;
+        public float damageTaken = 0f;
         public PlayerAnimatorState animatorState = new PlayerAnimatorState();
+        public Color color;
     }
 
     public void Deserialize(INetworkEntityData data)
@@ -57,6 +67,7 @@ public class PlayerSync : MonoBehaviour, INetworkSync
             if (!active)
             {
                 transform.position = new Vector3(playerData.x, playerData.y, playerData.z);
+                gameObject.GetComponentInChildren<SpriteRenderer>().color = playerData.color;
             }
             active = true;
             // move from current position to final position in latency seconds
@@ -66,6 +77,11 @@ public class PlayerSync : MonoBehaviour, INetworkSync
             targetPos = new Vector3(playerData.x, playerData.y, playerData.z);
             GetComponent<PlayerMovement>().SyncAnimatorState(playerData.animatorState);
             GetComponent<PlayerMovement>().IsClient = true;
+            if (Entities.Stocks.ContainsKey(gameObject))
+            {
+                Entities.Stocks[gameObject] = playerData.stocks;
+            }
+            gameObject.GetComponent<Drifter>().DamageTaken = playerData.damageTaken;
         }
     }
 
@@ -79,7 +95,10 @@ public class PlayerSync : MonoBehaviour, INetworkSync
             y = transform.position.y,
             z = transform.position.z,
             facing = GetComponentInChildren<SpriteRenderer>().flipX,
-            animatorState = (PlayerAnimatorState)GetComponent<PlayerMovement>().animatorState.Clone()
+            animatorState = (PlayerAnimatorState)GetComponent<PlayerMovement>().animatorState.Clone(),
+            stocks = Entities.Stocks.ContainsKey(gameObject) ? Entities.Stocks[gameObject] : 0,
+            damageTaken = gameObject.GetComponent<Drifter>().DamageTaken,
+            color = gameObject.GetComponentInChildren<SpriteRenderer>().color
         };
         GetComponent<PlayerMovement>().ResetAnimatorTriggers();
         return data;
