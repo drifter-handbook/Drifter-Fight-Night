@@ -160,7 +160,10 @@ public class NetworkClient : MonoBehaviour, NetworkID
         // remove all physics for synced objects
         foreach (GameObject obj in entities.Entities)
         {
-            obj.GetComponent<Rigidbody2D>().simulated = false;
+            if (obj != null)
+            {
+                obj.GetComponent<Rigidbody2D>().simulated = false;
+            }
         }
     }
 
@@ -183,9 +186,9 @@ public class NetworkClient : MonoBehaviour, NetworkID
         // sync objects
         for (int i = 0; i < entities.Entities.Count; i++)
         {
-            entities.Entities[i].GetComponent<Rigidbody2D>().simulated = false;
             if (entities.Entities[i] != null)
             {
+                entities.Entities[i].GetComponent<Rigidbody2D>().simulated = false;
                 INetworkSync entitySync = entities.Entities[i].GetComponent<INetworkSync>();
                 if (entitySync != null)
                 {

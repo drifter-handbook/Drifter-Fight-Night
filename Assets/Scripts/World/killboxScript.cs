@@ -68,7 +68,7 @@ public class killboxScript : MonoBehaviour
             // respawn
             if (other.gameObject != null)
             {
-                gameObject.GetComponent<Drifter>().Stocks--;
+                other.gameObject.GetComponent<Drifter>().Stocks--;
                 other.gameObject.GetComponent<Drifter>().DamageTaken = 0f;
             }
             if (Entities.hasStocks(other.gameObject))
