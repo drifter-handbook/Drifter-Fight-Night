@@ -8,12 +8,12 @@ public class CharacterCard : MonoBehaviour
 {
 
     //try to add player, return false if over max
-    public static Transform CreatePlayerCard(Color color)
+    public static GameObject CreatePlayerCard(Color color)
     {
         // TODO: Show specific character based on selection
-        Transform card = Instantiate(GameController.Instance.characterCardPrefab).transform;
-        card.GetChild(0).GetComponent<Image>().color = color;
-        Animate(card);
+        GameObject card = Instantiate(GameController.Instance.characterCardPrefab);
+        card.transform.GetChild(0).GetComponent<Image>().color = color;
+        Animate(card.transform);
         return card;
     }
 
