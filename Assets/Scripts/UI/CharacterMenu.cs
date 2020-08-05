@@ -9,19 +9,28 @@ public class CharacterMenu : MonoBehaviour
     // Make a note of these so we don't lose them to the source control gods
     // (You will have to modify the alpha value in inspector because -\_(o.o)_/-)
     // public List<Color> colorList = new List<Color> {
-    //     new Color(255,   0,   0, 1f),
-    //     new Color(255, 204,   0, 1f),
-    //     new Color( 32, 221,  30, 1f),
-    //     new Color( 19, 179, 231, 1f),
-    //     new Color(185,  16, 255, 1f),
-    //     new Color(255,  16, 144, 1f),
-    //     new Color(255, 140,  42, 1f),
-    //     new Color(  0, 255, 221, 1f),
+    //     new Color(255,   0,   0),
+    //     new Color(255, 204,   0),
+    //     new Color( 32, 221,  30),
+    //     new Color( 19, 179, 231),
+    //     new Color(185,  16, 255),
+    //     new Color(255,  16, 144),
+    //     new Color(255, 140,  42),
+    //     new Color(  0, 255, 221),
     // };
 
-    private int clientPlayerID = 0; //the person looking at the screen
+    List<PlayerColor> colorList = new List<PlayerColor>{
+        PlayerColor.RED,
+        PlayerColor.GOLD,
+        PlayerColor.GREEN,
+        PlayerColor.BLUE,
+        PlayerColor.PURPLE,
+        PlayerColor.MAGENTA,
+        PlayerColor.ORANGE,
+        PlayerColor.CYAN
+    };
 
-    public List<Color> colorList = new List<Color>();
+    private int clientPlayerID = 0; //the person looking at the screen
 
     public GameObject leftPanel;
     public GameObject rightPanel;
@@ -30,7 +39,7 @@ public class CharacterMenu : MonoBehaviour
     private int maxPlayers = 8; //the # of players allowed in the lobby
 
     private List<PlayerData> playerDataList = new List<PlayerData>();
-   
+
     public GameObject[] figurines;
     public Sprite[] images;
     private GameObject clientArrow;
@@ -38,7 +47,7 @@ public class CharacterMenu : MonoBehaviour
     //determines how many player cards we can fit on a panel
     private const int PANEL_MAX_PLAYERS = 4;
 
-    public GameObject arrowPrefab; 
+    public GameObject arrowPrefab;
 
     public void debugClientIncrementPlayerID()
     {
@@ -52,9 +61,9 @@ public class CharacterMenu : MonoBehaviour
 
     public PlayerData getPlayerData(int id)
     {
-        foreach(PlayerData playerData in playerDataList)
+        foreach (PlayerData playerData in playerDataList)
         {
-            if(playerData.PlayerID == clientPlayerID)
+            if (playerData.PlayerID == clientPlayerID)
             {
                 return playerData;
             }
@@ -72,7 +81,9 @@ public class CharacterMenu : MonoBehaviour
         playerDataList.Add(player);
 
         // TODO: Show specific character based on selection
-        GameObject charCard = CharacterCard.CreatePlayerCard(colorList[0]);
+
+        player.PlayerColor = colorList[0];
+        GameObject charCard = CharacterCard.CreatePlayerCard(player.getColorFromEnum());
         player.characterCard = charCard;
         Transform card = charCard.transform;
         colorList.RemoveAt(0);
@@ -102,8 +113,8 @@ public class CharacterMenu : MonoBehaviour
             leftPanel.transform.childCount >= index) ? leftPanel.transform
             : rightPanel.transform;
 
-        colorList.Add(parent.GetChild(index).transform.GetChild(0).gameObject.GetComponent<Image>().color); //this line still hurts my bones
-        //we should probably just assign color to a "player" data structure but I'm lazy rn
+        colorList.Add(getPlayerData(index).PlayerColor);
+
         Destroy(parent.GetChild(index % PANEL_MAX_PLAYERS).gameObject);
         connectedPlayers--;
     }
@@ -111,7 +122,7 @@ public class CharacterMenu : MonoBehaviour
     public void selectDrifter(int drifterIndex)
     {
         PlayerData myData = getPlayerData(clientPlayerID);
-        if(clientArrow != null)
+        if (clientArrow != null)
         {
             Destroy(clientArrow);
         }
@@ -121,12 +132,12 @@ public class CharacterMenu : MonoBehaviour
         clientArrow.transform.SetParent(figurines[drifterIndex].transform);
         clientArrow.transform.localPosition = new Vector3(0, 0, 0);
         clientArrow.transform.localScale = new Vector3(1, 1, 1);
-        clientArrow.GetComponent<Image>().color = myData.PlayerColor;
-        if(myData.characterCard != null)
+        clientArrow.GetComponent<Image>().color = myData.getColorFromEnum();
+        if (myData.characterCard != null)
         {
             CharacterCard.SetCharacter(myData.characterCard.transform, images[drifterIndex], fetchCharacterName(drifterIndex));
         }
-       
+
     }
 
     public string fetchCharacterName(int charID)
@@ -138,7 +149,7 @@ public class CharacterMenu : MonoBehaviour
             case 2: return "Lady Parhelion";
             case 3: return "Rykke";
             case 4: return "Space Jame";
-           default: return "???";
+            default: return "???";
         }
     }
 }
