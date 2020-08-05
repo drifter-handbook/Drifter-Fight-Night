@@ -21,7 +21,7 @@ public class PlayerCardArtHolder : MonoBehaviour
 
     private void Update()
     {
-        if (drifters == null)
+        if (drifters == null || drifters.Length == 0)
         {
             drifters = FindObjectsOfType<Drifter>();
 
@@ -45,9 +45,9 @@ public class PlayerCardArtHolder : MonoBehaviour
         {
             playerCards[i].setPercent(drifters[i].DamageTaken);
             // update stocks
-            if (drifters[i] != null && Entities.Stocks.ContainsKey(drifters[i].gameObject))
+            if (drifters[i] != null)
             {
-                playerCards[i].removeToStock(Entities.Stocks[drifters[i].gameObject]);
+                playerCards[i].removeToStock(drifters[i].Stocks);
             }
             else
             {

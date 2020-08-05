@@ -21,10 +21,6 @@ public class NetworkEntityList : MonoBehaviour
     static int nextID = 0;
     public static int NextID { get { nextID++; return nextID; } }
 
-    //Noah's Stock Garbage
-    // map from PlayerObject -> Stock Count
-    public Dictionary<GameObject, int> Stocks = new Dictionary<GameObject, int>();
-
     void Awake()
     {
         nextID = 0;
@@ -56,7 +52,7 @@ public class NetworkEntityList : MonoBehaviour
     {
         AddEntity(player);
         Players[playerID] = player;
-        Stocks[player] = 3;
+        player.GetComponent<Drifter>().Stocks = 3;
     }
 
     public void AddEntity(GameObject entity)
@@ -66,11 +62,11 @@ public class NetworkEntityList : MonoBehaviour
 
     public bool hasStocks(GameObject character)
     {
-        if (character == null || !Stocks.ContainsKey(character))
+        if (character == null)
         {
             return false;
         }
-        if (Stocks[character] > 0) {
+        if (character.GetComponent<Drifter>().Stocks > 0) {
             return true;
         }
         return false;

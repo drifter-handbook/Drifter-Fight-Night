@@ -98,10 +98,7 @@ public class PlayerSync : MonoBehaviour, INetworkSync
             targetPos = new Vector3(playerData.x, playerData.y, playerData.z);
             GetComponent<PlayerMovement>().SyncAnimatorState(playerData.animatorState);
             GetComponent<PlayerMovement>().IsClient = true;
-            if (Entities.Stocks.ContainsKey(gameObject))
-            {
-                Entities.Stocks[gameObject] = playerData.stocks;
-            }
+            gameObject.GetComponent<Drifter>().Stocks = playerData.stocks;
             gameObject.GetComponent<Drifter>().DamageTaken = playerData.damageTaken;
         }
     }
@@ -117,7 +114,7 @@ public class PlayerSync : MonoBehaviour, INetworkSync
             z = transform.position.z,
             facing = GetComponentInChildren<SpriteRenderer>().flipX,
             animatorState = (PlayerAnimatorState)GetComponent<PlayerMovement>().animatorState.Clone(),
-            stocks = Entities.Stocks.ContainsKey(gameObject) ? Entities.Stocks[gameObject] : 0,
+            stocks = gameObject.GetComponent<Drifter>().Stocks,
             damageTaken = gameObject.GetComponent<Drifter>().DamageTaken,
             color = new ColorButStupid(gameObject.GetComponentInChildren<SpriteRenderer>().color)
         };

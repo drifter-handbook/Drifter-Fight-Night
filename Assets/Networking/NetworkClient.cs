@@ -183,6 +183,7 @@ public class NetworkClient : MonoBehaviour, NetworkID
         // sync objects
         for (int i = 0; i < entities.Entities.Count; i++)
         {
+            entities.Entities[i].GetComponent<Rigidbody2D>().simulated = false;
             if (entities.Entities[i] != null)
             {
                 INetworkSync entitySync = entities.Entities[i].GetComponent<INetworkSync>();

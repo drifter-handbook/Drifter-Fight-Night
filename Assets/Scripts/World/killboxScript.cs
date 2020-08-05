@@ -66,9 +66,9 @@ public class killboxScript : MonoBehaviour
             Entities.AddEntity(deathExplosion);
 
             // respawn
-            if (other.gameObject != null && Entities.Stocks.ContainsKey(other.gameObject))
+            if (other.gameObject != null)
             {
-                Entities.Stocks[other.gameObject]--;
+                gameObject.GetComponent<Drifter>().Stocks--;
                 other.gameObject.GetComponent<Drifter>().DamageTaken = 0f;
             }
             if (Entities.hasStocks(other.gameObject))

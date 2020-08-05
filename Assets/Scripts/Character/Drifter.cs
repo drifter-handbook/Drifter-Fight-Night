@@ -14,6 +14,7 @@ public class Drifter : MonoBehaviour
     public PlayerSync sync;
     public CustomControls controls;
 
+    public int Stocks = 0;
     public float DamageTaken = 0f;
 
     private void OnValidate()
