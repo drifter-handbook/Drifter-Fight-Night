@@ -44,6 +44,27 @@ public class PlayerSync : MonoBehaviour, INetworkSync
         transform.position = Vector3.Lerp(oldPos, targetPos, t);
     }
 
+    public class ColorButStupid
+    {
+        public float r;
+        public float g;
+        public float b;
+        public float a;
+
+        public ColorButStupid(Color c)
+        {
+            r = c.r;
+            g = c.g;
+            b = c.b;
+            a = c.a;
+        }
+
+        public Color ToColor()
+        {
+            return new Color(r, g, b, a);
+        }
+    }
+
     public class PlayerData : INetworkEntityData
     {
         public string Type { get; set; } = "";
@@ -56,7 +77,7 @@ public class PlayerSync : MonoBehaviour, INetworkSync
         public int stocks = 0;
         public float damageTaken = 0f;
         public PlayerAnimatorState animatorState = new PlayerAnimatorState();
-        public Color color;
+        public ColorButStupid color;
     }
 
     public void Deserialize(INetworkEntityData data)
@@ -67,7 +88,7 @@ public class PlayerSync : MonoBehaviour, INetworkSync
             if (!active)
             {
                 transform.position = new Vector3(playerData.x, playerData.y, playerData.z);
-                gameObject.GetComponentInChildren<SpriteRenderer>().color = playerData.color;
+                gameObject.GetComponentInChildren<SpriteRenderer>().color = playerData.color.ToColor();
             }
             active = true;
             // move from current position to final position in latency seconds
@@ -98,7 +119,7 @@ public class PlayerSync : MonoBehaviour, INetworkSync
             animatorState = (PlayerAnimatorState)GetComponent<PlayerMovement>().animatorState.Clone(),
             stocks = Entities.Stocks.ContainsKey(gameObject) ? Entities.Stocks[gameObject] : 0,
             damageTaken = gameObject.GetComponent<Drifter>().DamageTaken,
-            color = gameObject.GetComponentInChildren<SpriteRenderer>().color
+            color = new ColorButStupid(gameObject.GetComponentInChildren<SpriteRenderer>().color)
         };
         GetComponent<PlayerMovement>().ResetAnimatorTriggers();
         return data;
