@@ -9,7 +9,7 @@ public class LadyParhelionAttackEffect : MonoBehaviour, IPlayerAttackEffect
     float gravityScale;
 
     NetworkEntityList Entities;
-    PlayerAttacking attacks;
+    PlayerHurtboxHandler attacks;
 
     public void Start()
     {
@@ -17,7 +17,7 @@ public class LadyParhelionAttackEffect : MonoBehaviour, IPlayerAttackEffect
         rb = GetComponent<Rigidbody2D>();
         gravityScale = rb.gravityScale;
         Entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
-        attacks = GetComponent<PlayerAttacking>();
+        attacks = GetComponent<PlayerHurtboxHandler>();
     }
 
     public IEnumerator<object> Aerial()

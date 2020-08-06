@@ -9,6 +9,7 @@ public class HitboxCollision : MonoBehaviour
 
     public int AttackID { get; set; }
     public DrifterAttackType AttackType { get; set; }
+    public bool Active { get; set; } = false;
 
     // Start is called before the first frame update
     CapsuleCollider2D capsule;
@@ -32,11 +33,11 @@ public class HitboxCollision : MonoBehaviour
     {
         Debug.Log("name " + name + " " + (gameObject.activeSelf || gameObject.activeInHierarchy));
         HurtboxCollision hurtbox = collider.GetComponent<HurtboxCollision>();
-        if (hurtbox != null && AttackType != DrifterAttackType.Null)
+        if (Active && hurtbox != null && AttackType != DrifterAttackType.Null)
         {
             string player = playerType.Type;
             SingleAttackData attackData = GameController.Instance.AllData.GetAttacks(player)[AttackType];
-            hurtbox.parent.GetComponent<PlayerAttacking>().RegisterAttackHit(this, hurtbox, AttackID, attackData);
+            hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, attackData);
         }
     }
 }

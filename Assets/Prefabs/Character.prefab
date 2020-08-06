@@ -384,6 +384,7 @@ GameObject:
   - component: {fileID: 2704295541901204434}
   - component: {fileID: 1589272871137191243}
   - component: {fileID: 8182132679057442092}
+  - component: {fileID: 9142496942411782138}
   m_Layer: 8
   m_Name: Character
   m_TagString: Player
@@ -422,6 +423,7 @@ MonoBehaviour:
   movement: {fileID: 3106753082241659641}
   sync: {fileID: 1401939795787901855}
   controls: {fileID: 0}
+  Stocks: 0
   DamageTaken: 0
 --- !u!114 &3106753082241659641
 MonoBehaviour:
@@ -539,6 +541,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0c70948fef8b0047aa95727076efea8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &9142496942411782138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3106753082241659636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52cc4f14323ee9143be25ebc5c5b91e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &4227067111414324707

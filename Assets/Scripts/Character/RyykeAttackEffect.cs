@@ -8,7 +8,7 @@ public class RyykeAttackEffect : MonoBehaviour, IPlayerAttackEffect
     Rigidbody2D rb;
     SpriteRenderer sr;
     NetworkEntityList Entities;
-    PlayerAttacking attacks;
+    PlayerHurtboxHandler attacks;
 
     public void Start()
     {
@@ -16,7 +16,7 @@ public class RyykeAttackEffect : MonoBehaviour, IPlayerAttackEffect
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponentInChildren<SpriteRenderer>();
         Entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
-        attacks = GetComponent<PlayerAttacking>();
+        attacks = GetComponent<PlayerHurtboxHandler>();
     }
 
     public IEnumerator<object> Aerial()

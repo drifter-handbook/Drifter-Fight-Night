@@ -9,7 +9,7 @@ public class NeroAttackEffect : MonoBehaviour, IPlayerAttackEffect
     float gravityScale;
 
     NetworkEntityList Entities;
-    PlayerAttacking attacks;
+    PlayerAttacks attacks;
 
     public void Start()
     {
@@ -17,7 +17,7 @@ public class NeroAttackEffect : MonoBehaviour, IPlayerAttackEffect
         rb = GetComponent<Rigidbody2D>();
         gravityScale = rb.gravityScale;
         Entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
-        attacks = GetComponent<PlayerAttacking>();
+        attacks = GetComponent<PlayerAttacks>();
     }
 
     public IEnumerator<object> Aerial()

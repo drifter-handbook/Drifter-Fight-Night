@@ -132,7 +132,7 @@ public class NetworkHost : MonoBehaviour, NetworkID
         // start game
         Network.StopAcceptingConnections();
         // attach player input to player 1
-        GetComponent<PlayerInput>().input = entities.Players[0].GetComponent<PlayerMovement>().input;
+        GetComponent<PlayerInput>().input = entities.Players[0].GetComponent<Drifter>().input;
     }
 
     SyncToClientPacket CreateGameSyncPacket()
@@ -162,7 +162,7 @@ public class NetworkHost : MonoBehaviour, NetworkID
     {
         if (entities != null && input?.input != null && entities.Players[id] != null)
         {
-            entities.Players[id]?.GetComponent<PlayerMovement>()?.input?.CopyFrom(input?.input);
+            entities.Players[id]?.GetComponent<Drifter>()?.input?.CopyFrom(input?.input);
         }
     }
 }

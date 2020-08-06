@@ -2,16 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAttacking : MonoBehaviour
+public class PlayerHurtboxHandler : MonoBehaviour
 {
-    static int nextID = 0;
-    // get a new attack ID
-    public static int NextID { get { nextID++; return nextID; } }
-
-    // current attack ID and Type, used for outgoing attacks
-    public int AttackID { get; private set; }
-    public DrifterAttackType AttackType { get; private set; }
-
     // keep track of what attacks we've already processed
     // AttackID -> Timestamp
     Dictionary<int, float> oldAttacks = new Dictionary<int, float>();
@@ -19,9 +11,6 @@ public class PlayerAttacking : MonoBehaviour
 
     // for creating hitsparks
     NetworkEntityList Entities;
-
-    // ignore all hits if client
-    bool IsHost => GameController.Instance.IsHost;
 
     // Start is called before the first frame update
     void Start()
@@ -36,32 +25,10 @@ public class PlayerAttacking : MonoBehaviour
 
     }
 
-    public void PerformAttack(DrifterAttackType attackType)
-    {
-        AttackType = attackType;
-        AttackID = NextID;
-        foreach (HitboxCollision hitbox in GetComponentsInChildren<HitboxCollision>(true))
-        {
-            hitbox.GetComponent<Collider2D>().enabled = false;
-            hitbox.AttackID = AttackID;
-            hitbox.AttackType = AttackType;
-        }
-    }
-    // called by hitboxes during attack animation
-    // reset attack ID, allowing for another hit in the same attack animation
-    public void MultiHitAttack()
-    {
-        AttackID = NextID;
-        foreach (HitboxCollision hitbox in GetComponentsInChildren<HitboxCollision>(true))
-        {
-            hitbox.AttackID = AttackID;
-        }
-    }
-
     public void RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, SingleAttackData attackData)
     {
         // only host processes hits, don't hit ourself, and ignore previously registered attacks
-        if (IsHost && hitbox.parent != hurtbox.parent && !oldAttacks.ContainsKey(attackID))
+        if (GameController.Instance.IsHost && hitbox.parent != hurtbox.parent && !oldAttacks.ContainsKey(attackID))
         {
             // register new attack
             oldAttacks[attackID] = Time.time;
@@ -69,7 +36,7 @@ public class PlayerAttacking : MonoBehaviour
             Drifter drifter = GetComponent<Drifter>();
             if (drifter != null)
             {
-                drifter.DamageTaken += attackData.AttackDamage * (GetComponent<PlayerMovement>().input.Guard ? 0.35f : 1f);
+                drifter.DamageTaken += attackData.AttackDamage * (GetComponentInChildren<Animator>().GetBool("Guarding") ? 0.35f : 1f);
             }
             // apply knockback
             float facingDir = Mathf.Sign(hurtbox.parent.transform.position.x - hitbox.parent.transform.position.x);
@@ -88,7 +55,7 @@ public class PlayerAttacking : MonoBehaviour
             // stun player
             float stunMultiplier = Mathf.Lerp(1f, damageMultiplier, 0.5f);
             GetComponent<PlayerStatus>()?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, stunMultiplier * attackData.HitStun);
-            GetComponent<PlayerMovement>()?.DamageSuperArmor(stunMultiplier * attackData.HitStun);
+            DamageSuperArmor(stunMultiplier * attackData.HitStun);
             // create hit sparks
             GameObject hitSparks = Instantiate(Entities.GetEntityPrefab("HitSparks"),
                 Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),
@@ -127,6 +94,48 @@ public class PlayerAttacking : MonoBehaviour
             foreach (int attackID in toRemove)
             {
                 oldAttacks.Remove(attackID);
+            }
+        }
+    }
+
+    // Super-armor logic
+    private class AttackEffect
+    {
+        public Coroutine Effect;
+        public float SuperArmor;
+        public float Damage;
+    }
+
+    List<AttackEffect> movementEffects = new List<AttackEffect>();
+    private void StartMovementEffect(IEnumerator ef, float superArmor)
+    {
+        if (ef != null)
+        {
+            movementEffects.Add(new AttackEffect()
+            {
+                Effect = StartCoroutine(ef),
+                SuperArmor = superArmor,
+                Damage = 0
+            });
+        }
+    }
+
+    // call this when launched to damage a movement effect
+    public void DamageSuperArmor(float damage)
+    {
+        for (int i = 0; i < movementEffects.Count; i++)
+        {
+            AttackEffect ef = movementEffects[i];
+            ef.Damage += damage;
+            if (ef.Damage > ef.SuperArmor)
+            {
+                if (ef.Effect != null)
+                {
+                    StopCoroutine(ef.Effect);
+                }
+                // TODO: do something
+                movementEffects.RemoveAt(i);
+                i--;
             }
         }
     }

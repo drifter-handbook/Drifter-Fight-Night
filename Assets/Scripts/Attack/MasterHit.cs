@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MasterHit : MonoBehaviour, IMasterHit
 {
-    PlayerAttacking attacking;
+    PlayerHurtboxHandler attacking;
     PlayerMovement playerMovement;
     public GameObject parent;
     // Start is called before the first frame update
@@ -48,6 +48,23 @@ public class MasterHit : MonoBehaviour, IMasterHit
     {
 
     }
+
+    public void hitTheAerial(GameObject target)
+    {
+    }
+
+    public void hitTheLight(GameObject target)
+    {
+    }
+
+    public void hitTheGrab(GameObject target)
+    {
+    }
+
+    public void hitTheRecovery(GameObject target)
+    {
+    }
+
     public void callTheAttackEffect()
     {
         //call the Attack here (using the parent)
