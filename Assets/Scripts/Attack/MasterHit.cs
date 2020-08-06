@@ -2,75 +2,70 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MasterHit : MonoBehaviour, IMasterHit
+public abstract class MasterHit : MonoBehaviour, IMasterHit
 {
-    PlayerHurtboxHandler attacking;
-    PlayerMovement playerMovement;
-    public GameObject parent;
+    Drifter drifter;
     // Start is called before the first frame update
     void Start()
     {
+        drifter = transform.parent.gameObject.GetComponent<Drifter>();
     }
 
     // Update is called once per frame
     void Update()
     {
+
     }
-    public void callTheAerial()
+
+    public virtual void callTheAerial()
     {
 
     }
-    public void cancelTheAerial()
+    public virtual void hitTheAerial(GameObject target)
     {
 
     }
-    public void callTheLight()
-    {
-
-    }
-    public void cancelTheLight()
-    {
-
-    }
-    public void callTheGrab()
-    {
-
-    }
-    public void cancelTheGrab()
-    {
-
-    }
-    public void callTheRecovery()
-    {
-
-    }
-    public void cancelTheRecovery()
+    public virtual void cancelTheAerial()
     {
 
     }
 
-    public void hitTheAerial(GameObject target)
+    public virtual void callTheLight()
     {
+
+    }
+    public virtual void hitTheLight(GameObject target)
+    {
+
+    }
+    public virtual void cancelTheLight()
+    {
+
     }
 
-    public void hitTheLight(GameObject target)
+    public virtual void callTheGrab()
     {
+
+    }
+    public virtual void hitTheGrab(GameObject target)
+    {
+
+    }
+    public virtual void cancelTheGrab()
+    {
+
     }
 
-    public void hitTheGrab(GameObject target)
+    public virtual void callTheRecovery()
     {
-    }
 
-    public void hitTheRecovery(GameObject target)
-    {
     }
+    public virtual void hitTheRecovery(GameObject target)
+    {
 
-    public void callTheAttackEffect()
-    {
-        //call the Attack here (using the parent)
     }
-    public void callTheMovementEffect()
+    public virtual void cancelTheRecovery()
     {
-        //call the movement caused by the attack here (in order to force move)
+
     }
 }

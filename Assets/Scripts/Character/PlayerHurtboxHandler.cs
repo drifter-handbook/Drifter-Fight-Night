@@ -25,13 +25,15 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
     }
 
-    public void RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, SingleAttackData attackData)
+    public void RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, DrifterAttackType attackType, SingleAttackData attackData)
     {
         // only host processes hits, don't hit ourself, and ignore previously registered attacks
         if (GameController.Instance.IsHost && hitbox.parent != hurtbox.parent && !oldAttacks.ContainsKey(attackID))
         {
             // register new attack
             oldAttacks[attackID] = Time.time;
+            // apply hit effects
+            hitbox.parent.GetComponent<PlayerAttacks>().Hit(attackType, attackID, hurtbox.parent);
             // apply damage
             Drifter drifter = GetComponent<Drifter>();
             if (drifter != null)
