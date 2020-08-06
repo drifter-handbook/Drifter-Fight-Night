@@ -4,11 +4,13 @@ using UnityEngine;
 
 public abstract class MasterHit : MonoBehaviour, IMasterHit
 {
-    Drifter drifter;
+    protected Drifter drifter;
+    protected NetworkEntityList entities;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         drifter = transform.parent.gameObject.GetComponent<Drifter>();
+        entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
     }
 
     // Update is called once per frame
