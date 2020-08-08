@@ -61,11 +61,12 @@ public class NetworkHost : MonoBehaviour, NetworkID
     void Update()
     {
         Network.Update();
-        if (GameStarted && Input.GetKeyDown(KeyCode.P))
+        if (GameStarted && Input.GetKeyDown(KeyCode.O))
         {
             GameStarted = false;
             StartGame();
         }
+        Time.timeScale = GameController.Instance.IsPaused ? 0f : 1f;
     }
 
     void FixedUpdate()
@@ -160,6 +161,7 @@ public class NetworkHost : MonoBehaviour, NetworkID
                 i--;
             }
         }
+        SyncData.pause = GameController.Instance.IsPaused;
         return new SyncToClientPacket() { Timestamp = Time.time, SyncData = SyncData };
     }
 
