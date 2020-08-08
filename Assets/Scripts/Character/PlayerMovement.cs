@@ -39,7 +39,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        if (!GameController.Instance.IsHost)
+        if (!GameController.Instance.IsHost || GameController.Instance.IsPaused)
         {
             return;
         }
@@ -53,8 +53,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (moving && canAct)
         {
-            sprite.flipX = flipSprite;
-            Facing = (drifter.input.MoveX > 0) ? 1 : -1;
+            Facing = (flipSprite ^ drifter.input.MoveX > 0) ? 1 : -1;
             transform.localScale = new Vector3(Facing * Mathf.Abs(transform.localScale.x),
                 transform.localScale.y, transform.localScale.z);
         }

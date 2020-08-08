@@ -17,7 +17,6 @@ public class NetworkHost : MonoBehaviour, NetworkID
     NetworkEntityList entities = GameController.Instance.Entities;
     List<CharacterSelectState> CharacterSelectStates; // single source of truth
 
-
     void Start()
     {
         // create host network handler
@@ -58,18 +57,33 @@ public class NetworkHost : MonoBehaviour, NetworkID
         Network.Connect();
     }
 
+    float updateTimer = 0f;
+    float updateRate = 0.04f;
     void Update()
     {
         Network.Update();
-        if (GameStarted && Input.GetKeyDown(KeyCode.P))
+        if (GameStarted && Input.GetKeyDown(KeyCode.O))
         {
             GameStarted = false;
             StartGame();
+        }
+        Time.timeScale = GameController.Instance.IsPaused ? 0f : 1f;
+        // update
+        updateTimer += Time.deltaTime;
+        if (updateTimer > updateRate)
+        {
+            updateTimer -= updateRate;
+            ProcessUpdate();
         }
     }
 
     void FixedUpdate()
     {
+    }
+
+    void ProcessUpdate()
+    {
+        // don't run if not connected
         if (PlayerID == -1)
         {
             return;
@@ -108,14 +122,17 @@ public class NetworkHost : MonoBehaviour, NetworkID
         entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
         // create players
         List<string> playerNames = new List<string>() {
-            "Ryyke",
+            "Nero",
+            "Lady Parhelion",
             "Ryyke",
             "Spacejam",
-            "Lady Parhelion"
+
         };
+
+        //TODO: Grab player color from the list on the character Select screen (saved with player data)
         List<Color> playerColors = new List<Color>() {
-            Color.white,
             Color.red,
+            Color.yellow,
             Color.green,
             Color.blue,
         };
@@ -126,7 +143,9 @@ public class NetworkHost : MonoBehaviour, NetworkID
                 entities.SpawnPoints[i].transform.position,
                 entities.SpawnPoints[i].transform.rotation
             );
-            player.GetComponentInChildren<SpriteRenderer>().color = playerColors[i];
+           Drifter drifter = player.GetComponent<Drifter>();
+            drifter.SetColor(playerColors[i]);
+            //player.GetComponentInChildren<SpriteRenderer>().color = playerColors[i];
             entities.AddPlayer(i, player);
         }
         // start game
@@ -155,6 +174,7 @@ public class NetworkHost : MonoBehaviour, NetworkID
                 i--;
             }
         }
+        SyncData.pause = GameController.Instance.IsPaused;
         return new SyncToClientPacket() { Timestamp = Time.time, SyncData = SyncData };
     }
 

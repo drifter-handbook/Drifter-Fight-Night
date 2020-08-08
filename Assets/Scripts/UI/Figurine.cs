@@ -3,17 +3,21 @@ using UnityEngine.UI;
 
 public class Figurine : MonoBehaviour
 {
-    public Image image;
-    public string drifterName;
-
-    void OnMouseOver()
+    public GameObject arrow;
+    
+    public void TurnArrowOn()
     {
-        // populate the card
+        arrow.transform.parent.gameObject.SetActive(true);
     }
 
-    void OnMouseDown()
+    public void TurnArrowOff()
     {
-        // tell network the selection
+        arrow.transform.parent.gameObject.SetActive(false);
+    }
+
+    public void SetColor(Color color)
+    {
+        arrow.GetComponent<Image>().color = color;
     }
 
 }

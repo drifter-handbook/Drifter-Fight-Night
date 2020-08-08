@@ -426,6 +426,7 @@ MonoBehaviour:
   controls: {fileID: 0}
   Stocks: 0
   DamageTaken: 0
+  myColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &3106753082241659641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -717,6 +718,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3106753082241659643}
     m_Modifications:
+    - target: {fileID: 4515762740744354354, guid: be3d2a1a9475453458451591623752f5,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 6559769987014644725, guid: be3d2a1a9475453458451591623752f5,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -771,6 +777,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7573174939608658340, guid: be3d2a1a9475453458451591623752f5,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 7656143657836238792, guid: be3d2a1a9475453458451591623752f5,
         type: 3}

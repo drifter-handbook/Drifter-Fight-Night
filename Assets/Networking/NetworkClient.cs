@@ -92,12 +92,30 @@ public class NetworkClient : MonoBehaviour, NetworkID
         Network.Connect();
     }
 
+    float counterTimer = 0f;
+    float updateTimer = 0f;
+    float updateRate = 0.04f;
     void Update()
     {
         Network.Update();
+        // update
+        updateTimer += Time.deltaTime;
+        if (updateTimer > updateRate)
+        {
+            updateTimer -= updateRate;
+            ProcessUpdate();
+        }
+        // update
+        counterTimer += Time.deltaTime;
+        if (counterTimer > 1)
+        {
+            counterTimer -= 1;
+            Debug.Log(syncsPerSecond);
+            syncsPerSecond = 0;
+        }
     }
 
-    void FixedUpdate()
+    void ProcessUpdate()
     {
         if (PlayerID == -1)
         {
@@ -167,12 +185,15 @@ public class NetworkClient : MonoBehaviour, NetworkID
         }
     }
 
+    int syncsPerSecond = 0;
     void GameSyncFromPacket(SyncToClientPacket data)
     {
+        syncsPerSecond++;
         if (entities == null)
         {
             return;
         }
+        Time.timeScale = data.SyncData.pause ? 0f : 1f;
         // if in packet data but not in current entities, create
         foreach (INetworkEntityData entityData in data.SyncData.entities)
         {
@@ -188,7 +209,13 @@ public class NetworkClient : MonoBehaviour, NetworkID
         {
             if (entities.Entities[i] != null)
             {
-                entities.Entities[i].GetComponent<Rigidbody2D>().simulated = false;
+                // disable client side simulation
+                Rigidbody2D rb = entities.Entities[i].GetComponent<Rigidbody2D>();
+                if (rb != null)
+                {
+                    rb.simulated = false;
+                }
+                // sync
                 INetworkSync entitySync = entities.Entities[i].GetComponent<INetworkSync>();
                 if (entitySync != null)
                 {

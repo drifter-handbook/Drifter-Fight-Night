@@ -11,6 +11,8 @@ public class PlayerCard : MonoBehaviour
     public Text percent;
     public int currStocks = 0;
 
+    public Image bannerBack;
+
     const int MAX_STOCKS = 4;
 
 
@@ -35,6 +37,11 @@ public class PlayerCard : MonoBehaviour
             newStock.GetComponent<Image>().sprite = stockImage;
             currStocks++;
         }
+    }
+
+     public void SetColor(Color color)
+    {
+        bannerBack.GetComponent<Image>().color = color;
     }
 
     public void removeStock()

@@ -8,6 +8,7 @@ public class RykkeMasterHit : MasterHit
     PlayerAttacks attacks;
     float gravityScale;
     PlayerMovement movement;
+    public int facing;
 
     void Start()
     {
@@ -29,18 +30,20 @@ public class RykkeMasterHit : MasterHit
     }
     public void RecoveryThrowString()
     {
+        facing = 1;
         // jump upwards and create spear projectile
         rb.velocity = new Vector2(rb.velocity.x, 1.5f * movement.jumpSpeed);
         rb.gravityScale = gravityScale;
-        GameObject neroSpear = Instantiate(entities.GetEntityPrefab("RykkeTether"), transform.position, transform.rotation);
-        foreach (HitboxCollision hitbox in neroSpear.GetComponentsInChildren<HitboxCollision>(true))
+        GameObject RykkeTether = Instantiate(entities.GetEntityPrefab("RykkeTether"), transform.position +( transform.right *2), transform.rotation * (Quaternion.Euler(new Vector3(45, 45, -45))));
+        RykkeTether.transform.localScale = new Vector3(5, 5, 5);
+        foreach (HitboxCollision hitbox in RykkeTether.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;
         }
-        entities.AddEntity(neroSpear);
+        entities.AddEntity(RykkeTether);
     }
     public override void hitTheRecovery(GameObject target)
     {

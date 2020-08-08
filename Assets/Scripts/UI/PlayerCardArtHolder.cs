@@ -34,6 +34,9 @@ public class PlayerCardArtHolder : MonoBehaviour
                 newCard.transform.SetParent(gameObject.transform, false);
                 newCard.transform.localScale = new Vector3(1, 1, 1);
                 playerCards[i] = newCard.GetComponent<PlayerCard>();
+
+                playerCards[i].SetColor(drifter.myColor);
+
                 int imageIndex = getDrifterTypeIndex(drifter.GetComponent<INetworkSync>().Type);
                 playerCards[i].setImages(faces[imageIndex], stocks[imageIndex]);
                 playerCards[i].addStocks(stockPrefab, 3);
