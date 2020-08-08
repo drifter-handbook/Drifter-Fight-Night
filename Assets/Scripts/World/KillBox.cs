@@ -9,7 +9,8 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
 
     void Awake()
     {
-        Entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
+        Entities = GameObject.FindGameObjectWithTag(
+            "NetworkEntityList").GetComponent<NetworkEntityList>();
     }
 
     void CreateExplosion(Collider2D other)
@@ -28,9 +29,10 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
         Entities.AddEntity(deathExplosion.gameObject);
     }
 
-    void Respawn()
+    void Respawn(Collider2D other)
     {
-
+        other.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        other.transform.position = new Vector2(0, 25);
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -40,15 +42,13 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
             Drifter drifter = other.gameObject?.GetComponent<Drifter>();
 
             CreateExplosion(other);
-            // respawn
 
             drifter.Stocks--;
             drifter.DamageTaken = 0f;
 
             if (Entities.hasStocks(other.gameObject))
             {
-                other.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-                other.transform.position = new Vector2(0, 25);
+                Respawn(other);
             }
             else
             {
