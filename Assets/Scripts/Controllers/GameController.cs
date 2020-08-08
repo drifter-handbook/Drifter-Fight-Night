@@ -36,6 +36,7 @@ public class GameController : MonoBehaviour
 
     //* Prefabs
     public GameObject characterCardPrefab;
+    public GameObject deathExplosionPrefab;
 
     //* Variables
     string SceneName { get; set; }
