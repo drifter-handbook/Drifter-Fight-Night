@@ -17,7 +17,6 @@ public class NetworkHost : MonoBehaviour, NetworkID
     NetworkEntityList entities = GameController.Instance.Entities;
     List<CharacterSelectState> CharacterSelectStates; // single source of truth
 
-
     void Start()
     {
         // create host network handler
@@ -56,6 +55,7 @@ public class NetworkHost : MonoBehaviour, NetworkID
         }, true);
         // start connection
         Network.Connect();
+        StartCoroutine(TheCoolerFixedUpdate());
     }
 
     void Update()
@@ -71,25 +71,44 @@ public class NetworkHost : MonoBehaviour, NetworkID
 
     void FixedUpdate()
     {
-        if (PlayerID == -1)
+    }
+    IEnumerator TheCoolerFixedUpdate()
+    {
+        float time = 0;
+        float rate = 0.04f;
+        while (true)
         {
-            return;
-        }
-        if (entities == null)
-        {
-            // send character selection sync packet every frame
-            Network.SendToAll(new CharacterSelectSyncPacket()
+            // run every 40ms
+            yield return null;
+            if (time > rate)
             {
-                Data = new CharacterSelectSyncPacket.CharacterSelectSyncData()
+                time -= rate;
+            }
+            else
+            {
+                continue;
+            }
+            // don't run if not connected
+            if (PlayerID == -1)
+            {
+                continue;
+            }
+            if (entities == null)
+            {
+                // send character selection sync packet every frame
+                Network.SendToAll(new CharacterSelectSyncPacket()
                 {
-                    CharacterSelectState = CharacterSelectStates
-                }
-            });
-        }
-        else
-        {
-            // send game sync packet every frame
-            Network.SendToAll(CreateGameSyncPacket());
+                    Data = new CharacterSelectSyncPacket.CharacterSelectSyncData()
+                    {
+                        CharacterSelectState = CharacterSelectStates
+                    }
+                });
+            }
+            else
+            {
+                // send game sync packet every frame
+                Network.SendToAll(CreateGameSyncPacket());
+            }
         }
     }
 

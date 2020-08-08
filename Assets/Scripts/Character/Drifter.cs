@@ -37,7 +37,7 @@ public class Drifter : MonoBehaviour
     public PlayerInputData input { get; set; } = new PlayerInputData();
     public PlayerInputData prevInput = new PlayerInputData();
 
-    void Start()
+    void Awake()
     {
         animator = GetComponentInChildren<Animator>();
     }

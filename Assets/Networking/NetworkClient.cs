@@ -173,6 +173,7 @@ public class NetworkClient : MonoBehaviour, NetworkID
         {
             return;
         }
+        Time.timeScale = data.SyncData.pause ? 0f : 1f;
         // if in packet data but not in current entities, create
         foreach (INetworkEntityData entityData in data.SyncData.entities)
         {
@@ -197,10 +198,6 @@ public class NetworkClient : MonoBehaviour, NetworkID
                     if (entityData != null)
                     {
                         entitySync.Deserialize(entityData);
-                        foreach (Animator anim in ((MonoBehaviour)entitySync).gameObject.GetComponentsInChildren<Animator>(true))
-                        {
-                            anim.enabled = data.SyncData.pause;
-                        }
                     }
                     // if not in packet data but in current entities, destroy
                     else
