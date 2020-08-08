@@ -128,14 +128,17 @@ public class NetworkHost : MonoBehaviour, NetworkID
         entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
         // create players
         List<string> playerNames = new List<string>() {
+            "Lady Parhelion",
             "Ryyke",
             "Ryyke",
             "Spacejam",
-            "Lady Parhelion"
+           
         };
+
+        //TODO: Grab player color from the list on the character Select screen (saved with player data)
         List<Color> playerColors = new List<Color>() {
-            Color.white,
             Color.red,
+            Color.yellow,
             Color.green,
             Color.blue,
         };
@@ -146,7 +149,9 @@ public class NetworkHost : MonoBehaviour, NetworkID
                 entities.SpawnPoints[i].transform.position,
                 entities.SpawnPoints[i].transform.rotation
             );
-            player.GetComponentInChildren<SpriteRenderer>().color = playerColors[i];
+           Drifter drifter = player.GetComponent<Drifter>();
+            drifter.SetColor(playerColors[i]);
+            //player.GetComponentInChildren<SpriteRenderer>().color = playerColors[i];
             entities.AddPlayer(i, player);
         }
         // start game
