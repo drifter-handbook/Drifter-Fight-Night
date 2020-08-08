@@ -6,18 +6,6 @@ using UnityEngine.UI;
 // Shows players and selected character [View]
 public class CharacterMenu : MonoBehaviour
 {
-    // Make a note of these so we don't lose them to the source control gods
-    // (You will have to modify the alpha value in inspector because -\_(o.o)_/-)
-    // public List<Color> colorList = new List<Color> {
-    //     new Color(255,   0,   0),
-    //     new Color(255, 204,   0),
-    //     new Color( 32, 221,  30),
-    //     new Color( 19, 179, 231),
-    //     new Color(185,  16, 255),
-    //     new Color(255,  16, 144),
-    //     new Color(255, 140,  42),
-    //     new Color(  0, 255, 221),
-    // };
 
     List<PlayerColor> colorList = new List<PlayerColor>{
         PlayerColor.RED,
@@ -42,7 +30,7 @@ public class CharacterMenu : MonoBehaviour
 
     public GameObject[] figurines;
     public Sprite[] images;
-    private GameObject clientArrow;
+    private int selectedDrifterID;
     private GameObject clientCard;
     //determines how many player cards we can fit on a panel
     private const int PANEL_MAX_PLAYERS = 4;
@@ -122,21 +110,22 @@ public class CharacterMenu : MonoBehaviour
     public void selectDrifter(int drifterIndex)
     {
         PlayerData myData = getPlayerData(clientPlayerID);
-        if (clientArrow != null)
+        if (selectedDrifterID != null)
         {
-            Destroy(clientArrow);
+            figurines[selectedDrifterID].GetComponent<Figurine>().TurnArrowOff();
         }
 
-        //spawn arrow on the correct object
-        clientArrow = Instantiate(arrowPrefab.gameObject, new Vector3(0, 0, 0), new Quaternion());
-        clientArrow.transform.SetParent(figurines[drifterIndex].transform);
-        clientArrow.transform.localPosition = new Vector3(0, 0, 0);
-        clientArrow.transform.localScale = new Vector3(1, 1, 1);
-        clientArrow.GetComponent<Image>().color = myData.getColorFromEnum();
+       figurines[drifterIndex].GetComponent<Figurine>().TurnArrowOn();
+       figurines[drifterIndex].GetComponent<Figurine>().SetColor(myData.getColorFromEnum());
+
         if (myData.characterCard != null)
         {
             CharacterCard.SetCharacter(myData.characterCard.transform, images[drifterIndex], fetchCharacterName(drifterIndex));
         }
+
+
+        Debug.Log(fetchCharacterName(drifterIndex));
+        selectedDrifterID = drifterIndex;
 
     }
 
@@ -148,7 +137,7 @@ public class CharacterMenu : MonoBehaviour
             case 1: return "Nero";
             case 2: return "Lady Parhelion";
             case 3: return "Rykke";
-            case 4: return "Space Jame";
+            case 4: return "Space Jam";
             default: return "???";
         }
     }
