@@ -17,6 +17,7 @@ public class SyncToClientPacket : IGamePacket
     public class SyncToClientData
     {
         public List<INetworkEntityData> entities = new List<INetworkEntityData>();
+        public bool pause;
     }
 
     public IGamePacket FromData(string json)

@@ -49,6 +49,11 @@ public class PlayerAttacks : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!GameController.Instance.IsHost || GameController.Instance.IsPaused)
+        {
+            return;
+        }
+
         // get input
         bool lightPressed = !drifter.prevInput.Light && drifter.input.Light;
         bool specialPressed = !drifter.prevInput.Special && drifter.input.Special;

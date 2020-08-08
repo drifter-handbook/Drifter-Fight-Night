@@ -197,6 +197,10 @@ public class NetworkClient : MonoBehaviour, NetworkID
                     if (entityData != null)
                     {
                         entitySync.Deserialize(entityData);
+                        foreach (Animator anim in ((MonoBehaviour)entitySync).gameObject.GetComponentsInChildren<Animator>(true))
+                        {
+                            anim.enabled = data.SyncData.pause;
+                        }
                     }
                     // if not in packet data but in current entities, destroy
                     else

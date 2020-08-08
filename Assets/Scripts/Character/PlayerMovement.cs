@@ -39,7 +39,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        if (!GameController.Instance.IsHost)
+        if (!GameController.Instance.IsHost || GameController.Instance.IsPaused)
         {
             return;
         }

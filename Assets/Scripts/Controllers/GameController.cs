@@ -32,7 +32,7 @@ public class GameController : MonoBehaviour
         new List<CharacterSelectState>() { new CharacterSelectState() };
     public ConnectedPlayer LocalPlayer; // It's you!
     public NetworkEntityList Entities; // Holds all entities, incl players!!!
-
+    public bool IsPaused { get; private set; } = false;
 
     //* Prefabs
     public GameObject characterCardPrefab;
@@ -114,6 +114,10 @@ public class GameController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Return))
         {
             GetComponent<NetworkHost>()?.StartGame();
+        }
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            IsPaused = !IsPaused;
         }
     }
 }
