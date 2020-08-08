@@ -53,7 +53,6 @@ public class PlayerMovement : MonoBehaviour
 
         if (moving && canAct)
         {
-            sprite.flipX = flipSprite;
             Facing = (flipSprite ^ drifter.input.MoveX > 0) ? 1 : -1;
             transform.localScale = new Vector3(Facing * Mathf.Abs(transform.localScale.x),
                 transform.localScale.y, transform.localScale.z);
