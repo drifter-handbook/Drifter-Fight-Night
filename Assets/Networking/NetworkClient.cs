@@ -92,12 +92,21 @@ public class NetworkClient : MonoBehaviour, NetworkID
         Network.Connect();
     }
 
+    float updateTimer = 0f;
+    float updateRate = 0.04f;
     void Update()
     {
         Network.Update();
+        // update
+        updateTimer += Time.deltaTime;
+        if (updateTimer > updateRate)
+        {
+            updateTimer -= updateRate;
+            ProcessUpdate();
+        }
     }
 
-    void FixedUpdate()
+    void ProcessUpdate()
     {
         if (PlayerID == -1)
         {
@@ -189,7 +198,13 @@ public class NetworkClient : MonoBehaviour, NetworkID
         {
             if (entities.Entities[i] != null)
             {
-                entities.Entities[i].GetComponent<Rigidbody2D>().simulated = false;
+                // disable client side simulation
+                Rigidbody2D rb = entities.Entities[i].GetComponent<Rigidbody2D>();
+                if (rb != null)
+                {
+                    rb.simulated = false;
+                }
+                // sync
                 INetworkSync entitySync = entities.Entities[i].GetComponent<INetworkSync>();
                 if (entitySync != null)
                 {
