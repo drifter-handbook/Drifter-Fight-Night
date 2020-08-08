@@ -16,8 +16,8 @@ public class Statistics : MonoBehaviour
     float damageBlocked;
     Drifter lastHit;
 
-    public void DieFool(Statistics other)
+    public void DieFool()
     {
-
+        
     }
 }
