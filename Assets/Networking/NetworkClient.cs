@@ -92,6 +92,7 @@ public class NetworkClient : MonoBehaviour, NetworkID
         Network.Connect();
     }
 
+    float counterTimer = 0f;
     float updateTimer = 0f;
     float updateRate = 0.04f;
     void Update()
@@ -103,6 +104,14 @@ public class NetworkClient : MonoBehaviour, NetworkID
         {
             updateTimer -= updateRate;
             ProcessUpdate();
+        }
+        // update
+        counterTimer += Time.deltaTime;
+        if (counterTimer > 1)
+        {
+            counterTimer -= 1;
+            Debug.Log(syncsPerSecond);
+            syncsPerSecond = 0;
         }
     }
 
@@ -176,8 +185,10 @@ public class NetworkClient : MonoBehaviour, NetworkID
         }
     }
 
+    int syncsPerSecond = 0;
     void GameSyncFromPacket(SyncToClientPacket data)
     {
+        syncsPerSecond++;
         if (entities == null)
         {
             return;
