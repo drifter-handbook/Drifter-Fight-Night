@@ -37,6 +37,8 @@ public class Drifter : MonoBehaviour
     public PlayerInputData input { get; set; } = new PlayerInputData();
     public PlayerInputData prevInput = new PlayerInputData();
 
+    public Color myColor;
+
     void Start()
     {
         animator = GetComponentInChildren<Animator>();
@@ -46,6 +48,14 @@ public class Drifter : MonoBehaviour
     {
         // set previous frame player input
         prevInput.CopyFrom(input);
+    }
+
+   public void SetColor(Color color)
+    {
+        myColor = color;
+        //setting triangle color
+        UnityEngine.Debug.Log(transform.GetChild(0));
+        transform.GetChild(0).transform.GetChild(1).GetComponent<SpriteRenderer>().color = color;
     }
 
     // used by clients
