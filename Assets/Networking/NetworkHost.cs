@@ -80,6 +80,7 @@ public class NetworkHost : MonoBehaviour, NetworkID
         {
             // run every 40ms
             yield return null;
+            time += Time.deltaTime;
             if (time > rate)
             {
                 time -= rate;
