@@ -73,7 +73,7 @@ public class PlayerSync : MonoBehaviour, INetworkSync
         public float x = 0f;
         public float y = 0f;
         public float z = 0f;
-        public bool facing = false;
+        public int facing = 1;
         public int stocks = 0;
         public float damageTaken = 0f;
         public PlayerAnimatorState animatorState = new PlayerAnimatorState();
@@ -93,11 +93,12 @@ public class PlayerSync : MonoBehaviour, INetworkSync
             active = true;
             // move from current position to final position in latency seconds
             time = 0f;
-            GetComponentInChildren<SpriteRenderer>().flipX = playerData.facing;
+            gameObject.transform.localScale = new Vector3(
+                playerData.facing * Mathf.Abs(gameObject.transform.localScale.x),
+                gameObject.transform.localScale.y, gameObject.transform.localScale.z);
             oldPos = transform.position;
             targetPos = new Vector3(playerData.x, playerData.y, playerData.z);
-            GetComponent<PlayerMovement>().SyncAnimatorState(playerData.animatorState);
-            GetComponent<PlayerMovement>().IsClient = true;
+            GetComponent<Drifter>().SyncAnimatorState(playerData.animatorState);
             gameObject.GetComponent<Drifter>().Stocks = playerData.stocks;
             gameObject.GetComponent<Drifter>().DamageTaken = playerData.damageTaken;
         }
@@ -112,13 +113,13 @@ public class PlayerSync : MonoBehaviour, INetworkSync
             x = transform.position.x,
             y = transform.position.y,
             z = transform.position.z,
-            facing = GetComponentInChildren<SpriteRenderer>().flipX,
-            animatorState = (PlayerAnimatorState)GetComponent<PlayerMovement>().animatorState.Clone(),
+            facing = (int)Mathf.Sign(gameObject.transform.localScale.x),
+            animatorState = (PlayerAnimatorState)gameObject.GetComponent<Drifter>().animatorState.Clone(),
             stocks = gameObject.GetComponent<Drifter>().Stocks,
             damageTaken = gameObject.GetComponent<Drifter>().DamageTaken,
             color = new ColorButStupid(gameObject.GetComponentInChildren<SpriteRenderer>().color)
         };
-        GetComponent<PlayerMovement>().ResetAnimatorTriggers();
+        GetComponent<Drifter>().ResetAnimatorTriggers();
         return data;
     }
 }

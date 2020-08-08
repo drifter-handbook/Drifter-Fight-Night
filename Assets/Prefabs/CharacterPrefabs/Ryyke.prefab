@@ -16,18 +16,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0.14582898, y: -0.12848428}
   m_Size: {x: 0.9359006, y: 0.464915}
   m_Direction: 1
---- !u!114 &7997410525710434574
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7638574618725185666}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3abcb4d412f9ef4390daa41ee565fe9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &4691849568075172470
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -66,6 +54,11 @@ PrefabInstance:
     - target: {fileID: 1853559349, guid: 03006bf76a5e1274aaf3da8b9c69d8f9, type: 3}
       propertyPath: m_Radius
       value: 0.125
+      objectReference: {fileID: 0}
+    - target: {fileID: 868922314134636865, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 39.68
       objectReference: {fileID: 0}
     - target: {fileID: 986045182707079716, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
@@ -205,7 +198,7 @@ PrefabInstance:
     - target: {fileID: 3106753082241659641, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: flipSprite
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3106753082241659641, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
@@ -333,6 +326,21 @@ PrefabInstance:
       propertyPath: m_Size.y
       value: 0.70239425
       objectReference: {fileID: 0}
+    - target: {fileID: 6428669193660994171, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.7692514
+      objectReference: {fileID: 0}
+    - target: {fileID: 6428669193660994171, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.63879496
+      objectReference: {fileID: 0}
+    - target: {fileID: 6428669193660994171, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.8207547
+      objectReference: {fileID: 0}
     - target: {fileID: 6941340441550975300, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -407,12 +415,6 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 5798512003942249155, guid: 03006bf76a5e1274aaf3da8b9c69d8f9, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 03006bf76a5e1274aaf3da8b9c69d8f9, type: 3}
---- !u!1 &7638574618725185666 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3106753082241659636, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
-    type: 3}
-  m_PrefabInstance: {fileID: 4691849568075172470}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6725200331047321015 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2038013260033882049, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,

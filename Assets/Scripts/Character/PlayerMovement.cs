@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public int numberOfJumps = 2;
-    public float delayedJumpDuration = 0.05f; // 3 seconds you can change this to whatever you want
+    public float delayedJumpDuration = 0.05f;
     public float walkSpeed = 15f;
     public float jumpSpeed = 32f;
     public bool flipSprite = false;
@@ -14,149 +14,78 @@ public class PlayerMovement : MonoBehaviour
     SpriteRenderer sprite;
     public int Facing { get; private set; } = 1;
 
-    public PlayerInputData input { get; set; } = new PlayerInputData();
-    PlayerInputData prevInput = new PlayerInputData();
-
     Animator animator;
-    public PlayerAnimatorState animatorState { get; set; } = new PlayerAnimatorState();
 
     Rigidbody2D rb;
     BoxCollider2D col;
-
-    [NonSerialized]
-    public bool IsClient;
 
     Coroutine varyJumpHeight;
     public float varyJumpHeightDuration = 0.5f;
     public float varyJumpHeightForce = 10f;
 
-    // attack effects are used to impact player movement during an attack
-    // for example, recovery makes the player go up
-    IPlayerAttackEffect attackEffect;
-    INetworkSync sync;
-    PlayerAttacking attacking;
     PlayerStatus status;
-    IMasterHit hit;
+
+    Drifter drifter;
 
     void Awake()
     {
+        drifter = GetComponent<Drifter>();
         animator = GetComponentInChildren<Animator>();
         sprite = GetComponentInChildren<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<BoxCollider2D>();
-        attackEffect = GetComponent<IPlayerAttackEffect>();
-        sync = GetComponent<INetworkSync>();
-        attacking = GetComponent<PlayerAttacking>();
         status = GetComponent<PlayerStatus>();
-        hit = GetComponentInChildren<IMasterHit>();
     }
-    void doGrab(DrifterAttackData attackData)
-    {
-        hit?.callTheGrab();
-        attacking.PerformAttack(DrifterAttackType.E_Side);
-        SetAnimatorTrigger("Grab");
-        StartMovementEffect(attackEffect?.Grab(), 0f);
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG, attackData[DrifterAttackType.E_Side].EndLag);
-    }
-    void doGroundLight(DrifterAttackData attackData)
-    {
-        hit?.callTheLight();
-        attacking.PerformAttack(DrifterAttackType.Ground_Q_Neutral);
-        SetAnimatorTrigger("Attack");
-        StartMovementEffect(attackEffect?.Light(), 0f);
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG, attackData[DrifterAttackType.Ground_Q_Neutral].EndLag);
-    }
-    void doAerialLight(DrifterAttackData attackData)
-    {
-        hit?.callTheAerial();
-        attacking.PerformAttack(DrifterAttackType.Aerial_Q_Neutral);
-        SetAnimatorTrigger("Aerial");
-        StartMovementEffect(attackEffect?.Aerial(), 0f);
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG, attackData[DrifterAttackType.Aerial_Q_Neutral].EndLag);
-    }
-    void doRecovery(DrifterAttackData attackData)
-    {
-        hit?.callTheRecovery();
-        attacking.PerformAttack(DrifterAttackType.W_Up);
-        SetAnimatorTrigger("Recovery");
-        StartMovementEffect(attackEffect?.Recovery(), 0f);
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG, attackData[DrifterAttackType.W_Up].EndLag);
-    }
+
     void Update()
     {
-        if (IsClient)
+        if (!GameController.Instance.IsHost)
         {
             return;
         }
 
-        // get input
-        bool jumpPressed = !prevInput.Jump && input.Jump;
-        bool lightPressed = !prevInput.Light && input.Light;
-        bool specialPressed = !prevInput.Special && input.Special;
-        bool grabPressed = !prevInput.Grab && input.Grab;
+        bool jumpPressed = !drifter.prevInput.Jump && drifter.input.Jump;
         // TODO: spawn hitboxes
         bool canAct = !status.HasStunEffect() && !animator.GetBool("Guarding");
         bool canGuard = !status.HasStunEffect();
-        bool moving = input.MoveX != 0;
-        SetAnimatorBool("Grounded", IsGrounded());
-        // get attack data
-        DrifterAttackData attackData = GameController.Instance.AllData.GetAttacks(sync.Type);
+        bool moving = drifter.input.MoveX != 0;
+        drifter.SetAnimatorBool("Grounded", IsGrounded());
 
         if (moving && canAct)
         {
-            sprite.flipX = flipSprite ^ (input.MoveX > 0);
-            Facing = (input.MoveX > 0) ? 1 : -1;
+            sprite.flipX = flipSprite;
+            Facing = (drifter.input.MoveX > 0) ? 1 : -1;
+            transform.localScale = new Vector3(Facing * Mathf.Abs(transform.localScale.x),
+                transform.localScale.y, transform.localScale.z);
         }
 
-        if (grabPressed && canAct)
+        if (moving && canAct)
         {
-            doGrab(attackData);
-        }
-        else if (moving && canAct)
-        {
-            SetAnimatorBool("Walking", true);
-            rb.velocity = new Vector2(input.MoveX > 0 ? walkSpeed : -walkSpeed, rb.velocity.y);
+            drifter.SetAnimatorBool("Walking", true);
+            rb.velocity = new Vector2(drifter.input.MoveX > 0 ? walkSpeed : -walkSpeed, rb.velocity.y);
         }
         else if (!moving && status.HasGroundFriction())
         {
-            SetAnimatorBool("Walking", false);
+            drifter.SetAnimatorBool("Walking", false);
             rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 80f * Time.deltaTime), rb.velocity.y);
         }
         else
         {
-            SetAnimatorBool("Grounded", false);
+            drifter.SetAnimatorBool("Grounded", false);
             rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 40f * Time.deltaTime), rb.velocity.y);
         }
 
-        //attack  //neutral aerial
-        if (lightPressed && canAct)
-        {
-            if (animator.GetBool("Grounded"))
-            {
-                doGroundLight(attackData);
-            }
-            else
-            {
-                doAerialLight(attackData);
-            }
-        }
-        if (input.Guard && canGuard)
+        if (drifter.input.Guard && canGuard)
         {
             //shift is guard
             if (!animator.GetBool("Guarding"))
             {
-                SetAnimatorBool("Guarding", true);
+                drifter.SetAnimatorBool("Guarding", true);
             }
         }
         else
         {
-            SetAnimatorBool("Guarding", false);
-        }
-
-        if (specialPressed && input.MoveY > 0 && canAct)
-        {
-            // recovery
-            doRecovery(attackData);
+            drifter.SetAnimatorBool("Guarding", false);
         }
 
         if (jumpPressed && canAct && rb.velocity.y < 0.8f * jumpSpeed)
@@ -169,83 +98,11 @@ public class PlayerMovement : MonoBehaviour
             if (numberOfJumps > 0)
             {
                 numberOfJumps--;
-                SetAnimatorTrigger("Jump");
+                drifter.SetAnimatorTrigger("Jump");
                 //jump needs a little delay so character animations can spend
                 //a frame of two preparing to jump
                 StartCoroutine(DelayedJump());
             }
-        }
-
-        // set previous player input
-        prevInput.CopyFrom(input);
-    }
-
-    public bool Walking = false;
-    // used by clients
-    public void SyncAnimatorState(PlayerAnimatorState state)
-    {
-        int ID = GetComponent<INetworkSync>().ID;
-        animator.SetBool("Grounded", state.Grounded);
-        animator.SetBool("Walking", state.Walking);
-        Walking = state.Walking;
-        animator.SetBool("Guarding", state.Guarding);
-        if (state.Attack) animator.SetTrigger("Attack");
-        if (state.Grab) animator.SetTrigger("Grab");
-        if (state.Jump) animator.SetTrigger("Jump");
-        if (state.Recovery) animator.SetTrigger("Recovery");
-        if (state.Aerial) animator.SetTrigger("Aerial");
-    }
-    // used by host
-    private void SetAnimatorTrigger(string s)
-    {
-        if (!IsClient)
-        {
-            animator.SetTrigger(s);
-        }
-        switch (s)
-        {
-            case "Attack":
-                animatorState.Attack = true;
-                break;
-            case "Grab":
-                animatorState.Grab = true;
-                break;
-            case "Jump":
-                animatorState.Jump = true;
-                break;
-            case "Recovery":
-                animatorState.Recovery = true;
-                break;
-            case "Aerial":
-                animatorState.Aerial = true;
-                break;
-        }
-    }
-    public void ResetAnimatorTriggers()
-    {
-        animatorState.Attack = false;
-        animatorState.Grab = false;
-        animatorState.Jump = false;
-        animatorState.Recovery = false;
-        animatorState.Aerial = false;
-    }
-    private void SetAnimatorBool(string s, bool value)
-    {
-        if (!IsClient)
-        {
-            animator.SetBool(s, value);
-        }
-        switch (s)
-        {
-            case "Grounded":
-                animatorState.Grounded = value;
-                break;
-            case "Walking":
-                animatorState.Walking = value;
-                break;
-            case "Guarding":
-                animatorState.Guarding = value;
-                break;
         }
     }
 
@@ -287,80 +144,12 @@ public class PlayerMovement : MonoBehaviour
         {
             yield return new WaitForFixedUpdate();
             time += Time.fixedDeltaTime;
-            if (!animator.GetBool("Grounded") && input.Jump)
+            if (!animator.GetBool("Grounded") && drifter.input.Jump)
             {
                 rb.AddForce(Vector2.up * -Physics2D.gravity * varyJumpHeightForce);
             }
         }
         varyJumpHeight = null;
     }
-
-    // Super-armor logic
-    private class AttackEffect
-    {
-        public Coroutine Effect;
-        public float SuperArmor;
-        public float Damage;
-    }
-
-    List<AttackEffect> movementEffects = new List<AttackEffect>();
-    private void StartMovementEffect(IEnumerator ef, float superArmor)
-    {
-        if (ef != null)
-        {
-            movementEffects.Add(new AttackEffect()
-            {
-                Effect = StartCoroutine(ef),
-                SuperArmor = superArmor,
-                Damage = 0
-            });
-        }
-    }
-
-    // call this when launched to damage a movement effect
-    public void DamageSuperArmor(float damage)
-    {
-        for (int i = 0; i < movementEffects.Count; i++)
-        {
-            AttackEffect ef = movementEffects[i];
-            ef.Damage += damage;
-            if (ef.Damage > ef.SuperArmor)
-            {
-                if (ef.Effect != null)
-                {
-                    StopCoroutine(ef.Effect);
-                }
-                attackEffect.Reset();
-                movementEffects.RemoveAt(i);
-                i--;
-            }
-        }
-    }
 }
 
-public class PlayerAnimatorState : ICloneable
-{
-    public bool Grounded = false;
-    public bool Walking = false;
-    public bool Guarding = false;
-    public bool Attack = false;
-    public bool Grab = false;
-    public bool Jump = false;
-    public bool Recovery = false;
-    public bool Aerial = false;
-
-    public object Clone()
-    {
-        return new PlayerAnimatorState()
-        {
-            Grounded = Grounded,
-            Walking = Walking,
-            Guarding = Guarding,
-            Attack = Attack,
-            Grab = Grab,
-            Jump = Jump,
-            Recovery = Recovery,
-            Aerial = Aerial
-        };
-    }
-}

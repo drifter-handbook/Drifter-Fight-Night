@@ -2,58 +2,72 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MasterHit : MonoBehaviour, IMasterHit
+public abstract class MasterHit : MonoBehaviour, IMasterHit
 {
-    PlayerAttacking attacking;
-    PlayerMovement playerMovement;
-    public GameObject parent;
+    protected Drifter drifter;
+    protected NetworkEntityList entities;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
+        drifter = transform.parent.gameObject.GetComponent<Drifter>();
+        entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
     }
 
     // Update is called once per frame
     void Update()
     {
+
     }
-    public void callTheAerial()
+
+    public virtual void callTheAerial()
     {
 
     }
-    public void cancelTheAerial()
+    public virtual void hitTheAerial(GameObject target)
     {
 
     }
-    public void callTheLight()
+    public virtual void cancelTheAerial()
     {
 
     }
-    public void cancelTheLight()
+
+    public virtual void callTheLight()
     {
 
     }
-    public void callTheGrab()
+    public virtual void hitTheLight(GameObject target)
     {
 
     }
-    public void cancelTheGrab()
+    public virtual void cancelTheLight()
     {
 
     }
-    public void callTheRecovery()
+
+    public virtual void callTheGrab()
     {
 
     }
-    public void cancelTheRecovery()
+    public virtual void hitTheGrab(GameObject target)
     {
 
     }
-    public void callTheAttackEffect()
+    public virtual void cancelTheGrab()
     {
-        //call the Attack here (using the parent)
+
     }
-    public void callTheMovementEffect()
+
+    public virtual void callTheRecovery()
     {
-        //call the movement caused by the attack here (in order to force move)
+
+    }
+    public virtual void hitTheRecovery(GameObject target)
+    {
+
+    }
+    public virtual void cancelTheRecovery()
+    {
+
     }
 }

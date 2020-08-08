@@ -10,7 +10,7 @@ public class SavvySyncManager : MonoBehaviour
     void Start()
     {
         Entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
-        GetComponent<PlayerInput>().input = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().input;
+        GetComponent<PlayerInput>().input = GameObject.FindGameObjectWithTag("Player").GetComponent<Drifter>().input;
     }
 
     // Update is called once per frame

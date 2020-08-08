@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RyykeAttackEffect : MonoBehaviour, IPlayerAttackEffect
+public class SpacejamAttackEffect : MonoBehaviour, IPlayerAttackEffect
 {
     PlayerMovement movement;
     Rigidbody2D rb;
     SpriteRenderer sr;
     NetworkEntityList Entities;
-    PlayerAttacking attacks;
+    PlayerAttacks attacks;
 
     public void Start()
     {
@@ -16,18 +16,11 @@ public class RyykeAttackEffect : MonoBehaviour, IPlayerAttackEffect
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponentInChildren<SpriteRenderer>();
         Entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
-        attacks = GetComponent<PlayerAttacking>();
+        attacks = GetComponent<PlayerAttacks>();
     }
 
     public IEnumerator<object> Aerial()
     {
-        float t = 0;
-        while (t < 0.5f)
-        {
-            rb.velocity = new Vector2(rb.velocity.x, 0.9f * rb.velocity.y);
-            t += Time.deltaTime;
-            yield return null;
-        }
         yield break;
     }
 
@@ -38,6 +31,17 @@ public class RyykeAttackEffect : MonoBehaviour, IPlayerAttackEffect
 
     public IEnumerator<object> Light()
     {
+        float range = 6f;
+        Vector3 pos = movement.Facing * Vector3.right * range + 1f * Vector3.down;
+        GameObject spacejamBell = Instantiate(Entities.GetEntityPrefab("SpacejamBell"), transform.position + pos, transform.rotation);
+        foreach (HitboxCollision hitbox in spacejamBell.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+        }
+        Entities.AddEntity(spacejamBell);
         yield break;
     }
 
