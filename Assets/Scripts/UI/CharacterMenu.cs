@@ -30,7 +30,7 @@ public class CharacterMenu : MonoBehaviour
 
     public GameObject[] figurines;
     public Sprite[] images;
-    private GameObject clientArrow;
+    private int selectedDrifterID;
     private GameObject clientCard;
     //determines how many player cards we can fit on a panel
     private const int PANEL_MAX_PLAYERS = 4;
@@ -110,21 +110,22 @@ public class CharacterMenu : MonoBehaviour
     public void selectDrifter(int drifterIndex)
     {
         PlayerData myData = getPlayerData(clientPlayerID);
-        if (clientArrow != null)
+        if (selectedDrifterID != null)
         {
-            Destroy(clientArrow);
+            figurines[selectedDrifterID].GetComponent<Figurine>().TurnArrowOff();
         }
 
-        //spawn arrow on the correct object
-        clientArrow = Instantiate(arrowPrefab.gameObject, new Vector3(0, 0, 0), new Quaternion());
-        clientArrow.transform.SetParent(figurines[drifterIndex].transform);
-        clientArrow.transform.localPosition = new Vector3(0, 0, 0);
-        clientArrow.transform.localScale = new Vector3(1, 1, 1);
-        clientArrow.GetComponent<Image>().color = myData.getColorFromEnum();
+       figurines[drifterIndex].GetComponent<Figurine>().TurnArrowOn();
+       figurines[drifterIndex].GetComponent<Figurine>().SetColor(myData.getColorFromEnum());
+
         if (myData.characterCard != null)
         {
             CharacterCard.SetCharacter(myData.characterCard.transform, images[drifterIndex], fetchCharacterName(drifterIndex));
         }
+
+
+        Debug.Log(fetchCharacterName(drifterIndex));
+        selectedDrifterID = drifterIndex;
 
     }
 
@@ -136,7 +137,7 @@ public class CharacterMenu : MonoBehaviour
             case 1: return "Nero";
             case 2: return "Lady Parhelion";
             case 3: return "Rykke";
-            case 4: return "Space Jame";
+            case 4: return "Space Jam";
             default: return "???";
         }
     }
