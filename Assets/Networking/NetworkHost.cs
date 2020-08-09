@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -161,13 +162,7 @@ public class NetworkHost : MonoBehaviour, NetworkID
         // find entities
         entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
         // create players
-        List<string> playerNames = new List<string>() {
-            "Nero",
-            "Lady Parhelion",
-            "Ryyke",
-            "Spacejam",
-
-        };
+        List<string> playerNames = CharacterSelectStates.Select(x => x.PlayerType.ToString().Replace("_", " ")).ToList();
 
         //TODO: Grab player color from the list on the character Select screen (saved with player data)
         List<Color> playerColors = new List<Color>() {
@@ -180,8 +175,8 @@ public class NetworkHost : MonoBehaviour, NetworkID
         {
             GameObject player = Instantiate(
                 entities.GetEntityPrefab(playerNames[i]),
-                entities.SpawnPoints[i].transform.position,
-                entities.SpawnPoints[i].transform.rotation
+                entities.SpawnPoints[i % entities.SpawnPoints.Count].transform.position,
+                Quaternion.identity
             );
            Drifter drifter = player.GetComponent<Drifter>();
             drifter.SetColor(playerColors[i]);
