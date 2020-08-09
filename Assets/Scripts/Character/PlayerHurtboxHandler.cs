@@ -53,7 +53,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
             {
                 damageMultiplier = 0f;
             }
-            GetComponent<Rigidbody2D>().velocity = forceDir.normalized * attackData.Knockback * 2.35f * damageMultiplier;
+            GetComponent<Rigidbody2D>().velocity = forceDir.normalized * (float)((drifter.DamageTaken / 10 + drifter.DamageTaken * attackData.AttackDamage / 20)
+                                                                * 200 / (drifter.drifterData.Weight + 100) * 1.4 * attackData.KnockbackScale + attackData.Knockback);
             // stun player
             float stunMultiplier = Mathf.Lerp(1f, damageMultiplier, 0.5f);
             GetComponent<PlayerStatus>()?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, stunMultiplier * attackData.HitStun);
