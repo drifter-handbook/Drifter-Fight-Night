@@ -12,11 +12,13 @@ public class PingPacket : IGamePacket
     public string TypeID { get; set; } = "Ping";
 
     public float Timestamp { get; set; }
+
+    public float PingTimestamp;
     public bool Response;
 
     public class PingData
     {
-        public float Timestamp;
+        public float PingTimestamp;
         // whether we're sending a ping or this is a response to a ping
         public bool Response = false;
     }
@@ -24,11 +26,11 @@ public class PingPacket : IGamePacket
     public IGamePacket FromData(string json)
     {
         PingData data = JsonConvert.DeserializeObject<PingData>(json);
-        return new PingPacket() { Timestamp = data.Timestamp, Response = data.Response };
+        return new PingPacket() { PingTimestamp = data.PingTimestamp, Response = data.Response };
     }
 
     public object ToData()
     {
-        return new PingData() { Timestamp = Timestamp, Response = Response };
+        return new PingData() { PingTimestamp = PingTimestamp, Response = Response };
     }
 }

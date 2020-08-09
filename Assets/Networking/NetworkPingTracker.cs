@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class NetworkPingTracker
@@ -32,8 +33,9 @@ public class NetworkPingTracker
         // send pings
         timer.Schedule(() =>
         {
-            network.SendToAll(new PingPacket() { Timestamp = Time.time });
+            network.SendToAll(new PingPacket() { PingTimestamp = Time.time, Response = false });
             // check if any connections timed out
+            List<int> timedOut = new List<int>();
             foreach (int id in pingTargets.Keys)
             {
                 pingTargets[id].latestPingSent = Time.time;
@@ -43,7 +45,7 @@ public class NetworkPingTracker
                     {
                         handler.Invoke(id);
                     }
-                    pingTargets.Remove(id);
+                    timedOut.Add(id);
                 }
             }
         }, PING_INTERVAL);
@@ -60,7 +62,7 @@ public class NetworkPingTracker
             // if receiving a response to one of our pings, track it
             else if (pingTargets.ContainsKey(id))
             {
-                if (Mathf.Abs(ping.Timestamp - pingTargets[id].latestPingSent) < 0.01f)
+                if (Mathf.Abs(ping.PingTimestamp - pingTargets[id].latestPingSent) < 0.01f)
                 {
                     pingTargets[id].latestPing = Time.time - pingTargets[id].latestPingSent;
                     pingTargets[id].latestPingResponse = Time.time;
@@ -68,6 +70,11 @@ public class NetworkPingTracker
             }
             pingTargets[id].latestPingResponse = Time.time;
         });
+    }
+
+    public float GetPing()
+    {
+        return GetPing(pingTargets.Keys.First());
     }
 
     public float GetPing(int id)
