@@ -63,14 +63,21 @@ public class NetworkClient : MonoBehaviour, NetworkID
                 return;
             }
             CharacterSelectState localCharSelect = null;
-            if (PlayerID < CharacterSelectStates.Count)
+            CharacterSelectState remote = ((CharacterSelectSyncPacket)packet).Data.CharacterSelectState.Find(x => x.PlayerID == PlayerID);
+            if (remote == null || remote.PlayerIndex < 0)
             {
-                localCharSelect = CharacterSelectStates[PlayerID];
+                return;
+            }
+            int index = remote.PlayerIndex;
+            localCharSelect = CharacterSelectStates.Find(x => x.PlayerID == PlayerID);
+            if (localCharSelect != null)
+            {
+                localCharSelect.PlayerIndex = index;
             }
             CharacterSelectStates = ((CharacterSelectSyncPacket)packet).Data.CharacterSelectState;
             if (PlayerID < CharacterSelectStates.Count && localCharSelect != null)
             {
-                CharacterSelectStates[PlayerID] = localCharSelect;
+                CharacterSelectStates[index] = localCharSelect;
             }
         }, true);
         // handle game input

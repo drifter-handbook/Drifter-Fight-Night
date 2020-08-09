@@ -80,6 +80,7 @@ public class NetworkHost : MonoBehaviour, NetworkID
             {
                 CharacterSelectStates[state.PlayerIndex] = ((CharacterSelectInputPacket)packet).CharacterSelect;
             }
+            // TODO: what about join and drop?
         }, true);
         // handle game input
         Network.OnReceive(new InputToHostPacket(), (id, packet) =>
@@ -123,6 +124,11 @@ public class NetworkHost : MonoBehaviour, NetworkID
         }
         if (entities == null)
         {
+            // sort
+            for (int i = 0; i < CharacterSelectStates.Count; i++)
+            {
+                CharacterSelectStates[i].PlayerIndex = i;
+            }
             // send character selection sync packet every frame
             Network.SendToAll(new CharacterSelectSyncPacket()
             {
