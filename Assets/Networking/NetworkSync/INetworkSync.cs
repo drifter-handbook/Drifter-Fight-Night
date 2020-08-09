@@ -35,6 +35,7 @@ public class NetworkEntityConverter : Newtonsoft.Json.Converters.CustomCreationC
             case "Lady Parhelion":
             case "Spacejam":
             case "Ryyke":
+            case "Orro":
             case "Swordfrog":
                 return new PlayerSync.PlayerData();
             case "Box":

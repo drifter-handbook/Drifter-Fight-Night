@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: AttackData
+  m_EditorClassIdentifier: Assembly-CSharp::DrifterAttackData
+  Attacks:
+  - attack: 4
+    attackData: {fileID: 11400000, guid: 01dd77dbf9921404fab081bdbf2b5639, type: 2}
+  - attack: 8
+    attackData: {fileID: 11400000, guid: 65ac441e1ba31b047832a5bc98b415e8, type: 2}
+  - attack: 11
+    attackData: {fileID: 11400000, guid: 3fb771830b1298d44a12fb359c784e58, type: 2}
+  - attack: 13
+    attackData: {fileID: 11400000, guid: ed20f4c3c6215ca4b8b59dde99376786, type: 2}

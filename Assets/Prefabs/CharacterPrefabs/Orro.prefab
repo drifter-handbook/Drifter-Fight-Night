@@ -424,8 +424,10 @@ MonoBehaviour:
   movement: {fileID: 3106753082241659641}
   sync: {fileID: 1401939795787901855}
   controls: {fileID: 11400000, guid: 885ea4674937f97478cc8405e1044828, type: 2}
+  animator: {fileID: 2000386183588008255}
   Stocks: 0
   DamageTaken: 0
+  myColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &3106753082241659641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -506,7 +508,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 1, y: -8.5}
+  m_Offset: {x: 1, y: 12}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -613,13 +615,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7083992111526413055}
-  m_LocalRotation: {x: 0, y: 0, z: 0.69528586, w: 0.7187333}
-  m_LocalPosition: {x: 0.045, y: -0.142, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5306829202166808911}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 88.1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!70 &1627984188795609511
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -634,7 +636,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.33, y: 0.33}
+  m_Size: {x: 0.33, y: 0.75}
   m_Direction: 0
 --- !u!114 &8371682803259408103
 MonoBehaviour:
