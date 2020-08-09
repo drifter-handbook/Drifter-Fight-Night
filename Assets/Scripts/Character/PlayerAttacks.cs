@@ -39,8 +39,8 @@ public class PlayerAttacks : MonoBehaviour
     void Start()
     {
         drifter = GetComponent<Drifter>();
+        animator = drifter.animator;
         status = GetComponent<PlayerStatus>();
-        animator = GetComponentInChildren<Animator>();
         hit = GetComponentInChildren<IMasterHit>();
         sync = GetComponent<INetworkSync>();
         attackData = GameController.Instance.AllData.GetAttacks(sync.Type);

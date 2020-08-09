@@ -30,7 +30,7 @@ public class PlayerMovement : MonoBehaviour
     void Awake()
     {
         drifter = GetComponent<Drifter>();
-        animator = GetComponentInChildren<Animator>();
+        animator = drifter.animator;
         sprite = GetComponentInChildren<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<BoxCollider2D>();

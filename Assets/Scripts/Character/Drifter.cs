@@ -28,7 +28,7 @@ public class Drifter : MonoBehaviour
     public PlayerSync sync;
     public CustomControls controls;
 
-    Animator animator;
+    public Animator animator;
     public PlayerAnimatorState animatorState { get; set; } = new PlayerAnimatorState();
 
     public int Stocks = 0;
@@ -41,7 +41,6 @@ public class Drifter : MonoBehaviour
 
     void Awake()
     {
-        animator = GetComponentInChildren<Animator>();
     }
 
     void LateUpdate()

@@ -38,7 +38,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             Drifter drifter = GetComponent<Drifter>();
             if (drifter != null)
             {
-                drifter.DamageTaken += attackData.AttackDamage * (GetComponentInChildren<Animator>().GetBool("Guarding") ? 0.35f : 1f);
+                drifter.DamageTaken += attackData.AttackDamage * (drifter.animator.GetBool("Guarding") ? 0.35f : 1f);
             }
             // apply knockback
             float facingDir = Mathf.Sign(hurtbox.parent.transform.position.x - hitbox.parent.transform.position.x);

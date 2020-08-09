@@ -424,6 +424,7 @@ MonoBehaviour:
   movement: {fileID: 3106753082241659641}
   sync: {fileID: 1401939795787901855}
   controls: {fileID: 0}
+  animator: {fileID: 2000386183588008255}
   Stocks: 0
   DamageTaken: 0
   myColor: {r: 0, g: 0, b: 0, a: 0}
@@ -589,6 +590,25 @@ Transform:
   m_Father: {fileID: 5306829202166808911}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &4917154141227020330
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4415746613059865980}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f0a70a69030b61846981aaf08bae8d8c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &7083992111526413055
 GameObject:
   m_ObjectHideFlags: 0
@@ -793,6 +813,12 @@ PrefabInstance:
 --- !u!4 &868922314134636865 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6559769987014644725, guid: be3d2a1a9475453458451591623752f5,
+    type: 3}
+  m_PrefabInstance: {fileID: 6271249501237877428}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4415746613059865980 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7656143657836238792, guid: be3d2a1a9475453458451591623752f5,
     type: 3}
   m_PrefabInstance: {fileID: 6271249501237877428}
   m_PrefabAsset: {fileID: 0}
