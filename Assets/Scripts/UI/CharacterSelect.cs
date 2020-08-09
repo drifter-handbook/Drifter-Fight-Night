@@ -14,8 +14,13 @@ public class CharacterSelect : MonoBehaviour
     public bool PlayerJoin(int connectionID)
     {
         PlayerData dannyDe_add_o = new PlayerData(connectionID);
+        
+
+        dannyDe_add_o = menu.AddPlayerCard(dannyDe_add_o);
+
         players.Add(dannyDe_add_o);
-        return menu.AddPlayerCard(dannyDe_add_o);
+        //I actually changed this to return a playerdata
+        return true;
     }
 
     public void PlayerDisconnect(int connectionID)

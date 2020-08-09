@@ -51,7 +51,10 @@ public class CharacterMenu : MonoBehaviour
     {
         foreach (PlayerData playerData in playerDataList)
         {
-            if (playerData.PlayerID == clientPlayerID)
+
+            Debug.Log(playerData.characterCard + "Oh!");
+
+            if (playerData.PlayerIndex == clientPlayerID)
             {
                 return playerData;
             }
@@ -60,19 +63,19 @@ public class CharacterMenu : MonoBehaviour
     }
 
     //try to add player, return false if over max
-    public bool AddPlayerCard(PlayerData player)
+    public PlayerData AddPlayerCard(PlayerData player)
     {
-        if (connectedPlayers > maxPlayers) return false;
+        if (connectedPlayers > maxPlayers) return player;
 
         player.PlayerColor = colorList[0];
         player.PlayerIndex = connectedPlayers - 1;
-        playerDataList.Add(player);
 
         // TODO: Show specific character based on selection
 
         player.PlayerColor = colorList[0];
         GameObject charCard = CharacterCard.CreatePlayerCard(player.getColorFromEnum());
         player.characterCard = charCard;
+
         Transform card = charCard.transform;
         colorList.RemoveAt(0);
 
@@ -82,8 +85,8 @@ public class CharacterMenu : MonoBehaviour
         card.SetParent(parent, false);
 
         connectedPlayers++;
-
-        return true;
+        playerDataList.Add(player);
+        return player;
     }
 
     public void RemovePlayerCard(int index) //start at 0 plz
@@ -110,6 +113,12 @@ public class CharacterMenu : MonoBehaviour
     public void selectDrifter(int drifterIndex)
     {
         PlayerData myData = getPlayerData(clientPlayerID);
+
+        Debug.Log(myData.characterCard + "?");
+        Debug.Log(myData.PlayerID + "??");
+        Debug.Log(myData.PlayerIndex + "???");
+
+
         if (selectedDrifterID != null)
         {
             figurines[selectedDrifterID].GetComponent<Figurine>().TurnArrowOff();
