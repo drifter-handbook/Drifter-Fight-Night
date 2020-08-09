@@ -78,7 +78,6 @@ public class CharacterMenu : MonoBehaviour
             RemovePlayerCard();
             i--;
         }
-        int index = GameController.Instance.LocalPlayer.PlayerIndex;
         // set cards
         for (int i = 0; i < menuEntries.Count; i++)
         {
@@ -86,6 +85,11 @@ public class CharacterMenu : MonoBehaviour
             CharacterCard.SetCharacter(menuEntries[i].characterCard.transform, figurines[drifter].image, drifter.ToString().Replace("_", " "));
         }
         // set arrow color and visibility
+        int index = GameController.Instance.LocalPlayer.PlayerIndex;
+        if (index < 0)
+        {
+            return;
+        }
         foreach (PlayerSelectFigurine drifter in drifters)
         {
             if (drifter.figurine != null)
