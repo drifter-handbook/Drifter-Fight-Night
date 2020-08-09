@@ -58,18 +58,17 @@ public class NetworkClient : MonoBehaviour, NetworkID
         Network.OnReceive(new CharacterSelectSyncPacket(), (id, packet) =>
         {
             // TODO: Add UI to networking when done
-            return;
             if (PlayerID < 0)
             {
                 return;
             }
-            CharacterSelectState localCharSelect = new CharacterSelectState();
+            CharacterSelectState localCharSelect = null;
             if (PlayerID < CharacterSelectStates.Count)
             {
                 localCharSelect = CharacterSelectStates[PlayerID];
             }
             CharacterSelectStates = ((CharacterSelectSyncPacket)packet).Data.CharacterSelectState;
-            if (PlayerID < CharacterSelectStates.Count)
+            if (PlayerID < CharacterSelectStates.Count && localCharSelect != null)
             {
                 CharacterSelectStates[PlayerID] = localCharSelect;
             }

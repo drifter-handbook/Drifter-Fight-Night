@@ -1,153 +1,151 @@
-﻿using System.Collections;
+﻿using System;
+using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum PlayerColor
+{
+    RED, GOLD, GREEN, BLUE, PURPLE, MAGENTA, ORANGE, CYAN
+}
+
 // Shows players and selected character [View]
 public class CharacterMenu : MonoBehaviour
 {
-
-    List<PlayerColor> colorList = new List<PlayerColor>{
-        PlayerColor.RED,
-        PlayerColor.GOLD,
-        PlayerColor.GREEN,
-        PlayerColor.BLUE,
-        PlayerColor.PURPLE,
-        PlayerColor.MAGENTA,
-        PlayerColor.ORANGE,
-        PlayerColor.CYAN
+    public static Dictionary<PlayerColor, Color> ColorFromEnum = new Dictionary<PlayerColor, Color>()
+    {
+        { PlayerColor.RED, new Color(1.0f, 0f, 0f) },
+        { PlayerColor.GOLD, new Color(1.0f, 0.8f, 0f) },
+        { PlayerColor.GREEN, new Color(0.124f, 0.866f, 0.118f) },
+        { PlayerColor.BLUE, new Color(0.075f, 0.702f, 0.906f) },
+        { PlayerColor.PURPLE, new Color(0.725f, 0.063f, 1.0f) },
+        { PlayerColor.MAGENTA, new Color(1.0f, 0.063f, 0.565f) },
+        { PlayerColor.ORANGE, new Color(1.0f, 0.55f, 0.165f) },
+        { PlayerColor.CYAN, new Color(0.0f, 1.0f, 0.702f) }
     };
-
-    private int clientPlayerID = 0; //the person looking at the screen
 
     public GameObject leftPanel;
     public GameObject rightPanel;
 
-    private int connectedPlayers = 1; //or maybe 0, but I hope we can assume 1
-    private int maxPlayers = 8; //the # of players allowed in the lobby
+    [Serializable]
+    public class PlayerSelectFigurine
+    {
+        public DrifterType drifter;
+        public GameObject figurine;
+        public Sprite image;
+    }
+    public List<PlayerSelectFigurine> drifters;
+    Dictionary<DrifterType, PlayerSelectFigurine> figurines = new Dictionary<DrifterType, PlayerSelectFigurine>();
 
-    private List<PlayerData> playerDataList = new List<PlayerData>();
-
-    public GameObject[] figurines;
-    public Sprite[] images;
-    private int selectedDrifterID;
     private GameObject clientCard;
+
     //determines how many player cards we can fit on a panel
     private const int PANEL_MAX_PLAYERS = 4;
 
     public GameObject arrowPrefab;
 
-    public void debugClientIncrementPlayerID()
+    public class PlayerMenuEntry
     {
-        clientPlayerID++;
+        public GameObject arrow;
+        public GameObject characterCard;
     }
+    List<PlayerMenuEntry> menuEntries = new List<PlayerMenuEntry>();
 
-    public void changeClientPlayerID(int num)
+    void Awake()
     {
-        clientPlayerID = num;
-    }
-
-    public PlayerData getPlayerData(int id)
-    {
-        foreach (PlayerData playerData in playerDataList)
+        foreach (PlayerSelectFigurine drifter in drifters)
         {
+            figurines[drifter.drifter] = drifter;
+        }
+    }
 
-            Debug.Log(playerData.characterCard + "Oh!");
+    void FixedUpdate()
+    {
+        SyncToCharSelectState();
+    }
 
-            if (playerData.PlayerIndex == clientPlayerID)
+    public void SyncToCharSelectState()
+    {
+        // add cards if needed
+        for (int i = menuEntries.Count; i < GameController.Instance.CharacterSelectStates.Count; i++)
+        {
+            AddPlayerCard();
+        }
+        // remove cards if needed
+        for (int i = GameController.Instance.CharacterSelectStates.Count; i < menuEntries.Count; i++)
+        {
+            RemovePlayerCard();
+            i--;
+        }
+        int index = GameController.Instance.LocalPlayer.PlayerIndex;
+        // set cards
+        for (int i = 0; i < menuEntries.Count; i++)
+        {
+            DrifterType drifter = GameController.Instance.CharacterSelectStates[i].PlayerType;
+            CharacterCard.SetCharacter(menuEntries[i].characterCard.transform, figurines[drifter].image, drifter.ToString().Replace("_", " "));
+        }
+        // set arrow color and visibility
+        foreach (PlayerSelectFigurine drifter in drifters)
+        {
+            if (drifter.figurine != null)
             {
-                return playerData;
+                drifter.figurine.GetComponent<Figurine>().SetColor(ColorFromEnum[(PlayerColor)index]);
+                if (drifter.drifter == GameController.Instance.CharacterSelectStates[index].PlayerType)
+                {
+                    drifter.figurine.GetComponent<Figurine>().TurnArrowOn();
+                }
+                else
+                {
+                    drifter.figurine.GetComponent<Figurine>().TurnArrowOff();
+                }
             }
         }
-        return new PlayerData();//no please don't hit this
     }
 
     //try to add player, return false if over max
-    public PlayerData AddPlayerCard(PlayerData player)
+    public void AddPlayerCard()
     {
-        if (connectedPlayers > maxPlayers) return player;
+        if (menuEntries.Count >= GameController.MAX_PLAYERS)
+        {
+            return;
+        }
+        PlayerMenuEntry entry = new PlayerMenuEntry();
+        int index = menuEntries.Count;
+        menuEntries.Add(entry);
 
-        player.PlayerColor = colorList[0];
-        player.PlayerIndex = connectedPlayers - 1;
-
-        // TODO: Show specific character based on selection
-
-        player.PlayerColor = colorList[0];
-        GameObject charCard = CharacterCard.CreatePlayerCard(player.getColorFromEnum());
-        player.characterCard = charCard;
+        GameObject charCard = CharacterCard.CreatePlayerCard(ColorFromEnum[(PlayerColor)index]);
+        entry.characterCard = charCard;
 
         Transform card = charCard.transform;
-        colorList.RemoveAt(0);
 
-        Transform parent = (connectedPlayers <= PANEL_MAX_PLAYERS) ?
+        Transform parent = (index < PANEL_MAX_PLAYERS) ?
             leftPanel.transform : rightPanel.transform;
 
         card.SetParent(parent, false);
-
-        connectedPlayers++;
-        playerDataList.Add(player);
-        return player;
     }
 
-    public void RemovePlayerCard(int index) //start at 0 plz
+    public void RemovePlayerCard()
     {
-        if (connectedPlayers <= 0)
+        int index = menuEntries.Count - 1;
+        Transform parent = index < PANEL_MAX_PLAYERS ? leftPanel.transform : rightPanel.transform;
+        Destroy(menuEntries[index].characterCard);
+        menuEntries.RemoveAt(index);
+    }
+
+    public void SelectDrifter(string drifterString)
+    {
+        DrifterType drifter = (DrifterType)Enum.Parse(typeof(DrifterType), drifterString.Replace(" ", "_"));
+        int index = GameController.Instance.LocalPlayer.PlayerIndex;
+        if (index < 0)
         {
-            //then you're using the debug menu
-            //and you should not
             return;
         }
-
-        // FIXME: Will delete from left panel first when there are 8 characters - 
-        // probs cause we remove at 0 and don't shift stuff from r to l
-        Transform parent = (index <= PANEL_MAX_PLAYERS &&
-            leftPanel.transform.childCount >= index) ? leftPanel.transform
-            : rightPanel.transform;
-
-        colorList.Add(getPlayerData(index).PlayerColor);
-
-        Destroy(parent.GetChild(index % PANEL_MAX_PLAYERS).gameObject);
-        connectedPlayers--;
-    }
-
-    public void selectDrifter(int drifterIndex)
-    {
-        PlayerData myData = getPlayerData(clientPlayerID);
-
-        Debug.Log(myData.characterCard + "?");
-        Debug.Log(myData.PlayerID + "??");
-        Debug.Log(myData.PlayerIndex + "???");
-
-
-        if (selectedDrifterID != null)
+        PlayerMenuEntry myCard = menuEntries[GameController.Instance.LocalPlayer.PlayerIndex];
+        if (myCard.characterCard != null)
         {
-            figurines[selectedDrifterID].GetComponent<Figurine>().TurnArrowOff();
+            CharacterCard.SetCharacter(myCard.characterCard.transform, figurines[drifter].image, drifter.ToString().Replace("_", " "));
         }
-
-       figurines[drifterIndex].GetComponent<Figurine>().TurnArrowOn();
-       figurines[drifterIndex].GetComponent<Figurine>().SetColor(myData.getColorFromEnum());
-
-        if (myData.characterCard != null)
-        {
-            CharacterCard.SetCharacter(myData.characterCard.transform, images[drifterIndex], fetchCharacterName(drifterIndex));
-        }
-
-
-        Debug.Log(fetchCharacterName(drifterIndex));
-        selectedDrifterID = drifterIndex;
-
-    }
-
-    public string fetchCharacterName(int charID)
-    {
-        switch (charID)
-        {
-            case 0: return "Swordfrog";
-            case 1: return "Nero";
-            case 2: return "Lady Parhelion";
-            case 3: return "Rykke";
-            case 4: return "Space Jam";
-            default: return "???";
-        }
+        GameController.Instance.CharacterSelectStates[index].PlayerType = drifter;
     }
 }

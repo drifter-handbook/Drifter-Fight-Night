@@ -3,17 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public enum DrifterType
 {
-    NONE,
-    BOJO,
-    SWORDFROG,
-    LADY_PARHELION,
-    SPACEJAM,
-    ORRO,
-    RYKKE,
-    MEGURIN,
-    NERO,
+    None,
+    Bojo,
+    Swordfrog,
+    Lady_Parhelion,
+    Spacejam,
+    Orro,
+    Ryyke,
+    Megurin,
+    Nero,
 }
 
 /** 

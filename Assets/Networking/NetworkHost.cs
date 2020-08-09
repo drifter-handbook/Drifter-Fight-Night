@@ -15,18 +15,48 @@ public class NetworkHost : MonoBehaviour, NetworkID
     public NetworkHandler Network { get; set; }
 
     NetworkEntityList entities = GameController.Instance.Entities;
-    List<CharacterSelectState> CharacterSelectStates; // single source of truth
+
+    // single source of truth, indexed by PlayerIndex
+    List<CharacterSelectState> CharacterSelectStates => GameController.Instance.CharacterSelectStates;
 
     void Start()
     {
+        PlayerID = 0;
+        CharacterSelectStates.Add(new CharacterSelectState() {
+            PlayerID = 0,
+            PlayerIndex = 0,
+        });
         // create host network handler
         Network = new NetworkHandler();
         // accept clients
         Network.OnConnect((addr, port, id) =>
         {
+            // get next player index
+            int nextPlayerIndex = -1;
+            for (int i = 0; i < GameController.MAX_PLAYERS; i++)
+            {
+                bool taken = false;
+                foreach (CharacterSelectState player in CharacterSelectStates)
+                {
+                    if (player.PlayerIndex == i)
+                    {
+                        taken = true;
+                        break;
+                    }
+                }
+                if (!taken)
+                {
+                    nextPlayerIndex = i;
+                    break;
+                }
+            }
             Debug.Log($"New client {id} visible at {addr}:{port}");
             // TODO: Add UI to networking when done
-            // CharacterSelectStates.Add(new CharacterSelectState());
+            CharacterSelectStates.Add(new CharacterSelectState()
+            {
+                PlayerID = id,
+                PlayerIndex = nextPlayerIndex
+            });
         });
         // on failure
         Network.OnFailure(() =>
@@ -45,8 +75,11 @@ public class NetworkHost : MonoBehaviour, NetworkID
         // handle character select
         Network.OnReceive(new CharacterSelectInputPacket(), (id, packet) =>
         {
-            // TODO: Add UI to networking when done
-            // CharacterSelectStates[id] = ((CharacterSelectInputPacket)packet).CharacterSelect;
+            CharacterSelectState state = CharacterSelectStates.Find(x => x.PlayerID == id);
+            if (state != null && state.PlayerIndex >= 0)
+            {
+                CharacterSelectStates[state.PlayerIndex] = ((CharacterSelectInputPacket)packet).CharacterSelect;
+            }
         }, true);
         // handle game input
         Network.OnReceive(new InputToHostPacket(), (id, packet) =>

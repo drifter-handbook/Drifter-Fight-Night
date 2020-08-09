@@ -2,6 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public class SyncColor
+{
+    public float r;
+    public float g;
+    public float b;
+    public float a;
+
+    public SyncColor(Color c)
+    {
+        r = c.r;
+        g = c.g;
+        b = c.b;
+        a = c.a;
+    }
+
+    public Color ToColor()
+    {
+        return new Color(r, g, b, a);
+    }
+}
+
 public class PlayerSync : MonoBehaviour, INetworkSync
 {
     bool active;
@@ -44,27 +65,6 @@ public class PlayerSync : MonoBehaviour, INetworkSync
         transform.position = Vector3.Lerp(oldPos, targetPos, t);
     }
 
-    public class ColorButStupid
-    {
-        public float r;
-        public float g;
-        public float b;
-        public float a;
-
-        public ColorButStupid(Color c)
-        {
-            r = c.r;
-            g = c.g;
-            b = c.b;
-            a = c.a;
-        }
-
-        public Color ToColor()
-        {
-            return new Color(r, g, b, a);
-        }
-    }
-
     public class PlayerData : INetworkEntityData
     {
         public string Type { get; set; } = "";
@@ -77,7 +77,7 @@ public class PlayerSync : MonoBehaviour, INetworkSync
         public int stocks = 0;
         public float damageTaken = 0f;
         public PlayerAnimatorState animatorState = new PlayerAnimatorState();
-        public ColorButStupid color;
+        public SyncColor color;
     }
 
     public void Deserialize(INetworkEntityData data)
@@ -117,7 +117,7 @@ public class PlayerSync : MonoBehaviour, INetworkSync
             animatorState = (PlayerAnimatorState)gameObject.GetComponent<Drifter>().animatorState.Clone(),
             stocks = gameObject.GetComponent<Drifter>().Stocks,
             damageTaken = gameObject.GetComponent<Drifter>().DamageTaken,
-            color = new ColorButStupid(gameObject.GetComponentInChildren<SpriteRenderer>().color)
+            color = new SyncColor(gameObject.GetComponentInChildren<SpriteRenderer>().color)
         };
         GetComponent<Drifter>().ResetAnimatorTriggers();
         return data;

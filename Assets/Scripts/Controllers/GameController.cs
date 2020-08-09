@@ -13,7 +13,6 @@ public struct ConnectedPlayer
     public bool IsHost { get; set; }
     // index in game instance
     public int PlayerIndex { get; set; }
-    public string IP { get; set; }
 }
 
 [DisallowMultipleComponent]
@@ -26,11 +25,25 @@ public class GameController : MonoBehaviour
     public string hostIP = "68.187.67.135";
     public int HostID = 18;
 
+    public const int MAX_PLAYERS = 8;
+
     //* Data storage
     public AllDrifterData AllData; // Character List
-    public List<CharacterSelectState> CharacterSelectStates = // Source of truth
-        new List<CharacterSelectState>() { new CharacterSelectState() };
-    public ConnectedPlayer LocalPlayer; // It's you!
+    // Source of Truth on CharSel:
+    public List<CharacterSelectState> CharacterSelectStates = new List<CharacterSelectState>() { };
+    // It's you!
+    public ConnectedPlayer LocalPlayer {
+        get
+        {
+            ConnectedPlayer c = new ConnectedPlayer();
+            c.IsHost = IsHost;
+            NetworkID id = GetComponent<NetworkID>();
+            c.PlayerID = id == null ? -1 : id.PlayerID;
+            CharacterSelectState charSelState = CharacterSelectStates.Find(x => x.PlayerID == c.PlayerID);
+            c.PlayerIndex = charSelState == null ? -1 : charSelState.PlayerIndex;
+            return c;
+        }
+    }
     public NetworkEntityList Entities; // Holds all entities, incl players!!!
     public bool IsPaused { get; private set; } = false;
 

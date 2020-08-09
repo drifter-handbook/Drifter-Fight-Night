@@ -3,8 +3,7 @@ using UnityEngine.UI;
 
 public class CharacterSelectState
 {
-    int PlayerID;
-    int PlayerIndex;
-    Color Color;
-    Image Image;
+    public int PlayerID = -1;
+    public int PlayerIndex = -1;
+    public DrifterType PlayerType = DrifterType.None;
 }
