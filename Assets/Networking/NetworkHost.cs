@@ -163,14 +163,6 @@ public class NetworkHost : MonoBehaviour, NetworkID
         entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
         // create players
         List<string> playerNames = CharacterSelectStates.Select(x => x.PlayerType.ToString().Replace("_", " ")).ToList();
-
-        //TODO: Grab player color from the list on the character Select screen (saved with player data)
-        List<Color> playerColors = new List<Color>() {
-            Color.red,
-            Color.yellow,
-            Color.green,
-            Color.blue,
-        };
         for (int i = 0; i < playerNames.Count; i++)
         {
             GameObject player = Instantiate(
@@ -178,9 +170,9 @@ public class NetworkHost : MonoBehaviour, NetworkID
                 entities.SpawnPoints[i % entities.SpawnPoints.Count].transform.position,
                 Quaternion.identity
             );
-           Drifter drifter = player.GetComponent<Drifter>();
-            drifter.SetColor(playerColors[i]);
-            //player.GetComponentInChildren<SpriteRenderer>().color = playerColors[i];
+            Drifter drifter = player.GetComponent<Drifter>();
+            drifter.SetColor(CharacterMenu.ColorFromEnum[(PlayerColor)i]);
+            // player.GetComponentInChildren<SpriteRenderer>().color = playerColors[i];
             entities.AddPlayer(i, player);
         }
         // start game

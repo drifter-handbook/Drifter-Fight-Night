@@ -101,6 +101,11 @@ public class PlayerSync : MonoBehaviour, INetworkSync
             GetComponent<Drifter>().SyncAnimatorState(playerData.animatorState);
             gameObject.GetComponent<Drifter>().Stocks = playerData.stocks;
             gameObject.GetComponent<Drifter>().DamageTaken = playerData.damageTaken;
+            int index = GameController.Instance.LocalPlayer.PlayerIndex;
+            if (index >= 0)
+            {
+                gameObject.GetComponent<Drifter>().SetColor(CharacterMenu.ColorFromEnum[(PlayerColor)index]);
+            }
         }
     }
 
