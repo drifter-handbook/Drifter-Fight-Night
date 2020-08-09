@@ -119,16 +119,10 @@ public class NetworkClient : MonoBehaviour, NetworkID
         // send char select input to host
         if (entities == null)
         {
-            // TODO: Add UI to networking when done
-            return;
-            CharacterSelectState localCharSelect = new CharacterSelectState();
-            if (PlayerID < CharacterSelectStates.Count)
-            {
-                localCharSelect = CharacterSelectStates[PlayerID];
-            }
+            CharacterSelectState local = CharacterSelectStates.Find(x => x.PlayerID == PlayerID);
             Network.SendToAll(new CharacterSelectInputPacket()
             {
-                CharacterSelect = localCharSelect
+                CharacterSelect = local
             });
         }
         // send game input to host
