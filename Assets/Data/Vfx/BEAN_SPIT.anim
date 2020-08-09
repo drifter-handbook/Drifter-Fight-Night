@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Zombie_Block
+  m_Name: BEAN_SPIT
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -20,16 +20,13 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 3060638071723291913, guid: 756101f5e9a2ecd49879f39798d7c0e9,
+      value: {fileID: -5092576580631439516, guid: 7a378cd46afb46d499b5ae66851eccf3,
         type: 3}
     - time: 0.083333336
-      value: {fileID: -3327812738869598388, guid: 756101f5e9a2ecd49879f39798d7c0e9,
+      value: {fileID: -3515970702493145664, guid: 7a378cd46afb46d499b5ae66851eccf3,
         type: 3}
     - time: 0.16666667
-      value: {fileID: -4254498486454292536, guid: 756101f5e9a2ecd49879f39798d7c0e9,
-        type: 3}
-    - time: 0.25
-      value: {fileID: 7062599105115738591, guid: 756101f5e9a2ecd49879f39798d7c0e9,
+      value: {fileID: -3487394478339827149, guid: 7a378cd46afb46d499b5ae66851eccf3,
         type: 3}
     attribute: m_Sprite
     path: 
@@ -50,21 +47,20 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 3060638071723291913, guid: 756101f5e9a2ecd49879f39798d7c0e9, type: 3}
-    - {fileID: -3327812738869598388, guid: 756101f5e9a2ecd49879f39798d7c0e9, type: 3}
-    - {fileID: -4254498486454292536, guid: 756101f5e9a2ecd49879f39798d7c0e9, type: 3}
-    - {fileID: 7062599105115738591, guid: 756101f5e9a2ecd49879f39798d7c0e9, type: 3}
+    - {fileID: -5092576580631439516, guid: 7a378cd46afb46d499b5ae66851eccf3, type: 3}
+    - {fileID: -3515970702493145664, guid: 7a378cd46afb46d499b5ae66851eccf3, type: 3}
+    - {fileID: -3487394478339827149, guid: 7a378cd46afb46d499b5ae66851eccf3, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.33333334
+    m_StopTime: 0.25
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
     m_HasAdditiveReferencePose: 0
-    m_LoopTime: 0
+    m_LoopTime: 1
     m_LoopBlend: 0
     m_LoopBlendOrientation: 0
     m_LoopBlendPositionY: 0
