@@ -14,6 +14,8 @@ public class NetworkHost : MonoBehaviour, NetworkID
 {
     public int PlayerID { get; private set; }
     public NetworkHandler Network { get; set; }
+    NetworkTimer networkTimer = new NetworkTimer();
+    NetworkPingTracker networkPing;
 
     NetworkEntityList entities = GameController.Instance.Entities;
 
@@ -52,7 +54,7 @@ public class NetworkHost : MonoBehaviour, NetworkID
                 }
             }
             Debug.Log($"New client {id} visible at {addr}:{port}");
-            // TODO: Add UI to networking when done
+            // add client to UI
             CharacterSelectStates.Add(new CharacterSelectState()
             {
                 PlayerID = id,
@@ -89,12 +91,20 @@ public class NetworkHost : MonoBehaviour, NetworkID
         {
             SetGameSyncInput((InputToHostPacket)packet, id);
         }, true);
+        // send updates every 40ms
+        networkTimer.Schedule(ProcessUpdate, 0.04f);
+        // ping and disconnect tracking
+        networkPing = new NetworkPingTracker(Network, networkTimer);
+        networkPing.OnDisconnect((id) =>
+        {
+            Debug.Log($"Error: Connection to client {id} lost.");
+            // remove from char select state
+            CharacterSelectStates.RemoveAll(x => x.PlayerID == id);
+        });
         // start connection
         Network.Connect();
     }
 
-    float updateTimer = 0f;
-    float updateRate = 0.04f;
     void Update()
     {
         Network.Update();
@@ -105,12 +115,7 @@ public class NetworkHost : MonoBehaviour, NetworkID
         }
         Time.timeScale = GameController.Instance.IsPaused ? 0f : 1f;
         // update
-        updateTimer += Time.deltaTime;
-        if (updateTimer > updateRate)
-        {
-            updateTimer -= updateRate;
-            ProcessUpdate();
-        }
+        networkTimer.Update(Time.deltaTime);
     }
 
     void FixedUpdate()

@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class NetworkClient : MonoBehaviour, NetworkID
 {
@@ -15,6 +16,8 @@ public class NetworkClient : MonoBehaviour, NetworkID
 
     public int PlayerID { get; private set; } = -1;
     public NetworkHandler Network { get; set; }
+    NetworkTimer networkTimer = new NetworkTimer();
+    NetworkPingTracker networkPing;
 
     const float ConnectTimeout = 3;
     Coroutine ConnectCoroutine;
@@ -83,31 +86,26 @@ public class NetworkClient : MonoBehaviour, NetworkID
             }
             GameSyncFromPacket((SyncToClientPacket)packet);
         }, true);
+        // send input to host every 40ms
+        networkTimer.Schedule(ProcessUpdate, 0.04f);
+        networkTimer.Schedule(() => {
+            // Debug.Log(syncsPerSecond);
+            syncsPerSecond = 0;
+        }, 1f);
+        // ping and disconnect tracking
+        networkPing = new NetworkPingTracker(Network, networkTimer);
+        networkPing.OnDisconnect((id) =>
+        {
+            Debug.Log("Error: Connection to host lost.");
+        });
         // start connection
         Network.Connect();
     }
 
-    float counterTimer = 0f;
-    float updateTimer = 0f;
-    float updateRate = 0.04f;
     void Update()
     {
         Network.Update();
-        // update
-        updateTimer += Time.deltaTime;
-        if (updateTimer > updateRate)
-        {
-            updateTimer -= updateRate;
-            ProcessUpdate();
-        }
-        // update
-        counterTimer += Time.deltaTime;
-        if (counterTimer > 1)
-        {
-            counterTimer -= 1;
-            Debug.Log(syncsPerSecond);
-            syncsPerSecond = 0;
-        }
+        networkTimer.Update(Time.deltaTime);
     }
 
     void ProcessUpdate()
@@ -115,6 +113,11 @@ public class NetworkClient : MonoBehaviour, NetworkID
         if (PlayerID == -1)
         {
             return;
+        }
+        GameObject pingUI = GameObject.FindGameObjectWithTag("PingDisplay");
+        if (pingUI != null)
+        {
+            pingUI.GetComponentInChildren<Text>().text = networkPing.GetPing(0).ToString();
         }
         // send char select input to host
         if (entities == null)
