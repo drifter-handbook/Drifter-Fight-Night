@@ -20,12 +20,11 @@ public class NetworkClient : MonoBehaviour, NetworkID
     Coroutine ConnectCoroutine;
 
     NetworkEntityList entities = GameController.Instance.Entities;
-    List<CharacterSelectState> CharacterSelectStates; // single source of truth
+    List<CharacterSelectState> CharacterSelectStates => GameController.Instance.CharacterSelectStates; // single source of truth
 
     void Start()
     {
         Network = new NetworkHandler(Host, HostID);
-        CharacterSelectStates = GetComponent<GameController>().CharacterSelectStates;
 
         // accept clients
         Network.OnConnect((addr, port, id) =>
@@ -63,7 +62,7 @@ public class NetworkClient : MonoBehaviour, NetworkID
                 return;
             }
             CharacterSelectState local = CharacterSelectStates.Find(x => x.PlayerID == PlayerID);
-            CharacterSelectStates = ((CharacterSelectSyncPacket)packet).Data.CharacterSelectState;
+            GameController.Instance.CharacterSelectStates = ((CharacterSelectSyncPacket)packet).Data.CharacterSelectState;
             CharacterSelectState remote = CharacterSelectStates.Find(x => x.PlayerID == PlayerID);
             if (local != null && remote != null)
             {
