@@ -51,7 +51,7 @@ public class NetworkHandler
     public NetworkHandler(string hostIP, int hostID)
     {
         IsHost = false;
-        this.hostIP = IPAddress.Parse(hostIP);
+        this.hostIP = IPAddress.Parse(hostIP.Trim());
         this.hostID = hostID;
     }
 

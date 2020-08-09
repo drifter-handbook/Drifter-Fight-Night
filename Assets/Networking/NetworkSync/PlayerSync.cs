@@ -101,11 +101,7 @@ public class PlayerSync : MonoBehaviour, INetworkSync
             GetComponent<Drifter>().SyncAnimatorState(playerData.animatorState);
             gameObject.GetComponent<Drifter>().Stocks = playerData.stocks;
             gameObject.GetComponent<Drifter>().DamageTaken = playerData.damageTaken;
-            int index = GameController.Instance.LocalPlayer.PlayerIndex;
-            if (index >= 0)
-            {
-                gameObject.GetComponent<Drifter>().SetColor(CharacterMenu.ColorFromEnum[(PlayerColor)index]);
-            }
+            gameObject.GetComponent<Drifter>().SetColor(playerData.color.ToColor());
         }
     }
 
@@ -122,7 +118,7 @@ public class PlayerSync : MonoBehaviour, INetworkSync
             animatorState = (PlayerAnimatorState)gameObject.GetComponent<Drifter>().animatorState.Clone(),
             stocks = gameObject.GetComponent<Drifter>().Stocks,
             damageTaken = gameObject.GetComponent<Drifter>().DamageTaken,
-            color = new SyncColor(gameObject.GetComponentInChildren<SpriteRenderer>().color)
+            color = new SyncColor(gameObject.GetComponentInChildren<Drifter>().GetColor())
         };
         GetComponent<Drifter>().ResetAnimatorTriggers();
         return data;

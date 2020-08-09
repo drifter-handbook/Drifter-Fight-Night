@@ -50,12 +50,16 @@ public class Drifter : MonoBehaviour
         prevInput.CopyFrom(input);
     }
 
-   public void SetColor(Color color)
+    public void SetColor(Color color)
     {
         myColor = color;
         //setting triangle color
         UnityEngine.Debug.Log(transform.GetChild(0));
         transform.GetChild(0).transform.GetChild(1).GetComponent<SpriteRenderer>().color = color;
+    }
+    public Color GetColor()
+    {
+        return transform.GetChild(0).transform.GetChild(1).GetComponent<SpriteRenderer>().color;
     }
 
     // used by clients
