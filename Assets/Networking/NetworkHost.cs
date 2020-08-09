@@ -76,9 +76,10 @@ public class NetworkHost : MonoBehaviour, NetworkID
         Network.OnReceive(new CharacterSelectInputPacket(), (id, packet) =>
         {
             CharacterSelectState state = CharacterSelectStates.Find(x => x.PlayerID == id);
-            if (state != null && state.PlayerIndex >= 0)
+            CharacterSelectState clientCharSel = ((CharacterSelectInputPacket)packet).CharacterSelect;
+            if (state != null && state.PlayerIndex >= 0 && clientCharSel != null)
             {
-                CharacterSelectStates[state.PlayerIndex] = ((CharacterSelectInputPacket)packet).CharacterSelect;
+                CharacterSelectStates[state.PlayerIndex].PlayerType = clientCharSel.PlayerType;
             }
             // TODO: what about join and drop?
         }, true);
