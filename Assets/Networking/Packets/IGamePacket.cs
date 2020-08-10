@@ -57,7 +57,6 @@ public static class GamePacketUtils
             {
                 gZipStream.Write(data, 0, data.Length);
             }
-            Debug.Log($"{data.Length} -> {outputStream.ToArray().Length}");
             return outputStream.ToArray();
         }
     }
