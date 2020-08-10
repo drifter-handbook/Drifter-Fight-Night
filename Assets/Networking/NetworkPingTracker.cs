@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class NetworkPingTracker
 {
-    public const float PING_INTERVAL = 3f;
+    public const float PING_INTERVAL = 2f;
     public const float DISCONNECT_TIMEOUT = 30f;
 
     private class ConnectionPingTracker
@@ -47,6 +47,10 @@ public class NetworkPingTracker
                     }
                     timedOut.Add(id);
                 }
+            }
+            foreach (int id in timedOut)
+            {
+                pingTargets.Remove(id);
             }
         }, PING_INTERVAL);
         // receive pings

@@ -117,7 +117,7 @@ public class NetworkClient : MonoBehaviour, NetworkID
         GameObject pingUI = GameObject.FindGameObjectWithTag("PingDisplay");
         if (pingUI != null)
         {
-            pingUI.GetComponentInChildren<Text>().text = networkPing.GetPing().ToString();
+            pingUI.GetComponentInChildren<Text>().text = ((int)Mathf.Round(networkPing.GetPing() * 1000f)).ToString();
         }
         // send char select input to host
         if (entities == null)
