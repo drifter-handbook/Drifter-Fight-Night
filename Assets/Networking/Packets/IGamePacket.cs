@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
 using System.Net;
 using System.Text;
 using UnityEngine;
@@ -46,15 +48,43 @@ public static class GamePacketUtils
         }
     }
 
+    static byte[] Compress(string dataString)
+    {
+        byte[] data = Encoding.ASCII.GetBytes(dataString);
+        using (var outputStream = new MemoryStream())
+        {
+            using (var gZipStream = new GZipStream(outputStream, CompressionMode.Compress))
+            {
+                gZipStream.Write(data, 0, data.Length);
+            }
+            return outputStream.ToArray();
+        }
+    }
+
+    static string Decompress(byte[] data)
+    {
+        using (var inputStream = new MemoryStream(data))
+        {
+            using (var gZipStream = new GZipStream(inputStream, CompressionMode.Decompress))
+            {
+                using (var outputStream = new MemoryStream())
+                {
+                    gZipStream.CopyTo(outputStream);
+                    return Encoding.ASCII.GetString(outputStream.ToArray());
+                }
+            }
+        }
+    }
+
     // convert packet to bytes
     public static byte[] Serialize(IGamePacket packet)
     {
-        return Encoding.ASCII.GetBytes(packet.TypeID + DELIMITER + Time.time + DELIMITER + JsonConvert.SerializeObject(packet.ToData()));
+        return Compress(packet.TypeID + DELIMITER + Time.time + DELIMITER + JsonConvert.SerializeObject(packet.ToData()));
     }
     // create packet from bytes
     public static IGamePacket Deserialize(byte[] data)
     {
-        string[] packet = Encoding.ASCII.GetString(data).Split(new string[] { DELIMITER }, 3, StringSplitOptions.None);
+        string[] packet = Decompress(data).Split(new string[] { DELIMITER }, 3, StringSplitOptions.None);
         if (namedTypes.ContainsKey(packet[0]))
         {
             IGamePacket gamePacket = namedTypes[packet[0]].FromData(packet[2]);
