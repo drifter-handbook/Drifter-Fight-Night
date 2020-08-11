@@ -29,7 +29,7 @@ public class PlayerInput : MonoBehaviour
         if (Input.GetKey(keyBindings.downKey))
         {
             // down key does nothing
-            // input.MoveY--;
+            input.MoveY--;
         }
         if (Input.GetKey(keyBindings.upKey))
         {

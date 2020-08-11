@@ -67,34 +67,33 @@ public class PlayerAttacks : MonoBehaviour
         bool specialPressed = !drifter.prevInput.Special && drifter.input.Special;
         bool grabPressed = !drifter.prevInput.Grab && drifter.input.Grab;
         bool canAct = !status.HasStunEffect() && !animator.GetBool("Guarding");
-        bool canRoll = animator.GetBool("Guarding") && animator.GetBool("Grounded");
 
         if (grabPressed && canAct)
         {
             StartAttack(DrifterAttackType.E_Side);
         }
-        if (specialPressed && drifter.input.MoveY > 0 && canAct)
+        else if (specialPressed && drifter.input.MoveY > 0 && canAct)
         {
             // recovery
             StartAttack(DrifterAttackType.W_Up);
         }
-        if (specialPressed && drifter.input.MoveY < 0 && canAct)
+        else if (specialPressed && drifter.input.MoveY < 0 && canAct)
         {
             // Down W
             StartAttack(DrifterAttackType.W_Down);
         }
-        if (specialPressed && drifter.input.MoveX != 0 && canAct)
+        else if (specialPressed && drifter.input.MoveX != 0 && canAct)
         {
             // Side W
             StartAttack(DrifterAttackType.W_Side);
         }
-        if (specialPressed && drifter.input.MoveX == 0 && canAct)
+        else if (specialPressed && drifter.input.MoveX == 0 && drifter.input.MoveY == 0 && canAct)
         {
             // Neutral W
             StartAttack(DrifterAttackType.W_Neutral);
         }
         //attack  //neutral aerial
-        if (lightPressed && canAct)
+        else if (lightPressed && canAct)
         {
             if (animator.GetBool("Grounded"))
             {
@@ -104,10 +103,6 @@ public class PlayerAttacks : MonoBehaviour
             {
                 StartAttack(DrifterAttackType.Aerial_Q_Neutral);
             }
-        }
-        if (canRoll && drifter.input.MoveX != 0);
-        {
-            StartAttack(DrifterAttackType.Roll);
         }
     }
 
