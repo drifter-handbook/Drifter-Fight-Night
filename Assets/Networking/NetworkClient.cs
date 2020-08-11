@@ -105,7 +105,7 @@ public class NetworkClient : MonoBehaviour, NetworkID
     void Update()
     {
         Network.Update();
-        networkTimer.Update(Time.deltaTime);
+        networkTimer.Update(Time.realtimeSinceStartup);
     }
 
     void ProcessUpdate()

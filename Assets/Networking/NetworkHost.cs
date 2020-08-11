@@ -115,7 +115,7 @@ public class NetworkHost : MonoBehaviour, NetworkID
         }
         Time.timeScale = GameController.Instance.IsPaused ? 0f : 1f;
         // update
-        networkTimer.Update(Time.deltaTime);
+        networkTimer.Update(Time.realtimeSinceStartup);
     }
 
     void FixedUpdate()

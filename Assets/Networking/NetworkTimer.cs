@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class NetworkTimer
 {
@@ -16,8 +17,14 @@ public class NetworkTimer
     }
     List<TimedAction> actions = new List<TimedAction>();
 
-    public void Update(float deltaTime)
+    float prevTime = -1f;
+    public void Update(float time)
     {
+        if (prevTime < 0)
+        {
+            prevTime = time;
+        }
+        float deltaTime = time - prevTime;
         foreach (TimedAction action in actions)
         {
             action.timer += deltaTime;
@@ -27,6 +34,7 @@ public class NetworkTimer
                 action.handler.Invoke();
             }
         }
+        prevTime = time;
     }
 
     // add timer handler Action
