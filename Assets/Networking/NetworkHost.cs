@@ -163,7 +163,9 @@ public class NetworkHost : MonoBehaviour, NetworkID
     }
     IEnumerator StartGameCoroutine()
     {
+        Debug.Log("Start scene load");
         yield return SceneManager.LoadSceneAsync("NetworkTestScene");
+        Debug.Log("Finish scene load");
         // find entities
         entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
         // create players
@@ -180,14 +182,17 @@ public class NetworkHost : MonoBehaviour, NetworkID
             // player.GetComponentInChildren<SpriteRenderer>().color = playerColors[i];
             entities.AddPlayer(i, player);
         }
+        Debug.Log("Added players");
         // start game
         Network.StopAcceptingConnections();
         // attach player input to player 1
         GetComponent<PlayerInput>().input = entities.Players[0].GetComponent<Drifter>().input;
+        Debug.Log("Attached input");
     }
 
     SyncToClientPacket CreateGameSyncPacket()
     {
+        Debug.Log("Sync");
         SyncToClientPacket.SyncToClientData SyncData = new SyncToClientPacket.SyncToClientData();
         for (int i = 0; i < entities.Entities.Count; i++)
         {

@@ -82,6 +82,7 @@ public class NetworkClient : MonoBehaviour, NetworkID
             // start game if not yet started
             if (!GameStarted)
             {
+                Debug.Log("Received start game packet");
                 StartGame((SyncToClientPacket)packet);
             }
             GameSyncFromPacket((SyncToClientPacket)packet);
@@ -162,11 +163,14 @@ public class NetworkClient : MonoBehaviour, NetworkID
     }
     IEnumerator StartGameCoroutine(SyncToClientPacket packet)
     {
+        Debug.Log("Start scene load");
         yield return SceneManager.LoadSceneAsync("NetworkTestScene");
+        Debug.Log("Finish scene load");
         // find entities
         entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
         // create entities
         GameSyncFromPacket(packet);
+        Debug.Log("Finish syncing");
         // remove all physics for synced objects
         foreach (GameObject obj in entities.Entities)
         {
