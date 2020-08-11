@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4714397270191989910}
   - component: {fileID: 1306498172550630662}
   - component: {fileID: 6116946390907807115}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: RykkeTether
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -114,7 +114,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5528938044680495150}
   - component: {fileID: 5074709910434592267}
-  m_Layer: 0
+  - component: {fileID: 2912115493662060990}
+  m_Layer: 9
   m_Name: Hitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -151,6 +152,20 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.5, y: 1}
   m_Direction: 0
+--- !u!114 &2912115493662060990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7206069984240715583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61e75b5f91562e042b5913aa2da0f0cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parent: {fileID: 0}
+  parent: {fileID: 0}
 --- !u!1 &8826189855587038557
 GameObject:
   m_ObjectHideFlags: 0
@@ -161,7 +176,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6687964947397598211}
   - component: {fileID: 8278582251817254062}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}

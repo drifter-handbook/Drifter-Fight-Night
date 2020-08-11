@@ -28,13 +28,32 @@ public class RykkeMasterHit : MasterHit
         rb.gravityScale = 0f;
         rb.velocity = Vector2.zero;
     }
+    public void RecoveryPreEmpty(){
+      Debug.Log("Recovery preempted!");
+      facing = movement.Facing;
+      // jump upwards and create spear projectile
+      //rb.velocity = new Vector2(rb.velocity.x, 1.5f * movement.jumpSpeed);
+      //rb.gravityScale = gravityScale;
+      Vector3 pos = new Vector3(facing * 4.5f, 7f, 0f);
+      GameObject RykkeBox = Instantiate(entities.GetEntityPrefab("RykkeBox"), transform.position + pos, transform.rotation * (Quaternion.Euler(new Vector3(0, 0, facing * 45))));
+      RykkeBox.transform.localScale = new Vector3(5, 5, 5);
+      foreach (HitboxCollision hitbox in RykkeBox.GetComponentsInChildren<HitboxCollision>(true))
+      {
+          hitbox.parent = drifter.gameObject;
+          hitbox.AttackID = attacks.AttackID;
+          hitbox.AttackType = attacks.AttackType;
+          hitbox.Active = true;
+      }
+      entities.AddEntity(RykkeBox);
+    }
     public void RecoveryThrowString()
     {
-        facing = 1;
+        facing = movement.Facing;
         // jump upwards and create spear projectile
-        rb.velocity = new Vector2(rb.velocity.x, 1.5f * movement.jumpSpeed);
-        rb.gravityScale = gravityScale;
-        GameObject RykkeTether = Instantiate(entities.GetEntityPrefab("RykkeTether"), transform.position +( transform.right *2), transform.rotation * (Quaternion.Euler(new Vector3(45, 45, -45))));
+        //rb.velocity = new Vector2(rb.velocity.x, 1.5f * movement.jumpSpeed);
+        //rb.gravityScale = gravityScale;
+        Vector3 pos = new Vector3(facing * 4.5f, 7f, 0f);
+        GameObject RykkeTether = Instantiate(entities.GetEntityPrefab("RykkeTether"), transform.position + pos, Quaternion.Euler(new Vector3(0, 0, facing * -45)));
         RykkeTether.transform.localScale = new Vector3(5, 5, 5);
         foreach (HitboxCollision hitbox in RykkeTether.GetComponentsInChildren<HitboxCollision>(true))
         {
@@ -44,6 +63,9 @@ public class RykkeMasterHit : MasterHit
             hitbox.Active = true;
         }
         entities.AddEntity(RykkeTether);
+    }
+    public void updatePosition(Vector3 position){
+        movement.updatePosition(position);
     }
     public override void hitTheRecovery(GameObject target)
     {

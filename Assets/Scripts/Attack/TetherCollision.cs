@@ -1,11 +1,12 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HitboxCollision : MonoBehaviour
+public class TetherCollision : HitboxCollision
 {
     public GameObject parent;
     INetworkSync playerType;
+    RykkeMasterHit masterHit;
 
     public int AttackID { get; set; }
     public DrifterAttackType AttackType { get; set; }
@@ -17,6 +18,7 @@ public class HitboxCollision : MonoBehaviour
     {
         capsule = GetComponentInChildren<CapsuleCollider2D>();
         playerType = parent.GetComponent<INetworkSync>();
+        masterHit = parent.GetComponent<RykkeMasterHit>();
     }
 
     // Update is called once per frame
@@ -26,7 +28,10 @@ public class HitboxCollision : MonoBehaviour
     }
     void OnTriggerEnter2D(Collider2D collider)
     {
-        Debug.Log("hi45");
+        Debug.Log("hi22");
+        Vector3 position = collider.transform.position;
+        Debug.Log("hey new position" + position);
+        masterHit.updatePosition(position);
     }
 
     void OnTriggerStay2D(Collider2D collider)
@@ -35,10 +40,12 @@ public class HitboxCollision : MonoBehaviour
         HurtboxCollision hurtbox = collider.GetComponent<HurtboxCollision>();
         if (Active && hurtbox != null && AttackType != DrifterAttackType.Null)
         {
-            string player = playerType.Type;
-            Debug.Log("Recovery" + player);
-            SingleAttackData attackData = GameController.Instance.AllData.GetAttacks(player)[AttackType];
-            hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, attackData);
+            Vector3 position = collider.transform.position;
+            Debug.Log("hey new position" + position);
+            masterHit.updatePosition(position);
+            //string player = playerType.Type;
+            //SingleAttackData attackData = GameController.Instance.AllData.GetAttacks(player)[AttackType];
+            //hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, attackData);
         }
     }
 }
