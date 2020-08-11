@@ -10,6 +10,10 @@ public class PlayerAttacks : MonoBehaviour
         { DrifterAttackType.Aerial_Q_Neutral, "Aerial" },
         { DrifterAttackType.W_Up, "Recovery" },
         { DrifterAttackType.E_Side, "Grab" },
+        { DrifterAttackType.W_Neutral, "W_Neutral" },
+        { DrifterAttackType.W_Side, "W_Side" },
+        { DrifterAttackType.W_Down, "W_Down" },
+        { DrifterAttackType.Roll, "Roll" },
     };
     public static Dictionary<DrifterAttackType, string> AnimatorStates = new Dictionary<DrifterAttackType, string>()
     {
@@ -17,6 +21,10 @@ public class PlayerAttacks : MonoBehaviour
         { DrifterAttackType.Aerial_Q_Neutral, "Aerial" },
         { DrifterAttackType.W_Up, "Recovery" },
         { DrifterAttackType.E_Side, "Grab" },
+        { DrifterAttackType.W_Neutral, "W_Neutral" },
+        { DrifterAttackType.W_Side, "W_Side" },
+        { DrifterAttackType.W_Down, "W_Down" },
+        { DrifterAttackType.Roll, "Roll" },
     };
 
     static int nextID = 0;
@@ -59,6 +67,7 @@ public class PlayerAttacks : MonoBehaviour
         bool specialPressed = !drifter.prevInput.Special && drifter.input.Special;
         bool grabPressed = !drifter.prevInput.Grab && drifter.input.Grab;
         bool canAct = !status.HasStunEffect() && !animator.GetBool("Guarding");
+        bool canRoll = animator.GetBool("Guarding") && animator.GetBool("Grounded");
 
         if (grabPressed && canAct)
         {
@@ -68,6 +77,21 @@ public class PlayerAttacks : MonoBehaviour
         {
             // recovery
             StartAttack(DrifterAttackType.W_Up);
+        }
+        if (specialPressed && drifter.input.MoveY < 0 && canAct)
+        {
+            // Down W
+            StartAttack(DrifterAttackType.W_Down);
+        }
+        if (specialPressed && drifter.input.MoveX != 0 && canAct)
+        {
+            // Side W
+            StartAttack(DrifterAttackType.W_Side);
+        }
+        if (specialPressed && drifter.input.MoveX == 0 && canAct)
+        {
+            // Neutral W
+            StartAttack(DrifterAttackType.W_Neutral);
         }
         //attack  //neutral aerial
         if (lightPressed && canAct)
@@ -80,6 +104,10 @@ public class PlayerAttacks : MonoBehaviour
             {
                 StartAttack(DrifterAttackType.Aerial_Q_Neutral);
             }
+        }
+        if (canRoll && drifter.input.MoveX != 0);
+        {
+            StartAttack(DrifterAttackType.Roll);
         }
     }
 
@@ -99,6 +127,18 @@ public class PlayerAttacks : MonoBehaviour
             case DrifterAttackType.E_Side:
                 hit?.callTheGrab();
                 break;
+            case DrifterAttackType.W_Neutral:
+                hit?.callTheNeutralW();
+                break;
+            case DrifterAttackType.W_Side:
+                hit?.callTheSideW();
+                break;
+            case DrifterAttackType.W_Down:
+                hit?.callTheDownW();
+                break;
+            case DrifterAttackType.Roll:
+                hit?.callTheRoll();
+                break;    
         }
         SetHitboxesActive(false);
         drifter.SetAnimatorTrigger(AnimatorTriggers[attackType]);
@@ -145,6 +185,18 @@ public class PlayerAttacks : MonoBehaviour
             case DrifterAttackType.E_Side:
                 hit?.hitTheGrab(target);
                 break;
+            case DrifterAttackType.W_Neutral:
+                hit?.hitTheNeutralW(target);
+                break;
+            case DrifterAttackType.W_Side:
+                hit?.hitTheSideW(target);
+                break;
+            case DrifterAttackType.W_Down:
+                hit?.hitTheDownW(target);
+                break;
+            case DrifterAttackType.Roll:
+                hit?.hitTheRoll(target);
+                break;       
         }
     }
     void FinishAttack(DrifterAttackType attackType)
@@ -163,6 +215,18 @@ public class PlayerAttacks : MonoBehaviour
             case DrifterAttackType.E_Side:
                 hit?.cancelTheGrab();
                 break;
+            case DrifterAttackType.W_Neutral:
+                hit?.cancelTheNeutralW();
+                break;
+            case DrifterAttackType.W_Side:
+                hit?.cancelTheSideW();
+                break;
+            case DrifterAttackType.W_Down:
+                hit?.cancelTheDownW();
+                break;
+            case DrifterAttackType.Roll:
+                hit?.cancelTheRoll();
+                break;   
         }
         SetHitboxesActive(false);
     }

@@ -7,7 +7,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: NEUTRAL_W
+  m_Name: W_Neutral
   m_Speed: 1.1
   m_CycleOffset: 0
   m_Transitions:
@@ -39,7 +39,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Guarding
     m_EventTreshold: 0
   - m_ConditionMode: 2
-    m_ConditionEvent: Awakened
+    m_ConditionEvent: Empowered
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -3827776204513690856}
@@ -191,7 +191,7 @@ AnimatorStateTransition:
     m_ConditionEvent: GrabbedPlayer
     m_EventTreshold: 0
   - m_ConditionMode: 2
-    m_ConditionEvent: Awakened
+    m_ConditionEvent: Empowered
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -4703682173953349251}
@@ -244,10 +244,10 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: Side_W
+    m_ConditionEvent: W_Side
     m_EventTreshold: 0
   - m_ConditionMode: 2
-    m_ConditionEvent: Awakened
+    m_ConditionEvent: Empowered
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -3262591930055139520}
@@ -323,7 +323,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: AHREADBAR
+  m_Name: W_Side1
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -384,7 +384,7 @@ AnimatorStateTransition:
     m_ConditionEvent: GrabbedPlayer
     m_EventTreshold: 0
   - m_ConditionMode: 1
-    m_ConditionEvent: Awakened
+    m_ConditionEvent: Empowered
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -1513112524207873490}
@@ -662,7 +662,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SIDE_W_NORMAL
+  m_Name: W_SIDE
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -694,7 +694,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Guarding
     m_EventTreshold: 0
   - m_ConditionMode: 1
-    m_ConditionEvent: Awakened
+    m_ConditionEvent: Empowered
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -5267335870824873454}
@@ -748,7 +748,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: Down_W
+    m_ConditionEvent: W_Down
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 3141055092014525762}
@@ -945,6 +945,30 @@ AnimatorController:
   m_Name: RyykeSprite
   serializedVersion: 5
   m_AnimatorParameters:
+  - m_Name: Grounded
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 1
+    m_Controller: {fileID: 0}
+  - m_Name: Walking
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: GrabbedPlayer
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: Empowered
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
   - m_Name: Jump
     m_Type: 9
     m_DefaultFloat: 0
@@ -975,25 +999,7 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: Grounded
-    m_Type: 4
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 0}
-  - m_Name: Walking
-    m_Type: 4
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 0}
   - m_Name: Guarding
-    m_Type: 4
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 0}
-  - m_Name: GrabbedPlayer
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -1005,25 +1011,19 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: Neutral W
+  - m_Name: W_Neutral
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: Down_W
+  - m_Name: W_Down
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: Awakened
-    m_Type: 4
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 0}
-  - m_Name: Side_W
+  - m_Name: W_Side
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -1141,7 +1141,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Guarding
     m_EventTreshold: 0
   - m_ConditionMode: 2
-    m_ConditionEvent: Awakened
+    m_ConditionEvent: Empowered
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -3827776204513690856}
@@ -1343,7 +1343,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DOWN_W
+  m_Name: W_Down
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -1370,7 +1370,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ROLL
+  m_Name: Roll
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -1452,10 +1452,10 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: Side_W
+    m_ConditionEvent: W_Side
     m_EventTreshold: 0
   - m_ConditionMode: 1
-    m_ConditionEvent: Awakened
+    m_ConditionEvent: Empowered
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -6118447869675589510}
@@ -1630,7 +1630,7 @@ AnimatorStateTransition:
     m_ConditionEvent: Grounded
     m_EventTreshold: 0
   - m_ConditionMode: 1
-    m_ConditionEvent: Neutral W
+    m_ConditionEvent: W_Neutral
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -9053397821072998380}

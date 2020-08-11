@@ -67,11 +67,16 @@ public class Drifter : MonoBehaviour
         animator.SetBool("Grounded", state.Grounded);
         animator.SetBool("Walking", state.Walking);
         animator.SetBool("Guarding", state.Guarding);
+        animator.SetBool("Empowered", state.Empowered);
         if (state.Attack) animator.SetTrigger("Attack");
         if (state.Grab) animator.SetTrigger("Grab");
         if (state.Jump) animator.SetTrigger("Jump");
         if (state.Recovery) animator.SetTrigger("Recovery");
         if (state.Aerial) animator.SetTrigger("Aerial");
+        if (state.W_Side) animator.SetTrigger("W_Side");
+        if (state.W_Neutral) animator.SetTrigger("W_Neutral");
+        if (state.W_Down) animator.SetTrigger("W_Down");
+        if (state.Roll) animator.SetTrigger("Roll");
     }
     // used by host
     public void SetAnimatorTrigger(string s)
@@ -97,6 +102,18 @@ public class Drifter : MonoBehaviour
             case "Aerial":
                 animatorState.Aerial = true;
                 break;
+            case "W_Side":
+                animatorState.W_Side = true;
+                break;
+            case "W_Neutral":
+                animatorState.W_Neutral = true;
+                break;
+            case "W_Down":
+                animatorState.W_Down = true;
+                break;
+            case "Roll":
+                animatorState.Roll = true;
+                break;
         }
     }
     public void ResetAnimatorTriggers()
@@ -106,6 +123,10 @@ public class Drifter : MonoBehaviour
         animatorState.Jump = false;
         animatorState.Recovery = false;
         animatorState.Aerial = false;
+        animatorState.W_Neutral = false;
+        animatorState.W_Side = false;
+        animatorState.W_Down = false;
+        animatorState.Roll = false;
     }
     public void SetAnimatorBool(string s, bool value)
     {
@@ -124,6 +145,9 @@ public class Drifter : MonoBehaviour
             case "Guarding":
                 animatorState.Guarding = value;
                 break;
+            case "Empowered":
+                animatorState.Empowered = value;
+                break;    
         }
     }
 }
@@ -133,11 +157,16 @@ public class PlayerAnimatorState : ICloneable
     public bool Grounded = false;
     public bool Walking = false;
     public bool Guarding = false;
+    public bool Empowered = false;
     public bool Attack = false;
     public bool Grab = false;
     public bool Jump = false;
     public bool Recovery = false;
     public bool Aerial = false;
+    public bool W_Side = false;
+    public bool W_Down = false;
+    public bool W_Neutral = false;
+    public bool Roll = false;
 
     public object Clone()
     {
@@ -146,11 +175,16 @@ public class PlayerAnimatorState : ICloneable
             Grounded = Grounded,
             Walking = Walking,
             Guarding = Guarding,
+            Empowered = Empowered,
             Attack = Attack,
             Grab = Grab,
             Jump = Jump,
             Recovery = Recovery,
-            Aerial = Aerial
+            Aerial = Aerial,
+            W_Side = W_Side,
+            W_Down = W_Down,
+            W_Neutral = W_Neutral,
+            Roll = Roll
         };
     }
 }

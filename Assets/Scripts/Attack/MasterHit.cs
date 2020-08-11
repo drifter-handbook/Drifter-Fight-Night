@@ -70,4 +70,60 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     {
 
     }
+
+    //Side W
+    public virtual void callTheSideW()
+    {
+
+    }
+    public virtual void hitTheSideW(GameObject target)
+    {
+
+    }
+    public virtual void cancelTheSideW()
+    {
+
+    }
+
+    //Down W
+    public virtual void callTheDownW()
+    {
+
+    }
+    public virtual void hitTheDownW(GameObject target)
+    {
+
+    }
+    public virtual void cancelTheDownW()
+    {
+
+    }
+
+     //Neutral W
+    public virtual void callTheNeutralW()
+    {
+
+    }
+    public virtual void hitTheNeutralW(GameObject target)
+    {
+
+    }
+    public virtual void cancelTheNeutralW()
+    {
+
+    }
+
+     //Roll
+    public virtual void callTheRoll()
+    {
+
+    }
+    public virtual void hitTheRoll(GameObject target)
+    {
+
+    }
+    public virtual void cancelTheRoll()
+    {
+
+    }
 }

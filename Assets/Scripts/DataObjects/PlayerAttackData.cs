@@ -10,7 +10,7 @@ public enum DrifterAttackType
     Ground_Q_Side, Ground_Q_Down, Ground_Q_Up, Ground_Q_Neutral,
     Aerial_Q_Side, Aerial_Q_Down, Aerial_Q_Up, Aerial_Q_Neutral,
     W_Side, W_Down, W_Up, W_Neutral,
-    E_Side, Aerial_E_Down, E_Up, E_Neutral
+    E_Side, Aerial_E_Down, E_Up, E_Neutral, Roll
 }
 
 // collection of data on all attacks a player has

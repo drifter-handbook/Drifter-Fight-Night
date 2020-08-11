@@ -14,4 +14,20 @@ public interface IMasterHit
     void callTheRecovery();
     void hitTheRecovery(GameObject target);
     void cancelTheRecovery();
+    //Side W
+    void callTheSideW();
+    void hitTheSideW(GameObject target);
+    void cancelTheSideW();
+    //Down W
+    void callTheDownW();
+    void hitTheDownW(GameObject target);
+    void cancelTheDownW();
+    //Neutral W
+    void callTheNeutralW();
+    void hitTheNeutralW(GameObject target);
+    void cancelTheNeutralW();
+    //Roll
+    void callTheRoll();
+    void hitTheRoll(GameObject target);
+    void cancelTheRoll();
 }

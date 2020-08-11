@@ -237,7 +237,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: Neutral_W
+    m_ConditionEvent: W_Neutral
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -2310432010840353995}
@@ -337,7 +337,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: NEURTAL_W
+  m_Name: W_Neutral
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -366,7 +366,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: COUNTER
+    m_ConditionEvent: Empowered
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 7695242423952417492}
@@ -466,7 +466,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DOWN_W
+  m_Name: W_Down
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -514,6 +514,12 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
+  - m_Name: Empowered
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
   - m_Name: Attack
     m_Type: 9
     m_DefaultFloat: 0
@@ -544,19 +550,13 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: COUNTER
-    m_Type: 4
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 0}
-  - m_Name: Down_W
+  - m_Name: W_Down
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: Neutral_W
+  - m_Name: W_Neutral
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -568,7 +568,7 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: Side_W
+  - m_Name: W_Side
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -947,7 +947,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: Side_W
+    m_ConditionEvent: W_Side
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 4551558699702061940}
@@ -1077,7 +1077,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Side_W
+  m_Name: W_Side
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -1126,7 +1126,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DOWN_W_FAIL
+  m_Name: W_Down1
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -1224,7 +1224,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 2
-    m_ConditionEvent: COUNTER
+    m_ConditionEvent: Empowered
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 5484787690430813877}
@@ -1303,7 +1303,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DOWN_W_SUCCESS
+  m_Name: W_Down2
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -1332,7 +1332,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: Down_W
+    m_ConditionEvent: W_Down
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -61638917537301393}
