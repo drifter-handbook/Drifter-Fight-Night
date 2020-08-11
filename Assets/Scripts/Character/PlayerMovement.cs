@@ -49,7 +49,9 @@ public class PlayerMovement : MonoBehaviour
         bool canAct = !status.HasStunEffect() && !animator.GetBool("Guarding");
         bool canGuard = !status.HasStunEffect();
         bool moving = drifter.input.MoveX != 0;
-        drifter.SetAnimatorBool("Grounded", IsGrounded());
+        bool grounded = IsGrounded();
+        bool justUngrounded = animator.GetBool("Grounded") && !grounded;
+        drifter.SetAnimatorBool("Grounded", grounded);
 
         if (moving && canAct)
         {
@@ -87,13 +89,18 @@ public class PlayerMovement : MonoBehaviour
             drifter.SetAnimatorBool("Guarding", false);
         }
 
+        //jump
+        if (grounded)
+        {
+            numberOfJumps = 2;
+        }
+        if (justUngrounded)
+        {
+            numberOfJumps = 1;
+        }
+
         if (jumpPressed && canAct && rb.velocity.y < 0.8f * jumpSpeed)
         {
-            //jump
-            if (animator.GetBool("Grounded"))
-            {
-                numberOfJumps = 2;
-            }
             if (numberOfJumps > 0)
             {
                 numberOfJumps--;
