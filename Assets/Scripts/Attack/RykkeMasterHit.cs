@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +8,8 @@ public class RykkeMasterHit : MasterHit
     PlayerAttacks attacks;
     float gravityScale;
     PlayerMovement movement;
+    public int awakenStacks = 0;
+    public Animator anim;
     public int facing;
 
     void Start()
@@ -86,6 +88,7 @@ public class RykkeMasterHit : MasterHit
 
     public void dropStone(){
       facing = movement.Facing;
+      rb.velocity = new Vector2(0,10);
       Vector3 flip = new Vector3(facing *8f,1f,1f);
       Vector3 loc = new Vector3(facing *1f,.5f,0f);
       GameObject tombstone = Instantiate(entities.GetEntityPrefab("RyykeTombstone"), transform.position + loc, transform.rotation);
@@ -99,6 +102,35 @@ public class RykkeMasterHit : MasterHit
         }
         entities.AddEntity(tombstone);
     }
+    public void grantStack(){
+    	if(awakenStacks < 3){
+    		awakenStacks++;
+    		anim.SetBool("Empowered",true);
+    	} 
 
+    }
 
+    public void conmsumeStack(){
+    	if(awakenStacks > 0){
+    		awakenStacks--;
+    		if(awakenStacks == 0){
+    			anim.SetBool("Empowered",false);
+    		}
+    	} 
+    }
+
+     public void SpawnChad(){
+
+        GameObject zombie = Instantiate(entities.GetEntityPrefab("Chadwick"), transform.position, transform.rotation);
+        zombie.transform.localScale = this.gameObject.transform.localScale;
+        foreach (HitboxCollision hitbox in zombie.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+        }
+        grantStack();
+        entities.AddEntity(zombie);
+    }
 }

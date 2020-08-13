@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d407fbd98e904e44c9c2b2a38fff84c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  awakenStacks: 0
+  anim: {fileID: 6547671940963507017}
   facing: 0
 --- !u!70 &7073853108319670014
 CapsuleCollider2D:
@@ -451,6 +453,12 @@ PrefabInstance:
 --- !u!1 &7185957702941560231 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2496518287981053905, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+    type: 3}
+  m_PrefabInstance: {fileID: 4691849568075172470}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &6547671940963507017 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 2000386183588008255, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
     type: 3}
   m_PrefabInstance: {fileID: 4691849568075172470}
   m_PrefabAsset: {fileID: 0}

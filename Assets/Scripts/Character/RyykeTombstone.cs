@@ -1,4 +1,4 @@
-﻿ using System.Collections;
+ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,6 +15,7 @@ public class RyykeTombstone : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
     	rb = GetComponent<Rigidbody2D>();
     	rb.velocity=velocity;
         anim = GetComponent<Animator>();
@@ -67,4 +68,5 @@ public class RyykeTombstone : MonoBehaviour
    			StartCoroutine(Delete());
         }
     }
+
 }
