@@ -94,6 +94,7 @@ GameObject:
   - component: {fileID: 1982506981683547287}
   - component: {fileID: 7822217194493894608}
   - component: {fileID: 4786103346119528741}
+  - component: {fileID: 801127716247501463}
   m_Layer: 0
   m_Name: Pips
   m_TagString: Untagged
@@ -185,3 +186,17 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &801127716247501463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9010208010979124909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 021d25f61de058f4db871f24ad3ffa39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  charge: 0
+  anim: {fileID: 4786103346119528741}
