@@ -76,4 +76,26 @@ public class RykkeMasterHit : MasterHit
         Debug.Log("Recovery end!");
         rb.gravityScale = gravityScale;
     }
+
+    //Down W
+
+    public override void callTheDownW()
+    {
+        Debug.Log("DOWN W START");
+    }
+
+    public void dropStone(){
+      facing = movement.Facing;
+      GameObject tombstone = Instantiate(entities.GetEntityPrefab("RyykeTombstone"), transform.position, transform.rotation);
+        foreach (HitboxCollision hitbox in tombstone.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+        }
+        entities.AddEntity(tombstone);
+    }
+
+
 }

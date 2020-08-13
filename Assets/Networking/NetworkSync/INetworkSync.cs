@@ -42,6 +42,8 @@ public class NetworkEntityConverter : Newtonsoft.Json.Converters.CustomCreationC
                 return new BoxSync.BoxData();
             case "NeroSpear":
                 return new NeroSpearSync.SpearData();
+            case "RyykeTombstone":
+                return new RyykeTombstoneSync.StoneData();
             case "SpacejamBell":
                 return new SpacejamBellSync.BellData();
             case "HitSparks":
