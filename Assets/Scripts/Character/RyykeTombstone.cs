@@ -1,13 +1,12 @@
-﻿using System.Collections;
+﻿ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class RyykeTombstone : MonoBehaviour
 {
-
+    public HitboxCollision hitbox;
 	public Vector2 velocity;
     Rigidbody2D rb;
-    
     Animator anim;
     bool armed = false;
 
@@ -16,7 +15,6 @@ public class RyykeTombstone : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
     	rb = GetComponent<Rigidbody2D>();
     	rb.velocity=velocity;
         anim = GetComponent<Animator>();
@@ -27,7 +25,7 @@ public class RyykeTombstone : MonoBehaviour
     {
    		if (!grounded)
         {
-            //rb.velocity = velocity;
+            rb.velocity = velocity;
         }
         else{
         	rb.velocity=Vector2.zero;
@@ -50,6 +48,7 @@ public class RyykeTombstone : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {
+        GameObject hitboxParent = hitbox.parent;
 
         if (col.gameObject.tag == "Ground" && !grounded)
         {
@@ -58,13 +57,13 @@ public class RyykeTombstone : MonoBehaviour
 			rb.velocity=Vector2.zero;
 			StartCoroutine(Arm());
 		}
-        else if(col.gameObject.tag != "Ground" && !grounded){
+        else if(col.gameObject.tag != "Ground"  && col.gameObject != hitboxParent && !grounded){
         	anim.SetBool("Grounded",true);
         	rb.velocity=Vector2.zero;
         	anim.SetTrigger("Delete");
         	StartCoroutine(Delete());
         }
-        else if(armed){
+        else if(armed  && col.gameObject != hitboxParent){
         	anim.SetTrigger("Activate");
    			StartCoroutine(Delete());
         }

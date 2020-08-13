@@ -86,7 +86,10 @@ public class RykkeMasterHit : MasterHit
 
     public void dropStone(){
       facing = movement.Facing;
-      GameObject tombstone = Instantiate(entities.GetEntityPrefab("RyykeTombstone"), transform.position, transform.rotation);
+      Vector3 flip = new Vector3(facing *8f,1f,1f);
+      Vector3 loc = new Vector3(facing *1f,.5f,0f);
+      GameObject tombstone = Instantiate(entities.GetEntityPrefab("RyykeTombstone"), transform.position + loc, transform.rotation);
+      tombstone.transform.localScale += flip;
         foreach (HitboxCollision hitbox in tombstone.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
