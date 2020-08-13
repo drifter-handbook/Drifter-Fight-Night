@@ -25,11 +25,8 @@ public class RyykeTombstone : MonoBehaviour
     {
    		if (!grounded)
         {
-            rb.velocity = velocity;
         }
-        else{
-        	rb.velocity=Vector2.zero;
-        }
+            //rb.velocity = velocity;
     }
 
     IEnumerator Delete()
@@ -54,11 +51,13 @@ public class RyykeTombstone : MonoBehaviour
         {
         	grounded = true;
 			anim.SetBool("Grounded",true);
+			grounded = true;
 			rb.velocity=Vector2.zero;
 			StartCoroutine(Arm());
 		}
         else if(col.gameObject.tag != "Ground"  && col.gameObject != hitboxParent && !grounded){
-        	anim.SetBool("Grounded",true);
+        	//anim.SetBool("Grounded",true);
+        	grounded = true;
         	rb.velocity=Vector2.zero;
         	anim.SetTrigger("Delete");
         	StartCoroutine(Delete());
