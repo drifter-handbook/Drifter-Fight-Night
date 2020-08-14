@@ -437,6 +437,7 @@ GameObject:
   - component: {fileID: 3908522157986534925}
   - component: {fileID: 3180167502283697778}
   - component: {fileID: 1611557515948390050}
+  - component: {fileID: 347982301077726426}
   m_Layer: 5
   m_Name: Figurine
   m_TagString: Untagged
@@ -546,3 +547,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   arrow: {fileID: 1041053327362063270}
+--- !u!95 &347982301077726426
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8918532560033638642}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

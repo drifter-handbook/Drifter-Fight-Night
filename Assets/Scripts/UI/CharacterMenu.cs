@@ -28,6 +28,7 @@ public class CharacterMenu : MonoBehaviour
     public GameObject leftPanel;
     public GameObject rightPanel;
 
+
     [Serializable]
     public class PlayerSelectFigurine
     {
@@ -45,6 +46,9 @@ public class CharacterMenu : MonoBehaviour
 
     public GameObject arrowPrefab;
 
+    public GameObject forwardButton;
+    public GameObject backButton;
+
     public class PlayerMenuEntry
     {
         public GameObject arrow;
@@ -57,7 +61,10 @@ public class CharacterMenu : MonoBehaviour
         foreach (PlayerSelectFigurine drifter in drifters)
         {
             figurines[drifter.drifter] = drifter;
+            drifter.figurine.GetComponent<Animator>().SetBool("present", true);
         }
+
+        forwardButton.GetComponent<Animator>().SetBool("present", true);
     }
 
     void FixedUpdate()
@@ -121,6 +128,8 @@ public class CharacterMenu : MonoBehaviour
         GameObject charCard = CharacterCard.CreatePlayerCard(ColorFromEnum[(PlayerColor)index]);
         entry.characterCard = charCard;
 
+        charCard.GetComponent<Animator>().SetBool("present", true);
+
         Transform card = charCard.transform;
 
         Transform parent = (index < PANEL_MAX_PLAYERS) ?
@@ -152,4 +161,73 @@ public class CharacterMenu : MonoBehaviour
         }
         GameController.Instance.CharacterSelectStates[index].PlayerType = drifter;
     }
+
+
+    public void HeadToLocationSelect()
+    {
+        this.GetComponent<Animator>().SetBool("location", true);
+      //  forwardButton.GetComponent<Animator>().SetBool("present", false);
+        backButton.GetComponent<Animator>().SetBool("present", true);
+
+        List<DrifterType> pickedTypes = new List<DrifterType>();
+
+        foreach (Animator card in rightPanel.GetComponentsInChildren<Animator>())
+        {
+           card.GetComponent<Animator>().SetBool("present", false);
+            pickedTypes.Add(getDrifterTypeFromString(card.transform.GetChild(1).GetComponent<Text>().text));
+        }
+
+        foreach (Animator card in leftPanel.GetComponentsInChildren<Animator>())
+        {
+            card.GetComponent<Animator>().SetBool("present", false);
+            pickedTypes.Add(getDrifterTypeFromString(card.transform.GetChild(1).GetComponent<Text>().text));
+        }
+
+        foreach (PlayerSelectFigurine drifter in drifters)
+        {
+            if (!pickedTypes.Contains(drifter.drifter))
+            {
+                drifter.figurine.GetComponent<Animator>().SetBool("present", false);
+            }
+        }
+
+    }
+
+    public void HeadToCharacterSelect()
+    {
+        this.GetComponent<Animator>().SetBool("location", false);
+      //  forwardButton.GetComponent<Animator>().SetBool("present", true);
+        backButton.GetComponent<Animator>().SetBool("present", false);
+
+        foreach (Animator card in rightPanel.GetComponentsInChildren<Animator>())
+        {
+            card.GetComponent<Animator>().SetBool("present", true);
+        }
+
+        foreach (Animator card in leftPanel.GetComponentsInChildren<Animator>())
+        {
+            card.GetComponent<Animator>().SetBool("present", true);
+        }
+
+        foreach (PlayerSelectFigurine drifter in drifters)
+        {
+            if (!drifter.figurine.GetComponent<Animator>().GetBool("present"))
+            {
+                drifter.figurine.GetComponent<Animator>().SetBool("present", true);
+            }
+        }
+    }
+
+    public DrifterType getDrifterTypeFromString(string name)
+    {
+        foreach(DrifterType drifter in Enum.GetValues(typeof(DrifterType)))
+        {
+            if(drifter.ToString() == name)
+            {
+                return drifter;
+            }
+        }
+        return DrifterType.Bojo;
+    }
+
 }
