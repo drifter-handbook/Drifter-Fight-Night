@@ -38,6 +38,10 @@ public class PlayerCardArtHolder : MonoBehaviour
                 playerCards[i].SetColor(drifter.myColor);
 
                 int imageIndex = getDrifterTypeIndex(drifter.GetComponent<INetworkSync>().Type);
+                if(imageIndex != 5 && imageIndex != 1){
+                   Destroy(playerCards[i].charge);
+                }
+
                 playerCards[i].setImages(faces[imageIndex], stocks[imageIndex]);
                 playerCards[i].addStocks(stockPrefab, 3);
                 i++;
@@ -47,6 +51,9 @@ public class PlayerCardArtHolder : MonoBehaviour
         for (int i = 0; i < drifters.Length; i++)
         {
             playerCards[i].setPercent(drifters[i].DamageTaken);
+            if(playerCards[i].charge){
+                //playerCards[i].charge.GetComponent<ChargeCounter>().setCharge(2);
+            }
             // update stocks
             if (drifters[i] != null)
             {
