@@ -19,7 +19,7 @@ public class OrroMasterHit : MasterHit
     }
 
 
-    public void callTheRecovery(){
+    public void cancelGravity(){
         facing = movement.Facing;
         rb.velocity = Vector2.zero;
         rb.gravityScale = 0;
@@ -27,6 +27,7 @@ public class OrroMasterHit : MasterHit
     public void inTheHole(){
         facing = movement.Facing;
         rb.gravityScale = gravityScale;
+        rb.velocity = Vector2.zero;
         rb.position += new Vector2(0,20);
     }
 
