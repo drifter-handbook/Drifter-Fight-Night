@@ -8,6 +8,7 @@ public class NeroMasterHit : MasterHit
     PlayerAttacks attacks;
     float gravityScale;
     PlayerMovement movement;
+    public int facing;
 
     void Start()
     {
@@ -49,6 +50,17 @@ public class NeroMasterHit : MasterHit
     public override void cancelTheRecovery()
     {
         Debug.Log("Recovery end!");
+        rb.gravityScale = gravityScale;
+    }
+
+    public void neutralWCharge(){
+         rb.gravityScale = .1f;
+         facing = movement.Facing;
+         rb.velocity = new Vector3(facing * 50, 0);
+
+    }
+    public override void cancelTheNeutralW()
+    {
         rb.gravityScale = gravityScale;
     }
 }
