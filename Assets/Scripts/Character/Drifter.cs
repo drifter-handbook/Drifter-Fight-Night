@@ -34,6 +34,7 @@ public class Drifter : MonoBehaviour
 
     public int Stocks = 0;
     public float DamageTaken = 0f;
+    public int Charge = 0;
 
     public PlayerInputData input { get; set; } = new PlayerInputData();
     public PlayerInputData prevInput = new PlayerInputData();

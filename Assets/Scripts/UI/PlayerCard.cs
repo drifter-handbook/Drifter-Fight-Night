@@ -10,6 +10,7 @@ public class PlayerCard : MonoBehaviour
     public Sprite stockImage;
     public Text percent;
     public int currStocks = 0;
+    public SpriteRenderer pips;
     public GameObject charge;
 
     public Image bannerBack;
@@ -43,6 +44,7 @@ public class PlayerCard : MonoBehaviour
      public void SetColor(Color color)
     {
         bannerBack.GetComponent<Image>().color = color;
+        pips.color = color;
 
     }
 

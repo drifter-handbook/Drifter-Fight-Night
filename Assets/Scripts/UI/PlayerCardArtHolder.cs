@@ -52,7 +52,7 @@ public class PlayerCardArtHolder : MonoBehaviour
         {
             playerCards[i].setPercent(drifters[i].DamageTaken);
             if(playerCards[i].charge){
-                //playerCards[i].charge.GetComponent<ChargeCounter>().setCharge(2);
+                playerCards[i].charge.GetComponent<ChargeCounter>().setCharge(drifters[i].Charge);
             }
             // update stocks
             if (drifters[i] != null)

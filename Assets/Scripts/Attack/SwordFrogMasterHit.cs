@@ -9,8 +9,6 @@ public class SwordFrogMasterHit : MasterHit
     float gravityScale;
     PlayerMovement movement;
 
-    public int charges;
-
     public int facing;
 
     void Start()
@@ -36,8 +34,15 @@ public class SwordFrogMasterHit : MasterHit
 
     public override void hitTheNeutralW(GameObject target)
     {
-        if(charges >0){
-            charges--;
+        if(drifter.Charge >0){
+            drifter.Charge--;
         }
+    }
+
+    public void grantCharge(){
+        if(drifter.Charge <3){
+            drifter.Charge++;
+        }
+        
     }
 }

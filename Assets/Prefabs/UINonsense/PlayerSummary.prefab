@@ -193,6 +193,7 @@ MonoBehaviour:
   stockImage: {fileID: 0}
   percent: {fileID: 5195908821410946412}
   currStocks: 0
+  pips: {fileID: 9058913575394300455}
   charge: {fileID: 2870736426426640415}
   bannerBack: {fileID: 1918312981551327777}
   stockHolder: {fileID: 5195908820502725873}
@@ -639,6 +640,12 @@ GameObject:
 --- !u!4 &6615579757402365066 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5401753583398818173, guid: cdc85b8315e1e6344b307d7b3b4b6958,
+    type: 3}
+  m_PrefabInstance: {fileID: 1241200187810352631}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &9058913575394300455 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 7822217194493894608, guid: cdc85b8315e1e6344b307d7b3b4b6958,
     type: 3}
   m_PrefabInstance: {fileID: 1241200187810352631}
   m_PrefabAsset: {fileID: 0}

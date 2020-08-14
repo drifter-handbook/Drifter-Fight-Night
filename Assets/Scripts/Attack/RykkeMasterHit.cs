@@ -8,7 +8,6 @@ public class RykkeMasterHit : MasterHit
     PlayerAttacks attacks;
     float gravityScale;
     PlayerMovement movement;
-    public int awakenStacks = 0;
     public Animator anim;
     public int facing;
 
@@ -103,17 +102,17 @@ public class RykkeMasterHit : MasterHit
         entities.AddEntity(tombstone);
     }
     public void grantStack(){
-    	if(awakenStacks < 3){
-    		awakenStacks++;
+    	if(drifter.Charge < 3){
+    		drifter.Charge++;
     		anim.SetBool("Empowered",true);
     	} 
 
     }
 
     public void conmsumeStack(){
-    	if(awakenStacks > 0){
-    		awakenStacks--;
-    		if(awakenStacks == 0){
+    	if(drifter.Charge > 0){
+    		drifter.Charge--;
+    		if(drifter.Charge == 0){
     			anim.SetBool("Empowered",false);
     		}
     	} 
