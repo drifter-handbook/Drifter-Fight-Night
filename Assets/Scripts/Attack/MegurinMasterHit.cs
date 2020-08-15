@@ -22,7 +22,7 @@ public class MegurinMasterHit : MasterHit
         gravityScale = rb.gravityScale;
         attacks = drifter.GetComponent<PlayerAttacks>();
         movement = drifter.GetComponent<PlayerMovement>();
-        status = drifter.GetComponent<PlayerStatus>();;
+        status = drifter.GetComponent<PlayerStatus>();
     }
 
     public override void callTheRecovery()

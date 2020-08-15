@@ -6,10 +6,10 @@ public class RyykeTombstone : MonoBehaviour
 {
     public HitboxCollision hitbox;
 	public Vector2 velocity;
-    RykkeMasterHit chadController;
+    public RykkeMasterHit chadController;
     Rigidbody2D rb;
     Animator anim;
-    int facing;
+    public int facing;
     bool armed = false;
 
     public bool grounded { get; set; } = false;
@@ -72,6 +72,10 @@ public class RyykeTombstone : MonoBehaviour
         	anim.SetTrigger("Activate");
    			StartCoroutine(Delete());
         }
+    }
+
+    public void spawnChadWrapper(){
+        chadController.SpawnChad(facing);
     }
 
 }
