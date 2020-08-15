@@ -26,7 +26,7 @@ public class OrroMasterHit : MasterHit
     }
     public void inTheHole(){
         facing = movement.Facing;
-        rb.gravityScale = gravityScale;
+        //rb.gravityScale = gravityScale;
         rb.velocity = Vector2.zero;
         rb.position += new Vector2(0,20);
     }
