@@ -6,8 +6,10 @@ public class RyykeTombstone : MonoBehaviour
 {
     public HitboxCollision hitbox;
 	public Vector2 velocity;
+    RykkeMasterHit chadController;
     Rigidbody2D rb;
     Animator anim;
+    int facing;
     bool armed = false;
 
     public bool grounded { get; set; } = false;
@@ -30,11 +32,15 @@ public class RyykeTombstone : MonoBehaviour
             //rb.velocity = velocity;
     }
 
-    IEnumerator Delete()
+    public IEnumerator Delete()
     {
         yield return new WaitForSeconds(0.8f);
         Destroy(gameObject);
         yield break;
+    }
+    public void Break(){
+        anim.SetTrigger("Delete");
+        StartCoroutine(Delete());
     }
 
  	IEnumerator Arm()
@@ -60,8 +66,7 @@ public class RyykeTombstone : MonoBehaviour
         	//anim.SetBool("Grounded",true);
         	grounded = true;
         	rb.velocity=Vector2.zero;
-        	anim.SetTrigger("Delete");
-        	StartCoroutine(Delete());
+        	Break();
         }
         else if(armed  && col.gameObject != hitboxParent){
         	anim.SetTrigger("Activate");

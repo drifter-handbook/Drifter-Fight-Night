@@ -10,6 +10,7 @@ public class RykkeMasterHit : MasterHit
     PlayerMovement movement;
     public Animator anim;
     public int facing;
+    GameObject activeStone;
 
     void Start()
     {
@@ -99,6 +100,10 @@ public class RykkeMasterHit : MasterHit
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;
         }
+        if(activeStone){
+            activeStone.GetComponent<RyykeTombstone>().Break();
+        }
+        activeStone = tombstone; 
         entities.AddEntity(tombstone);
     }
     public void grantStack(){
@@ -118,18 +123,18 @@ public class RykkeMasterHit : MasterHit
     	} 
     }
 
-     public void SpawnChad(){
-
-        GameObject zombie = Instantiate(entities.GetEntityPrefab("Chadwick"), transform.position, transform.rotation);
-        zombie.transform.localScale = this.gameObject.transform.localScale;
-        foreach (HitboxCollision hitbox in zombie.GetComponentsInChildren<HitboxCollision>(true))
-        {
-            hitbox.parent = drifter.gameObject;
-            hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
-            hitbox.Active = true;
-        }
-        grantStack();
-        entities.AddEntity(zombie);
-    }
+    //  public void SpawnChad(int direction, Vector3 pos){
+    //     Vector3 flip = new Vector3(direction *8f,8f,1f);
+    //     GameObject zombie = Instantiate(entities.GetEntityPrefab("Chadwick"), transform.position - pos, transform.rotation);
+    //     zombie.transform.localScale = flip;
+    //     foreach (HitboxCollision hitbox in zombie.GetComponentsInChildren<HitboxCollision>(true))
+    //     {
+    //         hitbox.parent = drifter.gameObject;
+    //         hitbox.AttackID = attacks.AttackID;
+    //         hitbox.AttackType = attacks.AttackType;
+    //         hitbox.Active = true;
+    //     }
+    //     grantStack();
+    //     entities.AddEntity(zombie);
+    // }
 }
