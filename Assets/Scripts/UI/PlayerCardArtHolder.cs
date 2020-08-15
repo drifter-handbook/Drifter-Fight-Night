@@ -41,6 +41,9 @@ public class PlayerCardArtHolder : MonoBehaviour
                 if(imageIndex != 5 && imageIndex != 1){
                    Destroy(playerCards[i].charge);
                 }
+                if(imageIndex !=6){
+                    Destroy(playerCards[i].MegurinElements);
+                }
 
                 playerCards[i].setImages(faces[imageIndex], stocks[imageIndex]);
                 playerCards[i].addStocks(stockPrefab, 3);

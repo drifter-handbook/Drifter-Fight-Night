@@ -12,6 +12,7 @@ public class PlayerCard : MonoBehaviour
     public int currStocks = 0;
     public SpriteRenderer pips;
     public GameObject charge;
+    public GameObject MegurinElements;
 
     public Image bannerBack;
 

@@ -10,6 +10,7 @@ public class MegurinMasterHit : MasterHit
     float gravityScale;
     PlayerMovement movement;
     public Animator anim;
+    GameObject activeStorm;
 
     int neutralWCharge = 0;
 
@@ -45,7 +46,7 @@ public class MegurinMasterHit : MasterHit
 
     public void spawnStorm(){
 
-        Vector3 pos = new Vector3(0f,8f,0f);
+        Vector3 pos = new Vector3(0f,6.5f,0f);
         GameObject MegurinStorm = Instantiate(entities.GetEntityPrefab("MegurinStorm"), transform.position + pos, transform.rotation);
         foreach (HitboxCollision hitbox in MegurinStorm.GetComponentsInChildren<HitboxCollision>(true))
         {
@@ -54,6 +55,11 @@ public class MegurinMasterHit : MasterHit
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;
         }
+
+        if(activeStorm){
+            StartCoroutine(activeStorm.GetComponent<MegurinStorm>().Fade(0));
+        }
+        activeStorm = MegurinStorm; 
         entities.AddEntity(MegurinStorm);
     }
 

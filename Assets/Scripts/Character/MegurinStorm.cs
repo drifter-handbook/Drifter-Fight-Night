@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class MegurinStorm : MonoBehaviour
 {
+
+    public float duration;
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(Fade());
+        StartCoroutine(Fade(duration));
     }
 
     // Update is called once per frame
@@ -16,9 +18,11 @@ public class MegurinStorm : MonoBehaviour
 
     }
 
-    IEnumerator Fade()
+
+
+    public IEnumerator Fade(float delay)
     {
-        yield return new WaitForSeconds(7f);
+        yield return new WaitForSeconds(delay);
         Destroy(gameObject);
         yield break;
     }
