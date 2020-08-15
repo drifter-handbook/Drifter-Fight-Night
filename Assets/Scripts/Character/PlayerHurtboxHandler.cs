@@ -34,9 +34,10 @@ public class PlayerHurtboxHandler : MonoBehaviour
             oldAttacks[attackID] = Time.time;
             // apply hit effects
             hitbox.parent.GetComponent<PlayerAttacks>().Hit(attackType, attackID, hurtbox.parent);
-            // apply damage
+            GetComponent<PlayerStatus>().ApplyStatusEffect(PlayerStatusEffect.HIT,.1f);
+            // apply damage, ignored if invuln
             Drifter drifter = GetComponent<Drifter>();
-            if (drifter != null)
+            if (drifter != null && !GetComponent<PlayerStatus>().HasInulvernability())
             {
                 drifter.DamageTaken += attackData.AttackDamage * (drifter.animator.GetBool("Guarding") ? 0.35f : 1f);
             }
@@ -53,8 +54,11 @@ public class PlayerHurtboxHandler : MonoBehaviour
             {
                 damageMultiplier = 0f;
             }
-            GetComponent<Rigidbody2D>().velocity = forceDir.normalized * (float)((drifter.DamageTaken / 10 + drifter.DamageTaken * attackData.AttackDamage / 20)
+            //Ignore knockback if invincible or armoured
+            if(!GetComponent<PlayerStatus>().HasInulvernability() && !GetComponent<PlayerStatus>().HasArmour()){
+                    GetComponent<Rigidbody2D>().velocity = forceDir.normalized * (float)((drifter.DamageTaken / 10 + drifter.DamageTaken * attackData.AttackDamage / 20)
                                                                 * 200 / (drifter.drifterData.Weight + 100) * 1.4 * attackData.KnockbackScale + attackData.Knockback);
+            }
             // stun player
             float stunMultiplier = Mathf.Lerp(1f, damageMultiplier, 0.5f);
             GetComponent<PlayerStatus>()?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, stunMultiplier * attackData.HitStun);
@@ -70,7 +74,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 hitSparks.transform.eulerAngles = new Vector3(0, 0, 90f);
                 hitSparks.transform.localScale = new Vector3(0.6f, 0.6f, 0.6f);
             }
-            else if (attackData.Knockback > 18f)
+            else if (attackData.Knockback > 18f && attackData.KnockbackScale > 0)
             {
                 hitSparks.GetComponent<HitSparks>().SetAnimation(HitSparksEffect.HIT_SPARKS_2);
                 hitSparks.transform.localScale = new Vector3(facingDir * 0.7f, 0.7f, 0.7f);

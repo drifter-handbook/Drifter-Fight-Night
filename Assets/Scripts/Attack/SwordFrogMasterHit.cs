@@ -7,6 +7,7 @@ public class SwordFrogMasterHit : MasterHit
     Rigidbody2D rb;
     PlayerAttacks attacks;
     float gravityScale;
+    PlayerStatus status;
     PlayerMovement movement;
     public Animator anim;
     int chargeProgress = 0;
@@ -19,6 +20,7 @@ public class SwordFrogMasterHit : MasterHit
         gravityScale = rb.gravityScale;
         attacks = drifter.GetComponent<PlayerAttacks>();
         movement = drifter.GetComponent<PlayerMovement>();
+        status = drifter.GetComponent<PlayerStatus>();
     }
 
 
@@ -43,6 +45,25 @@ public class SwordFrogMasterHit : MasterHit
             anim.SetBool("HasCharge",false);
         }
 
+    }
+    public void counter(){
+        if(!status.HasInulvernability()){
+            status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.1f);
+        }
+        if(status.HasHit()){
+            anim.SetBool("Empowered",true);
+            status.ApplyStatusEffect(PlayerStatusEffect.INVULN,0f);
+        }
+
+    }
+    public void hitCounter(){
+        anim.SetBool("Empowered",false);
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.5f);
+        
+    }
+    public void whiffCounter(){
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,0f);
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,1.05f);
     }
 
     public void grantCharge(){
