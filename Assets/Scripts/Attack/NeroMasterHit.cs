@@ -9,6 +9,8 @@ public class NeroMasterHit : MasterHit
     float gravityScale;
     PlayerMovement movement;
     public int facing;
+    PlayerStatus status;
+    public Animator anim;
 
     void Start()
     {
@@ -16,6 +18,7 @@ public class NeroMasterHit : MasterHit
         gravityScale = rb.gravityScale;
         attacks = drifter.GetComponent<PlayerAttacks>();
         movement = drifter.GetComponent<PlayerMovement>();
+        status = drifter.GetComponent<PlayerStatus>();
     }
 
     public override void callTheRecovery()
@@ -57,7 +60,26 @@ public class NeroMasterHit : MasterHit
          rb.gravityScale = .1f;
          facing = movement.Facing;
          rb.velocity = new Vector3(facing * 50, 0);
+    }
 
+    public void counter(){
+        if(!status.HasInulvernability()){
+            status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.1f);
+        }
+        if(status.HasHit()){
+            anim.SetBool("Empowered",true);
+            status.ApplyStatusEffect(PlayerStatusEffect.INVULN,0f);
+        }
+
+    }
+    public void hitCounter(){
+        anim.SetBool("Empowered",false);
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.45f);
+        
+    }
+    public void whiffCounter(){
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,0f);
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,1f);
     }
     public override void cancelTheNeutralW()
     {
