@@ -8,6 +8,8 @@ public class SwordFrogMasterHit : MasterHit
     PlayerAttacks attacks;
     float gravityScale;
     PlayerMovement movement;
+    public Animator anim;
+    int chargeProgress = 0;
 
     public int facing;
 
@@ -32,17 +34,26 @@ public class SwordFrogMasterHit : MasterHit
         rb.velocity= new Vector2(0,60);
     }
 
-    public override void hitTheNeutralW(GameObject target)
+    public void removeCharge()
     {
         if(drifter.Charge >0){
             drifter.Charge--;
         }
+        if(drifter.Charge ==0){
+            anim.SetBool("HasCharge",false);
+        }
+
     }
 
     public void grantCharge(){
-        if(drifter.Charge <3){
-            drifter.Charge++;
+        chargeProgress++;
+        if(chargeProgress >= 3){
+            chargeProgress = 0;anim.SetBool("HasCharge",true);
+            if(drifter.Charge <3){
+                drifter.Charge++;
+            }
         }
+        
         
     }
 }
