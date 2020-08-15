@@ -45,9 +45,14 @@ public class PlayerStatus : MonoBehaviour
 
     IEnumerator ApplyStatusEffectFor(PlayerStatusEffect ef, float duration)
     {
+        
         if (!statusEffects.ContainsKey(ef))
         {
             statusEffects[ef] = 0;
+        }
+
+        if(ef ==  PlayerStatusEffect.KNOCKBACK && statusEffects.ContainsKey(PlayerStatusEffect.END_LAG)){
+            statusEffects[PlayerStatusEffect.END_LAG] = 0;
         }
         statusEffects[ef]++;
         yield return new WaitForSeconds(duration);

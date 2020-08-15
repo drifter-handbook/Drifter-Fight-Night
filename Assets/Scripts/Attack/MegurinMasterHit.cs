@@ -6,8 +6,12 @@ public class MegurinMasterHit : MasterHit
 {
     Rigidbody2D rb;
     PlayerAttacks attacks;
+    PlayerStatus status;
     float gravityScale;
     PlayerMovement movement;
+    public Animator anim;
+
+    int neutralWCharge = 0;
 
     public int facing;
 
@@ -17,6 +21,7 @@ public class MegurinMasterHit : MasterHit
         gravityScale = rb.gravityScale;
         attacks = drifter.GetComponent<PlayerAttacks>();
         movement = drifter.GetComponent<PlayerMovement>();
+        status = drifter.GetComponent<PlayerStatus>();;
     }
 
     public override void callTheRecovery()
@@ -74,9 +79,10 @@ public class MegurinMasterHit : MasterHit
     public void spawnSmallBolt(){
 
         facing = movement.Facing;
-        Vector3 flip = new Vector3(facing *1f,1f,1f);
-        GameObject smallBolt = Instantiate(entities.GetEntityPrefab("StrongBolt"), transform.position, transform.rotation);
-        smallBolt.transform.localScale += flip;
+        Vector3 flip = new Vector3(facing *10f,10f,1f);
+        Vector3 pos = new Vector3(facing *3f,4,1f);
+        GameObject smallBolt = Instantiate(entities.GetEntityPrefab("WeakBolt"), transform.position + pos, transform.rotation);
+        smallBolt.transform.localScale = flip;
         foreach (HitboxCollision hitbox in smallBolt.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
@@ -89,9 +95,10 @@ public class MegurinMasterHit : MasterHit
     public void spawnLargeBolt(){
 
         facing = movement.Facing;
-        Vector3 flip = new Vector3(facing *1f,1f,1f);
-        GameObject largeBolt = Instantiate(entities.GetEntityPrefab("WeakBolt"), transform.position, transform.rotation);
-        largeBolt.transform.localScale += flip;
+        Vector3 flip = new Vector3(facing *10f,10f,1f);
+        Vector3 pos = new Vector3(facing *3f,4,1f);
+        GameObject largeBolt = Instantiate(entities.GetEntityPrefab("StrongBolt"), transform.position + pos, transform.rotation);
+        largeBolt.transform.localScale = flip;
         foreach (HitboxCollision hitbox in largeBolt.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
@@ -112,6 +119,40 @@ public class MegurinMasterHit : MasterHit
         drifter.Charge = 0;
     }
 
+
+    public void chargeNeutralW(){
+        if(neutralWCharge < 10){
+            neutralWCharge +=1;
+        }
+        else{
+            anim.SetBool("Empowered",true);
+        }
+    }
+
+    public void beginLightningbolt(){
+        if(anim.GetBool("Empowered") == true){
+            anim.SetBool("Empowered",false);
+            anim.SetBool("BoltStored",true);
+            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,1.8f);
+        }
+        else{
+            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,1f);
+        }
+          
+    }
+    public void fireLightningbolt(){
+        neutralWCharge = 0;
+        if(anim.GetBool("BoltStored") == true){
+            spawnLargeBolt();
+        }
+        else{
+            spawnSmallBolt();
+        }
+          
+    }
+    public void removeBoltStored(){
+         anim.SetBool("BoltStored",false);
+    }
 
 
     public override void cancelTheNeutralW()
