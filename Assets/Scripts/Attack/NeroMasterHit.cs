@@ -31,6 +31,14 @@ public class NeroMasterHit : MasterHit
         rb.gravityScale = 0f;
         rb.velocity = Vector2.zero;
     }
+
+    public void dodgeRoll(){
+        facing = movement.Facing;
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
+        rb.velocity = new Vector2(facing * 25f,0f);
+    }
+
     public void RecoveryThrowSpear()
     {
         // jump upwards and create spear projectile

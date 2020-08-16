@@ -46,6 +46,13 @@ public class OrroMasterHit : MasterHit
         entities.AddEntity(orroOrb);
     }
 
+    public void dodgeRoll(){
+        facing = movement.Facing;
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
+        rb.velocity = new Vector2(facing * 25f,0f);
+    }
+
      public void cancelGravity(){
         facing = movement.Facing;
         rb.velocity = Vector2.zero;
@@ -76,7 +83,7 @@ public class OrroMasterHit : MasterHit
         if(anim.GetBool("Empowered")){
             facing = movement.Facing;
             Vector3 flip = new Vector3(facing *6.7f,6.7f,0f);
-            Vector3 pos = new Vector3(facing *1f,3f,1f);
+            Vector3 pos = new Vector3(facing *1.3f,2f,1f);
             GameObject BeanProj = Instantiate(entities.GetEntityPrefab("Bean"), transform.position + pos, transform.rotation);
             BeanProj.transform.localScale = flip;
             BeanProj.GetComponent<Rigidbody2D>().simulated = true;

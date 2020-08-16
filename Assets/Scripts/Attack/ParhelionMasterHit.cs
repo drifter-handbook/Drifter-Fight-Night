@@ -8,6 +8,7 @@ public class ParhelionMasterHit : MasterHit
     PlayerAttacks attacks;
     float gravityScale;
     PlayerMovement movement;
+    PlayerStatus status;
     public int facing;
 
     void Start()
@@ -17,6 +18,7 @@ public class ParhelionMasterHit : MasterHit
         gravityScale = rb.gravityScale;
         attacks = drifter.GetComponent<PlayerAttacks>();
         movement = drifter.GetComponent<PlayerMovement>();
+        status = drifter.GetComponent<PlayerStatus>();
     }
 
     public void RecoveryPauseMidair()
@@ -40,5 +42,11 @@ public class ParhelionMasterHit : MasterHit
     {
         Debug.Log("Recovery end!");
         rb.gravityScale = gravityScale;
+    }
+    public void dodgeRoll(){
+        facing = movement.Facing;
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
+        rb.velocity = new Vector2(facing * 40f,0f);
     }
 }

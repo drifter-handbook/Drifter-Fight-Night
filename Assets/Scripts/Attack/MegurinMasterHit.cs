@@ -44,6 +44,13 @@ public class MegurinMasterHit : MasterHit
         rb.gravityScale = gravityScale;
     }
 
+    public void dodgeRoll(){
+        facing = movement.Facing;
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
+        rb.velocity = new Vector2(facing * 40f,0f);
+    }
+
     public void spawnStorm(){
 
         Vector3 pos = new Vector3(0f,6.5f,0f);

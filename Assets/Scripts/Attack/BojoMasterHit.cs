@@ -8,6 +8,7 @@ public class BojoMasterHit : MasterHit
     PlayerAttacks attacks;
     float gravityScale;
     PlayerMovement movement;
+    PlayerStatus status;
     public int facing;
 
     void Start()
@@ -16,10 +17,18 @@ public class BojoMasterHit : MasterHit
         gravityScale = rb.gravityScale;
         attacks = drifter.GetComponent<PlayerAttacks>();
         movement = drifter.GetComponent<PlayerMovement>();
+        status = drifter.GetComponent<PlayerStatus>();
     }
 
     public void freeze(){
         rb.velocity = Vector2.zero;
+    }
+
+    public void dodgeRoll(){
+        facing = movement.Facing;
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
+        rb.velocity = new Vector2(facing * 40f,0f);
     }
 
     public void callTheRecovery(){

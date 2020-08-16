@@ -23,6 +23,13 @@ public class SwordFrogMasterHit : MasterHit
         status = drifter.GetComponent<PlayerStatus>();
     }
 
+    public void dodgeRoll(){
+        facing = movement.Facing;
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
+        rb.velocity = new Vector2(facing * 40f,0f);
+    }
+
 
     public override void callTheRecovery()
     {
