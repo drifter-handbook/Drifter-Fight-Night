@@ -106,14 +106,14 @@ public class PlayerMovement : MonoBehaviour
             drifter.SetAnimatorBool("Guarding", false);
         }
 
-        //Termina velocity
+        //Terminal velocity
 
-        // if(rb.velocity.y < -terminalVelocity){
-        //     rb.velocity = new Vector2(rb.velocity.x,-terminalVelocity);
-        // }
+        if(rb.velocity.y < -terminalVelocity){
+            rb.velocity = new Vector2(rb.velocity.x,-terminalVelocity);
+        }
 
 
-        if (jumpPressed && canAct && rb.velocity.y < 0.8f * jumpSpeed)
+        if (jumpPressed && canAct) //&& rb.velocity.y < 0.8f * jumpSpeed)
         {
             //jump
             if (animator.GetBool("Grounded"))
