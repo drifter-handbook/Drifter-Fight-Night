@@ -9,10 +9,12 @@ public class PlayerMovement : MonoBehaviour
     public float delayedJumpDuration = 0.05f;
     public float walkSpeed = 15f;
     public float airSpeed = 15f;
-    public float jumpSpeed = 32f;
     public float terminalVelocity = 80f;
     public bool flipSprite = false;
 
+    public float jumpHeight;
+    public float jumpTime;
+    float jumpSpeed;
     int currentJumps;
 
     SpriteRenderer sprite;
@@ -33,18 +35,23 @@ public class PlayerMovement : MonoBehaviour
 
     void Awake()
     {
+        rb = GetComponent<Rigidbody2D>();        
+        jumpSpeed = jumpHeight / jumpTime - .5f*(rb.gravityScale * jumpTime);
+
         drifter = GetComponent<Drifter>();
         animator = drifter.animator;
         sprite = GetComponentInChildren<SpriteRenderer>();
-        rb = GetComponent<Rigidbody2D>();
+       
         col = GetComponent<BoxCollider2D>();
         status = GetComponent<PlayerStatus>();
     }
 
     void Update()
     {
+        UnityEngine.Debug.Log(rb.gravityScale);
+        //UnityEngine.Debug.Log(jumpSpeed);
         if (!GameController.Instance.IsHost || GameController.Instance.IsPaused)
-        {
+        { 
             return;
         }
 

@@ -42,7 +42,7 @@ public class NeroMasterHit : MasterHit
     public void RecoveryThrowSpear()
     {
         // jump upwards and create spear projectile
-        rb.velocity = new Vector2(rb.velocity.x, 1.5f * movement.jumpSpeed);
+        rb.velocity = new Vector2(rb.velocity.x, 1.5f * 35f);
         rb.gravityScale = gravityScale;
         GameObject neroSpear = Instantiate(entities.GetEntityPrefab("NeroSpear"), transform.position, transform.rotation);
         foreach (HitboxCollision hitbox in neroSpear.GetComponentsInChildren<HitboxCollision>(true))
