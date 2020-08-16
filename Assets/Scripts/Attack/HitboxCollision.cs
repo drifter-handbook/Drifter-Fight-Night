@@ -26,17 +26,17 @@ public class HitboxCollision : MonoBehaviour
     }
     void OnTriggerEnter2D(Collider2D collider)
     {
-        Debug.Log("hi45");
+        //Debug.Log("hi45");
     }
 
     void OnTriggerStay2D(Collider2D collider)
     {
-        Debug.Log("name " + name + " " + (gameObject.activeSelf || gameObject.activeInHierarchy));
+        //Debug.Log("name " + name + " " + (gameObject.activeSelf || gameObject.activeInHierarchy));
         HurtboxCollision hurtbox = collider.GetComponent<HurtboxCollision>();
         if (Active && hurtbox != null && AttackType != DrifterAttackType.Null)
         {
             string player = playerType.Type;
-            Debug.Log("Recovery" + player);
+            //Debug.Log("Recovery" + player);
             SingleAttackData attackData = GameController.Instance.AllData.GetAttacks(player)[AttackType];
             hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, attackData);
         }

@@ -192,7 +192,7 @@ public class NetworkHost : MonoBehaviour, NetworkID
 
     SyncToClientPacket CreateGameSyncPacket()
     {
-        Debug.Log("Sync");
+        //Debug.Log("Sync");
         SyncToClientPacket.SyncToClientData SyncData = new SyncToClientPacket.SyncToClientData();
         for (int i = 0; i < entities.Entities.Count; i++)
         {

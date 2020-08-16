@@ -9,10 +9,12 @@ public class PlayerMovement : MonoBehaviour
     public float delayedJumpDuration = 0.05f;
     public float walkSpeed = 15f;
     public float airSpeed = 15f;
-    public float jumpSpeed = 32f;
     public float terminalVelocity = 80f;
     public bool flipSprite = false;
 
+    public float jumpHeight = 20f;
+    public float jumpTime = 1f;
+    float jumpSpeed;
     int currentJumps;
 
     SpriteRenderer sprite;
@@ -33,16 +35,25 @@ public class PlayerMovement : MonoBehaviour
 
     void Awake()
     {
+        rb = GetComponent<Rigidbody2D>();
+
+
         drifter = GetComponent<Drifter>();
         animator = drifter.animator;
         sprite = GetComponentInChildren<SpriteRenderer>();
-        rb = GetComponent<Rigidbody2D>();
+
         col = GetComponent<BoxCollider2D>();
         status = GetComponent<PlayerStatus>();
+    }
+    void Start(){
+        UnityEngine.Debug.Log(rb.gravityScale);
+        jumpSpeed = (float)(jumpHeight / jumpTime + .5f*(rb.gravityScale * jumpTime));
+        UnityEngine.Debug.Log(jumpSpeed);
     }
 
     void Update()
     {
+
         if (!GameController.Instance.IsHost || GameController.Instance.IsPaused)
         {
             return;
@@ -54,6 +65,14 @@ public class PlayerMovement : MonoBehaviour
         bool canGuard = !status.HasStunEffect();
         bool moving = drifter.input.MoveX != 0;
         drifter.SetAnimatorBool("Grounded", IsGrounded());
+
+        if(status.HasEnemyStunEffect() && !animator.GetBool("HitStun")){
+            drifter.SetAnimatorBool("HitStun",true);
+        }
+        else if(!status.HasEnemyStunEffect() && animator.GetBool("HitStun"))
+        {
+                drifter.SetAnimatorBool("HitStun",false);
+        }
 
         if (moving && canAct)
         {
@@ -106,14 +125,14 @@ public class PlayerMovement : MonoBehaviour
             drifter.SetAnimatorBool("Guarding", false);
         }
 
-        //Termina velocity
+        //Terminal velocity
 
-        // if(rb.velocity.y < -terminalVelocity){
-        //     rb.velocity = new Vector2(rb.velocity.x,-terminalVelocity);
-        // }
+        if(rb.velocity.y < -terminalVelocity){
+            rb.velocity = new Vector2(rb.velocity.x,-terminalVelocity);
+        }
 
 
-        if (jumpPressed && canAct && rb.velocity.y < 0.8f * jumpSpeed)
+        if (jumpPressed && canAct) //&& rb.velocity.y < 0.8f * jumpSpeed)
         {
             //jump
             if (animator.GetBool("Grounded"))
@@ -173,7 +192,8 @@ public class PlayerMovement : MonoBehaviour
             time += Time.fixedDeltaTime;
             if (!animator.GetBool("Grounded") && drifter.input.Jump)
             {
-                rb.AddForce(Vector2.up * -Physics2D.gravity * varyJumpHeightForce);
+                //rb.AddForce(Vector2.up * -Physics2D.gravity * varyJumpHeightForce);
+                rb.velocity = Vector2.up * jumpSpeed;
             }
         }
         varyJumpHeight = null;

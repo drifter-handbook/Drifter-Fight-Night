@@ -75,6 +75,7 @@ public class PlayerSync : MonoBehaviour, INetworkSync
         public float z = 0f;
         public int facing = 1;
         public int stocks = 0;
+        public int charge;
         public float damageTaken = 0f;
         public PlayerAnimatorState animatorState = new PlayerAnimatorState();
         public SyncColor color;
@@ -101,6 +102,7 @@ public class PlayerSync : MonoBehaviour, INetworkSync
             GetComponent<Drifter>().SyncAnimatorState(playerData.animatorState);
             gameObject.GetComponent<Drifter>().Stocks = playerData.stocks;
             gameObject.GetComponent<Drifter>().DamageTaken = playerData.damageTaken;
+            gameObject.GetComponent<Drifter>().Charge = playerData.charge;
             gameObject.GetComponent<Drifter>().SetColor(playerData.color.ToColor());
         }
     }
@@ -118,6 +120,7 @@ public class PlayerSync : MonoBehaviour, INetworkSync
             animatorState = (PlayerAnimatorState)gameObject.GetComponent<Drifter>().animatorState.Clone(),
             stocks = gameObject.GetComponent<Drifter>().Stocks,
             damageTaken = gameObject.GetComponent<Drifter>().DamageTaken,
+            charge = gameObject.GetComponent<Drifter>().Charge,
             color = new SyncColor(gameObject.GetComponentInChildren<Drifter>().GetColor())
         };
         GetComponent<Drifter>().ResetAnimatorTriggers();

@@ -427,6 +427,7 @@ MonoBehaviour:
   animator: {fileID: 2000386183588008255}
   Stocks: 0
   DamageTaken: 0
+  Charge: 0
   myColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &3106753082241659641
 MonoBehaviour:
@@ -443,8 +444,11 @@ MonoBehaviour:
   numberOfJumps: 2
   delayedJumpDuration: 0.05
   walkSpeed: 25
-  jumpSpeed: 32
+  airSpeed: 15
+  terminalVelocity: 80
   flipSprite: 0
+  jumpHeight: 0
+  jumpTime: 0
   varyJumpHeightDuration: 0.2
   varyJumpHeightForce: 12
 --- !u!114 &1401939795787901855
@@ -492,7 +496,7 @@ Rigidbody2D:
   m_GravityScale: 10
   m_Material: {fileID: 0}
   m_Interpolate: 0
-  m_SleepingMode: 1
+  m_SleepingMode: 2
   m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!61 &2704295541901204434
