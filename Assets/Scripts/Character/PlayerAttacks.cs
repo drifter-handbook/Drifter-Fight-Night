@@ -34,6 +34,8 @@ public class PlayerAttacks : MonoBehaviour
     // current attack ID and Type, used for outgoing attacks
     public int AttackID { get; private set; }
     public DrifterAttackType AttackType { get; private set; }
+    public int maxRecoveries = 1;
+    int currentRecoveries;
 
     Drifter drifter;
     PlayerStatus status;
@@ -52,6 +54,7 @@ public class PlayerAttacks : MonoBehaviour
         hit = GetComponentInChildren<IMasterHit>();
         sync = GetComponent<INetworkSync>();
         attackData = GameController.Instance.AllData.GetAttacks(sync.Type);
+        currentRecoveries = maxRecoveries;
     }
 
     // Update is called once per frame
@@ -68,14 +71,19 @@ public class PlayerAttacks : MonoBehaviour
         bool grabPressed = !drifter.prevInput.Grab && drifter.input.Grab;
         bool canAct = !status.HasStunEffect() && !animator.GetBool("Guarding");
 
+        if(animator.GetBool("Grounded") && !status.HasStatusEffect(PlayerStatusEffect.END_LAG) || status.HasEnemyStunEffect()){
+            currentRecoveries = maxRecoveries;
+        }
+
         if (grabPressed && canAct)
         {
             StartAttack(DrifterAttackType.E_Side);
         }
-        else if (specialPressed && drifter.input.MoveY > 0 && canAct)
+        else if (specialPressed && drifter.input.MoveY > 0 && canAct && currentRecoveries >0)
         {
             // recovery
             StartAttack(DrifterAttackType.W_Up);
+            currentRecoveries--;
         }
         else if (specialPressed && drifter.input.MoveY < 0 && canAct)
         {

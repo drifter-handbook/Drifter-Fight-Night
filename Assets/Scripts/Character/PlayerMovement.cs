@@ -74,6 +74,11 @@ public class PlayerMovement : MonoBehaviour
                 drifter.SetAnimatorBool("HitStun",false);
         }
 
+        if (animator.GetBool("Grounded"))
+        {
+            currentJumps = numberOfJumps;
+        }
+
         if (moving && canAct)
         {
             Facing = (flipSprite ^ drifter.input.MoveX > 0) ? 1 : -1;
@@ -150,10 +155,6 @@ public class PlayerMovement : MonoBehaviour
         if (jumpPressed && canAct) //&& rb.velocity.y < 0.8f * jumpSpeed)
         {
             //jump
-            if (animator.GetBool("Grounded"))
-            {
-                currentJumps = numberOfJumps;
-            }
             if (currentJumps > 0)
             {
                 currentJumps--;
