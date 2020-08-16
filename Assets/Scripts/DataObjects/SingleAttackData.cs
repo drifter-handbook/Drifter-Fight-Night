@@ -11,5 +11,7 @@ public class SingleAttackData : ScriptableObject
     public float HitStun = 0.1f;
     public float EndLag = 0.1f;
     public float AngleOfImpact = 45f;
-    public List<string> StatusEffects = new List<string>();
+    public PlayerStatusEffect StatusEffect;
+    public float StatusDuration =.5f;
+
 }

@@ -50,7 +50,7 @@ public class PlayerStatus : MonoBehaviour
         return HasStatusEffect(PlayerStatusEffect.KNOCKBACK) || HasStatusEffect(PlayerStatusEffect.PLANTED);
     }
     public bool IsEnemyStunEffect(PlayerStatusEffect ef){
-        return ef == PlayerStatusEffect.KNOCKBACK || ef == PlayerStatusEffect.KNOCKBACK;
+        return (ef == PlayerStatusEffect.KNOCKBACK) || (ef == PlayerStatusEffect.PLANTED);
     }
     public bool HasGroundFriction()
     {
@@ -63,6 +63,7 @@ public class PlayerStatus : MonoBehaviour
 
     IEnumerator ApplyStatusEffectFor(PlayerStatusEffect ef, float duration)
     {
+        UnityEngine.Debug.Log("APPLY: " +ef);
     	float delay = duration;
     	//Ignores hitstun if in superarmour or invuln
     	if((HasInulvernability() || HasArmour()) && ef ==  PlayerStatusEffect.KNOCKBACK){
@@ -72,9 +73,13 @@ public class PlayerStatus : MonoBehaviour
         //If youre planted, you get unplanted by a hit
         if(HasStatusEffect(PlayerStatusEffect.PLANTED) && IsEnemyStunEffect(ef))
         {
+            UnityEngine.Debug.Log("PLANT RESET");
             statusEffects[PlayerStatusEffect.PLANTED] = 0f;
+            UnityEngine.Debug.Log(statusEffects[PlayerStatusEffect.PLANTED]);
+            UnityEngine.Debug.Log(ef);
             if(ef == PlayerStatusEffect.PLANTED)
             {
+                UnityEngine.Debug.Log("OUTIE");
                 yield break;
             }
         
