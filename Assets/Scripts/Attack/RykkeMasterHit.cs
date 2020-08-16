@@ -68,6 +68,9 @@ public class RykkeMasterHit : MasterHit
         }
         entities.AddEntity(RykkeTether);
     }
+    public void notify(){
+      Debug.Log("hit something!");
+    }
     public void updatePosition(Vector3 position){
         movement.updatePosition(position);
     }
