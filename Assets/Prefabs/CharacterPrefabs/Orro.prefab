@@ -462,9 +462,10 @@ MonoBehaviour:
   delayedJumpDuration: 0.05
   walkSpeed: 23
   airSpeed: 21
-  jumpSpeed: 32
-  terminalVelocity: 80
+  terminalVelocity: 37
   flipSprite: 0
+  jumpHeight: 25
+  jumpTime: 2
   varyJumpHeightDuration: 0.2
   varyJumpHeightForce: 12
 --- !u!114 &1401939795787901855
@@ -509,7 +510,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 10
+  m_GravityScale: 12
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
