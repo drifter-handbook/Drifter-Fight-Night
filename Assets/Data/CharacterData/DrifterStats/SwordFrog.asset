@@ -9,13 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 193b57c47c6e0024ebee715bea3d6f17, type: 3}
-  m_Name: Grab
+  m_Script: {fileID: 11500000, guid: 947269b40ab1acd449f1d4c04b2ccf16, type: 3}
+  m_Name: SwordFrog
   m_EditorClassIdentifier: 
-  AttackDamage: 10
-  Knockback: 10
-  KnockbackScale: 1
-  HitStun: 0.1
-  EndLag: 1.1
-  AngleOfImpact: 45
-  StatusEffects: []
+  readableName: 
+  jumps: 6
+  weight: 80
+  runSpeed: 0
+  walkSpeed: 0

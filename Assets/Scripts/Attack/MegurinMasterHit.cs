@@ -45,10 +45,14 @@ public class MegurinMasterHit : MasterHit
     }
 
     public void dodgeRoll(){
-        facing = movement.Facing;
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
+        
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.7f);
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
-        rb.velocity = new Vector2(facing * 40f,0f);
+    }
+
+    public void warpRoll(){
+        facing = movement.Facing;
+        rb.position += new Vector2(10f* facing,0f);
     }
 
     public void spawnStorm(){
