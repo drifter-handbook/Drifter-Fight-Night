@@ -11,6 +11,7 @@ public class SpaceJamMasterHit : MasterHit
     public Drifter self;
     public Animator anim;
     public int charges;
+    PlayerStatus status;
 
     public int facing;
 
@@ -20,6 +21,14 @@ public class SpaceJamMasterHit : MasterHit
         gravityScale = rb.gravityScale;
         attacks = drifter.GetComponent<PlayerAttacks>();
         movement = drifter.GetComponent<PlayerMovement>();
+        status = drifter.GetComponent<PlayerStatus>();
+    }
+
+    public void dodgeRoll(){
+        facing = movement.Facing;
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
+        rb.velocity = new Vector2(facing * 40f,0f);
     }
 
 

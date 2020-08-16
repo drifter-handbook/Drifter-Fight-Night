@@ -461,7 +461,9 @@ MonoBehaviour:
   numberOfJumps: 2
   delayedJumpDuration: 0.05
   walkSpeed: 23
+  airSpeed: 15
   jumpSpeed: 32
+  terminalVelocity: 80
   flipSprite: 0
   varyJumpHeightDuration: 0.2
   varyJumpHeightForce: 12
@@ -764,12 +766,12 @@ PrefabInstance:
     - target: {fileID: 7473316474781769828, guid: 1e76d2aad5cac964fa578bce301dd12f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.21111995
+      value: 0.232
       objectReference: {fileID: 0}
     - target: {fileID: 7473316474781769828, guid: 1e76d2aad5cac964fa578bce301dd12f,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.38233986
+      value: 0.208
       objectReference: {fileID: 0}
     - target: {fileID: 7473316474781769828, guid: 1e76d2aad5cac964fa578bce301dd12f,
         type: 3}
