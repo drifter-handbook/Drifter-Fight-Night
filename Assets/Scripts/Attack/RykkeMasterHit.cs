@@ -68,6 +68,9 @@ public class RykkeMasterHit : MasterHit
         }
         entities.AddEntity(RykkeTether);
     }
+    public void notify(){
+      Debug.Log("hit something!");
+    }
     public void updatePosition(Vector3 position){
         movement.updatePosition(position);
     }
@@ -139,14 +142,14 @@ public class RykkeMasterHit : MasterHit
         }
         tombstone.GetComponent<RyykeTombstone>().facing=facing;
         tombstone.GetComponent<RyykeTombstone>().chadController=this;
-        activeStone = tombstone; 
+        activeStone = tombstone;
         entities.AddEntity(tombstone);
     }
     public void grantStack(){
     	if(drifter.Charge < 3){
     		drifter.Charge++;
     		anim.SetBool("Empowered",true);
-    	} 
+    	}
 
     }
 
@@ -156,7 +159,7 @@ public class RykkeMasterHit : MasterHit
     		if(drifter.Charge == 0){
     			anim.SetBool("Empowered",false);
     		}
-    	} 
+    	}
     }
 
      public void SpawnChad(int direction){

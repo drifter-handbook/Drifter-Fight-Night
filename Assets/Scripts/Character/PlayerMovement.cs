@@ -35,13 +35,13 @@ public class PlayerMovement : MonoBehaviour
 
     void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();        
-        
+        rb = GetComponent<Rigidbody2D>();
+
 
         drifter = GetComponent<Drifter>();
         animator = drifter.animator;
         sprite = GetComponentInChildren<SpriteRenderer>();
-       
+
         col = GetComponent<BoxCollider2D>();
         status = GetComponent<PlayerStatus>();
     }
@@ -53,9 +53,9 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        
+
         if (!GameController.Instance.IsHost || GameController.Instance.IsPaused)
-        { 
+        {
             return;
         }
 
@@ -105,7 +105,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         if(drifter.input.Guard && canGuard && moving){
-            
+
             drifter.SetAnimatorTrigger("Roll");
 
             if(flipSprite ^ drifter.input.MoveX > 0){
@@ -207,7 +207,7 @@ public class PlayerMovement : MonoBehaviour
             time += Time.fixedDeltaTime;
             if (!animator.GetBool("Grounded") && drifter.input.Jump)
             {
-                //rb.AddForce(Vector2.up * -Physics2D.gravity * varyJumpHeightForce); 
+                //rb.AddForce(Vector2.up * -Physics2D.gravity * varyJumpHeightForce);
                 rb.velocity = Vector2.up * jumpSpeed;
             }
         }
