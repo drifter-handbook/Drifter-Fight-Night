@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TetherCollision : HitboxCollision
 {
+    public GameObject parent;
     INetworkSync playerType;
     RykkeMasterHit masterHit;
 
@@ -17,7 +18,7 @@ public class TetherCollision : HitboxCollision
     {
         capsule = GetComponentInChildren<CapsuleCollider2D>();
         playerType = parent.GetComponent<INetworkSync>();
-        masterHit = parent.GetComponentInChildren<RykkeMasterHit>();
+        masterHit = parent.GetComponent<RykkeMasterHit>();
     }
 
     // Update is called once per frame
@@ -29,7 +30,7 @@ public class TetherCollision : HitboxCollision
     {
         Debug.Log("hi22");
         Vector3 position = collider.transform.position;
-        Debug.Log("hey new position22222" + position);
+        Debug.Log("hey new position" + position);
         masterHit.updatePosition(position);
     }
 
@@ -40,7 +41,7 @@ public class TetherCollision : HitboxCollision
         if (Active && hurtbox != null && AttackType != DrifterAttackType.Null)
         {
             Vector3 position = collider.transform.position;
-            Debug.Log("hey new positiona" + position);
+            Debug.Log("hey new position" + position);
             masterHit.updatePosition(position);
             //string player = playerType.Type;
             //SingleAttackData attackData = GameController.Instance.AllData.GetAttacks(player)[AttackType];
