@@ -5,15 +5,11 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public int numberOfJumps;
+    public int numberOfJumps = 2;
     public float delayedJumpDuration = 0.05f;
     public float walkSpeed = 15f;
-    public float airSpeed = 15f;
     public float jumpSpeed = 32f;
-    public float terminalVelocity = 80f;
     public bool flipSprite = false;
-
-    int currentJumps;
 
     SpriteRenderer sprite;
     public int Facing { get; private set; } = 1;
@@ -62,18 +58,11 @@ public class PlayerMovement : MonoBehaviour
                 transform.localScale.y, transform.localScale.z);
         }
 
-        if (moving && canAct && IsGrounded())
+        if (moving && canAct)
         {
             drifter.SetAnimatorBool("Walking", true);
             rb.velocity = new Vector2(drifter.input.MoveX > 0 ? walkSpeed : -walkSpeed, rb.velocity.y);
         }
-
-        else if (moving && canAct &&  !IsGrounded())
-        {
-            drifter.SetAnimatorBool("Walking", true);
-            rb.velocity = new Vector2(drifter.input.MoveX > 0 ? airSpeed : -airSpeed, rb.velocity.y);
-        }
-
         else if (!moving && status.HasGroundFriction())
         {
             drifter.SetAnimatorBool("Walking", false);
@@ -85,16 +74,8 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 40f * Time.deltaTime), rb.velocity.y);
         }
 
-        if(drifter.input.Guard && canGuard && moving){
-            
-            drifter.SetAnimatorTrigger("Roll");
-            Facing = (flipSprite ^ drifter.input.MoveX > 0) ? 1 : -1;
-        }
-
-        else if (drifter.input.Guard && canGuard)
+        if (drifter.input.Guard && canGuard)
         {
-            Facing = (flipSprite ^ drifter.input.MoveX > 0) ? 1 : -1;
-
             //shift is guard
             if (!animator.GetBool("Guarding"))
             {
@@ -106,23 +87,16 @@ public class PlayerMovement : MonoBehaviour
             drifter.SetAnimatorBool("Guarding", false);
         }
 
-        //Termina velocity
-
-        // if(rb.velocity.y < -terminalVelocity){
-        //     rb.velocity = new Vector2(rb.velocity.x,-terminalVelocity);
-        // }
-
-
         if (jumpPressed && canAct && rb.velocity.y < 0.8f * jumpSpeed)
         {
             //jump
             if (animator.GetBool("Grounded"))
             {
-                currentJumps = numberOfJumps;
+                numberOfJumps = 2;
             }
-            if (currentJumps > 0)
+            if (numberOfJumps > 0)
             {
-                currentJumps--;
+                numberOfJumps--;
                 drifter.SetAnimatorTrigger("Jump");
                 //jump needs a little delay so character animations can spend
                 //a frame of two preparing to jump

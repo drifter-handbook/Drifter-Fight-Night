@@ -8,10 +8,9 @@ public class RykkeMasterHit : MasterHit
     PlayerAttacks attacks;
     float gravityScale;
     PlayerMovement movement;
+    public int awakenStacks = 0;
     public Animator anim;
     public int facing;
-    GameObject activeStone;
-    PlayerStatus status;
 
     void Start()
     {
@@ -19,7 +18,6 @@ public class RykkeMasterHit : MasterHit
         gravityScale = rb.gravityScale;
         attacks = drifter.GetComponent<PlayerAttacks>();
         movement = drifter.GetComponent<PlayerMovement>();
-        status = drifter.GetComponent<PlayerStatus>();
     }
 
     public override void callTheRecovery()
@@ -81,38 +79,6 @@ public class RykkeMasterHit : MasterHit
         rb.gravityScale = gravityScale;
     }
 
-    public void sideGrab()
-    {
-        facing = movement.Facing;
-        Vector3 flip = new Vector3(facing *8f,8f,1f);
-        Vector3 loc = new Vector3(facing *6.5f,0f,0f);
-        GameObject HoldPerson = Instantiate(entities.GetEntityPrefab("HoldPerson"), transform.position + loc, transform.rotation);
-        HoldPerson.transform.localScale = flip;
-        foreach (HitboxCollision hitbox in HoldPerson.GetComponentsInChildren<HitboxCollision>(true))
-        {
-            hitbox.parent = drifter.gameObject;
-            hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
-            hitbox.Active = true;
-        }
-        entities.AddEntity(HoldPerson);
-    }
-
-    public void grabWhiff(){
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.8f);
-    }
-
-    public void dodgeRoll(){
-        facing = movement.Facing;
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
-        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
-        rb.velocity = new Vector2(facing * 40f,0f);
-    }
-
-    public void grabEmpowered(){
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.9f);
-    }
-
     //Down W
 
     public override void callTheDownW()
@@ -134,35 +100,29 @@ public class RykkeMasterHit : MasterHit
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;
         }
-        if(activeStone){
-            activeStone.GetComponent<RyykeTombstone>().Break();
-        }
-        tombstone.GetComponent<RyykeTombstone>().facing=facing;
-        tombstone.GetComponent<RyykeTombstone>().chadController=this;
-        activeStone = tombstone; 
         entities.AddEntity(tombstone);
     }
     public void grantStack(){
-    	if(drifter.Charge < 3){
-    		drifter.Charge++;
+    	if(awakenStacks < 3){
+    		awakenStacks++;
     		anim.SetBool("Empowered",true);
-    	} 
+    	}
 
     }
 
     public void conmsumeStack(){
-    	if(drifter.Charge > 0){
-    		drifter.Charge--;
-    		if(drifter.Charge == 0){
+    	if(awakenStacks > 0){
+    		awakenStacks--;
+    		if(awakenStacks == 0){
     			anim.SetBool("Empowered",false);
     		}
-    	} 
+    	}
     }
 
-     public void SpawnChad(int direction){
-        Vector3 flip = new Vector3(direction *8f,8f,1f);
-        GameObject zombie = Instantiate(entities.GetEntityPrefab("Chadwick"), activeStone.transform.position, activeStone.transform.transform.rotation);
-        zombie.transform.localScale = flip;
+     public void SpawnChad(){
+
+        GameObject zombie = Instantiate(entities.GetEntityPrefab("Chadwick"), transform.position, transform.rotation);
+        zombie.transform.localScale = this.gameObject.transform.localScale;
         foreach (HitboxCollision hitbox in zombie.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
