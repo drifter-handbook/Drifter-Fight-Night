@@ -20,30 +20,27 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 4901012448083866612, guid: 4e660684b7f879c4abf335e7d7bf4a5a,
-        type: 3}
-    - time: 0.083333336
       value: {fileID: 3374160265562282450, guid: 4e660684b7f879c4abf335e7d7bf4a5a,
         type: 3}
-    - time: 0.16666667
+    - time: 0.083333336
       value: {fileID: -827333871441230180, guid: 4e660684b7f879c4abf335e7d7bf4a5a,
         type: 3}
-    - time: 0.25
+    - time: 0.16666667
       value: {fileID: 1538944254559304102, guid: 4e660684b7f879c4abf335e7d7bf4a5a,
         type: 3}
-    - time: 0.33333334
+    - time: 0.25
       value: {fileID: -1852637849725160341, guid: 4e660684b7f879c4abf335e7d7bf4a5a,
         type: 3}
-    - time: 0.41666666
+    - time: 0.33333334
       value: {fileID: -7326808774649166703, guid: 4e660684b7f879c4abf335e7d7bf4a5a,
         type: 3}
-    - time: 0.5
+    - time: 0.41666666
       value: {fileID: -6415792019250520251, guid: 4e660684b7f879c4abf335e7d7bf4a5a,
         type: 3}
-    - time: 0.5833333
+    - time: 0.5
       value: {fileID: 475082506263699335, guid: 4e660684b7f879c4abf335e7d7bf4a5a,
         type: 3}
-    - time: 0.6666667
+    - time: 0.5833333
       value: {fileID: 6651182393088486560, guid: 4e660684b7f879c4abf335e7d7bf4a5a,
         type: 3}
     attribute: m_Sprite
@@ -65,7 +62,6 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 4901012448083866612, guid: 4e660684b7f879c4abf335e7d7bf4a5a, type: 3}
     - {fileID: 3374160265562282450, guid: 4e660684b7f879c4abf335e7d7bf4a5a, type: 3}
     - {fileID: -827333871441230180, guid: 4e660684b7f879c4abf335e7d7bf4a5a, type: 3}
     - {fileID: 1538944254559304102, guid: 4e660684b7f879c4abf335e7d7bf4a5a, type: 3}
@@ -79,7 +75,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.75
+    m_StopTime: 0.6666666
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -99,7 +95,7 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.25
+  - time: 0.16666667
     functionName: spawnChadWrapper
     data: 
     objectReferenceParameter: {fileID: 0}

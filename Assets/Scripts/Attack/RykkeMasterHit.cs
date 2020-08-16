@@ -11,6 +11,7 @@ public class RykkeMasterHit : MasterHit
     public Animator anim;
     public int facing;
     GameObject activeStone;
+    PlayerStatus status;
 
     void Start()
     {
@@ -18,6 +19,7 @@ public class RykkeMasterHit : MasterHit
         gravityScale = rb.gravityScale;
         attacks = drifter.GetComponent<PlayerAttacks>();
         movement = drifter.GetComponent<PlayerMovement>();
+        status = drifter.GetComponent<PlayerStatus>();
     }
 
     public override void callTheRecovery()
@@ -77,6 +79,31 @@ public class RykkeMasterHit : MasterHit
     {
         Debug.Log("Recovery end!");
         rb.gravityScale = gravityScale;
+    }
+
+    public void sideGrab()
+    {
+        facing = movement.Facing;
+        Vector3 flip = new Vector3(facing *8f,8f,1f);
+        Vector3 loc = new Vector3(facing *6.5f,0f,0f);
+        GameObject HoldPerson = Instantiate(entities.GetEntityPrefab("HoldPerson"), transform.position + loc, transform.rotation);
+        HoldPerson.transform.localScale = flip;
+        foreach (HitboxCollision hitbox in HoldPerson.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+        }
+        entities.AddEntity(HoldPerson);
+    }
+
+    public void grabWhiff(){
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.8f);
+    }
+
+    public void grabEmpowered(){
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.9f);
     }
 
     //Down W

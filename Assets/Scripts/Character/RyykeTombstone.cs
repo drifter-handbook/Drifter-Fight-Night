@@ -23,15 +23,6 @@ public class RyykeTombstone : MonoBehaviour
         anim = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-   		if (!grounded)
-        {
-        }
-            //rb.velocity = velocity;
-    }
-
     public IEnumerator Delete()
     {
         yield return new WaitForSeconds(0.8f);
