@@ -25,9 +25,9 @@ public class SwordFrogMasterHit : MasterHit
 
     public void dodgeRoll(){
         facing = movement.Facing;
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
-        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
-        rb.velocity = new Vector2(facing * 40f,0f);
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.5f);
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.2f);
+        rb.velocity = new Vector2(facing * 30f,0f);
     }
 
 

@@ -52,7 +52,7 @@ public class MegurinMasterHit : MasterHit
 
     public void warpRoll(){
         facing = movement.Facing;
-        rb.position += new Vector2(10f* facing,0f);
+        rb.position += new Vector2(6f* facing,0f);
     }
 
     public void spawnStorm(){
