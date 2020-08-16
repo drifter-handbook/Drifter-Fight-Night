@@ -12,8 +12,8 @@ public class PlayerMovement : MonoBehaviour
     public float terminalVelocity = 80f;
     public bool flipSprite = false;
 
-    public float jumpHeight;
-    public float jumpTime;
+    public float jumpHeight = 20f;
+    public float jumpTime = 1f;
     float jumpSpeed;
     int currentJumps;
 
@@ -36,7 +36,7 @@ public class PlayerMovement : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();        
-        jumpSpeed = jumpHeight / jumpTime - .5f*(rb.gravityScale * jumpTime);
+        
 
         drifter = GetComponent<Drifter>();
         animator = drifter.animator;
@@ -45,11 +45,15 @@ public class PlayerMovement : MonoBehaviour
         col = GetComponent<BoxCollider2D>();
         status = GetComponent<PlayerStatus>();
     }
+    void Start(){
+        UnityEngine.Debug.Log(rb.gravityScale);
+        jumpSpeed = (float)(jumpHeight / jumpTime + .5f*(rb.gravityScale * jumpTime));
+        UnityEngine.Debug.Log(jumpSpeed);
+    }
 
     void Update()
     {
-        UnityEngine.Debug.Log(rb.gravityScale);
-        //UnityEngine.Debug.Log(jumpSpeed);
+        
         if (!GameController.Instance.IsHost || GameController.Instance.IsPaused)
         { 
             return;
@@ -61,6 +65,14 @@ public class PlayerMovement : MonoBehaviour
         bool canGuard = !status.HasStunEffect();
         bool moving = drifter.input.MoveX != 0;
         drifter.SetAnimatorBool("Grounded", IsGrounded());
+
+        if(status.HasEnemyStunEffect() && !animator.GetBool("HitStun")){
+            drifter.SetAnimatorBool("HitStun",true);
+        }
+        else if(!status.HasEnemyStunEffect() && animator.GetBool("HitStun"))
+        {
+                drifter.SetAnimatorBool("HitStun",false);
+        }
 
         if (moving && canAct)
         {
@@ -180,7 +192,8 @@ public class PlayerMovement : MonoBehaviour
             time += Time.fixedDeltaTime;
             if (!animator.GetBool("Grounded") && drifter.input.Jump)
             {
-                rb.AddForce(Vector2.up * -Physics2D.gravity * varyJumpHeightForce);
+                //rb.AddForce(Vector2.up * -Physics2D.gravity * varyJumpHeightForce); 
+                rb.velocity = Vector2.up * jumpSpeed;
             }
         }
         varyJumpHeight = null;

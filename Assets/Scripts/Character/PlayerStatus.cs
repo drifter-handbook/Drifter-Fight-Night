@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum PlayerStatusEffect
 {
-    END_LAG, KNOCKBACK, INVULN, ARMOUR, HIT
+    END_LAG, KNOCKBACK, INVULN, ARMOUR, HIT, PLANTED
 }
 
 
@@ -43,7 +43,14 @@ public class PlayerStatus : MonoBehaviour
     }
     public bool HasStunEffect()
     {
-        return HasStatusEffect(PlayerStatusEffect.END_LAG) || HasStatusEffect(PlayerStatusEffect.KNOCKBACK);
+        return HasStatusEffect(PlayerStatusEffect.END_LAG) || HasStatusEffect(PlayerStatusEffect.KNOCKBACK) || HasStatusEffect(PlayerStatusEffect.PLANTED);
+    }
+    public bool HasEnemyStunEffect()
+    {
+        return HasStatusEffect(PlayerStatusEffect.KNOCKBACK) || HasStatusEffect(PlayerStatusEffect.PLANTED);
+    }
+    public bool IsEnemyStunEffect(PlayerStatusEffect ef){
+        return ef == PlayerStatusEffect.KNOCKBACK || ef == PlayerStatusEffect.KNOCKBACK;
     }
     public bool HasGroundFriction()
     {
@@ -61,6 +68,17 @@ public class PlayerStatus : MonoBehaviour
     	if((HasInulvernability() || HasArmour()) && ef ==  PlayerStatusEffect.KNOCKBACK){
     		yield break;
     	}
+
+        //If youre planted, you get unplanted by a hit
+        if(HasStatusEffect(PlayerStatusEffect.PLANTED) && IsEnemyStunEffect(ef))
+        {
+            statusEffects[PlayerStatusEffect.PLANTED] = 0f;
+            if(ef == PlayerStatusEffect.PLANTED)
+            {
+                yield break;
+            }
+        
+        }
 
         if (!statusEffects.ContainsKey(ef))
         {
