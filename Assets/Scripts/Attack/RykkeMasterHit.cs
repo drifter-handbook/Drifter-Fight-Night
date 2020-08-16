@@ -102,6 +102,12 @@ public class RykkeMasterHit : MasterHit
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.8f);
     }
 
+    public void dodgeRoll(){
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
+        rb.velocity = new Vector2(facing *40f,0f);
+    }
+
     public void grabEmpowered(){
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.9f);
     }
