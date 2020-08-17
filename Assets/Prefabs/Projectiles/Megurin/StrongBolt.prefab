@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5579528854871966613}
   - component: {fileID: 1411689636585343869}
+  - component: {fileID: 4154209086107474042}
   m_Layer: 0
   m_Name: Hitbox
   m_TagString: Untagged
@@ -44,6 +45,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 0}
+--- !u!70 &4154209086107474042
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8313529166492313016}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 0.5, y: 1}
+  m_Direction: 1
 --- !u!1 &9138739817692732027
 GameObject:
   m_ObjectHideFlags: 0
