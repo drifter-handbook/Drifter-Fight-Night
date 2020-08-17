@@ -10,6 +10,8 @@ public class RykkeMasterHit : MasterHit
     PlayerMovement movement;
     public Animator anim;
     public int facing;
+    public TetherRange playerRange;
+    public TetherRange ledgeRange;
     GameObject activeStone;
     PlayerStatus status;
 
@@ -32,47 +34,34 @@ public class RykkeMasterHit : MasterHit
         rb.gravityScale = 0f;
         rb.velocity = Vector2.zero;
     }
-    public void RecoveryPreEmpty(){
-      Debug.Log("Recovery preempted!");
-      facing = movement.Facing;
-      // jump upwards and create spear projectile
-      //rb.velocity = new Vector2(rb.velocity.x, 1.5f * movement.jumpSpeed);
-      //rb.gravityScale = gravityScale;
-      Vector3 pos = new Vector3(facing * 4.5f, 7f, 0f);
-      GameObject RykkeBox = Instantiate(entities.GetEntityPrefab("RykkeBox"), transform.position + pos, transform.rotation * (Quaternion.Euler(new Vector3(0, 0, facing * 45))));
-      RykkeBox.transform.localScale = new Vector3(5, 5, 5);
-      foreach (HitboxCollision hitbox in RykkeBox.GetComponentsInChildren<HitboxCollision>(true))
-      {
-          hitbox.parent = drifter.gameObject;
-          hitbox.AttackID = attacks.AttackID;
-          hitbox.AttackType = attacks.AttackType;
-          hitbox.Active = true;
-      }
-      entities.AddEntity(RykkeBox);
-    }
-    public void RecoveryThrowString()
-    {
+
+    public void daisyChain(){
         facing = movement.Facing;
-        // jump upwards and create spear projectile
-        //rb.velocity = new Vector2(rb.velocity.x, 1.5f * movement.jumpSpeed);
-        //rb.gravityScale = gravityScale;
-        Vector3 pos = new Vector3(facing * 4.5f, 7f, 0f);
-        GameObject RykkeTether = Instantiate(entities.GetEntityPrefab("RykkeTether"), transform.position + pos, Quaternion.Euler(new Vector3(0, 0, facing * -45)));
-        RykkeTether.transform.localScale = new Vector3(5, 5, 5);
-        foreach (HitboxCollision hitbox in RykkeTether.GetComponentsInChildren<HitboxCollision>(true))
+        rb. gravityScale = gravityScale;
+        if(playerRange.TetherPoint != Vector3.zero)
         {
-            hitbox.parent = drifter.gameObject;
-            hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
-            hitbox.Active = true;
+            rb.velocity = new Vector2((-rb.position.x + playerRange.TetherPoint.x) *4f + 10 * facing, Mathf.Min((-rb.position.y + playerRange.TetherPoint.y) *4f,55) + 15);
+            attacks.resetRecovery();
+
         }
-        entities.AddEntity(RykkeTether);
+        else if(ledgeRange.TetherPoint != Vector3.zero)
+        {
+            rb.velocity = new Vector2((-rb.position.x + ledgeRange.TetherPoint.x) *4f -10 * facing, Mathf.Min((-rb.position.y + ledgeRange.TetherPoint.y) *4f + 15f,55f) + 20);
+            movement.currentJumps++;
+        }
+        else
+        {
+            UnityEngine.Debug.Log("Uhoh");
+            //draw tether whiff
+        }
+
     }
+
     public void notify(){
       Debug.Log("hit something!");
     }
     public void updatePosition(Vector3 position){
-        movement.updatePosition(position);
+        //movement.updatePosition(position);
     }
     public override void hitTheRecovery(GameObject target)
     {

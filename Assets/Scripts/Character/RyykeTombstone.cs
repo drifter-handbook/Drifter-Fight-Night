@@ -59,9 +59,13 @@ public class RyykeTombstone : MonoBehaviour
         	rb.velocity=Vector2.zero;
         	Break();
         }
-        else if(armed  && col.gameObject != hitboxParent){
-        	anim.SetTrigger("Activate");
-   			StartCoroutine(Delete());
+    }
+
+    void OnTriggerStay2D(Collider2D col)
+    {
+        if(armed){  //&& col.gameObject != hitboxParent){
+            anim.SetTrigger("Activate");
+            StartCoroutine(Delete());
         }
     }
 
