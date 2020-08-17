@@ -11,6 +11,7 @@ public class MegurinMasterHit : MasterHit
     PlayerMovement movement;
     public Animator anim;
     GameObject activeStorm;
+    Vector2 HeldDirection;
 
     int neutralWCharge = 0;
 
@@ -35,9 +36,21 @@ public class MegurinMasterHit : MasterHit
         rb.gravityScale = 0f;
         rb.velocity = Vector2.zero;
     }
+    public void saveDirection(){
+        Vector2 TestDirection = new Vector2(drifter.input.MoveX,drifter.input.MoveY);
+        HeldDirection = TestDirection == Vector2.zero? HeldDirection: TestDirection;
+    }
     public void RecoveryWarp()
     {
-         rb.position += new Vector2(0,20);
+        saveDirection();
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.25f);
+
+        HeldDirection.Normalize();
+
+        rb.position += HeldDirection*20f;
+
+        HeldDirection = Vector2.zero;
+
     }
 
     public void resetGravity(){
