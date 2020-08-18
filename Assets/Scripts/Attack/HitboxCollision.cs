@@ -10,6 +10,8 @@ public class HitboxCollision : MonoBehaviour
     public int AttackID { get; set; }
     public DrifterAttackType AttackType { get; set; }
     public bool Active { get; set; } = false;
+    public SingleAttackData useData;
+    SingleAttackData attackData;
 
     // Start is called before the first frame update
     CapsuleCollider2D capsule;
@@ -31,14 +33,20 @@ public class HitboxCollision : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D collider)
     {
-        //Debug.Log("name " + name + " " + (gameObject.activeSelf || gameObject.activeInHierarchy));
+        Debug.Log("name " + name + " " + (gameObject.activeSelf || gameObject.activeInHierarchy));
         HurtboxCollision hurtbox = collider.GetComponent<HurtboxCollision>();
         if (Active && hurtbox != null && AttackType != DrifterAttackType.Null)
         {
             string player = playerType.Type;
             //Debug.Log("Recovery" + player);
-            SingleAttackData attackData = GameController.Instance.AllData.GetAttacks(player)[AttackType];
-            hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, attackData);
+            if(useData != null){
+                hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, useData);
+            }
+            else{
+                attackData = GameController.Instance.AllData.GetAttacks(player)[AttackType];
+                hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, attackData);
+            }
+            
         }
     }
 }
