@@ -76,13 +76,13 @@ public class RykkeMasterHit : MasterHit
         
         if(playerRange.TetherPoint != Vector3.zero)
         {
-            rb.velocity = new Vector2((-rb.position.x + playerRange.TetherPoint.x) *4f + 10 * facing, Mathf.Min((-rb.position.y + playerRange.TetherPoint.x) *4f,55) + 15);
+            rb.velocity = new Vector2((-rb.position.x + playerRange.TetherPoint.x) *3f + 10 * facing, Mathf.Min((Mathf.Min(-rb.position.y,0) + playerRange.TetherPoint.x) *4f,30) +40);
             attacks.resetRecovery();
 
         }
         else if(ledgeRange.TetherPoint != Vector3.zero)
         {
-            rb.velocity = new Vector2((-rb.position.x + ledgeRange.TetherPoint.x) *4f, Mathf.Min((-rb.position.y + ledgeRange.TetherPoint.y) *4f + 15f,55f) + 20);
+            rb.velocity = new Vector2((-rb.position.x + ledgeRange.TetherPoint.x) *3f, Mathf.Min((-rb.position.y + ledgeRange.TetherPoint.y) *3f,50f) + 30);
             if(movement.currentJumps < movement.numberOfJumps){
                 movement.currentJumps++;
             }
@@ -92,7 +92,7 @@ public class RykkeMasterHit : MasterHit
             UnityEngine.Debug.Log("Uhoh");
             //draw tether whiff
         }
-        rb. gravityScale = gravityScale;
+        //rb. gravityScale = gravityScale;
         playerRange.gameObject.transform.parent.gameObject.SetActive(false);
         
 

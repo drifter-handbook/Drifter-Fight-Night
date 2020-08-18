@@ -32,25 +32,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0.05327708, y: -0.12848428}
   m_Size: {x: 0.75079936, y: 0.464915}
   m_Direction: 1
---- !u!95 &3388097468875207949
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6970235071137278267}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 9b7dab6a02221ca43a922b8b52bddd56, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &4691849568075172470
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -544,12 +525,12 @@ PrefabInstance:
     - target: {fileID: 7978673694419850604, guid: 964fd6376f370e24e956a547953245d3,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 75
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7978673694419850604, guid: 964fd6376f370e24e956a547953245d3,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 95
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 7978673694419850604, guid: 964fd6376f370e24e956a547953245d3,
         type: 3}
@@ -632,9 +613,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3e54db86925b434398b3a8543b8293d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &6970235071137278267 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3109080518957367388, guid: 964fd6376f370e24e956a547953245d3,
-    type: 3}
-  m_PrefabInstance: {fileID: 5448954899244116327}
-  m_PrefabAsset: {fileID: 0}
