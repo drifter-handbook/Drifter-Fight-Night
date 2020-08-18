@@ -63,7 +63,7 @@ public class RyykeTombstone : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D col)
     {
-        if(armed){  //&& col.gameObject != hitboxParent){
+        if(armed && col.gameObject.tag == "Player" && col.gameObject != this.gameObject.transform.parent){  //&& col.gameObject != hitboxParent){
             anim.SetTrigger("Activate");
             StartCoroutine(Delete());
         }
