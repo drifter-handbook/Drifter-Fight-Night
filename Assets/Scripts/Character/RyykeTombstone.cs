@@ -17,7 +17,6 @@ public class RyykeTombstone : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
     	rb = GetComponent<Rigidbody2D>();
     	rb.velocity=velocity;
         anim = GetComponent<Animator>();
@@ -43,17 +42,15 @@ public class RyykeTombstone : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        GameObject hitboxParent = hitbox.parent;
-
         if (col.gameObject.tag == "Ground" && !grounded)
         {
-        	grounded = true;
+        	grounded = true;  
 			anim.SetBool("Grounded",true);
 			grounded = true;
 			rb.velocity=Vector2.zero;
 			StartCoroutine(Arm());
 		}
-        else if(col.gameObject.tag != "Ground"  && col.gameObject != hitboxParent && !grounded){
+        else if(col.gameObject.tag != "Ground"  && col.gameObject != hitbox.parent && !grounded){
         	//anim.SetBool("Grounded",true);
         	grounded = true;
         	rb.velocity=Vector2.zero;
@@ -63,7 +60,7 @@ public class RyykeTombstone : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D col)
     {
-        if(armed && col.gameObject.tag == "Player" && col.gameObject != this.gameObject.transform.parent){  //&& col.gameObject != hitboxParent){
+        if(armed && col.gameObject.tag == "Player" && col.gameObject != hitbox.parent){  //&& col.gameObject != hitboxParent){
             anim.SetTrigger("Activate");
             StartCoroutine(Delete());
         }

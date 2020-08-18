@@ -14,7 +14,7 @@ public class RykkeMasterHit : MasterHit
     public TetherRange ledgeRange;
     GameObject activeStone;
     PlayerStatus status;
-
+    
     void Start()
     {
         rb = drifter.GetComponent<Rigidbody2D>();
@@ -22,6 +22,8 @@ public class RykkeMasterHit : MasterHit
         attacks = drifter.GetComponent<PlayerAttacks>();
         movement = drifter.GetComponent<PlayerMovement>();
         status = drifter.GetComponent<PlayerStatus>();
+        TetherArm = playerRange.gameObject.transform.parent.gameObject.transform.GetChild(2).gameObject;
+
     }
 
     public override void callTheRecovery()
@@ -33,9 +35,12 @@ public class RykkeMasterHit : MasterHit
         // pause in air
         rb.gravityScale = 0f;
         rb.velocity = Vector2.zero;
+        playerRange.gameObject.transform.parent.gameObject.SetActive(true);
+        
     }
 
     public void daisyChain(){
+
         facing = movement.Facing;
         rb. gravityScale = gravityScale;
         if(playerRange.TetherPoint != Vector3.zero)
@@ -46,7 +51,7 @@ public class RykkeMasterHit : MasterHit
         }
         else if(ledgeRange.TetherPoint != Vector3.zero)
         {
-            rb.velocity = new Vector2((-rb.position.x + ledgeRange.TetherPoint.x) *4f -10 * facing, Mathf.Min((-rb.position.y + ledgeRange.TetherPoint.y) *4f + 15f,55f) + 20);
+            rb.velocity = new Vector2((-rb.position.x + ledgeRange.TetherPoint.x) *4f, Mathf.Min((-rb.position.y + ledgeRange.TetherPoint.y) *4f + 15f,55f) + 20);
             movement.currentJumps++;
         }
         else
@@ -54,6 +59,9 @@ public class RykkeMasterHit : MasterHit
             UnityEngine.Debug.Log("Uhoh");
             //draw tether whiff
         }
+        
+        playerRange.gameObject.transform.parent.gameObject.SetActive(false);
+        
 
     }
 
@@ -116,7 +124,7 @@ public class RykkeMasterHit : MasterHit
       facing = movement.Facing;
       rb.velocity = new Vector2(0,10);
       Vector3 flip = new Vector3(facing *8f,8f,1f);
-      Vector3 loc = new Vector3(facing *1f,.5f,0f);
+      Vector3 loc = new Vector3(facing *1f,.8f,0f);
       GameObject tombstone = Instantiate(entities.GetEntityPrefab("RyykeTombstone"), transform.position + loc, transform.rotation);
       tombstone.transform.localScale = flip;
         foreach (HitboxCollision hitbox in tombstone.GetComponentsInChildren<HitboxCollision>(true))
