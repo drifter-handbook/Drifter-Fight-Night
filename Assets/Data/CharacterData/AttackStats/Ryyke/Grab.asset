@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AttackDamage: 0
   Knockback: 0
-  KnockbackScale: 1
+  KnockbackScale: 0
   HitStun: 0.5
-  EndLag: 0.45
-  AngleOfImpact: 0
-  StatusEffects: []
+  EndLag: 0.5
+  AngleOfImpact: -90
+  StatusEffect: 4
+  StatusDuration: 0.1
