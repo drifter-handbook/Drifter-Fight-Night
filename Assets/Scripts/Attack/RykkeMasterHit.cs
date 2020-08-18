@@ -38,28 +38,61 @@ public class RykkeMasterHit : MasterHit
         
     }
 
+    public void throwHands(){
+        facing = movement.Facing;
+        GameObject arms = Instantiate(entities.GetEntityPrefab("LongArmOfTheLaw"), transform.position + new Vector3(facing * 2,5,0), transform.rotation);
+                foreach (HitboxCollision hitbox in arms.GetComponentsInChildren<HitboxCollision>(true))
+                {
+                    hitbox.parent = drifter.gameObject;
+                    hitbox.AttackID = attacks.AttackID;
+                    hitbox.AttackType = attacks.AttackType;
+                    hitbox.Active = true;
+        }
+        float length = 15f;
+
+         if(playerRange.TetherPoint != Vector3.zero)
+        {
+            arms.transform.rotation = Quaternion.Euler(0,0, (Mathf.Atan2(arms.transform.position.x -playerRange.TetherPoint.x,-arms.transform.position.y+playerRange.TetherPoint.y)*180 / Mathf.PI));
+            length = Vector2.Distance(playerRange.TetherPoint,arms.transform.position);
+
+        }
+        else if(ledgeRange.TetherPoint != Vector3.zero)
+        {
+            arms.transform.rotation = Quaternion.Euler(0,0, (Mathf.Atan2(arms.transform.position.x -ledgeRange.TetherPoint.x,-arms.transform.position.y+ledgeRange.TetherPoint.y)*180 / Mathf.PI));
+            length = Vector2.Distance(ledgeRange.TetherPoint,arms.transform.position);
+        }
+        else
+        {
+            arms.transform.rotation = Quaternion.Euler(0,0,45 * -facing);
+        }
+        arms.transform.localScale = new Vector3(13,length/1.3f,1);
+
+        entities.AddEntity(arms);
+    }
+
     public void daisyChain()
     {
-
         facing = movement.Facing;
-        rb. gravityScale = gravityScale;
+        
         if(playerRange.TetherPoint != Vector3.zero)
         {
-            rb.velocity = new Vector2((-rb.position.x + playerRange.TetherPoint.x) *4f + 10 * facing, Mathf.Min((-rb.position.y + playerRange.TetherPoint.y) *4f,55) + 15);
+            rb.velocity = new Vector2((-rb.position.x + playerRange.TetherPoint.x) *4f + 10 * facing, Mathf.Min((-rb.position.y + playerRange.TetherPoint.x) *4f,55) + 15);
             attacks.resetRecovery();
 
         }
         else if(ledgeRange.TetherPoint != Vector3.zero)
         {
             rb.velocity = new Vector2((-rb.position.x + ledgeRange.TetherPoint.x) *4f, Mathf.Min((-rb.position.y + ledgeRange.TetherPoint.y) *4f + 15f,55f) + 20);
-            movement.currentJumps++;
+            if(movement.currentJumps < movement.numberOfJumps){
+                movement.currentJumps++;
+            }
         }
         else
         {
             UnityEngine.Debug.Log("Uhoh");
             //draw tether whiff
         }
-        
+        rb. gravityScale = gravityScale;
         playerRange.gameObject.transform.parent.gameObject.SetActive(false);
         
 

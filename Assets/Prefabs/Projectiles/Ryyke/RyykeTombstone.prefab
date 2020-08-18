@@ -9,7 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5925143568598280236}
-  m_Layer: 0
+  - component: {fileID: 7131854588931423868}
+  - component: {fileID: 8589309602999247432}
+  m_Layer: 9
   m_Name: HitBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30,6 +32,35 @@ Transform:
   m_Father: {fileID: 8200214832015112783}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!70 &7131854588931423868
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3397459691127300606}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.08852053, y: 0.160671}
+  m_Size: {x: 0.23443842, y: 0.29085398}
+  m_Direction: 0
+--- !u!114 &8589309602999247432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3397459691127300606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parent: {fileID: 6296654603608758130}
 --- !u!1 &6296654603608758130
 GameObject:
   m_ObjectHideFlags: 0
@@ -41,13 +72,11 @@ GameObject:
   - component: {fileID: 8200214832015112783}
   - component: {fileID: 5253896854285998856}
   - component: {fileID: 2930510012141252089}
-  - component: {fileID: 3281882100956926153}
   - component: {fileID: 6370346574022861836}
   - component: {fileID: 2025754852541153630}
-  - component: {fileID: 3957239284893128445}
   m_Layer: 0
   m_Name: RyykeTombstone
-  m_TagString: Ledge
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -107,19 +136,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &3281882100956926153
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6296654603608758130}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parent: {fileID: 0}
 --- !u!114 &6370346574022861836
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,10 +148,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 716dfe0e59174d642afa9c605171679a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitbox: {fileID: 3281882100956926153}
-  velocity: {x: 0, y: -50}
   chadController: {fileID: 0}
   facing: 0
+  grounded: 0
 --- !u!212 &2025754852541153630
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -187,19 +202,3 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!70 &3957239284893128445
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6296654603608758130}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.094188094, y: 0.16792637}
-  m_Size: {x: 0.22234368, y: 0.28755105}
-  m_Direction: 0
