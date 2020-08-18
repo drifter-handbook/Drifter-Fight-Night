@@ -71,8 +71,8 @@ public class PlayerAttacks : MonoBehaviour
         bool grabPressed = !drifter.prevInput.Grab && drifter.input.Grab;
         bool canAct = !status.HasStunEffect() && !animator.GetBool("Guarding");
 
-        if(animator.GetBool("Grounded") && !status.HasStatusEffect(PlayerStatusEffect.END_LAG) || status.HasEnemyStunEffect()){
-            currentRecoveries = maxRecoveries;
+        if((animator.GetBool("Grounded") && !status.HasStatusEffect(PlayerStatusEffect.END_LAG)) || status.HasEnemyStunEffect()){
+            resetRecovery();
         }
 
         if (grabPressed && canAct)
@@ -112,6 +112,10 @@ public class PlayerAttacks : MonoBehaviour
                 StartAttack(DrifterAttackType.Aerial_Q_Neutral);
             }
         }
+    }
+
+    public void resetRecovery(){
+        currentRecoveries = maxRecoveries;
     }
 
     void StartAttack(DrifterAttackType attackType)

@@ -2,14 +2,17 @@ using UnityEngine;
 
 public class HopUp : MonoBehaviour
 {
-    void OnCollisionEnter2D(Collision2D other)
+    void OnTriggerEnter2D(Collider2D col)
     {
-        if (other.gameObject.tag == "Player")
+        if (col.gameObject.tag == "Player")
         {
-            other.transform.position = new Vector3(transform.position.x,
-                transform.position.y + 8.0f, 1);
+        	UnityEngine.Debug.Log("CORNER HIT");
 
-            other.rigidbody.velocity = Vector3.zero;
+        	col.gameObject.GetComponent<PlayerMovement>().currentJumps++;
+            // other.transform.position = new Vector3(transform.position.x,
+            //     transform.position.y + 8.0f, 1);
+
+            // other.rigidbody.velocity = Vector3.zero;
         }
     }
 }

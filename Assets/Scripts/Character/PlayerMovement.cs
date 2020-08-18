@@ -14,8 +14,9 @@ public class PlayerMovement : MonoBehaviour
 
     public float jumpHeight = 20f;
     public float jumpTime = 1f;
+
+    public int currentJumps;
     float jumpSpeed;
-    int currentJumps;
 
     SpriteRenderer sprite;
     public int Facing { get; private set; } = 1;
@@ -46,9 +47,7 @@ public class PlayerMovement : MonoBehaviour
         status = GetComponent<PlayerStatus>();
     }
     void Start(){
-        UnityEngine.Debug.Log(rb.gravityScale);
         jumpSpeed = (float)(jumpHeight / jumpTime + .5f*(rb.gravityScale * jumpTime));
-        UnityEngine.Debug.Log(jumpSpeed);
     }
 
     void Update()
@@ -64,6 +63,17 @@ public class PlayerMovement : MonoBehaviour
         bool canAct = !status.HasStunEffect() && !animator.GetBool("Guarding");
         bool canGuard = !status.HasStunEffect();
         bool moving = drifter.input.MoveX != 0;
+        
+        //Handle jump resets
+        if(animator.GetBool("Grounded"))
+        {
+                currentJumps = numberOfJumps;
+                if(!IsGrounded())
+                {
+                    currentJumps--;
+                }
+            
+        }
         drifter.SetAnimatorBool("Grounded", IsGrounded());
 
         if(status.HasEnemyStunEffect() && !animator.GetBool("HitStun")){
@@ -73,12 +83,6 @@ public class PlayerMovement : MonoBehaviour
         {
                 drifter.SetAnimatorBool("HitStun",false);
         }
-
-        if (animator.GetBool("Grounded"))
-        {
-            currentJumps = numberOfJumps;
-        }
-
         if (moving && canAct)
         {
             Facing = (flipSprite ^ drifter.input.MoveX > 0) ? 1 : -1;

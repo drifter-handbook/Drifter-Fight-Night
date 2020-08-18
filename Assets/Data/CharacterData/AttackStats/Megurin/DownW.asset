@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 193b57c47c6e0024ebee715bea3d6f17, type: 3}
   m_Name: DownW
   m_EditorClassIdentifier: 
-  AttackDamage: 1.25
+  AttackDamage: 2
   Knockback: 0
   KnockbackScale: 0
   HitStun: 0
   EndLag: 0.65
-  AngleOfImpact: 0
-  StatusEffect: 0
-  StatusDuration: 0.5
+  AngleOfImpact: 45
+  StatusEffect: 4
+  StatusDuration: 0.1

@@ -10,6 +10,8 @@ public class RykkeMasterHit : MasterHit
     PlayerMovement movement;
     public Animator anim;
     public int facing;
+    public TetherRange playerRange;
+    public TetherRange ledgeRange;
     GameObject activeStone;
     PlayerStatus status;
 
@@ -20,6 +22,7 @@ public class RykkeMasterHit : MasterHit
         attacks = drifter.GetComponent<PlayerAttacks>();
         movement = drifter.GetComponent<PlayerMovement>();
         status = drifter.GetComponent<PlayerStatus>();
+
     }
 
     public override void callTheRecovery()
@@ -31,48 +34,76 @@ public class RykkeMasterHit : MasterHit
         // pause in air
         rb.gravityScale = 0f;
         rb.velocity = Vector2.zero;
+        playerRange.gameObject.transform.parent.gameObject.SetActive(true);
+        
     }
-    public void RecoveryPreEmpty(){
-      Debug.Log("Recovery preempted!");
-      facing = movement.Facing;
-      // jump upwards and create spear projectile
-      //rb.velocity = new Vector2(rb.velocity.x, 1.5f * movement.jumpSpeed);
-      //rb.gravityScale = gravityScale;
-      Vector3 pos = new Vector3(facing * 4.5f, 7f, 0f);
-      GameObject RykkeBox = Instantiate(entities.GetEntityPrefab("RykkeBox"), transform.position + pos, transform.rotation * (Quaternion.Euler(new Vector3(0, 0, facing * 45))));
-      RykkeBox.transform.localScale = new Vector3(5, 5, 5);
-      foreach (HitboxCollision hitbox in RykkeBox.GetComponentsInChildren<HitboxCollision>(true))
-      {
-          hitbox.parent = drifter.gameObject;
-          hitbox.AttackID = attacks.AttackID;
-          hitbox.AttackType = attacks.AttackType;
-          hitbox.Active = true;
-      }
-      entities.AddEntity(RykkeBox);
+
+    public void throwHands(){
+        facing = movement.Facing;
+        GameObject arms = Instantiate(entities.GetEntityPrefab("LongArmOfTheLaw"), transform.position + new Vector3(facing * 2,5,0), transform.rotation);
+                foreach (HitboxCollision hitbox in arms.GetComponentsInChildren<HitboxCollision>(true))
+                {
+                    hitbox.parent = drifter.gameObject;
+                    hitbox.AttackID = attacks.AttackID;
+                    hitbox.AttackType = attacks.AttackType;
+                    hitbox.Active = true;
+        }
+        float length = 15f;
+
+         if(playerRange.TetherPoint != Vector3.zero)
+        {
+            arms.transform.rotation = Quaternion.Euler(0,0, (Mathf.Atan2(arms.transform.position.x -playerRange.TetherPoint.x,-arms.transform.position.y+playerRange.TetherPoint.y)*180 / Mathf.PI));
+            length = Vector2.Distance(playerRange.TetherPoint,arms.transform.position);
+
+        }
+        else if(ledgeRange.TetherPoint != Vector3.zero)
+        {
+            arms.transform.rotation = Quaternion.Euler(0,0, (Mathf.Atan2(arms.transform.position.x -ledgeRange.TetherPoint.x,-arms.transform.position.y+ledgeRange.TetherPoint.y)*180 / Mathf.PI));
+            length = Vector2.Distance(ledgeRange.TetherPoint,arms.transform.position);
+        }
+        else
+        {
+            arms.transform.rotation = Quaternion.Euler(0,0,45 * -facing);
+        }
+        arms.transform.localScale = new Vector3(13,length/1.3f,1);
+
+        entities.AddEntity(arms);
     }
-    public void RecoveryThrowString()
+
+    public void daisyChain()
     {
         facing = movement.Facing;
-        // jump upwards and create spear projectile
-        //rb.velocity = new Vector2(rb.velocity.x, 1.5f * movement.jumpSpeed);
-        //rb.gravityScale = gravityScale;
-        Vector3 pos = new Vector3(facing * 4.5f, 7f, 0f);
-        GameObject RykkeTether = Instantiate(entities.GetEntityPrefab("RykkeTether"), transform.position + pos, Quaternion.Euler(new Vector3(0, 0, facing * -45)));
-        RykkeTether.transform.localScale = new Vector3(5, 5, 5);
-        foreach (HitboxCollision hitbox in RykkeTether.GetComponentsInChildren<HitboxCollision>(true))
+        
+        if(playerRange.TetherPoint != Vector3.zero)
         {
-            hitbox.parent = drifter.gameObject;
-            hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
-            hitbox.Active = true;
+            rb.velocity = new Vector2((-rb.position.x + playerRange.TetherPoint.x) *3f + 10 * facing, Mathf.Min((Mathf.Min(-rb.position.y,0) + playerRange.TetherPoint.x) *4f,30) +40);
+            attacks.resetRecovery();
+
         }
-        entities.AddEntity(RykkeTether);
+        else if(ledgeRange.TetherPoint != Vector3.zero)
+        {
+            rb.velocity = new Vector2((-rb.position.x + ledgeRange.TetherPoint.x) *3f, Mathf.Min((-rb.position.y + ledgeRange.TetherPoint.y) *3f,50f) + 30);
+            if(movement.currentJumps < movement.numberOfJumps){
+                movement.currentJumps++;
+            }
+        }
+        else
+        {
+            UnityEngine.Debug.Log("Uhoh");
+            //draw tether whiff
+        }
+        //rb. gravityScale = gravityScale;
+        playerRange.gameObject.transform.parent.gameObject.SetActive(false);
+        
+
     }
-    public void notify(){
+
+    public void notify()
+    {
       Debug.Log("hit something!");
     }
     public void updatePosition(Vector3 position){
-        movement.updatePosition(position);
+        //movement.updatePosition(position);
     }
     public override void hitTheRecovery(GameObject target)
     {
@@ -98,14 +129,17 @@ public class RykkeMasterHit : MasterHit
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;
         }
+        HoldPerson.GetComponentInChildren<RyykeGrab>().animator = anim;
         entities.AddEntity(HoldPerson);
     }
 
-    public void grabWhiff(){
+    public void grabWhiff()
+    {
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.8f);
     }
 
-    public void dodgeRoll(){
+    public void dodgeRoll()
+    {
         facing = movement.Facing;
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
@@ -123,11 +157,12 @@ public class RykkeMasterHit : MasterHit
         Debug.Log("DOWN W START");
     }
 
-    public void dropStone(){
+    public void dropStone()
+    {
       facing = movement.Facing;
       rb.velocity = new Vector2(0,10);
       Vector3 flip = new Vector3(facing *8f,8f,1f);
-      Vector3 loc = new Vector3(facing *1f,.5f,0f);
+      Vector3 loc = new Vector3(facing *1f,.8f,0f);
       GameObject tombstone = Instantiate(entities.GetEntityPrefab("RyykeTombstone"), transform.position + loc, transform.rotation);
       tombstone.transform.localScale = flip;
         foreach (HitboxCollision hitbox in tombstone.GetComponentsInChildren<HitboxCollision>(true))
@@ -145,7 +180,8 @@ public class RykkeMasterHit : MasterHit
         activeStone = tombstone;
         entities.AddEntity(tombstone);
     }
-    public void grantStack(){
+    public void grantStack()
+    {
     	if(drifter.Charge < 3){
     		drifter.Charge++;
     		anim.SetBool("Empowered",true);
@@ -153,7 +189,8 @@ public class RykkeMasterHit : MasterHit
 
     }
 
-    public void conmsumeStack(){
+    public void conmsumeStack()
+    {
     	if(drifter.Charge > 0){
     		drifter.Charge--;
     		if(drifter.Charge == 0){

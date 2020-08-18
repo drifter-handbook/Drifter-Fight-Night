@@ -37,6 +37,9 @@ public class PlayerHurtboxHandler : MonoBehaviour
             hitbox.parent.GetComponent<PlayerAttacks>().Hit(attackType, attackID, hurtbox.parent);
             GetComponent<PlayerStatus>().ApplyStatusEffect(PlayerStatusEffect.HIT,.1f);
             // apply damage, ignored if invuln
+
+            GetComponent<PlayerStatus>().ApplyStatusEffect(attackData.StatusEffect,attackData.StatusDuration);
+
             Drifter drifter = GetComponent<Drifter>();
             if (drifter != null && !GetComponent<PlayerStatus>().HasInulvernability())
             {
@@ -82,9 +85,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             }
             Entities.AddEntity(hitSparks);
 
-            if(attackData.StatusEffect != null){
-                GetComponent<PlayerStatus>().ApplyStatusEffect(attackData.StatusEffect,attackData.StatusDuration);
-            }
+            
         }
     }
 
