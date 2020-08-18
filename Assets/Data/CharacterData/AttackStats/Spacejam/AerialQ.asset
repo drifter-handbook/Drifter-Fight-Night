@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: AerialQ
   m_EditorClassIdentifier: 
   AttackDamage: 9
-  Knockback: 20
-  KnockbackScale: 1
-  HitStun: 0.6
-  EndLag: 0.4
+  Knockback: 25
+  KnockbackScale: 0.43
+  HitStun: 0.2
+  EndLag: 0.35
   AngleOfImpact: 45
-  StatusEffects: []
+  StatusEffect: 0
+  StatusDuration: 0.5
