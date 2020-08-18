@@ -14,7 +14,7 @@ public class RykkeMasterHit : MasterHit
     public TetherRange ledgeRange;
     GameObject activeStone;
     PlayerStatus status;
-    
+
     void Start()
     {
         rb = drifter.GetComponent<Rigidbody2D>();
@@ -22,7 +22,6 @@ public class RykkeMasterHit : MasterHit
         attacks = drifter.GetComponent<PlayerAttacks>();
         movement = drifter.GetComponent<PlayerMovement>();
         status = drifter.GetComponent<PlayerStatus>();
-        TetherArm = playerRange.gameObject.transform.parent.gameObject.transform.GetChild(2).gameObject;
 
     }
 
@@ -39,7 +38,8 @@ public class RykkeMasterHit : MasterHit
         
     }
 
-    public void daisyChain(){
+    public void daisyChain()
+    {
 
         facing = movement.Facing;
         rb. gravityScale = gravityScale;
@@ -65,7 +65,8 @@ public class RykkeMasterHit : MasterHit
 
     }
 
-    public void notify(){
+    public void notify()
+    {
       Debug.Log("hit something!");
     }
     public void updatePosition(Vector3 position){
@@ -95,14 +96,17 @@ public class RykkeMasterHit : MasterHit
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;
         }
+        HoldPerson.GetComponentInChildren<RyykeGrab>().animator = anim;
         entities.AddEntity(HoldPerson);
     }
 
-    public void grabWhiff(){
+    public void grabWhiff()
+    {
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.8f);
     }
 
-    public void dodgeRoll(){
+    public void dodgeRoll()
+    {
         facing = movement.Facing;
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
@@ -120,7 +124,8 @@ public class RykkeMasterHit : MasterHit
         Debug.Log("DOWN W START");
     }
 
-    public void dropStone(){
+    public void dropStone()
+    {
       facing = movement.Facing;
       rb.velocity = new Vector2(0,10);
       Vector3 flip = new Vector3(facing *8f,8f,1f);
@@ -142,7 +147,8 @@ public class RykkeMasterHit : MasterHit
         activeStone = tombstone;
         entities.AddEntity(tombstone);
     }
-    public void grantStack(){
+    public void grantStack()
+    {
     	if(drifter.Charge < 3){
     		drifter.Charge++;
     		anim.SetBool("Empowered",true);
@@ -150,7 +156,8 @@ public class RykkeMasterHit : MasterHit
 
     }
 
-    public void conmsumeStack(){
+    public void conmsumeStack()
+    {
     	if(drifter.Charge > 0){
     		drifter.Charge--;
     		if(drifter.Charge == 0){
