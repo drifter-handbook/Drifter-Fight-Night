@@ -1,7 +1,43 @@
 fileFormatVersion: 2
 guid: 350fdcce1134fe14495ea84f1a5fb151
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -8221939310143219130
+    second: LongArmOfTheLaw_0
+  - first:
+      213: 408994184466959388
+    second: LongArmOfTheLaw_1
+  - first:
+      213: -7488358864037644163
+    second: LongArmOfTheLaw_2
+  - first:
+      213: 2171655838137237223
+    second: LongArmOfTheLaw_3
+  - first:
+      213: -6091582235814434839
+    second: LongArmOfTheLaw_4
+  - first:
+      213: 7588064328811289517
+    second: LongArmOfTheLaw_0
+  - first:
+      213: 2516213585158737629
+    second: LongArmOfTheLaw_1
+  - first:
+      213: 1830143993917069499
+    second: LongArmOfTheLaw_2
+  - first:
+      213: 3403017781915365035
+    second: LongArmOfTheLaw_3
+  - first:
+      213: 3942469026908646541
+    second: LongArmOfTheLaw_4
+  - first:
+      213: -5070519589410692674
+    second: LongArmOfTheLaw_5
+  - first:
+      213: 4721537262880231818
+    second: LongArmOfTheLaw_6
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -40,11 +76,11 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 7
-  spritePivot: {x: 0.5, y: 0.5}
+  spritePivot: {x: 0.5, y: 0}
   spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
@@ -85,7 +121,154 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: LongArmOfTheLaw_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 16
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dab1c93cd483e4960800000000000000
+      internalID: 7588064328811289517
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LongArmOfTheLaw_1
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 0
+        width: 16
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dde066a9ce26be220800000000000000
+      internalID: 2516213585158737629
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LongArmOfTheLaw_2
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 16
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bb8dd35144af56910800000000000000
+      internalID: 1830143993917069499
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LongArmOfTheLaw_3
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 0
+        width: 16
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bae276784a2f93f20800000000000000
+      internalID: 3403017781915365035
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LongArmOfTheLaw_4
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 16
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d8caede11b676b630800000000000000
+      internalID: 3942469026908646541
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LongArmOfTheLaw_5
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 0
+        width: 16
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eb124865c45e1a9b0800000000000000
+      internalID: -5070519589410692674
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LongArmOfTheLaw_6
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 16
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a811fb3ff15468140800000000000000
+      internalID: 4721537262880231818
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
