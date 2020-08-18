@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: NeutralQ
   m_EditorClassIdentifier: 
   AttackDamage: 3
-  Knockback: 10
-  KnockbackScale: 0
+  Knockback: 7
+  KnockbackScale: 0.46
   HitStun: 0.2
-  EndLag: 0.4
+  EndLag: 0.2
   AngleOfImpact: 15
-  StatusEffects: []
+  StatusEffect: 0
+  StatusDuration: 0.5

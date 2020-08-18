@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Recovery
   m_EditorClassIdentifier: 
   AttackDamage: 18
-  Knockback: 20
-  KnockbackScale: 1
+  Knockback: 50
+  KnockbackScale: 0.18
   HitStun: 0.1
   EndLag: 1
   AngleOfImpact: 10
-  StatusEffects: []
+  StatusEffect: 0
+  StatusDuration: 0.5
