@@ -39,6 +39,11 @@ public class NeroMasterHit : MasterHit
         rb.velocity = new Vector2(facing * 30f,0f);
     }
 
+    public void grabDash(){
+        facing = movement.Facing;
+        rb.velocity = new Vector2(facing * 35f,0f);
+    }
+
     public void RecoveryThrowSpear()
     {
         // jump upwards and create spear projectile
