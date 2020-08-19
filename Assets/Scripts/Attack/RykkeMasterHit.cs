@@ -76,7 +76,7 @@ public class RykkeMasterHit : MasterHit
         
         if(playerRange.TetherPoint != Vector3.zero)
         {
-            rb.velocity = new Vector2((-rb.position.x + playerRange.TetherPoint.x) *3f + 10 * facing, Mathf.Min((Mathf.Min(-rb.position.y,0) + playerRange.TetherPoint.x) *4f,30) +30);
+            rb.velocity = new Vector2((-rb.position.x + playerRange.TetherPoint.x) *3f + 10 * facing, Mathf.Max(Mathf.Min((Mathf.Min(-rb.position.y,0) + playerRange.TetherPoint.x) *4f,20),0) +40);
             attacks.resetRecovery();
 
         }
@@ -94,6 +94,7 @@ public class RykkeMasterHit : MasterHit
         }
         //rb. gravityScale = gravityScale;
         playerRange.gameObject.transform.parent.gameObject.SetActive(false);
+        rb.gravityScale = gravityScale;
         
 
     }
