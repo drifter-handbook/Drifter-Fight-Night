@@ -36,6 +36,8 @@ public class Drifter : MonoBehaviour
     public float DamageTaken = 0f;
     public int Charge = 0;
 
+    public float BlockReduction = .5f;
+
     public PlayerInputData input { get; set; } = new PlayerInputData();
     public PlayerInputData prevInput = new PlayerInputData();
     

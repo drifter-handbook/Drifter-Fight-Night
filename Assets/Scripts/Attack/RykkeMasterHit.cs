@@ -76,8 +76,13 @@ public class RykkeMasterHit : MasterHit
         
         if(playerRange.TetherPoint != Vector3.zero)
         {
-            rb.velocity = new Vector2((-rb.position.x + playerRange.TetherPoint.x) *3f + 10 * facing, Mathf.Max(Mathf.Min((Mathf.Min(-rb.position.y,0) + playerRange.TetherPoint.x) *4f,20),0) +40);
-            attacks.resetRecovery();
+            // rb.velocity = new Vector2((-rb.position.x + playerRange.TetherPoint.x) *3f + 10 * facing, Mathf.Max(Mathf.Min((Mathf.Min(-rb.position.y,0) + playerRange.TetherPoint.x) *4f,20),0) +40);
+            // attacks.resetRecovery();
+            rb.position = new Vector3(playerRange.TetherPoint.x - 3* facing,playerRange.TetherPoint.y -3,0);
+            rb.velocity = new Vector3(facing*35, 45,0);
+            if(movement.currentJumps < movement.numberOfJumps){
+                movement.currentJumps++;
+            }
 
         }
         else if(ledgeRange.TetherPoint != Vector3.zero)
@@ -186,6 +191,7 @@ public class RykkeMasterHit : MasterHit
     	if(drifter.Charge < 3){
     		drifter.Charge++;
     		anim.SetBool("Empowered",true);
+            drifter.BlockReduction = .75f;
     	}
 
     }
@@ -196,6 +202,7 @@ public class RykkeMasterHit : MasterHit
     		drifter.Charge--;
     		if(drifter.Charge == 0){
     			anim.SetBool("Empowered",false);
+                drifter.BlockReduction = .25f;
     		}
     	}
     }
