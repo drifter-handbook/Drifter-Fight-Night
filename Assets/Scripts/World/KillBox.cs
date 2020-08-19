@@ -29,10 +29,25 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
         Entities.AddEntity(deathExplosion.gameObject);
     }
 
-    void Respawn(Collider2D other)
+    void CreateHalo()
     {
+        GameObject halo = Instantiate(
+            Entities.GetEntityPrefab("HaloPlatform"),
+            new Vector2(5, 23),
+            Quaternion.identity
+        );
+        halo.transform.localScale = new Vector2(.2f,.2f);
+        Entities.AddEntity(halo.gameObject);
+    }
+
+
+    IEnumerator Respawn(Collider2D other)
+    {
+        yield return new WaitForSeconds(2f);
+        CreateHalo();
         other.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        other.transform.position = new Vector2(0, 25);
+        other.transform.position = new Vector2(5, 23);
+        yield break;
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -45,10 +60,13 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
 
             drifter.Stocks--;
             drifter.DamageTaken = 0f;
+            drifter.Charge = 0;
+            drifter.GetComponent<PlayerStatus>().ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,2f);
+            drifter.GetComponent<PlayerStatus>().ApplyStatusEffect(PlayerStatusEffect.INVULN,3.5f);
 
             if (Entities.hasStocks(other.gameObject))
             {
-                Respawn(other);
+                 StartCoroutine(Respawn(other));
             }
             else
             {
