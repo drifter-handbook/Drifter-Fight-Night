@@ -35,12 +35,15 @@ public class HitboxCollision : MonoBehaviour
     {
         Debug.Log("name " + name + " " + (gameObject.activeSelf || gameObject.activeInHierarchy));
         HurtboxCollision hurtbox = collider.GetComponent<HurtboxCollision>();
-        if (Active && hurtbox != null && AttackType != DrifterAttackType.Null)
+        UnityEngine.Debug.Log( Active + " " + hurtbox + "" +AttackType);
+    
+        if (hurtbox != null && AttackType != DrifterAttackType.Null)
         {
             string player = playerType.Type;
             //Debug.Log("Recovery" + player);
             if(useData != null){
                 hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID*2, AttackType, useData);
+                Active = false;
             }
             else{
                 attackData = GameController.Instance.AllData.GetAttacks(player)[AttackType];
