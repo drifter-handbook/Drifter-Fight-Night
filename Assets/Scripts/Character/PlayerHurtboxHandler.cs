@@ -43,7 +43,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             Drifter drifter = GetComponent<Drifter>();
             if (drifter != null && !GetComponent<PlayerStatus>().HasInulvernability())
             {
-                drifter.DamageTaken += attackData.AttackDamage * (drifter.animator.GetBool("Guarding") ? 0.35f : 1f);
+                drifter.DamageTaken += attackData.AttackDamage * (drifter.animator.GetBool("Guarding") ? 1 - drifter.BlockReduction : 1f);
             }
             // apply knockback
             float facingDir = Mathf.Sign(hurtbox.parent.transform.position.x - hitbox.parent.transform.position.x);
@@ -53,13 +53,12 @@ public class PlayerHurtboxHandler : MonoBehaviour
             // how much damage matters to knockback
             const float ARMOR = 180f;
             float damageMultiplier = drifter != null ? (drifter.DamageTaken + ARMOR) / ARMOR : 1f;
-            Animator anim = GetComponent<Animator>();
-            if (anim != null && anim.GetBool("Guarding"))
+            if (drifter.animator.GetBool("Guarding"))
             {
                 damageMultiplier = 0f;
             }
             //Ignore knockback if invincible or armoured
-            if(!GetComponent<PlayerStatus>().HasInulvernability() && !GetComponent<PlayerStatus>().HasArmour()){
+            if(!GetComponent<PlayerStatus>().HasInulvernability() && !GetComponent<PlayerStatus>().HasArmour() && !drifter.animator.GetBool("Guarding")){
                     GetComponent<Rigidbody2D>().velocity = forceDir.normalized * (float)((drifter.DamageTaken / 10 + drifter.DamageTaken * attackData.AttackDamage / 20)
                                                                 * 200 / (drifter.drifterData.Weight + 100) * 1.4 * attackData.KnockbackScale + attackData.Knockback);
             }
