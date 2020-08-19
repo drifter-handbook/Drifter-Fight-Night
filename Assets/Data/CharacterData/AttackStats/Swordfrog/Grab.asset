@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Grab
   m_EditorClassIdentifier: 
   AttackDamage: 8
-  Knockback: 10
-  KnockbackScale: 1
+  Knockback: 30
+  KnockbackScale: 0.27
   HitStun: 0.1
   EndLag: 0.1
   AngleOfImpact: 90
-  StatusEffects: []
+  StatusEffect: 4
+  StatusDuration: 0.1
