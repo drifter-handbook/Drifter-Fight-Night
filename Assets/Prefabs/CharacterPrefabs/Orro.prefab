@@ -465,8 +465,8 @@ MonoBehaviour:
   numberOfJumps: 3
   delayedJumpDuration: 0.05
   walkSpeed: 23
-  acceleration: 4
-  airAcceleration: 2
+  groundAccelerationTime: 0.5
+  airAccelerationTime: 0.8
   airSpeed: 21
   terminalVelocity: 37
   flipSprite: 0
