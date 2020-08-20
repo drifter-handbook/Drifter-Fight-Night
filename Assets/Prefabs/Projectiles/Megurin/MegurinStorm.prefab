@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8107631278868043983}
   - component: {fileID: 3445964621854734439}
   - component: {fileID: 5866893930373629177}
+  - component: {fileID: -2781551909887999974}
   m_Layer: 0
   m_Name: MegurinStorm
   m_TagString: Untagged
@@ -117,6 +118,20 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-2781551909887999974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4855802820966953319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c74245efead93d14b9dc6cf2dbed6e98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  latency: 0.025
+  Name: MegurinStorm
 --- !u!1 &7978536591016880782
 GameObject:
   m_ObjectHideFlags: 0
@@ -163,7 +178,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 4855802820966953319}
   useData: {fileID: 11400000, guid: c0ec5ef07a9557e45909bf03d962e437, type: 2}
-  multihit: 1
 --- !u!61 &2371087433748199821
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -73,6 +73,7 @@ GameObject:
   - component: {fileID: 4735279360979347947}
   - component: {fileID: 1965035828278553725}
   - component: {fileID: 1862222812462308525}
+  - component: {fileID: 3291233107140168223}
   - component: {fileID: 947675487907408473}
   m_Layer: 0
   m_Name: StrongBolt
@@ -160,6 +161,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   duration: 1
+--- !u!114 &3291233107140168223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9138739817692732027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c74245efead93d14b9dc6cf2dbed6e98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  latency: 0.025
+  Name: StrongBolt
 --- !u!95 &947675487907408473
 Animator:
   serializedVersion: 3

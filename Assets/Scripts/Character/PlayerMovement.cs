@@ -85,9 +85,7 @@ public class PlayerMovement : MonoBehaviour
         }
         if (moving && canAct)
         {
-            Facing = (flipSprite ^ drifter.input.MoveX > 0) ? 1 : -1;
-            transform.localScale = new Vector3(Facing * Mathf.Abs(transform.localScale.x),
-                transform.localScale.y, transform.localScale.z);
+            updateFacing();
         }
 
         if (moving && canAct && IsGrounded())
@@ -116,15 +114,7 @@ public class PlayerMovement : MonoBehaviour
         if(drifter.input.Guard && canGuard && moving){
 
             drifter.SetAnimatorTrigger("Roll");
-
-            if(flipSprite ^ drifter.input.MoveX > 0){
-                Facing = 1;
-            }
-            else if(flipSprite ^ drifter.input.MoveX < 0){
-                Facing = -1;
-            }
-            transform.localScale = new Vector3(Facing * Mathf.Abs(transform.localScale.x),
-                transform.localScale.y, transform.localScale.z);
+            updateFacing();
         } 
 
         else if (drifter.input.Guard && canGuard)
@@ -134,14 +124,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 drifter.SetAnimatorBool("Guarding", true);
             }
-            if(flipSprite ^ drifter.input.MoveX > 0){
-                Facing = 1;
-            }
-            else if(flipSprite ^ drifter.input.MoveX < 0){
-                Facing = -1;
-            }
-            transform.localScale = new Vector3(Facing * Mathf.Abs(transform.localScale.x),
-                transform.localScale.y, transform.localScale.z);
+            updateFacing();
 
         }
         else
@@ -169,6 +152,19 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
+
+    public void updateFacing()
+    {
+        if(flipSprite ^ drifter.input.MoveX > 0){
+                Facing = 1;
+            }
+            else if(flipSprite ^ drifter.input.MoveX < 0){
+                Facing = -1;
+            }
+            transform.localScale = new Vector3(Facing * Mathf.Abs(transform.localScale.x),
+                transform.localScale.y, transform.localScale.z);
+    }
+
     public void updatePosition (Vector3 position){
       transform.position = position;
     }

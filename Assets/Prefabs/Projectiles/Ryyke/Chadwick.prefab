@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3628333383354559633}
   - component: {fileID: 2755764134449405988}
   - component: {fileID: 738416053196779739}
+  - component: {fileID: 5781921974023538366}
   m_Layer: 0
   m_Name: Chadwick
   m_TagString: Untagged
@@ -138,6 +139,20 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &5781921974023538366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 716693809758128051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c74245efead93d14b9dc6cf2dbed6e98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  latency: 0.025
+  Name: Chadwick
 --- !u!1 &6862372050114451943
 GameObject:
   m_ObjectHideFlags: 0

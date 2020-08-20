@@ -36,16 +36,26 @@ public class NetworkEntityConverter : Newtonsoft.Json.Converters.CustomCreationC
             case "Spacejam":
             case "Ryyke":
             case "Orro":
+            case "Megurin":
             case "Swordfrog":
                 return new PlayerSync.PlayerData();
             case "Box":
                 return new BoxSync.BoxData();
             case "NeroSpear":
                 return new NeroSpearSync.SpearData();
-            case "RyykeTombstone":
-                return new RyykeTombstoneSync.StoneData();
             case "SpacejamBell":
                 return new SpacejamBellSync.BellData();
+            case "Chadwick":
+            case "HoldPerson":
+            case "LongArmOfTheLaw":
+            case "WeakBolt":
+            case "StrongBolt":
+            case "MegurinStorm":
+                return new BasicProjectileSync.ProjectileData();
+            case "RyykeTombstone":
+                return new RyykeTombstoneSync.TombstoneData();
+            // case "OrroSideW":
+            //     return new OrroSideWSync.FireballData();        
             case "HitSparks":
                 return new HitSparksSync.HitSparksData();
             case "DeathExplosion":

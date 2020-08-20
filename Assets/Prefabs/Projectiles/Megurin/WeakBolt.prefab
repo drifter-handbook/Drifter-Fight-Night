@@ -73,6 +73,7 @@ GameObject:
   - component: {fileID: 5986211025625688025}
   - component: {fileID: 9011981906150626752}
   - component: {fileID: 217929249847182089}
+  - component: {fileID: -3292213856121794042}
   - component: {fileID: 848811147486797678}
   m_Layer: 0
   m_Name: WeakBolt
@@ -160,6 +161,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   duration: 0.7
+--- !u!114 &-3292213856121794042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6652007317158084390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c74245efead93d14b9dc6cf2dbed6e98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  latency: 0.025
+  Name: WeakBolt
 --- !u!95 &848811147486797678
 Animator:
   serializedVersion: 3

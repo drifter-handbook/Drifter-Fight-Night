@@ -24,6 +24,10 @@ public class BeanWrangler : MonoBehaviour
         yield break;
     }
 
+    public void attackIdHandler(){
+            
+    }
+
     // Update is called once per frame
     void Update()
     {

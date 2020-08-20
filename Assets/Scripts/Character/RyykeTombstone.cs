@@ -9,12 +9,13 @@ public class RyykeTombstone : MonoBehaviour
     Animator anim;
     public int facing;
     bool armed = false;
-
+    GameObject Ryyke;
     public bool grounded = false;
 
     // Start is called before the first frame update
     void Start()
     {
+        Ryyke = chadController.gameObject.transform.parent.gameObject;
     	rb = GetComponent<Rigidbody2D>();
     	rb.velocity = new Vector2(0f,-50f);
         anim = GetComponent<Animator>();
@@ -31,6 +32,14 @@ public class RyykeTombstone : MonoBehaviour
         StartCoroutine(Delete());
     }
 
+    void Update()
+    {
+        if (grounded)
+        {
+            rb.velocity = Vector2.zero;
+        }
+    }
+
  	IEnumerator Arm()
     {
         yield return new WaitForSeconds(1.5f);
@@ -38,37 +47,38 @@ public class RyykeTombstone : MonoBehaviour
         yield break;
     }
 
+
     void OnTriggerEnter2D(Collider2D col)
-    {
+    {  
+
+        if (col.gameObject.tag == "Ground")
+        {
+            grounded = true;  
+            
+            anim.SetBool("Grounded",true);
+            rb.velocity=Vector2.zero;
+            StartCoroutine(Arm());
+            return;
+        }
 
         UnityEngine.Debug.Log(col.gameObject.name);
-
-        if (col.gameObject.tag == "Ground" && !grounded)
-        {
-        	grounded = true;  
-            
-			anim.SetBool("Grounded",true);
-			rb.velocity=Vector2.zero;
-			StartCoroutine(Arm());
-		}
-
-        else if(col.gameObject.name != chadController.gameObject.transform.parent.gameObject.name && !armed){
-        	//anim.SetBool("Grounded",true);
-        	grounded = true;
+        if(!armed && col.gameObject != Ryyke && col.gameObject != Ryyke.GetComponentInChildren<HurtboxCollision>().gameObject){
             anim.SetBool("Grounded",false);
-        	rb.velocity=Vector2.zero;
-        	Break();
+            rb.velocity=Vector2.zero;
+            Break();
         }
     }
 
     void OnTriggerStay2D(Collider2D col)
     {
-        if(armed && col.gameObject.name != chadController.gameObject.transform.parent.gameObject.name && col.gameObject.tag == "Player") //&& col.gameObject != hitbox.parent)
+        //UnityEngine.Debug.Log("ACTIVATE: " + col.gameObject.name);
+
+        if(armed && col.gameObject != Ryyke && col.gameObject.tag == "Player") //&& col.gameObject != hitbox.parent)
         {
             anim.SetTrigger("Activate");
             StartCoroutine(Delete());
         }
-    }
+    }  
 
     public void spawnChadWrapper(){
         chadController.SpawnChad(facing);

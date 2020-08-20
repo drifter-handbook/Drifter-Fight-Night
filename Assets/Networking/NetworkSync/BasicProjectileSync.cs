@@ -1,12 +1,12 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RyykeTombstoneSync : MonoBehaviour, INetworkSync
+public class BasicProjectileSync : MonoBehaviour, INetworkSync
 {
     public bool Active { get; private set; }
     public float latency = 0.025f;
-    public string Name = "RyykeTombstone";
+    public string Name = "SpaceJamBell";
     float time = 0f;
     Vector3 oldPos;
     Vector3 targetPos;
@@ -39,7 +39,7 @@ public class RyykeTombstoneSync : MonoBehaviour, INetworkSync
         transform.position = Vector3.Lerp(oldPos, targetPos, t);
     }
 
-    public class TombstoneData : INetworkEntityData
+    public class ProjectileData : INetworkEntityData
     {
         public string Type { get; set; } = "";
         public int ID { get; set; }
@@ -51,7 +51,7 @@ public class RyykeTombstoneSync : MonoBehaviour, INetworkSync
 
     public void Deserialize(INetworkEntityData data)
     {
-        TombstoneData projData = data as TombstoneData;
+        ProjectileData projData = data as ProjectileData;
         if (projData != null)
         {
             if (!Active)
@@ -68,7 +68,7 @@ public class RyykeTombstoneSync : MonoBehaviour, INetworkSync
 
     public INetworkEntityData Serialize()
     {
-        TombstoneData data = new TombstoneData()
+        ProjectileData data = new ProjectileData()
         {
             name = gameObject.name,
             ID = ID,

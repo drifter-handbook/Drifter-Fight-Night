@@ -33,7 +33,7 @@ public class HitboxCollision : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D collider)
     {
-        Debug.Log("name " + name + " " + (gameObject.activeSelf || gameObject.activeInHierarchy));
+        //Debug.Log("name " + name + " " + (gameObject.activeSelf || gameObject.activeInHierarchy));
         HurtboxCollision hurtbox = collider.GetComponent<HurtboxCollision>();
     
         if (hurtbox != null && AttackType != DrifterAttackType.Null)
