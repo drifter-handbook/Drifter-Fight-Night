@@ -26,9 +26,8 @@ public class OrroSideWProjectile : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {
-
-        if(col.gameObject.tag == "Reflector"){
-            rb.velocity =  rb.velocity * -1.5f;
+         if(col.gameObject.name == "Reflector"){
+            rb.velocity =  rb.velocity * -2.5f;
         }
         else if(col.gameObject.name == "Hurtboxes" && !empowered)
         {

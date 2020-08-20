@@ -10,6 +10,7 @@ public class FadeProjectile : MonoBehaviour
     void Start()
     {
         StartCoroutine(Fade(duration));
+        rb = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
@@ -20,9 +21,10 @@ public class FadeProjectile : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {
+        UnityEngine.Debug.Log(col.gameObject.name);
 
-        if(col.gameObject.tag == "Reflector"){
-            rb.velocity =  rb.velocity * -1.5f;
+        if(col.gameObject.name == "Reflector"){
+            rb.velocity =  rb.velocity * -2.5f;
         }
         else if(col.gameObject.name == "Hurtboxes")
         {
