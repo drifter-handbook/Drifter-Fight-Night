@@ -35,11 +35,12 @@ public class PlayerHurtboxHandler : MonoBehaviour
             oldAttacks[attackID] = Time.time;
             // apply hit effects
             hitbox.parent.GetComponent<PlayerAttacks>().Hit(attackType, attackID, hurtbox.parent);
-            GetComponent<PlayerStatus>().ApplyStatusEffect(PlayerStatusEffect.HIT,.1f);
-            // apply damage, ignored if invuln
 
+            GetComponent<PlayerStatus>().ApplyStatusEffect(PlayerStatusEffect.HIT,.1f);
+            
             GetComponent<PlayerStatus>().ApplyStatusEffect(attackData.StatusEffect,attackData.StatusDuration);
 
+            // apply damage, ignored if invuln
             Drifter drifter = GetComponent<Drifter>();
             if (drifter != null && !GetComponent<PlayerStatus>().HasInulvernability())
             {
@@ -57,14 +58,17 @@ public class PlayerHurtboxHandler : MonoBehaviour
             {
                 damageMultiplier = 0f;
             }
+            float stunMultiplier = Mathf.Lerp(1f, damageMultiplier, 0.5f);
             //Ignore knockback if invincible or armoured
             if(!GetComponent<PlayerStatus>().HasInulvernability() && !GetComponent<PlayerStatus>().HasArmour() && !drifter.animator.GetBool("Guarding")){
                     GetComponent<Rigidbody2D>().velocity = forceDir.normalized * (float)((drifter.DamageTaken / 10 + drifter.DamageTaken * attackData.AttackDamage / 20)
                                                                 * 200 / (drifter.drifterData.Weight + 100) * 1.4 * attackData.KnockbackScale + attackData.Knockback);
+                    // stun player
+                    if(attackData.HitStun>=0){
+                        GetComponent<PlayerStatus>()?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, stunMultiplier * attackData.HitStun);
+                    }
             }
-            // stun player
-            float stunMultiplier = Mathf.Lerp(1f, damageMultiplier, 0.5f);
-            GetComponent<PlayerStatus>()?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, stunMultiplier * attackData.HitStun);
+            
             DamageSuperArmor(stunMultiplier * attackData.HitStun);
             // create hit sparks
             GameObject hitSparks = Instantiate(Entities.GetEntityPrefab("HitSparks"),

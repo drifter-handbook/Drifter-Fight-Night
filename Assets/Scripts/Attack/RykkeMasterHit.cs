@@ -15,6 +15,8 @@ public class RykkeMasterHit : MasterHit
     GameObject activeStone;
     PlayerStatus status;
 
+    
+
     void Start()
     {
         rb = drifter.GetComponent<Rigidbody2D>();
@@ -70,10 +72,6 @@ public class RykkeMasterHit : MasterHit
         entities.AddEntity(arms);
     }
 
-    public void AmrourUp(){
-        status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.5f);
-    }
-
     public void daisyChain()
     {
         facing = movement.Facing;
@@ -104,10 +102,24 @@ public class RykkeMasterHit : MasterHit
         //rb. gravityScale = gravityScale;
         playerRange.gameObject.transform.parent.gameObject.SetActive(false);
         rb.gravityScale = gravityScale;
-        
-
     }
 
+
+    public void AmrourUp(){
+        status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.5f);
+    }
+
+    public void resetGravity(){
+        rb.gravityScale = gravityScale;
+    }
+
+    public void pauseGravity(){
+        rb.gravityScale = 0f;
+        rb.velocity = Vector2.zero;
+    }
+
+
+    
     public void notify()
     {
       Debug.Log("hit something!");
@@ -121,8 +133,7 @@ public class RykkeMasterHit : MasterHit
     }
     public override void cancelTheRecovery()
     {
-        Debug.Log("Recovery end!");
-        rb.gravityScale = gravityScale;
+        resetGravity();
     }
 
     public void sideGrab()
@@ -158,15 +169,10 @@ public class RykkeMasterHit : MasterHit
 
     public void grabEmpowered(){
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.9f);
+        pauseGravity();
     }
 
     //Down W
-
-    public override void callTheDownW()
-    {
-        Debug.Log("DOWN W START");
-    }
-
     public void dropStone()
     {
       facing = movement.Facing;

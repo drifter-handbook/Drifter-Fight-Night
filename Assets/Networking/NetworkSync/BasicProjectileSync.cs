@@ -9,6 +9,7 @@ public class BasicProjectileSync : MonoBehaviour, INetworkSync
     public string Name = "SpaceJamBell";
     float time = 0f;
     Vector3 oldPos;
+    Vector3 oldScale;
     Vector3 targetPos;
 
     public string Type { get; private set; }
@@ -37,6 +38,7 @@ public class BasicProjectileSync : MonoBehaviour, INetworkSync
             t = time / latency;
         }
         transform.position = Vector3.Lerp(oldPos, targetPos, t);
+        transform.localScale = oldScale;
     }
 
     public class ProjectileData : INetworkEntityData
@@ -47,6 +49,8 @@ public class BasicProjectileSync : MonoBehaviour, INetworkSync
         public float x = 0f;
         public float y = 0f;
         public float z = 0f;
+        public float xScale = 1f;
+        public float yScale = 1f;
     }
 
     public void Deserialize(INetworkEntityData data)
@@ -62,6 +66,7 @@ public class BasicProjectileSync : MonoBehaviour, INetworkSync
             // move from current position to final position in latency seconds
             time = 0f;
             oldPos = transform.position;
+            oldScale = new Vector3(projData.xScale,projData.yScale,1);
             targetPos = new Vector3(projData.x, projData.y, projData.z);
         }
     }
@@ -75,6 +80,8 @@ public class BasicProjectileSync : MonoBehaviour, INetworkSync
             x = transform.position.x,
             y = transform.position.y,
             z = transform.position.z,
+            xScale = transform.localScale.x,
+            yScale = transform.localScale.y,
         };
         return data;
     }

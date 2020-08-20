@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum PlayerStatusEffect
 {
-    END_LAG, KNOCKBACK, INVULN, ARMOUR, HIT, PLANTED
+    END_LAG, KNOCKBACK, INVULN, ARMOUR, HIT, PLANTED, GRAPPLED
 }
 
 
@@ -43,11 +43,11 @@ public class PlayerStatus : MonoBehaviour
     }
     public bool HasStunEffect()
     {
-        return HasStatusEffect(PlayerStatusEffect.END_LAG) || HasStatusEffect(PlayerStatusEffect.KNOCKBACK) || HasStatusEffect(PlayerStatusEffect.PLANTED);
+        return HasStatusEffect(PlayerStatusEffect.END_LAG) || HasStatusEffect(PlayerStatusEffect.KNOCKBACK) || HasStatusEffect(PlayerStatusEffect.PLANTED) || HasStatusEffect(PlayerStatusEffect.GRAPPLED);
     }
     public bool HasEnemyStunEffect()
     {
-        return HasStatusEffect(PlayerStatusEffect.KNOCKBACK) || HasStatusEffect(PlayerStatusEffect.PLANTED);
+        return HasStatusEffect(PlayerStatusEffect.KNOCKBACK) || HasStatusEffect(PlayerStatusEffect.PLANTED)|| HasStatusEffect(PlayerStatusEffect.GRAPPLED);
     }
     public bool IsEnemyStunEffect(PlayerStatusEffect ef){
         return (ef == PlayerStatusEffect.KNOCKBACK) || (ef == PlayerStatusEffect.PLANTED);
@@ -70,9 +70,10 @@ public class PlayerStatus : MonoBehaviour
     	}
 
         //If youre planted, you get unplanted by a hit
-        if(HasStatusEffect(PlayerStatusEffect.PLANTED) && IsEnemyStunEffect(ef))
+        if(HasStatusEffect(PlayerStatusEffect.PLANTED) && IsEnemyStunEffect(ef) && duration != 0f)
         {
             statusEffects[PlayerStatusEffect.PLANTED] = 0f;
+            statusEffects[PlayerStatusEffect.GRAPPLED] = 0f;
             if(ef == PlayerStatusEffect.PLANTED)
             {
                 yield break;
