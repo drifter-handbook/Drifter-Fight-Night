@@ -448,7 +448,7 @@ MonoBehaviour:
   Stocks: 0
   DamageTaken: 0
   Charge: 0
-  BlockReduction: 0.5
+  BlockReduction: 0.25
   myColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &3106753082241659641
 MonoBehaviour:
@@ -465,6 +465,8 @@ MonoBehaviour:
   numberOfJumps: 3
   delayedJumpDuration: 0.05
   walkSpeed: 23
+  acceleration: 4
+  airAcceleration: 2
   airSpeed: 21
   terminalVelocity: 37
   flipSprite: 0

@@ -8,6 +8,8 @@ public class PlayerMovement : MonoBehaviour
     public int numberOfJumps;
     public float delayedJumpDuration = 0.05f;
     public float walkSpeed = 15f;
+    public float acceleration = 4f;
+    public float airAcceleration = 2f;
     public float airSpeed = 15f;
     public float terminalVelocity = 80f;
     public bool flipSprite = false;
@@ -81,23 +83,35 @@ public class PlayerMovement : MonoBehaviour
         }
         else if(!status.HasEnemyStunEffect() && animator.GetBool("HitStun"))
         {
-                drifter.SetAnimatorBool("HitStun",false);
+            drifter.SetAnimatorBool("HitStun",false);
         }
+
         if (moving && canAct)
         {
-            updateFacing();
-        }
+        	UnityEngine.Debug.Log("BEFORE velocity: " + rb.velocity.x);
+        	updateFacing();
 
-        if (moving && canAct && IsGrounded())
-        {
             drifter.SetAnimatorBool("Walking", true);
-            rb.velocity = new Vector2(drifter.input.MoveX > 0 ? walkSpeed : -walkSpeed, rb.velocity.y);
-        }
 
-        else if (moving && canAct &&  !IsGrounded())
-        {
-            drifter.SetAnimatorBool("Walking", true);
-            rb.velocity = new Vector2(drifter.input.MoveX > 0 ? airSpeed : -airSpeed, rb.velocity.y);
+            if(Mathf.Abs(rb.velocity.x + drifter.input.MoveX * acceleration) > walkSpeed &&  IsGrounded())
+            {
+            	//UnityEngine.Debug.Log("Ground Accell");
+            	rb.velocity = new Vector2(drifter.input.MoveX > 0 ? walkSpeed : -walkSpeed, rb.velocity.y);
+            }
+            else if(Mathf.Abs(rb.velocity.x + drifter.input.MoveX * acceleration) > airSpeed && !IsGrounded())
+            {
+            	//UnityEngine.Debug.Log("AIR Accell");
+            	rb.velocity = new Vector2(drifter.input.MoveX > 0 ? airSpeed : -airSpeed, rb.velocity.y);
+            }
+            else if(IsGrounded())
+            {
+            	//UnityEngine.Debug.Log("MAINTAIN");
+            	rb.velocity += new Vector2(drifter.input.MoveX > 0 ? acceleration : -acceleration, 0f);
+            }
+            else{
+            	rb.velocity += new Vector2(drifter.input.MoveX > 0 ? airAcceleration : -airAcceleration, 0f);
+            }
+            UnityEngine.Debug.Log("AFTER velocity: " + rb.velocity.x);
         }
 
         else if (!moving && status.HasGroundFriction())
@@ -141,6 +155,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (jumpPressed && canAct) //&& rb.velocity.y < 0.8f * jumpSpeed)
         {
+        	UnityEngine.Debug.Log("JUMP");
             //jump
             if (currentJumps > 0)
             {
@@ -209,7 +224,7 @@ public class PlayerMovement : MonoBehaviour
             if (!animator.GetBool("Grounded") && drifter.input.Jump)
             {
                 //rb.AddForce(Vector2.up * -Physics2D.gravity * varyJumpHeightForce);
-                rb.velocity = Vector2.up * jumpSpeed;
+                rb.velocity = new Vector2(rb.velocity.x, jumpSpeed);
             }
         }
         varyJumpHeight = null;
