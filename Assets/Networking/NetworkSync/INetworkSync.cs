@@ -51,11 +51,14 @@ public class NetworkEntityConverter : Newtonsoft.Json.Converters.CustomCreationC
             case "WeakBolt":
             case "StrongBolt":
             case "MegurinStorm":
+            case "Halo":
                 return new BasicProjectileSync.ProjectileData();
+            case "ChromaticOrb":
+                return new ChromaticOrbSync.ChromaticData();
             case "RyykeTombstone":
                 return new RyykeTombstoneSync.TombstoneData();
-            // case "OrroSideW":
-            //     return new OrroSideWSync.FireballData();        
+            case "OrroSideW":
+                return new OrroSideWSync.FireBallData();        
             case "HitSparks":
                 return new HitSparksSync.HitSparksData();
             case "DeathExplosion":

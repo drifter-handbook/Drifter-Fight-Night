@@ -76,6 +76,7 @@ GameObject:
   - component: {fileID: 2670959806005188801}
   - component: {fileID: 7054926142136883962}
   - component: {fileID: 8284505570922499199}
+  - component: {fileID: 1523897577318721866}
   m_Layer: 0
   m_Name: OrroSideW
   m_TagString: Untagged
@@ -180,10 +181,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9044a411b8ebaf41a17b30bde353e72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  duration: 4
+  duration: 5
   facing: 0
   anim: {fileID: 2670959806005188801}
   rb: {fileID: 8284505570922499199}
+  empowered: 0
 --- !u!50 &8284505570922499199
 Rigidbody2D:
   serializedVersion: 4
@@ -205,6 +207,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 6
+--- !u!114 &1523897577318721866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5902266580795054831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26c7b50ab0f247e48a5126d70fe6df10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  latency: 0.025
 --- !u!1 &8637832393931384079
 GameObject:
   m_ObjectHideFlags: 0
@@ -266,4 +281,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 5902266580795054831}
-  useData: {fileID: 0}
+  useData: {fileID: 11400000, guid: a3c2800dbdb72f7439e2c572b520b15a, type: 2}

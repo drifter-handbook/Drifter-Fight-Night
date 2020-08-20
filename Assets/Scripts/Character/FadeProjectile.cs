@@ -6,9 +6,10 @@ public class FadeProjectile : MonoBehaviour
 {
     // Start is called before the first frame update
     public float duration;
+    Rigidbody2D rb;
     void Start()
     {
-        StartCoroutine(Fade());
+        StartCoroutine(Fade(duration));
     }
 
     // Update is called once per frame
@@ -17,9 +18,22 @@ public class FadeProjectile : MonoBehaviour
 
     }
 
-    IEnumerator Fade()
+    void OnTriggerEnter2D(Collider2D col)
     {
-        yield return new WaitForSeconds(duration);
+
+        if(col.gameObject.tag == "Reflector"){
+            rb.velocity =  rb.velocity * -1.5f;
+        }
+        else if(col.gameObject.name == "Hurtboxes")
+        {
+            StartCoroutine(Fade(.1f));
+        }
+
+    }
+
+    IEnumerator Fade(float time)
+    {
+        yield return new WaitForSeconds(time);
         Destroy(gameObject);
         yield break;
     }
