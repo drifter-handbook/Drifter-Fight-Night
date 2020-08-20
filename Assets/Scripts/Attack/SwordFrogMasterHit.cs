@@ -59,17 +59,16 @@ public class SwordFrogMasterHit : MasterHit
         }
         if(status.HasHit()){
             anim.SetBool("Empowered",true);
-            status.ApplyStatusEffect(PlayerStatusEffect.INVULN,0f);
         }
 
     }
     public void hitCounter(){
         anim.SetBool("Empowered",false);
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.5f);
+        status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0.3f);
         
     }
     public void whiffCounter(){
-        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,0f);
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,1.05f);
     }
 

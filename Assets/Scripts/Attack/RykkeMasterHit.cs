@@ -70,6 +70,10 @@ public class RykkeMasterHit : MasterHit
         entities.AddEntity(arms);
     }
 
+    public void AmrourUp(){
+        status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.5f);
+    }
+
     public void daisyChain()
     {
         facing = movement.Facing;
