@@ -28,10 +28,10 @@ public class BasicProjectileSync : MonoBehaviour, INetworkSync
     // Update is called once per frame
     void Update()
     {
-        if (!Active)
-        {
-            return;
-        }
+        // if (!Active)
+        // {
+        //     return;
+        // }
         // lerp
         time = Mathf.MoveTowards(time, latency, Time.deltaTime);
         float t = 0;
@@ -63,10 +63,10 @@ public class BasicProjectileSync : MonoBehaviour, INetworkSync
         ProjectileData projData = data as ProjectileData;
         if (projData != null)
         {
-            if (!Active)
-            {
+            // if (!Active)
+            // {
                 transform.position = new Vector3(projData.x, projData.y, projData.z);
-            }
+            //}
             Active = true;
             // move from current position to final position in latency seconds
             time = 0f;
