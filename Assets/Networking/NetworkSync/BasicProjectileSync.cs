@@ -28,10 +28,10 @@ public class BasicProjectileSync : MonoBehaviour, INetworkSync
     // Update is called once per frame
     void Update()
     {
-        // if (!Active)
-        // {
-        //     return;
-        // }
+        if (!Active)
+        {
+            return;
+        }
         // lerp
         time = Mathf.MoveTowards(time, latency, Time.deltaTime);
         float t = 0;
@@ -63,15 +63,16 @@ public class BasicProjectileSync : MonoBehaviour, INetworkSync
         ProjectileData projData = data as ProjectileData;
         if (projData != null)
         {
-            // if (!Active)
-            // {
+            if (!Active)
+            {
                 transform.position = new Vector3(projData.x, projData.y, projData.z);
-            //}
+                transform.localScale =  new Vector3(projData.x, projData.y, projData.z);
+            }
             Active = true;
             // move from current position to final position in latency seconds
             time = 0f;
-            oldPos = transform.position;
-            oldScale = new Vector3(projData.xScale,projData.yScale,1);
+            oldPos = gameObject.transform.position;
+            oldScale = gameObject.transform.localScale;
             targetPos = new Vector3(projData.x, projData.y, projData.z);
             targetAngle = oldAngle + Mathf.DeltaAngle(oldAngle, projData.angle);
         }
@@ -86,9 +87,9 @@ public class BasicProjectileSync : MonoBehaviour, INetworkSync
             x = transform.position.x,
             y = transform.position.y,
             z = transform.position.z,
-            xScale = transform.localScale.x,
-            yScale = transform.localScale.y,
-            angle = transform.eulerAngles.z
+            xScale = gameObject.transform.localScale.x,
+            yScale = gameObject.transform.localScale.y,
+            angle = gameObject.transform.eulerAngles.z
         };
         return data;
     }
