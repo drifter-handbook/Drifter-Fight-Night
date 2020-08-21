@@ -51,7 +51,7 @@ public class NetworkEntityConverter : Newtonsoft.Json.Converters.CustomCreationC
             case "WeakBolt":
             case "StrongBolt":
             case "MegurinStorm":
-            case "Halo":
+            case "HaloPlatform":
                 return new BasicProjectileSync.ProjectileData();
             case "ChromaticOrb":
                 return new ChromaticOrbSync.ChromaticData();
