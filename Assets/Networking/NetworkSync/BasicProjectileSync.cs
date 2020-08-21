@@ -55,7 +55,6 @@ public class BasicProjectileSync : MonoBehaviour, INetworkSync
         public float z = 0f;
         public float xScale = 1f;
         public float yScale = 1f;
-        public string animState = "falling";
         public float angle = 0f;
     }
 
