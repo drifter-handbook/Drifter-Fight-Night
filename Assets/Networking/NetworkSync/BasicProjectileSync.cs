@@ -11,6 +11,8 @@ public class BasicProjectileSync : MonoBehaviour, INetworkSync
     Vector3 oldPos;
     Vector3 oldScale;
     Vector3 targetPos;
+    float oldAngle;
+    float targetAngle;
 
     public string Type { get; private set; }
     public int ID { get; set; } = NetworkEntityList.NextID;
@@ -39,6 +41,8 @@ public class BasicProjectileSync : MonoBehaviour, INetworkSync
         }
         transform.position = Vector3.Lerp(oldPos, targetPos, t);
         transform.localScale = oldScale;
+        transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y,
+            Mathf.Lerp(oldAngle, targetAngle, t));
     }
 
     public class ProjectileData : INetworkEntityData
@@ -51,6 +55,8 @@ public class BasicProjectileSync : MonoBehaviour, INetworkSync
         public float z = 0f;
         public float xScale = 1f;
         public float yScale = 1f;
+        public string animState = "falling";
+        public float angle = 0f;
     }
 
     public void Deserialize(INetworkEntityData data)
@@ -68,6 +74,7 @@ public class BasicProjectileSync : MonoBehaviour, INetworkSync
             oldPos = transform.position;
             oldScale = new Vector3(projData.xScale,projData.yScale,1);
             targetPos = new Vector3(projData.x, projData.y, projData.z);
+            targetAngle = oldAngle + Mathf.DeltaAngle(oldAngle, projData.angle);
         }
     }
 
@@ -82,6 +89,7 @@ public class BasicProjectileSync : MonoBehaviour, INetworkSync
             z = transform.position.z,
             xScale = transform.localScale.x,
             yScale = transform.localScale.y,
+            angle = transform.eulerAngles.z
         };
         return data;
     }
