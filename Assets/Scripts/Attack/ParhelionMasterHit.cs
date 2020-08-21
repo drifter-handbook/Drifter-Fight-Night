@@ -33,6 +33,19 @@ public class ParhelionMasterHit : MasterHit
         // pause in air
         rb.velocity = new Vector2(facing *-50, 20);
     }
+
+    public void neutralSmash()
+    {
+    	facing = movement.Facing;
+    	status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.4f);
+    	rb.velocity = new Vector2(facing *-45f,0);
+    }
+
+    public void downSmash()
+    {
+    	status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.4f);
+    	
+    }
     
     public override void hitTheRecovery(GameObject target)
     {
