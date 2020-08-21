@@ -9,7 +9,7 @@ public class HitboxCollision : MonoBehaviour
 
     public int AttackID { get; set; }
     public DrifterAttackType AttackType { get; set; }
-    public bool Active { get; set; } = false;
+    public bool Active { get; set; } = true;
     public SingleAttackData useData;
     SingleAttackData attackData;
 

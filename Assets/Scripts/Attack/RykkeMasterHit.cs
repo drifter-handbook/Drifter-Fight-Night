@@ -119,6 +119,12 @@ public class RykkeMasterHit : MasterHit
     }
 
 
+    public void sideWslide()
+    {
+        facing = movement.Facing;
+        rb.velocity = new Vector3(facing * 25,0);
+    }
+
     
     public void notify()
     {
