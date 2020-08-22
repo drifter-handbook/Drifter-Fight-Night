@@ -10,6 +10,7 @@ public class MegurinMasterHit : MasterHit
     float gravityScale;
     PlayerMovement movement;
     public Animator anim;
+    public SpriteRenderer sprite;
     GameObject activeStorm;
     Vector2 HeldDirection;
 
@@ -161,11 +162,13 @@ public class MegurinMasterHit : MasterHit
             neutralWCharge +=1;
         }
         else{
+            sprite.color = new Color(0,60,255);
             anim.SetBool("Empowered",true);
         }
     }
 
     public void beginLightningbolt(){
+        sprite.color = Color.white;
         if(anim.GetBool("Empowered") == true){
             drifter.SetAnimatorBool("Empowered",false);
             drifter.SetAnimatorBool("HasCharge",true);

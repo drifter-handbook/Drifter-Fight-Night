@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d6a98dae721e8e4aa3b1079537bd8ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sprite: {fileID: 3329276897009319341}
   self: {fileID: 898136060534194175}
   anim: {fileID: 6547671940963507017}
   charges: 0
@@ -360,6 +361,12 @@ MonoBehaviour:
 --- !u!1 &7185957702941560231 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2496518287981053905, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+    type: 3}
+  m_PrefabInstance: {fileID: 4691849568075172470}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &3329276897009319341 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 8011688095535036379, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
     type: 3}
   m_PrefabInstance: {fileID: 4691849568075172470}
   m_PrefabAsset: {fileID: 0}

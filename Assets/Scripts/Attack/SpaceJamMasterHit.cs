@@ -8,6 +8,7 @@ public class SpaceJamMasterHit : MasterHit
     PlayerAttacks attacks;
     float gravityScale;
     PlayerMovement movement;
+    public SpriteRenderer sprite;
     public Drifter self;
     public Animator anim;
     public int charges;
@@ -61,6 +62,7 @@ public class SpaceJamMasterHit : MasterHit
         rb.velocity += new Vector2(-20*facing,0);
         if(anim.GetBool("Empowered")){
             drifter.SetAnimatorBool("Empowered",false);
+            sprite.color = Color.white;
             
             Vector3 flip = new Vector3(facing *12f,12f,0f);
             Vector3 pos = new Vector3(facing *-3f,0f,1f);
@@ -97,11 +99,12 @@ public class SpaceJamMasterHit : MasterHit
 
     public void chargeNeutral()
     {
-        if(charges < 40){
+        if(charges < 35){
             charges++;
         }
-        if(charges == 40){
+        if(charges == 35){
             drifter.SetAnimatorBool("Empowered",true);
+            sprite.color = new Color(255,165,0);
         }
         if(self.DamageTaken >= .5f){
             self.DamageTaken -= .5f;
