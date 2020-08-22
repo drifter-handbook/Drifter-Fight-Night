@@ -206,7 +206,8 @@ public class RykkeMasterHit : MasterHit
     {
     	if(drifter.Charge < 3){
     		drifter.Charge++;
-    		anim.SetBool("Empowered",true);
+    		//anim.SetBool("Empowered",true);
+            drifter.SetAnimatorBool("Empowered",true);
             drifter.BlockReduction = .75f;
     	}
 
@@ -217,7 +218,8 @@ public class RykkeMasterHit : MasterHit
     	if(drifter.Charge > 0){
     		drifter.Charge--;
     		if(drifter.Charge == 0){
-    			anim.SetBool("Empowered",false);
+    			//anim.SetBool("Empowered",false);
+                drifter.SetAnimatorBool("Empowered",false);
                 drifter.BlockReduction = .25f;
     		}
     	}

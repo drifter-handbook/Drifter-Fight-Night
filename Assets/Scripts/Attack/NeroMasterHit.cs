@@ -85,12 +85,12 @@ public class NeroMasterHit : MasterHit
             status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.1f);
         }
         if(status.HasHit()){
-            anim.SetBool("Empowered",true);
+            drifter.SetAnimatorBool("Empowered",true);
         }
 
     }
     public void hitCounter(){
-        anim.SetBool("Empowered",false);
+        drifter.SetAnimatorBool("Empowered",false);
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.45f);
         
     }

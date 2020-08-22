@@ -167,8 +167,8 @@ public class MegurinMasterHit : MasterHit
 
     public void beginLightningbolt(){
         if(anim.GetBool("Empowered") == true){
-            anim.SetBool("Empowered",false);
-            anim.SetBool("BoltStored",true);
+            drifter.SetAnimatorBool("Empowered",false);
+            drifter.SetAnimatorBool("HasCharge",true);
             status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,1.8f);
         }
         else{
@@ -178,7 +178,7 @@ public class MegurinMasterHit : MasterHit
     }
     public void fireLightningbolt(){
         neutralWCharge = 0;
-        if(anim.GetBool("BoltStored") == true){
+        if(anim.GetBool("HasCharge") == true){
             spawnLargeBolt();
         }
         else{
@@ -187,7 +187,7 @@ public class MegurinMasterHit : MasterHit
           
     }
     public void removeBoltStored(){
-         anim.SetBool("BoltStored",false);
+         drifter.SetAnimatorBool("HasCharge",false);
     }
 
 

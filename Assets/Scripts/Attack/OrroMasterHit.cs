@@ -100,7 +100,7 @@ public class OrroMasterHit : MasterHit
             }
             beanRemote = BeanProj;
             localBeanAnim.SetBool("Hide", true);
-            anim.SetBool("Empowered",false);
+            drifter.SetAnimatorBool("Empowered",false);
             entities.AddEntity(BeanProj);
             beanSpeed = 20f;
         }
@@ -154,7 +154,7 @@ public class OrroMasterHit : MasterHit
     {
         Destroy(beanRemote);
         localBeanAnim.SetBool("Hide",false);
-        anim.SetBool("Empowered",true);
+        drifter.SetAnimatorBool("Empowered",true);
     }
 
 
