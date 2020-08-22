@@ -29,7 +29,7 @@ public class SpaceJamMasterHit : MasterHit
         facing = movement.Facing;
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
-        rb.velocity = new Vector2(facing * 40f,0f);
+        rb.velocity = new Vector2(facing * -35f,0f);
     }
 
     public void multihit(){
