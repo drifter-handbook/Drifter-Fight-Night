@@ -12,6 +12,7 @@ public class SpaceJamMasterHit : MasterHit
     public Animator anim;
     public int charges;
     PlayerStatus status;
+    GameObject bolt;
 
     public int facing;
 
@@ -29,6 +30,25 @@ public class SpaceJamMasterHit : MasterHit
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
         rb.velocity = new Vector2(facing * 40f,0f);
+    }
+
+    public void sideW()
+    {
+        facing = movement.Facing;
+        Vector3 flip = new Vector3(facing *12f,12f,0f);
+        Vector3 pos = new Vector3(facing *-3f,0f,1f);
+        GameObject GuidingBolt = Instantiate(entities.GetEntityPrefab("GuidingBolt"), transform.position + pos, transform.rotation);
+        GuidingBolt.transform.localScale = flip;
+        GuidingBolt.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * -30, 0);
+        foreach (HitboxCollision hitbox in GuidingBolt.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+        }
+        entities.AddEntity(GuidingBolt);       
+            
     }
 
 

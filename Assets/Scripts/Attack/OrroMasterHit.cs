@@ -27,8 +27,8 @@ public class OrroMasterHit : MasterHit
         status = drifter.GetComponent<PlayerStatus>();
     }
 
-    public void spawnFireball(){
-
+    public void spawnFireball()
+    {
         facing = movement.Facing;
         Vector3 flip = new Vector3(facing *12f,12f,0f);
         Vector3 pos = new Vector3(facing *3f,5.5f,1f);
