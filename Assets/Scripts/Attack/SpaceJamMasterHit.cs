@@ -97,10 +97,10 @@ public class SpaceJamMasterHit : MasterHit
 
     public void chargeNeutral()
     {
-        if(charges < 30){
+        if(charges < 40){
             charges++;
         }
-        if(charges == 30){
+        if(charges == 40){
             drifter.SetAnimatorBool("Empowered",true);
         }
         if(self.DamageTaken >= .5f){
