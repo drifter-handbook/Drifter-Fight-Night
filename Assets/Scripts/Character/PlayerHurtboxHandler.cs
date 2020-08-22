@@ -7,7 +7,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
     // keep track of what attacks we've already processed
     // AttackID -> Timestamp
     Dictionary<int, float> oldAttacks = new Dictionary<int, float>();
-    const float MAX_ATTACK_DURATION = 10f;
+    const float MAX_ATTACK_DURATION = 1.2f;
 
     // for creating hitsparks
     NetworkEntityList Entities;
@@ -84,7 +84,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             }
             else if(attackData.GetHitSpark() != 1){
                 hitSparks.GetComponent<HitSparks>().SetAnimation(attackData.GetHitSpark());
-                hitSparks.transform.localScale = new Vector3(facingDir *6f, 6f, 6f);
+                hitSparks.transform.localScale = new Vector3(facingDir *-6f, 6f, 6f);
             }
             else{
                 hitSparks.GetComponent<HitSparks>().SetAnimation(attackData.GetHitSpark());

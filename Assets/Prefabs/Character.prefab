@@ -61,6 +61,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 3106753082241659636}
+  useData: {fileID: 0}
 --- !u!1 &1853559347
 GameObject:
   m_ObjectHideFlags: 0
@@ -122,6 +123,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 3106753082241659636}
+  useData: {fileID: 0}
 --- !u!1 &428734560881909087
 GameObject:
   m_ObjectHideFlags: 0
@@ -183,6 +185,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 3106753082241659636}
+  useData: {fileID: 0}
 --- !u!1 &1709800075325733094
 GameObject:
   m_ObjectHideFlags: 0
@@ -428,6 +431,7 @@ MonoBehaviour:
   Stocks: 0
   DamageTaken: 0
   Charge: 0
+  BlockReduction: 0.5
   myColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &3106753082241659641
 MonoBehaviour:
@@ -444,11 +448,14 @@ MonoBehaviour:
   numberOfJumps: 2
   delayedJumpDuration: 0.05
   walkSpeed: 25
+  groundAccelerationTime: 0.6
+  airAccelerationTime: 0.8
   airSpeed: 15
   terminalVelocity: 80
   flipSprite: 0
   jumpHeight: 0
   jumpTime: 0
+  currentJumps: 0
   varyJumpHeightDuration: 0.2
   varyJumpHeightForce: 12
 --- !u!114 &1401939795787901855
@@ -561,6 +568,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52cc4f14323ee9143be25ebc5c5b91e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxRecoveries: 1
 --- !u!1 &4227067111414324707
 GameObject:
   m_ObjectHideFlags: 0
@@ -719,6 +727,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 3106753082241659636}
+  useData: {fileID: 0}
 --- !u!70 &1801323591959772194
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

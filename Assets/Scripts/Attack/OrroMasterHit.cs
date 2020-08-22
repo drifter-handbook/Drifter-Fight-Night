@@ -34,7 +34,7 @@ public class OrroMasterHit : MasterHit
         Vector3 pos = new Vector3(facing *3f,5.5f,1f);
         GameObject orroOrb = Instantiate(entities.GetEntityPrefab("OrroSideW"), transform.position + pos, transform.rotation);
         orroOrb.transform.localScale = flip;
-        orroOrb.GetComponent<Rigidbody2D>().velocity = new Vector2(facing *10, 0);
+        orroOrb.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * 10, 0);
         foreach (HitboxCollision hitbox in orroOrb.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
@@ -108,6 +108,10 @@ public class OrroMasterHit : MasterHit
             BeanRecall();
         }
        
+    }
+
+    public void jabCombo(){
+        attacks.SetupAttackID(DrifterAttackType.Ground_Q_Neutral);
     }
 
     public void BeanSide()

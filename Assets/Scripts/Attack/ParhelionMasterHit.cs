@@ -21,6 +21,10 @@ public class ParhelionMasterHit : MasterHit
         status = drifter.GetComponent<PlayerStatus>();
     }
 
+    public void nairMultihit(){
+        attacks.SetMultiHitAttackID();
+    }
+
     public void RecoveryPauseMidair()
     {
         Debug.Log("Recovery start!");

@@ -41,8 +41,7 @@ public class BasicProjectileSync : MonoBehaviour, INetworkSync
         }
         transform.position = Vector3.Lerp(oldPos, targetPos, t);
         transform.localScale = oldScale;
-        transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y,
-            Mathf.Lerp(oldAngle, targetAngle, t));
+        transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y,Mathf.Lerp(oldAngle, targetAngle, t));
     }
 
     public class ProjectileData : INetworkEntityData

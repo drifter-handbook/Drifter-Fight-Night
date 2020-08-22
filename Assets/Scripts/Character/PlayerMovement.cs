@@ -147,7 +147,6 @@ public class PlayerMovement : MonoBehaviour
 
         if (jumpPressed && canAct) //&& rb.velocity.y < 0.8f * jumpSpeed)
         {
-        	UnityEngine.Debug.Log("JUMP");
             //jump
             if (currentJumps > 0)
             {

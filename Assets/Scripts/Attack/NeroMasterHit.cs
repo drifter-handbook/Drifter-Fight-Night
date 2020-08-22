@@ -32,6 +32,10 @@ public class NeroMasterHit : MasterHit
         rb.velocity = Vector2.zero;
     }
 
+    public void setMultiHit(){
+        attacks.SetMultiHitAttackID();
+    }
+
     public void dodgeRoll(){
         facing = movement.Facing;
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.4f);
