@@ -7,7 +7,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
     // keep track of what attacks we've already processed
     // AttackID -> Timestamp
     Dictionary<int, float> oldAttacks = new Dictionary<int, float>();
-    const float MAX_ATTACK_DURATION = .7f;
+    const float MAX_ATTACK_DURATION = 10f;
 
     // for creating hitsparks
     NetworkEntityList Entities;
