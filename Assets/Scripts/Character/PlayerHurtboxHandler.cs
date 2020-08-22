@@ -74,18 +74,26 @@ public class PlayerHurtboxHandler : MonoBehaviour
             GameObject hitSparks = Instantiate(Entities.GetEntityPrefab("HitSparks"),
                 Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),
                 Quaternion.identity);
-            hitSparks.GetComponent<HitSparks>().SetAnimation(HitSparksEffect.HIT_SPARKS_1);
-            if (attackData.AngleOfImpact > 80f)
-            {
-                hitSparks.GetComponent<HitSparks>().SetAnimation(HitSparksEffect.HIT_SPARKS_2);
-                hitSparks.transform.eulerAngles = new Vector3(0, 0, 90f);
-                hitSparks.transform.localScale = new Vector3(0.6f, 0.6f, 0.6f);
+
+
+            UnityEngine.Debug.Log("HITSPARK" + attackData.GetHitSpark());
+
+            if(drifter.animator.GetBool("Guarding")){
+                    hitSparks.GetComponent<HitSparks>().SetAnimation(drifter.BlockReduction>.5?6:5);
+                    hitSparks.transform.localScale = new Vector3(facingDir * 10f, 10f, 10f);
             }
-            else if (attackData.Knockback > 18f && attackData.KnockbackScale > 0)
-            {
-                hitSparks.GetComponent<HitSparks>().SetAnimation(HitSparksEffect.HIT_SPARKS_2);
-                hitSparks.transform.localScale = new Vector3(facingDir * 0.7f, 0.7f, 0.7f);
+            else if(attackData.GetHitSpark() != 1){
+                hitSparks.GetComponent<HitSparks>().SetAnimation(attackData.GetHitSpark());
+                hitSparks.transform.localScale = new Vector3(facingDir *6f, 6f, 6f);
             }
+            else{
+                hitSparks.GetComponent<HitSparks>().SetAnimation(attackData.GetHitSpark());
+                hitSparks.transform.localScale = new Vector3(facingDir *10f, 10f, 10f);
+            }
+            
+            hitSparks.transform.eulerAngles = new Vector3(0, 0, facingDir * (attackData.AngleOfImpact > 80f?90f:0f));
+
+
             Entities.AddEntity(hitSparks);
 
             
