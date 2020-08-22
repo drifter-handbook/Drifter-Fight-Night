@@ -91,7 +91,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 hitSparks.transform.localScale = new Vector3(facingDir *10f, 10f, 10f);
             }
             
-            hitSparks.transform.eulerAngles = new Vector3(0, 0, facingDir * (attackData.AngleOfImpact > 80f?90f:0f));
+            hitSparks.transform.eulerAngles = new Vector3(0, 0, facingDir * (Mathf.Abs(attackData.AngleOfImpact) > 65f? Mathf.Sign(attackData.AngleOfImpact)*90f:0f));
 
 
             Entities.AddEntity(hitSparks);
