@@ -58,7 +58,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             {
                 damageMultiplier = 0f;
             }
-            float stunMultiplier = Mathf.Lerp(1f, damageMultiplier, 0.5f);
+            float stunMultiplier = (drifter.DamageTaken+30)/100f;
             //Ignore knockback if invincible or armoured
             if(!GetComponent<PlayerStatus>().HasInulvernability() && !GetComponent<PlayerStatus>().HasArmour() && !drifter.animator.GetBool("Guarding")){
                     GetComponent<Rigidbody2D>().velocity = forceDir.normalized * (float)((drifter.DamageTaken / 10 + drifter.DamageTaken * attackData.AttackDamage / 20)
