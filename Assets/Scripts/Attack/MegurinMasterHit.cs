@@ -53,6 +53,10 @@ public class MegurinMasterHit : MasterHit
 
     }
 
+    public void Nair(){
+        attacks.SetMultiHitAttackID();
+    }
+
     public void resetGravity(){
         rb.gravityScale = gravityScale;
     }
@@ -83,7 +87,9 @@ public class MegurinMasterHit : MasterHit
         if(activeStorm){
             StartCoroutine(activeStorm.GetComponent<MegurinStorm>().Fade(0));
         }
-        activeStorm = MegurinStorm; 
+        MegurinStorm.GetComponent<MegurinStorm>().attacks = attacks;
+        activeStorm = MegurinStorm;
+
         entities.AddEntity(MegurinStorm);
     }
 

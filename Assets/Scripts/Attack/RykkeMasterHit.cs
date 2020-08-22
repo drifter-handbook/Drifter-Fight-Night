@@ -227,6 +227,7 @@ public class RykkeMasterHit : MasterHit
         Vector3 flip = new Vector3(direction *8f,8f,1f);
         GameObject zombie = Instantiate(entities.GetEntityPrefab("Chadwick"), activeStone.transform.position, activeStone.transform.transform.rotation);
         zombie.transform.localScale = flip;
+        attacks.SetupAttackID(DrifterAttackType.W_Down);
         foreach (HitboxCollision hitbox in zombie.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
