@@ -54,6 +54,8 @@ public class NetworkEntityConverter : Newtonsoft.Json.Converters.CustomCreationC
             case "GuidingBolt":
             case "HaloPlatform":
                 return new BasicProjectileSync.ProjectileData();
+            case "Amber":
+                return new OopsiePoospieSync.AmberData();    
             case "ChromaticOrb":
                 return new ChromaticOrbSync.ChromaticData();
             case "RyykeTombstone":
