@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,7 +9,7 @@ public class HitboxCollision : MonoBehaviour
 
     public int AttackID { get; set; }
     public DrifterAttackType AttackType { get; set; }
-    public bool Active { get; set; } = true;
+    public bool Active { get; set; } = false;
     public SingleAttackData useData;
     SingleAttackData attackData;
 

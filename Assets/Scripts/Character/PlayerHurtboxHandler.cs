@@ -31,17 +31,15 @@ public class PlayerHurtboxHandler : MonoBehaviour
         // only host processes hits, don't hit ourself, and ignore previously registered attacks
         if (GameController.Instance.IsHost && hitbox.parent != hurtbox.parent && !oldAttacks.ContainsKey(attackID))
         {
-
             // register new attack
             oldAttacks[attackID] = Time.time;
             // apply hit effects
             hitbox.parent.GetComponent<PlayerAttacks>().Hit(attackType, attackID, hurtbox.parent);
-
             GetComponent<PlayerStatus>().ApplyStatusEffect(PlayerStatusEffect.HIT,.1f);
-            
-            
-
             // apply damage, ignored if invuln
+
+            GetComponent<PlayerStatus>().ApplyStatusEffect(attackData.StatusEffect,attackData.StatusDuration);
+
             Drifter drifter = GetComponent<Drifter>();
             if (drifter != null && !GetComponent<PlayerStatus>().HasInulvernability())
             {
@@ -59,50 +57,31 @@ public class PlayerHurtboxHandler : MonoBehaviour
             {
                 damageMultiplier = 0f;
             }
-            float stunMultiplier = (drifter.DamageTaken+30)/100f;
             //Ignore knockback if invincible or armoured
-            if(!GetComponent<PlayerStatus>().HasInulvernability() && !drifter.animator.GetBool("Guarding")){
-
-                if(attackData.HitStun>=0 && !GetComponent<PlayerStatus>().HasArmour())
-                {
-                    GetComponent<PlayerStatus>()?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, stunMultiplier * attackData.HitStun);
-                }
-                GetComponent<PlayerStatus>().ApplyStatusEffect(attackData.StatusEffect,attackData.StatusDuration);
-
-                if(!GetComponent<PlayerStatus>().HasArmour())
-                {
+            if(!GetComponent<PlayerStatus>().HasInulvernability() && !GetComponent<PlayerStatus>().HasArmour() && !drifter.animator.GetBool("Guarding")){
                     GetComponent<Rigidbody2D>().velocity = forceDir.normalized * (float)((drifter.DamageTaken / 10 + drifter.DamageTaken * attackData.AttackDamage / 20)
-                        * 200 / ( ((GetComponent<PlayerStatus>().HasStatusEffect(PlayerStatusEffect.EXPOSED)
-                        || GetComponent<PlayerStatus>().HasStatusEffect(PlayerStatusEffect.FEATHERWEIGHT))?drifter.drifterData.Weight-50:drifter.drifterData.Weight)
-                        + 100) * 1.4 * attackData.KnockbackScale + attackData.Knockback);
-                }            
+                                                                * 200 / (drifter.drifterData.Weight + 100) * 1.4 * attackData.KnockbackScale + attackData.Knockback);
             }
-            
+            // stun player
+            float stunMultiplier = Mathf.Lerp(1f, damageMultiplier, 0.5f);
+            GetComponent<PlayerStatus>()?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, stunMultiplier * attackData.HitStun);
             DamageSuperArmor(stunMultiplier * attackData.HitStun);
             // create hit sparks
             GameObject hitSparks = Instantiate(Entities.GetEntityPrefab("HitSparks"),
                 Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),
                 Quaternion.identity);
-
-
-            UnityEngine.Debug.Log("HITSPARK" + attackData.GetHitSpark());
-
-            if(drifter.animator.GetBool("Guarding")){
-                    hitSparks.GetComponent<HitSparks>().SetAnimation(drifter.BlockReduction>.5?6:5);
-                    hitSparks.transform.localScale = new Vector3(facingDir * 10f, 10f, 10f);
+            hitSparks.GetComponent<HitSparks>().SetAnimation(HitSparksEffect.HIT_SPARKS_1);
+            if (attackData.AngleOfImpact > 80f)
+            {
+                hitSparks.GetComponent<HitSparks>().SetAnimation(HitSparksEffect.HIT_SPARKS_2);
+                hitSparks.transform.eulerAngles = new Vector3(0, 0, 90f);
+                hitSparks.transform.localScale = new Vector3(0.6f, 0.6f, 0.6f);
             }
-            else if(attackData.GetHitSpark() != 1){
-                hitSparks.GetComponent<HitSparks>().SetAnimation(attackData.GetHitSpark());
-                hitSparks.transform.localScale = new Vector3(facingDir *-6f, 6f, 6f);
+            else if (attackData.Knockback > 18f && attackData.KnockbackScale > 0)
+            {
+                hitSparks.GetComponent<HitSparks>().SetAnimation(HitSparksEffect.HIT_SPARKS_2);
+                hitSparks.transform.localScale = new Vector3(facingDir * 0.7f, 0.7f, 0.7f);
             }
-            else{
-                hitSparks.GetComponent<HitSparks>().SetAnimation(attackData.GetHitSpark());
-                hitSparks.transform.localScale = new Vector3(facingDir *10f, 10f, 10f);
-            }
-            
-            hitSparks.transform.eulerAngles = new Vector3(0, 0, facingDir * (Mathf.Abs(attackData.AngleOfImpact) > 65f? Mathf.Sign(attackData.AngleOfImpact)*90f:0f));
-
-
             Entities.AddEntity(hitSparks);
 
             

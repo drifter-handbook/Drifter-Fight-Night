@@ -27,14 +27,14 @@ public class OrroMasterHit : MasterHit
         status = drifter.GetComponent<PlayerStatus>();
     }
 
-    public void spawnFireball()
-    {
+    public void spawnFireball(){
+
         facing = movement.Facing;
         Vector3 flip = new Vector3(facing *12f,12f,0f);
         Vector3 pos = new Vector3(facing *3f,5.5f,1f);
         GameObject orroOrb = Instantiate(entities.GetEntityPrefab("OrroSideW"), transform.position + pos, transform.rotation);
         orroOrb.transform.localScale = flip;
-        orroOrb.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * 10, 0);
+        orroOrb.GetComponent<Rigidbody2D>().velocity = new Vector2(facing *10, 0);
         foreach (HitboxCollision hitbox in orroOrb.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
@@ -48,13 +48,9 @@ public class OrroMasterHit : MasterHit
 
     public void dodgeRoll(){
         facing = movement.Facing;
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.8f);
-        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.4f);
-        //rb.velocity = new Vector2(facing * 25f,0f);
-    }
-    public void rollTele(){
-        facing = movement.Facing;
-        rb.position += new Vector2(facing* 10,0);
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
+        rb.velocity = new Vector2(facing * 25f,0f);
     }
 
      public void cancelGravity(){
@@ -102,10 +98,9 @@ public class OrroMasterHit : MasterHit
             if(beanRemote){
                 Destroy(beanRemote);
             }
-            BeanProj.GetComponent<BeanWrangler>().attacks=attacks;
             beanRemote = BeanProj;
             localBeanAnim.SetBool("Hide", true);
-            drifter.SetAnimatorBool("Empowered",false);
+            anim.SetBool("Empowered",false);
             entities.AddEntity(BeanProj);
             beanSpeed = 20f;
         }
@@ -113,10 +108,6 @@ public class OrroMasterHit : MasterHit
             BeanRecall();
         }
        
-    }
-
-    public void jabCombo(){
-        attacks.SetupAttackID(DrifterAttackType.Ground_Q_Neutral);
     }
 
     public void BeanSide()
@@ -159,7 +150,7 @@ public class OrroMasterHit : MasterHit
     {
         Destroy(beanRemote);
         localBeanAnim.SetBool("Hide",false);
-        drifter.SetAnimatorBool("Empowered",true);
+        anim.SetBool("Empowered",true);
     }
 
 

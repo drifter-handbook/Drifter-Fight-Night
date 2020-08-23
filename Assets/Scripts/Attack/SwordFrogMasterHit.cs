@@ -49,7 +49,7 @@ public class SwordFrogMasterHit : MasterHit
             drifter.Charge--;
         }
         if(drifter.Charge ==0){
-            drifter.SetAnimatorBool("HasCharge",false);
+            anim.SetBool("HasCharge",false);
         }
 
     }
@@ -58,25 +58,25 @@ public class SwordFrogMasterHit : MasterHit
             status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.1f);
         }
         if(status.HasHit()){
-            drifter.SetAnimatorBool("Empowered",true);
+            anim.SetBool("Empowered",true);
+            status.ApplyStatusEffect(PlayerStatusEffect.INVULN,0f);
         }
 
     }
     public void hitCounter(){
-        drifter.SetAnimatorBool("Empowered",false);
+        anim.SetBool("Empowered",false);
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.5f);
-        status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0.3f);
         
     }
     public void whiffCounter(){
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,0f);
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,1.05f);
     }
 
     public void grantCharge(){
         chargeProgress++;
         if(chargeProgress >= 3){
-            chargeProgress = 0;
-            drifter.SetAnimatorBool("HasCharge",true);
+            chargeProgress = 0;anim.SetBool("HasCharge",true);
             if(drifter.Charge <3){
                 drifter.Charge++;
             }

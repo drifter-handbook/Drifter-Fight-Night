@@ -28,12 +28,6 @@ public class OrroSideWProjectile : MonoBehaviour
     {
          if(col.gameObject.name == "Reflector"){
             rb.velocity =  rb.velocity * -2.5f;
-            foreach (HitboxCollision hitbox in gameObject.GetComponentsInChildren<HitboxCollision>(true))
-                {
-                    hitbox.parent = col.gameObject.GetComponentInChildren<HitboxCollision>().parent;
-                    //Mkae this not suck later
-                    hitbox.AttackID = 10000;
-                }
         }
         else if(col.gameObject.name == "Hurtboxes" && !empowered)
         {

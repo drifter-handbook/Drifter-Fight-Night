@@ -45,7 +45,6 @@ public class PlayerCardArtHolder : MonoBehaviour
                     Destroy(playerCards[i].MegurinElements);
                 }
 
-                playerCards[i].setChargeDrifter(drifter);
                 playerCards[i].setImages(faces[imageIndex], stocks[imageIndex]);
                 playerCards[i].addStocks(stockPrefab, 3);
                 i++;
@@ -55,9 +54,9 @@ public class PlayerCardArtHolder : MonoBehaviour
         for (int i = 0; i < drifters.Length; i++)
         {
             playerCards[i].setPercent(drifters[i].DamageTaken);
-            // if(playerCards[i].charge){
-            //     playerCards[i].charge.GetComponent<ChargeCounter>().setCharge(drifters[i].Charge);
-            // }
+            if(playerCards[i].charge){
+                playerCards[i].charge.GetComponent<ChargeCounter>().setCharge(drifters[i].Charge);
+            }
             // update stocks
             if (drifters[i] != null)
             {

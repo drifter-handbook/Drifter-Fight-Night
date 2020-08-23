@@ -8,8 +8,6 @@ public class PlayerMovement : MonoBehaviour
     public int numberOfJumps;
     public float delayedJumpDuration = 0.05f;
     public float walkSpeed = 15f;
-    public float groundAccelerationTime = .6f;
-    public float airAccelerationTime = .8f;
     public float airSpeed = 15f;
     public float terminalVelocity = 80f;
     public bool flipSprite = false;
@@ -19,14 +17,11 @@ public class PlayerMovement : MonoBehaviour
 
     public int currentJumps;
     float jumpSpeed;
-    float baseGravity;
 
     SpriteRenderer sprite;
     public int Facing { get; private set; } = 1;
 
     Animator animator;
-
-    NetworkEntityList entities;
 
     Rigidbody2D rb;
     BoxCollider2D col;
@@ -42,7 +37,7 @@ public class PlayerMovement : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
+
 
         drifter = GetComponent<Drifter>();
         animator = drifter.animator;
@@ -52,9 +47,7 @@ public class PlayerMovement : MonoBehaviour
         status = GetComponent<PlayerStatus>();
     }
     void Start(){
-        baseGravity = rb.gravityScale;
         jumpSpeed = (float)(jumpHeight / jumpTime + .5f*(rb.gravityScale * jumpTime));
-
     }
 
     void Update()
@@ -74,16 +67,12 @@ public class PlayerMovement : MonoBehaviour
         //Handle jump resets
         if(animator.GetBool("Grounded"))
         {
-            currentJumps = numberOfJumps;
-            if(!IsGrounded())
-            {
-                currentJumps--;
-            }
+                currentJumps = numberOfJumps;
+                if(!IsGrounded())
+                {
+                    currentJumps--;
+                }
             
-        }
-        else if(IsGrounded()){
-            //landing
-            //spawnJuiceParticle(new Vector3(0,-1,0),2);
         }
         drifter.SetAnimatorBool("Grounded", IsGrounded());
 
@@ -92,40 +81,23 @@ public class PlayerMovement : MonoBehaviour
         }
         else if(!status.HasEnemyStunEffect() && animator.GetBool("HitStun"))
         {
-            drifter.SetAnimatorBool("HitStun",false);
+                drifter.SetAnimatorBool("HitStun",false);
         }
-
-        if(status.HasStatusEffect(PlayerStatusEffect.KNOCKBACK) && rb.velocity.magnitude > 45f){
-            spawnJuiceParticle(Vector3.zero,1);
-        }
-
-        if(status.HasStatusEffect(PlayerStatusEffect.REVERSED)){
-            drifter.input.MoveX *= -1;
-        }
-
         if (moving && canAct)
         {
-        	//UnityEngine.Debug.Log("BEFORE velocity: " + rb.velocity.x);
-        	updateFacing();
+            updateFacing();
+        }
 
+        if (moving && canAct && IsGrounded())
+        {
             drifter.SetAnimatorBool("Walking", true);
+            rb.velocity = new Vector2(drifter.input.MoveX > 0 ? walkSpeed : -walkSpeed, rb.velocity.y);
+        }
 
-            //If just started moving or switched directions
-            if((rb.velocity.x == 0 || rb.velocity.x * drifter.input.MoveX < 0) && IsGrounded()){
-                spawnJuiceParticle(new Vector3(-Facing * 1.5f,-1.3f,0),5);
-            }
-
-            if(IsGrounded())
-            {
-            	//UnityEngine.Debug.Log("Ground Accell");
-            	rb.velocity = new Vector2(drifter.input.MoveX > 0 ? Mathf.Lerp(walkSpeed,rb.velocity.x,groundAccelerationTime) : Mathf.Lerp(-walkSpeed,rb.velocity.x,groundAccelerationTime), rb.velocity.y);
-            }
-            else
-            {
-            	rb.velocity = new Vector2(drifter.input.MoveX > 0 ? Mathf.Lerp(airSpeed,rb.velocity.x,airAccelerationTime) : Mathf.Lerp(-airSpeed,rb.velocity.x,airAccelerationTime), rb.velocity.y);
-            }
-
-            //UnityEngine.Debug.Log("AFTER velocity: " + rb.velocity.x);
+        else if (moving && canAct &&  !IsGrounded())
+        {
+            drifter.SetAnimatorBool("Walking", true);
+            rb.velocity = new Vector2(drifter.input.MoveX > 0 ? airSpeed : -airSpeed, rb.velocity.y);
         }
 
         else if (!moving && status.HasGroundFriction())
@@ -174,26 +146,10 @@ public class PlayerMovement : MonoBehaviour
             {
                 currentJumps--;
                 drifter.SetAnimatorTrigger("Jump");
-                //Particles
-                if(IsGrounded()){
-                    spawnJuiceParticle(new Vector3(0,-1,0),3);
-                }
-                else{
-                    spawnJuiceParticle(new Vector3(0,-1,0),4);
-                }
                 //jump needs a little delay so character animations can spend
                 //a frame of two preparing to jump
                 StartCoroutine(DelayedJump());
             }
-        }
-
-        if(status.HasStatusEffect(PlayerStatusEffect.STUNNED))
-        {
-            rb.velocity = Vector2.zero;
-            rb.gravityScale = 0;
-        }
-        else if(!status.HasStatusEffect(PlayerStatusEffect.END_LAG)){
-            rb.gravityScale = baseGravity;
         }
     }
 
@@ -226,14 +182,6 @@ public class PlayerMovement : MonoBehaviour
         return false;
     }
 
-    private void spawnJuiceParticle(Vector3 pos, int mode)
-    {
-        GameObject juiceParticle = Instantiate(entities.GetEntityPrefab("MovementParticle"), transform.position + pos, transform.rotation);
-        juiceParticle.GetComponent<JuiceParticle>().mode = mode;
-        juiceParticle.transform.localScale = new Vector3( juiceParticle.transform.localScale.x * Facing,juiceParticle.transform.localScale.y,1);
-        entities.AddEntity(juiceParticle);    
-    }
-
     private IEnumerator DelayedJump()
     {
         if (varyJumpHeight != null)
@@ -261,7 +209,7 @@ public class PlayerMovement : MonoBehaviour
             if (!animator.GetBool("Grounded") && drifter.input.Jump)
             {
                 //rb.AddForce(Vector2.up * -Physics2D.gravity * varyJumpHeightForce);
-                rb.velocity = new Vector2(rb.velocity.x, jumpSpeed);
+                rb.velocity = Vector2.up * jumpSpeed;
             }
         }
         varyJumpHeight = null;

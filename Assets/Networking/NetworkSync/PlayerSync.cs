@@ -75,7 +75,7 @@ public class PlayerSync : MonoBehaviour, INetworkSync
         public float z = 0f;
         public int facing = 1;
         public int stocks = 0;
-        public int charge = 0;
+        public int charge;
         public float damageTaken = 0f;
         public PlayerAnimatorState animatorState = new PlayerAnimatorState();
         public SyncColor color;

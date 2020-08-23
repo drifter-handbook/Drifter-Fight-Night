@@ -2,34 +2,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum HitSparksEffect
+{
+    NONE, HIT_SPARKS_1, HIT_SPARKS_2
+}
+
 public class HitSparks : MonoBehaviour
 {
     Animator anim;
-    public int Effect { get; private set; }
-    public AudioSource SoundPlayer;
-    public AudioClip[] HitSounds;
-
-
+    public HitSparksEffect Effect { get; private set; }
 
     // Start is called before the first frame update
     void Start()
     {
         anim = GetComponent<Animator>();
-        StartCoroutine(DestroyAfter(.3f));
+        StartCoroutine(DestroyAfter(4f));
     }
 
     // Update is called once per frame
     void Update()
     {
-        anim.SetInteger("Animation", Effect);
+        anim.SetInteger("Animation", (int)Effect);
     }
 
-    public void SetAnimation(int ef)
+    public void SetAnimation(HitSparksEffect ef)
     {
         Effect = ef;
-        SoundPlayer.clip = HitSounds[ef+1];
-        SoundPlayer.Play();
-     }
+    }
 
     IEnumerator DestroyAfter(float duration)
     {

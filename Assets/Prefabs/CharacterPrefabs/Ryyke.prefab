@@ -88,7 +88,7 @@ CircleCollider2D:
   m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -198,7 +198,7 @@ PrefabInstance:
     - target: {fileID: 868922314134636865, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 14.68
+      value: 39.68
       objectReference: {fileID: 0}
     - target: {fileID: 868922314134636865, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
@@ -308,7 +308,7 @@ PrefabInstance:
     - target: {fileID: 2704295541901204434, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: m_Offset.y
-      value: -15
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2704295541901204434, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
@@ -383,7 +383,7 @@ PrefabInstance:
     - target: {fileID: 3106753082241659641, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: acceleration
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3106753082241659641, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
@@ -394,16 +394,6 @@ PrefabInstance:
         type: 3}
       propertyPath: jumpTime
       value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 3106753082241659641, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
-        type: 3}
-      propertyPath: airAcceleration
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 3106753082241659641, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
-        type: 3}
-      propertyPath: airAccelerationTime
-      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 3106753082241659643, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
@@ -493,17 +483,12 @@ PrefabInstance:
     - target: {fileID: 5306829202166808911, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -24
+      value: -1.6
       objectReference: {fileID: 0}
     - target: {fileID: 5306829202166808911, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5306829202166808911, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5578303729342035337, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
@@ -691,7 +676,7 @@ PrefabInstance:
     - target: {fileID: 7978673694419850604, guid: 964fd6376f370e24e956a547953245d3,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 7978673694419850604, guid: 964fd6376f370e24e956a547953245d3,
         type: 3}

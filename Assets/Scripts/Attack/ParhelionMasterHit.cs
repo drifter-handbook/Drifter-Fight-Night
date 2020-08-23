@@ -21,18 +21,6 @@ public class ParhelionMasterHit : MasterHit
         status = drifter.GetComponent<PlayerStatus>();
     }
 
-    public void nairMultihit(){
-        attacks.SetMultiHitAttackID();
-    }
-
-    public void dodgeRoll(){
-        facing = movement.Facing;
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
-        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
-        rb.velocity = new Vector2(facing * -30f,0f);
-    }
-
-
     public void RecoveryPauseMidair()
     {
         Debug.Log("Recovery start!");
@@ -45,19 +33,6 @@ public class ParhelionMasterHit : MasterHit
         // pause in air
         rb.velocity = new Vector2(facing *-50, 20);
     }
-
-    public void neutralSmash()
-    {
-    	facing = movement.Facing;
-    	status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.4f);
-    	rb.velocity = new Vector2(facing *-25f,0);
-    }
-
-    public void downSmash()
-    {
-    	status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.4f);
-    	
-    }
     
     public override void hitTheRecovery(GameObject target)
     {
@@ -67,5 +42,11 @@ public class ParhelionMasterHit : MasterHit
     {
         Debug.Log("Recovery end!");
         rb.gravityScale = gravityScale;
+    }
+    public void dodgeRoll(){
+        facing = movement.Facing;
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
+        rb.velocity = new Vector2(facing * 40f,0f);
     }
 }
