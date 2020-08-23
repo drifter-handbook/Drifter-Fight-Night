@@ -11,7 +11,6 @@ public class BasicProjectileSync : MonoBehaviour, INetworkSync
     Vector3 oldPos;
     Vector3 oldScale;
     Vector3 targetPos;
-    float oldAngle;
     float targetAngle;
 
     public string Type { get; private set; }
@@ -41,7 +40,7 @@ public class BasicProjectileSync : MonoBehaviour, INetworkSync
         }
         transform.position = Vector3.Lerp(oldPos, targetPos, t);
         transform.localScale = oldScale;
-        transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y,Mathf.Lerp(oldAngle, targetAngle, t));
+        transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y,targetAngle);
     }
 
     public class ProjectileData : INetworkEntityData
@@ -65,15 +64,14 @@ public class BasicProjectileSync : MonoBehaviour, INetworkSync
             if (!Active)
             {
                 transform.position = new Vector3(projData.x, projData.y, projData.z);
-                transform.localScale =  new Vector3(projData.x, projData.y, projData.z);
             }
             Active = true;
             // move from current position to final position in latency seconds
             time = 0f;
             oldPos = gameObject.transform.position;
-            oldScale = gameObject.transform.localScale;
+            oldScale = new Vector3(projData.xScale,projData.yScale,1);
             targetPos = new Vector3(projData.x, projData.y, projData.z);
-            targetAngle = oldAngle + Mathf.DeltaAngle(oldAngle, projData.angle);
+            targetAngle = projData.angle;
         }
     }
 

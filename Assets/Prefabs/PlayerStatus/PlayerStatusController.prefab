@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 4326090534609056853}
   - component: {fileID: 5683720365398587116}
   - component: {fileID: 8365803419890072271}
-  - component: {fileID: 2665378348243008230}
   m_Layer: 0
   m_Name: PlayerStatusController
   m_TagString: Untagged
@@ -118,17 +117,3 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &2665378348243008230
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3642456212089594613}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 524fc89f68004664fac0437e66229573, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  status: {fileID: 0}
-  anim: {fileID: 0}

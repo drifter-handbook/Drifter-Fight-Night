@@ -15,11 +15,7 @@ public class PlayerStatusController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // if(anim.GetBool("Walking")){
-        //     GameObject SmokeTrail = Instantiate(entities.GetEntityPrefab("SmokeTrail"), transform.position, transform.rotation);
-        //     SmokeTrail.transform.localScale = new Vector3(100f,100f,1f);
-        //     entities.AddEntity(SmokeTrail);
-        // }
+        anim.SetInteger("Status",status.GetStatusToRender());
     }
 
 }

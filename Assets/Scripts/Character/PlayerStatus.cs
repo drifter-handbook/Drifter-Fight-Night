@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum PlayerStatusEffect
 {
-    END_LAG, KNOCKBACK, INVULN, ARMOUR, HIT, PLANTED, GRAPPLED, AMBERED
+    AMBERED, PLANTED, STUNNED, EXPOSED, HIT, FEATHERWEIGHT, END_LAG, KNOCKBACK, INVULN, ARMOUR, REVERSED
 }
 
 
@@ -43,14 +43,14 @@ public class PlayerStatus : MonoBehaviour
     }
     public bool HasStunEffect()
     {
-        return HasStatusEffect(PlayerStatusEffect.END_LAG) || HasStatusEffect(PlayerStatusEffect.KNOCKBACK) || HasStatusEffect(PlayerStatusEffect.PLANTED) || HasStatusEffect(PlayerStatusEffect.GRAPPLED)|| HasStatusEffect(PlayerStatusEffect.AMBERED);
+        return HasStatusEffect(PlayerStatusEffect.END_LAG) || HasStatusEffect(PlayerStatusEffect.KNOCKBACK) || HasStatusEffect(PlayerStatusEffect.PLANTED) || HasStatusEffect(PlayerStatusEffect.STUNNED)|| HasStatusEffect(PlayerStatusEffect.AMBERED);
     }
     public bool HasEnemyStunEffect()
     {
-        return HasStatusEffect(PlayerStatusEffect.KNOCKBACK) || HasStatusEffect(PlayerStatusEffect.PLANTED)|| HasStatusEffect(PlayerStatusEffect.GRAPPLED) || HasStatusEffect(PlayerStatusEffect.AMBERED);
+        return HasStatusEffect(PlayerStatusEffect.KNOCKBACK) || HasStatusEffect(PlayerStatusEffect.PLANTED)|| HasStatusEffect(PlayerStatusEffect.STUNNED) || HasStatusEffect(PlayerStatusEffect.AMBERED);
     }
     public bool IsEnemyStunEffect(PlayerStatusEffect ef){
-        return (ef == PlayerStatusEffect.KNOCKBACK) || (ef == PlayerStatusEffect.PLANTED) || (ef == PlayerStatusEffect.AMBERED) || (ef == PlayerStatusEffect.GRAPPLED);
+        return (ef == PlayerStatusEffect.KNOCKBACK) || (ef == PlayerStatusEffect.PLANTED) || (ef == PlayerStatusEffect.AMBERED) || (ef == PlayerStatusEffect.STUNNED);
     }
     public bool HasGroundFriction()
     {
@@ -59,6 +59,26 @@ public class PlayerStatus : MonoBehaviour
     public void ApplyStatusEffect(PlayerStatusEffect ef, float duration)
     {
         StartCoroutine(ApplyStatusEffectFor(ef, duration));
+    }
+
+    public int GetStatusToRender()
+    {
+        // int powerTwoCode = 0;
+        // if(HasStatusEffect(PlayerStatusEffect.AMBERED))powerTwoCode+=1;
+        // if(HasStatusEffect(PlayerStatusEffect.PLANTED))powerTwoCode+=2;
+        // if(HasStatusEffect(PlayerStatusEffect.STUNNED))powerTwoCode+=4;
+        // if(HasStatusEffect(PlayerStatusEffect.EXPOSED))powerTwoCode+=8;
+        // if(HasStatusEffect(PlayerStatusEffect.FEATHERWEIGHT))powerTwoCode+=16;
+        // return powerTwoCode;
+
+        if(HasStatusEffect(PlayerStatusEffect.AMBERED))return 1;
+        if(HasStatusEffect(PlayerStatusEffect.PLANTED))return 2;
+        if(HasStatusEffect(PlayerStatusEffect.STUNNED))return 3;
+        if(HasStatusEffect(PlayerStatusEffect.EXPOSED))return 4;
+        if(HasStatusEffect(PlayerStatusEffect.FEATHERWEIGHT))return 5;
+        if(HasStatusEffect(PlayerStatusEffect.REVERSED))return 6;
+
+        return 0;
     }
 
     IEnumerator ApplyStatusEffectFor(PlayerStatusEffect ef, float duration)
@@ -73,7 +93,7 @@ public class PlayerStatus : MonoBehaviour
         if(HasStatusEffect(PlayerStatusEffect.PLANTED) && IsEnemyStunEffect(ef) && duration != 0f)
         {
             statusEffects[PlayerStatusEffect.PLANTED] = 0f;
-            statusEffects[PlayerStatusEffect.GRAPPLED] = 0f;
+            statusEffects[PlayerStatusEffect.STUNNED] = 0f;
             if(ef == PlayerStatusEffect.PLANTED)
             {
                 yield break;
