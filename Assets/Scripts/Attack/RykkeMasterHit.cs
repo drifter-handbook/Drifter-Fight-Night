@@ -29,6 +29,7 @@ public class RykkeMasterHit : MasterHit
 
     public override void callTheRecovery()
     {
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,1.1f);
         Debug.Log("Recovery start!");
     }
     public void RecoveryPauseMidair()
