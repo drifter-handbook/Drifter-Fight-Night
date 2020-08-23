@@ -845,11 +845,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5306829202166808911}
     m_Modifications:
+    - target: {fileID: 156981227508402945, guid: 1e76d2aad5cac964fa578bce301dd12f,
+        type: 3}
+      propertyPath: parent
+      value: 
+      objectReference: {fileID: 3106753082241659636}
     - target: {fileID: 2710562965551637604, guid: 1e76d2aad5cac964fa578bce301dd12f,
         type: 3}
       propertyPath: m_Name
       value: Bean
       objectReference: {fileID: 0}
+    - target: {fileID: 3769307876474953664, guid: 1e76d2aad5cac964fa578bce301dd12f,
+        type: 3}
+      propertyPath: parent
+      value: 
+      objectReference: {fileID: 3106753082241659636}
+    - target: {fileID: 4642488344634641391, guid: 1e76d2aad5cac964fa578bce301dd12f,
+        type: 3}
+      propertyPath: parent
+      value: 
+      objectReference: {fileID: 3106753082241659636}
     - target: {fileID: 7473316474781769828, guid: 1e76d2aad5cac964fa578bce301dd12f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -920,6 +935,11 @@ PrefabInstance:
       propertyPath: attacks
       value: 
       objectReference: {fileID: 9142496942411782138}
+    - target: {fileID: 8731014671159021511, guid: 1e76d2aad5cac964fa578bce301dd12f,
+        type: 3}
+      propertyPath: parent
+      value: 
+      objectReference: {fileID: 3106753082241659636}
     - target: {fileID: 8879790841671161615, guid: 1e76d2aad5cac964fa578bce301dd12f,
         type: 3}
       propertyPath: m_IsActive

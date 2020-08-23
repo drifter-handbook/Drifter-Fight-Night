@@ -48,9 +48,13 @@ public class OrroMasterHit : MasterHit
 
     public void dodgeRoll(){
         facing = movement.Facing;
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
-        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
-        rb.velocity = new Vector2(facing * 25f,0f);
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.8f);
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.4f);
+        //rb.velocity = new Vector2(facing * 25f,0f);
+    }
+    public void rollTele(){
+        facing = movement.Facing;
+        rb.position += new Vector2(facing* 10,0);
     }
 
      public void cancelGravity(){
