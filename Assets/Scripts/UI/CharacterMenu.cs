@@ -89,7 +89,11 @@ public class CharacterMenu : MonoBehaviour
         for (int i = 0; i < menuEntries.Count; i++)
         {
             DrifterType drifter = GameController.Instance.CharacterSelectStates[i].PlayerType;
-            CharacterCard.SetCharacter(menuEntries[i].characterCard.transform, figurines[drifter].image, drifter.ToString().Replace("_", " "));
+            
+            if(drifter != DrifterType.None){
+                CharacterCard.SetCharacter(menuEntries[i].characterCard.transform, figurines[drifter].image, drifter.ToString().Replace("_", " "));
+            }
+            
         }
         // set arrow color and visibility
         int index = GameController.Instance.LocalPlayer.PlayerIndex;
