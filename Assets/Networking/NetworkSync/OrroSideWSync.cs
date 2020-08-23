@@ -9,6 +9,7 @@ public class OrroSideWSync : MonoBehaviour, INetworkSync
     float time = 0f;
     Vector3 oldPos;
     Vector3 targetPos;
+    Vector3 oldScale;
     bool oldEmp;
 
     public string Type { get; private set; } = "OrroSideW";
@@ -35,6 +36,7 @@ public class OrroSideWSync : MonoBehaviour, INetworkSync
         {
             t = time / latency;
         }
+        transform.localScale = oldScale;
         transform.position = Vector3.Lerp(oldPos, targetPos, t);
     }
 
@@ -46,6 +48,8 @@ public class OrroSideWSync : MonoBehaviour, INetworkSync
         public float x = 0f;
         public float y = 0f;
         public float z = 0f;
+        public float xScale = 1f;
+        public float yScale = 1f;
         public bool empowered = false;
     }
 
@@ -63,6 +67,7 @@ public class OrroSideWSync : MonoBehaviour, INetworkSync
             time = 0f;
             oldEmp =  fireballData.empowered;
             oldPos = transform.position;
+            oldScale = new Vector3(fireballData.xScale,fireballData.yScale,1);
             targetPos = new Vector3(fireballData.x, fireballData.y, fireballData.z);
         }
     }
@@ -76,6 +81,8 @@ public class OrroSideWSync : MonoBehaviour, INetworkSync
             x = transform.position.x,
             y = transform.position.y,
             z = transform.position.z,
+            xScale = gameObject.transform.localScale.x,
+            yScale = gameObject.transform.localScale.y,
             empowered = GetComponent<OrroSideWProjectile>().empowered,
         };
         return data;

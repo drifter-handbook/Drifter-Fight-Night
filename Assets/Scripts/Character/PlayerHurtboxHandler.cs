@@ -71,10 +71,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
                 if(!GetComponent<PlayerStatus>().HasArmour())
                 {
-                    GetComponent<Rigidbody2D>().velocity = forceDir.normalized * (float)((drifter.DamageTaken / 10 + drifter.DamageTaken * attackData.AttackDamage / 20)
-                        * 200 / ( ((GetComponent<PlayerStatus>().HasStatusEffect(PlayerStatusEffect.EXPOSED)
-                        || GetComponent<PlayerStatus>().HasStatusEffect(PlayerStatusEffect.FEATHERWEIGHT))?drifter.drifterData.Weight-50:drifter.drifterData.Weight)
-                        + 100) * 1.4 * attackData.KnockbackScale + attackData.Knockback);
+                    GetComponent<Rigidbody2D>().velocity = forceDir.normalized * (float)(((drifter.DamageTaken / 10 + drifter.DamageTaken * attackData.AttackDamage / 20)
+                        * 200 / (drifter.drifterData.Weight + 100) * 1.4 * ((GetComponent<PlayerStatus>().HasStatusEffect(PlayerStatusEffect.EXPOSED) || GetComponent<PlayerStatus>().HasStatusEffect(PlayerStatusEffect.FEATHERWEIGHT))?1.5f:1)) * attackData.KnockbackScale + attackData.Knockback);
                 }            
             }
             
