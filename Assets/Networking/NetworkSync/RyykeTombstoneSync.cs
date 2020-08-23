@@ -9,7 +9,9 @@ public class RyykeTombstoneSync : MonoBehaviour, INetworkSync
     public string Name = "RyykeTombstone";
     float time = 0f;
     Vector3 oldPos;
+    Vector3 oldScale;
     Vector3 targetPos;
+    bool grounded = false;
 
     public string Type { get; private set; }
     public int ID { get; set; } = NetworkEntityList.NextID;
@@ -37,6 +39,8 @@ public class RyykeTombstoneSync : MonoBehaviour, INetworkSync
             t = time / latency;
         }
         transform.position = Vector3.Lerp(oldPos, targetPos, t);
+        gameObject.GetComponent<RyykeTombstone>().grounded = grounded;
+        transform.localScale = oldScale;
     }
 
     public class TombstoneData : INetworkEntityData
@@ -47,6 +51,9 @@ public class RyykeTombstoneSync : MonoBehaviour, INetworkSync
         public float x = 0f;
         public float y = 0f;
         public float z = 0f;
+        public float xScale = 1f;
+        public float yScale = 1f;
+        public bool grounded = false;
     }
 
     public void Deserialize(INetworkEntityData data)
@@ -62,7 +69,11 @@ public class RyykeTombstoneSync : MonoBehaviour, INetworkSync
             // move from current position to final position in latency seconds
             time = 0f;
             oldPos = transform.position;
+            gameObject.GetComponent<RyykeTombstone>().grounded = projData.grounded;
             targetPos = new Vector3(projData.x, projData.y, projData.z);
+            oldScale = new Vector3(projData.xScale,projData.yScale,1);
+            grounded = projData.grounded;
+
         }
     }
 
@@ -75,6 +86,10 @@ public class RyykeTombstoneSync : MonoBehaviour, INetworkSync
             x = transform.position.x,
             y = transform.position.y,
             z = transform.position.z,
+            xScale = gameObject.transform.localScale.x,
+            yScale = gameObject.transform.localScale.y,
+            grounded = gameObject.GetComponent<RyykeTombstone>().grounded
+
         };
         return data;
     }
