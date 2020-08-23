@@ -19,6 +19,7 @@ public class PlayerMovement : MonoBehaviour
 
     public int currentJumps;
     float jumpSpeed;
+    float baseGravity;
 
     SpriteRenderer sprite;
     public int Facing { get; private set; } = 1;
@@ -49,7 +50,9 @@ public class PlayerMovement : MonoBehaviour
         status = GetComponent<PlayerStatus>();
     }
     void Start(){
+        baseGravity = rb.gravityScale;
         jumpSpeed = (float)(jumpHeight / jumpTime + .5f*(rb.gravityScale * jumpTime));
+
     }
 
     void Update()
@@ -84,6 +87,10 @@ public class PlayerMovement : MonoBehaviour
         else if(!status.HasEnemyStunEffect() && animator.GetBool("HitStun"))
         {
             drifter.SetAnimatorBool("HitStun",false);
+        }
+
+        if(status.HasStatusEffect(PlayerStatusEffect.REVERSED)){
+            drifter.input.MoveX *= -1;
         }
 
         if (moving && canAct)
@@ -156,6 +163,15 @@ public class PlayerMovement : MonoBehaviour
                 //a frame of two preparing to jump
                 StartCoroutine(DelayedJump());
             }
+        }
+
+        if(status.HasStatusEffect(PlayerStatusEffect.STUNNED))
+        {
+            rb.velocity = Vector2.zero;
+            rb.gravityScale = 0;
+        }
+        else if(!status.HasStatusEffect(PlayerStatusEffect.END_LAG)){
+            rb.gravityScale = baseGravity;
         }
     }
 

@@ -31,6 +31,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
         // only host processes hits, don't hit ourself, and ignore previously registered attacks
         if (GameController.Instance.IsHost && hitbox.parent != hurtbox.parent && !oldAttacks.ContainsKey(attackID))
         {
+
             // register new attack
             oldAttacks[attackID] = Time.time;
             // apply hit effects
@@ -38,7 +39,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
             GetComponent<PlayerStatus>().ApplyStatusEffect(PlayerStatusEffect.HIT,.1f);
             
-            GetComponent<PlayerStatus>().ApplyStatusEffect(attackData.StatusEffect,attackData.StatusDuration);
+            
 
             // apply damage, ignored if invuln
             Drifter drifter = GetComponent<Drifter>();
@@ -60,13 +61,21 @@ public class PlayerHurtboxHandler : MonoBehaviour
             }
             float stunMultiplier = (drifter.DamageTaken+30)/100f;
             //Ignore knockback if invincible or armoured
-            if(!GetComponent<PlayerStatus>().HasInulvernability() && !GetComponent<PlayerStatus>().HasArmour() && !drifter.animator.GetBool("Guarding")){
+            if(!GetComponent<PlayerStatus>().HasInulvernability() && !drifter.animator.GetBool("Guarding")){
+
+                if(attackData.HitStun>=0 && !GetComponent<PlayerStatus>().HasArmour())
+                {
+                    GetComponent<PlayerStatus>()?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, stunMultiplier * attackData.HitStun);
+                }
+                GetComponent<PlayerStatus>().ApplyStatusEffect(attackData.StatusEffect,attackData.StatusDuration);
+
+                if(!GetComponent<PlayerStatus>().HasArmour())
+                {
                     GetComponent<Rigidbody2D>().velocity = forceDir.normalized * (float)((drifter.DamageTaken / 10 + drifter.DamageTaken * attackData.AttackDamage / 20)
-                                                                * 200 / (drifter.drifterData.Weight + 100) * 1.4 * attackData.KnockbackScale + attackData.Knockback);
-                    // stun player
-                    if(attackData.HitStun>=0){
-                        GetComponent<PlayerStatus>()?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, stunMultiplier * attackData.HitStun);
-                    }
+                        * 200 / ( ((GetComponent<PlayerStatus>().HasStatusEffect(PlayerStatusEffect.EXPOSED)
+                        || GetComponent<PlayerStatus>().HasStatusEffect(PlayerStatusEffect.FEATHERWEIGHT))?drifter.drifterData.Weight-50:drifter.drifterData.Weight)
+                        + 100) * 1.4 * attackData.KnockbackScale + attackData.Knockback);
+                }            
             }
             
             DamageSuperArmor(stunMultiplier * attackData.HitStun);

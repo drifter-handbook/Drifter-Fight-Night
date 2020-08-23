@@ -61,6 +61,15 @@ public class PlayerStatus : MonoBehaviour
         StartCoroutine(ApplyStatusEffectFor(ef, duration));
     }
 
+    public void clearStatus()
+    {
+        statusEffects[PlayerStatusEffect.PLANTED] = 0f;
+        statusEffects[PlayerStatusEffect.STUNNED] = 0f;
+        statusEffects[PlayerStatusEffect.EXPOSED] = 0f;
+        statusEffects[PlayerStatusEffect.REVERSED] = 0f;
+        statusEffects[PlayerStatusEffect.END_LAG] = 0f;
+    }
+
     public int GetStatusToRender()
     {
         // int powerTwoCode = 0;
@@ -73,7 +82,7 @@ public class PlayerStatus : MonoBehaviour
 
         if(HasStatusEffect(PlayerStatusEffect.AMBERED))return 1;
         if(HasStatusEffect(PlayerStatusEffect.PLANTED))return 2;
-        if(HasStatusEffect(PlayerStatusEffect.STUNNED))return 3;
+        if(HasStatusEffect(PlayerStatusEffect.STUNNED) || HasStatusEffect(PlayerStatusEffect.REVERSED))return 3;
         if(HasStatusEffect(PlayerStatusEffect.EXPOSED))return 4;
         if(HasStatusEffect(PlayerStatusEffect.FEATHERWEIGHT))return 5;
         if(HasStatusEffect(PlayerStatusEffect.REVERSED))return 6;
@@ -89,16 +98,11 @@ public class PlayerStatus : MonoBehaviour
     		yield break;
     	}
 
-        //If youre planted, you get unplanted by a hit
-        if(HasStatusEffect(PlayerStatusEffect.PLANTED) && IsEnemyStunEffect(ef) && duration != 0f)
+        //If youre planted or stunned, you get unplanted by a hit
+        if(IsEnemyStunEffect(ef) && (HasStatusEffect(PlayerStatusEffect.PLANTED) || HasStatusEffect(PlayerStatusEffect.STUNNED) || HasStatusEffect(PlayerStatusEffect.EXPOSED)))
         {
-            statusEffects[PlayerStatusEffect.PLANTED] = 0f;
-            statusEffects[PlayerStatusEffect.STUNNED] = 0f;
-            if(ef == PlayerStatusEffect.PLANTED)
-            {
-                yield break;
-            }
-        
+            clearStatus();
+            yield break;
         }
 
         if (!statusEffects.ContainsKey(ef))
