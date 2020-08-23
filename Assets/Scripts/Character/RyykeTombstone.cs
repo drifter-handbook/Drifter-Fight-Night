@@ -38,6 +38,7 @@ public class RyykeTombstone : MonoBehaviour
         {
             rb.velocity = Vector2.zero;
         }
+        anim.SetBool("Grounded",grounded);
     }
 
  	IEnumerator Arm()

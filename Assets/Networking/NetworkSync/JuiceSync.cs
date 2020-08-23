@@ -1,17 +1,17 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RyykeTombstoneSync : MonoBehaviour, INetworkSync
+public class JuiceSync : MonoBehaviour, INetworkSync
 {
     public bool Active { get; private set; }
     public float latency = 0.025f;
-    public string Name = "RyykeTombstone";
+    public string Name = "MovementParticle";
     float time = 0f;
     Vector3 oldPos;
     Vector3 oldScale;
     Vector3 targetPos;
-    bool grounded = false;
+    int oldMode;
 
     public string Type { get; private set; }
     public int ID { get; set; } = NetworkEntityList.NextID;
@@ -39,11 +39,10 @@ public class RyykeTombstoneSync : MonoBehaviour, INetworkSync
             t = time / latency;
         }
         transform.position = Vector3.Lerp(oldPos, targetPos, t);
-        gameObject.GetComponent<RyykeTombstone>().grounded = grounded;
         transform.localScale = oldScale;
     }
 
-    public class TombstoneData : INetworkEntityData
+    public class JuiceData : INetworkEntityData
     {
         public string Type { get; set; } = "";
         public int ID { get; set; }
@@ -53,12 +52,12 @@ public class RyykeTombstoneSync : MonoBehaviour, INetworkSync
         public float z = 0f;
         public float xScale = 1f;
         public float yScale = 1f;
-        public bool grounded = false;
+        public int mode = 0;
     }
 
     public void Deserialize(INetworkEntityData data)
     {
-        TombstoneData projData = data as TombstoneData;
+        JuiceData projData = data as JuiceData;
         if (projData != null)
         {
             if (!Active)
@@ -68,18 +67,16 @@ public class RyykeTombstoneSync : MonoBehaviour, INetworkSync
             Active = true;
             // move from current position to final position in latency seconds
             time = 0f;
-            oldPos = transform.position;
-            gameObject.GetComponent<RyykeTombstone>().grounded = projData.grounded;
-            targetPos = new Vector3(projData.x, projData.y, projData.z);
+            oldPos = gameObject.transform.position;
             oldScale = new Vector3(projData.xScale,projData.yScale,1);
-            grounded = projData.grounded;
-
+            targetPos = new Vector3(projData.x, projData.y, projData.z);
+            gameObject.GetComponent<JuiceParticle>().mode = projData.mode;
         }
     }
 
     public INetworkEntityData Serialize()
     {
-        TombstoneData data = new TombstoneData()
+        JuiceData data = new JuiceData()
         {
             name = gameObject.name,
             ID = ID,
@@ -88,8 +85,7 @@ public class RyykeTombstoneSync : MonoBehaviour, INetworkSync
             z = transform.position.z,
             xScale = gameObject.transform.localScale.x,
             yScale = gameObject.transform.localScale.y,
-            grounded = gameObject.GetComponent<RyykeTombstone>().grounded
-
+            mode = GetComponent<JuiceParticle>().mode,
         };
         return data;
     }

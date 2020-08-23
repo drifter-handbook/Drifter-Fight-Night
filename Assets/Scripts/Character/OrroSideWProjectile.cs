@@ -42,7 +42,7 @@ public class OrroSideWProjectile : MonoBehaviour
     }
 
     IEnumerator Empower(){
-        yield return new WaitForSeconds(duration * .30f);
+        yield return new WaitForSeconds(duration * .15f);
         anim.SetTrigger("Empower"); 
         empowered = true;
         rb.velocity += new Vector2(facing *15f,0f);
