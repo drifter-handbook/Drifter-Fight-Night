@@ -98,6 +98,7 @@ public class OrroMasterHit : MasterHit
             if(beanRemote){
                 Destroy(beanRemote);
             }
+            BeanProj.GetComponent<BeanWrangler>().attacks=attacks;
             beanRemote = BeanProj;
             localBeanAnim.SetBool("Hide", true);
             drifter.SetAnimatorBool("Empowered",false);

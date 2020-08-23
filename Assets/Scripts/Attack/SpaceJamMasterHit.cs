@@ -28,9 +28,9 @@ public class SpaceJamMasterHit : MasterHit
 
     public void dodgeRoll(){
         facing = movement.Facing;
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.5f);
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
-        rb.velocity = new Vector2(facing * -35f,0f);
+        rb.velocity = new Vector2(facing * -45f,0f);
     }
 
     public void multihit(){
@@ -101,10 +101,10 @@ public class SpaceJamMasterHit : MasterHit
 
     public void chargeNeutral()
     {
-        if(charges < 1){
+        if(charges < 35){
             charges++;
         }
-        if(charges >= 1){
+        if(charges >= 35){
             drifter.SetAnimatorBool("Empowered",true);
             sprite.color = new Color(255,165,0);
         }

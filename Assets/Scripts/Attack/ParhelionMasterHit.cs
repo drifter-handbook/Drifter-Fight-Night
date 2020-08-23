@@ -25,6 +25,14 @@ public class ParhelionMasterHit : MasterHit
         attacks.SetMultiHitAttackID();
     }
 
+    public void dodgeRoll(){
+        facing = movement.Facing;
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
+        rb.velocity = new Vector2(facing * -30f,0f);
+    }
+
+
     public void RecoveryPauseMidair()
     {
         Debug.Log("Recovery start!");
@@ -59,11 +67,5 @@ public class ParhelionMasterHit : MasterHit
     {
         Debug.Log("Recovery end!");
         rb.gravityScale = gravityScale;
-    }
-    public void dodgeRoll(){
-        facing = movement.Facing;
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
-        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
-        rb.velocity = new Vector2(facing * 40f,0f);
     }
 }

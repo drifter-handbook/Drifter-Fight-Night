@@ -7,6 +7,7 @@ public class BeanWrangler : MonoBehaviour
     // Start is called before the first frame update
     public bool hide;
     public Animator anim;
+    public PlayerAttacks attacks;
     Rigidbody2D rb;
 
     void Start()
@@ -24,8 +25,8 @@ public class BeanWrangler : MonoBehaviour
         yield break;
     }
 
-    public void attackIdHandler(){
-            
+    public void setAttackId(){
+        attacks.SetMultiHitAttackID();
     }
 
     // Update is called once per frame
