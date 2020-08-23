@@ -32,6 +32,10 @@ public class NeroMasterHit : MasterHit
         rb.velocity = Vector2.zero;
     }
 
+    public void setMultiHit(){
+        attacks.SetMultiHitAttackID();
+    }
+
     public void dodgeRoll(){
         facing = movement.Facing;
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.4f);
@@ -72,6 +76,7 @@ public class NeroMasterHit : MasterHit
     public void neutralWCharge(){
          rb.gravityScale = .1f;
          facing = movement.Facing;
+         status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.4f);
          rb.velocity = new Vector3(facing * 50, 0);
     }
 
@@ -80,18 +85,16 @@ public class NeroMasterHit : MasterHit
             status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.1f);
         }
         if(status.HasHit()){
-            anim.SetBool("Empowered",true);
-            status.ApplyStatusEffect(PlayerStatusEffect.INVULN,0f);
+            drifter.SetAnimatorBool("Empowered",true);
         }
 
     }
     public void hitCounter(){
-        anim.SetBool("Empowered",false);
+        drifter.SetAnimatorBool("Empowered",false);
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.45f);
         
     }
     public void whiffCounter(){
-        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,0f);
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,1f);
     }
     public override void cancelTheNeutralW()

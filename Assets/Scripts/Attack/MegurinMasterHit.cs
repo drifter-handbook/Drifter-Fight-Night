@@ -10,6 +10,7 @@ public class MegurinMasterHit : MasterHit
     float gravityScale;
     PlayerMovement movement;
     public Animator anim;
+    public SpriteRenderer sprite;
     GameObject activeStorm;
     Vector2 HeldDirection;
 
@@ -53,6 +54,10 @@ public class MegurinMasterHit : MasterHit
 
     }
 
+    public void Nair(){
+        attacks.SetMultiHitAttackID();
+    }
+
     public void resetGravity(){
         rb.gravityScale = gravityScale;
     }
@@ -83,7 +88,9 @@ public class MegurinMasterHit : MasterHit
         if(activeStorm){
             StartCoroutine(activeStorm.GetComponent<MegurinStorm>().Fade(0));
         }
-        activeStorm = MegurinStorm; 
+        MegurinStorm.GetComponent<MegurinStorm>().attacks = attacks;
+        activeStorm = MegurinStorm;
+
         entities.AddEntity(MegurinStorm);
     }
 
@@ -155,14 +162,16 @@ public class MegurinMasterHit : MasterHit
             neutralWCharge +=1;
         }
         else{
+            sprite.color = new Color(0,60,255);
             anim.SetBool("Empowered",true);
         }
     }
 
     public void beginLightningbolt(){
+        sprite.color = Color.white;
         if(anim.GetBool("Empowered") == true){
-            anim.SetBool("Empowered",false);
-            anim.SetBool("BoltStored",true);
+            drifter.SetAnimatorBool("Empowered",false);
+            drifter.SetAnimatorBool("HasCharge",true);
             status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,1.8f);
         }
         else{
@@ -172,7 +181,7 @@ public class MegurinMasterHit : MasterHit
     }
     public void fireLightningbolt(){
         neutralWCharge = 0;
-        if(anim.GetBool("BoltStored") == true){
+        if(anim.GetBool("HasCharge") == true){
             spawnLargeBolt();
         }
         else{
@@ -181,7 +190,7 @@ public class MegurinMasterHit : MasterHit
           
     }
     public void removeBoltStored(){
-         anim.SetBool("BoltStored",false);
+         drifter.SetAnimatorBool("HasCharge",false);
     }
 
 

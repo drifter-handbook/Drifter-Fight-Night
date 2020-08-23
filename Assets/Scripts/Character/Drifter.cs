@@ -71,6 +71,8 @@ public class Drifter : MonoBehaviour
         animator.SetBool("Walking", state.Walking);
         animator.SetBool("Guarding", state.Guarding);
         animator.SetBool("Empowered", state.Empowered);
+        animator.SetBool("HasCharge", state.HasCharge);
+        animator.SetBool("HitStun", state.HitStun);
         if (state.Attack) animator.SetTrigger("Attack");
         if (state.Grab) animator.SetTrigger("Grab");
         if (state.Jump) animator.SetTrigger("Jump");
@@ -130,6 +132,9 @@ public class Drifter : MonoBehaviour
         animatorState.W_Side = false;
         animatorState.W_Down = false;
         animatorState.Roll = false;
+        animatorState.HasCharge = false;
+        animatorState.HitStun = false;
+
     }
     public void SetAnimatorBool(string s, bool value)
     {
@@ -150,7 +155,13 @@ public class Drifter : MonoBehaviour
                 break;
             case "Empowered":
                 animatorState.Empowered = value;
-                break;    
+                break;
+            case "HasCharge":
+                animatorState.HasCharge = value;
+                break;
+            case "HitStun":
+                animatorState.HitStun = value;
+                break;                 
         }
     }
 }
@@ -170,6 +181,8 @@ public class PlayerAnimatorState : ICloneable
     public bool W_Down = false;
     public bool W_Neutral = false;
     public bool Roll = false;
+    public bool HasCharge = false;
+    public bool HitStun = false;
 
     public object Clone()
     {
@@ -187,7 +200,9 @@ public class PlayerAnimatorState : ICloneable
             W_Side = W_Side,
             W_Down = W_Down,
             W_Neutral = W_Neutral,
-            Roll = Roll
+            Roll = Roll,
+            HasCharge = HasCharge,
+            HitStun = HitStun
         };
     }
 }

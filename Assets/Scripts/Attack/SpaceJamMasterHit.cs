@@ -8,10 +8,12 @@ public class SpaceJamMasterHit : MasterHit
     PlayerAttacks attacks;
     float gravityScale;
     PlayerMovement movement;
+    public SpriteRenderer sprite;
     public Drifter self;
     public Animator anim;
     public int charges;
     PlayerStatus status;
+    GameObject bolt;
 
     public int facing;
 
@@ -26,9 +28,59 @@ public class SpaceJamMasterHit : MasterHit
 
     public void dodgeRoll(){
         facing = movement.Facing;
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.5f);
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
-        rb.velocity = new Vector2(facing * 40f,0f);
+        rb.velocity = new Vector2(facing * -45f,0f);
+    }
+
+    public void multihit(){
+        attacks.SetMultiHitAttackID();
+    }
+
+    public void sideW()
+    {
+        facing = movement.Facing;
+        Vector3 flip = new Vector3(facing *12f,12f,0f);
+        Vector3 pos = new Vector3(facing *-3f,0f,1f);
+        GameObject GuidingBolt = Instantiate(entities.GetEntityPrefab("GuidingBolt"), transform.position + pos, transform.rotation);
+        GuidingBolt.transform.localScale = flip;
+        GuidingBolt.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * -30, 0);
+        foreach (HitboxCollision hitbox in GuidingBolt.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+        }
+        entities.AddEntity(GuidingBolt);       
+            
+    }
+
+    public void oopsiePoopsie()
+    {
+        facing = movement.Facing;
+        rb.velocity += new Vector2(-20*facing,0);
+        if(anim.GetBool("Empowered")){
+            drifter.SetAnimatorBool("Empowered",false);
+            sprite.color = Color.white;
+            
+            Vector3 flip = new Vector3(facing *12f,12f,0f);
+            Vector3 pos = new Vector3(facing *-3f,0f,1f);
+            GameObject amber = Instantiate(entities.GetEntityPrefab("Amber"), transform.position + pos, transform.rotation);
+            amber.transform.localScale = flip;
+            amber.GetComponent<Rigidbody2D>().velocity = rb.velocity;
+            foreach (HitboxCollision hitbox in amber.GetComponentsInChildren<HitboxCollision>(true))
+            {
+                hitbox.parent = drifter.gameObject;
+                hitbox.AttackID = attacks.AttackID;
+                hitbox.AttackType = attacks.AttackType;
+                hitbox.Active = true;
+            }
+            amber.GetComponent<OopsiePoopsie>().hurtbox = gameObject.transform.Find("Hurtboxes").gameObject.GetComponent<CapsuleCollider2D>();
+            amber.GetComponent<OopsiePoopsie>().status = status;
+        entities.AddEntity(amber);
+        charges = 0;
+        }
     }
 
 
@@ -47,13 +99,14 @@ public class SpaceJamMasterHit : MasterHit
         rb.gravityScale = gravityScale;
     } 
 
-    public override void hitTheNeutralW(GameObject target)
+    public void chargeNeutral()
     {
-        if(charges < 30){
+        if(charges < 35){
             charges++;
         }
-        if(charges == 30){
-            anim.SetBool("Empowered",true);
+        if(charges >= 35){
+            drifter.SetAnimatorBool("Empowered",true);
+            sprite.color = new Color(255,165,0);
         }
         if(self.DamageTaken >= .5f){
             self.DamageTaken -= .5f;

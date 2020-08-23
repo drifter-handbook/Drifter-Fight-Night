@@ -36,7 +36,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
             new Vector2(5, 23),
             Quaternion.identity
         );
-        halo.transform.localScale = new Vector2(.2f,.2f);
+        halo.transform.localScale = new Vector2(10f,10f);
         Entities.AddEntity(halo.gameObject);
     }
 
@@ -46,7 +46,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
         yield return new WaitForSeconds(2f);
         CreateHalo();
         other.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        other.transform.position = new Vector2(5, 23);
+        other.transform.position = new Vector2(5, 27);
         yield break;
     }
 

@@ -49,6 +49,11 @@ public class PlayerCard : MonoBehaviour
 
     }
 
+    public void setChargeDrifter(Drifter drifter)
+    {
+        charge.GetComponent<ChargeCounter>().drifter = drifter;
+    }
+
     public void removeStock()
     {
         removeStocks(1);

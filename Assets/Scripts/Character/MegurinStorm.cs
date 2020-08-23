@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MegurinStorm : MonoBehaviour
 {
-
+    public PlayerAttacks attacks;
     public float duration;
     // Start is called before the first frame update
     void Start()
@@ -18,6 +18,9 @@ public class MegurinStorm : MonoBehaviour
 
     }
 
+    public void multihit(){
+        attacks.SetupAttackID(DrifterAttackType.W_Down);
+    }
 
 
     public IEnumerator Fade(float delay)
