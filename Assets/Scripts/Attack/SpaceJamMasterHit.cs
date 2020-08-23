@@ -76,8 +76,10 @@ public class SpaceJamMasterHit : MasterHit
                 hitbox.AttackType = attacks.AttackType;
                 hitbox.Active = true;
             }
+            amber.GetComponent<OopsiePoopsie>().hurtbox = gameObject.transform.Find("Hurtboxes").gameObject.GetComponent<CapsuleCollider2D>();
+            amber.GetComponent<OopsiePoopsie>().status = status;
         entities.AddEntity(amber);
-
+        charges = 0;
         }
     }
 
@@ -99,10 +101,10 @@ public class SpaceJamMasterHit : MasterHit
 
     public void chargeNeutral()
     {
-        if(charges < 35){
+        if(charges < 1){
             charges++;
         }
-        if(charges == 35){
+        if(charges >= 1){
             drifter.SetAnimatorBool("Empowered",true);
             sprite.color = new Color(255,165,0);
         }
