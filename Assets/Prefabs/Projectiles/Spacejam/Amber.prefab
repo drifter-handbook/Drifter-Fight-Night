@@ -59,9 +59,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.00881958, y: 0.010290146}
+  m_Offset: {x: -0.00881958, y: 0.007927895}
   serializedVersion: 2
-  m_Radius: 0.46325064
+  m_Radius: 0.58840847
 --- !u!1 &8588162288674083642
 GameObject:
   m_ObjectHideFlags: 0
@@ -221,6 +221,7 @@ MonoBehaviour:
   anim: {fileID: 7946148366151414869}
   rb: {fileID: 8344995058333733698}
   empowered: 0
+  hurtbox: {fileID: 0}
 --- !u!114 &98880424256107500
 MonoBehaviour:
   m_ObjectHideFlags: 0

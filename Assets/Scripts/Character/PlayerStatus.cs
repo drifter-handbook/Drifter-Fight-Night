@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum PlayerStatusEffect
 {
-    END_LAG, KNOCKBACK, INVULN, ARMOUR, HIT, PLANTED, GRAPPLED
+    END_LAG, KNOCKBACK, INVULN, ARMOUR, HIT, PLANTED, GRAPPLED, AMBERED
 }
 
 
@@ -43,14 +43,14 @@ public class PlayerStatus : MonoBehaviour
     }
     public bool HasStunEffect()
     {
-        return HasStatusEffect(PlayerStatusEffect.END_LAG) || HasStatusEffect(PlayerStatusEffect.KNOCKBACK) || HasStatusEffect(PlayerStatusEffect.PLANTED) || HasStatusEffect(PlayerStatusEffect.GRAPPLED);
+        return HasStatusEffect(PlayerStatusEffect.END_LAG) || HasStatusEffect(PlayerStatusEffect.KNOCKBACK) || HasStatusEffect(PlayerStatusEffect.PLANTED) || HasStatusEffect(PlayerStatusEffect.GRAPPLED)|| HasStatusEffect(PlayerStatusEffect.AMBERED);
     }
     public bool HasEnemyStunEffect()
     {
-        return HasStatusEffect(PlayerStatusEffect.KNOCKBACK) || HasStatusEffect(PlayerStatusEffect.PLANTED)|| HasStatusEffect(PlayerStatusEffect.GRAPPLED);
+        return HasStatusEffect(PlayerStatusEffect.KNOCKBACK) || HasStatusEffect(PlayerStatusEffect.PLANTED)|| HasStatusEffect(PlayerStatusEffect.GRAPPLED) || HasStatusEffect(PlayerStatusEffect.AMBERED);
     }
     public bool IsEnemyStunEffect(PlayerStatusEffect ef){
-        return (ef == PlayerStatusEffect.KNOCKBACK) || (ef == PlayerStatusEffect.PLANTED);
+        return (ef == PlayerStatusEffect.KNOCKBACK) || (ef == PlayerStatusEffect.PLANTED) || (ef == PlayerStatusEffect.AMBERED) || (ef == PlayerStatusEffect.GRAPPLED);
     }
     public bool HasGroundFriction()
     {
@@ -65,7 +65,7 @@ public class PlayerStatus : MonoBehaviour
     {
     	float delay = duration;
     	//Ignores hitstun if in superarmour or invuln
-    	if((HasInulvernability() || HasArmour()) && ef ==  PlayerStatusEffect.KNOCKBACK){
+    	if((HasInulvernability() || HasArmour()) && IsEnemyStunEffect(ef)){
     		yield break;
     	}
 

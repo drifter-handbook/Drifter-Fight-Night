@@ -8,6 +8,7 @@ public class SpaceJamMasterHit : MasterHit
     PlayerAttacks attacks;
     float gravityScale;
     PlayerMovement movement;
+    public SpriteRenderer sprite;
     public Drifter self;
     public Animator anim;
     public int charges;
@@ -29,7 +30,7 @@ public class SpaceJamMasterHit : MasterHit
         facing = movement.Facing;
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
-        rb.velocity = new Vector2(facing * 40f,0f);
+        rb.velocity = new Vector2(facing * -35f,0f);
     }
 
     public void multihit(){
@@ -61,6 +62,7 @@ public class SpaceJamMasterHit : MasterHit
         rb.velocity += new Vector2(-20*facing,0);
         if(anim.GetBool("Empowered")){
             drifter.SetAnimatorBool("Empowered",false);
+            sprite.color = Color.white;
             
             Vector3 flip = new Vector3(facing *12f,12f,0f);
             Vector3 pos = new Vector3(facing *-3f,0f,1f);
@@ -74,8 +76,10 @@ public class SpaceJamMasterHit : MasterHit
                 hitbox.AttackType = attacks.AttackType;
                 hitbox.Active = true;
             }
+            amber.GetComponent<OopsiePoopsie>().hurtbox = gameObject.transform.Find("Hurtboxes").gameObject.GetComponent<CapsuleCollider2D>();
+            amber.GetComponent<OopsiePoopsie>().status = status;
         entities.AddEntity(amber);
-
+        charges = 0;
         }
     }
 
@@ -97,11 +101,12 @@ public class SpaceJamMasterHit : MasterHit
 
     public void chargeNeutral()
     {
-        if(charges < 40){
+        if(charges < 1){
             charges++;
         }
-        if(charges == 40){
+        if(charges >= 1){
             drifter.SetAnimatorBool("Empowered",true);
+            sprite.color = new Color(255,165,0);
         }
         if(self.DamageTaken >= .5f){
             self.DamageTaken -= .5f;

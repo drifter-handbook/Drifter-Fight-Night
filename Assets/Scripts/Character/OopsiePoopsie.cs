@@ -8,6 +8,8 @@ public class OopsiePoopsie : MonoBehaviour
     public Animator anim;
     public Rigidbody2D rb;
     public bool empowered = false;
+    public Collider2D hurtbox;
+    public PlayerStatus status;
 
     void Start()
     {
@@ -35,9 +37,11 @@ public class OopsiePoopsie : MonoBehaviour
             StartCoroutine(delete(.4f));
         }
     }
-    // void onTriggerStay2d(Collider2D){
-    //     //Check if spacejam was hit
-    // }
+    void OnTriggerStay2D(Collider2D col){
+        if(col == hurtbox){
+            status.ApplyStatusEffect(PlayerStatusEffect.AMBERED,3f);
+        }
+    }
 
     IEnumerator delete(float time){
         yield return new WaitForSeconds(time);
