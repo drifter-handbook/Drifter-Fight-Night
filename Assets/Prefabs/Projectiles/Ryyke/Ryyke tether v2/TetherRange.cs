@@ -22,7 +22,7 @@ public class TetherRange : MonoBehaviour
         yield break;
     }
 
-    void OnTriggerEnter2D(Collider2D col)
+    void OnTriggerStay2D(Collider2D col)
     {
         if(col.gameObject.tag == tag)
         {

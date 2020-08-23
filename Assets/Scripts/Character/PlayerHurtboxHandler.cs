@@ -27,7 +27,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
     public void RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, DrifterAttackType attackType, SingleAttackData attackData)
     {
-        UnityEngine.Debug.Log("ATTACK REGISTERERD");
+        //UnityEngine.Debug.Log("ATTACK REGISTERERD");
         // only host processes hits, don't hit ourself, and ignore previously registered attacks
         if (GameController.Instance.IsHost && hitbox.parent != hurtbox.parent && !oldAttacks.ContainsKey(attackID))
         {
