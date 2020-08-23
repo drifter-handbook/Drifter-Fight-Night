@@ -5,27 +5,16 @@ using UnityEngine;
 public class ChargeCounter : MonoBehaviour
 {
     
-    public int charge;
+    public Drifter drifter;
     public Animator anim;
 
     void Start()
     {
     }
 
-    void Update(){
-        anim.SetInteger("Charge",charge);
-    }
-
-    public void setCharge(int Charge){
-        charge = Charge;
-    }
-
-    IEnumerator Hide()
+    void Update()
     {
-        yield return new WaitForSeconds(2.5f);
-        //anim.SetBool("Show",false);
-        yield break;
+        anim.SetInteger("Charge",drifter.Charge);
     }
-
 
 }

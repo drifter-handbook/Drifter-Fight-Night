@@ -15,6 +15,8 @@ public class RykkeMasterHit : MasterHit
     GameObject activeStone;
     PlayerStatus status;
 
+    
+
     void Start()
     {
         rb = drifter.GetComponent<Rigidbody2D>();
@@ -100,10 +102,30 @@ public class RykkeMasterHit : MasterHit
         //rb. gravityScale = gravityScale;
         playerRange.gameObject.transform.parent.gameObject.SetActive(false);
         rb.gravityScale = gravityScale;
-        
-
     }
 
+
+    public void AmrourUp(){
+        status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.5f);
+    }
+
+    public void resetGravity(){
+        rb.gravityScale = gravityScale;
+    }
+
+    public void pauseGravity(){
+        rb.gravityScale = 0f;
+        rb.velocity = Vector2.zero;
+    }
+
+
+    public void sideWslide()
+    {
+        facing = movement.Facing;
+        rb.velocity = new Vector3(facing * 25,0);
+    }
+
+    
     public void notify()
     {
       Debug.Log("hit something!");
@@ -117,8 +139,7 @@ public class RykkeMasterHit : MasterHit
     }
     public override void cancelTheRecovery()
     {
-        Debug.Log("Recovery end!");
-        rb.gravityScale = gravityScale;
+        resetGravity();
     }
 
     public void sideGrab()
@@ -154,15 +175,10 @@ public class RykkeMasterHit : MasterHit
 
     public void grabEmpowered(){
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.9f);
+        pauseGravity();
     }
 
     //Down W
-
-    public override void callTheDownW()
-    {
-        Debug.Log("DOWN W START");
-    }
-
     public void dropStone()
     {
       facing = movement.Facing;
@@ -190,7 +206,8 @@ public class RykkeMasterHit : MasterHit
     {
     	if(drifter.Charge < 3){
     		drifter.Charge++;
-    		anim.SetBool("Empowered",true);
+    		//anim.SetBool("Empowered",true);
+            drifter.SetAnimatorBool("Empowered",true);
             drifter.BlockReduction = .75f;
     	}
 
@@ -201,7 +218,8 @@ public class RykkeMasterHit : MasterHit
     	if(drifter.Charge > 0){
     		drifter.Charge--;
     		if(drifter.Charge == 0){
-    			anim.SetBool("Empowered",false);
+    			//anim.SetBool("Empowered",false);
+                drifter.SetAnimatorBool("Empowered",false);
                 drifter.BlockReduction = .25f;
     		}
     	}
@@ -211,6 +229,7 @@ public class RykkeMasterHit : MasterHit
         Vector3 flip = new Vector3(direction *8f,8f,1f);
         GameObject zombie = Instantiate(entities.GetEntityPrefab("Chadwick"), activeStone.transform.position, activeStone.transform.transform.rotation);
         zombie.transform.localScale = flip;
+        attacks.SetupAttackID(DrifterAttackType.W_Down);
         foreach (HitboxCollision hitbox in zombie.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;

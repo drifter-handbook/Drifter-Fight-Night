@@ -9,7 +9,9 @@ public class BasicProjectileSync : MonoBehaviour, INetworkSync
     public string Name = "SpaceJamBell";
     float time = 0f;
     Vector3 oldPos;
+    Vector3 oldScale;
     Vector3 targetPos;
+    float targetAngle;
 
     public string Type { get; private set; }
     public int ID { get; set; } = NetworkEntityList.NextID;
@@ -37,6 +39,8 @@ public class BasicProjectileSync : MonoBehaviour, INetworkSync
             t = time / latency;
         }
         transform.position = Vector3.Lerp(oldPos, targetPos, t);
+        transform.localScale = oldScale;
+        transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y,targetAngle);
     }
 
     public class ProjectileData : INetworkEntityData
@@ -47,6 +51,9 @@ public class BasicProjectileSync : MonoBehaviour, INetworkSync
         public float x = 0f;
         public float y = 0f;
         public float z = 0f;
+        public float xScale = 1f;
+        public float yScale = 1f;
+        public float angle = 0f;
     }
 
     public void Deserialize(INetworkEntityData data)
@@ -61,8 +68,10 @@ public class BasicProjectileSync : MonoBehaviour, INetworkSync
             Active = true;
             // move from current position to final position in latency seconds
             time = 0f;
-            oldPos = transform.position;
+            oldPos = gameObject.transform.position;
+            oldScale = new Vector3(projData.xScale,projData.yScale,1);
             targetPos = new Vector3(projData.x, projData.y, projData.z);
+            targetAngle = projData.angle;
         }
     }
 
@@ -75,6 +84,9 @@ public class BasicProjectileSync : MonoBehaviour, INetworkSync
             x = transform.position.x,
             y = transform.position.y,
             z = transform.position.z,
+            xScale = gameObject.transform.localScale.x,
+            yScale = gameObject.transform.localScale.y,
+            angle = gameObject.transform.eulerAngles.z
         };
         return data;
     }

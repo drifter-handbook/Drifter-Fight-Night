@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 193b57c47c6e0024ebee715bea3d6f17, type: 3}
   m_Name: SideWTipper
   m_EditorClassIdentifier: 
-  AttackDamage: 13
+  AttackDamage: 9
   Knockback: 25
-  KnockbackScale: 0.66
-  HitStun: 0.1
-  EndLag: 0.1
+  KnockbackScale: 0.76
+  HitStun: 0.4
+  EndLag: 0.4
   AngleOfImpact: 15
   StatusEffect: 4
   StatusDuration: 0.1
+  HitVisual: 3
