@@ -162,7 +162,7 @@ public class PlayerMovement : MonoBehaviour
 
         //Terminal velocity
 
-        if(rb.velocity.y < -terminalVelocity){
+        if(rb.velocity.y < -terminalVelocity && !status.HasEnemyStunEffect()){
             rb.velocity = new Vector2(rb.velocity.x,-terminalVelocity);
         }
 
