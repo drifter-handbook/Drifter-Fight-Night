@@ -28,6 +28,12 @@ public class OopsiePoopsie : MonoBehaviour
         UnityEngine.Debug.Log(col.gameObject.name);        
         if(col.gameObject.name == "Reflector"){
             rb.velocity =  rb.velocity * -2.5f;
+            foreach (HitboxCollision hitbox in gameObject.GetComponentsInChildren<HitboxCollision>(true))
+                {
+                    hitbox.parent = col.gameObject.GetComponentInChildren<HitboxCollision>().parent;
+                    //Mkae this not suck later
+                    hitbox.AttackID = 10000;
+                }
         }
         else{
             anim.SetTrigger("Empower");

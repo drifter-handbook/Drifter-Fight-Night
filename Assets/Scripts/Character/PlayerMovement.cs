@@ -26,6 +26,8 @@ public class PlayerMovement : MonoBehaviour
 
     Animator animator;
 
+    NetworkEntityList entities;
+
     Rigidbody2D rb;
     BoxCollider2D col;
 
@@ -40,7 +42,7 @@ public class PlayerMovement : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-
+        entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
 
         drifter = GetComponent<Drifter>();
         animator = drifter.animator;
@@ -159,6 +161,13 @@ public class PlayerMovement : MonoBehaviour
             {
                 currentJumps--;
                 drifter.SetAnimatorTrigger("Jump");
+                //Particles
+                if(IsGrounded()){
+                    spawnJuiceParticle(new Vector3(0,-1,0),3);
+                }
+                else{
+                    spawnJuiceParticle(new Vector3(0,-1,0),4);
+                }
                 //jump needs a little delay so character animations can spend
                 //a frame of two preparing to jump
                 StartCoroutine(DelayedJump());
@@ -202,6 +211,13 @@ public class PlayerMovement : MonoBehaviour
             }
         }
         return false;
+    }
+
+    private void spawnJuiceParticle(Vector3 pos, int mode)
+    {
+        GameObject juiceParticle = Instantiate(entities.GetEntityPrefab("MovementParticle"), transform.position + pos, transform.rotation);
+        juiceParticle.GetComponent<JuiceParticle>().mode = mode;
+        entities.AddEntity(juiceParticle);    
     }
 
     private IEnumerator DelayedJump()
