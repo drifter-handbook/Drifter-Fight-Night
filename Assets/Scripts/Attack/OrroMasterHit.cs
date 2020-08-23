@@ -47,6 +47,7 @@ public class OrroMasterHit : MasterHit
     }
 
     public void dodgeRoll(){
+        beanSpeed = 10f;
         facing = movement.Facing;
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.8f);
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.4f);
