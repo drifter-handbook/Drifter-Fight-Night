@@ -6,7 +6,7 @@ public class JuiceParticle : MonoBehaviour
 {
     // Start is called before the first frame update
     public float duration;
-    public int mode= 0;
+    public int mode = 0;
     public Animator anim;
     void Start()
     {

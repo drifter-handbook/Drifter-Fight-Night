@@ -74,12 +74,16 @@ public class PlayerMovement : MonoBehaviour
         //Handle jump resets
         if(animator.GetBool("Grounded"))
         {
-                currentJumps = numberOfJumps;
-                if(!IsGrounded())
-                {
-                    currentJumps--;
-                }
+            currentJumps = numberOfJumps;
+            if(!IsGrounded())
+            {
+                currentJumps--;
+            }
             
+        }
+        else if(IsGrounded()){
+            //landing
+            //spawnJuiceParticle(new Vector3(0,-1,0),2);
         }
         drifter.SetAnimatorBool("Grounded", IsGrounded());
 
@@ -89,6 +93,10 @@ public class PlayerMovement : MonoBehaviour
         else if(!status.HasEnemyStunEffect() && animator.GetBool("HitStun"))
         {
             drifter.SetAnimatorBool("HitStun",false);
+        }
+
+        if(status.HasStatusEffect(PlayerStatusEffect.KNOCKBACK) && rb.velocity.magnitude > 45f){
+            spawnJuiceParticle(Vector3.zero,1);
         }
 
         if(status.HasStatusEffect(PlayerStatusEffect.REVERSED)){
@@ -101,6 +109,11 @@ public class PlayerMovement : MonoBehaviour
         	updateFacing();
 
             drifter.SetAnimatorBool("Walking", true);
+
+            //If just started moving or switched directions
+            if((rb.velocity.x == 0 || rb.velocity.x * drifter.input.MoveX < 0) && IsGrounded()){
+                spawnJuiceParticle(new Vector3(-Facing * 1.5f,-1.3f,0),5);
+            }
 
             if(IsGrounded())
             {
@@ -217,6 +230,7 @@ public class PlayerMovement : MonoBehaviour
     {
         GameObject juiceParticle = Instantiate(entities.GetEntityPrefab("MovementParticle"), transform.position + pos, transform.rotation);
         juiceParticle.GetComponent<JuiceParticle>().mode = mode;
+        juiceParticle.transform.localScale = new Vector3( juiceParticle.transform.localScale.x * Facing,juiceParticle.transform.localScale.y,1);
         entities.AddEntity(juiceParticle);    
     }
 
