@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -104,7 +104,7 @@ public class MegurinMasterHit : MasterHit
         Vector3 pos = new Vector3(facing *4f,5,1f);
         GameObject MegurinOrb = Instantiate(entities.GetEntityPrefab("ChromaticOrb"), transform.position + pos, transform.rotation);
         MegurinOrb.transform.localScale = flip;
-        MegurinOrb.GetComponent<Rigidbody2D>().velocity = new Vector2(facing *10, 0);
+        MegurinOrb.GetComponent<Rigidbody2D>().velocity = new Vector2(facing *25, 0);
         MegurinOrb.GetComponent<Animator>().SetInteger("Mode",drifter.Charge);
         foreach (HitboxCollision hitbox in MegurinOrb.GetComponentsInChildren<HitboxCollision>(true))
         {

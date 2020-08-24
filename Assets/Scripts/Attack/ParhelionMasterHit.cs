@@ -9,6 +9,7 @@ public class ParhelionMasterHit : MasterHit
     float gravityScale;
     PlayerMovement movement;
     PlayerStatus status;
+    float terminalVelocity;
     public int facing;
 
     void Start()
@@ -19,6 +20,7 @@ public class ParhelionMasterHit : MasterHit
         attacks = drifter.GetComponent<PlayerAttacks>();
         movement = drifter.GetComponent<PlayerMovement>();
         status = drifter.GetComponent<PlayerStatus>();
+        terminalVelocity = movement.terminalVelocity;
     }
 
     public void nairMultihit(){
@@ -56,7 +58,19 @@ public class ParhelionMasterHit : MasterHit
     public void downSmash()
     {
     	status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.4f);
+        movement.terminalVelocity = 150;
     	
+    }
+
+    public void downJump(){
+        rb.velocity += new Vector2(0,35);
+    }
+
+    public void downSlam(){
+        rb.velocity += new Vector2(0,-60);
+    }
+    public void resetTerminal(){
+        movement.terminalVelocity = terminalVelocity;
     }
     
     public override void hitTheRecovery(GameObject target)

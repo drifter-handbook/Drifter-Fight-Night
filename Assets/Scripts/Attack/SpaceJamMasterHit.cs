@@ -13,7 +13,9 @@ public class SpaceJamMasterHit : MasterHit
     public Animator anim;
     public int charges;
     PlayerStatus status;
-    GameObject bolt;
+
+    public AudioSource audio;
+    public AudioClip[] audioClips;
 
     public int facing;
 
@@ -27,6 +29,7 @@ public class SpaceJamMasterHit : MasterHit
     }
 
     public void dodgeRoll(){
+        audio.Pause();
         facing = movement.Facing;
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.5f);
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
@@ -39,6 +42,7 @@ public class SpaceJamMasterHit : MasterHit
 
     public void sideW()
     {
+        audio.PlayOneShot(audioClips[1], 1f);
         facing = movement.Facing;
         Vector3 flip = new Vector3(facing *12f,12f,0f);
         Vector3 pos = new Vector3(facing *-3f,0f,1f);
@@ -63,7 +67,7 @@ public class SpaceJamMasterHit : MasterHit
         if(anim.GetBool("Empowered")){
             drifter.SetAnimatorBool("Empowered",false);
             sprite.color = Color.white;
-            
+            audio.PlayOneShot(audioClips[1], 1f);
             Vector3 flip = new Vector3(facing *12f,12f,0f);
             Vector3 pos = new Vector3(facing *-3f,0f,1f);
             GameObject amber = Instantiate(entities.GetEntityPrefab("Amber"), transform.position + pos, transform.rotation);
@@ -83,13 +87,6 @@ public class SpaceJamMasterHit : MasterHit
         }
     }
 
-
-    // public override void callTheRecovery()
-    // {
-    //     rb.gravityScale = 0;
-    //     rb.velocity = Vector2.zero;
-    // }
-
     public void callTheRecovery(){
         facing = movement.Facing;
         rb.gravityScale = 0;
@@ -101,10 +98,14 @@ public class SpaceJamMasterHit : MasterHit
 
     public void chargeNeutral()
     {
+        
         if(charges < 35){
             charges++;
+            
         }
         if(charges >= 35){
+            audio.Stop();
+            audio.PlayOneShot(audioClips[2],1f);
             drifter.SetAnimatorBool("Empowered",true);
             sprite.color = new Color(255,165,0);
         }

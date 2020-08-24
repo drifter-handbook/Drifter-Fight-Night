@@ -53,8 +53,13 @@ public class NetworkEntityConverter : Newtonsoft.Json.Converters.CustomCreationC
             case "MegurinStorm":
             case "GuidingBolt":
             case "HaloPlatform":
-            case "JuiceParticle":
                 return new BasicProjectileSync.ProjectileData();
+            case "Bean":
+                return new BeanSync.BeanData();
+            case "MovementParticle":
+                return new JuiceSync.JuiceData();
+            case "PlayerStatusController":
+                return new PlayerStatusSync.StatusData();
             case "Amber":
                 return new OopsiePoospieSync.AmberData();    
             case "ChromaticOrb":

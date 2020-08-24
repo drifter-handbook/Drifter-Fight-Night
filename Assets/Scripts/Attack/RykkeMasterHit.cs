@@ -29,6 +29,7 @@ public class RykkeMasterHit : MasterHit
 
     public override void callTheRecovery()
     {
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,1.1f);
         Debug.Log("Recovery start!");
     }
     public void RecoveryPauseMidair()
@@ -52,17 +53,18 @@ public class RykkeMasterHit : MasterHit
         }
         float length = 15f;
 
-         if(playerRange.TetherPoint != Vector3.zero)
+        if(ledgeRange.TetherPoint != Vector3.zero)
+        {
+            arms.transform.rotation = Quaternion.Euler(0,0, (Mathf.Atan2(arms.transform.position.x -ledgeRange.TetherPoint.x,-arms.transform.position.y+ledgeRange.TetherPoint.y)*180 / Mathf.PI));
+            length = Vector2.Distance(ledgeRange.TetherPoint,arms.transform.position);
+        }
+        else if(playerRange.TetherPoint != Vector3.zero)
         {
             arms.transform.rotation = Quaternion.Euler(0,0, (Mathf.Atan2(arms.transform.position.x -playerRange.TetherPoint.x,-arms.transform.position.y+playerRange.TetherPoint.y)*180 / Mathf.PI));
             length = Vector2.Distance(playerRange.TetherPoint,arms.transform.position);
 
         }
-        else if(ledgeRange.TetherPoint != Vector3.zero)
-        {
-            arms.transform.rotation = Quaternion.Euler(0,0, (Mathf.Atan2(arms.transform.position.x -ledgeRange.TetherPoint.x,-arms.transform.position.y+ledgeRange.TetherPoint.y)*180 / Mathf.PI));
-            length = Vector2.Distance(ledgeRange.TetherPoint,arms.transform.position);
-        }
+        
         else
         {
             arms.transform.rotation = Quaternion.Euler(0,0,45 * -facing);
@@ -76,24 +78,26 @@ public class RykkeMasterHit : MasterHit
     {
         facing = movement.Facing;
         
-        if(playerRange.TetherPoint != Vector3.zero)
-        {
-            // rb.velocity = new Vector2((-rb.position.x + playerRange.TetherPoint.x) *3f + 10 * facing, Mathf.Max(Mathf.Min((Mathf.Min(-rb.position.y,0) + playerRange.TetherPoint.x) *4f,20),0) +40);
-            // attacks.resetRecovery();
-            rb.position = new Vector3(playerRange.TetherPoint.x - 3* facing,playerRange.TetherPoint.y -3,0);
-            rb.velocity = new Vector3(facing*35, 45,0);
-            if(movement.currentJumps < movement.numberOfJumps){
-                movement.currentJumps++;
-            }
-
-        }
-        else if(ledgeRange.TetherPoint != Vector3.zero)
+        if(ledgeRange.TetherPoint != Vector3.zero)
         {
             rb.velocity = new Vector2((-rb.position.x + ledgeRange.TetherPoint.x) *3f, Mathf.Min((-rb.position.y + ledgeRange.TetherPoint.y) *3f,50f) + 30);
             if(movement.currentJumps < movement.numberOfJumps){
                 movement.currentJumps++;
             }
         }
+
+        else if(playerRange.TetherPoint != Vector3.zero)
+        {
+            // rb.velocity = new Vector2((-rb.position.x + playerRange.TetherPoint.x) *3f + 10 * facing, Mathf.Max(Mathf.Min((Mathf.Min(-rb.position.y,0) + playerRange.TetherPoint.x) *4f,20),0) +40);
+            // attacks.resetRecovery();
+            rb.position = new Vector3(playerRange.TetherPoint.x -facing,playerRange.TetherPoint.y -1,0);
+            rb.velocity = new Vector3(facing*35, 45,0);
+            if(movement.currentJumps < movement.numberOfJumps){
+                movement.currentJumps++;
+            }
+
+        }
+        
         else
         {
             UnityEngine.Debug.Log("Uhoh");
