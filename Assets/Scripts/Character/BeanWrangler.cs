@@ -6,6 +6,7 @@ public class BeanWrangler : MonoBehaviour
 {
     // Start is called before the first frame update
     public bool hide;
+    public int facing;
     public Animator anim;
     public PlayerAttacks attacks;
     public bool Up = false;
@@ -13,6 +14,7 @@ public class BeanWrangler : MonoBehaviour
     public bool Side = false;
     public bool Neutral = false;
     public bool Hide = false;
+    public OrroMasterHit orro;
 
     Rigidbody2D rb;
 
@@ -34,6 +36,14 @@ public class BeanWrangler : MonoBehaviour
         Down = false;
         Side = false;
         Neutral = false;
+    }
+
+    public void beanSpit(){
+        orro.spawnBeanSpit(facing,gameObject.transform.position);
+    }
+
+    public void multihit(){
+        orro.multihit();
     }
 
     // Update is called once per frame

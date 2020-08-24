@@ -53,6 +53,7 @@ public class NetworkEntityConverter : Newtonsoft.Json.Converters.CustomCreationC
             case "MegurinStorm":
             case "GuidingBolt":
             case "HaloPlatform":
+            case "BeanSpit":
                 return new BasicProjectileSync.ProjectileData();
             case "Bean":
                 return new BeanSync.BeanData();
