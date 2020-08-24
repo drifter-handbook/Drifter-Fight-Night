@@ -98,6 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9fa41060c8e88848bc207d9557175ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attacks: {fileID: 0}
   duration: 7
 --- !u!95 &5866893930373629177
 Animator:
@@ -141,8 +142,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3328878544896965218}
-  - component: {fileID: 4042707346068330113}
   - component: {fileID: 2371087433748199821}
+  - component: {fileID: 6407793262804036119}
   m_Layer: 9
   m_Name: HitBox
   m_TagString: Untagged
@@ -164,20 +165,6 @@ Transform:
   m_Father: {fileID: 8167682399175016614}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4042707346068330113
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7978536591016880782}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parent: {fileID: 4855802820966953319}
-  useData: {fileID: 11400000, guid: c0ec5ef07a9557e45909bf03d962e437, type: 2}
 --- !u!61 &2371087433748199821
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -204,3 +191,17 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.250582, y: 0.68867075}
   m_EdgeRadius: 0
+--- !u!114 &6407793262804036119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7978536591016880782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 339a7873ee6ae514e871c8828b9e1206, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parent: {fileID: 0}
+  useData: {fileID: 11400000, guid: c0ec5ef07a9557e45909bf03d962e437, type: 2}
