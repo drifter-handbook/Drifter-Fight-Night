@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum PlayerStatusEffect
 {
-    AMBERED, PLANTED, STUNNED, EXPOSED, HIT, FEATHERWEIGHT, END_LAG, KNOCKBACK, INVULN, ARMOUR, REVERSED
+    AMBERED, PLANTED, STUNNED, EXPOSED, HIT, FEATHERWEIGHT, END_LAG, KNOCKBACK, INVULN, ARMOUR, REVERSED, SLOW
 }
 
 
@@ -138,8 +138,8 @@ public class PlayerStatus : MonoBehaviour
         	if(statusEffects[ef] == delay){
         		sequence = 0f;
         		statusEffects[ef] = 0f;
-        	} 
+        	}
         }
-        
+
     }
 }

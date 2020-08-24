@@ -9,6 +9,7 @@ public class BoltoCollision : HitboxCollision
     MegurinMasterHit megurin;
     // Start is called before the first frame update
     CapsuleCollider2D capsule;
+    public PlayerStatus status;
     int boltCharge;
     void Start()
     {
@@ -39,8 +40,7 @@ public class BoltoCollision : HitboxCollision
             string player = playerType.Type;
             if(useData != null){
                 if (boltCharge >=3){
-                  useData.HitStun = 3;
-                  useData.Knockback = 1;
+                  useData.StatusEffect = PlayerStatusEffect.STUNNED;
                   megurin.resetLightning();
                 }
                 hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, -AttackID, AttackType, useData);

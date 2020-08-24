@@ -36,7 +36,6 @@ public class PlayerMovement : MonoBehaviour
     public float varyJumpHeightForce = 10f;
 
     PlayerStatus status;
-    public int freeze = 0;
 
     Drifter drifter;
 
@@ -60,10 +59,6 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        Debug.Log("froze " + this.freeze);
-        if (this.freeze > 0){
-          this.freeze -= 1;
-        }
         if (!GameController.Instance.IsHost || GameController.Instance.IsPaused)
         {
             return;
@@ -107,7 +102,7 @@ public class PlayerMovement : MonoBehaviour
             drifter.input.MoveX *= -1;
         }
 
-        if (moving && canAct && this.freeze == 0)
+        if (moving && canAct)
         {
         	//UnityEngine.Debug.Log("BEFORE velocity: " + rb.velocity.x);
         	updateFacing();
@@ -199,9 +194,6 @@ public class PlayerMovement : MonoBehaviour
         else if(!status.HasStatusEffect(PlayerStatusEffect.END_LAG)){
             rb.gravityScale = baseGravity;
         }
-    }
-    public void registerFreeze(){
-        this.freeze = 600;
     }
     public void updateFacing()
     {

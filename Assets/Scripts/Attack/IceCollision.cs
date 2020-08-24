@@ -39,7 +39,7 @@ public class IceCollision : HitboxCollision
             string player = playerType.Type;
             if(useData != null){
                 if (iceCharge >=6){
-                  hurtbox.parent.GetComponent<PlayerMovement>().registerFreeze();
+                  useData.StatusEffect = PlayerStatusEffect.SLOW;
                   megurin.resetIce();
                 }
                 hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, -AttackID, AttackType, useData);
