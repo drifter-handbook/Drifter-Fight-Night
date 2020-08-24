@@ -159,7 +159,7 @@ public class OrroMasterHit : MasterHit
             {
                 hitbox.parent = drifter.gameObject;
                 hitbox.AttackID = attacks.AttackID;
-                hitbox.AttackType = attacks.AttackType;
+                hitbox.AttackType = DrifterAttackType.W_Neutral;
                 hitbox.Active = true;
             }
     }
