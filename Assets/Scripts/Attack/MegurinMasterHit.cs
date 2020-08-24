@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,6 +13,7 @@ public class MegurinMasterHit : MasterHit
     public SpriteRenderer sprite;
     GameObject activeStorm;
     Vector2 HeldDirection;
+
     int neutralWCharge = 0;
 
     public int facing;

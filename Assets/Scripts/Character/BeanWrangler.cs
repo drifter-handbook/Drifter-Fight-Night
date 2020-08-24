@@ -8,15 +8,17 @@ public class BeanWrangler : MonoBehaviour
     public bool hide;
     public Animator anim;
     public PlayerAttacks attacks;
+    public bool Up = false;
+    public bool Down = false;
+    public bool Side = false;
+    public bool Neutral = false;
+    public bool Hide = false;
+
     Rigidbody2D rb;
 
     void Start()
     {
         
-    }
-
-    public void turn(int facing){
-        transform.localScale = new Vector3(transform.localScale.x * facing,transform.localScale.y,transform.localScale.z);
     }
 
     IEnumerator delete(){
@@ -25,13 +27,25 @@ public class BeanWrangler : MonoBehaviour
         yield break;
     }
 
-    public void setAttackId(){
-        attacks.SetMultiHitAttackID();
+    //Call after saving states?
+    public void resetAnimatorTriggers()
+    {
+        Up = false;
+        Down = false;
+        Side = false;
+        Neutral = false;
     }
 
     // Update is called once per frame
     void Update()
     {
+        anim.SetBool("Hide", Hide);
+        if (Side) anim.SetTrigger("Side");
+        if (Down) anim.SetTrigger("Down");
+        if (Up) anim.SetTrigger("Up");
+        if (Neutral) anim.SetTrigger("Neutral");
+
+        resetAnimatorTriggers();
 
     }
 }

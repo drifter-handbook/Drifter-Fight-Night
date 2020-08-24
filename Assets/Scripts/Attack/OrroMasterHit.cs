@@ -46,14 +46,16 @@ public class OrroMasterHit : MasterHit
         entities.AddEntity(orroOrb);
     }
 
-    public void dodgeRoll(){
+    public void dodgeRoll()
+    {
         beanSpeed = 10f;
         facing = movement.Facing;
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.8f);
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.4f);
-        //rb.velocity = new Vector2(facing * 25f,0f);
     }
-    public void rollTele(){
+
+    public void rollTele()
+    {
         facing = movement.Facing;
         rb.position += new Vector2(facing* 10,0);
     }
@@ -105,7 +107,7 @@ public class OrroMasterHit : MasterHit
             }
             BeanProj.GetComponent<BeanWrangler>().attacks=attacks;
             beanRemote = BeanProj;
-            localBeanAnim.SetBool("Hide", true);
+            localBean.GetComponent<BeanWrangler>().Hide = true;
             drifter.SetAnimatorBool("Empowered",false);
             entities.AddEntity(BeanProj);
             beanSpeed = 20f;
@@ -122,44 +124,50 @@ public class OrroMasterHit : MasterHit
 
     public void BeanSide()
     {
-        if(beanRemote){
-            beanRemote.GetComponent<BeanWrangler>().anim.SetTrigger("Side");
-        }
-        else{
-           localBeanAnim.SetTrigger("Side");
-        }
+        beanAttack("Side").GetComponent<BeanWrangler>().Side = true;
     }
     public void BeanDown()
     {
-        if(beanRemote){
-            beanRemote.GetComponent<BeanWrangler>().anim.SetTrigger("Down");
-        }
-        else{
-           localBeanAnim.SetTrigger("Down");
-        }
+        beanAttack("Down").GetComponent<BeanWrangler>().Down = true;
     }
     public void BeanUp()
     {
-        if(beanRemote){
-            beanRemote.GetComponent<BeanWrangler>().anim.SetTrigger("Up");
-        }
-        else{
-           localBeanAnim.SetTrigger("Up");
-        }
+        beanAttack("Up").GetComponent<BeanWrangler>().Up = true;
     }
     public void BeanNeutral()
     {
+        beanAttack("Neutral").GetComponent<BeanWrangler>().Neutral = true;
+    }
+
+    private GameObject beanAttack(string direction)
+    {
+        attacks.SetMultiHitAttackID();
+
         if(beanRemote){
-            beanRemote.GetComponent<BeanWrangler>().anim.SetTrigger("Neutral");
+            refreshBeanHitboxes(beanRemote);
+            return beanRemote;
         }
         else{
-           localBeanAnim.SetTrigger("Neutral");
+           refreshBeanHitboxes(localBean);
+           return localBean;
         }
+
     }
+
+    private void refreshBeanHitboxes(GameObject bean){
+        foreach (HitboxCollision hitbox in bean.GetComponentsInChildren<HitboxCollision>(true))
+            {
+                hitbox.parent = drifter.gameObject;
+                hitbox.AttackID = attacks.AttackID;
+                hitbox.AttackType = attacks.AttackType;
+                hitbox.Active = true;
+            }
+    }
+
     public void BeanRecall()
     {
         Destroy(beanRemote);
-        localBeanAnim.SetBool("Hide",false);
+        localBean.GetComponent<BeanWrangler>().Hide = false;
         drifter.SetAnimatorBool("Empowered",true);
     }
 

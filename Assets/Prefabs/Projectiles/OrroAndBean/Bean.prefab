@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4742937968009250531}
   - component: {fileID: 9016843426336431674}
   - component: {fileID: 8052798006598364633}
+  - component: {fileID: 4691752932841800066}
   m_Layer: 0
   m_Name: Bean
   m_TagString: Untagged
@@ -140,6 +141,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hide: 0
   anim: {fileID: 4742937968009250531}
+  attacks: {fileID: 0}
+--- !u!114 &4691752932841800066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2710562965551637604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a4ff611df11c79459f50125667942c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  latency: 0.025
+  Name: Bean
 --- !u!1 &4098096189212201271
 GameObject:
   m_ObjectHideFlags: 0
