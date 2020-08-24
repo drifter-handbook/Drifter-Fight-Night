@@ -27,7 +27,7 @@ public class HitSparks : MonoBehaviour
     public void SetAnimation(int ef)
     {
         Effect = ef;
-        SoundPlayer.clip = HitSounds[ef+1];
+        SoundPlayer.clip = HitSounds[ef-1];
         SoundPlayer.Play();
      }
 
