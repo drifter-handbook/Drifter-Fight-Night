@@ -82,6 +82,8 @@ public class Drifter : MonoBehaviour
         if (state.W_Neutral) animator.SetTrigger("W_Neutral");
         if (state.W_Down) animator.SetTrigger("W_Down");
         if (state.Roll) animator.SetTrigger("Roll");
+        if (state.GrabbedPlayer) animator.SetTrigger("GrabbedPlayer");
+
     }
     // used by host
     public void SetAnimatorTrigger(string s)
@@ -119,6 +121,9 @@ public class Drifter : MonoBehaviour
             case "Roll":
                 animatorState.Roll = true;
                 break;
+            case "GrabbedPlayer":
+                animatorState.GrabbedPlayer = true;
+                break;    
         }
     }
     public void ResetAnimatorTriggers()
@@ -134,6 +139,7 @@ public class Drifter : MonoBehaviour
         animatorState.Roll = false;
         animatorState.HasCharge = false;
         animatorState.HitStun = false;
+        animatorState.GrabbedPlayer = false;
 
     }
     public void SetAnimatorBool(string s, bool value)
@@ -183,6 +189,7 @@ public class PlayerAnimatorState : ICloneable
     public bool Roll = false;
     public bool HasCharge = false;
     public bool HitStun = false;
+    public bool GrabbedPlayer = false;
 
     public object Clone()
     {
@@ -202,7 +209,8 @@ public class PlayerAnimatorState : ICloneable
             W_Neutral = W_Neutral,
             Roll = Roll,
             HasCharge = HasCharge,
-            HitStun = HitStun
+            HitStun = HitStun,
+            GrabbedPlayer = GrabbedPlayer
         };
     }
 }

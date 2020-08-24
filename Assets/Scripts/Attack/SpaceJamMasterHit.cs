@@ -87,13 +87,6 @@ public class SpaceJamMasterHit : MasterHit
         }
     }
 
-
-    // public override void callTheRecovery()
-    // {
-    //     rb.gravityScale = 0;
-    //     rb.velocity = Vector2.zero;
-    // }
-
     public void callTheRecovery(){
         facing = movement.Facing;
         rb.gravityScale = 0;
