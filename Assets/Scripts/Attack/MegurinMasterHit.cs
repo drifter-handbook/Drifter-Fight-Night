@@ -15,6 +15,9 @@ public class MegurinMasterHit : MasterHit
     Vector2 HeldDirection;
 
     int neutralWCharge = 0;
+    int lightningCharge = 0;
+    int windCharge = 0;
+    int iceCharge = 0;
 
     public int facing;
 
@@ -63,7 +66,7 @@ public class MegurinMasterHit : MasterHit
     }
 
     public void dodgeRoll(){
-        
+
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.7f);
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
     }
@@ -156,6 +159,30 @@ public class MegurinMasterHit : MasterHit
         drifter.Charge = 0;
     }
 
+    public void addLightning(){
+      this.lightningCharge += 1;
+      Debug.Log("this " + this.lightningCharge);
+    }
+    public int getLightning(){
+      return this.lightningCharge;
+    }
+
+    public void resetLightning(){
+      this.lightningCharge = 0;
+    }
+
+    public void addIce(){
+      this.iceCharge += 1;
+      Debug.Log("this " + this.iceCharge);
+    }
+    public int getIce(){
+      return this.iceCharge;
+    }
+
+    public void resetIce(){
+      this.iceCharge = 0;
+    }
+
 
     public void chargeNeutralW(){
         if(neutralWCharge < 10){
@@ -177,7 +204,7 @@ public class MegurinMasterHit : MasterHit
         else{
             status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,1f);
         }
-          
+
     }
     public void fireLightningbolt(){
         neutralWCharge = 0;
@@ -187,7 +214,7 @@ public class MegurinMasterHit : MasterHit
         else{
             spawnSmallBolt();
         }
-          
+
     }
     public void removeBoltStored(){
          drifter.SetAnimatorBool("HasCharge",false);

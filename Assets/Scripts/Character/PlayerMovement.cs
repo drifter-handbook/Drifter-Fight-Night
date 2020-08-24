@@ -36,6 +36,7 @@ public class PlayerMovement : MonoBehaviour
     public float varyJumpHeightForce = 10f;
 
     PlayerStatus status;
+    public int freeze = 0;
 
     Drifter drifter;
 
@@ -59,7 +60,10 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-
+        Debug.Log("froze " + this.freeze);
+        if (this.freeze > 0){
+          this.freeze -= 1;
+        }
         if (!GameController.Instance.IsHost || GameController.Instance.IsPaused)
         {
             return;
@@ -70,7 +74,7 @@ public class PlayerMovement : MonoBehaviour
         bool canAct = !status.HasStunEffect() && !animator.GetBool("Guarding");
         bool canGuard = !status.HasStunEffect();
         bool moving = drifter.input.MoveX != 0;
-        
+
         //Handle jump resets
         if(animator.GetBool("Grounded"))
         {
@@ -79,7 +83,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 currentJumps--;
             }
-            
+
         }
         else if(IsGrounded()){
             //landing
@@ -103,7 +107,7 @@ public class PlayerMovement : MonoBehaviour
             drifter.input.MoveX *= -1;
         }
 
-        if (moving && canAct)
+        if (moving && canAct && this.freeze == 0)
         {
         	//UnityEngine.Debug.Log("BEFORE velocity: " + rb.velocity.x);
         	updateFacing();
@@ -143,7 +147,7 @@ public class PlayerMovement : MonoBehaviour
 
             drifter.SetAnimatorTrigger("Roll");
             updateFacing();
-        } 
+        }
 
         else if (drifter.input.Guard && canGuard)
         {
@@ -196,7 +200,9 @@ public class PlayerMovement : MonoBehaviour
             rb.gravityScale = baseGravity;
         }
     }
-
+    public void registerFreeze(){
+        this.freeze = 600;
+    }
     public void updateFacing()
     {
         if(flipSprite ^ drifter.input.MoveX > 0){
@@ -231,7 +237,7 @@ public class PlayerMovement : MonoBehaviour
         GameObject juiceParticle = Instantiate(entities.GetEntityPrefab("MovementParticle"), transform.position + pos, transform.rotation);
         juiceParticle.GetComponent<JuiceParticle>().mode = mode;
         juiceParticle.transform.localScale = new Vector3( juiceParticle.transform.localScale.x * Facing,juiceParticle.transform.localScale.y,1);
-        entities.AddEntity(juiceParticle);    
+        entities.AddEntity(juiceParticle);
     }
 
     private IEnumerator DelayedJump()
