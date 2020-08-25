@@ -103,12 +103,15 @@ public class OrroMasterHit : MasterHit
     {
         beanSpeed+=10f;
         if(beanSpeed >= 50){
-            anim.SetTrigger("Bean");
+            anim.SetTrigger("W_Neutral");
         }
     }
 
+    public void startFireBean(){
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.33f);
+    }
+
     public void fireBean(){
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.4f);
         if(anim.GetBool("Empowered")){
             facing = movement.Facing;
             Vector3 flip = new Vector3(facing *6.7f,6.7f,0f);
