@@ -58,6 +58,14 @@ public class MegurinMasterHit : MasterHit
 
     }
 
+    IEnumerator resetGauges()
+    {
+        yield return new WaitForSeconds(.2f);
+        lightningCharge = 0;
+        windCharge = 0;
+        iceCharge = 0;
+    }
+
     public SingleAttackData handleElements(SingleAttackData attackData, int element){
         //-1 lightning
         //0 wind
@@ -66,27 +74,21 @@ public class MegurinMasterHit : MasterHit
         switch(element){
             case -1:
                 if(lightningCharge >= elementChargeMax){
-                    lightningCharge = 0;
-                    windCharge = 0;
-                    iceCharge = 0;
                     attackData.StatusEffect = PlayerStatusEffect.STUNNED;
                     attackData.StatusDuration = .7f;
-                    UnityEngine.Debug.Log("ZAP");
+                    StartCoroutine(resetGauges());
                     return attackData;
                 }
                 else{
                     lightningCharge += attackData.AttackDamage;
-                    if(lightningCharge>elementChargeMax)lightningCharge =elementChargeMax;
+                    if(lightningCharge>elementChargeMax)lightningCharge = elementChargeMax;
                     break;
                 }
             case 0:
                 if(windCharge >= elementChargeMax){
-                    lightningCharge = 0;
-                    windCharge = 0;
-                    iceCharge = 0;
                     attackData.StatusEffect = PlayerStatusEffect.FEATHERWEIGHT;
                     attackData.StatusDuration = 5f;
-                    UnityEngine.Debug.Log("WIND");
+                    StartCoroutine(resetGauges());
                     return attackData;
                 }
                 else{
@@ -96,12 +98,9 @@ public class MegurinMasterHit : MasterHit
                 }
             case 1:
                 if(iceCharge >= elementChargeMax){
-                    lightningCharge = 0;
-                    windCharge = 0;
-                    iceCharge = 0;
                     attackData.StatusEffect = PlayerStatusEffect.SLOWED;
                     attackData.StatusDuration = 5f;
-                    UnityEngine.Debug.Log("ICE");
+                    StartCoroutine(resetGauges());
                     return attackData;
                 }
                 else{
@@ -144,7 +143,7 @@ public class MegurinMasterHit : MasterHit
         foreach (HitboxCollision hitbox in MegurinStorm.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
-            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackID = attacks.AttackID + 150;
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;
         }
@@ -225,7 +224,7 @@ public class MegurinMasterHit : MasterHit
             neutralWCharge +=1;
         }
         else{
-            sprite.color = new Color(0,60,255);
+            sprite.color = new Color(1f,1f,.5f);
             anim.SetBool("Empowered",true);
         }
     }

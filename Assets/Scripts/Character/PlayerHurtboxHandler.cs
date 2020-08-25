@@ -6,8 +6,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
 {
     // keep track of what attacks we've already processed
     // AttackID -> Timestamp
-    Dictionary<int, float> oldAttacks = new Dictionary<int, float>();
-    const float MAX_ATTACK_DURATION = 10f;
+    public Dictionary<int, float> oldAttacks = new Dictionary<int, float>();
+    const float MAX_ATTACK_DURATION = 7f;
 
     // for creating hitsparks
     NetworkEntityList Entities;
@@ -38,8 +38,6 @@ public class PlayerHurtboxHandler : MonoBehaviour
             hitbox.parent.GetComponent<PlayerAttacks>().Hit(attackType, attackID, hurtbox.parent);
 
             GetComponent<PlayerStatus>().ApplyStatusEffect(PlayerStatusEffect.HIT,.1f);
-            
-            
 
             // apply damage, ignored if invuln
             Drifter drifter = GetComponent<Drifter>();
@@ -69,7 +67,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 }
                 GetComponent<PlayerStatus>().ApplyStatusEffect(attackData.StatusEffect,attackData.StatusDuration);
 
-                if(!GetComponent<PlayerStatus>().HasArmour())
+                if(!GetComponent<PlayerStatus>().HasArmour() && attackData.KnockbackScale >= -1)
                 {
                     GetComponent<Rigidbody2D>().velocity = forceDir.normalized * (float)(((drifter.DamageTaken / 10 + drifter.DamageTaken * attackData.AttackDamage / 20)
                         * 200 / (drifter.drifterData.Weight + 100) * 1.4 * ((GetComponent<PlayerStatus>().HasStatusEffect(PlayerStatusEffect.EXPOSED) || GetComponent<PlayerStatus>().HasStatusEffect(PlayerStatusEffect.FEATHERWEIGHT))?1.5f:1)) * attackData.KnockbackScale + attackData.Knockback);

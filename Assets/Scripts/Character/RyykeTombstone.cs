@@ -43,7 +43,7 @@ public class RyykeTombstone : MonoBehaviour
 
  	IEnumerator Arm()
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1.65f);
         armed = true;
         yield break;
     }
@@ -61,18 +61,18 @@ public class RyykeTombstone : MonoBehaviour
             StartCoroutine(Arm());
             return;
         }
-
-        if(!armed && col.gameObject != Ryyke && col.gameObject != Ryyke.GetComponentInChildren<HurtboxCollision>().gameObject){
-            anim.SetBool("Grounded",false);
-            rb.velocity=Vector2.zero;
-            Break();
-        }
     }
 
     void OnTriggerStay2D(Collider2D col)
     {
 
-        if(armed && col.gameObject != Ryyke && col.gameObject.tag == "Player") //&& col.gameObject != hitbox.parent)
+        if(!armed && col.gameObject != Ryyke && col.gameObject != Ryyke.GetComponentInChildren<HurtboxCollision>().gameObject && col.gameObject.tag != "Ground"){
+            anim.SetBool("Grounded",false);
+            rb.velocity=Vector2.zero;
+            Break();
+        }
+
+        else if(armed && col.gameObject != Ryyke && col.gameObject.tag == "Player") //&& col.gameObject != hitbox.parent)
         {
             anim.SetTrigger("Activate");
             StartCoroutine(Delete());
