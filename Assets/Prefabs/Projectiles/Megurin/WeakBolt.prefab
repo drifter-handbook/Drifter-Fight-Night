@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 710670958068765235}
   - component: {fileID: 8331096318131152715}
-  - component: {fileID: 3675149855179986105}
+  - component: {fileID: 9180539709865902785}
   m_Layer: 9
   m_Name: Hitbox
   m_TagString: Untagged
@@ -48,7 +48,7 @@ CapsuleCollider2D:
   m_Offset: {x: 0.993257, y: -0.0070435884}
   m_Size: {x: 2.1224198, y: 0.15938185}
   m_Direction: 1
---- !u!114 &3675149855179986105
+--- !u!114 &9180539709865902785
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -57,11 +57,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2530289922174557791}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0981f7ec34319d49a603cfc727c73f6, type: 3}
+  m_Script: {fileID: 11500000, guid: c0590c2ccf3fcca42b52b658fedfa594, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 0}
   useData: {fileID: 11400000, guid: 8ce51ce71de00ed46bdd046556f40e8c, type: 2}
+  element: -1
 --- !u!1 &6652007317158084390
 GameObject:
   m_ObjectHideFlags: 0

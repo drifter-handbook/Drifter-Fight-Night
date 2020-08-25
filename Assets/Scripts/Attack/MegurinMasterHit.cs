@@ -15,9 +15,9 @@ public class MegurinMasterHit : MasterHit
     Vector2 HeldDirection;
 
     int neutralWCharge = 0;
-    int lightningCharge = 0;
-    int windCharge = 0;
-    int iceCharge = 0;
+    float lightningCharge = 0f;
+    float windCharge = 0f;
+    float iceCharge = 0f;
 
     public int facing;
 
@@ -57,6 +57,53 @@ public class MegurinMasterHit : MasterHit
 
     }
 
+    public SingleAttackData handleElements(SingleAttackData attackData, int element){
+        //-1 lightning
+        //0 wind
+        //1 ice
+
+        switch(element){
+            case -1:
+                if(lightningCharge >= 100){
+                    lightningCharge = 0;
+                    attackData.StatusEffect = PlayerStatusEffect.STUNNED;
+                    attackData.StatusDuration = .7f;
+                    return attackData;
+                }
+                else{
+                    lightningCharge += attackData.AttackDamage;
+                    break;
+                }
+            case 0:
+                if(windCharge >= 100){
+                    windCharge = 0;
+                    attackData.StatusEffect = PlayerStatusEffect.FEATHERWEIGHT;
+                    attackData.StatusDuration = 5f;
+                    return attackData;
+                }
+                else{
+                    windCharge += attackData.AttackDamage;
+                    break;
+                }
+            case 1:
+                if(iceCharge >= 100){
+                    iceCharge = 0;
+                    attackData.StatusEffect = PlayerStatusEffect.SLOWED;
+                    attackData.StatusDuration = 5f;
+                    return attackData;
+                }
+                else{
+                    iceCharge += attackData.AttackDamage;
+                    break;
+                }
+            default:
+                break;
+        }
+        attackData.StatusDuration = .1f;
+        attackData.StatusEffect = PlayerStatusEffect.HIT;
+        return attackData;
+    }
+    
     public void Nair(){
         attacks.SetMultiHitAttackID();
     }
@@ -158,31 +205,6 @@ public class MegurinMasterHit : MasterHit
     public void setWind(){
         drifter.Charge = 0;
     }
-
-    public void addLightning(){
-      this.lightningCharge += 1;
-      Debug.Log("this " + this.lightningCharge);
-    }
-    public int getLightning(){
-      return this.lightningCharge;
-    }
-
-    public void resetLightning(){
-      this.lightningCharge = 0;
-    }
-
-    public void addIce(){
-      this.iceCharge += 1;
-      Debug.Log("this " + this.iceCharge);
-    }
-    public int getIce(){
-      return this.iceCharge;
-    }
-
-    public void resetIce(){
-      this.iceCharge = 0;
-    }
-
 
     public void chargeNeutralW(){
         if(neutralWCharge < 10){

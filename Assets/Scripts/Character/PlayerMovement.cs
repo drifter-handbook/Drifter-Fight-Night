@@ -117,11 +117,15 @@ public class PlayerMovement : MonoBehaviour
             if(IsGrounded())
             {
             	//UnityEngine.Debug.Log("Ground Accell");
-            	rb.velocity = new Vector2(drifter.input.MoveX > 0 ? Mathf.Lerp(walkSpeed,rb.velocity.x,groundAccelerationTime) : Mathf.Lerp(-walkSpeed,rb.velocity.x,groundAccelerationTime), rb.velocity.y);
+            	rb.velocity = new Vector2(drifter.input.MoveX > 0 ? 
+                    Mathf.Lerp((!status.HasStatusEffect(PlayerStatusEffect.SLOWED)?walkSpeed:(.6f*walkSpeed)),rb.velocity.x,groundAccelerationTime) :
+                    Mathf.Lerp((!status.HasStatusEffect(PlayerStatusEffect.SLOWED)?-walkSpeed:(-.6f*walkSpeed)),rb.velocity.x,groundAccelerationTime), rb.velocity.y);
             }
             else
             {
-            	rb.velocity = new Vector2(drifter.input.MoveX > 0 ? Mathf.Lerp(airSpeed,rb.velocity.x,airAccelerationTime) : Mathf.Lerp(-airSpeed,rb.velocity.x,airAccelerationTime), rb.velocity.y);
+            	rb.velocity = new Vector2(drifter.input.MoveX > 0 ? 
+                    Mathf.Lerp((!status.HasStatusEffect(PlayerStatusEffect.SLOWED)?airSpeed:(.6f*airSpeed)),rb.velocity.x,airAccelerationTime) : 
+                    Mathf.Lerp((!status.HasStatusEffect(PlayerStatusEffect.SLOWED)?-airSpeed:(-.6f*airSpeed)),rb.velocity.x,airAccelerationTime), rb.velocity.y);
             }
 
             //UnityEngine.Debug.Log("AFTER velocity: " + rb.velocity.x);

@@ -11,13 +11,11 @@ public class HitboxCollision : MonoBehaviour
     public DrifterAttackType AttackType { get; set; }
     public bool Active { get; set; } = true;
     public SingleAttackData useData;
-    SingleAttackData attackData;
+    protected SingleAttackData attackData;
 
     // Start is called before the first frame update
-    CapsuleCollider2D capsule;
     void Start()
     {
-        capsule = GetComponentInChildren<CapsuleCollider2D>();
         playerType = parent.GetComponent<INetworkSync>();
     }
 
