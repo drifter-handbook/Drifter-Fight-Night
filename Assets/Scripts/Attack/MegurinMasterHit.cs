@@ -64,10 +64,13 @@ public class MegurinMasterHit : MasterHit
 
         switch(element){
             case -1:
-                if(lightningCharge >= 100){
+                if(lightningCharge >= 50){
                     lightningCharge = 0;
+                    windCharge = 0;
+                    iceCharge = 0;
                     attackData.StatusEffect = PlayerStatusEffect.STUNNED;
                     attackData.StatusDuration = .7f;
+                    UnityEngine.Debug.Log("ZAP");
                     return attackData;
                 }
                 else{
@@ -75,10 +78,13 @@ public class MegurinMasterHit : MasterHit
                     break;
                 }
             case 0:
-                if(windCharge >= 100){
+                if(windCharge >= 50){
+                    lightningCharge = 0;
                     windCharge = 0;
+                    iceCharge = 0;
                     attackData.StatusEffect = PlayerStatusEffect.FEATHERWEIGHT;
                     attackData.StatusDuration = 5f;
+                    UnityEngine.Debug.Log("WIND");
                     return attackData;
                 }
                 else{
@@ -86,10 +92,13 @@ public class MegurinMasterHit : MasterHit
                     break;
                 }
             case 1:
-                if(iceCharge >= 100){
+                if(iceCharge >= 50){
+                    lightningCharge = 0;
+                    windCharge = 0;
                     iceCharge = 0;
                     attackData.StatusEffect = PlayerStatusEffect.SLOWED;
                     attackData.StatusDuration = 5f;
+                    UnityEngine.Debug.Log("ICE");
                     return attackData;
                 }
                 else{
@@ -99,6 +108,7 @@ public class MegurinMasterHit : MasterHit
             default:
                 break;
         }
+        UnityEngine.Debug.Log("RESET");
         attackData.StatusDuration = .1f;
         attackData.StatusEffect = PlayerStatusEffect.HIT;
         return attackData;

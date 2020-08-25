@@ -15,9 +15,8 @@ public class MegurinHitboxCollision : HitboxCollision
 
 
     // Start is called before the first frame update   
-    void OnTriggerStay2D(Collider2D collider)
+    void OnTriggerEnter2D(Collider2D collider)
     {
-        UnityEngine.Debug.Log("MEGURIN HIT");
         //Debug.Log("name " + name + " " + (gameObject.activeSelf || gameObject.activeInHierarchy));
         HurtboxCollision hurtbox = collider.GetComponent<HurtboxCollision>();
     
@@ -33,5 +32,9 @@ public class MegurinHitboxCollision : HitboxCollision
             }
             
         }
+    }
+
+    void OnTriggerStay2D(Collider2D collider){
+
     }
 }
