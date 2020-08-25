@@ -14,6 +14,8 @@ public class RykkeMasterHit : MasterHit
     public TetherRange ledgeRange;
     GameObject activeStone;
     PlayerStatus status;
+    public AudioSource audio;
+    public AudioClip[] audioClips;
 
     
 
@@ -209,6 +211,7 @@ public class RykkeMasterHit : MasterHit
     public void grantStack()
     {
     	if(drifter.Charge < 3){
+            audio.PlayOneShot(audioClips[0]);
     		drifter.Charge++;
     		//anim.SetBool("Empowered",true);
             drifter.SetAnimatorBool("Empowered",true);
