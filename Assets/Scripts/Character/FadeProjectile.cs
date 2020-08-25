@@ -25,7 +25,7 @@ public class FadeProjectile : MonoBehaviour
 
         if(col.gameObject.name == "Reflector"){
             rb.velocity =  rb.velocity * -2.5f;
-            foreach (HitboxCollision hitbox in gameObject.GetComponentsInChildren<HitboxCollision>(true))
+            foreach (HitboxCollision hitbox in col.gameObject.GetComponentsInChildren<HitboxCollision>(true))
                 {
                     hitbox.parent = col.gameObject.GetComponentInChildren<HitboxCollision>().parent;
                     //Mkae this not suck later
@@ -33,7 +33,7 @@ public class FadeProjectile : MonoBehaviour
                 }
 
         }
-        else if(col.gameObject.name == "Hurtboxes")
+        else if(col.gameObject.name == "Hurtboxes" && col.GetComponent<HurtboxCollision>() != this.gameObject.GetComponentInChildren<HitboxCollision>().parent.GetComponentInChildren<HurtboxCollision>())
         {
             StartCoroutine(Fade(.1f));
         }

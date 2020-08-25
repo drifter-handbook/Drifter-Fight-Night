@@ -62,7 +62,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 6949512207643572198}
   useData: {fileID: 11400000, guid: afbcc1a56b667d4478d389ea996a633e, type: 2}
-  element: 2
+  element: 0
 --- !u!114 &1839771838832836201
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77,6 +77,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 5813596663097594925}
   sprite: {fileID: 2613209421641134793}
+  lightningCharge: 0
+  windCharge: 0
+  iceCharge: 0
   facing: 0
 --- !u!114 &1833645724151641344
 MonoBehaviour:
@@ -92,7 +95,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 6949512207643572198}
   useData: {fileID: 0}
-  element: 2
+  element: 0
 --- !u!114 &4218063540468515608
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107,7 +110,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 6949512207643572198}
   useData: {fileID: 0}
-  element: 2
+  element: 0
 --- !u!114 &3761947454739589551
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -311,6 +314,11 @@ PrefabInstance:
         type: 3}
       propertyPath: airAccelerationTime
       value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3106753082241659641, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: groundAccelerationTime
+      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 3106753082241659643, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}

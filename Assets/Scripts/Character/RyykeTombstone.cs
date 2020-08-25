@@ -62,7 +62,6 @@ public class RyykeTombstone : MonoBehaviour
             return;
         }
 
-        UnityEngine.Debug.Log(col.gameObject.name);
         if(!armed && col.gameObject != Ryyke && col.gameObject != Ryyke.GetComponentInChildren<HurtboxCollision>().gameObject){
             anim.SetBool("Grounded",false);
             rb.velocity=Vector2.zero;
@@ -72,7 +71,6 @@ public class RyykeTombstone : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D col)
     {
-        //UnityEngine.Debug.Log("ACTIVATE: " + col.gameObject.name);
 
         if(armed && col.gameObject != Ryyke && col.gameObject.tag == "Player") //&& col.gameObject != hitbox.parent)
         {

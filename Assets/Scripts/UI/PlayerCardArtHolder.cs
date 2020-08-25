@@ -44,6 +44,9 @@ public class PlayerCardArtHolder : MonoBehaviour
                 if(imageIndex !=6){
                     Destroy(playerCards[i].MegurinElements);
                 }
+                else{
+                    playerCards[i].MegurinElements.GetComponent<MegurinGauges>().megurin = drifter.GetComponentInChildren<MegurinMasterHit>();
+                }
 
                 playerCards[i].setChargeDrifter(drifter);
                 playerCards[i].setImages(faces[imageIndex], stocks[imageIndex]);

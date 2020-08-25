@@ -15,12 +15,12 @@ public class MegurinHitboxCollision : HitboxCollision
 
 
     // Start is called before the first frame update   
-    void OnTriggerEnter2D(Collider2D collider)
+    void OnTriggerStay2D(Collider2D collider)
     {
         //Debug.Log("name " + name + " " + (gameObject.activeSelf || gameObject.activeInHierarchy));
         HurtboxCollision hurtbox = collider.GetComponent<HurtboxCollision>();
     
-        if (hurtbox != null && AttackType != DrifterAttackType.Null)
+        if (hurtbox != null && hurtbox != this.parent.GetComponentInChildren<HurtboxCollision>() && AttackType != DrifterAttackType.Null)
         {
             if(useData != null){
 
@@ -32,9 +32,5 @@ public class MegurinHitboxCollision : HitboxCollision
             }
             
         }
-    }
-
-    void OnTriggerStay2D(Collider2D collider){
-
     }
 }

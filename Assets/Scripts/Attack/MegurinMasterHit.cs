@@ -15,9 +15,10 @@ public class MegurinMasterHit : MasterHit
     Vector2 HeldDirection;
 
     int neutralWCharge = 0;
-    float lightningCharge = 0f;
-    float windCharge = 0f;
-    float iceCharge = 0f;
+    public float lightningCharge = 0f;
+    public float windCharge = 0f;
+    public float iceCharge = 0f;
+    float elementChargeMax = 50f;
 
     public int facing;
 
@@ -64,7 +65,7 @@ public class MegurinMasterHit : MasterHit
 
         switch(element){
             case -1:
-                if(lightningCharge >= 50){
+                if(lightningCharge >= elementChargeMax){
                     lightningCharge = 0;
                     windCharge = 0;
                     iceCharge = 0;
@@ -75,10 +76,11 @@ public class MegurinMasterHit : MasterHit
                 }
                 else{
                     lightningCharge += attackData.AttackDamage;
+                    if(lightningCharge>elementChargeMax)lightningCharge =elementChargeMax;
                     break;
                 }
             case 0:
-                if(windCharge >= 50){
+                if(windCharge >= elementChargeMax){
                     lightningCharge = 0;
                     windCharge = 0;
                     iceCharge = 0;
@@ -89,10 +91,11 @@ public class MegurinMasterHit : MasterHit
                 }
                 else{
                     windCharge += attackData.AttackDamage;
+                    if(windCharge>elementChargeMax)windCharge = elementChargeMax;
                     break;
                 }
             case 1:
-                if(iceCharge >= 50){
+                if(iceCharge >= elementChargeMax){
                     lightningCharge = 0;
                     windCharge = 0;
                     iceCharge = 0;
@@ -103,6 +106,7 @@ public class MegurinMasterHit : MasterHit
                 }
                 else{
                     iceCharge += attackData.AttackDamage;
+                    if(iceCharge>elementChargeMax)iceCharge = elementChargeMax;
                     break;
                 }
             default:
