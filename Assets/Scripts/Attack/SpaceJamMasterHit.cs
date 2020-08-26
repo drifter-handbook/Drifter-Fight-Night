@@ -99,11 +99,11 @@ public class SpaceJamMasterHit : MasterHit
     public void chargeNeutral()
     {
         
-        if(charges < 35){
+        if(charges < 30){
             charges++;
             
         }
-        if(charges >= 35){
+        if(charges >= 30){
             audio.Stop();
             audio.PlayOneShot(audioClips[2],1f);
             drifter.SetAnimatorBool("Empowered",true);

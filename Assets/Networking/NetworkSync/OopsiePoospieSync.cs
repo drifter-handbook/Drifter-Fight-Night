@@ -35,6 +35,7 @@ public class OopsiePoospieSync : MonoBehaviour, INetworkSync
         {
             t = time / latency;
         }
+        GetComponent<OopsiePoopsie>().empowered = oldEmp;
         transform.position = Vector3.Lerp(oldPos, targetPos, t);
     }
 

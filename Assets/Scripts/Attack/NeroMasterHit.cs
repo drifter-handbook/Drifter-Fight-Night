@@ -75,22 +75,26 @@ public class NeroMasterHit : MasterHit
     }
 
     public void neutralWCharge(){
-    	
+    	        
         rb.gravityScale = .1f;
         dashDistance += 10;
         if(dashDistance>=80)drifter.SetAnimatorBool("HasCharge",true);
      }
 
      public void neutralWDash(){
+        facing = movement.Facing;
 
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.5f);
         status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.4f);
-        rb.velocity = new Vector3(facing * dashDistance, 0);
+        rb.velocity = new Vector3( facing * dashDistance, 0);
         rb.gravityScale = 0;
         dashDistance = 30f;
         drifter.SetAnimatorBool("HasCharge",false);
     }
-         
+    
+    public override void callTheNeutralW(){
+        facing = movement.Facing;
+    }     
 
     public void counter(){
         if(!status.HasInulvernability()){
