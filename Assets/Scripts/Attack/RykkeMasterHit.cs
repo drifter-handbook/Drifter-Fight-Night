@@ -152,7 +152,7 @@ public class RykkeMasterHit : MasterHit
     {
         facing = movement.Facing;
         Vector3 flip = new Vector3(facing *8f,8f,1f);
-        Vector3 loc = new Vector3(facing *6.5f,0f,0f);
+        Vector3 loc = new Vector3(facing *5f,0f,0f);
         GameObject HoldPerson = Instantiate(entities.GetEntityPrefab("HoldPerson"), transform.position + loc, transform.rotation);
         HoldPerson.transform.localScale = flip;
         foreach (HitboxCollision hitbox in HoldPerson.GetComponentsInChildren<HitboxCollision>(true))
