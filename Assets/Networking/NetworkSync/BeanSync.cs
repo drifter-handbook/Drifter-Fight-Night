@@ -89,7 +89,7 @@ public class BeanSync : MonoBehaviour, INetworkSync
             oldScale = new Vector3(beanData.xScale,beanData.yScale,1);
             holdUp = beanData.Up;
             holdDown = beanData.Down;
-            holdSide =beanData.Side;
+            holdSide = beanData.Side;
             holdNeutral = beanData.Neutral;
             holdHide = beanData.Hide;
 

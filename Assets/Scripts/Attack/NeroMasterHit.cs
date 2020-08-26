@@ -75,8 +75,7 @@ public class NeroMasterHit : MasterHit
     }
 
     public void neutralWCharge(){
-        
-        facing = movement.Facing;
+    	
         rb.gravityScale = .1f;
         dashDistance += 10;
         if(dashDistance>=80)drifter.SetAnimatorBool("HasCharge",true);

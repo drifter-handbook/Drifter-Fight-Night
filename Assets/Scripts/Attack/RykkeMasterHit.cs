@@ -92,7 +92,7 @@ public class RykkeMasterHit : MasterHit
         {
             // rb.velocity = new Vector2((-rb.position.x + playerRange.TetherPoint.x) *3f + 10 * facing, Mathf.Max(Mathf.Min((Mathf.Min(-rb.position.y,0) + playerRange.TetherPoint.x) *4f,20),0) +40);
             // attacks.resetRecovery();
-            rb.position = new Vector3(playerRange.TetherPoint.x -facing,playerRange.TetherPoint.y -1,0);
+            rb.position = new Vector3(playerRange.TetherPoint.x -.5f *facing,playerRange.TetherPoint.y +.5f,0);
             rb.velocity = new Vector3(facing*35, 45,0);
             if(movement.currentJumps < movement.numberOfJumps){
                 movement.currentJumps++;
