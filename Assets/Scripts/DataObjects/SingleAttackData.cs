@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum HitSpark
 {
-    NONE, POKE, BASH, PIERCE, GRAB ,GUARD_WEAK, GUARD_STRONG, CRIT, MAGICWEAK
+    NONE, POKE, BASH, PIERCE, GRAB ,GUARD_WEAK, GUARD_STRONG, SPIKE, MAGICWEAK
 }
 
 
@@ -37,7 +37,7 @@ public class SingleAttackData : ScriptableObject
     			return 5;	
     		case HitSpark.GUARD_WEAK:
     			return 6;
-            case HitSpark.CRIT:
+            case HitSpark.SPIKE:
                 return 7;
             case HitSpark.MAGICWEAK:
                 return 8;        

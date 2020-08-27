@@ -87,7 +87,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                     hitSparks.GetComponent<HitSparks>().SetAnimation(drifter.BlockReduction>.5?6:5);
                     hitSparks.transform.localScale = new Vector3(facingDir * 10f, 10f, 10f);
             }
-            else if(attackData.GetHitSpark() != 1){
+            else if(attackData.GetHitSpark() != 1 && attackData.GetHitSpark() != 8){
                 hitSparks.GetComponent<HitSparks>().SetAnimation(attackData.GetHitSpark());
                 hitSparks.transform.localScale = new Vector3(facingDir *-6f, 6f, 6f);
             }
@@ -96,7 +96,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 hitSparks.transform.localScale = new Vector3(facingDir *10f, 10f, 10f);
             }
             
-            hitSparks.transform.eulerAngles = new Vector3(0, 0, facingDir * (Mathf.Abs(attackData.AngleOfImpact) > 65f? Mathf.Sign(attackData.AngleOfImpact)*90f:0f));
+            hitSparks.transform.eulerAngles = new Vector3(0, 0, facingDir * ((Mathf.Abs(attackData.AngleOfImpact) > 65f && attackData.GetHitSpark() != 7)? Mathf.Sign(attackData.AngleOfImpact)*90f:0f));
 
 
             Entities.AddEntity(hitSparks);
