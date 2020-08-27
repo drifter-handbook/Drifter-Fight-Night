@@ -7,6 +7,7 @@ public class PlayerCardArtHolder : MonoBehaviour
     public Sprite[] faces = new Sprite[8];
     public Sprite[] stocks = new Sprite[8];
     public GameObject summaryCardPrefab;
+    public GameObject miniSummaryCardPrefab;
     public GameObject stockPrefab;
 
     private Drifter[] drifters;
@@ -30,7 +31,17 @@ public class PlayerCardArtHolder : MonoBehaviour
             int i = 0; //i know i know i just like foreach ok
             foreach (Drifter drifter in drifters)
             {
-                GameObject newCard = Instantiate(summaryCardPrefab, transform.position, transform.rotation);
+
+                GameObject newCard;
+                if (drifters.Length > 4)
+                {
+                    newCard = Instantiate(miniSummaryCardPrefab, transform.position, transform.rotation);
+                }
+                else
+                {
+                     newCard = Instantiate(summaryCardPrefab, transform.position, transform.rotation);
+                    
+                }
                 newCard.transform.SetParent(gameObject.transform, false);
                 newCard.transform.localScale = new Vector3(1, 1, 1);
                 playerCards[i] = newCard.GetComponent<PlayerCard>();
