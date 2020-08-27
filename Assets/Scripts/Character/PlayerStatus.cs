@@ -72,20 +72,14 @@ public class PlayerStatus : MonoBehaviour
 
     public int GetStatusToRender()
     {
-        // int powerTwoCode = 0;
-        // if(HasStatusEffect(PlayerStatusEffect.AMBERED))powerTwoCode+=1;
-        // if(HasStatusEffect(PlayerStatusEffect.PLANTED))powerTwoCode+=2;
-        // if(HasStatusEffect(PlayerStatusEffect.STUNNED))powerTwoCode+=4;
-        // if(HasStatusEffect(PlayerStatusEffect.EXPOSED))powerTwoCode+=8;
-        // if(HasStatusEffect(PlayerStatusEffect.FEATHERWEIGHT))powerTwoCode+=16;
-        // return powerTwoCode;
-
         if(HasStatusEffect(PlayerStatusEffect.AMBERED))return 1;
         if(HasStatusEffect(PlayerStatusEffect.PLANTED))return 2;
-        if(HasStatusEffect(PlayerStatusEffect.STUNNED) || HasStatusEffect(PlayerStatusEffect.REVERSED))return 3;
+        if(HasStatusEffect(PlayerStatusEffect.STUNNED))return 3;
         if(HasStatusEffect(PlayerStatusEffect.EXPOSED))return 4;
         if(HasStatusEffect(PlayerStatusEffect.FEATHERWEIGHT))return 5;
         if(HasStatusEffect(PlayerStatusEffect.REVERSED))return 6;
+        if(HasStatusEffect(PlayerStatusEffect.SLOWED))return 7;
+
 
         return 0;
     }
