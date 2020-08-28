@@ -11,11 +11,6 @@ public class BeanSync : MonoBehaviour, INetworkSync
     Vector3 oldPos;
     Vector3 oldScale;
     Vector3 targetPos;
-    bool holdUp = false;
-    bool holdDown = false;
-    bool holdSide = false;
-    bool holdNeutral = false;
-    bool holdHide = false;
 
     public string Type { get; private set; }
     public int ID { get; set; } = NetworkEntityList.NextID;
@@ -44,13 +39,6 @@ public class BeanSync : MonoBehaviour, INetworkSync
         }
         transform.position = Vector3.Lerp(oldPos, targetPos, t);
         transform.localScale = oldScale;
-
-        gameObject.GetComponent<BeanWrangler>().Up = holdUp;
-        gameObject.GetComponent<BeanWrangler>().Down = holdDown;
-        gameObject.GetComponent<BeanWrangler>().Side = holdSide;
-        gameObject.GetComponent<BeanWrangler>().Neutral = holdNeutral;
-        gameObject.GetComponent<BeanWrangler>().Hide = holdHide;
-
 
     }
 
@@ -87,11 +75,11 @@ public class BeanSync : MonoBehaviour, INetworkSync
             oldPos = transform.position;
             targetPos = new Vector3(beanData.x, beanData.y, beanData.z);
             oldScale = new Vector3(beanData.xScale,beanData.yScale,1);
-            holdUp = beanData.Up;
-            holdDown = beanData.Down;
-            holdSide = beanData.Side;
-            holdNeutral = beanData.Neutral;
-            holdHide = beanData.Hide;
+            gameObject.GetComponent<BeanWrangler>().Up = beanData.Up;
+            gameObject.GetComponent<BeanWrangler>().Down = beanData.Down;
+            gameObject.GetComponent<BeanWrangler>().Side = beanData.Side;
+            gameObject.GetComponent<BeanWrangler>().Neutral = beanData.Neutral;
+            gameObject.GetComponent<BeanWrangler>().Hide = beanData.Hide;
 
         }
     }

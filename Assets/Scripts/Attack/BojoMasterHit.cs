@@ -65,7 +65,7 @@ public class BojoMasterHit : MasterHit
         rb.velocity = new Vector2(facing * 40f,0f);
     }
 
-    public void callTheRecovery(){
+    public override void callTheRecovery(){
         facing = movement.Facing;
         rb.velocity = new Vector2(rb.velocity.x  + facing * 20,45);
     }

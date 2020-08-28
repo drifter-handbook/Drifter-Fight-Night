@@ -29,21 +29,19 @@ public class BeanWrangler : MonoBehaviour
         yield break;
     }
 
-    //Call after saving states?
-    public void resetAnimatorTriggers()
-    {
+    public void beanSpit(){
+        orro.spawnBeanSpit(facing,gameObject.transform.position);
+    }
+ 
+    public void multihit(){
+        orro.multihit();
+    }
+
+    void resetAnimatorTriggers(){
         Up = false;
         Down = false;
         Side = false;
         Neutral = false;
-    }
-
-    public void beanSpit(){
-        orro.spawnBeanSpit(facing,gameObject.transform.position);
-    }
-
-    public void multihit(){
-        orro.multihit();
     }
 
     // Update is called once per frame
@@ -54,7 +52,7 @@ public class BeanWrangler : MonoBehaviour
         if (Down) anim.SetTrigger("Down");
         if (Up) anim.SetTrigger("Up");
         if (Neutral) anim.SetTrigger("Neutral");
-
+   
         resetAnimatorTriggers();
 
     }

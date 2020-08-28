@@ -11,7 +11,6 @@ public class PlayerStatusSync : MonoBehaviour, INetworkSync
     Vector3 oldPos;
     Vector3 oldScale;
     Vector3 targetPos;
-    int oldMode;
 
     public string Type { get; private set; }
     public int ID { get; set; } = NetworkEntityList.NextID;
@@ -59,6 +58,7 @@ public class PlayerStatusSync : MonoBehaviour, INetworkSync
             // move from current position to final position in latency seconds
             time = 0f;
             gameObject.GetComponent<PlayerStatusController>().mode = projData.mode;
+            
         }
     }
 
