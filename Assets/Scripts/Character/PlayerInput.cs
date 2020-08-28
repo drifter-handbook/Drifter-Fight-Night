@@ -15,7 +15,7 @@ public class PlayerInput : MonoBehaviour
     {
 
         if(Time.time - timeOfFirstButton>1f) firstButtonPressed = false;
-        
+
         if (input == null)
         {
             return;
@@ -44,7 +44,6 @@ public class PlayerInput : MonoBehaviour
         //Doubletap down for platforms
         if(Input.GetKeyDown(keyBindings.downKey) && firstButtonPressed) {
              if(Time.time - timeOfFirstButton < 0.5f) {
-                Debug.Log("DoubleClicked");
                 input.MoveY--;
              } else {
                  firstButtonPressed = false;

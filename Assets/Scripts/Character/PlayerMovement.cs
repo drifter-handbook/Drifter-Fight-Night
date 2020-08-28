@@ -81,7 +81,7 @@ public class PlayerMovement : MonoBehaviour
         bool canGuard = !status.HasStunEffect();
         bool moving = drifter.input.MoveX != 0;
 
-        if(Time.time - dropThroughTime > .2f){
+        if(gameObject.layer != 8 && Time.time - dropThroughTime > .4f){
             gameObject.layer = 8;
         }
 
@@ -159,7 +159,6 @@ public class PlayerMovement : MonoBehaviour
 
         //Drop throuhg platforms
         if(canGuard && drifter.input.MoveY <-1){
-            UnityEngine.Debug.Log("DROPTHROUGH");
             gameObject.layer = 13;
             dropThroughTime = Time.time;
 
