@@ -50,14 +50,6 @@ public class PlayerHurtboxHandler : MonoBehaviour
             facingDir = facingDir == 0 ? 1 : facingDir;
             // rotate direction by angle of impact
             Vector2 forceDir = Quaternion.Euler(0, 0, attackData.AngleOfImpact * facingDir) * (facingDir * Vector2.right);
-            // how much damage matters to knockback
-            const float ARMOR = 180f;
-            float damageMultiplier = drifter != null ? (drifter.DamageTaken + ARMOR) / ARMOR : 1f;
-            if (drifter.animator.GetBool("Guarding"))
-            {
-                damageMultiplier = 0f;
-            }
-            float stunMultiplier = (drifter.DamageTaken+30)/100f;
             //Ignore knockback if invincible or armoured
             if(!GetComponent<PlayerStatus>().HasInulvernability() && (!drifter.animator.GetBool("Guarding") || attackData.isGrab)){
 
@@ -71,13 +63,11 @@ public class PlayerHurtboxHandler : MonoBehaviour
                         GetComponent<Rigidbody2D>().velocity = forceDir.normalized * KB;
                     }
                     if(attackData.HitStun != 0){
-                        GetComponent<PlayerStatus>()?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, (attackData.HitStun>0)?attackData.HitStun * stunMultiplier:(KB*.0055f + .1f));
+                        GetComponent<PlayerStatus>()?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, (attackData.HitStun>0)?attackData.HitStun:(KB*.0055f + .1f));
                     }
                 }
                 GetComponent<PlayerStatus>().ApplyStatusEffect(attackData.StatusEffect,attackData.StatusDuration);            
             }
-            
-            DamageSuperArmor(stunMultiplier * attackData.HitStun);
             // create hit sparks
             GameObject hitSparks = Instantiate(Entities.GetEntityPrefab("HitSparks"),
                 Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),

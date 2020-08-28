@@ -74,6 +74,10 @@ public class NeroMasterHit : MasterHit
         rb.gravityScale = gravityScale;
     }
 
+    public void resetCharge(){
+        dashDistance = 30f;
+    }
+
     public void neutralWCharge(){
     	        
         rb.gravityScale = .1f;
