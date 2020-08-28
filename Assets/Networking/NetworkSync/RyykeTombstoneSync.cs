@@ -11,7 +11,7 @@ public class RyykeTombstoneSync : MonoBehaviour, INetworkSync
     Vector3 oldPos;
     Vector3 oldScale;
     Vector3 targetPos;
-    bool grounded = false;
+    bool oldGrounded = false;
 
     public string Type { get; private set; }
     public int ID { get; set; } = NetworkEntityList.NextID;
@@ -39,7 +39,7 @@ public class RyykeTombstoneSync : MonoBehaviour, INetworkSync
             t = time / latency;
         }
         transform.position = Vector3.Lerp(oldPos, targetPos, t);
-        gameObject.GetComponent<RyykeTombstone>().grounded = grounded;
+        GetComponent<RyykeTombstone>().grounded = oldGrounded;
         transform.localScale = oldScale;
     }
 
@@ -72,7 +72,7 @@ public class RyykeTombstoneSync : MonoBehaviour, INetworkSync
             gameObject.GetComponent<RyykeTombstone>().grounded = projData.grounded;
             targetPos = new Vector3(projData.x, projData.y, projData.z);
             oldScale = new Vector3(projData.xScale,projData.yScale,1);
-            grounded = projData.grounded;
+            oldGrounded = projData.grounded;
 
         }
     }

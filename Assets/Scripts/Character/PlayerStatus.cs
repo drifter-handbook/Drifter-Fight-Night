@@ -11,17 +11,33 @@ public enum PlayerStatusEffect
 
 public class PlayerStatus : MonoBehaviour
 {
+    float time = 0f;
     Dictionary<PlayerStatusEffect, float> statusEffects = new Dictionary<PlayerStatusEffect, float>();
-	float sequence = 0f;
+
+    PlayerStatusEffect[] removeableEffects = {PlayerStatusEffect.STUNNED,PlayerStatusEffect.END_LAG,PlayerStatusEffect.REVERSED,PlayerStatusEffect.PLANTED,PlayerStatusEffect.EXPOSED};
+    System.Array allEffects = PlayerStatusEffect.GetValues(typeof(PlayerStatusEffect));
     // Start is called before the first frame update
     void Start()
     {
     }
-
+ 
     // Update is called once per frame
     void Update()
     {
-
+        if(time > .1f){
+            time = 0f;
+            foreach(PlayerStatusEffect ef in allEffects){
+                if(HasStatusEffect(ef) &&statusEffects[ef] > 0)
+                {
+                    statusEffects[ef]--;
+                }
+                else{
+                    statusEffects[ef] = 0;
+                }
+            }
+        }
+        time += Time.deltaTime;
+        
     }
     public bool HasInulvernability()
     {
@@ -45,6 +61,11 @@ public class PlayerStatus : MonoBehaviour
     {
         return HasStatusEffect(PlayerStatusEffect.END_LAG) || HasStatusEffect(PlayerStatusEffect.KNOCKBACK) || HasStatusEffect(PlayerStatusEffect.PLANTED) || HasStatusEffect(PlayerStatusEffect.STUNNED)|| HasStatusEffect(PlayerStatusEffect.AMBERED);
     }
+
+    public bool HasRemovableEffect()
+    {
+        return HasStatusEffect(PlayerStatusEffect.END_LAG) || HasStatusEffect(PlayerStatusEffect.PLANTED) || HasStatusEffect(PlayerStatusEffect.STUNNED)||  HasStatusEffect(PlayerStatusEffect.EXPOSED) || HasStatusEffect(PlayerStatusEffect.REVERSED);
+    }
     public bool HasEnemyStunEffect()
     {
         return HasStatusEffect(PlayerStatusEffect.KNOCKBACK) || HasStatusEffect(PlayerStatusEffect.PLANTED)|| HasStatusEffect(PlayerStatusEffect.STUNNED) || HasStatusEffect(PlayerStatusEffect.AMBERED);
@@ -58,16 +79,15 @@ public class PlayerStatus : MonoBehaviour
     }
     public void ApplyStatusEffect(PlayerStatusEffect ef, float duration)
     {
-        StartCoroutine(ApplyStatusEffectFor(ef, duration));
+        ApplyStatusEffectFor(ef, duration);
     }
 
     public void clearStatus()
     {
-        statusEffects[PlayerStatusEffect.PLANTED] = 0f;
-        statusEffects[PlayerStatusEffect.STUNNED] = 0f;
-        statusEffects[PlayerStatusEffect.EXPOSED] = 0f;
-        statusEffects[PlayerStatusEffect.REVERSED] = 0f;
-        statusEffects[PlayerStatusEffect.END_LAG] = 0f;
+        foreach(PlayerStatusEffect ef in removeableEffects)
+        {
+         if(statusEffects.ContainsKey(ef))statusEffects[ef] = 0f;
+        }
     }
 
     public int GetStatusToRender()
@@ -84,19 +104,23 @@ public class PlayerStatus : MonoBehaviour
         return 0;
     }
 
-    IEnumerator ApplyStatusEffectFor(PlayerStatusEffect ef, float duration)
+    void ApplyStatusEffectFor(PlayerStatusEffect ef, float duration)
     {
-    	float delay = duration;
     	//Ignores hitstun if in superarmour or invuln
     	if((HasInulvernability() || HasArmour()) && IsEnemyStunEffect(ef)){
-    		yield break;
+    		return;
     	}
+        UnityEngine.Debug.Log("OUTER:" + ef);
 
         //If youre planted or stunned, you get unplanted by a hit
-        if(IsEnemyStunEffect(ef) && (HasStatusEffect(PlayerStatusEffect.PLANTED) || HasStatusEffect(PlayerStatusEffect.STUNNED) || HasStatusEffect(PlayerStatusEffect.EXPOSED)))
+        if(IsEnemyStunEffect(ef) && HasRemovableEffect())
         {
+            UnityEngine.Debug.Log("INNER:" +ef);
             clearStatus();
-            yield break;
+            if(ef == PlayerStatusEffect.KNOCKBACK){
+                statusEffects[ef] = duration * 10f;
+            }
+            return;
         }
 
         if (!statusEffects.ContainsKey(ef))
@@ -104,36 +128,34 @@ public class PlayerStatus : MonoBehaviour
             statusEffects[ef] = 0f;
         }
 
-        if(ef ==  PlayerStatusEffect.KNOCKBACK && statusEffects.ContainsKey(PlayerStatusEffect.END_LAG)){
-            statusEffects[PlayerStatusEffect.END_LAG] = 0f;
-        }
-
         //Uses most rescently applied duration
 
-        if(duration == 0f){
-        	sequence = 0f;
-        	statusEffects[ef] = 0f;
-        }
-        else if(statusEffects[ef] == (duration + sequence)){
-        	sequence += .01f;
-        	delay += sequence;
-        	statusEffects[ef] = delay;
+        statusEffects[ef] = duration * 10f;
 
-        	yield return new WaitForSeconds(duration);
-        	if(statusEffects[ef] == delay){
-        		sequence = 0f;
-        		statusEffects[ef] = 0f;
-        	}
-        }
-        else{
-        	delay = duration+ sequence;
-        	statusEffects[ef] = delay;
-        	yield return new WaitForSeconds(duration);
-        	if(statusEffects[ef] == delay){
-        		sequence = 0f;
-        		statusEffects[ef] = 0f;
-        	}
-        }
+        // if(duration == 0f){
+        // 	sequence = 0f;
+        // 	statusEffects[ef] = 0f;
+        // }
+        // else if(statusEffects[ef] == (duration + sequence)){
+        // 	sequence += .01f;
+        // 	delay += sequence;
+        // 	statusEffects[ef] = delay;
+
+        // 	yield return new WaitForSeconds(duration);
+        // 	if(statusEffects[ef] == delay){
+        // 		sequence = 0f;
+        // 		statusEffects[ef] = 0f;
+        // 	}
+        // }
+        // else{
+        // 	delay = duration+ sequence;
+        // 	statusEffects[ef] = delay;
+        // 	yield return new WaitForSeconds(duration);
+        // 	if(statusEffects[ef] == delay){
+        // 		sequence = 0f;
+        // 		statusEffects[ef] = 0f;
+        // 	}
+        // }
 
     }
 }

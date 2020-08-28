@@ -190,10 +190,17 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        if(status.HasStatusEffect(PlayerStatusEffect.STUNNED))
+        if(status.HasStatusEffect(PlayerStatusEffect.STUNNED) || status.HasStatusEffect(PlayerStatusEffect.PLANTED))
         {
-            rb.velocity = Vector2.zero;
-            rb.gravityScale = 0;
+            if(status.HasStatusEffect(PlayerStatusEffect.PLANTED) && !IsGrounded())
+            {
+                status.ApplyStatusEffect(PlayerStatusEffect.PLANTED,0f);
+            }
+            else{
+                rb.velocity = Vector2.zero;
+                rb.gravityScale = 0;
+            }
+            
         }
         else if(!status.HasStatusEffect(PlayerStatusEffect.END_LAG)){
             rb.gravityScale = baseGravity;

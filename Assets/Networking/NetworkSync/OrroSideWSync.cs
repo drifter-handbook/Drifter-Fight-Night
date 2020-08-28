@@ -37,6 +37,7 @@ public class OrroSideWSync : MonoBehaviour, INetworkSync
             t = time / latency;
         }
         transform.localScale = oldScale;
+        GetComponent<OrroSideWProjectile>().empowered = oldEmp;
         transform.position = Vector3.Lerp(oldPos, targetPos, t);
     }
 
