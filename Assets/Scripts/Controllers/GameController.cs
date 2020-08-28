@@ -113,20 +113,6 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public string WhatsMyIP()
-    {
-        if (gameObject.GetComponent<NetworkHost>() != null)
-        {
-            return gameObject.GetComponent<NetworkHost>().Network.HolePunchID + "";
-        }
-
-        BeginHandshake();
-       
-       return gameObject.GetComponent<NetworkHost>().Network.HolePunchID + "";
-        
-
-    }
-
     // Only the host gets to see this guy
     public void BeginMatch()
     {

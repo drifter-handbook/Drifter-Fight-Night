@@ -28,7 +28,7 @@ public class CharacterMenu : MonoBehaviour
     public GameObject leftPanel;
     public GameObject rightPanel;
 
-
+   
     [Serializable]
     public class PlayerSelectFigurine
     {
@@ -36,10 +36,26 @@ public class CharacterMenu : MonoBehaviour
         public GameObject figurine;
         public Sprite image;
     }
+
+    [Serializable]
+    public class FightZone
+    {
+        public GameObject fightzone;
+        public Sprite fightzonePreview;
+        public string fightzoneName;
+    }
+
     public List<PlayerSelectFigurine> drifters;
     Dictionary<DrifterType, PlayerSelectFigurine> figurines = new Dictionary<DrifterType, PlayerSelectFigurine>();
+     public  List<FightZone> fightzones = new List<FightZone>();
 
     private GameObject clientCard;
+
+    private FightZone selectedFightzone;
+    private int selectedFightzoneNum = 0;
+
+    public Image fightZonePreview;
+    public Text fightZoneLabel;
 
     //determines how many player cards we can fit on a panel
     private const int PANEL_MAX_PLAYERS = 4;
@@ -65,6 +81,7 @@ public class CharacterMenu : MonoBehaviour
         }
 
         forwardButton.GetComponent<Animator>().SetBool("present", true);
+        UpdateFightzone();
     }
 
     void FixedUpdate()
@@ -150,6 +167,23 @@ public class CharacterMenu : MonoBehaviour
         menuEntries.RemoveAt(index);
     }
 
+    public void nextFightzone()
+    {
+        selectedFightzoneNum++;
+        if(selectedFightzoneNum >= fightzones.Count)
+        {
+            selectedFightzoneNum = 0;
+        }
+        UpdateFightzone();
+    }
+
+    public void UpdateFightzone()
+    {
+        selectedFightzone = fightzones[selectedFightzoneNum];
+        fightZonePreview.sprite = selectedFightzone.fightzonePreview;
+        fightZoneLabel.text = selectedFightzone.fightzoneName;
+    }
+
     public void SelectDrifter(string drifterString)
     {
         DrifterType drifter = (DrifterType)Enum.Parse(typeof(DrifterType), drifterString.Replace(" ", "_"));
@@ -169,8 +203,22 @@ public class CharacterMenu : MonoBehaviour
 
     public void HeadToLocationSelect()
     {
+
+        if (this.GetComponent<Animator>().GetBool("location"))
+        {
+            //So you're the host?
+            //LET'S GO TO THE GAME!
+            GameController.Instance.BeginMatch();
+            return;
+        }
+
+
+
         this.GetComponent<Animator>().SetBool("location", true);
-      //  forwardButton.GetComponent<Animator>().SetBool("present", false);
+        if (!GameController.Instance.IsHost)
+        {
+            forwardButton.GetComponent<Animator>().SetBool("present", false);
+        }
         backButton.GetComponent<Animator>().SetBool("present", true);
 
         List<DrifterType> pickedTypes = new List<DrifterType>();
@@ -199,8 +247,15 @@ public class CharacterMenu : MonoBehaviour
 
     public void HeadToCharacterSelect()
     {
+
+        if (!GameController.Instance.IsHost)
+        {
+            //non-hosts don't get to start the game, so bring me back!
+            forwardButton.GetComponent<Animator>().SetBool("present", true);
+        }
+
+
         this.GetComponent<Animator>().SetBool("location", false);
-      //  forwardButton.GetComponent<Animator>().SetBool("present", true);
         backButton.GetComponent<Animator>().SetBool("present", false);
 
         foreach (Animator card in rightPanel.GetComponentsInChildren<Animator>())
