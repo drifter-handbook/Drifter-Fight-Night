@@ -21,8 +21,8 @@ public class GameController : MonoBehaviour
     //* Serialized members
     [Header("Check box if hosting")]
     public bool IsHost;
-    [Header("Don't ship with this.")]
-    public string hostIP = "68.187.67.135";
+   
+    public string hostIP = "";
     public int HostID = 18;
 
     public const int MAX_PLAYERS = 8;
