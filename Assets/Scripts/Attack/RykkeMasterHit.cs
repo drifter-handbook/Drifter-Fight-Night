@@ -168,7 +168,7 @@ public class RykkeMasterHit : MasterHit
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;
         }
-        HoldPerson.GetComponentInChildren<RyykeGrab>().animator = anim;
+        HoldPerson.GetComponentInChildren<RyykeGrab>().drifter = drifter;
         entities.AddEntity(HoldPerson);
     }
 

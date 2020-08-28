@@ -5,7 +5,7 @@ using UnityEngine;
 public class DetectGrab : MonoBehaviour
 {
 
-    public Animator anim;
+    public Drifter drifter;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,7 +22,7 @@ public class DetectGrab : MonoBehaviour
     {
         if(col.gameObject.name == "Hurtboxes")
         {
-            anim.SetTrigger("GrabbedPlayer");
+            drifter.SetAnimatorTrigger("GrabbedPlayer");
         }
         Debug.Log("GOTTUM");
     }

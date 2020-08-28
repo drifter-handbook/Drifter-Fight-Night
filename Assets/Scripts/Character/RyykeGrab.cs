@@ -6,7 +6,7 @@ public class RyykeGrab : MonoBehaviour
 {
 
     public float duration;
-    public Animator animator;
+    public Drifter drifter;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,7 +22,7 @@ public class RyykeGrab : MonoBehaviour
     void OnTriggerEnter2D(Collider2D col)
     {
         if(col.gameObject.name == "Hurtboxes"){
-            animator.SetTrigger("GrabbedPlayer");
+            drifter.SetAnimatorTrigger("GrabbedPlayer");
         }
         
     }
