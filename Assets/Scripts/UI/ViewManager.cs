@@ -16,7 +16,9 @@ public class ViewManager : MonoBehaviour
 
     GameController lucille = GameController.Instance;
 
-    public string hostIP; // TODO: Don't hardcode an IP when we ship the game 🤔
+    public Text hostIP;
+    bool foundIP = false;
+
 
     string currentView;
     Dictionary<string, Transform> views = new Dictionary<string, Transform>();
@@ -44,6 +46,16 @@ public class ViewManager : MonoBehaviour
         currentView = startingMenu.gameObject.name;
     }
 
+    private void Update()
+    {
+        
+        if (!foundIP && lucille.GetComponent<IPWebRequest>().complete)
+        {
+            hostIP.text = lucille.GetComponent<IPWebRequest>().result.ToString();
+            foundIP = true;
+        }
+    }
+
     public Transform GetView(string name)
     {
         return views[name];
@@ -64,7 +76,12 @@ public class ViewManager : MonoBehaviour
     public void GoToCharacterSelect(bool isHost)
     {
         lucille.IsHost = isHost;
+        if (isHost)
+        {
+            //if we're hosting, lets grab our own IP
+        } 
         lucille.ChooseYerDrifter();
+
     }
 
     // May be moved to game controller?
