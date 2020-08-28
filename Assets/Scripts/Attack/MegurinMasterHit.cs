@@ -225,7 +225,7 @@ public class MegurinMasterHit : MasterHit
         }
         else{
             sprite.color = new Color(1f,1f,.5f);
-            anim.SetBool("Empowered",true);
+            drifter.SetAnimatorBool("Empowered",true);
         }
     }
 

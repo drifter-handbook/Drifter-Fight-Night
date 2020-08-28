@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   facing: 0
+  anim: {fileID: 5939196135170664860}
 --- !u!1001 &5309339101456283811
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -222,6 +223,12 @@ PrefabInstance:
 --- !u!1 &7713511604616445810 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2496518287981053905, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+    type: 3}
+  m_PrefabInstance: {fileID: 5309339101456283811}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &5939196135170664860 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 2000386183588008255, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
     type: 3}
   m_PrefabInstance: {fileID: 5309339101456283811}
   m_PrefabAsset: {fileID: 0}

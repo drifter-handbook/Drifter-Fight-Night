@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -90,6 +90,13 @@ public class PlayerStatus : MonoBehaviour
         }
     }
 
+    // public void bounce()
+    // {
+    //     if(HasStatusEffect(PlayerStatusEffect.KNOCKBACK)){
+    //         statusEffects[PlayerStatusEffect.KNOCKBACK] *= .8f;
+    //     }
+    // }
+
     public int GetStatusToRender()
     {
         if(HasStatusEffect(PlayerStatusEffect.AMBERED))return 1;
@@ -110,12 +117,10 @@ public class PlayerStatus : MonoBehaviour
     	if((HasInulvernability() || HasArmour()) && IsEnemyStunEffect(ef)){
     		return;
     	}
-        UnityEngine.Debug.Log("OUTER:" + ef);
 
         //If youre planted or stunned, you get unplanted by a hit
         if(IsEnemyStunEffect(ef) && HasRemovableEffect())
         {
-            UnityEngine.Debug.Log("INNER:" +ef);
             clearStatus();
             if(ef == PlayerStatusEffect.KNOCKBACK){
                 statusEffects[ef] = duration * 10f;

@@ -103,7 +103,7 @@ public class OrroMasterHit : MasterHit
     {
         beanSpeed+=10f;
         if(beanSpeed >= 50){
-            anim.SetTrigger("W_Neutral");
+            drifter.SetAnimatorTrigger("W_Neutral");
         }
     }
 
