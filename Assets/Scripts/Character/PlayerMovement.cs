@@ -39,6 +39,8 @@ public class PlayerMovement : MonoBehaviour
 
     Drifter drifter;
 
+    float dropThroughTime;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -57,6 +59,15 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
+    //Restitution
+
+    // void OnCollisionEnter2D(Collision2D col){
+    //     if(!status.HasGroundFriction()){
+    //         status.bounce();
+    //         rb.velocity = Vector2.Reflect(rb.velocity,col.contacts[0].normal);
+    //     }
+    // }
+
     void Update()
     {
         if (!GameController.Instance.IsHost || GameController.Instance.IsPaused)
@@ -69,6 +80,10 @@ public class PlayerMovement : MonoBehaviour
         bool canAct = !status.HasStunEffect() && !animator.GetBool("Guarding");
         bool canGuard = !status.HasStunEffect();
         bool moving = drifter.input.MoveX != 0;
+
+        if(Time.time - dropThroughTime > .2f){
+            gameObject.layer = 8;
+        }
 
         //Handle jump resets
         if(animator.GetBool("Grounded"))
@@ -140,6 +155,14 @@ public class PlayerMovement : MonoBehaviour
         {
             drifter.SetAnimatorBool("Grounded", false);
             rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 40f * Time.deltaTime), rb.velocity.y);
+        }
+
+        //Drop throuhg platforms
+        if(canGuard && drifter.input.MoveY <-1){
+            UnityEngine.Debug.Log("DROPTHROUGH");
+            gameObject.layer = 13;
+            dropThroughTime = Time.time;
+
         }
 
         if(drifter.input.Guard && canGuard && moving){
@@ -227,7 +250,7 @@ public class PlayerMovement : MonoBehaviour
         int count = Physics2D.RaycastNonAlloc(col.bounds.center + col.bounds.extents.y * Vector3.down, Vector3.down, hits, 0.2f);
         for (int i = 0; i < count; i++)
         {
-            if (hits[i].collider.gameObject.tag == "Ground")
+            if (hits[i].collider.gameObject.tag == "Ground" || (hits[i].collider.gameObject.tag == "Platform" && status.HasGroundFriction()))
             {
                 return true;
             }

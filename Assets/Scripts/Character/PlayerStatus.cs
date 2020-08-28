@@ -90,12 +90,12 @@ public class PlayerStatus : MonoBehaviour
         }
     }
 
-    // public void bounce()
-    // {
-    //     if(HasStatusEffect(PlayerStatusEffect.KNOCKBACK)){
-    //         statusEffects[PlayerStatusEffect.KNOCKBACK] *= .8f;
-    //     }
-    // }
+    public void bounce()
+    {
+        if(HasStatusEffect(PlayerStatusEffect.KNOCKBACK)){
+            statusEffects[PlayerStatusEffect.KNOCKBACK] *= .8f;
+        }
+    }
 
     public int GetStatusToRender()
     {
@@ -132,35 +132,8 @@ public class PlayerStatus : MonoBehaviour
         {
             statusEffects[ef] = 0f;
         }
-
-        //Uses most rescently applied duration
-
+        
         statusEffects[ef] = duration * 10f;
-
-        // if(duration == 0f){
-        // 	sequence = 0f;
-        // 	statusEffects[ef] = 0f;
-        // }
-        // else if(statusEffects[ef] == (duration + sequence)){
-        // 	sequence += .01f;
-        // 	delay += sequence;
-        // 	statusEffects[ef] = delay;
-
-        // 	yield return new WaitForSeconds(duration);
-        // 	if(statusEffects[ef] == delay){
-        // 		sequence = 0f;
-        // 		statusEffects[ef] = 0f;
-        // 	}
-        // }
-        // else{
-        // 	delay = duration+ sequence;
-        // 	statusEffects[ef] = delay;
-        // 	yield return new WaitForSeconds(duration);
-        // 	if(statusEffects[ef] == delay){
-        // 		sequence = 0f;
-        // 		statusEffects[ef] = 0f;
-        // 	}
-        // }
 
     }
 }

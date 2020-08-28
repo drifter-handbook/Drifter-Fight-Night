@@ -128,7 +128,13 @@ public class RykkeMasterHit : MasterHit
     public void sideWslide()
     {
         facing = movement.Facing;
-        rb.velocity = new Vector3(facing * 25,0);
+        if(!anim.GetBool("Empowered")){
+            rb.velocity = new Vector3(facing * 25,0);
+        }
+        else{
+            rb.velocity = new Vector3(facing * 35,0);
+        }
+        
     }
 
     

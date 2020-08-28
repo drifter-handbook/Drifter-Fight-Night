@@ -52,7 +52,7 @@ public class RyykeTombstone : MonoBehaviour
     void OnTriggerEnter2D(Collider2D col)
     {  
 
-        if (col.gameObject.tag == "Ground")
+        if (col.gameObject.tag == "Ground" || col.gameObject.tag == "Platform")
         {
             grounded = true;  
             
@@ -66,7 +66,7 @@ public class RyykeTombstone : MonoBehaviour
     void OnTriggerStay2D(Collider2D col)
     {
 
-        if(!armed && col.gameObject != Ryyke && col.gameObject != Ryyke.GetComponentInChildren<HurtboxCollision>().gameObject && col.gameObject.tag != "Ground"){
+        if(!armed && col.gameObject != Ryyke && col.gameObject != Ryyke.GetComponentInChildren<HurtboxCollision>().gameObject && col.gameObject.tag != "Ground" && col.gameObject.tag != "Platform"){
             anim.SetBool("Grounded",false);
             rb.velocity=Vector2.zero;
             Break();
