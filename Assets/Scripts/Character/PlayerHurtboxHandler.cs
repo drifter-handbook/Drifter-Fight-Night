@@ -43,7 +43,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             Drifter drifter = GetComponent<Drifter>();
             if (drifter != null && !GetComponent<PlayerStatus>().HasInulvernability())
             {
-                drifter.DamageTaken += attackData.AttackDamage * (drifter.animator.GetBool("Guarding") ? 1 - drifter.BlockReduction : 1f);
+                drifter.DamageTaken += attackData.AttackDamage * (drifter.animator.GetBool("Guarding") && !attackData.isGrab ? 1 - drifter.BlockReduction : 1f);
             }
             // apply knockback
             float facingDir = Mathf.Sign(hurtbox.parent.transform.position.x - hitbox.parent.transform.position.x);
@@ -59,7 +59,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             }
             float stunMultiplier = (drifter.DamageTaken+30)/100f;
             //Ignore knockback if invincible or armoured
-            if(!GetComponent<PlayerStatus>().HasInulvernability() && !drifter.animator.GetBool("Guarding")){
+            if(!GetComponent<PlayerStatus>().HasInulvernability() && (!drifter.animator.GetBool("Guarding") || attackData.isGrab)){
 
                 float KB = (float)(((drifter.DamageTaken / 10 + drifter.DamageTaken * attackData.AttackDamage / 20)
                         * 200 / (drifter.drifterData.Weight + 100) * 1.4 *
@@ -86,7 +86,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
             UnityEngine.Debug.Log("HITSPARK" + attackData.GetHitSpark());
 
-            if(drifter.animator.GetBool("Guarding")){
+            if(drifter.animator.GetBool("Guarding") && !attackData.isGrab){
                     hitSparks.GetComponent<HitSparks>().SetAnimation(drifter.BlockReduction>.5?6:5);
                     hitSparks.transform.localScale = new Vector3(facingDir * 10f, 10f, 10f);
             }
