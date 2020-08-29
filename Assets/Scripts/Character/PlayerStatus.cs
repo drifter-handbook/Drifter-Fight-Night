@@ -123,6 +123,9 @@ public class PlayerStatus : MonoBehaviour
             if(ef == PlayerStatusEffect.KNOCKBACK){
                 statusEffects[ef] = duration * 10f;
             }
+            else if( ef == PlayerStatusEffect.PLANTED){
+                 statusEffects[PlayerStatusEffect.KNOCKBACK] = 4f;
+            }
             return;
         }
 

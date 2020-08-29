@@ -23,6 +23,7 @@ public class PlayerMovement : MonoBehaviour
 
     SpriteRenderer sprite;
     public int Facing { get; private set; } = 1;
+    public bool grounded = true;
 
     Animator animator;
 
@@ -61,12 +62,14 @@ public class PlayerMovement : MonoBehaviour
 
     //Restitution
 
-    // void OnCollisionEnter2D(Collision2D col){
-    //     if(!status.HasGroundFriction()){
-    //         status.bounce();
-    //         rb.velocity = Vector2.Reflect(rb.velocity,col.contacts[0].normal);
-    //     }
-    // }
+    void OnCollisionEnter2D(Collision2D col){
+        if(!status.HasGroundFriction() && (rb.velocity.y < 0 || col.gameObject.tag !=  "Platform")){
+            status.bounce();
+            Vector3 normal = col.contacts[0].normal;
+            rb.velocity = Vector2.Reflect(rb.velocity,normal) *.8f;
+            spawnJuiceParticle(new Vector3(0,-1,0),2,Quaternion.Euler(0f,0f,Vector3.Angle(Vector3.up,normal)));
+        }
+    }
 
     void Update()
     {
@@ -93,13 +96,14 @@ public class PlayerMovement : MonoBehaviour
             {
                 currentJumps--;
             }
-
+ 
         }
         else if(IsGrounded()){
             //landing
-            //spawnJuiceParticle(new Vector3(0,-1,0),2);
+            
         }
         drifter.SetAnimatorBool("Grounded", IsGrounded());
+        grounded = IsGrounded();
 
         if(status.HasEnemyStunEffect() && !animator.GetBool("HitStun")){
             drifter.SetAnimatorBool("HitStun",true);
@@ -216,7 +220,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if(status.HasStatusEffect(PlayerStatusEffect.PLANTED) && !IsGrounded())
             {
-                status.ApplyStatusEffect(PlayerStatusEffect.PLANTED,0f);
+            	status.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,.4f);
             }
             else{
                 rb.velocity = Vector2.zero;
@@ -259,7 +263,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void spawnJuiceParticle(Vector3 pos, int mode)
     {
-        GameObject juiceParticle = Instantiate(entities.GetEntityPrefab("MovementParticle"), transform.position + pos, transform.rotation);
+        spawnJuiceParticle(pos, mode, transform.rotation);
+    }
+
+    private void spawnJuiceParticle(Vector3 pos, int mode, Quaternion angle){
+
+    	GameObject juiceParticle = Instantiate(entities.GetEntityPrefab("MovementParticle"), transform.position + pos,  angle);
         juiceParticle.GetComponent<JuiceParticle>().mode = mode;
         juiceParticle.transform.localScale = new Vector3( juiceParticle.transform.localScale.x * Facing,juiceParticle.transform.localScale.y,1);
         entities.AddEntity(juiceParticle);

@@ -13,11 +13,12 @@ MonoBehaviour:
   m_Name: DownW
   m_EditorClassIdentifier: 
   AttackDamage: 10
-  Knockback: 40
+  Knockback: 45
   KnockbackScale: 0
   HitStun: 0
   EndLag: 0.7
-  AngleOfImpact: -90
+  isGrab: 0
+  AngleOfImpact: -75
   StatusEffect: 1
   StatusDuration: 2
   HitVisual: 7
