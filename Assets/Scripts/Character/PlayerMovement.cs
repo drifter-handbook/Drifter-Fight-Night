@@ -84,7 +84,7 @@ public class PlayerMovement : MonoBehaviour
         bool canGuard = !status.HasStunEffect();
         bool moving = drifter.input.MoveX != 0;
 
-        if(gameObject.layer != 8 && Time.time - dropThroughTime > .4f){
+        if(gameObject.layer != 8 && Time.time - dropThroughTime > .3f){
             gameObject.layer = 8;
         }
 
@@ -95,12 +95,7 @@ public class PlayerMovement : MonoBehaviour
             if(!IsGrounded())
             {
                 currentJumps--;
-            }
- 
-        }
-        else if(IsGrounded()){
-            //landing
-            
+            }            
         }
         drifter.SetAnimatorBool("Grounded", IsGrounded());
         grounded = IsGrounded();

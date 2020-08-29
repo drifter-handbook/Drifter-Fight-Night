@@ -1,26 +1,30 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FadeProjectile : MonoBehaviour
+public class CentaurProjectile : MonoBehaviour
 {
     // Start is called before the first frame update
     public float duration;
     Rigidbody2D rb;
+    float vel;
     void Start()
     {
         StartCoroutine(Fade(duration));
         rb = GetComponent<Rigidbody2D>();
+        vel = rb.velocity.x;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        rb.velocity = new Vector2(vel,rb.velocity.y);
     }
 
     void OnTriggerEnter2D(Collider2D col)
     {
+
         if(col.gameObject.name == "Reflector"){
             rb.velocity =  rb.velocity * -2.5f;
             foreach (HitboxCollision hitbox in gameObject.GetComponentsInChildren<HitboxCollision>(true))
@@ -30,10 +34,6 @@ public class FadeProjectile : MonoBehaviour
                     hitbox.AttackID = 10000;
                 }
 
-        }
-        else if(col.gameObject.name == "Hurtboxes" && col.GetComponent<HurtboxCollision>() != this.gameObject.GetComponentInChildren<HitboxCollision>().parent.GetComponentInChildren<HurtboxCollision>())
-        {
-            StartCoroutine(Fade(.05f));
         }
 
     }

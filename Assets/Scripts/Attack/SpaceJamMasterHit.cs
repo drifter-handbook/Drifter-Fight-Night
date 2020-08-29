@@ -14,6 +14,7 @@ public class SpaceJamMasterHit : MasterHit
     public int charges;
     PlayerStatus status;
     float chargeTime = 0f;
+    int maxCharge = 40;
 
     public AudioSource audio;
     public AudioClip[] audioClips;
@@ -40,7 +41,7 @@ public class SpaceJamMasterHit : MasterHit
     void Update(){
     	chargeTime += Time.deltaTime;
     	if(chargeTime >= 1.0f){
-    		if(charges < 30){
+    		if(charges < maxCharge){
     			grantCharges();
     		}
     		chargeTime = 0f;
@@ -109,11 +110,11 @@ public class SpaceJamMasterHit : MasterHit
     } 
 
     void grantCharges(){
-    	if(charges < 30){
+    	if(charges < maxCharge){
             charges++;
             
         }
-        if(charges >= 30){
+        if(charges >= maxCharge){
             audio.Stop();
             audio.PlayOneShot(audioClips[2],1f);
             drifter.SetAnimatorBool("Empowered",true);
@@ -123,7 +124,7 @@ public class SpaceJamMasterHit : MasterHit
 
     public void chargeNeutral()
     {
-        if(charges < 30){
+        if(charges < maxCharge){
     			grantCharges();
     		}
         

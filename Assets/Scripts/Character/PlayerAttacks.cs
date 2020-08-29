@@ -35,7 +35,7 @@ public class PlayerAttacks : MonoBehaviour
     public int AttackID { get; private set; }
     public DrifterAttackType AttackType { get; private set; }
     public int maxRecoveries = 1;
-    int currentRecoveries;
+    public int currentRecoveries;
 
     Drifter drifter;
     PlayerStatus status;

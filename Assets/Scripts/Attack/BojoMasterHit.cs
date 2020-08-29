@@ -9,9 +9,11 @@ public class BojoMasterHit : MasterHit
     float gravityScale;
     PlayerMovement movement;
     PlayerStatus status;
-    public int facing;
     public Animator anim;
     float timeSinceGun = 0f;
+    public int facing;
+    float boofTime;
+    bool checkBoof;
 
     void Start()
     {
@@ -25,6 +27,10 @@ public class BojoMasterHit : MasterHit
     void Update()
     {
 
+        if(checkBoof && Time.time - boofTime > 1f){
+            attacks.currentRecoveries = 0;
+            checkBoof = false;
+        }
     	if(timeSinceGun < .7f){
     		timeSinceGun += Time.deltaTime;
     	}
@@ -58,6 +64,44 @@ public class BojoMasterHit : MasterHit
         entities.AddEntity(bubble);
     }
 
+    public void callTheSideW(){
+        facing = movement.Facing;
+        rb.velocity = new Vector2(55 *facing, 0);
+
+    }
+    public void continueCharge(){
+        rb.velocity = new Vector2(55 *facing, rb.velocity.y);
+    }
+
+    public void misfire(){
+        facing = movement.Facing;
+        rb.velocity = new Vector2(50f * facing,15f);
+    }
+
+    public void dismount(){
+         rb.velocity = new Vector2(rb.velocity.x - facing * 10, 45f);
+         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.3f);
+
+        Vector3 flip = new Vector3(facing *9f,9f,0f);
+        Vector3 pos = new Vector3(facing *0f,0f,1f);
+        GameObject Centaur = Instantiate(entities.GetEntityPrefab("Kamikaze"), transform.position + pos, transform.rotation);
+        Centaur.transform.localScale = flip;
+        Centaur.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * 65, 0);
+        
+        foreach (HitboxCollision hitbox in Centaur.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+        }
+        entities.AddEntity(Centaur);
+    }
+
+    public void centaurCharge(){
+        rb.velocity = new Vector2(55*facing,rb.velocity.y);
+    }
+
     public void dodgeRoll(){
         facing = movement.Facing;
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
@@ -65,17 +109,11 @@ public class BojoMasterHit : MasterHit
         rb.velocity = new Vector2(facing * 40f,0f);
     }
 
-    public override void callTheRecovery(){
+    public void boof(){
         facing = movement.Facing;
-        rb.velocity = new Vector2(rb.velocity.x  + facing * 20,45);
+        rb.velocity = new Vector2(rb.velocity.x  + facing * 10,45);
+        boofTime = Time.time;
+        checkBoof = true;
     }
-    public void tootToot(){
-        facing = movement.Facing;
-        rb.gravityScale = gravityScale;
-        rb.velocity += new Vector2(facing * 10,15);
-    }
-    // public override void cancelTheRecovery(){
-    //     rb.gravityScale = gravityScale;
-    // } 
 
 }
