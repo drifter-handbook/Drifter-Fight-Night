@@ -57,6 +57,10 @@ public class NetworkEntityConverter : Newtonsoft.Json.Converters.CustomCreationC
             case "Mock":
             case "Centaur":
                 return new BasicProjectileSync.ProjectileData();
+            case "IceBar":
+            case "WindBar":
+            case "LightningBar":
+                return new BarSync.BarData();
             case "Bean":
                 return new BeanSync.BeanData();
             case "MovementParticle":
