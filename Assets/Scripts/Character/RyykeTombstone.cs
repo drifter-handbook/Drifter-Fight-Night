@@ -12,6 +12,7 @@ public class RyykeTombstone : MonoBehaviour
     public bool activate = false;
     GameObject Ryyke;
     public bool grounded = false;
+    public bool broken = false;
 
     // Start is called before the first frame update
     void Start()
@@ -22,11 +23,13 @@ public class RyykeTombstone : MonoBehaviour
 
     public IEnumerator Delete()
     {
+
         yield return new WaitForSeconds(0.75f);
         Destroy(gameObject);
         yield break;
     }
     public void Break(){
+        broken = true;
         anim.SetTrigger("Delete");
         StartCoroutine(Delete());
     }
@@ -39,6 +42,9 @@ public class RyykeTombstone : MonoBehaviour
         }
         if(activate){
             anim.SetTrigger("Activate");
+        }
+        if(broken){
+             anim.SetTrigger("Delete");
         }
         anim.SetBool("Grounded",grounded);
     }
