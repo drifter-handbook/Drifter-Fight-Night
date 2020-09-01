@@ -17,6 +17,9 @@ public class RykkeMasterHit : MasterHit
     public AudioSource audio;
     public AudioClip[] audioClips;
 
+    bool tetheredPlayer = false;
+    Vector2 tetherTarget = Vector3.zero;
+
     
 
     void Start()
@@ -59,17 +62,23 @@ public class RykkeMasterHit : MasterHit
         {
             arms.transform.rotation = Quaternion.Euler(0,0, (Mathf.Atan2(arms.transform.position.x -ledgeRange.TetherPoint.x,-arms.transform.position.y+ledgeRange.TetherPoint.y)*180 / Mathf.PI));
             length = Vector2.Distance(ledgeRange.TetherPoint,arms.transform.position);
+            tetherTarget = ledgeRange.TetherPoint;
+            tetheredPlayer = false;
         }
         else if(playerRange.TetherPoint != Vector3.zero)
         {
             arms.transform.rotation = Quaternion.Euler(0,0, (Mathf.Atan2(arms.transform.position.x -playerRange.TetherPoint.x,-arms.transform.position.y+playerRange.TetherPoint.y)*180 / Mathf.PI));
             length = Vector2.Distance(playerRange.TetherPoint,arms.transform.position);
+            tetherTarget = playerRange.TetherPoint;
+            tetheredPlayer = true;
 
         }
         
         else
         {
             arms.transform.rotation = Quaternion.Euler(0,0,45 * -facing);
+            tetherTarget = Vector2.zero;
+            tetheredPlayer = false;
         }
         arms.transform.localScale = new Vector3(13,length/1.3f,1);
 
@@ -80,34 +89,26 @@ public class RykkeMasterHit : MasterHit
     {
         facing = movement.Facing;
         
-        if(ledgeRange.TetherPoint != Vector3.zero)
+        if(tetherTarget != Vector2.zero && !tetheredPlayer)
         {
-            rb.velocity = new Vector2((-rb.position.x + ledgeRange.TetherPoint.x) *3f, Mathf.Min((-rb.position.y + ledgeRange.TetherPoint.y) *3f,50f) + 30);
+            rb.velocity = new Vector2((-rb.position.x + tetherTarget.x) *3f, Mathf.Min((-rb.position.y + tetherTarget.y) *3f,50f) + 30);
             if(movement.currentJumps < movement.numberOfJumps){
                 movement.currentJumps++;
             }
         }
 
-        else if(playerRange.TetherPoint != Vector3.zero)
+        else if(tetherTarget != Vector2.zero && tetheredPlayer)
         {
-            // rb.velocity = new Vector2((-rb.position.x + playerRange.TetherPoint.x) *3f + 10 * facing, Mathf.Max(Mathf.Min((Mathf.Min(-rb.position.y,0) + playerRange.TetherPoint.x) *4f,20),0) +40);
-            // attacks.resetRecovery();
-            rb.position = new Vector3(playerRange.TetherPoint.x -.5f *facing,playerRange.TetherPoint.y +.5f,0);
+            rb.position = new Vector3(tetherTarget.x -.5f *facing,tetherTarget.y +.5f,0);
             rb.velocity = new Vector3(facing*35, 45,0);
             if(movement.currentJumps < movement.numberOfJumps){
                 movement.currentJumps++;
             }
 
         }
-        
-        else
-        {
-            UnityEngine.Debug.Log("Uhoh");
-            //draw tether whiff
-        }
-        //rb. gravityScale = gravityScale;
         playerRange.gameObject.transform.parent.gameObject.SetActive(false);
         rb.gravityScale = gravityScale;
+        player = false;
     }
 
 
