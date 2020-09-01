@@ -14,8 +14,6 @@ public class ViewManager : MonoBehaviour
 #endif
     Transform startingMenu;
 
-    GameController lucille = GameController.Instance;
-
     public Text hostIP;
     bool foundIP = false;
 
@@ -26,7 +24,6 @@ public class ViewManager : MonoBehaviour
     void Awake()
     {
         views = new Dictionary<string, Transform>();
-        lucille = GameController.Instance;
         if (views.Count <= 0)
         {
             foreach (var child in this.gameObject.GetComponentsInDirectChildren<Transform>())
@@ -49,9 +46,9 @@ public class ViewManager : MonoBehaviour
     private void Update()
     {
         
-        if (!foundIP && lucille.GetComponent<IPWebRequest>().complete)
+        if (!foundIP && GameController.Instance.GetComponent<IPWebRequest>().complete)
         {
-            hostIP.text = $"{lucille.GetComponent<IPWebRequest>().result.ToString()}:{UDPHolePuncher.GetLocalID("minecraft.scrollingnumbers.com", 6969)}";
+            hostIP.text = $"{GameController.Instance.GetComponent<IPWebRequest>().result.ToString()}:{UDPHolePuncher.GetLocalID("minecraft.scrollingnumbers.com", 6969)}";
             foundIP = true;
         }
     }
@@ -71,18 +68,18 @@ public class ViewManager : MonoBehaviour
     public void SetIP(string ip)
     {
         string[] ip_id = ip.Split(':');
-        lucille.hostIP = ip_id[0];
-        lucille.HostID = int.Parse(ip_id[1]);
+        GameController.Instance.hostIP = ip_id[0];
+        GameController.Instance.HostID = int.Parse(ip_id[1]);
     }
 
     public void GoToCharacterSelect(bool isHost)
     {
-        lucille.IsHost = isHost;
+        GameController.Instance.IsHost = isHost;
         if (isHost)
         {
             //if we're hosting, lets grab our own IP
-        } 
-        lucille.ChooseYerDrifter();
+        }
+        GameController.Instance.ChooseYerDrifter();
 
     }
 
