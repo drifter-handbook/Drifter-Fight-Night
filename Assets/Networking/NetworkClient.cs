@@ -19,7 +19,7 @@ public class NetworkClient : MonoBehaviour, NetworkID
     const float ConnectTimeout = 3;
     Coroutine ConnectCoroutine;
 
-    NetworkEntityList entities = GameController.Instance.Entities;
+    NetworkEntityList entities;
     List<CharacterSelectState> CharacterSelectStates => GameController.Instance.CharacterSelectStates; // single source of truth
 
     void Awake()

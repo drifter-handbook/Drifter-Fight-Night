@@ -171,7 +171,8 @@ public class CharacterMenu : MonoBehaviour
 
     public void SelectFightzone(string s)
     {
-        selectedFightzoneNum = fightzones.FindIndex(x => x.fightzoneName == s);
+        selectedFightzoneNum = fightzones.FindIndex(x => x.sceneName == s);
+        UpdateFightzone();
     }
 
     public void nextFightzone()
