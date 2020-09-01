@@ -27,6 +27,9 @@ public class GameController : MonoBehaviour
 
     public const int MAX_PLAYERS = 8;
 
+    // Evans's horrid hack, please help me fix this Lyn
+    public string selectedStage = null;
+
     //* Data storage
     public AllDrifterData AllData; // Character List
     // Source of Truth on CharSel:
@@ -77,7 +80,10 @@ public class GameController : MonoBehaviour
     void PreLoad()
     {
         // Do something!
-        BeginHandshake();
+        if (SceneManager.GetActiveScene().name == "CharacterSelect")
+        {
+            BeginHandshake();
+        }
     }
 
     public void Load(string sceneName)

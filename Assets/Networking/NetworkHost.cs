@@ -164,7 +164,7 @@ public class NetworkHost : MonoBehaviour, NetworkID
     IEnumerator StartGameCoroutine()
     {
         Debug.Log("Start scene load");
-        yield return SceneManager.LoadSceneAsync("NetworkTestScene");
+        yield return SceneManager.LoadSceneAsync(GameController.Instance.selectedStage);
         Debug.Log("Finish scene load");
         // find entities
         entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
@@ -212,6 +212,7 @@ public class NetworkHost : MonoBehaviour, NetworkID
             }
         }
         SyncData.pause = GameController.Instance.IsPaused;
+        SyncData.stage = SceneManager.GetActiveScene().name;
         return new SyncToClientPacket() { Timestamp = Time.time, SyncData = SyncData };
     }
 

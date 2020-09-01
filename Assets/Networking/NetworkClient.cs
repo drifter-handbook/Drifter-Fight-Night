@@ -164,7 +164,7 @@ public class NetworkClient : MonoBehaviour, NetworkID
     IEnumerator StartGameCoroutine(SyncToClientPacket packet)
     {
         Debug.Log("Start scene load");
-        yield return SceneManager.LoadSceneAsync("NetworkTestScene");
+        yield return SceneManager.LoadSceneAsync(packet.SyncData.stage);
         Debug.Log("Finish scene load");
         // find entities
         entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();

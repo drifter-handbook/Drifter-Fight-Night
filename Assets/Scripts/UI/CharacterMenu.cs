@@ -43,6 +43,7 @@ public class CharacterMenu : MonoBehaviour
         public GameObject fightzone;
         public Sprite fightzonePreview;
         public string fightzoneName;
+        public string sceneName;
     }
 
     public List<PlayerSelectFigurine> drifters;
@@ -182,6 +183,7 @@ public class CharacterMenu : MonoBehaviour
         selectedFightzone = fightzones[selectedFightzoneNum];
         fightZonePreview.sprite = selectedFightzone.fightzonePreview;
         fightZoneLabel.text = selectedFightzone.fightzoneName;
+        GameController.Instance.selectedStage = selectedFightzone.sceneName;
     }
 
     public void SelectDrifter(string drifterString)
