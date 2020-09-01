@@ -170,8 +170,10 @@ public class NetworkHost : MonoBehaviour, NetworkID
     }
     IEnumerator EndGameCoroutine()
     {
+        yield return new WaitForSeconds(.7f);
         yield return SceneManager.LoadSceneAsync("Endgame");
         Text winner = GameObject.FindGameObjectWithTag("EndgameName").GetComponent<Text>();
+        GameObject.FindGameObjectWithTag("EndgamePic").GetComponent<EndgameImageHandler>().setImage(GameController.Instance.winner);
         winner.text = $"Winner: {GameController.Instance.winner.Replace('_', ' ')}";
         while (SceneManager.GetActiveScene().name == "Endgame")
         {
