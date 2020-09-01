@@ -90,8 +90,6 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                 } else
                 {
                     gameObject.GetComponentInParent<SingleSound>().PlayAudio();
-                }
-                else{
                     endgameBanner.enabled = true;
                 }
             }
