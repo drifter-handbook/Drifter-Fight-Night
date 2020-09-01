@@ -76,6 +76,16 @@ public class PlayerCardArtHolder : MonoBehaviour
             {
                 stockvals[i] = playerCards[i].currStocks;
                 playerCards[i].removeToStock(drifters[i].Stocks);
+
+                if (playerCards[i].currStocks == 0 && stockvals[i] != playerCards[i].currStocks)
+                {
+                    if (getNullCount(drifters) > 1)
+                    {
+                        gameObject.GetComponent<MultiSound>().PlayAudio(i);
+                    }
+                    else
+                        gameObject.GetComponent<SingleSound>().PlayAudio();
+                }
                 
             }
             else

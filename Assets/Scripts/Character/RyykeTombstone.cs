@@ -9,24 +9,27 @@ public class RyykeTombstone : MonoBehaviour
     public Animator anim;
     public int facing;
     bool armed = false;
+    public bool activate = false;
     GameObject Ryyke;
     public bool grounded = false;
+    public bool broken = false;
 
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
-        Ryyke = chadController.gameObject.transform.parent.gameObject;
     	rb = GetComponent<Rigidbody2D>();
     	rb.velocity = new Vector2(0f,-50f);
     }
 
     public IEnumerator Delete()
     {
+
         yield return new WaitForSeconds(0.75f);
         Destroy(gameObject);
         yield break;
     }
     public void Break(){
+        broken = true;
         anim.SetTrigger("Delete");
         StartCoroutine(Delete());
     }
@@ -36,6 +39,12 @@ public class RyykeTombstone : MonoBehaviour
         if (grounded)
         {
             rb.velocity = Vector2.zero;
+        }
+        if(activate){
+            anim.SetTrigger("Activate");
+        }
+        if(broken){
+             anim.SetTrigger("Delete");
         }
         anim.SetBool("Grounded",grounded);
     }
@@ -50,6 +59,10 @@ public class RyykeTombstone : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {  
+
+        if(Ryyke == null){
+            Ryyke = chadController.gameObject.transform.parent.gameObject;
+        }
 
         if (col.gameObject.tag == "Ground" || col.gameObject.tag == "Platform")
         {
@@ -73,6 +86,7 @@ public class RyykeTombstone : MonoBehaviour
 
         else if(armed && col.gameObject != Ryyke && col.gameObject.tag == "Player") //&& col.gameObject != hitbox.parent)
         {
+            activate = true;
             anim.SetTrigger("Activate");
             StartCoroutine(Delete());
         }

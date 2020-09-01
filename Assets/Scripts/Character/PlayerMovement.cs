@@ -125,7 +125,7 @@ public class PlayerMovement : MonoBehaviour
 
             //If just started moving or switched directions
             if((rb.velocity.x == 0 || rb.velocity.x * drifter.input.MoveX < 0) && IsGrounded()){
-                spawnJuiceParticle(new Vector3(-Facing * 1.5f,-1.3f,0),5);
+                spawnJuiceParticle(new Vector3(-Facing * (flipSprite?-1:1)* 1.5f,-1.3f,0),5);
             }
 
             if(IsGrounded())
@@ -265,7 +265,8 @@ public class PlayerMovement : MonoBehaviour
 
     	GameObject juiceParticle = Instantiate(entities.GetEntityPrefab("MovementParticle"), transform.position + pos,  angle);
         juiceParticle.GetComponent<JuiceParticle>().mode = mode;
-        juiceParticle.transform.localScale = new Vector3( juiceParticle.transform.localScale.x * Facing,juiceParticle.transform.localScale.y,1);
+        juiceParticle.transform.localScale = new Vector3( juiceParticle.transform.localScale.x * Facing * (flipSprite?-1:1),juiceParticle.transform.localScale.y,1);
+
         entities.AddEntity(juiceParticle);
     }
 

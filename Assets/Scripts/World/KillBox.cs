@@ -71,7 +71,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
             }
             else
             {
-                int destroyed = 0;
+                //int destroyed = 0;
                 foreach (CharacterSelectState state in GameController.Instance.CharacterSelectStates)
                 {
                     
@@ -83,7 +83,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                         if (obj.Equals(other.gameObject))
                         {
                             
-                            destroyed = state.PlayerIndex;
+                           // destroyed = state.PlayerIndex;
                         }
                     }
                 }
@@ -91,6 +91,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                 Destroy(other.gameObject);
                 // check for last one remaining
                 int count = 0;
+                string winner = null;
                 foreach (GameObject go in Entities.Players.Values)
                 {
                     if (Entities.hasStocks(go))
@@ -98,21 +99,18 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                         int victor = -1;
                         foreach (CharacterSelectState select in GameController.Instance.CharacterSelectStates)
                         {
-                            if (go.Equals(Entities.Players[select.PlayerID]))
+                            if (Entities.Players.ContainsKey(select.PlayerID) && go.Equals(Entities.Players[select.PlayerID]))
                                 victor = select.PlayerIndex;
                         }
                         count++;
-                        GameController.Instance.winner = go.GetComponent<INetworkSync>().Type + "|" + victor;
+                        winner = go.GetComponent<INetworkSync>().Type + "|" + victor;
                     }
                 }
-                if (count != 1)
+                if (count == 1)
                 {
-                    gameObject.GetComponentInParent<MultiSound>().PlayAudio(destroyed);
-                    GameController.Instance.winner = null;
-                } else
-                {
-                    gameObject.GetComponentInParent<SingleSound>().PlayAudio();
                     endgameBanner.enabled = true;
+                    GameController.Instance.winner = winner;
+               
                 }
             }
         }
