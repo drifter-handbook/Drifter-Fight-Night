@@ -22,7 +22,7 @@ public class NetworkHost : MonoBehaviour, NetworkID
     // single source of truth, indexed by PlayerIndex
     List<CharacterSelectState> CharacterSelectStates => GameController.Instance.CharacterSelectStates;
 
-    void Start()
+    void Awake()
     {
         PlayerID = 0;
         CharacterSelectStates.Add(new CharacterSelectState() {

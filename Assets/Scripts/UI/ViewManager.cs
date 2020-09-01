@@ -51,7 +51,7 @@ public class ViewManager : MonoBehaviour
         
         if (!foundIP && lucille.GetComponent<IPWebRequest>().complete)
         {
-            hostIP.text = lucille.GetComponent<IPWebRequest>().result.ToString();
+            hostIP.text = $"{lucille.GetComponent<IPWebRequest>().result.ToString()}:{UDPHolePuncher.GetLocalID("minecraft.scrollingnumbers.com", 6969)}";
             foundIP = true;
         }
     }
@@ -70,7 +70,9 @@ public class ViewManager : MonoBehaviour
 
     public void SetIP(string ip)
     {
-        lucille.hostIP = ip;
+        string[] ip_id = ip.Split(':');
+        lucille.hostIP = ip_id[0];
+        lucille.HostID = int.Parse(ip_id[1]);
     }
 
     public void GoToCharacterSelect(bool isHost)
