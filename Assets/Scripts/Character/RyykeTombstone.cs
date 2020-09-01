@@ -6,7 +6,7 @@ public class RyykeTombstone : MonoBehaviour
 {
     public RykkeMasterHit chadController;
     Rigidbody2D rb;
-    Animator anim;
+    public Animator anim;
     public int facing;
     bool armed = false;
     GameObject Ryyke;
@@ -18,7 +18,6 @@ public class RyykeTombstone : MonoBehaviour
         Ryyke = chadController.gameObject.transform.parent.gameObject;
     	rb = GetComponent<Rigidbody2D>();
     	rb.velocity = new Vector2(0f,-50f);
-        anim = GetComponent<Animator>();
     }
 
     public IEnumerator Delete()
