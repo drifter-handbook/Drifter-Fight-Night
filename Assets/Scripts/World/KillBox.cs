@@ -91,6 +91,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                 Destroy(other.gameObject);
                 // check for last one remaining
                 int count = 0;
+                string winner = null;
                 foreach (GameObject go in Entities.Players.Values)
                 {
                     if (Entities.hasStocks(go))
@@ -102,17 +103,14 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                                 victor = select.PlayerIndex;
                         }
                         count++;
-                        GameController.Instance.winner = go.GetComponent<INetworkSync>().Type + "|" + victor;
+                        winner = go.GetComponent<INetworkSync>().Type + "|" + victor;
                     }
                 }
-                if (count != 1)
+                if (count == 1)
                 {
-                    //gameObject.GetComponentInParent<MultiSound>().PlayAudio(destroyed);
-                    GameController.Instance.winner = null;
-                } else
-                {
-                    //gameObject.GetComponentInParent<SingleSound>().PlayAudio();
                     endgameBanner.enabled = true;
+                    GameController.Instance.winner = winner;
+               
                 }
             }
         }
