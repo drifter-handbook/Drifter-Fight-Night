@@ -13,8 +13,7 @@ public class SpaceJamMasterHit : MasterHit
     public Animator anim;
     public int charges;
     PlayerStatus status;
-    float chargeTime = 0f;
-    int maxCharge = 40;
+    int maxCharge = 30;
 
     public AudioSource audio;
     public AudioClip[] audioClips;

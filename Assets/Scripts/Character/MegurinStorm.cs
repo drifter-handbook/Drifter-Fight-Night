@@ -21,7 +21,7 @@ public class MegurinStorm : MonoBehaviour
     public void multihit(){
         foreach (HitboxCollision hitbox in GetComponentsInChildren<HitboxCollision>(true))
             {
-                hitbox.AttackID+= Random.Range(20, 40);
+                hitbox.AttackID -= Random.Range(20, 40);
                 hitbox.AttackType = DrifterAttackType.W_Down;
                 hitbox.Active = true;
             }
