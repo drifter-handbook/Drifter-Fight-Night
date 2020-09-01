@@ -81,8 +81,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                         GameController.Instance.winner = go.GetComponent<INetworkSync>().Type;
                     }
                 }
-                GameController.Instance.winner = "Nero";
-                if (count != 1 && count != 0)
+                if (count != 1)
                 {
                     GameController.Instance.winner = null;
                 }
