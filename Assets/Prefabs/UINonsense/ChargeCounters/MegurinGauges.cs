@@ -18,7 +18,7 @@ public class MegurinGauges : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-    	ice.transform.localScale = new Vector2(megurin.iceCharge/50f, 1f);
+    	ice.transform.localScale = new Vector2(megurin.iceCharge/30f, 1f);
     	if(ice.transform.localScale.x ==1)
     	{
     		ice.GetComponent<SpriteRenderer>().color = new Color(1f,1f,.5f);
@@ -26,7 +26,7 @@ public class MegurinGauges : MonoBehaviour
     	else{
     		ice.GetComponent<SpriteRenderer>().color = Color.white;
     	}
-    	wind.transform.localScale = new Vector2(megurin.windCharge/50f,1f);
+    	wind.transform.localScale = new Vector2(megurin.windCharge/30f,1f);
     	if(wind.transform.localScale.x ==1)
     	{
     		wind.GetComponent<SpriteRenderer>().color = new Color(1f,1f,.5f);
@@ -34,7 +34,7 @@ public class MegurinGauges : MonoBehaviour
     	else{
     		wind.GetComponent<SpriteRenderer>().color = Color.white;
     	}
-    	lightning.transform.localScale = new Vector2(megurin.lightningCharge/50f,1f);
+    	lightning.transform.localScale = new Vector2(megurin.lightningCharge/30f,1f);
     	if(lightning.transform.localScale.x ==1)
     	{
     		lightning.GetComponent<SpriteRenderer>().color = new Color(1f,1f,.5f);

@@ -38,17 +38,6 @@ public class SpaceJamMasterHit : MasterHit
         rb.velocity = new Vector2(facing * -45f,0f);
     }
 
-    void Update(){
-    	chargeTime += Time.deltaTime;
-    	if(chargeTime >= 1.0f){
-    		if(charges < maxCharge){
-    			grantCharges();
-    		}
-    		chargeTime = 0f;
-    	}
-
-    }
-
     public void multihit(){
         attacks.SetMultiHitAttackID();
     }

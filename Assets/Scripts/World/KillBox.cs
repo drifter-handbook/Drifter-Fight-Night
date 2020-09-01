@@ -6,6 +6,7 @@ using UnityEngine;
 public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
 {
     NetworkEntityList Entities;
+    public Animator endgameBanner;
 
     void Awake()
     {
@@ -89,6 +90,9 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                 } else
                 {
                     gameObject.GetComponentInParent<SingleSound>().PlayAudio();
+                }
+                else{
+                    endgameBanner.enabled = true;
                 }
             }
         }

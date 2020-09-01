@@ -19,7 +19,7 @@ public class MegurinMasterHit : MasterHit
     public float lightningCharge = 0f;
     public float windCharge = 0f;
     public float iceCharge = 0f;
-    float elementChargeMax = 50f;
+    float elementChargeMax = 30f;
 
     public int facing;
 
