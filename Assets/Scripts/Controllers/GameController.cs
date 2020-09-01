@@ -138,5 +138,9 @@ public class GameController : MonoBehaviour
         {
             IsPaused = !IsPaused;
         }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
     }
 }
