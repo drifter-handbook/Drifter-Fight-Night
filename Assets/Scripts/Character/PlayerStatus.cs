@@ -64,7 +64,7 @@ public class PlayerStatus : MonoBehaviour
 
     public bool HasRemovableEffect()
     {
-        return HasStatusEffect(PlayerStatusEffect.END_LAG) || HasStatusEffect(PlayerStatusEffect.PLANTED) || HasStatusEffect(PlayerStatusEffect.STUNNED)||  HasStatusEffect(PlayerStatusEffect.EXPOSED) || HasStatusEffect(PlayerStatusEffect.REVERSED);
+        return HasStatusEffect(PlayerStatusEffect.PLANTED) || HasStatusEffect(PlayerStatusEffect.STUNNED)||  HasStatusEffect(PlayerStatusEffect.EXPOSED) || HasStatusEffect(PlayerStatusEffect.REVERSED);
     }
     public bool HasEnemyStunEffect()
     {
