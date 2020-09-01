@@ -13,9 +13,8 @@ public class RyykeTombstone : MonoBehaviour
     public bool grounded = false;
 
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
-        Ryyke = chadController.gameObject.transform.parent.gameObject;
     	rb = GetComponent<Rigidbody2D>();
     	rb.velocity = new Vector2(0f,-50f);
     }
@@ -50,6 +49,10 @@ public class RyykeTombstone : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {  
+
+        if(Ryyke == null){
+            Ryyke = chadController.gameObject.transform.parent.gameObject;
+        }
 
         if (col.gameObject.tag == "Ground" || col.gameObject.tag == "Platform")
         {
