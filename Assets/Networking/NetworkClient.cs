@@ -183,6 +183,11 @@ public class NetworkClient : MonoBehaviour, NetworkID
             if (Input.GetMouseButtonDown(0))
             {
                 yield return SceneManager.LoadSceneAsync("MenuScene");
+                GameController.Instance.selectedStage = null;
+                GameController.Instance.winner = null;
+                GameController.Instance.CharacterSelectStates = new List<CharacterSelectState>() { };
+                GameController.Instance.Entities = null;
+                Destroy(this);
                 yield break;
             }
         }
