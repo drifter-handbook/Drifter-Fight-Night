@@ -93,7 +93,7 @@ public class RykkeMasterHit : MasterHit
         if(tetherTarget != Vector2.zero && !tetheredPlayer)
         {
             rb.velocity = new Vector2((-rb.position.x + tetherTarget.x) *3f, Mathf.Min((-rb.position.y + tetherTarget.y) *3f,50f) + 30);
-            if(movement.currentJumps < movement.numberOfJumps){
+            if(movement.currentJumps < movement.numberOfJumps-1){
                 movement.currentJumps++;
             }
         }
@@ -102,7 +102,7 @@ public class RykkeMasterHit : MasterHit
         {
             rb.position = new Vector3(tetherTarget.x -.5f *facing,tetherTarget.y +.5f,0);
             rb.velocity = new Vector3(facing*35, 45,0);
-            if(movement.currentJumps < movement.numberOfJumps){
+            if(movement.currentJumps < movement.numberOfJumps-1){
                 movement.currentJumps++;
             }
 
