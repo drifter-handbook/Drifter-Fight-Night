@@ -52,7 +52,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Player")
+        if (other.gameObject.tag == "Player" && GameController.Instance.IsHost)
         {
             Drifter drifter = other.gameObject?.GetComponent<Drifter>();
 
@@ -71,6 +71,21 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
             else
             {
                 Destroy(other.gameObject);
+                // check for last one remaining
+                int count = 0;
+                foreach (GameObject go in Entities.Players.Values)
+                {
+                    if (Entities.hasStocks(go))
+                    {
+                        count++;
+                        GameController.Instance.winner = go.GetComponent<INetworkSync>().Type;
+                    }
+                }
+                GameController.Instance.winner = "Nero";
+                if (count != 1 && count != 0)
+                {
+                    GameController.Instance.winner = null;
+                }
             }
         }
     }

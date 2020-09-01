@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public interface NetworkID
 {
@@ -151,6 +152,35 @@ public class NetworkHost : MonoBehaviour, NetworkID
         {
             // send game sync packet every frame
             Network.SendToAll(CreateGameSyncPacket());
+            if (GameController.Instance.winner != null && GameController.Instance.winner != "")
+            {
+                EndGame();
+            }
+        }
+    }
+
+    public bool GameEnded { get; private set; } = false;
+    public void EndGame()
+    {
+        if (!GameEnded)
+        {
+            StartCoroutine(EndGameCoroutine());
+        }
+        GameEnded = true;
+    }
+    IEnumerator EndGameCoroutine()
+    {
+        yield return SceneManager.LoadSceneAsync("Endgame");
+        Text winner = GameObject.FindGameObjectWithTag("EndgameName").GetComponent<Text>();
+        winner.text = $"Winner: {GameController.Instance.winner.Replace('_', ' ')}";
+        while (SceneManager.GetActiveScene().name == "Endgame")
+        {
+            yield return null;
+            if (Input.GetMouseButtonDown(0))
+            {
+                yield return SceneManager.LoadSceneAsync("MenuScene");
+                yield break;
+            }
         }
     }
 
@@ -215,6 +245,7 @@ public class NetworkHost : MonoBehaviour, NetworkID
         }
         SyncData.pause = GameController.Instance.IsPaused;
         SyncData.stage = SceneManager.GetActiveScene().name;
+        SyncData.winner = GameController.Instance.winner;
         return new SyncToClientPacket() { Timestamp = Time.time, SyncData = SyncData };
     }
 

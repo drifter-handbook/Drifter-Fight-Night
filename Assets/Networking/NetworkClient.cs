@@ -144,6 +144,10 @@ public class NetworkClient : MonoBehaviour, NetworkID
             {
                 input = (PlayerInputData)GetComponent<PlayerInput>().input.Clone()
             });
+            if (GameController.Instance.winner != null && GameController.Instance.winner != "")
+            {
+                EndGame();
+            }
         }
     }
 
@@ -157,6 +161,31 @@ public class NetworkClient : MonoBehaviour, NetworkID
             Network.SendToAll(new ClientSetupPacket() { ID = -1 });
         }
         yield break;
+    }
+
+    public bool GameEnded { get; private set; } = false;
+    public void EndGame()
+    {
+        if (!GameEnded)
+        {
+            StartCoroutine(EndGameCoroutine());
+        }
+        GameEnded = true;
+    }
+    IEnumerator EndGameCoroutine()
+    {
+        yield return SceneManager.LoadSceneAsync("Endgame");
+        Text winner = GameObject.FindGameObjectWithTag("EndgameName").GetComponent<Text>();
+        winner.text = $"Winner: {GameController.Instance.winner.Replace('_', ' ')}";
+        while (SceneManager.GetActiveScene().name == "Endgame")
+        {
+            yield return null;
+            if (Input.GetMouseButtonDown(0))
+            {
+                yield return SceneManager.LoadSceneAsync("MenuScene");
+                yield break;
+            }
+        }
     }
 
     public bool GameStarted { get; set; } = false;
@@ -194,6 +223,12 @@ public class NetworkClient : MonoBehaviour, NetworkID
         syncsPerSecond++;
         if (entities == null)
         {
+            return;
+        }
+        // if game over
+        if (data.SyncData.winner != null && data.SyncData.winner != "")
+        {
+            GameController.Instance.winner = data.SyncData.winner;
             return;
         }
         Time.timeScale = data.SyncData.pause ? 0f : 1f;

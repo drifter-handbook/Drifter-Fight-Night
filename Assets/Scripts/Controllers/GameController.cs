@@ -29,6 +29,7 @@ public class GameController : MonoBehaviour
 
     // Evans's horrid hack, please help me fix this Lyn
     public string selectedStage = null;
+    public string winner = null;
 
     //* Data storage
     public AllDrifterData AllData; // Character List
