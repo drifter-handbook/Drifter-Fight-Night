@@ -19,7 +19,7 @@ public class BojoBubble : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        anim.SetInteger("mode",mode);
+        anim.SetInteger("Mode",mode);
     }
 
     void OnTriggerEnter2D(Collider2D col)
