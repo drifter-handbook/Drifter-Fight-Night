@@ -211,7 +211,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        if(status.HasStatusEffect(PlayerStatusEffect.STUNNED) || status.HasStatusEffect(PlayerStatusEffect.PLANTED))
+        if(status.HasStatusEffect(PlayerStatusEffect.STUNNED) || status.HasStatusEffect(PlayerStatusEffect.PLANTED) || status.HasStatusEffect(PlayerStatusEffect.DEAD))
         {
             if(status.HasStatusEffect(PlayerStatusEffect.PLANTED) && !IsGrounded())
             {
