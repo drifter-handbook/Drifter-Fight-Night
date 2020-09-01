@@ -25,7 +25,7 @@ public class NetworkClient : MonoBehaviour, NetworkID
     NetworkEntityList entities = GameController.Instance.Entities;
     List<CharacterSelectState> CharacterSelectStates => GameController.Instance.CharacterSelectStates; // single source of truth
 
-    void Start()
+    void Awake()
     {
         Network = new NetworkHandler(Host, HostID);
 
