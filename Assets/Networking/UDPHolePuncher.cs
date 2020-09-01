@@ -62,6 +62,18 @@ public class UDPHolePuncher : IDisposable
         received = new ConcurrentBag<HolePunchResponse>();
         // send UDP to hole punch server to give it your assigned port
         udpClient = new UdpClient();
+        // get ID
+        ID = GetLocalID(holePunchingServerName, holePunchingServerPort);
+        byte[] data = Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(new HolePunchID() { PeerPort = ID }));
+        udpClient.Send(data, data.Length, holePunchingServerName, holePunchingServerPort);
+        // start receive thread
+        thread = new Thread(new ThreadStart(ReceiveClientData));
+        thread.Start();
+    }
+
+    public static int GetLocalID(string holePunchingServerName, int holePunchingServerPort)
+    {
+        int ID = -1;
         // get local IP
         byte[] test = Encoding.ASCII.GetBytes("peepeepoopoo");
         using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
@@ -71,12 +83,7 @@ public class UDPHolePuncher : IDisposable
             ID = endPoint.Address.GetAddressBytes()[3];
             Debug.Log($"Your PlayerID is {ID}");
         }
-        // use it as ID
-        byte[] data = Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(new HolePunchID() { PeerPort = ID }));
-        udpClient.Send(data, data.Length, holePunchingServerName, holePunchingServerPort);
-        // start receive thread
-        thread = new Thread(new ThreadStart(ReceiveClientData));
-        thread.Start();
+        return ID;
     }
 
     private void ReceiveClientData()
