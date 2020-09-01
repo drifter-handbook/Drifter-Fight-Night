@@ -114,8 +114,6 @@ public class GameController : MonoBehaviour
         else
         {
             NetworkClient client = gameObject.AddComponent<NetworkClient>();
-            client.Host = hostIP;
-            client.HostID = HostID;
         }
     }
 

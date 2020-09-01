@@ -11,9 +11,6 @@ using UnityEngine.UI;
 
 public class NetworkClient : MonoBehaviour, NetworkID
 {
-    public string Host;
-    public int HostID;
-
     public int PlayerID { get; private set; } = -1;
     public NetworkHandler Network { get; set; }
     NetworkTimer networkTimer = new NetworkTimer();
@@ -27,7 +24,7 @@ public class NetworkClient : MonoBehaviour, NetworkID
 
     void Awake()
     {
-        Network = new NetworkHandler(Host, HostID);
+        Network = new NetworkHandler(GameController.Instance.hostIP, GameController.Instance.HostID);
 
         // accept clients
         Network.OnConnect((addr, port, id) =>
@@ -143,7 +140,7 @@ public class NetworkClient : MonoBehaviour, NetworkID
     IEnumerator ConnectToHost()
     {
         // Send request for a Client ID
-        Debug.Log($"Sending connection request to host at {Host}");
+        Debug.Log($"Sending connection request to host at {GameController.Instance.hostIP}");
         // Keep sending until we get a reply or timeout
         for (float time = 0; PlayerID == -1 && time < ConnectTimeout; time += Time.deltaTime)
         {
