@@ -6,6 +6,7 @@ using UnityEngine;
 public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
 {
     NetworkEntityList Entities;
+    public Animator endgameBanner;
 
     void Awake()
     {
@@ -84,6 +85,9 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                 if (count != 1)
                 {
                     GameController.Instance.winner = null;
+                }
+                else{
+                    endgameBanner.enabled = true;
                 }
             }
         }
