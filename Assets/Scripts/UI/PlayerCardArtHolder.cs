@@ -12,6 +12,7 @@ public class PlayerCardArtHolder : MonoBehaviour
 
     private Drifter[] drifters;
     private PlayerCard[] playerCards;
+    private int[] stockvals;
 
     NetworkEntityList Entities;
 
@@ -25,6 +26,7 @@ public class PlayerCardArtHolder : MonoBehaviour
         if (drifters == null || drifters.Length == 0)
         {
             drifters = FindObjectsOfType<Drifter>();
+            stockvals = new int[drifters.Length];
 
             playerCards = new PlayerCard[drifters.Length];
 
@@ -72,15 +74,35 @@ public class PlayerCardArtHolder : MonoBehaviour
             // update stocks
             if (drifters[i] != null)
             {
+                stockvals[i] = playerCards[i].currStocks;
                 playerCards[i].removeToStock(drifters[i].Stocks);
+                
             }
             else
             {
+                if (stockvals[i] != playerCards[i].currStocks)
+                {
+                    if (getNullCount(drifters) > 1)
+                    {
+                        gameObject.GetComponent<MultiSound>().PlayAudio(i);
+                    }
+                    else
+                        gameObject.GetComponent<SingleSound>().PlayAudio();
+                    stockvals[i] = playerCards[i].currStocks;
+                }
                 playerCards[i].removeToStock(0);
             }
         }
     }
 
+    private int getNullCount(Drifter[] drifters)
+    {
+        int count = 0;
+        for (int i = 0; i < drifters.Length; i++)
+            if (drifters[i] == null)
+                count++;
+        return count;
+    }
 
     private int getDrifterTypeIndex(string name)
     {
