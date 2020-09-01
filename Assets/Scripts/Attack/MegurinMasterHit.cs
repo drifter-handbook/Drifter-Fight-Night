@@ -52,7 +52,7 @@ public class MegurinMasterHit : MasterHit
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.25f);
         HeldDirection.Normalize();
         Debug.Log("direction " + HeldDirection*20f);
-        myLayerMask = ~(1 << LayerMask.NameToLayer ("Player"));
+        myLayerMask = ~(1 << LayerMask.NameToLayer ("Player") | 1 << LayerMask.NameToLayer ("Platform"));
         RaycastHit2D hit = Physics2D.Raycast(rb.position, HeldDirection*20f, 20, myLayerMask);
         if(hit.collider != null)
         {
