@@ -68,16 +68,21 @@ public class NetworkClient : MonoBehaviour, NetworkID
             {
                 remote.PlayerType = local.PlayerType;
             }
-            CharacterMenu menu = GameObject.FindGameObjectWithTag("CharacterMenu").GetComponent<CharacterMenu>();
+
             string s = ((CharacterSelectSyncPacket)packet).Data.stage;
-            if (s != null && s != "" && !menu.GetComponent<Animator>().GetBool("location"))
-            {
-                menu.HeadToLocationSelect();
+            GameObject menuObject = GameObject.FindGameObjectWithTag("CharacterMenu");
+            if(menuObject != null){
+                 CharacterMenu menu = GameObject.FindGameObjectWithTag("CharacterMenu").GetComponent<CharacterMenu>();
+                 if (s != null && s != "" && !menu.GetComponent<Animator>().GetBool("location"))
+                {
+                    menu.HeadToLocationSelect();
+                }
+                if (s != null && s != "")
+                {
+                    menu.SelectFightzone(s);
+                }
             }
-            if (s != null && s != "")
-            {
-                menu.SelectFightzone(s);
-            }
+            
         }, true);
         // handle game input
         Network.OnReceive(new SyncToClientPacket(), (id, packet) =>
