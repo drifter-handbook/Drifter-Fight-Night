@@ -13,6 +13,7 @@ public class MegurinMasterHit : MasterHit
     public SpriteRenderer sprite;
     GameObject activeStorm;
     Vector2 HeldDirection;
+    LayerMask myLayerMask;
 
     int neutralWCharge = 0;
     public float lightningCharge = 0f;
@@ -49,11 +50,23 @@ public class MegurinMasterHit : MasterHit
     {
         saveDirection();
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.25f);
-
         HeldDirection.Normalize();
-
-        rb.position += HeldDirection*20f;
-
+        Debug.Log("direction " + HeldDirection*20f);
+        myLayerMask = ~(1 << LayerMask.NameToLayer ("Player"));
+        RaycastHit2D hit = Physics2D.Raycast(rb.position, HeldDirection*20f, 20, myLayerMask);
+        if(hit.collider != null)
+        {
+            Debug.Log("Hit this" + hit.collider.tag);
+            Debug.Log("Did Hit" + hit.distance);
+            var distance = hit.distance;
+            if (distance <4f){
+              distance = 0;
+            }
+            rb.position += HeldDirection*(distance);
+        }
+        else{
+          rb.position += HeldDirection*20f;
+        }
         HeldDirection = Vector2.zero;
 
     }
@@ -116,7 +129,7 @@ public class MegurinMasterHit : MasterHit
         attackData.StatusEffect = PlayerStatusEffect.HIT;
         return attackData;
     }
-    
+
     public void Nair(){
         attacks.SetMultiHitAttackID();
     }
