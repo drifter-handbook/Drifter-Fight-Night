@@ -16,6 +16,7 @@ public class CharacterSelectSyncPacket : IGamePacket
     public class CharacterSelectSyncData
     {
         public List<CharacterSelectState> CharacterSelectState = new List<CharacterSelectState>();
+        public string stage;
     }
 
     public IGamePacket FromData(string json)

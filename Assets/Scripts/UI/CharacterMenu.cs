@@ -88,6 +88,7 @@ public class CharacterMenu : MonoBehaviour
     void FixedUpdate()
     {
         SyncToCharSelectState();
+        transform.Find("ReadyButton").gameObject.SetActive(GameController.Instance.IsHost);
     }
 
     public void SyncToCharSelectState()
@@ -168,6 +169,11 @@ public class CharacterMenu : MonoBehaviour
         menuEntries.RemoveAt(index);
     }
 
+    public void SelectFightzone(string s)
+    {
+        selectedFightzoneNum = fightzones.FindIndex(x => x.fightzoneName == s);
+    }
+
     public void nextFightzone()
     {
         selectedFightzoneNum++;
@@ -183,7 +189,10 @@ public class CharacterMenu : MonoBehaviour
         selectedFightzone = fightzones[selectedFightzoneNum];
         fightZonePreview.sprite = selectedFightzone.fightzonePreview;
         fightZoneLabel.text = selectedFightzone.fightzoneName;
-        GameController.Instance.selectedStage = selectedFightzone.sceneName;
+        if (GetComponent<Animator>().GetBool("location"))
+        {
+            GameController.Instance.selectedStage = selectedFightzone.sceneName;
+        }
     }
 
     public void SelectDrifter(string drifterString)
@@ -244,7 +253,7 @@ public class CharacterMenu : MonoBehaviour
                 drifter.figurine.GetComponent<Animator>().SetBool("present", false);
             }
         }
-
+        UpdateFightzone();
     }
 
     public void HeadToCharacterSelect()
