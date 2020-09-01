@@ -71,7 +71,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
             }
             else
             {
-                int destroyed = 0;
+                //int destroyed = 0;
                 foreach (CharacterSelectState state in GameController.Instance.CharacterSelectStates)
                 {
                     
@@ -83,7 +83,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                         if (obj.Equals(other.gameObject))
                         {
                             
-                            destroyed = state.PlayerIndex;
+                           // destroyed = state.PlayerIndex;
                         }
                     }
                 }
@@ -107,11 +107,11 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                 }
                 if (count != 1)
                 {
-                    gameObject.GetComponentInParent<MultiSound>().PlayAudio(destroyed);
+                    //gameObject.GetComponentInParent<MultiSound>().PlayAudio(destroyed);
                     GameController.Instance.winner = null;
                 } else
                 {
-                    gameObject.GetComponentInParent<SingleSound>().PlayAudio();
+                    //gameObject.GetComponentInParent<SingleSound>().PlayAudio();
                     endgameBanner.enabled = true;
                 }
             }
