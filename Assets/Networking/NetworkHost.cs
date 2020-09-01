@@ -89,7 +89,8 @@ public class NetworkHost : MonoBehaviour, NetworkID
         // handle game input
         Network.OnReceive(new InputToHostPacket(), (id, packet) =>
         {
-            SetGameSyncInput((InputToHostPacket)packet, id);
+            CharacterSelectState state = CharacterSelectStates.Find(x => x.PlayerID == id);
+            SetGameSyncInput((InputToHostPacket)packet, state.PlayerIndex);
         }, true);
         // send updates every 40ms
         networkTimer.Schedule(ProcessUpdate, 0.04f);

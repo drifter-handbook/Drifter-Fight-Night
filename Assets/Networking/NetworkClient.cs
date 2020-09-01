@@ -70,11 +70,11 @@ public class NetworkClient : MonoBehaviour, NetworkID
             }
             CharacterMenu menu = GameObject.FindGameObjectWithTag("CharacterMenu").GetComponent<CharacterMenu>();
             string s = ((CharacterSelectSyncPacket)packet).Data.stage;
-            if (s != null && !menu.GetComponent<Animator>().GetBool("location"))
+            if (s != null && s != "" && !menu.GetComponent<Animator>().GetBool("location"))
             {
                 menu.HeadToLocationSelect();
             }
-            if (s != null)
+            if (s != null && s != "")
             {
                 menu.SelectFightzone(s);
             }
