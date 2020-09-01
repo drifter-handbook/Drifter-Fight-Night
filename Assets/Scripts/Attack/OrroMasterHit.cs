@@ -15,6 +15,7 @@ public class OrroMasterHit : MasterHit
     Animator localBeanAnim;
     PlayerStatus status;
     float beanSpeed = 10f;
+    LayerMask aLayerMask;
 
     void Start()
     {
@@ -52,7 +53,7 @@ public class OrroMasterHit : MasterHit
 
     public void spawnBeanSpit(int direction,Vector3 position)
     {
-        
+
         Vector3 flip = new Vector3(direction *8,8,0f);
         Vector3 pos = new Vector3(direction *.7f,2.5f,1f);
         GameObject spit = Instantiate(entities.GetEntityPrefab("BeanSpit"), position + pos, transform.rotation);
@@ -90,12 +91,26 @@ public class OrroMasterHit : MasterHit
     public void inTheHole(){
         facing = movement.Facing;
         rb.velocity = Vector2.zero;
-        rb.position += new Vector2(0,20);
+        aLayerMask = ~(1 << LayerMask.NameToLayer ("Player") | 1 << LayerMask.NameToLayer ("Platform"));
+        RaycastHit2D hit = Physics2D.Raycast(rb.position, new Vector2(0,1), 20, aLayerMask);
+        if(hit.collider != null && hit.collider.gameObject!= null && hit.collider.gameObject.tag != "Untagged")
+        {
+            Debug.Log("Hit this" + hit.collider);
+            Debug.Log("Did Hit" + hit.distance);
+            var distance = hit.distance;
+            if (distance <4f){
+              distance = 0;
+            }
+            rb.position += new Vector2(0, distance);
+        }
+        else{
+          rb.position += new Vector2(0,20);
+        }
     }
 
     public void resetGravity(){
         rb.gravityScale = gravityScale;
-    } 
+    }
 
     //Bean
 
@@ -142,7 +157,7 @@ public class OrroMasterHit : MasterHit
         else{
             BeanRecall();
         }
-       
+
     }
 
     public void jabCombo()

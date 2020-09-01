@@ -51,13 +51,10 @@ public class MegurinMasterHit : MasterHit
         saveDirection();
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.25f);
         HeldDirection.Normalize();
-        Debug.Log("direction " + HeldDirection*20f);
         myLayerMask = ~(1 << LayerMask.NameToLayer ("Player") | 1 << LayerMask.NameToLayer ("Platform"));
         RaycastHit2D hit = Physics2D.Raycast(rb.position, HeldDirection*20f, 20, myLayerMask);
-        if(hit.collider != null)
+        if(hit.collider != null && hit.collider.gameObject!= null && hit.collider.gameObject.tag != "Untagged")
         {
-            Debug.Log("Hit this" + hit.collider.tag);
-            Debug.Log("Did Hit" + hit.distance);
             var distance = hit.distance;
             if (distance <4f){
               distance = 0;
