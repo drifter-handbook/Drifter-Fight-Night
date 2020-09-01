@@ -189,7 +189,10 @@ public class CharacterMenu : MonoBehaviour
         selectedFightzone = fightzones[selectedFightzoneNum];
         fightZonePreview.sprite = selectedFightzone.fightzonePreview;
         fightZoneLabel.text = selectedFightzone.fightzoneName;
-        GameController.Instance.selectedStage = selectedFightzone.sceneName;
+        if (GetComponent<Animator>().GetBool("location"))
+        {
+            GameController.Instance.selectedStage = selectedFightzone.sceneName;
+        }
     }
 
     public void SelectDrifter(string drifterString)
@@ -250,7 +253,7 @@ public class CharacterMenu : MonoBehaviour
                 drifter.figurine.GetComponent<Animator>().SetBool("present", false);
             }
         }
-
+        UpdateFightzone();
     }
 
     public void HeadToCharacterSelect()
