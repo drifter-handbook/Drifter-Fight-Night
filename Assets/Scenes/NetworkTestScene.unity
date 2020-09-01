@@ -447,6 +447,68 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 424397744}
   m_CullTransparentMesh: 0
+--- !u!1 &478933353 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8089335417560576336, guid: b7472ea8ca06c2b47b57bb0484c1a2c1,
+    type: 3}
+  m_PrefabInstance: {fileID: 116621893}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &478933355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 478933353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 466ceb50f1f44f24797fbc1e4a707f63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Clips:
+  - {fileID: 8300000, guid: 84cb96806bddca640943bd10ea7b920e, type: 3}
+  - {fileID: 8300000, guid: d9756abfa5928464f87b6830b41d3419, type: 3}
+  - {fileID: 8300000, guid: 35d1612082647524fb8074aabe9a6761, type: 3}
+--- !u!1 &522815402 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5156570637442938337, guid: c6335b54d7903ca478353699c205f47c,
+    type: 3}
+  m_PrefabInstance: {fileID: 698605776}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &522815403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 522815402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dc78681112c14b40a94e80267fa54c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Clip: {fileID: 8300000, guid: 0f78413c7b60b684daf3ad8488c033c9, type: 3}
+--- !u!114 &522815404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 522815402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d2b023013e94224390b9280c8feab37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Clips:
+  - {fileID: 8300000, guid: 088747203e5f56448aefd8d738e38280, type: 3}
+  - {fileID: 8300000, guid: adf86762a60707145aca4c78408675ce, type: 3}
+  - {fileID: 8300000, guid: be50aa9a3672edf45b976afb4411508b, type: 3}
+  - {fileID: 8300000, guid: 892e8c819ec1dce4698df465fa4d858b, type: 3}
+  - {fileID: 8300000, guid: e58a1a4f231ff3342a3abb286a6d2a84, type: 3}
+  - {fileID: 8300000, guid: 7655f1b0766987745b914856822e1497, type: 3}
+  - {fileID: 8300000, guid: a573ae720c5a6224983a91326fa6e5b1, type: 3}
+  - {fileID: 8300000, guid: 6d029f2af61877143859d1b3aaff8487, type: 3}
 --- !u!1001 &698605776
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -70,6 +70,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
             }
             else
             {
+                //int destroyed = GameController.Instance.CharacterSelectStates[0].PlayerIndex;
                 Destroy(other.gameObject);
                 // check for last one remaining
                 int count = 0;
@@ -83,7 +84,11 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                 }
                 if (count != 1)
                 {
+                    //gameObject.GetComponentInParent<MultiSound>().PlayAudio(destroyed);
                     GameController.Instance.winner = null;
+                } else
+                {
+                    gameObject.GetComponentInParent<SingleSound>().PlayAudio();
                 }
             }
         }
