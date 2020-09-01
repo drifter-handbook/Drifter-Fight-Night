@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum PlayerStatusEffect
 {
-    AMBERED, PLANTED, STUNNED, EXPOSED, HIT, FEATHERWEIGHT, END_LAG, KNOCKBACK, INVULN, ARMOUR, REVERSED, SLOWED
+    AMBERED, PLANTED, STUNNED, EXPOSED, HIT, FEATHERWEIGHT, END_LAG, KNOCKBACK, INVULN, ARMOUR, REVERSED, SLOWED, DEAD
 }
 
 
@@ -64,7 +64,7 @@ public class PlayerStatus : MonoBehaviour
 
     public bool HasRemovableEffect()
     {
-        return HasStatusEffect(PlayerStatusEffect.PLANTED) || HasStatusEffect(PlayerStatusEffect.STUNNED)||  HasStatusEffect(PlayerStatusEffect.EXPOSED) || HasStatusEffect(PlayerStatusEffect.REVERSED);
+        return HasStatusEffect(PlayerStatusEffect.PLANTED) || HasStatusEffect(PlayerStatusEffect.STUNNED)||  HasStatusEffect(PlayerStatusEffect.EXPOSED) || HasStatusEffect(PlayerStatusEffect.REVERSED)  || HasStatusEffect(PlayerStatusEffect.END_LAG);
     }
     public bool HasEnemyStunEffect()
     {
