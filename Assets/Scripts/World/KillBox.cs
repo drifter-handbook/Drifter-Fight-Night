@@ -71,7 +71,24 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
             }
             else
             {
-                //int destroyed = GameController.Instance.CharacterSelectStates[0].PlayerIndex;
+                int destroyed = 0;
+                foreach (CharacterSelectState state in GameController.Instance.CharacterSelectStates)
+                {
+                    
+                    if (Entities.Players.ContainsKey(state.PlayerID))
+                    {
+                        GameObject obj;
+                        Entities.Players.TryGetValue(state.PlayerID, out obj);
+
+                        if (obj.Equals(other.gameObject))
+                        {
+                            
+                            destroyed = state.PlayerIndex;
+                            Debug.Log("b i n g b o n g " + destroyed);
+                        }
+                    }
+                }
+                
                 Destroy(other.gameObject);
                 // check for last one remaining
                 int count = 0;
@@ -85,11 +102,12 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                 }
                 if (count != 1)
                 {
-                    //gameObject.GetComponentInParent<MultiSound>().PlayAudio(destroyed);
+                    gameObject.GetComponentInParent<MultiSound>().PlayAudio(destroyed);
                     GameController.Instance.winner = null;
                 } else
                 {
-                    gameObject.GetComponentInParent<SingleSound>().PlayAudio();
+                    gameObject.GetComponentInParent<MultiSound>().PlayAudio(destroyed);
+                    //gameObject.GetComponentInParent<SingleSound>().PlayAudio();
                     endgameBanner.enabled = true;
                 }
             }
