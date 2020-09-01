@@ -54,6 +54,7 @@ public class RyykeTombstoneSync : MonoBehaviour, INetworkSync
         public float xScale = 1f;
         public float yScale = 1f;
         public bool grounded = false;
+        public bool activate = false;
     }
 
     public void Deserialize(INetworkEntityData data)
@@ -73,6 +74,7 @@ public class RyykeTombstoneSync : MonoBehaviour, INetworkSync
             targetPos = new Vector3(projData.x, projData.y, projData.z);
             oldScale = new Vector3(projData.xScale,projData.yScale,1);
             oldGrounded = projData.grounded;
+            GetComponent<RyykeTombstone>().activate = projData.activate;
 
         }
     }
@@ -88,7 +90,8 @@ public class RyykeTombstoneSync : MonoBehaviour, INetworkSync
             z = transform.position.z,
             xScale = gameObject.transform.localScale.x,
             yScale = gameObject.transform.localScale.y,
-            grounded = gameObject.GetComponent<RyykeTombstone>().grounded
+            grounded = gameObject.GetComponent<RyykeTombstone>().grounded,
+            activate = gameObject.GetComponent<RyykeTombstone>().activate
 
         };
         return data;

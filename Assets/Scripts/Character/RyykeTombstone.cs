@@ -9,6 +9,7 @@ public class RyykeTombstone : MonoBehaviour
     public Animator anim;
     public int facing;
     bool armed = false;
+    public bool activate = false;
     GameObject Ryyke;
     public bool grounded = false;
 
@@ -35,6 +36,9 @@ public class RyykeTombstone : MonoBehaviour
         if (grounded)
         {
             rb.velocity = Vector2.zero;
+        }
+        if(activate){
+            anim.SetTrigger("Activate");
         }
         anim.SetBool("Grounded",grounded);
     }
@@ -76,6 +80,7 @@ public class RyykeTombstone : MonoBehaviour
 
         else if(armed && col.gameObject != Ryyke && col.gameObject.tag == "Player") //&& col.gameObject != hitbox.parent)
         {
+            activate = true;
             anim.SetTrigger("Activate");
             StartCoroutine(Delete());
         }
