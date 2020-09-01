@@ -13,7 +13,7 @@ public class RyykeTombstone : MonoBehaviour
     public bool grounded = false;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         Ryyke = chadController.gameObject.transform.parent.gameObject;
     	rb = GetComponent<Rigidbody2D>();
