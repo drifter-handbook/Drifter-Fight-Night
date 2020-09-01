@@ -55,8 +55,8 @@ public class NetworkEntityConverter : Newtonsoft.Json.Converters.CustomCreationC
             case "GuidingBolt":
             case "HaloPlatform":
             case "BeanSpit":
-            case "Mock":
-            case "Centaur":
+            case "Mockery":
+            case "Kamikaze":
                 return new BasicProjectileSync.ProjectileData();
             case "IceBar":
             case "WindBar":
