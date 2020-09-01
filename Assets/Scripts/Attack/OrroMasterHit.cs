@@ -35,7 +35,7 @@ public class OrroMasterHit : MasterHit
     {
         facing = movement.Facing;
         Vector3 flip = new Vector3(facing *12f,12f,0f);
-        Vector3 pos = new Vector3(facing *3f,5.5f,1f);
+        Vector3 pos = new Vector3(facing *3f,3.5f,1f);
         GameObject orroOrb = Instantiate(entities.GetEntityPrefab("OrroSideW"), transform.position + pos, transform.rotation);
         orroOrb.transform.localScale = flip;
         orroOrb.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * 25, 0);
@@ -54,7 +54,7 @@ public class OrroMasterHit : MasterHit
     {
         
         Vector3 flip = new Vector3(direction *8,8,0f);
-        Vector3 pos = new Vector3(direction *.7f,3,1f);
+        Vector3 pos = new Vector3(direction *.7f,2.5f,1f);
         GameObject spit = Instantiate(entities.GetEntityPrefab("BeanSpit"), position + pos, transform.rotation);
         spit.transform.localScale = flip;
         spit.GetComponent<Rigidbody2D>().velocity = new Vector2(direction * 20, 0);
