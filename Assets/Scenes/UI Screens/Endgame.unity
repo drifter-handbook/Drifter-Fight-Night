@@ -5213,6 +5213,7 @@ GameObject:
   - component: {fileID: 833886438}
   - component: {fileID: 833886437}
   - component: {fileID: 833886436}
+  - component: {fileID: 833886439}
   m_Layer: 5
   m_Name: EndgameArt
   m_TagString: EndgamePic
@@ -5298,6 +5299,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 833886434}
   m_CullTransparentMesh: 0
+--- !u!114 &833886439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 833886434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d2b023013e94224390b9280c8feab37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Clips:
+  - {fileID: 8300000, guid: e820a24da8f74984a80cb1e2b5063866, type: 3}
+  - {fileID: 8300000, guid: f1d94511119d35d44bee1b9ba86b64c3, type: 3}
+  - {fileID: 8300000, guid: e1f1dc3684f7e604f877ba41d3765bb1, type: 3}
+  - {fileID: 8300000, guid: 6f4aebf8d90d1fb41a7183c86e51bcfb, type: 3}
+  - {fileID: 8300000, guid: 5c1710e8499d2e842b0236316a560f94, type: 3}
+  - {fileID: 8300000, guid: 4531c7b46f7c8fb44aed574a252ef64f, type: 3}
+  - {fileID: 8300000, guid: 1bf07ba803379cb43bfcdda4a1d07297, type: 3}
+  - {fileID: 8300000, guid: 2b89985d983ec7847950b335b9d26ac5, type: 3}
 --- !u!1 &974345563
 GameObject:
   m_ObjectHideFlags: 0

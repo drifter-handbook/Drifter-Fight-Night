@@ -84,7 +84,6 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                         {
                             
                             destroyed = state.PlayerIndex;
-                            Debug.Log("b i n g b o n g " + destroyed);
                         }
                     }
                 }
@@ -96,8 +95,14 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                 {
                     if (Entities.hasStocks(go))
                     {
+                        int victor = -1;
+                        foreach (CharacterSelectState select in GameController.Instance.CharacterSelectStates)
+                        {
+                            if (go.Equals(Entities.Players[select.PlayerID]))
+                                victor = select.PlayerIndex;
+                        }
                         count++;
-                        GameController.Instance.winner = go.GetComponent<INetworkSync>().Type;
+                        GameController.Instance.winner = go.GetComponent<INetworkSync>().Type + "|" + victor;
                     }
                 }
                 if (count != 1)
@@ -106,8 +111,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                     GameController.Instance.winner = null;
                 } else
                 {
-                    gameObject.GetComponentInParent<MultiSound>().PlayAudio(destroyed);
-                    //gameObject.GetComponentInParent<SingleSound>().PlayAudio();
+                    gameObject.GetComponentInParent<SingleSound>().PlayAudio();
                     endgameBanner.enabled = true;
                 }
             }
