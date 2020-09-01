@@ -36,8 +36,7 @@ public static class GamePacketUtils
         new SyncToClientPacket(),
         new PingPacket(),
         new CharacterSelectInputPacket(),
-        new CharacterSelectSyncPacket(),
-        new StageSelectSyncPacket()
+        new CharacterSelectSyncPacket()
     };
     static Dictionary<string, IGamePacket> namedTypes = new Dictionary<string, IGamePacket>();
     static GamePacketUtils()

@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 6175947058605950356}
   - component: {fileID: 3851472505369005441}
   - component: {fileID: 8608663704774372660}
-  - component: {fileID: -1331057761305526557}
   - component: {fileID: -7181416711269201357}
+  - component: {fileID: 1695495948942947693}
+  - component: {fileID: 3079038706259413413}
   m_Layer: 0
   m_Name: Mockery
   m_TagString: Untagged
@@ -74,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -3245303269222625363, guid: 04bcd681e734f8244827607d9b331341,
+  m_Sprite: {fileID: 5797837809803962633, guid: d0872c50c87736a44a5905d19d92db2c,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -100,19 +101,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   latency: 0.025
   Name: Mock
---- !u!114 &-1331057761305526557
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7124858215600245853}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0858efbbb62af5e4c8dba1c80bb85222, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  duration: 0.6
 --- !u!50 &-7181416711269201357
 Rigidbody2D:
   serializedVersion: 4
@@ -134,6 +122,40 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 6
+--- !u!95 &1695495948942947693
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7124858215600245853}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c9c903d8723a61643ad5b4c26aaf23e4, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &3079038706259413413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7124858215600245853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2718b0de45ad6c14ba7d87ff3a832d93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 0.6
+  mode: 0
+  anim: {fileID: 1695495948942947693}
 --- !u!1 &8501102141425205889
 GameObject:
   m_ObjectHideFlags: 0
@@ -179,8 +201,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.5, y: 1}
+  m_Offset: {x: 0.00000047466366, y: -0.018233063}
+  m_Size: {x: 0.79335654, y: 0.34359145}
   m_Direction: 1
 --- !u!114 &2752544219615661103
 MonoBehaviour:

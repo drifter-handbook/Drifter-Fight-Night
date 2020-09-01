@@ -88,6 +88,7 @@ public class CharacterMenu : MonoBehaviour
     void FixedUpdate()
     {
         SyncToCharSelectState();
+        transform.Find("ReadyButton").gameObject.SetActive(GameController.Instance.IsHost);
     }
 
     public void SyncToCharSelectState()
@@ -166,6 +167,11 @@ public class CharacterMenu : MonoBehaviour
         Transform parent = index < PANEL_MAX_PLAYERS ? leftPanel.transform : rightPanel.transform;
         Destroy(menuEntries[index].characterCard);
         menuEntries.RemoveAt(index);
+    }
+
+    public void SelectFightzone(string s)
+    {
+        selectedFightzoneNum = fightzones.FindIndex(x => x.fightzoneName == s);
     }
 
     public void nextFightzone()

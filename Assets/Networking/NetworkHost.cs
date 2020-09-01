@@ -141,7 +141,8 @@ public class NetworkHost : MonoBehaviour, NetworkID
             {
                 Data = new CharacterSelectSyncPacket.CharacterSelectSyncData()
                 {
-                    CharacterSelectState = CharacterSelectStates
+                    CharacterSelectState = CharacterSelectStates,
+                    stage = GameController.Instance.selectedStage
                 }
             });
         }
