@@ -72,7 +72,7 @@ public class NetworkClient : MonoBehaviour, NetworkID
             string s = ((CharacterSelectSyncPacket)packet).Data.stage;
             GameObject menuObject = GameObject.FindGameObjectWithTag("CharacterMenu");
             if(menuObject != null){
-                 CharacterMenu menu = GameObject.FindGameObjectWithTag("CharacterMenu").GetComponent<CharacterMenu>();
+                 CharacterMenu menu = menuObject.GetComponent<CharacterMenu>();
                  if (s != null && s != "" && !menu.GetComponent<Animator>().GetBool("location"))
                 {
                     menu.HeadToLocationSelect();
