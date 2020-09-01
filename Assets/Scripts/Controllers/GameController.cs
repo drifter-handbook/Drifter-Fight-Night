@@ -130,10 +130,6 @@ public class GameController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            GetComponent<NetworkHost>()?.StartGame();
-        }
         if (Input.GetKeyDown(KeyCode.P))
         {
             IsPaused = !IsPaused;
