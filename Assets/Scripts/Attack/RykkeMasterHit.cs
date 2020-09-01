@@ -46,7 +46,8 @@ public class RykkeMasterHit : MasterHit
         
     }
 
-    public void throwHands(){
+    public void throwHands()
+    {
         facing = movement.Facing;
         GameObject arms = Instantiate(entities.GetEntityPrefab("LongArmOfTheLaw"), transform.position + new Vector3(facing * 2,5,0), transform.rotation);
                 foreach (HitboxCollision hitbox in arms.GetComponentsInChildren<HitboxCollision>(true))
@@ -108,7 +109,7 @@ public class RykkeMasterHit : MasterHit
         }
         playerRange.gameObject.transform.parent.gameObject.SetActive(false);
         rb.gravityScale = gravityScale;
-        player = false;
+        tetheredPlayer = false;
     }
 
 
