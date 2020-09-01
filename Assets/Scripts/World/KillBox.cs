@@ -98,7 +98,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                         int victor = -1;
                         foreach (CharacterSelectState select in GameController.Instance.CharacterSelectStates)
                         {
-                            if (go.Equals(Entities.Players[select.PlayerID]))
+                            if (Entities.Players.ContainsKey(select.PlayerID) && go.Equals(Entities.Players[select.PlayerID]))
                                 victor = select.PlayerIndex;
                         }
                         count++;
