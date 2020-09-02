@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 7721718320186116863}
   - component: {fileID: 7036779647235626514}
   - component: {fileID: 2284918692465744229}
+  - component: {fileID: 5458575745414982599}
+  - component: {fileID: 6659709467830893312}
   m_Layer: 0
   m_Name: DeathExplosion
   m_TagString: Untagged
@@ -117,6 +119,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   latency: 0.025
+  PlayerIndex: -1
 --- !u!82 &2284918692465744229
 AudioSource:
   m_ObjectHideFlags: 0
@@ -141,7 +144,7 @@ AudioSource:
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
-  BypassEffects: 0
+  BypassEffects: 1
   BypassListenerEffects: 1
   BypassReverbZones: 0
   rolloffCustomCurve:
@@ -213,3 +216,37 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &5458575745414982599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7721718320186116860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d2b023013e94224390b9280c8feab37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Clips:
+  - {fileID: 8300000, guid: 088747203e5f56448aefd8d738e38280, type: 3}
+  - {fileID: 8300000, guid: adf86762a60707145aca4c78408675ce, type: 3}
+  - {fileID: 8300000, guid: be50aa9a3672edf45b976afb4411508b, type: 3}
+  - {fileID: 8300000, guid: 892e8c819ec1dce4698df465fa4d858b, type: 3}
+  - {fileID: 8300000, guid: e58a1a4f231ff3342a3abb286a6d2a84, type: 3}
+  - {fileID: 8300000, guid: 7655f1b0766987745b914856822e1497, type: 3}
+  - {fileID: 8300000, guid: a573ae720c5a6224983a91326fa6e5b1, type: 3}
+  - {fileID: 8300000, guid: 6d029f2af61877143859d1b3aaff8487, type: 3}
+--- !u!114 &6659709467830893312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7721718320186116860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dc78681112c14b40a94e80267fa54c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Clip: {fileID: 8300000, guid: 0f78413c7b60b684daf3ad8488c033c9, type: 3}

@@ -14,20 +14,22 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
             "NetworkEntityList").GetComponent<NetworkEntityList>();
     }
 
-    void CreateExplosion(Collider2D other)
+    GameObject CreateExplosion(Collider2D other, int playerIndex)
     {
+        GameController.Instance.deathExplosionPrefab.GetComponent<DeathExplosionSync>().PlayerIndex = playerIndex;
         GameObject deathExplosion = Instantiate(
             GameController.Instance.deathExplosionPrefab,
             other.transform.position,
             Quaternion.identity
         );
-
+        GameController.Instance.deathExplosionPrefab.GetComponent<DeathExplosionSync>().PlayerIndex = -1;
         deathExplosion.transform.position =
             ClampObjectToScreenSpace.FindPosition(deathExplosion.transform);
         deathExplosion.transform.eulerAngles =
             ClampObjectToScreenSpace.FindNearestOctagonalAngle(deathExplosion.transform);
 
         Entities.AddEntity(deathExplosion.gameObject);
+        return deathExplosion;    
     }
 
     void CreateHalo()
@@ -57,8 +59,6 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
         {
             Drifter drifter = other.gameObject?.GetComponent<Drifter>();
 
-            CreateExplosion(other);
-
             drifter.Stocks--;
             drifter.DamageTaken = 0f;
             drifter.Charge = 0;
@@ -67,23 +67,23 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
 
             if (Entities.hasStocks(other.gameObject))
             {
-                 StartCoroutine(Respawn(other));
+                CreateExplosion(other, -1);
+                StartCoroutine(Respawn(other));
             }
             else
             {
-                //int destroyed = 0;
+                int destroyed = -1;
                 foreach (CharacterSelectState state in GameController.Instance.CharacterSelectStates)
                 {
                     
                     if (Entities.Players.ContainsKey(state.PlayerID))
                     {
-                        GameObject obj;
-                        Entities.Players.TryGetValue(state.PlayerID, out obj);
+                        Entities.Players.TryGetValue(state.PlayerID, out GameObject obj);
 
                         if (obj.Equals(other.gameObject))
                         {
-                            
-                           // destroyed = state.PlayerIndex;
+                            destroyed = state.PlayerIndex;
+                            break;
                         }
                     }
                 }
@@ -106,12 +106,15 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                         winner = go.GetComponent<INetworkSync>().Type + "|" + victor;
                     }
                 }
-                if (count == 1)
+                if (count <= 1)
                 {
+
                     endgameBanner.enabled = true;
                     GameController.Instance.winner = winner;
+                    destroyed = -2;
                
                 }
+                CreateExplosion(other, destroyed);
             }
         }
     }

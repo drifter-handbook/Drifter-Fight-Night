@@ -13,11 +13,21 @@ public class DeathExplosionSync : MonoBehaviour, INetworkSync
     public string Type { get; private set; } = "DeathExplosion";
     public int ID { get; set; } = NetworkEntityList.NextID;
 
+    public int PlayerIndex = -1; //TODO sync
+
     Animator anim;
 
     void Awake()
     {
         anim = GetComponent<Animator>();
+        if (PlayerIndex == -2)
+        {
+            gameObject.GetComponent<SingleSound>().PlayAudio();
+        }
+        else if (PlayerIndex >= 0)
+        {
+            gameObject.GetComponent<MultiSound>().PlayAudio(PlayerIndex);
+        }
     }
 
     // Update is called once per frame
