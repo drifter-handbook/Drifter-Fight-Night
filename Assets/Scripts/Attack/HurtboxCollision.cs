@@ -19,6 +19,5 @@ public class HurtboxCollision : MonoBehaviour
     }
     void OnTriggerEnter2D(Collider2D collider)
     {
-        Debug.Log("hi");
     }
 }
