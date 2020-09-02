@@ -73,9 +73,6 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),
                 Quaternion.identity);
 
-
-            UnityEngine.Debug.Log("HITSPARK" + attackData.GetHitSpark());
-
             if(drifter.animator.GetBool("Guarding") && !attackData.isGrab){
                     hitSparks.GetComponent<HitSparks>().SetAnimation(drifter.BlockReduction>.5?6:5);
                     hitSparks.transform.localScale = new Vector3(facingDir * 10f, 10f, 10f);
