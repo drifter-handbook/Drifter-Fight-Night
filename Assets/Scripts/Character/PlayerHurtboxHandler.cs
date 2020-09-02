@@ -11,11 +11,13 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
     // for creating hitsparks
     NetworkEntityList Entities;
+    CameraShake camera;
 
     // Start is called before the first frame update
     void Start()
     {
         Entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
+        camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraShake>();
         StartCoroutine(CleanupOldAttacks());
     }
 
@@ -63,6 +65,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 if(!status.HasArmour()){
                     if(attackData.KnockbackScale >= -1){
                         GetComponent<Rigidbody2D>().velocity = new Vector2(forceDir.normalized.x * KB, GetComponent<PlayerMovement>().grounded?Mathf.Abs(forceDir.normalized.y * KB): forceDir.normalized.y * KB);
+                        StartCoroutine(camera.Shake(KB * .005f,KB * .002f));
                     }
                     if(attackData.HitStun != 0){
                         status?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, (attackData.HitStun>0)?attackData.HitStun:(KB*.0055f + .1f));
