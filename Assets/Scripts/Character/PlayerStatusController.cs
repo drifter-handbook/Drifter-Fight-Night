@@ -16,9 +16,9 @@ public class PlayerStatusController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        mode = status.GetStatusToRender();
         anim.SetInteger("Status",mode);
-        
+        mode = status.GetStatusToRender();
+                
     }
 
 }
