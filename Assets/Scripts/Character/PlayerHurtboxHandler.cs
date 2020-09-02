@@ -52,9 +52,10 @@ public class PlayerHurtboxHandler : MonoBehaviour
             // rotate direction by angle of impact
             Vector2 forceDir = Quaternion.Euler(0, 0, attackData.AngleOfImpact * facingDir) * (facingDir * Vector2.right);
             //Ignore knockback if invincible or armoured
+            float KB = 0;
             if(status != null && !status.HasInulvernability() && (attackData.isGrab || !drifter.animator.GetBool("Guarding"))){
 
-                float KB = (float)(((drifter.DamageTaken / 10 + drifter.DamageTaken * attackData.AttackDamage / 20)
+                KB = (float)(((drifter.DamageTaken / 10 + drifter.DamageTaken * attackData.AttackDamage / 20)
                         * 200 / (drifter.drifterData.Weight + 100) * 1.4 *
                          ((status.HasStatusEffect(PlayerStatusEffect.EXPOSED) || status.HasStatusEffect(PlayerStatusEffect.FEATHERWEIGHT))
                             ?1.5f:1)) * attackData.KnockbackScale + attackData.Knockback);
@@ -74,11 +75,15 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),
                 Quaternion.identity);
 
+            bool noRotateFlag = true;
             if(drifter != null && drifter.animator.GetBool("Guarding") && !attackData.isGrab){
                     hitSparks.GetComponent<HitSparks>().SetAnimation(drifter.BlockReduction>.5?6:5);
                     hitSparks.transform.localScale = new Vector3(facingDir * 10f, 10f, 10f);
-            }
-            else if(drifter != null && attackData.GetHitSpark() != 1 && attackData.GetHitSpark() != 8){
+            } else if (drifter != null && willCollideWithBlastZone(GetComponent<Rigidbody2D>(), (attackData.HitStun > 0) ? attackData.HitStun : (KB * .0055f + .1f))){
+                hitSparks.GetComponent<HitSparks>().SetAnimation(9);
+                hitSparks.transform.localScale = new Vector3(facingDir * 10f, 10f, 10f);
+                noRotateFlag = false;
+            } else if(drifter != null && attackData.GetHitSpark() != 1 && attackData.GetHitSpark() != 8){
                 hitSparks.GetComponent<HitSparks>().SetAnimation(attackData.GetHitSpark());
                 hitSparks.transform.localScale = new Vector3(facingDir *-6f, 6f, 6f);
             }
@@ -87,7 +92,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 hitSparks.transform.localScale = new Vector3(facingDir *10f, 10f, 10f);
             }
             
-            hitSparks.transform.eulerAngles = new Vector3(0, 0, facingDir * ((Mathf.Abs(attackData.AngleOfImpact) > 65f && attackData.GetHitSpark() != 7)? Mathf.Sign(attackData.AngleOfImpact)*90f:0f));
+            if (noRotateFlag)
+                hitSparks.transform.eulerAngles = new Vector3(0, 0, facingDir * ((Mathf.Abs(attackData.AngleOfImpact) > 65f && attackData.GetHitSpark() != 7)? Mathf.Sign(attackData.AngleOfImpact)*90f:0f));
 
 
             Entities.AddEntity(hitSparks);
@@ -158,5 +164,35 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 i--;
             }
         }
+    }
+
+    private bool willCollideWithBlastZone(Rigidbody2D rigidbody, float hitstun)
+    {
+        float xDel, yDel;
+        float xVel, yVel;
+
+        GameObject parentZone = GameObject.Find("Kill Zones");
+        Transform hZone, vZone;
+        if (rigidbody.velocity.x > 0)
+            hZone = parentZone.transform.Find("Killzone Right");
+        else
+            hZone = parentZone.transform.Find("Killzone Left");
+
+        if (rigidbody.velocity.y > 0)
+            vZone = parentZone.transform.Find("Killzone Top");
+        else
+            vZone = parentZone.transform.Find("Killzone Bottom");
+
+        xDel = Mathf.Abs(hZone.position.x - rigidbody.position.x);
+        yDel = Mathf.Abs(vZone.position.y - rigidbody.position.y);
+        xVel = Mathf.Abs(rigidbody.velocity.x);
+        yVel = Mathf.Abs(rigidbody.velocity.y);
+
+
+
+        if (xVel * hitstun >= xDel || yVel * hitstun >= yDel)
+            return true;
+
+        return false;
     }
 }
