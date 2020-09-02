@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: -7181416711269201357}
   - component: {fileID: 1695495948942947693}
   - component: {fileID: 3079038706259413413}
+  - component: {fileID: 1699452464115451772}
   m_Layer: 0
   m_Name: Mockery
   m_TagString: Untagged
@@ -156,6 +157,27 @@ MonoBehaviour:
   duration: 0.6
   mode: 0
   anim: {fileID: 1695495948942947693}
+--- !u!114 &1699452464115451772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7124858215600245853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d2b023013e94224390b9280c8feab37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Clips:
+  - {fileID: 8300000, guid: 272003971dc9b3f40a98ca4b304a511f, type: 3}
+  - {fileID: 8300000, guid: f530bce2e04dd714bbdeaa6e6f2f3e22, type: 3}
+  - {fileID: 8300000, guid: 18f0e78339d88a045945f82f243f67bd, type: 3}
+  - {fileID: 8300000, guid: f8b1cd74e4621d947b7b0ca38277ce6a, type: 3}
+  - {fileID: 8300000, guid: d8a29d419decfd546a90cbdf48a6cb83, type: 3}
+  - {fileID: 8300000, guid: e5fcea18630d3444ca98af6838a76312, type: 3}
+  - {fileID: 8300000, guid: 9a6cbd6a76a48764eb90310531fbcdc5, type: 3}
+  - {fileID: 8300000, guid: 9570c6d5efea3a142a2938ad9384a8fc, type: 3}
 --- !u!1 &8501102141425205889
 GameObject:
   m_ObjectHideFlags: 0
