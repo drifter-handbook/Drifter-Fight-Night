@@ -45,6 +45,7 @@ public class Drifter : MonoBehaviour
 
     void Awake()
     {
+        drifterData = GameController.Instance.AllData.GetStats(sync.Type);
     }
 
     void LateUpdate()
