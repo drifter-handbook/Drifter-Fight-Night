@@ -25,7 +25,6 @@ public class PlayerCardArtHolder : MonoBehaviour
         if (drifters == null || drifters.Length == 0)
         {
             drifters = FindObjectsOfType<Drifter>();
-            stockvals = new int[drifters.Length];
 
             playerCards = new PlayerCard[drifters.Length];
 
