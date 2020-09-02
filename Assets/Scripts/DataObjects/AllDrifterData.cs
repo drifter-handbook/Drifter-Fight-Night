@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "AllDrifterData", menuName = "VirtuaDrifter/AllDrifterData", order = 53)]
-public class AllDrifterData : ScriptableObject
+public class AllDrifterData
 {
     [Serializable]
     public class DrifterAttacks
@@ -18,12 +17,14 @@ public class AllDrifterData : ScriptableObject
     Dictionary<string, DrifterData> DataMap = new Dictionary<string, DrifterData>();
     Dictionary<string, DrifterAttackData> AttackMap = new Dictionary<string, DrifterAttackData>();
 
-    void OnEnable()
+    public void FinishLoading()
     {
         foreach (DrifterAttacks pa in Players)
         {
             DataMap[pa.name] = pa.stats;
+            DataMap[pa.name].FinishLoading();
             AttackMap[pa.name] = pa.attacks;
+            AttackMap[pa.name].FinishLoading();
         }
     }
 

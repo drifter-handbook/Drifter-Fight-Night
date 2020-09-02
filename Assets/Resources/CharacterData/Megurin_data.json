@@ -1,0 +1,154 @@
+{
+  "name": "Megurin",
+  "stats": {
+    "ReadableName": "Megurin",
+    "Jumps": 2,
+    "Weight": 80.0,
+    "RunSpeed": 0.0,
+    "WalkSpeed": 0.0,
+    "name": "Megurin",
+    "hideFlags": 0
+  },
+  "attacks": {
+    "Attacks": [
+      {
+        "attack": 4,
+        "attackData": {
+          "AttackDamage": 6.0,
+          "Knockback": 20.0,
+          "KnockbackScale": 0.285,
+          "HitStun": 0.2,
+          "EndLag": 0.45,
+          "isGrab": false,
+          "AngleOfImpact": 15.0,
+          "StatusEffect": 4,
+          "StatusDuration": 0.0,
+          "HitVisual": 1,
+          "name": "Jab",
+          "hideFlags": 0
+        }
+      },
+      {
+        "attack": 8,
+        "attackData": {
+          "AttackDamage": 1.6,
+          "Knockback": 10.0,
+          "KnockbackScale": 0.37,
+          "HitStun": 0.2,
+          "EndLag": 0.1,
+          "isGrab": false,
+          "AngleOfImpact": 65.0,
+          "StatusEffect": 4,
+          "StatusDuration": 0.0,
+          "HitVisual": 1,
+          "name": "Aerial",
+          "hideFlags": 0
+        }
+      },
+      {
+        "attack": 11,
+        "attackData": {
+          "AttackDamage": 0.0,
+          "Knockback": 0.0,
+          "KnockbackScale": 0.0,
+          "HitStun": -1.0,
+          "EndLag": 1.4,
+          "isGrab": false,
+          "AngleOfImpact": 45.0,
+          "StatusEffect": 4,
+          "StatusDuration": 0.1,
+          "HitVisual": 1,
+          "name": "UpW",
+          "hideFlags": 0
+        }
+      },
+      {
+        "attack": 10,
+        "attackData": {
+          "AttackDamage": 1.0,
+          "Knockback": 0.0,
+          "KnockbackScale": 0.0,
+          "HitStun": 0.0,
+          "EndLag": 0.65,
+          "isGrab": false,
+          "AngleOfImpact": 90.0,
+          "StatusEffect": 4,
+          "StatusDuration": 0.1,
+          "HitVisual": 8,
+          "name": "DownW",
+          "hideFlags": 0
+        }
+      },
+      {
+        "attack": 9,
+        "attackData": {
+          "AttackDamage": 12.0,
+          "Knockback": 15.0,
+          "KnockbackScale": 0.46,
+          "HitStun": -1.0,
+          "EndLag": 0.8,
+          "isGrab": false,
+          "AngleOfImpact": 35.0,
+          "StatusEffect": 4,
+          "StatusDuration": 0.1,
+          "HitVisual": 8,
+          "name": "SideW",
+          "hideFlags": 0
+        }
+      },
+      {
+        "attack": 12,
+        "attackData": {
+          "AttackDamage": 22.0,
+          "Knockback": 40.0,
+          "KnockbackScale": 0.4,
+          "HitStun": -1.0,
+          "EndLag": 0.25,
+          "isGrab": false,
+          "AngleOfImpact": 25.0,
+          "StatusEffect": 4,
+          "StatusDuration": 0.1,
+          "HitVisual": 1,
+          "name": "NeutralWStrong",
+          "hideFlags": 0
+        }
+      },
+      {
+        "attack": 13,
+        "attackData": {
+          "AttackDamage": 8.0,
+          "Knockback": 25.0,
+          "KnockbackScale": 0.67,
+          "HitStun": -1.0,
+          "EndLag": 1.1,
+          "isGrab": true,
+          "AngleOfImpact": -45.0,
+          "StatusEffect": 4,
+          "StatusDuration": 0.1,
+          "HitVisual": 4,
+          "name": "Grab",
+          "hideFlags": 0
+        }
+      },
+      {
+        "attack": 17,
+        "attackData": {
+          "AttackDamage": 10.0,
+          "Knockback": 10.0,
+          "KnockbackScale": 0.5,
+          "HitStun": -1.0,
+          "EndLag": 0.6,
+          "isGrab": false,
+          "AngleOfImpact": 45.0,
+          "StatusEffect": 4,
+          "StatusDuration": 0.1,
+          "HitVisual": 1,
+          "name": "Roll",
+          "hideFlags": 0
+        }
+      }
+    ],
+    "name": "Megurin",
+    "hideFlags": 0
+  }
+}

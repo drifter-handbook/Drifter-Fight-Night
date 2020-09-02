@@ -6,8 +6,7 @@ using UnityEngine;
  * This will hold the data for each drifter. It is able to be modified
  * in the explorer.
  */
-[CreateAssetMenu(fileName = "DrifterData", menuName = "VirtuaDrifter/DrifterData", order = 51)]
-public class DrifterData : ScriptableObject
+public class DrifterData
 {
     [Header("UI Info")]
     [SerializeField] string readableName;
@@ -24,4 +23,9 @@ public class DrifterData : ScriptableObject
     public float Weight { get { return weight; } }
     public float RunSpeed { get { return runSpeed; } }
     public float WalkSpeed { get { return walkSpeed; } }
+
+    public void FinishLoading()
+    {
+
+    }
 }

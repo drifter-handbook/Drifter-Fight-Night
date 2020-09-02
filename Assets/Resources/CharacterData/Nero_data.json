@@ -1,0 +1,154 @@
+{
+  "name": "Nero",
+  "stats": {
+    "ReadableName": "Nero",
+    "Jumps": 1,
+    "Weight": 110.0,
+    "RunSpeed": 0.0,
+    "WalkSpeed": 0.0,
+    "name": "Nero",
+    "hideFlags": 0
+  },
+  "attacks": {
+    "Attacks": [
+      {
+        "attack": 4,
+        "attackData": {
+          "AttackDamage": 2.0,
+          "Knockback": 12.0,
+          "KnockbackScale": 0.38,
+          "HitStun": -1.0,
+          "EndLag": 0.15,
+          "isGrab": false,
+          "AngleOfImpact": 0.0,
+          "StatusEffect": 4,
+          "StatusDuration": 0.1,
+          "HitVisual": 3,
+          "name": "NeutralQ",
+          "hideFlags": 0
+        }
+      },
+      {
+        "attack": 8,
+        "attackData": {
+          "AttackDamage": 4.0,
+          "Knockback": 17.0,
+          "KnockbackScale": 0.57,
+          "HitStun": -1.0,
+          "EndLag": 0.35,
+          "isGrab": false,
+          "AngleOfImpact": 25.0,
+          "StatusEffect": 4,
+          "StatusDuration": 0.0,
+          "HitVisual": 1,
+          "name": "AerialQ",
+          "hideFlags": 0
+        }
+      },
+      {
+        "attack": 11,
+        "attackData": {
+          "AttackDamage": 14.0,
+          "Knockback": 20.0,
+          "KnockbackScale": 0.56,
+          "HitStun": -1.0,
+          "EndLag": 0.5,
+          "isGrab": false,
+          "AngleOfImpact": -90.0,
+          "StatusEffect": 4,
+          "StatusDuration": 0.0,
+          "HitVisual": 1,
+          "name": "Recovery",
+          "hideFlags": 0
+        }
+      },
+      {
+        "attack": 13,
+        "attackData": {
+          "AttackDamage": 8.0,
+          "Knockback": 30.0,
+          "KnockbackScale": 0.27,
+          "HitStun": -1.0,
+          "EndLag": 0.6,
+          "isGrab": true,
+          "AngleOfImpact": 90.0,
+          "StatusEffect": 4,
+          "StatusDuration": 0.0,
+          "HitVisual": 4,
+          "name": "Grab",
+          "hideFlags": 0
+        }
+      },
+      {
+        "attack": 9,
+        "attackData": {
+          "AttackDamage": 14.0,
+          "Knockback": 35.0,
+          "KnockbackScale": 0.59,
+          "HitStun": -1.0,
+          "EndLag": 0.6,
+          "isGrab": false,
+          "AngleOfImpact": 45.0,
+          "StatusEffect": 4,
+          "StatusDuration": 0.0,
+          "HitVisual": 2,
+          "name": "SideW",
+          "hideFlags": 0
+        }
+      },
+      {
+        "attack": 10,
+        "attackData": {
+          "AttackDamage": 16.0,
+          "Knockback": 50.0,
+          "KnockbackScale": 0.6,
+          "HitStun": -1.0,
+          "EndLag": 0.6,
+          "isGrab": false,
+          "AngleOfImpact": 45.0,
+          "StatusEffect": 4,
+          "StatusDuration": 0.0,
+          "HitVisual": 3,
+          "name": "DownW",
+          "hideFlags": 0
+        }
+      },
+      {
+        "attack": 12,
+        "attackData": {
+          "AttackDamage": 12.0,
+          "Knockback": 35.0,
+          "KnockbackScale": 0.39,
+          "HitStun": -1.0,
+          "EndLag": 0.2,
+          "isGrab": false,
+          "AngleOfImpact": 25.0,
+          "StatusEffect": 4,
+          "StatusDuration": 0.0,
+          "HitVisual": 2,
+          "name": "NeutralW",
+          "hideFlags": 0
+        }
+      },
+      {
+        "attack": 17,
+        "attackData": {
+          "AttackDamage": 8.0,
+          "Knockback": 30.0,
+          "KnockbackScale": 0.27,
+          "HitStun": -1.0,
+          "EndLag": 0.6,
+          "isGrab": true,
+          "AngleOfImpact": 90.0,
+          "StatusEffect": 4,
+          "StatusDuration": 0.0,
+          "HitVisual": 4,
+          "name": "Grab",
+          "hideFlags": 0
+        }
+      }
+    ],
+    "name": "Nero",
+    "hideFlags": 0
+  }
+}

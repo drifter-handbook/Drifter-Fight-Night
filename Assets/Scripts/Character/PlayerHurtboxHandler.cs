@@ -37,11 +37,12 @@ public class PlayerHurtboxHandler : MonoBehaviour
             // apply hit effects
             hitbox.parent.GetComponent<PlayerAttacks>().Hit(attackType, attackID, hurtbox.parent);
 
-            GetComponent<PlayerStatus>().ApplyStatusEffect(PlayerStatusEffect.HIT,.1f);
+            PlayerStatus status = GetComponent<PlayerStatus>();
+            status?.ApplyStatusEffect(PlayerStatusEffect.HIT,.1f);
 
             // apply damage, ignored if invuln
             Drifter drifter = GetComponent<Drifter>();
-            if (drifter != null && !GetComponent<PlayerStatus>().HasInulvernability())
+            if (drifter != null && status != null && !status.HasInulvernability())
             {
                 drifter.DamageTaken += attackData.AttackDamage * (drifter.animator.GetBool("Guarding") && !attackData.isGrab ? 1 - drifter.BlockReduction : 1f);
             }
@@ -51,33 +52,33 @@ public class PlayerHurtboxHandler : MonoBehaviour
             // rotate direction by angle of impact
             Vector2 forceDir = Quaternion.Euler(0, 0, attackData.AngleOfImpact * facingDir) * (facingDir * Vector2.right);
             //Ignore knockback if invincible or armoured
-            if(!GetComponent<PlayerStatus>().HasInulvernability() && (!drifter.animator.GetBool("Guarding") || attackData.isGrab)){
+            if(status != null && !status.HasInulvernability() && (!drifter.animator.GetBool("Guarding") || attackData.isGrab)){
 
                 float KB = (float)(((drifter.DamageTaken / 10 + drifter.DamageTaken * attackData.AttackDamage / 20)
                         * 200 / (drifter.drifterData.Weight + 100) * 1.4 *
-                         ((GetComponent<PlayerStatus>().HasStatusEffect(PlayerStatusEffect.EXPOSED) || GetComponent<PlayerStatus>().HasStatusEffect(PlayerStatusEffect.FEATHERWEIGHT))
+                         ((status.HasStatusEffect(PlayerStatusEffect.EXPOSED) || status.HasStatusEffect(PlayerStatusEffect.FEATHERWEIGHT))
                             ?1.5f:1)) * attackData.KnockbackScale + attackData.Knockback);
 
-                if(!GetComponent<PlayerStatus>().HasArmour()){
+                if(!status.HasArmour()){
                     if(attackData.KnockbackScale >= -1){
                         GetComponent<Rigidbody2D>().velocity = new Vector2(forceDir.normalized.x * KB, GetComponent<PlayerMovement>().grounded?Mathf.Abs(forceDir.normalized.y * KB): forceDir.normalized.y * KB);
                     }
                     if(attackData.HitStun != 0){
-                        GetComponent<PlayerStatus>()?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, (attackData.HitStun>0)?attackData.HitStun:(KB*.0055f + .1f));
+                        status?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, (attackData.HitStun>0)?attackData.HitStun:(KB*.0055f + .1f));
                     }
                 }
-                GetComponent<PlayerStatus>().ApplyStatusEffect(attackData.StatusEffect,attackData.StatusDuration);            
+                status.ApplyStatusEffect(attackData.StatusEffect,attackData.StatusDuration);            
             }
             // create hit sparks
             GameObject hitSparks = Instantiate(Entities.GetEntityPrefab("HitSparks"),
                 Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),
                 Quaternion.identity);
 
-            if(drifter.animator.GetBool("Guarding") && !attackData.isGrab){
+            if(drifter != null && drifter.animator.GetBool("Guarding") && !attackData.isGrab){
                     hitSparks.GetComponent<HitSparks>().SetAnimation(drifter.BlockReduction>.5?6:5);
                     hitSparks.transform.localScale = new Vector3(facingDir * 10f, 10f, 10f);
             }
-            else if(attackData.GetHitSpark() != 1 && attackData.GetHitSpark() != 8){
+            else if(drifter != null && attackData.GetHitSpark() != 1 && attackData.GetHitSpark() != 8){
                 hitSparks.GetComponent<HitSparks>().SetAnimation(attackData.GetHitSpark());
                 hitSparks.transform.localScale = new Vector3(facingDir *-6f, 6f, 6f);
             }

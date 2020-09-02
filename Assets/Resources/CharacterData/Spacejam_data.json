@@ -1,0 +1,154 @@
+{
+  "name": "Spacejam",
+  "stats": {
+    "ReadableName": "Spacejam",
+    "Jumps": 3,
+    "Weight": 70.0,
+    "RunSpeed": 0.0,
+    "WalkSpeed": 0.0,
+    "name": "Spacejam",
+    "hideFlags": 0
+  },
+  "attacks": {
+    "Attacks": [
+      {
+        "attack": 4,
+        "attackData": {
+          "AttackDamage": 3.0,
+          "Knockback": 7.0,
+          "KnockbackScale": 0.46,
+          "HitStun": -1.0,
+          "EndLag": 0.2,
+          "isGrab": false,
+          "AngleOfImpact": 15.0,
+          "StatusEffect": 4,
+          "StatusDuration": 0.0,
+          "HitVisual": 1,
+          "name": "NeutralQ",
+          "hideFlags": 0
+        }
+      },
+      {
+        "attack": 8,
+        "attackData": {
+          "AttackDamage": 9.0,
+          "Knockback": 20.0,
+          "KnockbackScale": 0.43,
+          "HitStun": -1.0,
+          "EndLag": 0.35,
+          "isGrab": false,
+          "AngleOfImpact": 45.0,
+          "StatusEffect": 4,
+          "StatusDuration": 0.0,
+          "HitVisual": 1,
+          "name": "AerialQ",
+          "hideFlags": 0
+        }
+      },
+      {
+        "attack": 11,
+        "attackData": {
+          "AttackDamage": 2.0,
+          "Knockback": 35.0,
+          "KnockbackScale": 0.1,
+          "HitStun": 0.3,
+          "EndLag": 0.9,
+          "isGrab": false,
+          "AngleOfImpact": 55.0,
+          "StatusEffect": 4,
+          "StatusDuration": 0.0,
+          "HitVisual": 1,
+          "name": "Recovery",
+          "hideFlags": 0
+        }
+      },
+      {
+        "attack": 13,
+        "attackData": {
+          "AttackDamage": 8.0,
+          "Knockback": 30.0,
+          "KnockbackScale": 0.36,
+          "HitStun": -1.0,
+          "EndLag": 0.1,
+          "isGrab": true,
+          "AngleOfImpact": -45.0,
+          "StatusEffect": 2,
+          "StatusDuration": 0.0,
+          "HitVisual": 4,
+          "name": "Grab",
+          "hideFlags": 0
+        }
+      },
+      {
+        "attack": 12,
+        "attackData": {
+          "AttackDamage": 0.0,
+          "Knockback": 0.0,
+          "KnockbackScale": 1.0,
+          "HitStun": -1.0,
+          "EndLag": 0.4,
+          "isGrab": false,
+          "AngleOfImpact": 45.0,
+          "StatusEffect": 4,
+          "StatusDuration": 0.1,
+          "HitVisual": 1,
+          "name": "NeutralW",
+          "hideFlags": 0
+        }
+      },
+      {
+        "attack": 10,
+        "attackData": {
+          "AttackDamage": 4.0,
+          "Knockback": 10.0,
+          "KnockbackScale": 0.52,
+          "HitStun": 0.3,
+          "EndLag": 0.4,
+          "isGrab": false,
+          "AngleOfImpact": 15.0,
+          "StatusEffect": 4,
+          "StatusDuration": 0.1,
+          "HitVisual": 1,
+          "name": "DownW",
+          "hideFlags": 0
+        }
+      },
+      {
+        "attack": 9,
+        "attackData": {
+          "AttackDamage": 5.0,
+          "Knockback": 10.0,
+          "KnockbackScale": 0.46,
+          "HitStun": -1.0,
+          "EndLag": 0.7,
+          "isGrab": false,
+          "AngleOfImpact": 45.0,
+          "StatusEffect": 3,
+          "StatusDuration": 10.0,
+          "HitVisual": 8,
+          "name": "SideW",
+          "hideFlags": 0
+        }
+      },
+      {
+        "attack": 17,
+        "attackData": {
+          "AttackDamage": 0.0,
+          "Knockback": 0.0,
+          "KnockbackScale": 0.0,
+          "HitStun": 0.1,
+          "EndLag": 0.6,
+          "isGrab": false,
+          "AngleOfImpact": 0.0,
+          "StatusEffect": 4,
+          "StatusDuration": 0.1,
+          "HitVisual": 1,
+          "name": "Roll",
+          "hideFlags": 0
+        }
+      }
+    ],
+    "name": "SpaceJam",
+    "hideFlags": 0
+  }
+}

@@ -14,8 +14,7 @@ public enum DrifterAttackType
 }
 
 // collection of data on all attacks a player has
-[CreateAssetMenu(fileName = "AttackData", menuName = "VirtuaDrifter/AttackData", order = 69)]
-public class DrifterAttackData : ScriptableObject
+public class DrifterAttackData
 {
     [Serializable]
     public class SingleAttack
@@ -26,7 +25,7 @@ public class DrifterAttackData : ScriptableObject
     public List<SingleAttack> Attacks = new List<SingleAttack>();
     Dictionary<DrifterAttackType, SingleAttackData> AttackMap = new Dictionary<DrifterAttackType, SingleAttackData>();
 
-    void OnEnable()
+    public void FinishLoading()
     {
         foreach (SingleAttack sa in Attacks)
         {
