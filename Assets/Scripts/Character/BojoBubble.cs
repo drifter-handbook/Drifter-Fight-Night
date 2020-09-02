@@ -9,13 +9,13 @@ public class BojoBubble : MonoBehaviour
     public int mode;
     public Animator anim;
     Rigidbody2D rb;
-    MultiSound sound;
+    BojoSound sound;
 
     void Start()
     {
         StartCoroutine(Fade(duration));
         rb = GetComponent<Rigidbody2D>();
-        sound = GetComponent<MultiSound>();
+        sound = GetComponent<BojoSound>();
         sound.PlayAudio(mode);
     }
 
