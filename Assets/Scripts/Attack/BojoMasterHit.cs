@@ -61,7 +61,7 @@ public class BojoMasterHit : MasterHit
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;
         }
-        bubble.GetComponent<BojoBubble>().mode = Random.Range(0,7);
+        bubble.GetComponent<BojoBubble>().mode = Random.Range(0,8);
         entities.AddEntity(bubble);
     }
 
