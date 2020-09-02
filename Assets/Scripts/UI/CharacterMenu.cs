@@ -48,7 +48,7 @@ public class CharacterMenu : MonoBehaviour
 
     public List<PlayerSelectFigurine> drifters;
     Dictionary<DrifterType, PlayerSelectFigurine> figurines = new Dictionary<DrifterType, PlayerSelectFigurine>();
-     public  List<FightZone> fightzones = new List<FightZone>();
+    public  List<FightZone> fightzones = new List<FightZone>();
 
     private GameObject clientCard;
 
@@ -293,7 +293,7 @@ public class CharacterMenu : MonoBehaviour
     {
         foreach(DrifterType drifter in Enum.GetValues(typeof(DrifterType)))
         {
-            if(drifter.ToString() == name)
+            if(drifter.ToString() == name.Replace(" ", "_"))
             {
                 return drifter;
             }
