@@ -52,7 +52,13 @@ public class PlayerHurtboxHandler : MonoBehaviour
             float facingDir = Mathf.Sign(hurtbox.parent.transform.position.x - hitbox.parent.transform.position.x);
             facingDir = facingDir == 0 ? 1 : facingDir;
             // rotate direction by angle of impact
-            Vector2 forceDir = Quaternion.Euler(0, 0, attackData.AngleOfImpact * facingDir) * (facingDir * Vector2.right);
+            //calculated angle
+            float angle = Mathf.Atan2(hurtbox.parent.transform.position.y-hitbox.parent.transform.position.y, hurtbox.parent.transform.position.x-hitbox.parent.transform.position.x)*180 / Mathf.PI;
+            Vector2 forceDir = attackData.AngleOfImpact <= 360?
+                                    Quaternion.Euler(0, 0, attackData.AngleOfImpact * facingDir) * (facingDir * Vector2.right) :
+                                    Quaternion.Euler(0, 0, angle) * Vector2.right;
+
+
             //Ignore knockback if invincible or armoured
             float KB = 0;
             if(status != null && !status.HasInulvernability() && (attackData.isGrab || !drifter.animator.GetBool("Guarding"))){
