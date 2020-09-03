@@ -90,6 +90,13 @@ public class PlayerStatus : MonoBehaviour
         }
     }
 
+    public Dictionary<PlayerStatusEffect,float> getStatusState(){
+        return statusEffects;
+    }
+    public void setStatusState(Dictionary<PlayerStatusEffect,float> statusEffects){
+        this.statusEffects = statusEffects;
+    }
+
     public void bounce()
     {
         if(HasStatusEffect(PlayerStatusEffect.KNOCKBACK)){

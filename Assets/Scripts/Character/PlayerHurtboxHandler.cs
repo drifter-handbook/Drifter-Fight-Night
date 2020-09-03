@@ -11,13 +11,12 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
     // for creating hitsparks
     NetworkEntityList Entities;
-    CameraShake camera;
 
     // Start is called before the first frame update
     void Start()
     {
         Entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
-        camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraShake>();
+
         StartCoroutine(CleanupOldAttacks());
     }
 
@@ -40,7 +39,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             hitbox.parent.GetComponent<PlayerAttacks>().Hit(attackType, attackID, hurtbox.parent);
 
             PlayerStatus status = GetComponent<PlayerStatus>();
-            status?.ApplyStatusEffect(PlayerStatusEffect.HIT,.1f);
+            status?.ApplyStatusEffect(PlayerStatusEffect.HIT,.2f);
 
             // apply damage, ignored if invuln
             Drifter drifter = GetComponent<Drifter>();
@@ -72,7 +71,6 @@ public class PlayerHurtboxHandler : MonoBehaviour
                     
                     if(attackData.KnockbackScale >= -1){
                         GetComponent<Rigidbody2D>().velocity = new Vector2(forceDir.normalized.x * KB, GetComponent<PlayerMovement>().grounded?Mathf.Abs(forceDir.normalized.y * KB): forceDir.normalized.y * KB);
-                        StartCoroutine(camera.Shake(KB * .005f,KB * .002f));
                     }
                                         
                     if(attackData.HitStun != 0){

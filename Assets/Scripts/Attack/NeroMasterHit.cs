@@ -102,7 +102,7 @@ public class NeroMasterHit : MasterHit
 
     public void counter(){
         if(!status.HasInulvernability()){
-            status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.1f);
+            status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.2f);
         }
         if(status.HasHit()){
             drifter.SetAnimatorBool("Empowered",true);
@@ -112,6 +112,7 @@ public class NeroMasterHit : MasterHit
     public void hitCounter(){
         drifter.SetAnimatorBool("Empowered",false);
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.45f);
+        status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.35f);
         
     }
     public void whiffCounter(){
