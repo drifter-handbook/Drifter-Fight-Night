@@ -33,6 +33,9 @@ public class OrroMasterHit : MasterHit
         if(beanRemote != null && !localBeanAnim.GetBool("Hide")){
             localBean.GetComponent<BeanWrangler>().Hide = true;
         }
+        else if(beanRemote == null && localBeanAnim.GetBool("Hide")){
+            localBean.GetComponent<BeanWrangler>().Hide = false;
+        }
     }
 
     public void spawnFireball()
