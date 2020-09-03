@@ -10,8 +10,8 @@ public class HitboxCollision : MonoBehaviour
     public int AttackID { get; set; }
     public DrifterAttackType AttackType { get; set; }
     public bool Active { get; set; } = true;
-    public SingleAttackData useData;
-    protected SingleAttackData attackData;
+    public SingleAttackData OverrideData;
+    public SingleAttackData AttackData;
 
     // Start is called before the first frame update
     void Start()
@@ -37,12 +37,11 @@ public class HitboxCollision : MonoBehaviour
         if (hurtbox != null && AttackType != DrifterAttackType.Null)
         {
             string player = playerType.Type;
-            if(useData != null){
-                hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, -AttackID, AttackType, useData);
+            if(OverrideData != null){
+                hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, -AttackID, AttackType, OverrideData);
             }
             else{
-                attackData = GameController.Instance.AllData.GetAttacks(player)[AttackType];
-                hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, attackData);
+                hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, AttackData);
             }
             
         }

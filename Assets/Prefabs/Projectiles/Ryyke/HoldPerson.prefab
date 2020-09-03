@@ -180,7 +180,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 2198231603327798865}
-  useData: {fileID: 0}
+  OverrideData: {fileID: 11400000, guid: c53dcc323aa708044bbca05414169ce4, type: 2}
+  AttackData: {fileID: 11400000, guid: c53dcc323aa708044bbca05414169ce4, type: 2}
 --- !u!114 &2153637533272270687
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,4 +195,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   duration: 0.6
-  animator: {fileID: 0}
+  drifter: {fileID: 0}

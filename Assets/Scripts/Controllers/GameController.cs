@@ -1,10 +1,8 @@
 // https://forum.unity.com/threads/help-how-do-you-set-up-a-gamemanager.131170/
 // https://wiki.unity3d.com/index.php/Toolbox
 
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -34,7 +32,7 @@ public class GameController : MonoBehaviour
     public string winner = null;
 
     //* Data storage
-    public AllDrifterData AllData; // Character List
+    // Character List
     // Source of Truth on CharSel:
     public List<CharacterSelectState> CharacterSelectStates = new List<CharacterSelectState>() { };
     // It's you!
@@ -67,19 +65,6 @@ public class GameController : MonoBehaviour
 
     private void Awake()
     {
-        // load stats
-        AllData = new AllDrifterData();
-        foreach (DrifterType drifter in Enum.GetValues(typeof(DrifterType)))
-        {
-            TextAsset text = Resources.Load<TextAsset>($"CharacterData/{drifter.ToString()}_data");
-            if (text != null)
-            {
-                AllDrifterData.DrifterAttacks data = JsonConvert.DeserializeObject<AllDrifterData.DrifterAttacks>(text.text);
-                AllData.Players.Add(data);
-            }
-        }
-        AllData.FinishLoading();
-        // load stats
         if (instance != null && instance != this)
         {
             Destroy(this.gameObject);

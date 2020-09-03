@@ -62,7 +62,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 5902266580795054831}
-  useData: {fileID: 0}
+  OverrideData: {fileID: 11400000, guid: 3d82480900a80b94180064524906ab65, type: 2}
+  AttackData: {fileID: 0}
 --- !u!1 &5902266580795054831
 GameObject:
   m_ObjectHideFlags: 0
@@ -281,4 +282,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 5902266580795054831}
-  useData: {fileID: 11400000, guid: a3c2800dbdb72f7439e2c572b520b15a, type: 2}
+  OverrideData: {fileID: 11400000, guid: a3c2800dbdb72f7439e2c572b520b15a, type: 2}
+  AttackData: {fileID: 0}

@@ -61,7 +61,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 6949512207643572198}
-  useData: {fileID: 11400000, guid: afbcc1a56b667d4478d389ea996a633e, type: 2}
+  OverrideData: {fileID: 11400000, guid: afbcc1a56b667d4478d389ea996a633e, type: 2}
+  AttackData: {fileID: 0}
   element: 0
 --- !u!114 &1839771838832836201
 MonoBehaviour:
@@ -94,7 +95,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 6949512207643572198}
-  useData: {fileID: 0}
+  OverrideData: {fileID: 0}
+  AttackData: {fileID: 0}
   element: 0
 --- !u!114 &4218063540468515608
 MonoBehaviour:
@@ -109,7 +111,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 6949512207643572198}
-  useData: {fileID: 0}
+  OverrideData: {fileID: 0}
+  AttackData: {fileID: 0}
   element: 0
 --- !u!114 &3761947454739589551
 MonoBehaviour:
@@ -124,7 +127,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 6949512207643572198}
-  useData: {fileID: 0}
+  OverrideData: {fileID: 0}
+  AttackData: {fileID: 0}
   element: 2
 --- !u!1001 &5434938751262967058
 PrefabInstance:
@@ -325,6 +329,11 @@ PrefabInstance:
       propertyPath: groundAccelerationTime
       value: 0.75
       objectReference: {fileID: 0}
+    - target: {fileID: 3106753082241659641, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: Weight
+      value: 80
+      objectReference: {fileID: 0}
     - target: {fileID: 3106753082241659643, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -419,8 +428,7 @@ PrefabInstance:
         type: 3}
       propertyPath: drifterData
       value: 
-      objectReference: {fileID: 11400000, guid: 63aa8e34ec0b44d49ad8f708f9a86b93,
-        type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 5578303729342035337, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: BlockReduction
@@ -512,6 +520,54 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0.3
       objectReference: {fileID: 0}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[1].attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: be94e269e9183e840a9536a046b0df0c,
+        type: 2}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[0].attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: 0a2760c88e5e4b44ab8376d75ca19d53,
+        type: 2}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[2].attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: c00563bb75b24544e94fa618670ac8e3,
+        type: 2}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[3].attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: 5d9535fe470af194992f0c4d44118522,
+        type: 2}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[4].attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: c0ec5ef07a9557e45909bf03d962e437,
+        type: 2}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[5].attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: 7199f8a4a225d7a43bbc5918e403b737,
+        type: 2}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[6].attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: 8ce51ce71de00ed46bdd046556f40e8c,
+        type: 2}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[7].attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: 9c12889ca17b6d44fa83be3ba4c1399c,
+        type: 2}
     m_RemovedComponents:
     - {fileID: 7688281774863332295, guid: 03006bf76a5e1274aaf3da8b9c69d8f9, type: 3}
     - {fileID: 5078492785402310169, guid: 03006bf76a5e1274aaf3da8b9c69d8f9, type: 3}

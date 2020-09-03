@@ -1,6 +1,25 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+[Serializable]
+public enum DrifterAttackType
+{
+    Null,
+    Ground_Q_Side, Ground_Q_Down, Ground_Q_Up, Ground_Q_Neutral,
+    Aerial_Q_Side, Aerial_Q_Down, Aerial_Q_Up, Aerial_Q_Neutral,
+    W_Side, W_Down, W_Up, W_Neutral,
+    E_Side, Aerial_E_Down, E_Up, E_Neutral, Roll
+}
+
+[Serializable]
+public class SingleAttack
+{
+    public DrifterAttackType attack;
+    public SingleAttackData attackData;
+}
+
 
 public class PlayerAttacks : MonoBehaviour
 {
@@ -34,6 +53,8 @@ public class PlayerAttacks : MonoBehaviour
     // current attack ID and Type, used for outgoing attacks
     public int AttackID { get; private set; }
     public DrifterAttackType AttackType { get; private set; }
+    public List<SingleAttack> AttackMap = new List<SingleAttack>();
+    Dictionary<DrifterAttackType,SingleAttackData> Attacks = new Dictionary<DrifterAttackType,SingleAttackData>();
     public int maxRecoveries = 1;
     public int currentRecoveries;
 
@@ -41,9 +62,16 @@ public class PlayerAttacks : MonoBehaviour
     PlayerStatus status;
     Animator animator;
     IMasterHit hit;
-    DrifterAttackData attackData;
 
     INetworkSync sync;
+
+    void Awake()
+    {
+        foreach (SingleAttack attack in AttackMap)
+        {
+            Attacks[attack.attack] = attack.attackData;
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -53,7 +81,6 @@ public class PlayerAttacks : MonoBehaviour
         status = GetComponent<PlayerStatus>();
         hit = GetComponentInChildren<IMasterHit>();
         sync = GetComponent<INetworkSync>();
-        attackData = GameController.Instance.AllData.GetAttacks(sync.Type);
         currentRecoveries = maxRecoveries;
     }
 
@@ -151,7 +178,8 @@ public class PlayerAttacks : MonoBehaviour
         drifter.SetAnimatorTrigger(AnimatorTriggers[attackType]);
         SetupAttackID(attackType);
         status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,
-            attackData[attackType].EndLag);
+            Attacks[attackType].EndLag);
+
         StartCoroutine(ListenForAttackEvents(attackType));
     }
     public IEnumerator ListenForAttackEvents(DrifterAttackType attackType)
@@ -247,6 +275,7 @@ public class PlayerAttacks : MonoBehaviour
             hitbox.GetComponent<Collider2D>().enabled = false;
             hitbox.AttackID = AttackID;
             hitbox.AttackType = AttackType;
+            hitbox.AttackData = Attacks[AttackType];
             hitbox.Active = false;
         }
     }

@@ -176,7 +176,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 7638574618725185666}
-  useData: {fileID: 11400000, guid: c9320dbc849736b4085c3b375edd2498, type: 2}
+  OverrideData: {fileID: 11400000, guid: c9320dbc849736b4085c3b375edd2498, type: 2}
+  AttackData: {fileID: 0}
 --- !u!58 &4362896926154053516
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -238,7 +239,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 7638574618725185666}
-  useData: {fileID: 11400000, guid: 426f42be1f3b95c4da5c1445412970fd, type: 2}
+  OverrideData: {fileID: 11400000, guid: 426f42be1f3b95c4da5c1445412970fd, type: 2}
+  AttackData: {fileID: 0}
 --- !u!58 &1315669275612064083
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -638,8 +640,7 @@ PrefabInstance:
         type: 3}
       propertyPath: drifterData
       value: 
-      objectReference: {fileID: 11400000, guid: 5d02245c18a717c4b91eab393b1aae64,
-        type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 5578303729342035337, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: BlockReduction
@@ -756,6 +757,54 @@ PrefabInstance:
       propertyPath: m_Size.y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[0].attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: e3f285cd0070e6943a3e383fe936b331,
+        type: 2}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[1].attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: 933e5ab685f6909438a3aed2b7358b69,
+        type: 2}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[2].attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: c53dcc323aa708044bbca05414169ce4,
+        type: 2}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[7].attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: d2f13702c539b604481ed89329698e76,
+        type: 2}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[4].attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: ef4900cfbee25d04690af7e2db614691,
+        type: 2}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[5].attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: 191c07bd11d32b044a7b643a8f2126ac,
+        type: 2}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[6].attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: 7294a86b8cf40b14392a6eb911e8d3fd,
+        type: 2}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[3].attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: 8cb2a5c01b2663045bf11be530c9d703,
+        type: 2}
     m_RemovedComponents:
     - {fileID: 5798512003942249155, guid: 03006bf76a5e1274aaf3da8b9c69d8f9, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 03006bf76a5e1274aaf3da8b9c69d8f9, type: 3}

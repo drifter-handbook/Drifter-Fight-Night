@@ -58,15 +58,17 @@ public class PlayerHurtboxHandler : MonoBehaviour
             if(status != null && !status.HasInulvernability() && (attackData.isGrab || !drifter.animator.GetBool("Guarding"))){
 
                 KB = (float)(((drifter.DamageTaken / 10 + drifter.DamageTaken * attackData.AttackDamage / 20)
-                        * 200 / (drifter.drifterData.Weight + 100) * 1.4 *
+                        * 200 / (GetComponent<PlayerMovement>().Weight + 100) * 1.4 *
                          ((status.HasStatusEffect(PlayerStatusEffect.EXPOSED) || status.HasStatusEffect(PlayerStatusEffect.FEATHERWEIGHT))
                             ?1.5f:1)) * attackData.KnockbackScale + attackData.Knockback);
 
                 if(!status.HasArmour()){
+                    
                     if(attackData.KnockbackScale >= -1){
                         GetComponent<Rigidbody2D>().velocity = new Vector2(forceDir.normalized.x * KB, GetComponent<PlayerMovement>().grounded?Mathf.Abs(forceDir.normalized.y * KB): forceDir.normalized.y * KB);
-                        StartCoroutine(camera.Shake(KB * .005f,KB * .002f));
+                        //StartCoroutine(camera.Shake(KB * .005f,KB * .002f));
                     }
+                                        
                     if(attackData.HitStun != 0){
                         status?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, (attackData.HitStun>0)?attackData.HitStun:(KB*.0055f + .1f));
                     }

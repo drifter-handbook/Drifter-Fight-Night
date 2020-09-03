@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63a538e8413bd3347b18b00c0e5f9a81, type: 3}
+  m_Name: AllPlayerData
+  m_EditorClassIdentifier: 
+  Players:
+  - name: Nero
+    stats: {fileID: 11400000, guid: 4100fa6a3aa87924db4e5022ed4f35b1, type: 2}
+    attacks: {fileID: 11400000, guid: d9f9e3353b81e574f94d85bc0df3c4a5, type: 2}
+  - name: Lady Parhelion
+    stats: {fileID: 11400000, guid: 3757e6588329bf14ab3ace8d8ded3e66, type: 2}
+    attacks: {fileID: 11400000, guid: 4f57944482214cf4bae06938df518cac, type: 2}
+  - name: Spacejam
+    stats: {fileID: 11400000, guid: b653cee11bdea504f8b1eda1a2b8ff35, type: 2}
+    attacks: {fileID: 11400000, guid: 18e49668bab7c9947a610fa3f4ec38a2, type: 2}
+  - name: Ryyke
+    stats: {fileID: 11400000, guid: 5d02245c18a717c4b91eab393b1aae64, type: 2}
+    attacks: {fileID: 11400000, guid: fba575d5af2eb80458539a378096b5fc, type: 2}
+  - name: Swordfrog
+    stats: {fileID: 11400000, guid: d1135a9847e357f41ac220f03f04e241, type: 2}
+    attacks: {fileID: 11400000, guid: 2d22d2ebd9678264db6a8b07b3a67bc0, type: 2}
+  - name: Orro
+    stats: {fileID: 11400000, guid: 8e91f25ba7c0af746950cf88deb93dd0, type: 2}
+    attacks: {fileID: 11400000, guid: 700b88562f0031d489b53e80806e31f2, type: 2}
+  - name: Megurin
+    stats: {fileID: 11400000, guid: 63aa8e34ec0b44d49ad8f708f9a86b93, type: 2}
+    attacks: {fileID: 11400000, guid: 8a2b1b2f8b625f446afdfc073f067c2f, type: 2}
+  - name: Bojo
+    stats: {fileID: 11400000, guid: e24df38e3bdd4b049afbe127515e72b5, type: 2}
+    attacks: {fileID: 11400000, guid: f279eee9ca29fa641be64d259d5c134f, type: 2}

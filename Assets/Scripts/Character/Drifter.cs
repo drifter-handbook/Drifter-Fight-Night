@@ -24,7 +24,6 @@ public enum DrifterType
 [RequireComponent(typeof(PlayerMovement))]
 public class Drifter : MonoBehaviour
 {
-    public DrifterData drifterData;
     public PlayerMovement movement;
     public PlayerSync sync;
     public CustomControls controls;
@@ -42,11 +41,6 @@ public class Drifter : MonoBehaviour
     public PlayerInputData prevInput = new PlayerInputData();
     
     public Color myColor;
-
-    void Awake()
-    {
-        drifterData = GameController.Instance.AllData.GetStats(sync.Type);
-    }
 
     void LateUpdate()
     {

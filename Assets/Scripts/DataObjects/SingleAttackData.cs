@@ -7,7 +7,9 @@ public enum HitSpark
     NONE, POKE, BASH, PIERCE, GRAB ,GUARD_WEAK, GUARD_STRONG, SPIKE, MAGICWEAK, CRIT
 }
 
-public class SingleAttackData
+
+[CreateAssetMenu(fileName = "SingleAttackData", menuName = "VirtuaDrifter/SingleAttackData", order = 70)]
+public class SingleAttackData : ScriptableObject
 {
     public float AttackDamage = 10.0f;
     public float Knockback = 10.0f;

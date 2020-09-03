@@ -61,7 +61,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 3106753082241659636}
-  useData: {fileID: 0}
+  OverrideData: {fileID: 0}
+  AttackData: {fileID: 0}
 --- !u!1 &1853559347
 GameObject:
   m_ObjectHideFlags: 0
@@ -123,7 +124,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 3106753082241659636}
-  useData: {fileID: 0}
+  OverrideData: {fileID: 0}
+  AttackData: {fileID: 0}
 --- !u!1 &428734560881909087
 GameObject:
   m_ObjectHideFlags: 0
@@ -185,7 +187,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 3106753082241659636}
-  useData: {fileID: 0}
+  OverrideData: {fileID: 0}
+  AttackData: {fileID: 0}
 --- !u!1 &1709800075325733094
 GameObject:
   m_ObjectHideFlags: 0
@@ -383,11 +386,11 @@ GameObject:
   - component: {fileID: 3106753082241659641}
   - component: {fileID: 1401939795787901855}
   - component: {fileID: 271773049362604864}
+  - component: {fileID: 9142496942411782138}
   - component: {fileID: 3106753082241659639}
   - component: {fileID: 2704295541901204434}
   - component: {fileID: 1589272871137191243}
   - component: {fileID: 8182132679057442092}
-  - component: {fileID: 9142496942411782138}
   m_Layer: 8
   m_Name: Character
   m_TagString: Player
@@ -424,7 +427,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e92d5051cfb5c649be7e9b52cc084df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  drifterData: {fileID: 11400000, guid: b653cee11bdea504f8b1eda1a2b8ff35, type: 2}
   movement: {fileID: 3106753082241659641}
   sync: {fileID: 1401939795787901855}
   controls: {fileID: 0}
@@ -456,7 +458,9 @@ MonoBehaviour:
   flipSprite: 0
   jumpHeight: 0
   jumpTime: 0
+  Weight: 90
   currentJumps: 0
+  grounded: 1
   varyJumpHeightDuration: 0.2
   varyJumpHeightForce: 12
 --- !u!114 &1401939795787901855
@@ -486,6 +490,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   keyBindings: {fileID: 11400000, guid: 885ea4674937f97478cc8405e1044828, type: 2}
+--- !u!114 &9142496942411782138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3106753082241659636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52cc4f14323ee9143be25ebc5c5b91e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AttackMap:
+  - attack: 4
+    attackData: {fileID: 0}
+  - attack: 8
+    attackData: {fileID: 0}
+  - attack: 13
+    attackData: {fileID: 0}
+  - attack: 11
+    attackData: {fileID: 0}
+  - attack: 10
+    attackData: {fileID: 0}
+  - attack: 9
+    attackData: {fileID: 0}
+  - attack: 12
+    attackData: {fileID: 0}
+  - attack: 17
+    attackData: {fileID: 0}
+  maxRecoveries: 1
+  currentRecoveries: 0
 --- !u!50 &3106753082241659639
 Rigidbody2D:
   serializedVersion: 4
@@ -557,19 +592,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0c70948fef8b0047aa95727076efea8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &9142496942411782138
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3106753082241659636}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52cc4f14323ee9143be25ebc5c5b91e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxRecoveries: 1
 --- !u!1 &4227067111414324707
 GameObject:
   m_ObjectHideFlags: 0
@@ -728,7 +750,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 3106753082241659636}
-  useData: {fileID: 0}
+  OverrideData: {fileID: 0}
+  AttackData: {fileID: 0}
 --- !u!70 &1801323591959772194
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

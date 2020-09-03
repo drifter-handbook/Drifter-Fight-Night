@@ -25,13 +25,12 @@ public class MegurinHitboxCollision : HitboxCollision
          && !hurtbox.parent.GetComponent<PlayerHurtboxHandler>().oldAttacks.ContainsKey(-AttackID))
         {
 
-            if(useData != null){
+            if(OverrideData != null){
 
-                hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, -AttackID, AttackType, Megurin.handleElements(useData, element));
+                hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, -AttackID, AttackType, Megurin.handleElements(OverrideData, element));
             }
             else{
-                this.attackData = GameController.Instance.AllData.GetAttacks("Megurin")[AttackType];
-                hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, Megurin.handleElements(this.attackData, element));
+                hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, Megurin.handleElements(this.AttackData, element));
             }
             
         }

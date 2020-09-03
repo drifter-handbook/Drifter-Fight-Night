@@ -9,7 +9,9 @@ using UnityEditor;
 public class ViewManager : MonoBehaviour
 {
     [SerializeField]
-    [Header("All views must be registered by being children of this game object!")]
+#if UNITY_EDITOR
+    [Help("All views must be registered by being children of this game object!", UnityEditor.MessageType.Warning)]
+#endif
     Transform startingMenu;
 
     public Text hostIP;

@@ -45,7 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 6949512207643572198}
-  useData: {fileID: 11400000, guid: 959e70f74de542d48b3c692dd088dd63, type: 2}
+  OverrideData: {fileID: 11400000, guid: 959e70f74de542d48b3c692dd088dd63, type: 2}
+  AttackData: {fileID: 0}
 --- !u!58 &9780128646020160
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -136,7 +137,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 6949512207643572198}
-  useData: {fileID: 11400000, guid: 7331573e54e3c174abef342dd2a55a51, type: 2}
+  OverrideData: {fileID: 11400000, guid: 7331573e54e3c174abef342dd2a55a51, type: 2}
+  AttackData: {fileID: 0}
 --- !u!1001 &5434938751262967058
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -314,6 +316,11 @@ PrefabInstance:
       propertyPath: groundAccelerationTime
       value: 0.9
       objectReference: {fileID: 0}
+    - target: {fileID: 3106753082241659641, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: Weight
+      value: 120
+      objectReference: {fileID: 0}
     - target: {fileID: 3106753082241659643, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -385,6 +392,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: c313aa9d650b4da4a8a74e6120e40ebc,
         type: 2}
+    - target: {fileID: 5078492785402310169, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: OverrideData
+      value: 
+      objectReference: {fileID: 11400000, guid: c313aa9d650b4da4a8a74e6120e40ebc,
+        type: 2}
     - target: {fileID: 5306829202166808911, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -394,8 +407,7 @@ PrefabInstance:
         type: 3}
       propertyPath: drifterData
       value: 
-      objectReference: {fileID: 11400000, guid: 3757e6588329bf14ab3ace8d8ded3e66,
-        type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 5798512003942249155, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: m_Enabled
@@ -467,6 +479,59 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0.3
       objectReference: {fileID: 0}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: Attacks.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[0].attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: 4cf3ff173001f0048a2aa3a13b1d217c,
+        type: 2}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[1].attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: 4251799640cf9e54db6bba5a30161b96,
+        type: 2}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[2].attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: 37a770a7b0a0c6d4e8177054e6308a6e,
+        type: 2}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[3].attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: dcc97463a2133784e91cce68396d80df,
+        type: 2}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[5].attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: 959e70f74de542d48b3c692dd088dd63,
+        type: 2}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[4].attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: 351beebcdcbfcf945aaa922ac5da19e0,
+        type: 2}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[6].attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: 44dd25bfaf6fabb428d4d990c878a4bf,
+        type: 2}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[7].attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: 4ab78b8c2de13ba438f5fe8dd723d1d8,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 03006bf76a5e1274aaf3da8b9c69d8f9, type: 3}
 --- !u!1 &6949512207643572198 stripped

@@ -45,7 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 2782640523891384236}
-  useData: {fileID: 11400000, guid: 763593e78875306489ce31e0d77df192, type: 2}
+  OverrideData: {fileID: 11400000, guid: 763593e78875306489ce31e0d77df192, type: 2}
+  AttackData: {fileID: 0}
 --- !u!70 &5703379441250306968
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
