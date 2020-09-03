@@ -66,7 +66,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                     
                     if(attackData.KnockbackScale >= -1){
                         GetComponent<Rigidbody2D>().velocity = new Vector2(forceDir.normalized.x * KB, GetComponent<PlayerMovement>().grounded?Mathf.Abs(forceDir.normalized.y * KB): forceDir.normalized.y * KB);
-                        //StartCoroutine(camera.Shake(KB * .005f,KB * .002f));
+                        StartCoroutine(camera.Shake(KB * .005f,KB * .002f));
                     }
                                         
                     if(attackData.HitStun != 0){
