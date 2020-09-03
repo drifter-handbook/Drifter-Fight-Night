@@ -32,6 +32,14 @@ public class RykkeMasterHit : MasterHit
 
     }
 
+    void Update()
+    {
+        if(drifter.Charge == 0){
+                drifter.SetAnimatorBool("Empowered",false);
+                drifter.BlockReduction = .25f;
+            }
+    }
+
     public override void callTheRecovery()
     {
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,1.1f);
@@ -212,7 +220,7 @@ public class RykkeMasterHit : MasterHit
             activeStone.GetComponent<RyykeTombstone>().Break();
         }
         tombstone.GetComponent<RyykeTombstone>().facing=facing;
-        tombstone.GetComponent<RyykeTombstone>().chadController=this;
+        tombstone.GetComponent<RyykeTombstone>().chadController = gameObject.GetComponent<RykkeMasterHit>();
         activeStone = tombstone;
         entities.AddEntity(tombstone);
     }

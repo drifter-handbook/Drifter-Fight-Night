@@ -75,7 +75,7 @@ public class SwordFrogMasterHit : MasterHit
     }
 
     public void whiffCounter(){
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,1.05f);
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.65f);
     }
 
     public void grantCharge(){

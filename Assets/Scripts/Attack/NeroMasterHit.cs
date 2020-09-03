@@ -123,7 +123,7 @@ public class NeroMasterHit : MasterHit
 
 
     public void whiffCounter(){
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,1f);
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
     }
     public override void cancelTheNeutralW()
     {
