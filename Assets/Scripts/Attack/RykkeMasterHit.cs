@@ -203,12 +203,16 @@ public class RykkeMasterHit : MasterHit
     //Down W
     public void dropStone()
     {
-      facing = movement.Facing;
-      rb.velocity = new Vector2(0,10);
-      Vector3 flip = new Vector3(facing *8f,8f,1f);
-      Vector3 loc = new Vector3(facing *1f,.8f,0f);
-      GameObject tombstone = Instantiate(entities.GetEntityPrefab("RyykeTombstone"), transform.position + loc, transform.rotation);
-      tombstone.transform.localScale = flip;
+
+        if(activeStone){
+            activeStone.GetComponent<RyykeTombstone>().Break();
+        }  
+        facing = movement.Facing;
+        rb.velocity = new Vector2(0,10);
+        Vector3 flip = new Vector3(facing *8f,8f,1f);
+        Vector3 loc = new Vector3(facing *1f,.8f,0f);
+        GameObject tombstone = Instantiate(entities.GetEntityPrefab("RyykeTombstone"), transform.position + loc, transform.rotation);
+        tombstone.transform.localScale = flip;
         foreach (HitboxCollision hitbox in tombstone.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
@@ -216,14 +220,13 @@ public class RykkeMasterHit : MasterHit
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;
         }
-        if(activeStone){
-            activeStone.GetComponent<RyykeTombstone>().Break();
-        }
+        
         tombstone.GetComponent<RyykeTombstone>().facing=facing;
-        tombstone.GetComponent<RyykeTombstone>().chadController = gameObject.GetComponent<RykkeMasterHit>();
+        tombstone.GetComponent<RyykeTombstone>().setChadController(this);
         activeStone = tombstone;
         entities.AddEntity(tombstone);
     }
+
     public void grantStack()
     {
     	if(drifter.Charge < 3){

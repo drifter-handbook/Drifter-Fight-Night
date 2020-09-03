@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RyykeTombstone : MonoBehaviour
 {
-    public RykkeMasterHit chadController;
+    RykkeMasterHit chadController;
     Rigidbody2D rb;
     public Animator anim;
     public int facing = 0;
@@ -34,8 +34,15 @@ public class RyykeTombstone : MonoBehaviour
         StartCoroutine(Delete());
     }
 
+    public void setChadController(RykkeMasterHit controller)
+    {
+        UnityEngine.Debug.Log("CHAD SET");
+        chadController = controller;
+    }
+
     void Update()
     {
+        UnityEngine.Debug.Log("ChadController+" + chadController);
         if (grounded)
         {
             rb.velocity = Vector2.zero;
