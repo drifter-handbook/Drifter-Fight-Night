@@ -28,7 +28,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
     public void RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, DrifterAttackType attackType, SingleAttackData attackData)
     {
-        //UnityEngine.Debug.Log("ATTACK REGISTERERD");
+        //UnityEngine.Debug.Log(attackID);
         // only host processes hits, don't hit ourself, and ignore previously registered attacks
         if (GameController.Instance.IsHost && hitbox.parent != hurtbox.parent && !oldAttacks.ContainsKey(attackID))
         {
@@ -39,7 +39,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             hitbox.parent.GetComponent<PlayerAttacks>().Hit(attackType, attackID, hurtbox.parent);
 
             PlayerStatus status = GetComponent<PlayerStatus>();
-            status?.ApplyStatusEffect(PlayerStatusEffect.HIT,.2f);
+            status.ApplyStatusEffect(PlayerStatusEffect.HIT,.3f);
 
             // apply damage, ignored if invuln
             Drifter drifter = GetComponent<Drifter>();

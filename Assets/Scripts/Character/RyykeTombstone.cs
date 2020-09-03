@@ -7,7 +7,7 @@ public class RyykeTombstone : MonoBehaviour
     public RykkeMasterHit chadController;
     Rigidbody2D rb;
     public Animator anim;
-    public int facing;
+    public int facing = 0;
     bool armed = false;
     public bool activate = false;
     GameObject Ryyke;

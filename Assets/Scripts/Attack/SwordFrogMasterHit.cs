@@ -63,11 +63,17 @@ public class SwordFrogMasterHit : MasterHit
 
     }
     public void hitCounter(){
-        drifter.SetAnimatorBool("Empowered",false);
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.5f);
         status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0.3f);
+        StartCoroutine(resetCounter());
         
     }
+
+    IEnumerator resetCounter(){
+        yield return new WaitForSeconds(.3f);
+         drifter.SetAnimatorBool("Empowered",false);
+    }
+
     public void whiffCounter(){
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,1.05f);
     }
