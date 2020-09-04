@@ -113,6 +113,34 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 hitSparkKill.transform.localScale = new Vector3(facingDir * 10f, 10f, 10f);
                 Entities.AddEntity(hitSparkKill);
             }
+
+            if (drifter != null)
+            {
+                for (int i = 0; i < attackData.AttackDamage / 4; i++)
+                {
+                    float angleT = attackData.AngleOfImpact + UnityEngine.Random.Range(-45, 45);
+
+                    GameObject hitSparkTri1 = Instantiate(Entities.GetEntityPrefab("HitSparks"),
+                    Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),
+                    Quaternion.identity);
+                    hitSparkTri1.GetComponent<HitSparks>().SetAnimation(11);
+                    hitSparkTri1.transform.localScale = new Vector3(facingDir * 10f, 10f, 10f);
+                    hitSparkTri1.transform.position += Quaternion.Euler(0, 0, angleT) * new Vector3(-5, 0, 0);
+                    hitSparkTri1.transform.rotation = Quaternion.Euler(0, 0, angleT);
+                    Entities.AddEntity(hitSparkTri1);
+
+                    angleT += 180;
+
+                    GameObject hitSparkTri2 = Instantiate(Entities.GetEntityPrefab("HitSparks"),
+                    Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),
+                    Quaternion.identity);
+                    hitSparkTri2.GetComponent<HitSparks>().SetAnimation(11);
+                    hitSparkTri2.transform.localScale = new Vector3(facingDir * 10f, 10f, 10f);
+                    hitSparkTri2.transform.position += Quaternion.Euler(0, 0, angleT) * new Vector3(-5, 0, 0);
+                    hitSparkTri2.transform.rotation = Quaternion.Euler(0, 0, angleT);
+                    Entities.AddEntity(hitSparkTri2);
+                }
+            }
         }
     }
 
