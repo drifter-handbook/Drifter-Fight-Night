@@ -105,8 +105,9 @@ public class PlayerStatus : MonoBehaviour
     }
 
     public void mashOut(){
-        if(HasStatusEffect(PlayerStatusEffect.AMBERED))statusEffects[PlayerStatusEffect.AMBERED]--;
-        if(HasStatusEffect(PlayerStatusEffect.PLANTED))statusEffects[PlayerStatusEffect.PLANTED]--;
+        //Adjust these numbers to make it easier or harder to mash out
+        if(HasStatusEffect(PlayerStatusEffect.AMBERED))statusEffects[PlayerStatusEffect.AMBERED]-=.4f;
+        if(HasStatusEffect(PlayerStatusEffect.PLANTED))statusEffects[PlayerStatusEffect.PLANTED]-=.4f;
     }
 
     public int GetStatusToRender()
