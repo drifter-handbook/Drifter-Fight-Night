@@ -67,7 +67,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                          ((status.HasStatusEffect(PlayerStatusEffect.EXPOSED) || status.HasStatusEffect(PlayerStatusEffect.FEATHERWEIGHT))
                             ?1.5f:1)) * attackData.KnockbackScale + attackData.Knockback);
 
-                if(!status.HasArmour()){
+                if(!status.HasArmour() || attackData.isGrab){
                     
                     if(attackData.KnockbackScale >= -1){
                         GetComponent<Rigidbody2D>().velocity = new Vector2(forceDir.normalized.x * KB, GetComponent<PlayerMovement>().grounded?Mathf.Abs(forceDir.normalized.y * KB): forceDir.normalized.y * KB);

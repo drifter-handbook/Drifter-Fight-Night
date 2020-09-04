@@ -30,10 +30,12 @@ public class OrroMasterHit : MasterHit
     }
     void Update(){
         localBean.GetComponent<BeanWrangler>().facing =  movement.Facing;
-        if(beanRemote != null && !localBeanAnim.GetBool("Hide")){
+        if(beanRemote != null)
+        {
             localBean.GetComponent<BeanWrangler>().Hide = true;
         }
-        else if(beanRemote == null && localBeanAnim.GetBool("Hide")){
+        else if(beanRemote == null)
+        {
             localBean.GetComponent<BeanWrangler>().Hide = false;
         }
     }
