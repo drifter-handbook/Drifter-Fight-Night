@@ -117,6 +117,9 @@ public class OrroMasterHit : MasterHit
         rb.gravityScale = gravityScale;
     }
 
+    public void grabEndlag(){
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.55f);
+    }
     //Bean
 
     public void chargebean()
