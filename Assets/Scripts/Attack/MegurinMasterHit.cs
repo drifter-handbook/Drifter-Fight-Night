@@ -69,20 +69,6 @@ public class MegurinMasterHit : MasterHit
                  Point = Goal; // If there is no obstruction to our goal, then we can reach it in one step.
              }
          }
-         //while(Point != Start) // Try to return to where we came from, this will make sure we see all the back faces too.
-         //{
-            // RaycastHit2D hit = Physics2D.Linecast(Point, Start);
-            //if(hit)
-            // {
-              //   Debug.Log("hit2!" + hit.point);
-            //     Itterations ++;
-            //     Point = hit.point + (-Direction/100.0f);
-            // }
-          //   else
-            // {
-            //     Point = Start;
-            //}
-         //}
          if(Itterations % 2 == 0)
          {
              print("Point is Outside");
@@ -108,7 +94,6 @@ public class MegurinMasterHit : MasterHit
         bool resultBackward = posTest(checkPosBackward);
         bool resultNeutral = posTest(checkPosNeutral);
         bool result = resultForward && resultBackward && resultNeutral;
-        Debug.Log("result " + result);
         if (result){
           myLayerMask = ~(1 << LayerMask.NameToLayer ("Player") | 1 << LayerMask.NameToLayer ("Platform") | 1 << LayerMask.NameToLayer ("Ground"));
           RaycastHit2D hit = Physics2D.Raycast(rb.position, HeldDirection*20f, 20, myLayerMask);
@@ -125,24 +110,6 @@ public class MegurinMasterHit : MasterHit
             rb.position += HeldDirection*20f;
           }
        }
-      //  if (Physics2D.OverlapCircle(checkPos,radius)){
-        //  Debug.Log("hey i found something");
-        //  myLayerMask = ~(1 << LayerMask.NameToLayer ("Player") | 1 << LayerMask.NameToLayer ("Platform") | 1 << LayerMask.NameToLayer ("Ground"));
-        //  RaycastHit2D hit = Physics2D.Raycast(rb.position, HeldDirection*20f, 20, myLayerMask);
-        //  if(hit.collider != null && hit.collider.gameObject!= null && hit.collider.gameObject.tag != "Untagged")
-        //  {
-              // var distance = hit.distance;
-              // if (distance <6f){
-                //  distance = 0;
-              //  }
-              //  rb.position += HeldDirection*(distance);
-        //  }
-          //else{
-            //  rb.position += HeldDirection*20f;
-          //}
-        //}
-        //GameObject FutureLocation = Instantiate(entities.GetEntityPrefab("FutureLocation"), rb.position + HeldDirection*20f);
-        //entities.AddEntity(FutureLocation);
         else{
           rb.position += HeldDirection*20f;
         }
