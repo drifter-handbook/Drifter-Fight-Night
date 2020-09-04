@@ -220,12 +220,8 @@ public class PlayerMovement : MonoBehaviour
         //mashout effects
         if((status.HasStatusEffect(PlayerStatusEffect.PLANTED) || status.HasStatusEffect(PlayerStatusEffect.AMBERED)) && prevMoveX != drifter.input.MoveX){
             status.mashOut();
-            
 
-            UnityEngine.Debug.Log(count++);
-
-
-            spawnJuiceParticle(new Vector3(.5f,UnityEngine.Random.Range(-1f,1f),0),4);
+            spawnJuiceParticle(new Vector3(.5f,UnityEngine.Random.Range(1f,3f),0),6);
         }
 
         if(status.HasStatusEffect(PlayerStatusEffect.STUNNED) || status.HasStatusEffect(PlayerStatusEffect.PLANTED) || status.HasStatusEffect(PlayerStatusEffect.DEAD))
