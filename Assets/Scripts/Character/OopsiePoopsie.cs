@@ -45,7 +45,7 @@ public class OopsiePoopsie : MonoBehaviour
     }
     void OnTriggerStay2D(Collider2D col){
         if(col == hurtbox){
-            status.ApplyStatusEffect(PlayerStatusEffect.AMBERED,3f);
+            status.ApplyStatusEffect(PlayerStatusEffect.AMBERED,10f);
         }
     }
 

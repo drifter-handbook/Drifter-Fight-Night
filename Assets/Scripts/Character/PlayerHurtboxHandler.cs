@@ -52,8 +52,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
             facingDir = facingDir == 0 ? 1 : facingDir;
             // rotate direction by angle of impact
             //calculated angle
-            float angle = Mathf.Atan2(hurtbox.parent.transform.position.y-hitbox.parent.transform.position.y, hurtbox.parent.transform.position.x-hitbox.parent.transform.position.x)*180 / Mathf.PI;
-            Vector2 forceDir = attackData.AngleOfImpact <= 360?
+            float angle = Mathf.Sign(attackData.AngleOfImpact) * Mathf.Atan2(hurtbox.parent.transform.position.y-hitbox.parent.transform.position.y, hurtbox.parent.transform.position.x-hitbox.parent.transform.position.x)*180 / Mathf.PI;
+            Vector2 forceDir = Mathf.Abs(attackData.AngleOfImpact) <= 360?
                                     Quaternion.Euler(0, 0, attackData.AngleOfImpact * facingDir) * (facingDir * Vector2.right) :
                                     Quaternion.Euler(0, 0, angle) * Vector2.right;
 
@@ -78,8 +78,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
                     }
                 }
 
-                status.ApplyStatusEffect(attackData.StatusEffect, (attackData.StatusEffect== PlayerStatusEffect.PLANTED || attackData.StatusEffect == PlayerStatusEffect.AMBERED?
-                                                                    attackData.StatusDuration * Mathf.Max(.5f,drifter.DamageTaken/100f) * attackData.StatusDuration:
+                status.ApplyStatusEffect(attackData.StatusEffect, (attackData.StatusEffect == PlayerStatusEffect.PLANTED || attackData.StatusEffect == PlayerStatusEffect.AMBERED?
+                                                                    attackData.StatusDuration *2f* 4f/(1f+Mathf.Exp(-0.03f * (drifter.DamageTaken -80f))):
                                                                     attackData.StatusDuration));            
             }
             // create hit sparks
