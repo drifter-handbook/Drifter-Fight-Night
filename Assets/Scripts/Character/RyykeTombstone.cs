@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class RyykeTombstone : MonoBehaviour
 {
-    RykkeMasterHit chadController;
+    protected NetworkEntityList entities;
     Rigidbody2D rb;
     public Animator anim;
     public int facing = 0;
     bool armed = false;
     public bool activate = false;
     GameObject Ryyke;
+    PlayerAttacks attacks;
     public bool grounded = false;
     public bool broken = false;
 
@@ -19,6 +20,10 @@ public class RyykeTombstone : MonoBehaviour
     {
     	rb = GetComponent<Rigidbody2D>();
     	rb.velocity = new Vector2(0f,-50f);
+        entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
+        Ryyke = gameObject.GetComponentInChildren<HitboxCollision>().parent;
+        attacks = Ryyke.GetComponentInChildren<PlayerAttacks>();
+
     }
 
     public IEnumerator Delete()
@@ -34,15 +39,8 @@ public class RyykeTombstone : MonoBehaviour
         StartCoroutine(Delete());
     }
 
-    public void setChadController(RykkeMasterHit controller)
-    {
-        UnityEngine.Debug.Log("CHAD SET");
-        chadController = controller;
-    }
-
     void Update()
     {
-        UnityEngine.Debug.Log("ChadController+" + chadController);
         if (grounded)
         {
             rb.velocity = Vector2.zero;
@@ -66,11 +64,6 @@ public class RyykeTombstone : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {  
-
-        if(Ryyke == null){
-            Ryyke = chadController.gameObject.transform.parent.gameObject;
-        }
-
         if (col.gameObject.tag == "Ground" || col.gameObject.tag == "Platform")
         {
             grounded = true;  
@@ -97,10 +90,21 @@ public class RyykeTombstone : MonoBehaviour
             anim.SetTrigger("Activate");
             StartCoroutine(Delete());
         }
-    }  
-
-    public void spawnChadWrapper(){
-        chadController.SpawnChad(facing);
     }
 
+    public void SpawnChad(){
+        Vector3 flip = new Vector3(facing *8f,8f,1f);
+        GameObject zombie = Instantiate(entities.GetEntityPrefab("Chadwick"), transform.position, transform.transform.rotation);
+        zombie.transform.localScale = flip;
+        attacks.SetupAttackID(DrifterAttackType.W_Down);
+        foreach (HitboxCollision hitbox in zombie.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = Ryyke;
+            hitbox.AttackID = attacks.AttackID + 1;
+            hitbox.AttackType = DrifterAttackType.W_Down;
+            hitbox.Active = true;
+        }
+        Ryyke.GetComponentInChildren<RykkeMasterHit>().grantStack();
+        entities.AddEntity(zombie);
+    }  
 }

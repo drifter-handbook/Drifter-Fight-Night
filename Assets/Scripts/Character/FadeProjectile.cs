@@ -25,9 +25,9 @@ public class FadeProjectile : MonoBehaviour
             rb.velocity =  rb.velocity * -2.5f;
             foreach (HitboxCollision hitbox in gameObject.GetComponentsInChildren<HitboxCollision>(true))
                 {
-                    //hitbox.parent = col.gameObject.GetComponentInChildren<HitboxCollision>().parent;
-                    //Mkae this not suck later
-                    hitbox.AttackID = 10000;
+                    hitbox.parent = col.gameObject.transform.parent.gameObject.GetComponent<HitboxCollision>().parent;
+                    //Mkae this not suck laters
+                    hitbox.AttackID = 300 + Random.Range(0,25);
                 }
 
         }

@@ -46,10 +46,11 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
 
     IEnumerator Respawn(Collider2D other)
     {
+        other.transform.position = new Vector2(0f,-100f);
         yield return new WaitForSeconds(2f);
         CreateHalo();
         other.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        other.transform.position = new Vector2(5, 27);
+        other.transform.position = new Vector2(5f, 27f);
         yield break;
     }
 

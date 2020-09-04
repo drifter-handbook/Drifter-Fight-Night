@@ -26,7 +26,6 @@ public class OrroMasterHit : MasterHit
         attacks = drifter.GetComponent<PlayerAttacks>();
         movement = drifter.GetComponent<PlayerMovement>();
         status = drifter.GetComponent<PlayerStatus>();
-        localBean.GetComponent<BeanWrangler>().orro=this;
     }
     void Update(){
         localBean.GetComponent<BeanWrangler>().facing =  movement.Facing;
@@ -57,23 +56,6 @@ public class OrroMasterHit : MasterHit
         }
         orroOrb.GetComponent<OrroSideWProjectile>().facing=facing;
         entities.AddEntity(orroOrb);
-    }
-
-    public void spawnBeanSpit(int direction,Vector3 position)
-    {
-        Vector3 flip = new Vector3(direction *8,8,0f);
-        Vector3 pos = new Vector3(direction *.7f,2.5f,1f);
-        GameObject spit = Instantiate(entities.GetEntityPrefab("BeanSpit"), position + pos, transform.rotation);
-        spit.transform.localScale = flip;
-        spit.GetComponent<Rigidbody2D>().velocity = new Vector2(direction * 20, 0);
-        foreach (HitboxCollision hitbox in spit.GetComponentsInChildren<HitboxCollision>(true))
-        {
-            hitbox.parent = drifter.gameObject;
-            hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
-            hitbox.Active = true;
-        }
-        entities.AddEntity(spit);
     }
 
     public void dodgeRoll()
@@ -156,9 +138,7 @@ public class OrroMasterHit : MasterHit
             if(beanRemote){
                 Destroy(beanRemote);
             }
-            BeanProj.GetComponent<BeanWrangler>().attacks=attacks;
             BeanProj.GetComponent<BeanWrangler>().facing=facing;
-            BeanProj.GetComponent<BeanWrangler>().orro=this;
             beanRemote = BeanProj;
             localBean.GetComponent<BeanWrangler>().Hide = true;
             drifter.SetAnimatorBool("Empowered",false);
@@ -231,6 +211,7 @@ public class OrroMasterHit : MasterHit
         Destroy(beanRemote);
         localBean.GetComponent<BeanWrangler>().Hide = false;
         drifter.SetAnimatorBool("Empowered",true);
+        beanRemote = null;
     }
 
 

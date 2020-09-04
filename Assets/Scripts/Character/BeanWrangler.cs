@@ -5,22 +5,25 @@ using UnityEngine;
 public class BeanWrangler : MonoBehaviour
 {
     // Start is called before the first frame update
+    protected NetworkEntityList entities;
     public bool hide;
     public int facing;
     public Animator anim;
-    public PlayerAttacks attacks;
     public bool Up = false;
     public bool Down = false;
     public bool Side = false;
     public bool Neutral = false;
     public bool Hide = false;
-    public OrroMasterHit orro;
+    PlayerAttacks attacks;
+    GameObject Orro;
 
     Rigidbody2D rb;
 
     void Start()
     {
-        
+        entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
+        Orro = gameObject.GetComponentInChildren<HitboxCollision>().parent;
+        attacks = Orro.GetComponentInChildren<PlayerAttacks>();
     }
 
     IEnumerator delete(){
@@ -30,11 +33,26 @@ public class BeanWrangler : MonoBehaviour
     }
 
     public void beanSpit(){
-        orro.spawnBeanSpit(facing,gameObject.transform.position);
+    {
+        Vector3 flip = new Vector3(facing *8,8,0f);
+        Vector3 pos = new Vector3(facing *.7f,2.5f,1f);
+        GameObject spit = Instantiate(entities.GetEntityPrefab("BeanSpit"), transform.position + pos, transform.rotation);
+        spit.transform.localScale = flip;
+        attacks.SetMultiHitAttackID();
+        spit.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * 20, 0);
+        foreach (HitboxCollision hitbox in spit.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = Orro;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+        }
+        entities.AddEntity(spit);
+    }
     }
  
     public void multihit(){
-        orro.multihit();
+        attacks.SetMultiHitAttackID();
     }
 
     public void resetAnimatorTriggers(){
