@@ -116,7 +116,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
             if (drifter != null)
             {
-                for (int i = 0; i < attackData.AttackDamage / 4; i++)
+                for (int i = 0; i < (attackData.AttackDamage + 2) / 5; i++)
                 {
                     float angleT = attackData.AngleOfImpact + UnityEngine.Random.Range(-45, 45);
 
@@ -124,8 +124,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
                     Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),
                     Quaternion.identity);
                     hitSparkTri1.GetComponent<HitSparks>().SetAnimation(11);
-                    hitSparkTri1.transform.localScale = new Vector3(facingDir * 10f, 10f, 10f);
-                    hitSparkTri1.transform.position += Quaternion.Euler(0, 0, angleT) * new Vector3(-5, 0, 0);
+                    hitSparkTri1.transform.localScale = new Vector3(10f, 10f, 10f);
+                    hitSparkTri1.transform.position += Quaternion.Euler(0, 0, angleT) * new Vector3(-UnityEngine.Random.Range(2, 5), 0, 0);
                     hitSparkTri1.transform.rotation = Quaternion.Euler(0, 0, angleT);
                     Entities.AddEntity(hitSparkTri1);
 
@@ -135,8 +135,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
                     Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),
                     Quaternion.identity);
                     hitSparkTri2.GetComponent<HitSparks>().SetAnimation(11);
-                    hitSparkTri2.transform.localScale = new Vector3(facingDir * 10f, 10f, 10f);
-                    hitSparkTri2.transform.position += Quaternion.Euler(0, 0, angleT) * new Vector3(-5, 0, 0);
+                    hitSparkTri2.transform.localScale = new Vector3(10f, 10f, 10f);
+                    hitSparkTri2.transform.position += Quaternion.Euler(0, 0, angleT) * new Vector3(-UnityEngine.Random.Range(2, 5), 0, 0);
                     hitSparkTri2.transform.rotation = Quaternion.Euler(0, 0, angleT);
                     Entities.AddEntity(hitSparkTri2);
                 }
