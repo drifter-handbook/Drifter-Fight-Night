@@ -30,6 +30,14 @@ public class OrroMasterHit : MasterHit
     }
     void Update(){
         localBean.GetComponent<BeanWrangler>().facing =  movement.Facing;
+        if(beanRemote != null)
+        {
+            localBean.GetComponent<BeanWrangler>().Hide = true;
+        }
+        else if(beanRemote == null)
+        {
+            localBean.GetComponent<BeanWrangler>().Hide = false;
+        }
     }
 
     public void spawnFireball()
@@ -53,7 +61,6 @@ public class OrroMasterHit : MasterHit
 
     public void spawnBeanSpit(int direction,Vector3 position)
     {
-
         Vector3 flip = new Vector3(direction *8,8,0f);
         Vector3 pos = new Vector3(direction *.7f,2.5f,1f);
         GameObject spit = Instantiate(entities.GetEntityPrefab("BeanSpit"), position + pos, transform.rotation);
@@ -112,6 +119,9 @@ public class OrroMasterHit : MasterHit
         rb.gravityScale = gravityScale;
     }
 
+    public void grabEndlag(){
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.55f);
+    }
     //Bean
 
     public void chargebean()
@@ -126,7 +136,8 @@ public class OrroMasterHit : MasterHit
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.33f);
     }
 
-    public void fireBean(){
+    public void fireBean()
+    {
         if(anim.GetBool("Empowered")){
             facing = movement.Facing;
             Vector3 flip = new Vector3(facing *6.7f,6.7f,0f);
@@ -205,6 +216,7 @@ public class OrroMasterHit : MasterHit
     }
 
     private void refreshBeanHitboxes(GameObject bean){
+        bean.GetComponent<BeanWrangler>().resetAnimatorTriggers();
         foreach (HitboxCollision hitbox in bean.GetComponentsInChildren<HitboxCollision>(true))
             {
                 hitbox.parent = drifter.gameObject;

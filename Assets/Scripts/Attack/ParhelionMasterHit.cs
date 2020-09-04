@@ -51,7 +51,7 @@ public class ParhelionMasterHit : MasterHit
     public void neutralSmash()
     {
     	facing = movement.Facing;
-    	status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.4f);
+    	status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.6f);
     	rb.velocity = new Vector2(facing *-35f,0);
     }
 

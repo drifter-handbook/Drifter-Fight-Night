@@ -81,7 +81,7 @@ public class BojoMasterHit : MasterHit
 
     public void dismount(){
          rb.velocity = new Vector2(rb.velocity.x - facing * 10, 45f);
-         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.3f);
+         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.4f);
 
         Vector3 flip = new Vector3(facing *9f,9f,0f);
         Vector3 pos = new Vector3(facing *0f,0f,1f);

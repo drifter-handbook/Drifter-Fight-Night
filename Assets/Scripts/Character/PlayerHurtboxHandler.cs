@@ -11,13 +11,12 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
     // for creating hitsparks
     NetworkEntityList Entities;
-    CameraShake camera;
 
     // Start is called before the first frame update
     void Start()
     {
         Entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
-        camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraShake>();
+
         StartCoroutine(CleanupOldAttacks());
     }
 
@@ -29,7 +28,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
     public void RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, DrifterAttackType attackType, SingleAttackData attackData)
     {
-        //UnityEngine.Debug.Log("ATTACK REGISTERERD");
+        //UnityEngine.Debug.Log(attackID);
         // only host processes hits, don't hit ourself, and ignore previously registered attacks
         if (GameController.Instance.IsHost && hitbox.parent != hurtbox.parent && !oldAttacks.ContainsKey(attackID))
         {
@@ -40,7 +39,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             hitbox.parent.GetComponent<PlayerAttacks>().Hit(attackType, attackID, hurtbox.parent);
 
             PlayerStatus status = GetComponent<PlayerStatus>();
-            status?.ApplyStatusEffect(PlayerStatusEffect.HIT,.1f);
+            status.ApplyStatusEffect(PlayerStatusEffect.HIT,.3f);
 
             // apply damage, ignored if invuln
             Drifter drifter = GetComponent<Drifter>();
@@ -52,7 +51,13 @@ public class PlayerHurtboxHandler : MonoBehaviour
             float facingDir = Mathf.Sign(hurtbox.parent.transform.position.x - hitbox.parent.transform.position.x);
             facingDir = facingDir == 0 ? 1 : facingDir;
             // rotate direction by angle of impact
-            Vector2 forceDir = Quaternion.Euler(0, 0, attackData.AngleOfImpact * facingDir) * (facingDir * Vector2.right);
+            //calculated angle
+            float angle = Mathf.Sign(attackData.AngleOfImpact) * Mathf.Atan2(hurtbox.parent.transform.position.y-hitbox.parent.transform.position.y, hurtbox.parent.transform.position.x-hitbox.parent.transform.position.x)*180 / Mathf.PI;
+            Vector2 forceDir = Mathf.Abs(attackData.AngleOfImpact) <= 360?
+                                    Quaternion.Euler(0, 0, attackData.AngleOfImpact * facingDir) * (facingDir * Vector2.right) :
+                                    Quaternion.Euler(0, 0, angle) * Vector2.right;
+
+
             //Ignore knockback if invincible or armoured
             float KB = 0;
             if(status != null && !status.HasInulvernability() && (attackData.isGrab || !drifter.animator.GetBool("Guarding"))){
@@ -62,32 +67,29 @@ public class PlayerHurtboxHandler : MonoBehaviour
                          ((status.HasStatusEffect(PlayerStatusEffect.EXPOSED) || status.HasStatusEffect(PlayerStatusEffect.FEATHERWEIGHT))
                             ?1.5f:1)) * attackData.KnockbackScale + attackData.Knockback);
 
-                if(!status.HasArmour()){
+                if(!status.HasArmour() || attackData.isGrab){
                     
                     if(attackData.KnockbackScale >= -1){
                         GetComponent<Rigidbody2D>().velocity = new Vector2(forceDir.normalized.x * KB, GetComponent<PlayerMovement>().grounded?Mathf.Abs(forceDir.normalized.y * KB): forceDir.normalized.y * KB);
-                        StartCoroutine(camera.Shake(KB * .005f,KB * .002f));
                     }
                                         
                     if(attackData.HitStun != 0){
                         status?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, (attackData.HitStun>0)?attackData.HitStun:(KB*.0055f + .1f));
                     }
                 }
-                status.ApplyStatusEffect(attackData.StatusEffect,attackData.StatusDuration);            
+
+                status.ApplyStatusEffect(attackData.StatusEffect, (attackData.StatusEffect == PlayerStatusEffect.PLANTED || attackData.StatusEffect == PlayerStatusEffect.AMBERED?
+                                                                    attackData.StatusDuration *2f* 4f/(1f+Mathf.Exp(-0.03f * (drifter.DamageTaken -80f))):
+                                                                    attackData.StatusDuration));            
             }
             // create hit sparks
             GameObject hitSparks = Instantiate(Entities.GetEntityPrefab("HitSparks"),
                 Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),
                 Quaternion.identity);
 
-            bool noRotateFlag = true;
             if(drifter != null && drifter.animator.GetBool("Guarding") && !attackData.isGrab){
                     hitSparks.GetComponent<HitSparks>().SetAnimation(drifter.BlockReduction>.5?6:5);
                     hitSparks.transform.localScale = new Vector3(facingDir * 10f, 10f, 10f);
-            } else if (drifter != null && willCollideWithBlastZone(GetComponent<Rigidbody2D>(), (attackData.HitStun > 0) ? attackData.HitStun : (KB * .0055f + .1f))){
-                hitSparks.GetComponent<HitSparks>().SetAnimation(9);
-                hitSparks.transform.localScale = new Vector3(facingDir * 10f, 10f, 10f);
-                noRotateFlag = false;
             } else if(drifter != null && attackData.GetHitSpark() != 1 && attackData.GetHitSpark() != 8){
                 hitSparks.GetComponent<HitSparks>().SetAnimation(attackData.GetHitSpark());
                 hitSparks.transform.localScale = new Vector3(facingDir *-6f, 6f, 6f);
@@ -96,14 +98,49 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 hitSparks.GetComponent<HitSparks>().SetAnimation(attackData.GetHitSpark());
                 hitSparks.transform.localScale = new Vector3(facingDir *10f, 10f, 10f);
             }
-            
-            if (noRotateFlag)
-                hitSparks.transform.eulerAngles = new Vector3(0, 0, facingDir * ((Mathf.Abs(attackData.AngleOfImpact) > 65f && attackData.GetHitSpark() != 7)? Mathf.Sign(attackData.AngleOfImpact)*90f:0f));
+
+            hitSparks.transform.eulerAngles = new Vector3(0, 0, facingDir * ((Mathf.Abs(attackData.AngleOfImpact) > 65f && attackData.GetHitSpark() != 7)? Mathf.Sign(attackData.AngleOfImpact)*90f:0f));
 
 
             Entities.AddEntity(hitSparks);
+        
+            if (drifter != null && willCollideWithBlastZone(GetComponent<Rigidbody2D>(), (attackData.HitStun > 0) ? attackData.HitStun : (KB * .0055f + .1f)))
+            {
+                GameObject hitSparkKill = Instantiate(Entities.GetEntityPrefab("HitSparks"),
+                Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),
+                Quaternion.identity);
+                hitSparkKill.GetComponent<HitSparks>().SetAnimation(9);
+                hitSparkKill.transform.localScale = new Vector3(facingDir * 10f, 10f, 10f);
+                Entities.AddEntity(hitSparkKill);
+            }
 
-            
+            if (drifter != null)
+            {
+                for (int i = 0; i < (attackData.AttackDamage + 2) / 5; i++)
+                {
+                    float angleT = attackData.AngleOfImpact + UnityEngine.Random.Range(-45, 45);
+
+                    GameObject hitSparkTri1 = Instantiate(Entities.GetEntityPrefab("HitSparks"),
+                    Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),
+                    Quaternion.identity);
+                    hitSparkTri1.GetComponent<HitSparks>().SetAnimation(11);
+                    hitSparkTri1.transform.localScale = new Vector3(10f, 10f, 10f);
+                    hitSparkTri1.transform.position += Quaternion.Euler(0, 0, angleT) * new Vector3(-UnityEngine.Random.Range(2, 5), 0, 0);
+                    hitSparkTri1.transform.rotation = Quaternion.Euler(0, 0, angleT);
+                    Entities.AddEntity(hitSparkTri1);
+
+                    angleT += 180;
+
+                    GameObject hitSparkTri2 = Instantiate(Entities.GetEntityPrefab("HitSparks"),
+                    Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),
+                    Quaternion.identity);
+                    hitSparkTri2.GetComponent<HitSparks>().SetAnimation(11);
+                    hitSparkTri2.transform.localScale = new Vector3(10f, 10f, 10f);
+                    hitSparkTri2.transform.position += Quaternion.Euler(0, 0, angleT) * new Vector3(-UnityEngine.Random.Range(2, 5), 0, 0);
+                    hitSparkTri2.transform.rotation = Quaternion.Euler(0, 0, angleT);
+                    Entities.AddEntity(hitSparkTri2);
+                }
+            }
         }
     }
 

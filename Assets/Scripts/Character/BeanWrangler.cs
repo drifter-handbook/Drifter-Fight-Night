@@ -37,11 +37,15 @@ public class BeanWrangler : MonoBehaviour
         orro.multihit();
     }
 
-    void resetAnimatorTriggers(){
+    public void resetAnimatorTriggers(){
         Up = false;
         Down = false;
         Side = false;
         Neutral = false;
+        anim.ResetTrigger("Side");
+        anim.ResetTrigger("Down");
+        anim.ResetTrigger("Up");
+        anim.ResetTrigger("Neutral");
     }
 
     // Update is called once per frame
@@ -52,8 +56,6 @@ public class BeanWrangler : MonoBehaviour
         if (Down) anim.SetTrigger("Down");
         if (Up) anim.SetTrigger("Up");
         if (Neutral) anim.SetTrigger("Neutral");
-   
-        resetAnimatorTriggers();
 
     }
 }

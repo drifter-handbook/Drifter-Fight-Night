@@ -47,6 +47,8 @@ public class OopsiePoospieSync : MonoBehaviour, INetworkSync
         public float x = 0f;
         public float y = 0f;
         public float z = 0f;
+        public float xScale = 1f;
+        public float yScale = 1f;
         public bool empowered = false;
     }
 
@@ -65,6 +67,7 @@ public class OopsiePoospieSync : MonoBehaviour, INetworkSync
             oldEmp =  fireballData.empowered;
             oldPos = transform.position;
             targetPos = new Vector3(fireballData.x, fireballData.y, fireballData.z);
+            transform.localScale =  new Vector3(fireballData.xScale,fireballData.yScale,1);
         }
     }
 
@@ -78,6 +81,8 @@ public class OopsiePoospieSync : MonoBehaviour, INetworkSync
             y = transform.position.y,
             z = transform.position.z,
             empowered = GetComponent<OopsiePoopsie>().empowered,
+            xScale = gameObject.transform.localScale.x,
+            yScale = gameObject.transform.localScale.y,
         };
         return data;
     }

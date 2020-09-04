@@ -41,20 +41,10 @@ public class PlayerInput : MonoBehaviour
             input.MoveY++;
         }
 
-        //Doubletap down for platforms
-        if(Input.GetKeyDown(keyBindings.downKey) && firstButtonPressed) {
-             if(Time.time - timeOfFirstButton < 0.5f) {
-                input.MoveY--;
-             } else {
-                 firstButtonPressed = false;
-             }
 
-         }
- 
-         if(Input.GetKeyDown(keyBindings.downKey) && !firstButtonPressed) {
-             firstButtonPressed = true;
-             timeOfFirstButton = Time.time;
-         }
+        if(Input.GetKey(keyBindings.guard1Key) && Input.GetKey(keyBindings.downKey)){
+            input.MoveY--;
+        }
 
 
         input.Jump = Input.GetKey(keyBindings.jumpKey);

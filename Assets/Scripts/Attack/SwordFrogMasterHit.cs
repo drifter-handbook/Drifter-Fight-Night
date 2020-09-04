@@ -55,7 +55,7 @@ public class SwordFrogMasterHit : MasterHit
     }
     public void counter(){
         if(!status.HasInulvernability()){
-            status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.1f);
+            status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.2f);
         }
         if(status.HasHit()){
             drifter.SetAnimatorBool("Empowered",true);
@@ -63,13 +63,19 @@ public class SwordFrogMasterHit : MasterHit
 
     }
     public void hitCounter(){
-        drifter.SetAnimatorBool("Empowered",false);
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.5f);
         status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0.3f);
+        StartCoroutine(resetCounter());
         
     }
+
+    IEnumerator resetCounter(){
+        yield return new WaitForSeconds(.3f);
+         drifter.SetAnimatorBool("Empowered",false);
+    }
+
     public void whiffCounter(){
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,1.05f);
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.65f);
     }
 
     public void grantCharge(){

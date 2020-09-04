@@ -27,8 +27,11 @@ public class HitSparks : MonoBehaviour
     public void SetAnimation(int ef)
     {
         Effect = ef;
-        SoundPlayer.clip = HitSounds[ef-1];
-        SoundPlayer.Play();
+        if(HitSounds.Length >= ef && ef != 0){
+            SoundPlayer.clip = HitSounds[ef-1];
+            SoundPlayer.Play();
+        }
+        
      }
 
     IEnumerator DestroyAfter(float duration)

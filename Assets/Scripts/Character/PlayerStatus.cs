@@ -90,11 +90,24 @@ public class PlayerStatus : MonoBehaviour
         }
     }
 
+    public Dictionary<PlayerStatusEffect,float> getStatusState(){
+        return statusEffects;
+    }
+    public void setStatusState(Dictionary<PlayerStatusEffect,float> statusEffects){
+        this.statusEffects = statusEffects;
+    }
+
     public void bounce()
     {
         if(HasStatusEffect(PlayerStatusEffect.KNOCKBACK)){
             statusEffects[PlayerStatusEffect.KNOCKBACK] *= .8f;
         }
+    }
+
+    public void mashOut(){
+        //Adjust these numbers to make it easier or harder to mash out
+        if(HasStatusEffect(PlayerStatusEffect.AMBERED))statusEffects[PlayerStatusEffect.AMBERED]-=.4f;
+        if(HasStatusEffect(PlayerStatusEffect.PLANTED))statusEffects[PlayerStatusEffect.PLANTED]-=.4f;
     }
 
     public int GetStatusToRender()

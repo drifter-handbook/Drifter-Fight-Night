@@ -38,11 +38,15 @@ public class PlayerMovement : MonoBehaviour
     public float varyJumpHeightDuration = 0.5f;
     public float varyJumpHeightForce = 10f;
 
+    int count = 0;
+
     PlayerStatus status;
 
     Drifter drifter;
 
     float dropThroughTime;
+
+    int prevMoveX = 0;
 
     void Awake()
     {
@@ -85,8 +89,8 @@ public class PlayerMovement : MonoBehaviour
         bool canAct = !status.HasStunEffect() && !animator.GetBool("Guarding");
         bool canGuard = !status.HasStunEffect();
         bool moving = drifter.input.MoveX != 0;
-
-        if(gameObject.layer != 8 && Time.time - dropThroughTime > .3f){
+       
+        if(gameObject.layer != 8 && Time.time - dropThroughTime > .55f){
             gameObject.layer = 8;
         }
 
@@ -213,6 +217,13 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
+        //mashout effects
+        if((status.HasStatusEffect(PlayerStatusEffect.PLANTED) || status.HasStatusEffect(PlayerStatusEffect.AMBERED)) && prevMoveX != drifter.input.MoveX){
+            status.mashOut();
+
+            spawnJuiceParticle(new Vector3(.5f,UnityEngine.Random.Range(1f,3f),0),6);
+        }
+
         if(status.HasStatusEffect(PlayerStatusEffect.STUNNED) || status.HasStatusEffect(PlayerStatusEffect.PLANTED) || status.HasStatusEffect(PlayerStatusEffect.DEAD))
         {
             if(status.HasStatusEffect(PlayerStatusEffect.PLANTED) && !IsGrounded())
@@ -228,6 +239,8 @@ public class PlayerMovement : MonoBehaviour
         else if(!status.HasStatusEffect(PlayerStatusEffect.END_LAG)){
             rb.gravityScale = baseGravity;
         }
+
+         prevMoveX = drifter.input.MoveX;
     }
     public void updateFacing()
     {
