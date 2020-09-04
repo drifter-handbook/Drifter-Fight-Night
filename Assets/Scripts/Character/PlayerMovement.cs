@@ -44,6 +44,8 @@ public class PlayerMovement : MonoBehaviour
 
     float dropThroughTime;
 
+    int prevMoveX = 0;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -85,8 +87,9 @@ public class PlayerMovement : MonoBehaviour
         bool canAct = !status.HasStunEffect() && !animator.GetBool("Guarding");
         bool canGuard = !status.HasStunEffect();
         bool moving = drifter.input.MoveX != 0;
+        prevMoveX = drifter.input.MoveX;
 
-        if(gameObject.layer != 8 && Time.time - dropThroughTime > .3f){
+        if(gameObject.layer != 8 && Time.time - dropThroughTime > .55f){
             gameObject.layer = 8;
         }
 
@@ -211,6 +214,12 @@ public class PlayerMovement : MonoBehaviour
                 //a frame of two preparing to jump
                 StartCoroutine(DelayedJump());
             }
+        }
+
+        //mashout effects
+        if(status.HasStatusEffect(PlayerStatusEffect.PLANTED) || status.HasStatusEffect(PlayerStatusEffect.AMBERED) && prevMoveX != drifter.input.MoveX){
+            status.mashOut();
+            spawnJuiceParticle(new Vector3(-drifter.input.MoveX * (flipSprite?-1:1)* 1.5f,-1.3f,0),5);
         }
 
         if(status.HasStatusEffect(PlayerStatusEffect.STUNNED) || status.HasStatusEffect(PlayerStatusEffect.PLANTED) || status.HasStatusEffect(PlayerStatusEffect.DEAD))

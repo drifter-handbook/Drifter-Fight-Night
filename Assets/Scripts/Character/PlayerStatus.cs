@@ -104,6 +104,11 @@ public class PlayerStatus : MonoBehaviour
         }
     }
 
+    public void mashOut(){
+        if(HasStatusEffect(PlayerStatusEffect.AMBERED))statusEffects[PlayerStatusEffect.AMBERED]--;
+        if(HasStatusEffect(PlayerStatusEffect.PLANTED))statusEffects[PlayerStatusEffect.PLANTED]--;
+    }
+
     public int GetStatusToRender()
     {
         if(HasStatusEffect(PlayerStatusEffect.AMBERED))return 1;

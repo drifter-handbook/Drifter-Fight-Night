@@ -77,7 +77,10 @@ public class PlayerHurtboxHandler : MonoBehaviour
                         status?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, (attackData.HitStun>0)?attackData.HitStun:(KB*.0055f + .1f));
                     }
                 }
-                status.ApplyStatusEffect(attackData.StatusEffect,attackData.StatusDuration);            
+
+                status.ApplyStatusEffect(attackData.StatusEffect, (attackData.StatusEffect== PlayerStatusEffect.PLANTED || attackData.StatusEffect == PlayerStatusEffect.AMBERED?
+                                                                    attackData.StatusDuration * Mathf.Max(.5f,drifter.DamageTaken/100f) * attackData.StatusDuration:
+                                                                    attackData.StatusDuration));            
             }
             // create hit sparks
             GameObject hitSparks = Instantiate(Entities.GetEntityPrefab("HitSparks"),

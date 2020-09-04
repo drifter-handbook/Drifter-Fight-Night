@@ -43,7 +43,7 @@ public class PlayerInput : MonoBehaviour
 
         //Doubletap down for platforms
         if(Input.GetKeyDown(keyBindings.downKey) && firstButtonPressed) {
-             if(Time.time - timeOfFirstButton < 0.5f) {
+             if(Time.time - timeOfFirstButton < 0.7f) {
                 input.MoveY--;
              } else {
                  firstButtonPressed = false;
