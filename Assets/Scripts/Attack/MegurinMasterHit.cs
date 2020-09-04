@@ -46,21 +46,103 @@ public class MegurinMasterHit : MasterHit
         Vector2 TestDirection = new Vector2(drifter.input.MoveX,drifter.input.MoveY);
         HeldDirection = TestDirection == Vector2.zero? HeldDirection: TestDirection;
     }
+    private bool posTest(Vector2 pos){
+         Vector2 Point;
+         Vector2 Start = rb.position; // This is defined to be some arbitrary point far away from the collider.
+         Vector2 Goal = pos; // This is the point we want to determine whether or not is inside or outside the collider.
+         Vector2 Direction = Goal-Start; // This is the direction from start to goal.
+         Direction.Normalize();
+         int Itterations = 0; // If we know how many times the raycast has hit faces on its way to the target and back, we can tell through logic whether or not it is inside.
+         Point = Start;
+         LayerMask tempMask = ~(1 << LayerMask.NameToLayer ("Player") | 1 << LayerMask.NameToLayer ("Platform") );
+         while(Point != Goal) // Try to reach the point starting from the far off point.  This will pass through faces to reach its objective.
+         {
+             RaycastHit2D hit = Physics2D.Linecast(Point, Goal, tempMask);
+             if(hit) // Progressively move the point forward, stopping everytime we see a new plane in the way.
+             {
+                Debug.Log("hit!" + hit.point);
+                 Itterations ++;
+                 Point = hit.point + (Direction/100.0f); // Move the Point to hit.point and push it forward just a touch to move it through the skin of the mesh (if you don't push it, it will read that same point indefinately).
+             }
+             else
+             {
+                 Point = Goal; // If there is no obstruction to our goal, then we can reach it in one step.
+             }
+         }
+         //while(Point != Start) // Try to return to where we came from, this will make sure we see all the back faces too.
+         //{
+            // RaycastHit2D hit = Physics2D.Linecast(Point, Start);
+            //if(hit)
+            // {
+              //   Debug.Log("hit2!" + hit.point);
+            //     Itterations ++;
+            //     Point = hit.point + (-Direction/100.0f);
+            // }
+          //   else
+            // {
+            //     Point = Start;
+            //}
+         //}
+         if(Itterations % 2 == 0)
+         {
+             print("Point is Outside");
+             return false;
+         }
+         else
+         {
+             print("Point is Inside");
+             return true;
+         }
+    }
     public void RecoveryWarp()
     {
         saveDirection();
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.25f);
         HeldDirection.Normalize();
-        myLayerMask = ~(1 << LayerMask.NameToLayer ("Player") | 1 << LayerMask.NameToLayer ("Platform") | 1 << LayerMask.NameToLayer ("Ground"));
-        RaycastHit2D hit = Physics2D.Raycast(rb.position, HeldDirection*20f, 20, myLayerMask);
-        if(hit.collider != null && hit.collider.gameObject!= null && hit.collider.gameObject.tag != "Untagged")
-        {
-            var distance = hit.distance - 4f;
-            if (distance <4f){
-              distance = 0;
-            }
-            rb.position += HeldDirection*(distance);
-        }
+        Debug.Log("rb. " + rb.position);
+        Vector2 checkPosForward = rb.position + HeldDirection*21f;
+        Vector2 checkPosBackward = rb.position + HeldDirection*19f;
+        Vector2 checkPosNeutral = rb.position + HeldDirection*20f;
+        float radius = 1.75f;
+        bool resultForward = posTest(checkPosForward);
+        bool resultBackward = posTest(checkPosBackward);
+        bool resultNeutral = posTest(checkPosNeutral);
+        bool result = resultForward && resultBackward && resultNeutral;
+        Debug.Log("result " + result);
+        if (result){
+          myLayerMask = ~(1 << LayerMask.NameToLayer ("Player") | 1 << LayerMask.NameToLayer ("Platform") | 1 << LayerMask.NameToLayer ("Ground"));
+          RaycastHit2D hit = Physics2D.Raycast(rb.position, HeldDirection*20f, 20, myLayerMask);
+          if(hit.collider != null && hit.collider.gameObject!= null && hit.collider.gameObject.tag != "Untagged")
+          {
+              Debug.Log("shouldve gone here" + hit.point);
+              var distance = hit.distance-3;
+              //if (distance <12f){
+                //distance = distance - 3;
+              //}
+              rb.position += HeldDirection*(distance);
+          }
+          else{
+            rb.position += HeldDirection*20f;
+          }
+       }
+      //  if (Physics2D.OverlapCircle(checkPos,radius)){
+        //  Debug.Log("hey i found something");
+        //  myLayerMask = ~(1 << LayerMask.NameToLayer ("Player") | 1 << LayerMask.NameToLayer ("Platform") | 1 << LayerMask.NameToLayer ("Ground"));
+        //  RaycastHit2D hit = Physics2D.Raycast(rb.position, HeldDirection*20f, 20, myLayerMask);
+        //  if(hit.collider != null && hit.collider.gameObject!= null && hit.collider.gameObject.tag != "Untagged")
+        //  {
+              // var distance = hit.distance;
+              // if (distance <6f){
+                //  distance = 0;
+              //  }
+              //  rb.position += HeldDirection*(distance);
+        //  }
+          //else{
+            //  rb.position += HeldDirection*20f;
+          //}
+        //}
+        //GameObject FutureLocation = Instantiate(entities.GetEntityPrefab("FutureLocation"), rb.position + HeldDirection*20f);
+        //entities.AddEntity(FutureLocation);
         else{
           rb.position += HeldDirection*20f;
         }
