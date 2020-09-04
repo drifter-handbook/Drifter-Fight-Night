@@ -87,14 +87,9 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),
                 Quaternion.identity);
 
-            bool noRotateFlag = true;
             if(drifter != null && drifter.animator.GetBool("Guarding") && !attackData.isGrab){
                     hitSparks.GetComponent<HitSparks>().SetAnimation(drifter.BlockReduction>.5?6:5);
                     hitSparks.transform.localScale = new Vector3(facingDir * 10f, 10f, 10f);
-            } else if (drifter != null && willCollideWithBlastZone(GetComponent<Rigidbody2D>(), (attackData.HitStun > 0) ? attackData.HitStun : (KB * .0055f + .1f))){
-                hitSparks.GetComponent<HitSparks>().SetAnimation(9);
-                hitSparks.transform.localScale = new Vector3(facingDir * 10f, 10f, 10f);
-                noRotateFlag = false;
             } else if(drifter != null && attackData.GetHitSpark() != 1 && attackData.GetHitSpark() != 8){
                 hitSparks.GetComponent<HitSparks>().SetAnimation(attackData.GetHitSpark());
                 hitSparks.transform.localScale = new Vector3(facingDir *-6f, 6f, 6f);
@@ -103,14 +98,21 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 hitSparks.GetComponent<HitSparks>().SetAnimation(attackData.GetHitSpark());
                 hitSparks.transform.localScale = new Vector3(facingDir *10f, 10f, 10f);
             }
-            
-            if (noRotateFlag)
-                hitSparks.transform.eulerAngles = new Vector3(0, 0, facingDir * ((Mathf.Abs(attackData.AngleOfImpact) > 65f && attackData.GetHitSpark() != 7)? Mathf.Sign(attackData.AngleOfImpact)*90f:0f));
+
+            hitSparks.transform.eulerAngles = new Vector3(0, 0, facingDir * ((Mathf.Abs(attackData.AngleOfImpact) > 65f && attackData.GetHitSpark() != 7)? Mathf.Sign(attackData.AngleOfImpact)*90f:0f));
 
 
             Entities.AddEntity(hitSparks);
-
-            
+        
+            if (drifter != null && willCollideWithBlastZone(GetComponent<Rigidbody2D>(), (attackData.HitStun > 0) ? attackData.HitStun : (KB * .0055f + .1f)))
+            {
+                GameObject hitSparkKill = Instantiate(Entities.GetEntityPrefab("HitSparks"),
+                Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),
+                Quaternion.identity);
+                hitSparkKill.GetComponent<HitSparks>().SetAnimation(9);
+                hitSparkKill.transform.localScale = new Vector3(facingDir * 10f, 10f, 10f);
+                Entities.AddEntity(hitSparkKill);
+            }
         }
     }
 
