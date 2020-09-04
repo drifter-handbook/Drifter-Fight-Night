@@ -60,9 +60,8 @@ public class MegurinMasterHit : MasterHit
              RaycastHit2D hit = Physics2D.Linecast(Point, Goal, tempMask);
              if(hit) // Progressively move the point forward, stopping everytime we see a new plane in the way.
              {
-                Debug.Log("hit!" + hit.point);
-                 Itterations ++;
-                 Point = hit.point + (Direction/100.0f); // Move the Point to hit.point and push it forward just a touch to move it through the skin of the mesh (if you don't push it, it will read that same point indefinately).
+                Itterations ++;
+                Point = hit.point + (Direction/100.0f); // Move the Point to hit.point and push it forward just a touch to move it through the skin of the mesh (if you don't push it, it will read that same point indefinately).
              }
              else
              {
@@ -71,13 +70,11 @@ public class MegurinMasterHit : MasterHit
          }
          if(Itterations % 2 == 0)
          {
-             print("Point is Outside");
-             return false;
+            return false;
          }
          else
          {
-             print("Point is Inside");
-             return true;
+            return true;
          }
     }
     public void RecoveryWarp()
@@ -85,7 +82,6 @@ public class MegurinMasterHit : MasterHit
         saveDirection();
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.25f);
         HeldDirection.Normalize();
-        Debug.Log("rb. " + rb.position);
         Vector2 checkPosForward = rb.position + HeldDirection*21f;
         Vector2 checkPosBackward = rb.position + HeldDirection*19f;
         Vector2 checkPosNeutral = rb.position + HeldDirection*20f;
@@ -99,11 +95,8 @@ public class MegurinMasterHit : MasterHit
           RaycastHit2D hit = Physics2D.Raycast(rb.position, HeldDirection*20f, 20, myLayerMask);
           if(hit.collider != null && hit.collider.gameObject!= null && hit.collider.gameObject.tag != "Untagged")
           {
-              Debug.Log("shouldve gone here" + hit.point);
               var distance = hit.distance-3;
-              //if (distance <12f){
-                //distance = distance - 3;
-              //}
+              
               rb.position += HeldDirection*(distance);
           }
           else{
