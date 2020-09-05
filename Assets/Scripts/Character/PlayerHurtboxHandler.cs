@@ -11,11 +11,13 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
     // for creating hitsparks
     NetworkEntityList Entities;
+    CameraShake Shake;
 
     // Start is called before the first frame update
     void Start()
     {
         Entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
+        Shake = GameObject.FindGameObjectWithTag("Background").GetComponent<CameraShake>();
 
         StartCoroutine(CleanupOldAttacks());
     }
@@ -46,6 +48,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
             if (drifter != null && status != null && !status.HasInulvernability())
             {
                 drifter.DamageTaken += attackData.AttackDamage * (drifter.animator.GetBool("Guarding") && !attackData.isGrab ? 1 - drifter.BlockReduction : 1f);
+                //ScreenShake
+                if(!drifter.animator.GetBool("Guarding") && Shake != null)StartCoroutine(Shake.Shake(drifter.DamageTaken/100f * attackData.AttackDamage/12f * .1f,attackData.AttackDamage/12f));
             }
             // apply knockback
             float facingDir = Mathf.Sign(hurtbox.parent.transform.position.x - hitbox.parent.transform.position.x);
@@ -57,9 +61,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
                                     Quaternion.Euler(0, 0, attackData.AngleOfImpact * facingDir) * (facingDir * Vector2.right) :
                                     Quaternion.Euler(0, 0, angle) * Vector2.right;
 
-
-            //Ignore knockback if invincible or armoured
             float KB = 0;
+            //Ignore knockback if invincible or armoured
             if(status != null && !status.HasInulvernability() && (attackData.isGrab || !drifter.animator.GetBool("Guarding"))){
 
                 KB = (float)(((drifter.DamageTaken / 10 + drifter.DamageTaken * attackData.AttackDamage / 20)

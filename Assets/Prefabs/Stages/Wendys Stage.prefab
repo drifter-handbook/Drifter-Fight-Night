@@ -509,6 +509,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4176283034723748919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6819448990122589461}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58857c4384a9ba942ae268159cbba96d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7200789990499736726
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -602,6 +614,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wendys
       objectReference: {fileID: 0}
+    - target: {fileID: 2679157069034588274, guid: 4a230e846cc93f74f83ebc80f0749926,
+        type: 3}
+      propertyPath: m_TagString
+      value: Background
+      objectReference: {fileID: 0}
     - target: {fileID: 2679157069034588556, guid: 4a230e846cc93f74f83ebc80f0749926,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -669,6 +686,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4a230e846cc93f74f83ebc80f0749926, type: 3}
+--- !u!1 &6819448990122589461 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2679157069034588274, guid: 4a230e846cc93f74f83ebc80f0749926,
+    type: 3}
+  m_PrefabInstance: {fileID: 8902995863780963687}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6819448990122589419 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2679157069034588556, guid: 4a230e846cc93f74f83ebc80f0749926,
