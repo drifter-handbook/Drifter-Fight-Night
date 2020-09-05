@@ -47,7 +47,7 @@ public class BojoMasterHit : MasterHit
     public void GUN(){
     	facing = movement.Facing;
         Vector3 flip = new Vector3(facing *6f,6f,0f);
-        Vector3 pos = new Vector3(facing *3f,4.5f,1f);
+        Vector3 pos = new Vector3(facing *3f,4f,1f);
         GameObject bubble = Instantiate(entities.GetEntityPrefab("Mockery"), transform.position + pos, transform.rotation);
         bubble.transform.localScale = flip;
         bubble.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * 55, 0);
