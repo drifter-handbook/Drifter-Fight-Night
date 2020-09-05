@@ -4112,7 +4112,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 152.2, y: 1.1000061}
+  m_AnchoredPosition: {x: 152.20001, y: 1.0999756}
   m_SizeDelta: {x: -330.76392, y: -252.11873}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1083082567
@@ -7737,15 +7737,18 @@ MonoBehaviour:
     - Spiral Kick
     - Im Not Here
     moveDescriptions:
-    - Spacejam turns her knife into a bell and rings it, summoning a projectile.
+    - Spacejam turns her knife into a bell and bops an opponent on the head
     - Spacejam creates a basketball and slams an opponent with it in mid-air.
-    - Spacejam winds up and then pushes away an opponent.
-    - Spacejam happily disregards combat and rings her bell, charging Oopsy Poopsie.
+    - Spacejam winds up and then dunks opponents hit. Deadly offstage
+    - Spacejam happily disregards combat and rings her bell, charging Oopsy Poopsie
+      and slightly healing herself.
     - Spacejam gathers a ball of light together, then fires as a slow projectile.
+      Enemies hit take increased kncokback from the next attack they recieve
     - Spacejam trips over herself. If fully charged, Spacejam drops an amber crystal
-      which traps enemies.
+      which traps anyone hit.
     - Spacejam jumps into the air diagonally and kicks an opponent downwards.
-    - Spacejam guards and pretends like no one can see her.
+    - Spacejam guards and pretends like no one can see her, blocking a small amout
+      of incoming damage. Press left or right while grounded to roll.
   - drifterName: Nero
     flipSprites: 1
     moveTitles:
@@ -7758,17 +7761,19 @@ MonoBehaviour:
     - DeFy Physics
     - SteadFast
     moveDescriptions:
-    - Nero thrusts his spear forward in a flurry of attacks
+    - Nero thrusts his spear forward in a flurry of attacks. Can be repeatedly tapped
+      to continue the comob
     - Nero sweeps his spear in a large arc beneath him
     - Nero does a light charge forward, pushing back enemies.
     - Nero readies himself, then rushes forward across the stage, dealing damage
-      to enemies in his path
+      to enemies in his path. The distance traveled depends on how long Nero charged
     - Nero drops his shield and grabs a steel baseball bat, then clobbers and enemy
-      in a deft swing
+      in a deft swing and knocks away their projectiles
     - Nero draws up his shield and waits for the opponent to attack. Deals a powerful
       counter if it succeeds, or leaves Nero vulnerable.
     - Nero launches into the air by throwing his spear into the ground beneath him.
-    - Nero holds up his shield and blocks incoming damage.
+    - Nero holds up his shield and blocks most incoming damage. Press left or right
+      while grounded to roll.
   - drifterName: 
     flipSprites: 0
     moveTitles:
