@@ -49,7 +49,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             {
                 drifter.DamageTaken += attackData.AttackDamage * (drifter.animator.GetBool("Guarding") && !attackData.isGrab ? 1 - drifter.BlockReduction : 1f);
                 //ScreenShake
-                if(!drifter.animator.GetBool("Guarding") && Shake != null)StartCoroutine(Shake.Shake(drifter.DamageTaken/100f * attackData.AttackDamage/12f * .1f,attackData.AttackDamage/12f));
+                if(!drifter.animator.GetBool("Guarding") && Shake != null)StartCoroutine(Shake.Shake(drifter.DamageTaken/100f * Mathf.Max((attackData.AttackDamage + attackData.KnockbackScale *3f -3f),.1f)/10f * .1f,Mathf.Max((attackData.AttackDamage+ attackData.KnockbackScale*3f - 3f),.2f)/10f));
             }
             // apply knockback
             float facingDir = Mathf.Sign(hurtbox.parent.transform.position.x - hitbox.parent.transform.position.x);
