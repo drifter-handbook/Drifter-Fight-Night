@@ -47,9 +47,11 @@ public class RyykeTombstone : MonoBehaviour
         }
         if(activate){
             anim.SetTrigger("Activate");
+            StartCoroutine(Delete());
         }
         if(broken){
              anim.SetTrigger("Delete");
+             StartCoroutine(Delete());
         }
         anim.SetBool("Grounded",grounded);
     }
@@ -95,12 +97,12 @@ public class RyykeTombstone : MonoBehaviour
     public void SpawnChad(){
         Vector3 flip = new Vector3(facing *8f,8f,1f);
         GameObject zombie = Instantiate(entities.GetEntityPrefab("Chadwick"), transform.position, transform.transform.rotation);
-        zombie.transform.localScale = flip;
-        attacks.SetupAttackID(DrifterAttackType.W_Down);
+        zombie.transform.localScale = flip;        
         foreach (HitboxCollision hitbox in zombie.GetComponentsInChildren<HitboxCollision>(true))
         {
+            attacks.SetupAttackID(DrifterAttackType.W_Down);
             hitbox.parent = Ryyke;
-            hitbox.AttackID = attacks.AttackID + 1;
+            hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = DrifterAttackType.W_Down;
             hitbox.Active = true;
         }

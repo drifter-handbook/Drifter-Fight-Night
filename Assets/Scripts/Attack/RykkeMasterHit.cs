@@ -226,12 +226,32 @@ public class RykkeMasterHit : MasterHit
         entities.AddEntity(tombstone);
     }
 
+    public void awaken(){
+        facing = movement.Facing;
+        rb.velocity = new Vector2(0,10);
+        Vector3 flip = new Vector3(facing *8f,8f,1f);
+        Vector3 loc = new Vector3(facing *3.5f,0f,0f);
+        GameObject tombstone = Instantiate(entities.GetEntityPrefab("RyykeTombstone"), transform.position + loc, transform.rotation);
+        tombstone.transform.localScale = flip;
+        foreach (HitboxCollision hitbox in tombstone.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+        }
+        
+        tombstone.GetComponent<RyykeTombstone>().facing=facing;
+        tombstone.GetComponent<RyykeTombstone>().grounded = true;
+        tombstone.GetComponent<RyykeTombstone>().activate = true;
+        entities.AddEntity(tombstone);
+    }
+
     public void grantStack()
     {
     	if(drifter.Charge < 3){
             audio.PlayOneShot(audioClips[0]);
     		drifter.Charge++;
-    		//anim.SetBool("Empowered",true);
             drifter.SetAnimatorBool("Empowered",true);
             drifter.BlockReduction = .75f;
     	}
