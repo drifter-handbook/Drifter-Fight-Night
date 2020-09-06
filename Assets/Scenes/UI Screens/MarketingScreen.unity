@@ -858,7 +858,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 12a90fd9f8c159b468482fd46295717b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f3aefbecdc70a3d47960d11d48dc36a9, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -7824,6 +7824,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 490159935b2eb14439ec31b67ef997ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  background: {fileID: 388580243}
   buttons:
   - {fileID: 1040425090}
   - {fileID: 1975866502}
@@ -7845,6 +7846,7 @@ MonoBehaviour:
   tutorialInfo:
   - drifterName: Spacejam
     flipSprites: 0
+    background: {fileID: 21300000, guid: 12a90fd9f8c159b468482fd46295717b, type: 3}
     moveTitles:
     - Toll The Dead
     - Rebound
@@ -7869,6 +7871,7 @@ MonoBehaviour:
       of incoming damage. Press left or right while grounded to roll.
   - drifterName: Nero
     flipSprites: 1
+    background: {fileID: 21300000, guid: f3aefbecdc70a3d47960d11d48dc36a9, type: 3}
     moveTitles:
     - Spear Jab
     - Clean Sweep
@@ -7892,8 +7895,34 @@ MonoBehaviour:
     - Nero launches into the air by throwing his spear into the ground beneath him.
     - Nero holds up his shield and blocks most incoming damage. Press left or right
       while grounded to roll.
+  - drifterName: Orro
+    flipSprites: 1
+    background: {fileID: 21300000, guid: 23ea840c41df7c04ca4f462a97964de6, type: 3}
+    moveTitles:
+    - Read A Book
+    - Honey
+    - Runic Whip
+    - Bean!
+    - Knowledge Is Power
+    - Inkwell
+    - Rope Trick
+    - Protective Bubble
+    moveDescriptions:
+    - Orro enlarges his book, then swats it at the enemy at high speed.
+    - Orro dumps a small amount of honey from his alchemy jug on enemies below him.
+    - Orro creates a whip and tries to ensnare his opponent. If the whip connects,
+      opponent is thrown across the stage. Power depends on where the whip strikes.
+    - Orro charges up energy, then commands Bean into combat as its own entity.
+    - Orro fires a projectile from his book, which grows more powerful the further
+      it travels.
+    - Orro places his book on the ground and pulls the ink off the pages in a pillar,
+      launching nearby enemies.
+    - Orro yeets out of combat and teleports to a different location.
+    - Orro flips to the shield page of his book and manifests a protective ourple
+      bubble around himself.
   - drifterName: 
     flipSprites: 0
+    background: {fileID: 0}
     moveTitles:
     - 
     - 
@@ -7914,6 +7943,7 @@ MonoBehaviour:
     - 
   - drifterName: 
     flipSprites: 0
+    background: {fileID: 0}
     moveTitles:
     - 
     - 
@@ -7934,6 +7964,7 @@ MonoBehaviour:
     - 
   - drifterName: 
     flipSprites: 0
+    background: {fileID: 0}
     moveTitles:
     - 
     - 
@@ -7954,6 +7985,7 @@ MonoBehaviour:
     - 
   - drifterName: 
     flipSprites: 0
+    background: {fileID: 0}
     moveTitles:
     - 
     - 
@@ -7974,26 +8006,7 @@ MonoBehaviour:
     - 
   - drifterName: 
     flipSprites: 0
-    moveTitles:
-    - 
-    - 
-    - 
-    - 
-    - 
-    - 
-    - 
-    - 
-    moveDescriptions:
-    - 
-    - 
-    - 
-    - 
-    - 
-    - 
-    - 
-    - 
-  - drifterName: 
-    flipSprites: 0
+    background: {fileID: 0}
     moveTitles:
     - 
     - 
