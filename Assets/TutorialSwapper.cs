@@ -9,6 +9,7 @@ using UnityEngine.UI;
 
 public class TutorialSwapper : MonoBehaviour
 {
+    public GameObject background;
     public GameObject[] buttons = new GameObject[8];
     public GameObject[] controls = new GameObject[8];
     public DrifterTutorialInfo[] tutorialInfo = new DrifterTutorialInfo[8];
@@ -19,6 +20,7 @@ public class TutorialSwapper : MonoBehaviour
     {
         public string drifterName;
         public bool flipSprites;
+        public Sprite background;
         public string[] moveTitles = new string[8];
         public string[] moveDescriptions = new string[8]; 
     }
@@ -73,6 +75,7 @@ public class TutorialSwapper : MonoBehaviour
         {
             mainPreviewAnimator.gameObject.transform.localScale = new Vector3(-1, 1, 1);
         }
+        background.GetComponent<Image>().sprite = currentDrifter.background;
     }
 
     
