@@ -7887,7 +7887,8 @@ MonoBehaviour:
     - Nero sweeps his spear in a large arc beneath him
     - Nero does a light charge forward, pushing back enemies.
     - Nero readies himself, then rushes forward across the stage, dealing damage
-      to enemies in his path. The distance traveled depends on how long Nero charged
+      to enemies in his path. The distance traveled depends on how long Nero charged.
+      Nero ignores knockback during the charge.
     - Nero drops his shield and grabs a steel baseball bat, then clobbers and enemy
       in a deft swing and knocks away their projectiles
     - Nero draws up his shield and waits for the opponent to attack. Deals a powerful
@@ -7908,18 +7909,24 @@ MonoBehaviour:
     - Rope Trick
     - Protective Bubble
     moveDescriptions:
-    - Orro enlarges his book, then swats it at the enemy at high speed.
-    - Orro dumps a small amount of honey from his alchemy jug on enemies below him.
+    - Orro enlarges his book, then swats it at the enemy at high speed. Tap repeatedly
+      for a rapid attack!
+    - Orro dumps a small amount of honey from his alchemy jug on enemies in front
+      of and behind him.
     - Orro creates a whip and tries to ensnare his opponent. If the whip connects,
       opponent is thrown across the stage. Power depends on where the whip strikes.
-    - Orro charges up energy, then commands Bean into combat as its own entity.
-    - Orro fires a projectile from his book, which grows more powerful the further
-      it travels.
+    - Passively, the homunculus Bean follows at Orro's side and attacks with him.
+      On use, Orro charges up energy, then commands Bean to attack from a remote
+      location. The distance Bean travels is based on how long Orro charges. Press
+      again to recall Bean to Orro's side.
+    - Orro fires a projectile from his book, which grows more powerful after traveling
+      a certain distance.
     - Orro places his book on the ground and pulls the ink off the pages in a pillar,
       launching nearby enemies.
-    - Orro yeets out of combat and teleports to a different location.
+    - Orro yeets out of combat and teleportsa distance upward.
     - Orro flips to the shield page of his book and manifests a protective ourple
-      bubble around himself.
+      bubble around himself. Press left or right while grounded to do a short range
+      teleport-dodge.
   - drifterName: 
     flipSprites: 0
     background: {fileID: 0}
