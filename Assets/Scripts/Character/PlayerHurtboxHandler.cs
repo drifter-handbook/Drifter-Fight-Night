@@ -17,7 +17,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
     void Start()
     {
         Entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
-        Shake = GameObject.FindGameObjectWithTag("Background").GetComponent<CameraShake>();
+        Shake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraShake>();
 
         StartCoroutine(CleanupOldAttacks());
     }
@@ -49,7 +49,6 @@ public class PlayerHurtboxHandler : MonoBehaviour
             {
                 drifter.DamageTaken += attackData.AttackDamage * (drifter.animator.GetBool("Guarding") && !attackData.isGrab ? 1 - drifter.BlockReduction : 1f);
                 //ScreenShake
-                if(!drifter.animator.GetBool("Guarding") && Shake != null && attackData.Knockback !=0)StartCoroutine(Shake.Shake(drifter.DamageTaken/100f * Mathf.Max((attackData.AttackDamage + attackData.KnockbackScale *3f -3f),.1f)/10f * .1f,Mathf.Max((attackData.AttackDamage+ attackData.KnockbackScale*3f - 3f),.2f)/10f));
             }
             // apply knockback
             float facingDir = Mathf.Sign(hurtbox.parent.transform.position.x - hitbox.parent.transform.position.x);
@@ -70,9 +69,12 @@ public class PlayerHurtboxHandler : MonoBehaviour
                          ((status.HasStatusEffect(PlayerStatusEffect.EXPOSED) || status.HasStatusEffect(PlayerStatusEffect.FEATHERWEIGHT))
                             ?1.5f:1)) * attackData.KnockbackScale + attackData.Knockback);
 
+            
                 if(!status.HasArmour() || attackData.isGrab){
-                    
-                    if(attackData.Knockback != 0){
+
+                    if(Shake != null && attackData.Knockback !=0)StartCoroutine(Shake.Shake(.1f,Mathf.Clamp(((attackData.Knockback/100f + attackData.AttackDamage/30f)) * attackData.KnockbackScale,.15f,.8f)));//StartCoroutine(Shake.Shake(drifter.DamageTaken/100f * Mathf.Max((attackData.AttackDamage + attackData.KnockbackScale *3f -3f),.1f)/10f * .1f,Mathf.Max((attackData.AttackDamage+ attackData.KnockbackScale*3f - 3f),.2f)/10f));
+                                
+                    if(attackData.Knockback > 0){
                         GetComponent<Rigidbody2D>().velocity = new Vector2(forceDir.normalized.x * KB, GetComponent<PlayerMovement>().grounded?Mathf.Abs(forceDir.normalized.y * KB): forceDir.normalized.y * KB);
                     }
                                         

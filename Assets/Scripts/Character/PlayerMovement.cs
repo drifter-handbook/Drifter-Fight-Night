@@ -115,7 +115,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         if(status.HasStatusEffect(PlayerStatusEffect.KNOCKBACK) && rb.velocity.magnitude > 45f){
-            spawnJuiceParticle(Vector3.zero,1);
+            spawnJuiceParticle(Vector3.zero,1,Quaternion.Euler(0,0,UnityEngine.Random.Range(0,180)));
         }
 
         if(status.HasStatusEffect(PlayerStatusEffect.REVERSED)){

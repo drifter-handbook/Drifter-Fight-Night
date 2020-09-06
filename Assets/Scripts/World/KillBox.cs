@@ -6,12 +6,14 @@ using UnityEngine;
 public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
 {
     NetworkEntityList Entities;
+    CameraShake Shake;
     public Animator endgameBanner;
 
     void Awake()
     {
         Entities = GameObject.FindGameObjectWithTag(
             "NetworkEntityList").GetComponent<NetworkEntityList>();
+        Shake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraShake>();
     }
 
     GameObject CreateExplosion(Collider2D other, int playerIndex)
@@ -58,6 +60,8 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
     {
         if (other.gameObject.tag == "Player" && GameController.Instance.IsHost)
         {
+
+            StartCoroutine(Shake.Shake(.3f,1.5f));
             Drifter drifter = other.gameObject?.GetComponent<Drifter>();
 
             drifter.Stocks--;
