@@ -24,7 +24,7 @@ public class PlayerMovement : MonoBehaviour
     float baseGravity;
 
     SpriteRenderer sprite;
-    public int Facing { get; private set; } = 1;
+    public int Facing { get; set; } = 1;
     public bool grounded = true;
 
     Animator animator;
@@ -242,7 +242,7 @@ public class PlayerMovement : MonoBehaviour
 
          prevMoveX = drifter.input.MoveX;
     }
-    public void updateFacing()
+    void updateFacing()
     {
         if(flipSprite ^ drifter.input.MoveX > 0){
                 Facing = 1;
@@ -252,6 +252,11 @@ public class PlayerMovement : MonoBehaviour
             }
             transform.localScale = new Vector3(Facing * Mathf.Abs(transform.localScale.x),
                 transform.localScale.y, transform.localScale.z);
+    }
+
+    public void flipFacing(){
+        Facing *= -1;
+        transform.localScale = new Vector3(Facing * Mathf.Abs(transform.localScale.x),transform.localScale.y, transform.localScale.z);
     }
 
     public void updatePosition (Vector3 position){

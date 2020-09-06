@@ -49,7 +49,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             {
                 drifter.DamageTaken += attackData.AttackDamage * (drifter.animator.GetBool("Guarding") && !attackData.isGrab ? 1 - drifter.BlockReduction : 1f);
                 //ScreenShake
-                if(!drifter.animator.GetBool("Guarding") && Shake != null)StartCoroutine(Shake.Shake(drifter.DamageTaken/100f * Mathf.Max((attackData.AttackDamage + attackData.KnockbackScale *3f -3f),.1f)/10f * .1f,Mathf.Max((attackData.AttackDamage+ attackData.KnockbackScale*3f - 3f),.2f)/10f));
+                if(!drifter.animator.GetBool("Guarding") && Shake != null && attackData.Knockback !=0)StartCoroutine(Shake.Shake(drifter.DamageTaken/100f * Mathf.Max((attackData.AttackDamage + attackData.KnockbackScale *3f -3f),.1f)/10f * .1f,Mathf.Max((attackData.AttackDamage+ attackData.KnockbackScale*3f - 3f),.2f)/10f));
             }
             // apply knockback
             float facingDir = Mathf.Sign(hurtbox.parent.transform.position.x - hitbox.parent.transform.position.x);
@@ -72,7 +72,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
                 if(!status.HasArmour() || attackData.isGrab){
                     
-                    if(attackData.KnockbackScale >= -1){
+                    if(attackData.Knockback != 0){
                         GetComponent<Rigidbody2D>().velocity = new Vector2(forceDir.normalized.x * KB, GetComponent<PlayerMovement>().grounded?Mathf.Abs(forceDir.normalized.y * KB): forceDir.normalized.y * KB);
                     }
                                         
@@ -83,7 +83,15 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
                 status.ApplyStatusEffect(attackData.StatusEffect, (attackData.StatusEffect == PlayerStatusEffect.PLANTED || attackData.StatusEffect == PlayerStatusEffect.AMBERED?
                                                                     attackData.StatusDuration *2f* 4f/(1f+Mathf.Exp(-0.03f * (drifter.DamageTaken -80f))):
-                                                                    attackData.StatusDuration));            
+                                                                    attackData.StatusDuration));
+
+                //Cape logic
+                if(attackData.StatusEffect == PlayerStatusEffect.REVERSED)
+                {
+                    Vector2 velocity = GetComponent<Rigidbody2D>().velocity;
+                    velocity = new Vector2(-1 * velocity.x,velocity.y);
+                    GetComponent<PlayerMovement>().flipFacing();
+                }            
             }
             // create hit sparks
             GameObject hitSparks = Instantiate(Entities.GetEntityPrefab("HitSparks"),
