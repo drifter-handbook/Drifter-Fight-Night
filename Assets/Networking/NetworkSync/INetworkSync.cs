@@ -46,6 +46,8 @@ public class NetworkEntityConverter : Newtonsoft.Json.Converters.CustomCreationC
                 return new NeroSpearSync.SpearData();
             case "SpacejamBell":
                 return new SpacejamBellSync.BellData();
+            case "Camera":
+                return new CameraSync.ShakeData();    
             case "Chadwick":
             case "HoldPerson":
             case "LongArmOfTheLaw":
