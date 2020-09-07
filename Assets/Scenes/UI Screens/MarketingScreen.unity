@@ -8125,8 +8125,12 @@ MonoBehaviour:
     - Blink
     - Gale
     moveDescriptions:
-    - Megurin drops her magic act and decks an opponent in the face.
-    - Megurin summons a small windstorm to surround her.
+    - Megurin drops her magic act and decks an opponent in the face. Passively, her
+      other damaging abilities build up power of thier respective element. When fully
+      charged, Megurin's next attack of that element will consume all stored power
+      to apply a powerful status effect.
+    - Megurin summons a small windstorm to surround her, hitting enemies multiple
+      times.
     - Megurin twirls her staff and summons a powerful wind funnel to ensnare opponents.
     - Megurin summons a massive lightning bolt to strike all enemies in front of
       her. If charged, this bolt does more damage, but leaves Megurin vulnerable
@@ -8136,7 +8140,8 @@ MonoBehaviour:
     - Megurin summons a hailstorm to envelop the area and deal damage over time.
     - Megurin blinks out of reality for a short period of time, teleporting to a
       new location on the map
-    - Megurin creates a windshield around her, deflecting incoming attacks
+    - Megurin creates a windshield around her, deflecting some damage from incoming
+      attacks. Press a direction while grounded to do a short range blink-dodge.
   - drifterName: 
     flipSprites: 0
     background: {fileID: 0}
