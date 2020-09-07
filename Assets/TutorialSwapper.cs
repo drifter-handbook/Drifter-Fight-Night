@@ -41,8 +41,8 @@ public class TutorialSwapper : MonoBehaviour
     public Text name;
     public Text nameShadow;
 
-    private int currentDrifterIndex = 0;
-    private DrifterTutorialInfo currentDrifter;
+    public int currentDrifterIndex = 0;
+    public DrifterTutorialInfo currentDrifter;
 
 
     // Start is called before the first frame update
