@@ -890,6 +890,7 @@ GameObject:
   - component: {fileID: 388600460}
   - component: {fileID: 388600459}
   - component: {fileID: 388600463}
+  - component: {fileID: 388600464}
   m_Layer: 5
   m_Name: MoveButton (2)
   m_TagString: Untagged
@@ -1040,6 +1041,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 1
+--- !u!114 &388600464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 388600457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c2c3958a7b074c469192f0797bdb837, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  info: {fileID: 2122016309}
+  myIndex: 2
 --- !u!1 &394134546
 GameObject:
   m_ObjectHideFlags: 0
@@ -1320,6 +1335,8 @@ GameObject:
   - component: {fileID: 484167783}
   - component: {fileID: 484167782}
   - component: {fileID: 484167781}
+  - component: {fileID: 484167786}
+  - component: {fileID: 484167785}
   m_Layer: 5
   m_Name: MoveButton (4)
   m_TagString: Untagged
@@ -1457,6 +1474,33 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 484167779}
   m_CullTransparentMesh: 0
+--- !u!114 &484167785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 484167779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c2c3958a7b074c469192f0797bdb837, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  info: {fileID: 2122016309}
+  myIndex: 4
+--- !u!114 &484167786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 484167779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShowMaskGraphic: 1
 --- !u!1 &488195286
 GameObject:
   m_ObjectHideFlags: 0
@@ -3576,6 +3620,8 @@ GameObject:
   - component: {fileID: 1035374969}
   - component: {fileID: 1035374968}
   - component: {fileID: 1035374967}
+  - component: {fileID: 1035374972}
+  - component: {fileID: 1035374971}
   m_Layer: 5
   m_Name: MoveButton (5)
   m_TagString: Untagged
@@ -3713,6 +3759,33 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1035374965}
   m_CullTransparentMesh: 0
+--- !u!114 &1035374971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1035374965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c2c3958a7b074c469192f0797bdb837, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  info: {fileID: 2122016309}
+  myIndex: 5
+--- !u!114 &1035374972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1035374965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShowMaskGraphic: 1
 --- !u!1 &1040425090
 GameObject:
   m_ObjectHideFlags: 0
@@ -3866,55 +3939,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1040425090}
   m_CullTransparentMesh: 0
---- !u!331 &1040425096
-SpriteMask:
+--- !u!114 &1040425096
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1040425090}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 10758, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 6831ab50ee1a39c46bb886743483bd19, type: 3}
-  m_MaskAlphaCutoff: 0
-  m_FrontSortingLayerID: 0
-  m_BackSortingLayerID: 0
-  m_FrontSortingLayer: 0
-  m_BackSortingLayer: 0
-  m_FrontSortingOrder: 0
-  m_BackSortingOrder: 0
-  m_IsCustomRangeActive: 0
-  m_SpriteSortPoint: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c2c3958a7b074c469192f0797bdb837, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  info: {fileID: 2122016309}
+  myIndex: 0
 --- !u!114 &1040425097
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4041,6 +4079,8 @@ GameObject:
   - component: {fileID: 1054114959}
   - component: {fileID: 1054114958}
   - component: {fileID: 1054114957}
+  - component: {fileID: 1054114962}
+  - component: {fileID: 1054114961}
   m_Layer: 5
   m_Name: MoveButton (3)
   m_TagString: Untagged
@@ -4178,6 +4218,33 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1054114955}
   m_CullTransparentMesh: 0
+--- !u!114 &1054114961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1054114955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c2c3958a7b074c469192f0797bdb837, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  info: {fileID: 2122016309}
+  myIndex: 3
+--- !u!114 &1054114962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1054114955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShowMaskGraphic: 1
 --- !u!1 &1083082565
 GameObject:
   m_ObjectHideFlags: 0
@@ -4495,6 +4562,8 @@ GameObject:
   - component: {fileID: 1150328001}
   - component: {fileID: 1150328000}
   - component: {fileID: 1150327999}
+  - component: {fileID: 1150328004}
+  - component: {fileID: 1150328003}
   m_Layer: 5
   m_Name: MoveButton (6)
   m_TagString: Untagged
@@ -4632,6 +4701,33 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1150327997}
   m_CullTransparentMesh: 0
+--- !u!114 &1150328003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1150327997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c2c3958a7b074c469192f0797bdb837, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  info: {fileID: 2122016309}
+  myIndex: 6
+--- !u!114 &1150328004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1150327997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShowMaskGraphic: 1
 --- !u!1 &1151793871
 GameObject:
   m_ObjectHideFlags: 0
@@ -5023,6 +5119,8 @@ GameObject:
   - component: {fileID: 1250926544}
   - component: {fileID: 1250926543}
   - component: {fileID: 1250926542}
+  - component: {fileID: 1250926547}
+  - component: {fileID: 1250926546}
   m_Layer: 5
   m_Name: MoveButton (7)
   m_TagString: Untagged
@@ -5160,6 +5258,33 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1250926540}
   m_CullTransparentMesh: 0
+--- !u!114 &1250926546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1250926540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c2c3958a7b074c469192f0797bdb837, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  info: {fileID: 2122016309}
+  myIndex: 7
+--- !u!114 &1250926547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1250926540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShowMaskGraphic: 1
 --- !u!1 &1300050859
 GameObject:
   m_ObjectHideFlags: 0
@@ -7308,6 +7433,7 @@ GameObject:
   - component: {fileID: 1975866505}
   - component: {fileID: 1975866504}
   - component: {fileID: 1975866508}
+  - component: {fileID: 1975866509}
   m_Layer: 5
   m_Name: MoveButton (1)
   m_TagString: Untagged
@@ -7458,6 +7584,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 1
+--- !u!114 &1975866509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1975866502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c2c3958a7b074c469192f0797bdb837, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  info: {fileID: 2122016309}
+  myIndex: 1
 --- !u!1 &2015793518
 GameObject:
   m_ObjectHideFlags: 0
@@ -7810,7 +7950,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!114 &2122016309
 MonoBehaviour:
@@ -7951,9 +8091,9 @@ MonoBehaviour:
       anyone caught beneath her jump.
     - Lady Parhelion uses her storm aura to slide into enemies and inflict damage.
     - Lady Parhelion puts up a crystalline rainbow shield around herself.
-  - drifterName: 
+  - drifterName: Bojo
     flipSprites: 0
-    background: {fileID: 0}
+    background: {fileID: 21300000, guid: f3aefbecdc70a3d47960d11d48dc36a9, type: 3}
     moveTitles:
     - 
     - 
@@ -7972,27 +8112,31 @@ MonoBehaviour:
     - 
     - 
     - 
-  - drifterName: 
-    flipSprites: 0
-    background: {fileID: 0}
+  - drifterName: Megurin
+    flipSprites: 1
+    background: {fileID: 21300000, guid: 23ea840c41df7c04ca4f462a97964de6, type: 3}
     moveTitles:
-    - 
-    - 
-    - 
-    - 
-    - 
-    - 
-    - 
-    - 
+    - Left Hook
+    - Whirlwind
+    - Typhoon
+    - Lightning Bolt
+    - Chromatic Orb
+    - Hailstorm
+    - Blink
+    - Gale
     moveDescriptions:
-    - 
-    - 
-    - 
-    - 
-    - 
-    - 
-    - 
-    - 
+    - Megurin drops her magic act and decks an opponent in the face.
+    - Megurin summons a small windstorm to surround her.
+    - Megurin twirls her staff and summons a powerful wind funnel to ensnare opponents.
+    - Megurin summons a massive lightning bolt to strike all enemies in front of
+      her. If charged, this bolt does more damage, but leaves Megurin vulnerable
+      afterwards.
+    - Fires a large magical orb at enemies. The element of this orb changes based
+      on the last spell Megurin casted
+    - Megurin summons a hailstorm to envelop the area and deal damage over time.
+    - Megurin blinks out of reality for a short period of time, teleporting to a
+      new location on the map
+    - Megurin creates a windshield around her, deflecting incoming attacks
   - drifterName: 
     flipSprites: 0
     background: {fileID: 0}
@@ -8040,6 +8184,29 @@ MonoBehaviour:
   moveDescription: {fileID: 802668081}
   name: {fileID: 1479504202}
   nameShadow: {fileID: 1831912966}
+  currentDrifterIndex: 0
+  currentDrifter:
+    drifterName: 
+    flipSprites: 0
+    background: {fileID: 0}
+    moveTitles:
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    moveDescriptions:
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
 --- !u!4 &2122016310
 Transform:
   m_ObjectHideFlags: 0
