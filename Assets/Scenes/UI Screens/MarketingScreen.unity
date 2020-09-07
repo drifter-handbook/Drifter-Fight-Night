@@ -1263,7 +1263,7 @@ RectTransform:
   - {fileID: 1479504201}
   - {fileID: 675771235}
   m_Father: {fileID: 660505147}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -2226,9 +2226,9 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 388580244}
+  - {fileID: 466165646}
   - {fileID: 926591904}
   - {fileID: 1083082566}
-  - {fileID: 466165646}
   - {fileID: 869348586}
   - {fileID: 1964744251}
   - {fileID: 737462435}
@@ -3083,7 +3083,7 @@ RectTransform:
   m_Children:
   - {fileID: 1380596998}
   m_Father: {fileID: 660505147}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -4212,7 +4212,7 @@ RectTransform:
   - {fileID: 427030631}
   - {fileID: 802668080}
   m_Father: {fileID: 660505147}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -7927,27 +7927,30 @@ MonoBehaviour:
     - Orro flips to the shield page of his book and manifests a protective ourple
       bubble around himself. Press left or right while grounded to do a short range
       teleport-dodge.
-  - drifterName: 
-    flipSprites: 0
-    background: {fileID: 0}
+  - drifterName: Lady Parhelion
+    flipSprites: 1
+    background: {fileID: 21300000, guid: f3aefbecdc70a3d47960d11d48dc36a9, type: 3}
     moveTitles:
-    - 
-    - 
-    - 
-    - 
-    - 
-    - 
-    - 
-    - 
+    - Skull Bash
+    - Storm Aura
+    - Earthshaker
+    - Dog of the Sun
+    - Wrath
+    - Shatter
+    - Storm Step
+    - Sanctuary
     moveDescriptions:
-    - 
-    - 
-    - 
-    - 
-    - 
-    - 
-    - 
-    - 
+    - Lady Parhelion brings her harp down directly onto an enemies head.
+    - Lady Parhelion summons a small surge of storm around her, electrifying nearby
+      opponents.
+    - Lady Parhelion crushes the ground beneath her feet, knocking back nearby enemies.
+    - Lady Parhelion's harp begins to heat up with a magical fire. When unleashed,
+      a large firey apparition tears away at opponents.
+    - Lady Parhelion summons a storm bolt to strike a nearby enemy.
+    - Lady Parhelion strikes up a tune on her harp, and uses bardic magic to destroy
+      anyone caught beneath her jump.
+    - Lady Parhelion uses her storm aura to slide into enemies and inflict damage.
+    - Lady Parhelion puts up a crystalline rainbow shield around herself.
   - drifterName: 
     flipSprites: 0
     background: {fileID: 0}
