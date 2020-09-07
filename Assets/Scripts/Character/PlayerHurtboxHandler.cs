@@ -69,12 +69,14 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
             float HitstunDuration = (attackData.HitStun>0)?attackData.HitStun:(KB*.0055f + .1f);
 
+            
+
             //Ignore knockback if invincible or armoured
             if(status != null && (attackData.isGrab || !drifter.animator.GetBool("Guarding"))){
 
                 if(!status.HasArmour() || attackData.isGrab){
 
-                    if(Shake != null && attackData.Knockback !=0)StartCoroutine(Shake.Shake(.1f,Mathf.Clamp(((attackData.Knockback/100f + attackData.AttackDamage/44f)) * attackData.KnockbackScale,.1f,.8f)));//StartCoroutine(Shake.Shake(drifter.DamageTaken/100f * Mathf.Max((attackData.AttackDamage + attackData.KnockbackScale *3f -3f),.1f)/10f * .1f,Mathf.Max((attackData.AttackDamage+ attackData.KnockbackScale*3f - 3f),.2f)/10f));
+                    if(Shake != null && attackData.Knockback !=0)StartCoroutine(Shake.Shake((willCollideWithBlastZone(GetComponent<Rigidbody2D>(), HitstunDuration)?0.3f:0.1f),Mathf.Clamp(((attackData.Knockback/100f + attackData.AttackDamage/44f)) * attackData.KnockbackScale,.1f,.8f)));//StartCoroutine(Shake.Shake(drifter.DamageTaken/100f * Mathf.Max((attackData.AttackDamage + attackData.KnockbackScale *3f -3f),.1f)/10f * .1f,Mathf.Max((attackData.AttackDamage+ attackData.KnockbackScale*3f - 3f),.2f)/10f));
                                 
                     if(attackData.Knockback > 0){
                         GetComponent<Rigidbody2D>().velocity = new Vector2(forceDir.normalized.x * KB, GetComponent<PlayerMovement>().grounded?Mathf.Abs(forceDir.normalized.y * KB): forceDir.normalized.y * KB);
@@ -94,6 +96,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 if(willCollideWithBlastZone(GetComponent<Rigidbody2D>(), HitstunDuration))HitstunDuration*=2f;
 
                 status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,HitstunDuration*.2f);
+                StartCoroutine(drifter.GetComponentInChildren<CameraShake>().Shake(HitstunDuration*.2f,1.2f));
 
                 //Cape logic
                 if(attackData.StatusEffect == PlayerStatusEffect.REVERSED)
@@ -105,7 +108,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             }
 
             //apply attacker hitpause
-            hitbox.parent.GetComponent<PlayerStatus>().ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,HitstunDuration*.18f);          
+            if(hitbox.gameObject.tag != "Projectile")hitbox.parent.GetComponent<PlayerStatus>().ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,HitstunDuration*.18f);          
 
             // create hit sparks
             GameObject hitSparks = Instantiate(Entities.GetEntityPrefab("HitSparks"),

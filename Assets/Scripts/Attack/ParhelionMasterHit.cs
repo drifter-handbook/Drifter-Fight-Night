@@ -40,6 +40,7 @@ public class ParhelionMasterHit : MasterHit
         Debug.Log("Recovery start!");
         rb.gravityScale = 0f;
         rb.velocity = Vector2.zero;
+        movement.gravityPaused= true;
     }
     public override void callTheRecovery()
     {
@@ -80,6 +81,7 @@ public class ParhelionMasterHit : MasterHit
     public override void cancelTheRecovery()
     {
         Debug.Log("Recovery end!");
+        movement.gravityPaused= false;
         rb.gravityScale = gravityScale;
     }
 }

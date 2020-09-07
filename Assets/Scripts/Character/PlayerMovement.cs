@@ -26,6 +26,7 @@ public class PlayerMovement : MonoBehaviour
     SpriteRenderer sprite;
     public int Facing { get; set; } = 1;
     public bool grounded = true;
+    public bool gravityPaused = false;
 
     Animator animator;
 
@@ -255,7 +256,7 @@ public class PlayerMovement : MonoBehaviour
             
         }
         //makes sure gavity is always reset after using a move
-        else if(!status.HasStatusEffect(PlayerStatusEffect.END_LAG)){
+        else if(!status.HasStatusEffect(PlayerStatusEffect.END_LAG) || !gravityPaused){
             rb.gravityScale = baseGravity;
         }
         
@@ -332,7 +333,7 @@ public class PlayerMovement : MonoBehaviour
         {
             yield return new WaitForFixedUpdate();
             time += Time.fixedDeltaTime;
-            if (!animator.GetBool("Grounded") && drifter.input.Jump)
+            if (!animator.GetBool("Grounded") && !status.HasStunEffect() && drifter.input.Jump)
             {
                 //rb.AddForce(Vector2.up * -Physics2D.gravity * varyJumpHeightForce);
                 rb.velocity = new Vector2(rb.velocity.x, jumpSpeed);

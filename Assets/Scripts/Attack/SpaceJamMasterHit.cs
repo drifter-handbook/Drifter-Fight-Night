@@ -91,10 +91,12 @@ public class SpaceJamMasterHit : MasterHit
     public void callTheRecovery(){
         facing = movement.Facing;
         rb.gravityScale = 0;
+        movement.gravityPaused= true;
         rb.velocity= new Vector2(facing * -25,25);
     }
     public override void cancelTheRecovery(){
         rb.gravityScale = gravityScale;
+        movement.gravityPaused= false;
     } 
 
     void grantCharges(){

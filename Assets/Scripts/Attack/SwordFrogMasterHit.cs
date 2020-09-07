@@ -35,11 +35,13 @@ public class SwordFrogMasterHit : MasterHit
     {
         rb.gravityScale = 0;
         rb.velocity = Vector2.zero;
+        movement.gravityPaused= true;
     }
 
     public void bigLeap(){
         facing = movement.Facing;
         rb.gravityScale = gravityScale;
+        movement.gravityPaused= false;
         rb.velocity= new Vector2(0,60);
     }
 

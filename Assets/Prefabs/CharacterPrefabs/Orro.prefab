@@ -555,6 +555,7 @@ MonoBehaviour:
   Weight: 95
   currentJumps: 0
   grounded: 1
+  gravityPaused: 0
   varyJumpHeightDuration: 0.2
   varyJumpHeightForce: 12
 --- !u!114 &9142496942411782138
@@ -980,11 +981,31 @@ PrefabInstance:
       propertyPath: parent
       value: 
       objectReference: {fileID: 3106753082241659636}
+    - target: {fileID: 4098096189212201271, guid: 1e76d2aad5cac964fa578bce301dd12f,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 4642488344634641391, guid: 1e76d2aad5cac964fa578bce301dd12f,
         type: 3}
       propertyPath: parent
       value: 
       objectReference: {fileID: 3106753082241659636}
+    - target: {fileID: 5434104029671321749, guid: 1e76d2aad5cac964fa578bce301dd12f,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 6238866400539476306, guid: 1e76d2aad5cac964fa578bce301dd12f,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 7113186010434642531, guid: 1e76d2aad5cac964fa578bce301dd12f,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 7473316474781769828, guid: 1e76d2aad5cac964fa578bce301dd12f,
         type: 3}
       propertyPath: m_LocalPosition.x

@@ -39,6 +39,7 @@ public class MegurinMasterHit : MasterHit
     public void RecoveryPauseMidair()
     {
         // pause in air
+        movement.gravityPaused= true;
         rb.gravityScale = 0f;
         rb.velocity = Vector2.zero;
     }
@@ -174,6 +175,7 @@ public class MegurinMasterHit : MasterHit
     }
 
     public void resetGravity(){
+        movement.gravityPaused= false;
         rb.gravityScale = gravityScale;
     }
 
@@ -311,5 +313,6 @@ public class MegurinMasterHit : MasterHit
     public override void cancelTheNeutralW()
     {
         rb.gravityScale = gravityScale;
+        movement.gravityPaused= false;
     }
 }

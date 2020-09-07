@@ -278,6 +278,7 @@ GameObject:
   - component: {fileID: 5306829202166808911}
   - component: {fileID: 8011688095535036379}
   - component: {fileID: 2000386183588008255}
+  - component: {fileID: 3448103185150702309}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -373,6 +374,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &3448103185150702309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2496518287981053905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58857c4384a9ba942ae268159cbba96d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3106753082241659636
 GameObject:
   m_ObjectHideFlags: 0
@@ -461,6 +474,7 @@ MonoBehaviour:
   Weight: 90
   currentJumps: 0
   grounded: 1
+  gravityPaused: 0
   varyJumpHeightDuration: 0.2
   varyJumpHeightForce: 12
 --- !u!114 &1401939795787901855

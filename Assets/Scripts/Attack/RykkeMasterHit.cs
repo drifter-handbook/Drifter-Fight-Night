@@ -48,6 +48,7 @@ public class RykkeMasterHit : MasterHit
     public void RecoveryPauseMidair()
     {
         // pause in air
+        movement.gravityPaused= true;
         rb.gravityScale = 0f;
         rb.velocity = Vector2.zero;
         playerRange.gameObject.transform.parent.gameObject.SetActive(true);
@@ -126,10 +127,12 @@ public class RykkeMasterHit : MasterHit
     }
 
     public void resetGravity(){
+        movement.gravityPaused = false;
         rb.gravityScale = gravityScale;
     }
 
     public void pauseGravity(){
+        movement.gravityPaused= true;
         rb.gravityScale = 0f;
         rb.velocity = Vector2.zero;
     }
@@ -228,6 +231,7 @@ public class RykkeMasterHit : MasterHit
 
     public void awaken(){
         facing = movement.Facing;
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.2f);
         Vector3 flip = new Vector3(facing *8f,8f,1f);
         Vector3 loc = new Vector3(facing *3.5f,0f,0f);
         GameObject tombstone = Instantiate(entities.GetEntityPrefab("RyykeTombstone"), transform.position + loc, transform.rotation);

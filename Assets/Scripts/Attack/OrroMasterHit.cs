@@ -75,6 +75,7 @@ public class OrroMasterHit : MasterHit
      public void cancelGravity(){
         facing = movement.Facing;
         rb.velocity = Vector2.zero;
+        movement.gravityPaused= true;
         rb.gravityScale = 0;
     }
     public void inTheHole(){
@@ -98,6 +99,7 @@ public class OrroMasterHit : MasterHit
     }
 
     public void resetGravity(){
+        movement.gravityPaused= false;
         rb.gravityScale = gravityScale;
     }
 

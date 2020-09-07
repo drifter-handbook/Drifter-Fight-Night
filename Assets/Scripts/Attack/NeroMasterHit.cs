@@ -29,6 +29,7 @@ public class NeroMasterHit : MasterHit
     public void RecoveryPauseMidair()
     {
         // pause in air
+        movement.gravityPaused= true;
         rb.gravityScale = 0f;
         rb.velocity = Vector2.zero;
     }
@@ -53,6 +54,7 @@ public class NeroMasterHit : MasterHit
     {
         // jump upwards and create spear projectile
         rb.velocity = new Vector2(rb.velocity.x, 1.5f * 35f);
+        movement.gravityPaused= false;
         rb.gravityScale = gravityScale;
         GameObject neroSpear = Instantiate(entities.GetEntityPrefab("NeroSpear"), transform.position, transform.rotation);
         foreach (HitboxCollision hitbox in neroSpear.GetComponentsInChildren<HitboxCollision>(true))
@@ -71,6 +73,7 @@ public class NeroMasterHit : MasterHit
     public override void cancelTheRecovery()
     {
         Debug.Log("Recovery end!");
+        movement.gravityPaused= false;
         rb.gravityScale = gravityScale;
     }
 
@@ -91,6 +94,7 @@ public class NeroMasterHit : MasterHit
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.5f);
         status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.4f);
         rb.velocity = new Vector3( facing * dashDistance, 0);
+        movement.gravityPaused= true;
         rb.gravityScale = 0;
         dashDistance = 30f;
         drifter.SetAnimatorBool("HasCharge",false);
@@ -127,6 +131,7 @@ public class NeroMasterHit : MasterHit
     }
     public override void cancelTheNeutralW()
     {
+        movement.gravityPaused= false;
         rb.gravityScale = gravityScale;
         dashDistance = 30f;
     }
