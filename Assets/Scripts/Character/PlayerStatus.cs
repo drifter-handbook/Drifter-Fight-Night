@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum PlayerStatusEffect
 {
-    AMBERED, PLANTED, STUNNED, EXPOSED, HIT, FEATHERWEIGHT, END_LAG, KNOCKBACK, INVULN, ARMOUR, REVERSED, SLOWED, DEAD
+    AMBERED, PLANTED, STUNNED, EXPOSED, HIT, FEATHERWEIGHT, END_LAG, KNOCKBACK, INVULN, ARMOUR, REVERSED, SLOWED, DEAD, HITPAUSE
 }
 
 
@@ -16,9 +16,12 @@ public class PlayerStatus : MonoBehaviour
 
     PlayerStatusEffect[] removeableEffects = {PlayerStatusEffect.STUNNED,PlayerStatusEffect.END_LAG,PlayerStatusEffect.REVERSED,PlayerStatusEffect.PLANTED,PlayerStatusEffect.EXPOSED};
     System.Array allEffects = PlayerStatusEffect.GetValues(typeof(PlayerStatusEffect));
+    Rigidbody2D rb;
+    Vector2 delayedVelocity;
     // Start is called before the first frame update
     void Start()
     {
+        rb = GetComponent<Rigidbody2D>();
     }
  
     // Update is called once per frame
@@ -26,15 +29,24 @@ public class PlayerStatus : MonoBehaviour
     {
         if(time > .1f){
             time = 0f;
-            foreach(PlayerStatusEffect ef in allEffects){
-                if(HasStatusEffect(ef) &&statusEffects[ef] > 0)
-                {
-                    statusEffects[ef]--;
-                }
-                else{
-                    statusEffects[ef] = 0;
+            //Hitpause pauses all other statuses for its duration
+            if(HasStatusEffect(PlayerStatusEffect.HITPAUSE))
+            {
+                 statusEffects[PlayerStatusEffect.HITPAUSE]--;
+                 if(!HasStatusEffect(PlayerStatusEffect.HITPAUSE))rb.velocity = delayedVelocity;
+            }
+            else{
+                foreach(PlayerStatusEffect ef in allEffects){
+                    if(HasStatusEffect(ef) &&statusEffects[ef] > 0)
+                    {
+                        statusEffects[ef]--;
+                    }
+                    else{
+                        statusEffects[ef] = 0;
+                    }
                 }
             }
+            
         }
         time += Time.deltaTime;
         
@@ -59,7 +71,7 @@ public class PlayerStatus : MonoBehaviour
     }
     public bool HasStunEffect()
     {
-        return HasStatusEffect(PlayerStatusEffect.END_LAG) || HasStatusEffect(PlayerStatusEffect.KNOCKBACK) || HasStatusEffect(PlayerStatusEffect.PLANTED) || HasStatusEffect(PlayerStatusEffect.STUNNED)|| HasStatusEffect(PlayerStatusEffect.AMBERED) || HasStatusEffect(PlayerStatusEffect.DEAD);
+        return HasStatusEffect(PlayerStatusEffect.END_LAG) || HasStatusEffect(PlayerStatusEffect.HITPAUSE) || HasStatusEffect(PlayerStatusEffect.KNOCKBACK) || HasStatusEffect(PlayerStatusEffect.PLANTED) || HasStatusEffect(PlayerStatusEffect.STUNNED)|| HasStatusEffect(PlayerStatusEffect.AMBERED) || HasStatusEffect(PlayerStatusEffect.DEAD);
     }
 
     public bool HasRemovableEffect()
@@ -152,6 +164,12 @@ public class PlayerStatus : MonoBehaviour
             statusEffects[ef] = 0f;
         }
         
+        if(ef == PlayerStatusEffect.HITPAUSE){
+            //save delayed velocity
+            delayedVelocity = rb.velocity;
+        }
+
+
         statusEffects[ef] = duration * 10f;
 
     }

@@ -106,6 +106,7 @@ public class PlayerMovement : MonoBehaviour
         drifter.SetAnimatorBool("Grounded", IsGrounded());
         grounded = IsGrounded();
 
+        //Sets hitstun state when applicable
         if(status.HasEnemyStunEffect() && !animator.GetBool("HitStun")){
             drifter.SetAnimatorBool("HitStun",true);
         }
@@ -114,14 +115,26 @@ public class PlayerMovement : MonoBehaviour
             drifter.SetAnimatorBool("HitStun",false);
         }
 
+        //Pause all animations while in hitpause
+        if(status.HasStatusEffect(PlayerStatusEffect.HITPAUSE))
+        {
+            animator.enabled = false;
+        }
+        else{
+            animator.enabled = true;
+        }
+
+        //Smoke trail
         if(status.HasStatusEffect(PlayerStatusEffect.KNOCKBACK) && rb.velocity.magnitude > 45f){
             spawnJuiceParticle(Vector3.zero,1,Quaternion.Euler(0,0,UnityEngine.Random.Range(0,180)));
         }
 
+        //Reversed controls
         if(status.HasStatusEffect(PlayerStatusEffect.REVERSED)){
             drifter.input.MoveX *= -1;
         }
 
+        //Normal walking logic
         if (moving && canAct)
         {
         	//UnityEngine.Debug.Log("BEFORE velocity: " + rb.velocity.x);
@@ -150,12 +163,13 @@ public class PlayerMovement : MonoBehaviour
 
             //UnityEngine.Debug.Log("AFTER velocity: " + rb.velocity.x);
         }
-
+        //Turn walking animation off
         else if (!moving && status.HasGroundFriction())
         {
             drifter.SetAnimatorBool("Walking", false);
             rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 80f * Time.deltaTime), rb.velocity.y);
         }
+        //Tunrs hang animation on
         else
         {
             drifter.SetAnimatorBool("Grounded", false);
@@ -169,12 +183,14 @@ public class PlayerMovement : MonoBehaviour
 
         }
 
+        //Roll
         if(drifter.input.Guard && canGuard && moving){
 
             drifter.SetAnimatorTrigger("Roll");
             updateFacing();
         }
 
+        //Guard
         else if (drifter.input.Guard && canGuard)
         {
             //shift is guard
@@ -196,7 +212,7 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x,-terminalVelocity);
         }
 
-
+        //Jump
         if (jumpPressed && canAct) //&& rb.velocity.y < 0.8f * jumpSpeed)
         {
             //jump
@@ -223,8 +239,10 @@ public class PlayerMovement : MonoBehaviour
 
             spawnJuiceParticle(new Vector3(.5f,UnityEngine.Random.Range(1f,3f),0),6);
         }
+        prevMoveX = drifter.input.MoveX;
 
-        if(status.HasStatusEffect(PlayerStatusEffect.STUNNED) || status.HasStatusEffect(PlayerStatusEffect.PLANTED) || status.HasStatusEffect(PlayerStatusEffect.DEAD))
+        //Pause movement for relevent effects.
+        if(status.HasStatusEffect(PlayerStatusEffect.STUNNED) || status.HasStatusEffect(PlayerStatusEffect.PLANTED) || status.HasStatusEffect(PlayerStatusEffect.DEAD) || status.HasStatusEffect(PlayerStatusEffect.HITPAUSE))
         {
             if(status.HasStatusEffect(PlayerStatusEffect.PLANTED) && !IsGrounded())
             {
@@ -236,11 +254,11 @@ public class PlayerMovement : MonoBehaviour
             }
             
         }
+        //makes sure gavity is always reset after using a move
         else if(!status.HasStatusEffect(PlayerStatusEffect.END_LAG)){
             rb.gravityScale = baseGravity;
         }
-
-         prevMoveX = drifter.input.MoveX;
+        
     }
     void updateFacing()
     {

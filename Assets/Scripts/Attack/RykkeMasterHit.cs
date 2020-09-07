@@ -208,7 +208,7 @@ public class RykkeMasterHit : MasterHit
             activeStone.GetComponent<RyykeTombstone>().Break();
         }  
         facing = movement.Facing;
-        rb.velocity = new Vector2(0,10);
+        if(!movement.grounded)rb.velocity = new Vector2(0,10);
         Vector3 flip = new Vector3(facing *8f,8f,1f);
         Vector3 loc = new Vector3(facing *1f,.8f,0f);
         GameObject tombstone = Instantiate(entities.GetEntityPrefab("RyykeTombstone"), transform.position + loc, transform.rotation);
@@ -228,7 +228,6 @@ public class RykkeMasterHit : MasterHit
 
     public void awaken(){
         facing = movement.Facing;
-        rb.velocity = new Vector2(0,10);
         Vector3 flip = new Vector3(facing *8f,8f,1f);
         Vector3 loc = new Vector3(facing *3.5f,0f,0f);
         GameObject tombstone = Instantiate(entities.GetEntityPrefab("RyykeTombstone"), transform.position + loc, transform.rotation);

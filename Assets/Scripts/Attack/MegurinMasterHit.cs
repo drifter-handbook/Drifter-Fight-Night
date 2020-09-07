@@ -286,7 +286,7 @@ public class MegurinMasterHit : MasterHit
         if(anim.GetBool("Empowered") == true){
             drifter.SetAnimatorBool("Empowered",false);
             drifter.SetAnimatorBool("HasCharge",true);
-            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,1.8f);
+            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,1.65f);
         }
         else{
             status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,1f);
