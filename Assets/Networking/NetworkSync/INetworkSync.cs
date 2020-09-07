@@ -50,7 +50,6 @@ public class NetworkEntityConverter : Newtonsoft.Json.Converters.CustomCreationC
                 return new CameraSync.ShakeData();    
             case "Chadwick":
             case "HoldPerson":
-            case "LongArmOfTheLaw":
             case "WeakBolt":
             case "StrongBolt":
             case "MegurinStorm":
@@ -60,6 +59,8 @@ public class NetworkEntityConverter : Newtonsoft.Json.Converters.CustomCreationC
             case "Mockery":
             case "Kamikaze":
                 return new BasicProjectileSync.ProjectileData();
+            case "LongArmOfTheLaw":
+                return new LongArmSync.ArmData();
             case "IceBar":
             case "WindBar":
             case "LightningBar":
