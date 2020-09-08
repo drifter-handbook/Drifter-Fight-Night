@@ -8023,7 +8023,7 @@ MonoBehaviour:
     - SteadFast
     moveDescriptions:
     - Nero thrusts his spear forward in a flurry of attacks. Can be repeatedly tapped
-      to continue the comob
+      to continue the combo
     - Nero sweeps his spear in a large arc beneath him
     - Nero does a light charge forward, pushing back enemies.
     - Nero readies himself, then rushes forward across the stage, dealing damage
@@ -8063,8 +8063,8 @@ MonoBehaviour:
       a certain distance.
     - Orro places his book on the ground and pulls the ink off the pages in a pillar,
       launching nearby enemies.
-    - Orro yeets out of combat and teleportsa distance upward.
-    - Orro flips to the shield page of his book and manifests a protective ourple
+    - Orro yeets out of combat and teleports a distance upward.
+    - Orro flips to the shield page of his book and manifests a protective purple
       bubble around himself. Press left or right while grounded to do a short range
       teleport-dodge.
   - drifterName: Lady Parhelion
@@ -8086,9 +8086,11 @@ MonoBehaviour:
     - Lady Parhelion crushes the ground beneath her feet, knocking back nearby enemies.
     - Lady Parhelion's harp begins to heat up with a magical fire. When unleashed,
       a large firey apparition tears away at opponents.
-    - Lady Parhelion summons a storm bolt to strike a nearby enemy.
+    - Lady Parhelion summons a storm bolt to strike a nearby enemy. The bolt's tip
+      is a death sentence to offstage opponents.
     - Lady Parhelion strikes up a tune on her harp, and uses bardic magic to destroy
-      anyone caught beneath her jump.
+      anyone caught beneath her jump. The weight of her harp allows Lady Parhelion
+      to shrug off all knockback during the fall.
     - Lady Parhelion uses her storm aura to slide into enemies and inflict damage.
     - Lady Parhelion puts up a crystalline rainbow shield around herself.
   - drifterName: Bojo
@@ -8157,15 +8159,21 @@ MonoBehaviour:
     moveDescriptions:
     - Konikryyke pushes away enemies with a quick kick
     - Konikryyke cartwheels in the air, clearing the area of enemies.
-    - Konikryyke raises her hand and causes an enemy to freeze in place.
-    - Konikryyke channels necromantic energy into a corpse, bringing it to life as
-      a zombie to fight with her.
-    - Konikryyke winds up with her shovel to deliver a fierce hit
-    - Konikryyke reels back, casting animate dead, then whips a chain of zombie arms
-      upward, grabbing ledges and opponents alike.
-    - 'Konikryyke plants a gravestone, dealing small damage and grounding opponents
-      in front of her. '
-    - Konikryyke braces herself for incoming attacks.
+    - Konikryyke raises her hand and causes an enemy to freeze in place. If Chadwick
+      is active, he follows up with a devastating punch.
+    - Konikryyke channels necromantic energy into a corpse, summoning her undead
+      familiar Chadwick to empower her next Hush Now or Hold Person. Chadwick can
+      be queued up to three times.
+    - Konikryyke winds up with her shovel to deliver a fierce hit, dealing more damage
+      at the tip. If Chadwick is active, he delivers a devastating punch alongside
+      his master.
+    - Whips a chain of zombie arms upward, grabbing ledges and opponents alike.
+    - Konikryyke plants a gravestone, dealing small damage and grounding opponents
+      in front of her. If the gravestone remains undisturbed for a short while, it
+      arms as a deadly trap. Only one can be placed at a time.
+    - Konikryyke braces herself for incoming attacks, blocking a small amount of
+      damage. If Chadwick is active he guards as well, greatly increasing the damage
+      reduction.
   - drifterName: 
     flipSprites: 0
     background: {fileID: 0}

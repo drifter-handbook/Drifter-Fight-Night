@@ -204,7 +204,7 @@ GameObject:
   m_Component:
   - component: {fileID: 35713444313488493}
   - component: {fileID: 2424285794468905282}
-  - component: {fileID: 1315669275612064083}
+  - component: {fileID: 1122610539328794745}
   m_Layer: 9
   m_Name: EmpoweredPunch
   m_TagString: Untagged
@@ -241,8 +241,8 @@ MonoBehaviour:
   parent: {fileID: 7638574618725185666}
   OverrideData: {fileID: 11400000, guid: 426f42be1f3b95c4da5c1445412970fd, type: 2}
   AttackData: {fileID: 0}
---- !u!58 &1315669275612064083
-CircleCollider2D:
+--- !u!70 &1122610539328794745
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -251,12 +251,12 @@ CircleCollider2D:
   m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5
+  m_Size: {x: 0.5, y: 1}
+  m_Direction: 1
 --- !u!1001 &4691849568075172470
 PrefabInstance:
   m_ObjectHideFlags: 0
