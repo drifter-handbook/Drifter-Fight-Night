@@ -234,7 +234,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0.0000076294, y: 9}
+  m_AnchoredPosition: {x: 0.0000076294, y: -10}
   m_SizeDelta: {x: 349.77057, y: 166.23895}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!95 &480106897
@@ -245,7 +245,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 480106895}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 5a846e28ea70b9c4da8ac06a4cab2e43, type: 2}
   m_CullingMode: 0
@@ -275,8 +275,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 5129451589502431624, guid: 4291183e673e7584c9db818c45b55fa9,
-    type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1c64ab683b6fb3245a69e1f176eef273, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
