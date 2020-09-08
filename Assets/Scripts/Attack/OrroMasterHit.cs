@@ -29,13 +29,16 @@ public class OrroMasterHit : MasterHit
     }
     void Update(){
         localBean.GetComponent<BeanWrangler>().facing =  movement.Facing;
-        if(beanRemote != null)
+
+        if(!anim.GetBool("Empowered"))
         {
             localBean.GetComponent<BeanWrangler>().Hide = true;
+            localBeanAnim.SetBool("Hide",true);
         }
-        else if(beanRemote == null)
+        else
         {
             localBean.GetComponent<BeanWrangler>().Hide = false;
+            localBeanAnim.SetBool("Hide",false);
         }
     }
 
