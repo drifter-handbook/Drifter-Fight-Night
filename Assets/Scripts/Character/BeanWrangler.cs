@@ -23,7 +23,7 @@ public class BeanWrangler : MonoBehaviour
     {
         entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
         Orro = gameObject.GetComponentInChildren<HitboxCollision>().parent;
-        attacks = Orro.GetComponentInChildren<PlayerAttacks>();
+        attacks = Orro.GetComponent<PlayerAttacks>();
     }
 
     IEnumerator delete(){

@@ -356,6 +356,7 @@ GameObject:
   - component: {fileID: 8011688095535036379}
   - component: {fileID: 2000386183588008255}
   - component: {fileID: 4597195802583323110}
+  - component: {fileID: 5207508147783339694}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -467,6 +468,18 @@ MonoBehaviour:
   facing: 0
   anim: {fileID: 2000386183588008255}
   localBean: {fileID: 8944603714200825024}
+--- !u!114 &5207508147783339694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2496518287981053905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58857c4384a9ba942ae268159cbba96d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3106753082241659636
 GameObject:
   m_ObjectHideFlags: 0
@@ -1099,15 +1112,15 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 9016843426336431674, guid: 1e76d2aad5cac964fa578bce301dd12f, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 1e76d2aad5cac964fa578bce301dd12f, type: 3}
---- !u!4 &4470608415435892928 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7473316474781769828, guid: 1e76d2aad5cac964fa578bce301dd12f,
-    type: 3}
-  m_PrefabInstance: {fileID: 6466121333110245540}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8944603714200825024 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2710562965551637604, guid: 1e76d2aad5cac964fa578bce301dd12f,
+    type: 3}
+  m_PrefabInstance: {fileID: 6466121333110245540}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4470608415435892928 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7473316474781769828, guid: 1e76d2aad5cac964fa578bce301dd12f,
     type: 3}
   m_PrefabInstance: {fileID: 6466121333110245540}
   m_PrefabAsset: {fileID: 0}
