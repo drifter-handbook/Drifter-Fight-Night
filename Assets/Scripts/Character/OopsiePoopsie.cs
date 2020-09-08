@@ -25,15 +25,18 @@ public class OopsiePoopsie : MonoBehaviour
     void OnTriggerEnter2D(Collider2D col)
     {
 
-        UnityEngine.Debug.Log(col.gameObject.name);        
-        if(col.gameObject.name == "Reflector"){
-            rb.velocity =  rb.velocity * -2.5f;
+         if(col.gameObject.name == "Reflector"){
+            rb.velocity =  rb.velocity * -1.5f;
+
+            gameObject.transform.localScale = new Vector3(gameObject.transform.localScale.x * -1,gameObject.transform.localScale.y,gameObject.transform.localScale.z);
+
             foreach (HitboxCollision hitbox in gameObject.GetComponentsInChildren<HitboxCollision>(true))
                 {
-                    hitbox.parent = col.gameObject.GetComponentInChildren<HitboxCollision>().parent;
-                    //Mkae this not suck later
-                    hitbox.AttackID = 10000;
+                    hitbox.parent = col.gameObject.transform.parent.GetComponentInChildren<HitboxCollision>().parent;
+                    //Mkae this not suck laters
+                    hitbox.AttackID = 300 + Random.Range(0,25);
                 }
+
         }
         else{
             anim.SetTrigger("Empower");
