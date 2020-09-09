@@ -48,7 +48,7 @@ public class ViewManager : MonoBehaviour
         
         if (!foundIP && GameController.Instance.GetComponent<IPWebRequest>().complete)
         {
-            hostIP.text = $"{GameController.Instance.GetComponent<IPWebRequest>().result.ToString()}:{UDPHolePuncher.GetLocalID("minecraft.scrollingnumbers.com", 6969)}";
+            hostIP.text = $"{GameController.Instance.GetComponent<IPWebRequest>().result.ToString()}:{UDPHolePuncher.GetLocalID("75.134.27.221", 6969)}";
             foundIP = true;
         }
     }

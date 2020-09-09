@@ -59,7 +59,7 @@ public class NetworkHandler
     public void Connect()
     {
         Active = true;
-        HolePuncher = new UDPHolePuncher(hostIP == null ? "127.0.0.1" : hostIP.ToString(), "minecraft.scrollingnumbers.com", 6969, IsHost, hostID);
+        HolePuncher = new UDPHolePuncher(hostIP == null ? "127.0.0.1" : hostIP.ToString(), "75.134.27.221", 6969, IsHost, hostID);
         HolePunchID = HolePuncher.ID;
         Connection = new UDPConnection(HolePuncher.udpClient);
     }
