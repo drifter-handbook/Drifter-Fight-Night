@@ -22,10 +22,7 @@ public class RyykeTombstone : MonoBehaviour
     	rb.velocity = new Vector2(0f,-50f);
         entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
         Ryyke = gameObject.GetComponentInChildren<HitboxCollision>().parent;
-        UnityEngine.Debug.Log("Ryyke:" + Ryyke);
         attacks = Ryyke.GetComponent<PlayerAttacks>();
-        UnityEngine.Debug.Log( "PlayerAtta:" + attacks);
-
     }
 
     public IEnumerator Delete()
