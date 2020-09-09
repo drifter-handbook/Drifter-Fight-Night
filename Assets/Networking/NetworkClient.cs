@@ -218,6 +218,7 @@ public class NetworkClient : MonoBehaviour, NetworkID
         // find entities
         entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
         // create entities
+        entities.populate();
         GameSyncFromPacket(packet);
         Debug.Log("Finish syncing");
         // remove all physics for synced objects

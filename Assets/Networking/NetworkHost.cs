@@ -186,7 +186,6 @@ public class NetworkHost : MonoBehaviour, NetworkID
                 GameController.Instance.winner = null;
                 GameController.Instance.CharacterSelectStates = new List<CharacterSelectState>() { };
                 GameController.Instance.Entities = null;
-                GameController.Instance.Entities.populate();
                 Destroy(this);
                 yield break;
             }
@@ -210,6 +209,7 @@ public class NetworkHost : MonoBehaviour, NetworkID
         // find entities
         entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
         // create players
+        entities.populate();
         List<string> playerNames = CharacterSelectStates.Select(x => x.PlayerType.ToString().Replace("_", " ")).ToList();
         for (int i = 0; i < playerNames.Count; i++)
         {
