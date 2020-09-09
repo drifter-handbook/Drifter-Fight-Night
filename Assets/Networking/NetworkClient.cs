@@ -193,7 +193,7 @@ public class NetworkClient : MonoBehaviour, NetworkID
                 GameController.Instance.selectedStage = null;
                 GameController.Instance.winner = null;
                 GameController.Instance.CharacterSelectStates = new List<CharacterSelectState>() { };
-                //GameController.Instance.Entities = null;
+                GameController.Instance.Entities = null;
                 Destroy(this);
                 yield break;
             }
