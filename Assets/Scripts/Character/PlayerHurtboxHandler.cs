@@ -67,7 +67,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                          ((status.HasStatusEffect(PlayerStatusEffect.EXPOSED) || status.HasStatusEffect(PlayerStatusEffect.FEATHERWEIGHT))
                             ?1.5f:1)) * attackData.KnockbackScale + attackData.Knockback);
 
-            float HitstunDuration = (attackData.HitStun>0)?attackData.HitStun:(KB*.0055f + .1f);
+            float HitstunDuration = (attackData.HitStun>0)?attackData.HitStun:(KB*.006f + .1f);
 
             
 

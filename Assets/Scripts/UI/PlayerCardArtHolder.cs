@@ -49,13 +49,14 @@ public class PlayerCardArtHolder : MonoBehaviour
                 playerCards[i].SetColor(drifter.myColor);
 
                 int imageIndex = getDrifterTypeIndex(drifter.GetComponent<INetworkSync>().Type);
-                if(imageIndex != 5 && imageIndex != 1){
-                   Destroy(playerCards[i].charge);
+                playerCards[i].charge.active = false;
+                playerCards[i].MegurinElements.active = false;
+
+                if(imageIndex == 5 || imageIndex == 1){
+                   playerCards[i].charge.active = true;
                 }
-                if(imageIndex !=6){
-                    Destroy(playerCards[i].MegurinElements);
-                }
-                else{
+                if(imageIndex == 6){
+                    playerCards[i].MegurinElements.active = true;
                     playerCards[i].MegurinElements.GetComponent<MegurinGauges>().megurin = drifter.GetComponentInChildren<MegurinMasterHit>();
                 }
 
