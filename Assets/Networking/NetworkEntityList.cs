@@ -24,6 +24,7 @@ public class NetworkEntityList : MonoBehaviour
     void Awake()
     {
         nextID = 0;
+        Entities = new List<GameObject>();
         // add starting entities
         foreach (GameObject obj in StartingEntities)
         {
