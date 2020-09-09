@@ -34,12 +34,12 @@ public class BeanWrangler : MonoBehaviour
 
     public void beanSpit()
     {
-        try{
+       
         Vector3 flip = new Vector3(facing *8,8,0f);
         Vector3 pos = new Vector3(facing *.7f,2.5f,1f);
         GameObject spit = Instantiate(entities.GetEntityPrefab("BeanSpit"), transform.position + pos, transform.rotation);
         spit.transform.localScale = flip;
-        
+        try{
 
             attacks.SetMultiHitAttackID();
             spit.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * 20, 0);
