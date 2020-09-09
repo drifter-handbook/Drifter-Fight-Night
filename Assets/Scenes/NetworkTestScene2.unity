@@ -220,6 +220,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 99f00dda964e6054cb2af4c05ec2139d, type: 3}
+--- !u!1 &80741482 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8308863690101463978, guid: 99f00dda964e6054cb2af4c05ec2139d,
+    type: 3}
+  m_PrefabInstance: {fileID: 80741481}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &83182561
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1287,13 +1293,13 @@ MonoBehaviour:
   - {fileID: 7124858215600245853, guid: 0d80b8f258ca7d44d82109e9e223b041, type: 3}
   - {fileID: 1413698060829908408, guid: b5826cc83564422449b5d9bda3283f7e, type: 3}
   - {fileID: 5084955732123879987, guid: f8c3a22ca1bebd4429055b73df4f1cfa, type: 3}
-  - {fileID: 8308863690101463978, guid: 99f00dda964e6054cb2af4c05ec2139d, type: 3}
   SpawnPoints:
   - {fileID: 42964543}
   - {fileID: 1635710762}
   - {fileID: 1087257763}
   - {fileID: 766515719}
-  StartingEntities: []
+  StartingEntities:
+  - {fileID: 80741482}
 --- !u!1001 &8805985096357553231
 PrefabInstance:
   m_ObjectHideFlags: 0
