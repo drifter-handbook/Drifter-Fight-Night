@@ -58,7 +58,7 @@ public class RyykeTombstone : MonoBehaviour
 
  	IEnumerator Arm()
     {
-        yield return new WaitForSeconds(1.65f);
+        yield return new WaitForSeconds(1.3f);
         armed = true;
         yield break;
     }
