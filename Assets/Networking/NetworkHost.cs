@@ -174,7 +174,8 @@ public class NetworkHost : MonoBehaviour, NetworkID
         yield return SceneManager.LoadSceneAsync("Endgame");
         Text winner = GameObject.FindGameObjectWithTag("EndgameName").GetComponent<Text>();
         GameObject.FindGameObjectWithTag("EndgamePic").GetComponent<EndgameImageHandler>().setImage(GameController.Instance.winner);
-        winner.text = $"Winner: {GameController.Instance.winner.Replace('_', ' ')}";
+        if (GameController.Instance.winner != null)
+            winner.text = $"Winner: {GameController.Instance.winner.Replace('_', ' ')}";
         while (SceneManager.GetActiveScene().name == "Endgame")
         {
             yield return null;
