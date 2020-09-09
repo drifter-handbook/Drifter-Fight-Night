@@ -10,7 +10,7 @@ public class CameraSync : MonoBehaviour, INetworkSync
     Vector3 oldPos;
     Vector3 targetPos;
 
-    public string Type { get; private set; } = "Camera";
+    public string Type { get; private set; } = "Main Camera";
     public int ID { get; set; } = NetworkEntityList.NextID;
 
     // Start is called before the first frame update
