@@ -14,10 +14,14 @@ public class EndgameImageHandler : MonoBehaviour
     }
 
     public void setImage(string winner){
+        int winnerIndex = -1;
+        if (winner != null)
+        {
+            winnerIndex = int.Parse(winner.Split('|')[1]);
+            gameObject.GetComponent<MultiSound>().PlayAudio(winnerIndex);
+            winner = winner.Split('|')[0];
+        }
         
-        int winnerIndex = int.Parse(winner.Split('|')[1]);
-        gameObject.GetComponent<MultiSound>().PlayAudio(winnerIndex);
-        winner = winner.Split('|')[0];
         UnityEngine.Debug.Log(winner);
         switch(winner){
             case "Nero":
