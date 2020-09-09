@@ -138,6 +138,9 @@ public class PlayerStatus : MonoBehaviour
     {
     	//Ignores hitstun if in superarmour or invuln
         if(HasStatusEffect(PlayerStatusEffect.DEAD)){
+            foreach(PlayerStatusEffect effect in allEffects){
+                    if(HasStatusEffect(effect))statusEffects[effect] = 0;                   
+            }
             statusEffects[ef] = duration * 10f;
             return;
         }
