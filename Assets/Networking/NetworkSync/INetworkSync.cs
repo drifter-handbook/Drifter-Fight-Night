@@ -61,9 +61,7 @@ public class NetworkEntityConverter : Newtonsoft.Json.Converters.CustomCreationC
                 return new BasicProjectileSync.ProjectileData();
             case "LongArmOfTheLaw":
                 return new LongArmSync.ArmData();
-            case "IceBar":
-            case "WindBar":
-            case "LightningBar":
+            case "MegurinBar":
                 return new BarSync.BarData();
             case "Bean":
                 return new BeanSync.BeanData();

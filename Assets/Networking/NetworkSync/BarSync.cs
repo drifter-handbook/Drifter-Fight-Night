@@ -8,7 +8,6 @@ public class BarSync : MonoBehaviour, INetworkSync
     public float latency = 0.025f;
     public string Name = "MegurinBar";
     float time = 0f;
-    Vector3 oldScale;
 
 
     public string Type { get; private set; }
@@ -36,7 +35,6 @@ public class BarSync : MonoBehaviour, INetworkSync
         {
             t = time / latency;
         }
-        transform.localScale = oldScale;
     }
 
     public class BarData : INetworkEntityData
@@ -44,8 +42,12 @@ public class BarSync : MonoBehaviour, INetworkSync
         public string Type { get; set; } = "";
         public int ID { get; set; }
         public string name = "";
-        public float xScale = 1f;
-        public float yScale = 1f;
+        public float xScaleWind = 1f;
+        public float yScaleWind = 1f;
+        public float xScaleLightning = 1f;
+        public float yScaleLightning = 1f;
+        public float xScaleice = 1f;
+        public float yScaleice = 1f;
     }
 
     public void Deserialize(INetworkEntityData data)
@@ -53,7 +55,11 @@ public class BarSync : MonoBehaviour, INetworkSync
         BarData projData = data as BarData;
         if (projData != null)
         {
-            oldScale = new Vector3(projData.xScale,projData.yScale,1);
+            gameObject.transform.Find("WindSprite").transform.localScale = new Vector2(projData.xScaleWind,projData.yScaleWind);
+
+            gameObject.transform.Find("LightningSprite").transform.localScale = new Vector2(projData.xScaleLightning,projData.yScaleLightning);
+
+            gameObject.transform.Find("IceSprite").transform.localScale = new Vector2(projData.xScaleice,projData. yScaleice);
 
         }
     }
@@ -64,8 +70,12 @@ public class BarSync : MonoBehaviour, INetworkSync
         {
             name = gameObject.name,
             ID = ID,
-            xScale = gameObject.transform.localScale.x,
-            yScale = gameObject.transform.localScale.y,
+            xScaleWind = gameObject.transform.Find("WindSprite").transform.localScale.x,
+            yScaleWind = gameObject.transform.Find("WindSprite").transform.localScale.y,
+            xScaleLightning = gameObject.transform.Find("LightningSprite").transform.localScale.x,
+            yScaleLightning = gameObject.transform.Find("LightningSprite").transform.localScale.y,
+            xScaleice = gameObject.transform.Find("IceSprite").transform.localScale.x,
+            yScaleice = gameObject.transform.Find("IceSprite").transform.localScale.y,
         };
         return data;
     }

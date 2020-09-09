@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 766680850273911478}
   - component: {fileID: 5534955970607975727}
-  - component: {fileID: 8419480535138766418}
   m_Layer: 0
   m_Name: LightningSprite
   m_TagString: Untagged
@@ -83,20 +82,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 2
   m_SpriteSortPoint: 0
---- !u!114 &8419480535138766418
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 572629683442961070}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91a262e71c4c3884b97247d1b082aaaf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  latency: 0.025
-  Name: LightningBar
 --- !u!1 &5084955732123879987
 GameObject:
   m_ObjectHideFlags: 0
@@ -108,6 +93,7 @@ GameObject:
   - component: {fileID: 4984026350831502643}
   - component: {fileID: 5699170254478871135}
   - component: {fileID: 8124884663706820413}
+  - component: {fileID: 4482150447232184546}
   m_Layer: 0
   m_Name: megurinBars
   m_TagString: Untagged
@@ -199,6 +185,20 @@ MonoBehaviour:
   ice: {fileID: 7382876174262737569}
   wind: {fileID: 6988108270228492532}
   lightning: {fileID: 572629683442961070}
+--- !u!114 &4482150447232184546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5084955732123879987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91a262e71c4c3884b97247d1b082aaaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  latency: 0.025
+  Name: MegurinBar
 --- !u!1 &6988108270228492532
 GameObject:
   m_ObjectHideFlags: 0
@@ -209,7 +209,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5244311863543428992}
   - component: {fileID: 66233921052137599}
-  - component: {fileID: 5951857399799985775}
   m_Layer: 0
   m_Name: WindSprite
   m_TagString: Untagged
@@ -282,20 +281,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 2
   m_SpriteSortPoint: 0
---- !u!114 &5951857399799985775
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6988108270228492532}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91a262e71c4c3884b97247d1b082aaaf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  latency: 0.025
-  Name: WindBar
 --- !u!1 &7382876174262737569
 GameObject:
   m_ObjectHideFlags: 0
@@ -306,7 +291,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2423824974989473926}
   - component: {fileID: 5240815153190363961}
-  - component: {fileID: 6770439532206703363}
   m_Layer: 0
   m_Name: IceSprite
   m_TagString: Untagged
@@ -379,17 +363,3 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 2
   m_SpriteSortPoint: 0
---- !u!114 &6770439532206703363
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7382876174262737569}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91a262e71c4c3884b97247d1b082aaaf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  latency: 0.025
-  Name: IceBar

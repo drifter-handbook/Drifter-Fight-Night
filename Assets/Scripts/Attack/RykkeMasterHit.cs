@@ -123,7 +123,7 @@ public class RykkeMasterHit : MasterHit
 
 
     public void AmrourUp(){
-        status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.5f);
+        status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.7f);
     }
 
     public void resetGravity(){
