@@ -185,7 +185,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //Roll
-        if(drifter.input.Guard && canGuard && moving){
+        if(drifter.input.Guard && canGuard && moving && IsGrounded()){
 
             drifter.SetAnimatorTrigger("Roll");
             updateFacing();
