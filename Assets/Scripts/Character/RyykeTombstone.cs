@@ -1,4 +1,5 @@
- using System.Collections;
+using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -110,7 +111,7 @@ public class RyykeTombstone : MonoBehaviour
             Ryyke.GetComponentInChildren<RykkeMasterHit>().grantStack();
             entities.AddEntity(zombie);
         }
-        finally
+        catch(NullReferenceException E)
         {
             //I'm sick of this shit
         }

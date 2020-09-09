@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class BeanWrangler : MonoBehaviour
 {
@@ -52,7 +53,7 @@ public class BeanWrangler : MonoBehaviour
             }
             entities.AddEntity(spit);
         }
-        finally{
+        catch(NullReferenceException E){
             //Eventually
         }
     }
@@ -61,7 +62,7 @@ public class BeanWrangler : MonoBehaviour
         try{
             attacks.SetMultiHitAttackID();    
         }
-        finally{
+        catch(NullReferenceException E){
             //Eventually
         }
         
