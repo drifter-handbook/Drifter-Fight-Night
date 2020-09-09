@@ -60,66 +60,68 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
     {
         if (other.gameObject.tag == "Player" && GameController.Instance.IsHost)
         {
-
-            StartCoroutine(Shake.Shake(.3f,1.5f));
             Drifter drifter = other.gameObject?.GetComponent<Drifter>();
+            if(!drifter.GetComponent<PlayerStatus>().HasStatusEffect(PlayerStatusEffect.DEAD)){
 
-            drifter.Stocks--;
-            drifter.DamageTaken = 0f;
-            drifter.Charge = 0;
-            drifter.GetComponent<PlayerStatus>().ApplyStatusEffect(PlayerStatusEffect.DEAD,2f);
-            drifter.GetComponent<PlayerStatus>().ApplyStatusEffect(PlayerStatusEffect.INVULN,3.5f);
+                StartCoroutine(Shake.Shake(.3f,1.5f));
+            
+                drifter.Stocks--;
+                drifter.DamageTaken = 0f;
+                drifter.Charge = 0;
+                drifter.GetComponent<PlayerStatus>().ApplyStatusEffect(PlayerStatusEffect.DEAD,2f);
+                drifter.GetComponent<PlayerStatus>().ApplyStatusEffect(PlayerStatusEffect.INVULN,3.5f);
 
-            if (Entities.hasStocks(other.gameObject))
-            {
-                CreateExplosion(other, -1);
-                StartCoroutine(Respawn(other));
-            }
-            else
-            {
-                int destroyed = -1;
-                foreach (CharacterSelectState state in GameController.Instance.CharacterSelectStates)
+                if (Entities.hasStocks(other.gameObject))
                 {
-                    
-                    if (Entities.Players.ContainsKey(state.PlayerID))
+                    CreateExplosion(other, -1);
+                    StartCoroutine(Respawn(other));
+                }
+                else
+                {
+                    int destroyed = -1;
+                    foreach (CharacterSelectState state in GameController.Instance.CharacterSelectStates)
                     {
+                    
+                        if (Entities.Players.ContainsKey(state.PlayerID))
+                        {
                         Entities.Players.TryGetValue(state.PlayerID, out GameObject obj);
 
-                        if (obj.Equals(other.gameObject))
-                        {
-                            destroyed = state.PlayerIndex;
-                            break;
+                            if (obj.Equals(other.gameObject))
+                            {
+                                destroyed = state.PlayerIndex;
+                                break;
+                            }
                         }
                     }
-                }
                 
-                Destroy(other.gameObject);
+                    Destroy(other.gameObject);
                 // check for last one remaining
-                int count = 0;
-                string winner = null;
-                foreach (GameObject go in Entities.Players.Values)
-                {
-                    if (Entities.hasStocks(go))
+                    int count = 0;
+                    string winner = null;
+                    foreach (GameObject go in Entities.Players.Values)
                     {
-                        int victor = -1;
-                        foreach (CharacterSelectState select in GameController.Instance.CharacterSelectStates)
+                        if (Entities.hasStocks(go))
                         {
-                            if (Entities.Players.ContainsKey(select.PlayerID) && go.Equals(Entities.Players[select.PlayerID]))
+                            int victor = -1;
+                            foreach (CharacterSelectState select in GameController.Instance.CharacterSelectStates)
+                            {
+                                if (Entities.Players.ContainsKey(select.PlayerID) && go.Equals(Entities.Players[select.PlayerID]))
                                 victor = select.PlayerIndex;
+                            }
+                            count++;
+                            winner = go.GetComponent<INetworkSync>().Type + "|" + victor;
                         }
-                        count++;
-                        winner = go.GetComponent<INetworkSync>().Type + "|" + victor;
                     }
-                }
-                if (count <= 1)
-                {
+                    if (count <= 1)
+                    {
 
-                    endgameBanner.enabled = true;
-                    GameController.Instance.winner = winner;
-                    destroyed = -2;
+                        endgameBanner.enabled = true;
+                        GameController.Instance.winner = winner;
+                        destroyed = -2;
                
+                    }
+                    CreateExplosion(other, destroyed);
                 }
-                CreateExplosion(other, destroyed);
             }
         }
     }
