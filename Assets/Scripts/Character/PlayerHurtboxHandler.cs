@@ -76,7 +76,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
                 if(!status.HasArmour() || attackData.isGrab){
 
-                    if(Shake != null && attackData.Knockback !=0)StartCoroutine(Shake.Shake((willCollideWithBlastZone(GetComponent<Rigidbody2D>(), HitstunDuration)?0.3f:0.1f),Mathf.Clamp(((attackData.Knockback/120f + attackData.AttackDamage/54f)) * attackData.KnockbackScale,.1f,.8f)));//StartCoroutine(Shake.Shake(drifter.DamageTaken/100f * Mathf.Max((attackData.AttackDamage + attackData.KnockbackScale *3f -3f),.1f)/10f * .1f,Mathf.Max((attackData.AttackDamage+ attackData.KnockbackScale*3f - 3f),.2f)/10f));
+                    if(Shake != null && attackData.Knockback !=0)StartCoroutine(Shake.Shake((willCollideWithBlastZone(GetComponent<Rigidbody2D>(), HitstunDuration)?0.3f:0.1f),Mathf.Clamp(((attackData.Knockback/120f + attackData.AttackDamage/54f)) * attackData.KnockbackScale,.7f,.8f)));//StartCoroutine(Shake.Shake(drifter.DamageTaken/100f * Mathf.Max((attackData.AttackDamage + attackData.KnockbackScale *3f -3f),.1f)/10f * .1f,Mathf.Max((attackData.AttackDamage+ attackData.KnockbackScale*3f - 3f),.2f)/10f));
                                 
                     if(attackData.Knockback > 0){
                         GetComponent<Rigidbody2D>().velocity = new Vector2(forceDir.normalized.x * KB, GetComponent<PlayerMovement>().grounded?Mathf.Abs(forceDir.normalized.y * KB): forceDir.normalized.y * KB);
