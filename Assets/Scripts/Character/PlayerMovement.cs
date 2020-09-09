@@ -33,7 +33,7 @@ public class PlayerMovement : MonoBehaviour
     NetworkEntityList entities;
 
     Rigidbody2D rb;
-    BoxCollider2D col;
+    PolygonCollider2D col;
 
     Coroutine varyJumpHeight;
     public float varyJumpHeightDuration = 0.5f;
@@ -58,7 +58,7 @@ public class PlayerMovement : MonoBehaviour
         animator = drifter.animator;
         sprite = GetComponentInChildren<SpriteRenderer>();
 
-        col = GetComponent<BoxCollider2D>();
+        col = GetComponent<PolygonCollider2D>();
         status = GetComponent<PlayerStatus>();
     }
     void Start(){

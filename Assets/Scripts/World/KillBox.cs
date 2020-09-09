@@ -48,7 +48,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
 
     IEnumerator Respawn(Collider2D other)
     {
-        other.transform.position = new Vector2(0f,-100f);
+        
         yield return new WaitForSeconds(2f);
         CreateHalo();
         other.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
@@ -58,7 +58,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Player" && GameController.Instance.IsHost)
+        if (other.gameObject.tag == "Player" && GameController.Instance.IsHost && other.GetType() == typeof(PolygonCollider2D))
         {
             Drifter drifter = other.gameObject?.GetComponent<Drifter>();
             if(!drifter.GetComponent<PlayerStatus>().HasStatusEffect(PlayerStatusEffect.DEAD)){
@@ -121,6 +121,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                
                     }
                     CreateExplosion(other, destroyed);
+                    other.transform.position = new Vector2(0f,-300f);
                 }
             }
         }
