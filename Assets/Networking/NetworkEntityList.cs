@@ -26,10 +26,7 @@ public class NetworkEntityList : MonoBehaviour
         nextID = 0;
         Entities = new List<GameObject>();
         // add starting entities
-        foreach (GameObject obj in StartingEntities)
-        {
-            AddEntity(obj);
-        }
+        populate();
     }
 
     // Start is called before the first frame update
@@ -42,6 +39,12 @@ public class NetworkEntityList : MonoBehaviour
     void Update()
     {
 
+    }
+    public void populate(){
+        foreach (GameObject obj in StartingEntities)
+        {
+            AddEntity(obj);
+        }
     }
 
     public GameObject GetEntityPrefab(string type)
