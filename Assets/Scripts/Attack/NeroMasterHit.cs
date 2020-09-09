@@ -41,7 +41,7 @@ public class NeroMasterHit : MasterHit
     public void dodgeRoll(){
         facing = movement.Facing;
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.4f);
-        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
+        //status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
         rb.velocity = new Vector2(facing * 30f,0f);
     }
 

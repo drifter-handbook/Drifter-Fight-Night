@@ -32,27 +32,39 @@ public class BeanWrangler : MonoBehaviour
         yield break;
     }
 
-    public void beanSpit(){
+    public void beanSpit()
     {
+        try{
         Vector3 flip = new Vector3(facing *8,8,0f);
         Vector3 pos = new Vector3(facing *.7f,2.5f,1f);
         GameObject spit = Instantiate(entities.GetEntityPrefab("BeanSpit"), transform.position + pos, transform.rotation);
         spit.transform.localScale = flip;
-        attacks.SetMultiHitAttackID();
-        spit.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * 20, 0);
-        foreach (HitboxCollision hitbox in spit.GetComponentsInChildren<HitboxCollision>(true))
-        {
-            hitbox.parent = Orro;
-            hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
-            hitbox.Active = true;
+        
+
+            attacks.SetMultiHitAttackID();
+            spit.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * 20, 0);
+            foreach (HitboxCollision hitbox in spit.GetComponentsInChildren<HitboxCollision>(true))
+            {
+                hitbox.parent = Orro;
+                hitbox.AttackID = attacks.AttackID;
+                hitbox.AttackType = attacks.AttackType;
+                hitbox.Active = true;
+            }
+            entities.AddEntity(spit);
         }
-        entities.AddEntity(spit);
-    }
+        finally{
+            //Eventually
+        }
     }
  
     public void multihit(){
-        attacks.SetMultiHitAttackID();
+        try{
+            attacks.SetMultiHitAttackID();    
+        }
+        finally{
+            //Eventually
+        }
+        
     }
 
     public void resetAnimatorTriggers(){

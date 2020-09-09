@@ -10,8 +10,8 @@ public class RyykeTombstone : MonoBehaviour
     public int facing = 0;
     bool armed = false;
     public bool activate = false;
-    GameObject Ryyke;
-    PlayerAttacks attacks;
+    public GameObject Ryyke;
+    public PlayerAttacks attacks;
     public bool grounded = false;
     public bool broken = false;
 
@@ -22,7 +22,9 @@ public class RyykeTombstone : MonoBehaviour
     	rb.velocity = new Vector2(0f,-50f);
         entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
         Ryyke = gameObject.GetComponentInChildren<HitboxCollision>().parent;
+        UnityEngine.Debug.Log("Ryyke:" + Ryyke);
         attacks = Ryyke.GetComponent<PlayerAttacks>();
+        UnityEngine.Debug.Log( "PlayerAtta:" + attacks);
 
     }
 
@@ -97,16 +99,24 @@ public class RyykeTombstone : MonoBehaviour
     public void SpawnChad(){
         Vector3 flip = new Vector3(facing *8f,8f,1f);
         GameObject zombie = Instantiate(entities.GetEntityPrefab("Chadwick"), transform.position, transform.transform.rotation);
-        zombie.transform.localScale = flip;        
-        foreach (HitboxCollision hitbox in zombie.GetComponentsInChildren<HitboxCollision>(true))
-        {
-            attacks.SetupAttackID(DrifterAttackType.W_Down);
-            hitbox.parent = Ryyke;
-            hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = DrifterAttackType.W_Down;
-            hitbox.Active = true;
+        
+        try{
+             zombie.transform.localScale = flip;        
+            foreach (HitboxCollision hitbox in zombie.GetComponentsInChildren<HitboxCollision>(true))
+            {
+                attacks.SetupAttackID(DrifterAttackType.W_Down);
+                hitbox.parent = Ryyke;
+                hitbox.AttackID = attacks.AttackID;
+                hitbox.AttackType = DrifterAttackType.W_Down;
+                hitbox.Active = true;
+            }
+            Ryyke.GetComponentInChildren<RykkeMasterHit>().grantStack();
+            entities.AddEntity(zombie);
         }
-        Ryyke.GetComponentInChildren<RykkeMasterHit>().grantStack();
-        entities.AddEntity(zombie);
+        finally
+        {
+            //I'm sick of this shit
+        }
+
     }  
 }
