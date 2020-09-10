@@ -96,7 +96,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 if(willCollideWithBlastZone(GetComponent<Rigidbody2D>(), HitstunDuration))HitstunDuration*=2f;
 
                 if(HitstunDuration>0)status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,HitstunDuration*.2f);
-                StartCoroutine(drifter.GetComponentInChildren<CameraShake>().Shake(HitstunDuration*.2f,1.2f));
+                StartCoroutine(drifter.GetComponentInChildren<CameraShake>().Shake(HitstunDuration*.2f,1.5f));
 
                 //Cape logic
                 if(attackData.StatusEffect == PlayerStatusEffect.REVERSED)
