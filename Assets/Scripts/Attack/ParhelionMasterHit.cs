@@ -34,6 +34,22 @@ public class ParhelionMasterHit : MasterHit
         rb.velocity = new Vector2(facing * -30f,0f);
     }
 
+    public void SpikeBolt()
+    {
+        // jump upwards and create spear projectile
+        facing = movement.Facing;
+        Vector3 pos = new Vector3(facing * - 4.3f,2.8f,0);
+        GameObject bolt = Instantiate(entities.GetEntityPrefab("ParhelionBolt"), transform.position + pos, transform.rotation);
+        foreach (HitboxCollision hitbox in bolt.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+        }
+        entities.AddEntity(bolt);
+    }
+
 
     public void RecoveryPauseMidair()
     {
