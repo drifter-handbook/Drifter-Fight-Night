@@ -71,11 +71,15 @@ public class PlayerMovement : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D col){
         if(!status.HasGroundFriction() && (rb.velocity.y < 0 || col.gameObject.tag !=  "Platform")){
-            status.bounce();
-            Vector3 normal = col.contacts[0].normal;
-            rb.velocity = Vector2.Reflect(rb.velocity,normal) *.8f;
-            if(rb.velocity.y < -5 )status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.2f);
-            spawnJuiceParticle(new Vector3(0,-1,0),2,Quaternion.Euler(0f,0f,Vector3.Angle(Vector3.up,normal)));
+            
+            if(rb.velocity.y < -5 ){
+                status.bounce();
+                Vector3 normal = col.contacts[0].normal;
+                rb.velocity = Vector2.Reflect(rb.velocity,normal) *.8f;
+                status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.2f);
+                spawnJuiceParticle(new Vector3(0,1,0),7,Quaternion.Euler(0f,0f,Vector3.Angle(Vector3.down,normal)));
+            }
+
         }
     }
 
