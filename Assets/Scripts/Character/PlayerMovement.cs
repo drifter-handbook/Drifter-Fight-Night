@@ -74,6 +74,7 @@ public class PlayerMovement : MonoBehaviour
             status.bounce();
             Vector3 normal = col.contacts[0].normal;
             rb.velocity = Vector2.Reflect(rb.velocity,normal) *.8f;
+            if(rb.velocity.y < -5 )status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.2f);
             spawnJuiceParticle(new Vector3(0,-1,0),2,Quaternion.Euler(0f,0f,Vector3.Angle(Vector3.up,normal)));
         }
     }
@@ -99,11 +100,17 @@ public class PlayerMovement : MonoBehaviour
         if(animator.GetBool("Grounded"))
         {
             currentJumps = numberOfJumps;
+
             if(!IsGrounded())
             {
                 currentJumps--;
             }            
         }
+        else if(IsGrounded() && !status.HasStunEffect())
+        {
+            spawnJuiceParticle(new Vector3(0,-1,0),2);
+        }
+
         drifter.SetAnimatorBool("Grounded", IsGrounded());
         grounded = IsGrounded();
 
