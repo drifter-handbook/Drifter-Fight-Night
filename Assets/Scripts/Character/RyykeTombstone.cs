@@ -58,7 +58,8 @@ public class RyykeTombstone : MonoBehaviour
 
  	IEnumerator Arm()
     {
-        yield return new WaitForSeconds(1.3f);
+        yield return new WaitForSeconds(1f);
+        UnityEngine.Debug.Log("ARMED!");
         armed = true;
         yield break;
     }
