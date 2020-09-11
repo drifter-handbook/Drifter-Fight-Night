@@ -39,6 +39,7 @@ public class PlayerStatus : MonoBehaviour
                 foreach(PlayerStatusEffect ef in allEffects){
                     if(HasStatusEffect(ef) &&statusEffects[ef] > 0)
                     {
+                        UnityEngine.Debug.Log(ef);
                         statusEffects[ef]--;
                     }
                     else{
@@ -137,7 +138,7 @@ public class PlayerStatus : MonoBehaviour
     void ApplyStatusEffectFor(PlayerStatusEffect ef, float duration)
     {
     	//Ignores hitstun if in superarmour or invuln
-        if(HasStatusEffect(PlayerStatusEffect.DEAD)){
+        if(ef == PlayerStatusEffect.DEAD){
             foreach(PlayerStatusEffect effect in allEffects){
                     if(HasStatusEffect(effect))statusEffects[effect] = 0;                   
             }
