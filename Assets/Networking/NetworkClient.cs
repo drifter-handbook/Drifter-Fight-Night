@@ -225,7 +225,8 @@ public class NetworkClient : MonoBehaviour, NetworkID
         {
             if (obj != null)
             {
-                obj.GetComponent<Rigidbody2D>().simulated = false;
+
+            	if(obj.GetComponent<Rigidbody2D>() != null)obj.GetComponent<Rigidbody2D>().simulated = false;
             }
         }
     }
