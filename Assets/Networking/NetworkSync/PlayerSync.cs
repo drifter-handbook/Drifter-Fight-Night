@@ -80,6 +80,7 @@ public class PlayerSync : MonoBehaviour, INetworkSync
         public PlayerAnimatorState animatorState = new PlayerAnimatorState();
         public SyncColor color;
         public Dictionary<PlayerStatusEffect,float> statusState;
+        public SyncColor chargeColor;
     }
 
     public void Deserialize(INetworkEntityData data)
@@ -106,6 +107,7 @@ public class PlayerSync : MonoBehaviour, INetworkSync
             gameObject.GetComponent<Drifter>().Charge = playerData.charge;
             gameObject.GetComponent<Drifter>().SetColor(playerData.color.ToColor());
             gameObject.GetComponentInChildren<PlayerStatus>().setStatusState(playerData.statusState);
+            gameObject.transform.Find("Sprite").GetComponent<SpriteRenderer>().color = playerData.chargeColor.ToColor();
         }
     }
 
@@ -124,7 +126,8 @@ public class PlayerSync : MonoBehaviour, INetworkSync
             damageTaken = gameObject.GetComponent<Drifter>().DamageTaken,
             charge = gameObject.GetComponent<Drifter>().Charge,
             color = new SyncColor(gameObject.GetComponentInChildren<Drifter>().GetColor()),
-            statusState =  gameObject.GetComponentInChildren<PlayerStatus>().getStatusState()
+            statusState =  gameObject.GetComponentInChildren<PlayerStatus>().getStatusState(),
+            chargeColor = new SyncColor(gameObject.transform.Find("Sprite").GetComponent<SpriteRenderer>().color)
         };
         GetComponent<Drifter>().ResetAnimatorTriggers();
         return data;
