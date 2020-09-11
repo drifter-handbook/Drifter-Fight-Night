@@ -39,7 +39,6 @@ public class PlayerStatus : MonoBehaviour
                 foreach(PlayerStatusEffect ef in allEffects){
                     if(HasStatusEffect(ef) &&statusEffects[ef] > 0)
                     {
-                        UnityEngine.Debug.Log(ef);
                         statusEffects[ef]--;
                     }
                     else{
