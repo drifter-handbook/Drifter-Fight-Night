@@ -78,6 +78,9 @@ public class Drifter : MonoBehaviour
         if (state.W_Down) animator.SetTrigger("W_Down");
         if (state.Roll) animator.SetTrigger("Roll");
         if (state.GrabbedPlayer) animator.SetTrigger("GrabbedPlayer");
+        if (state.Aerial_Up) animator.SetTrigger("Aerial_Up");
+        if (state.Aerial_Down) animator.SetTrigger("Aerial_Down");
+        if (state.Aerial_Side) animator.SetTrigger("Aerial_Side");
 
     }
     // used by host
@@ -118,7 +121,16 @@ public class Drifter : MonoBehaviour
                 break;
             case "GrabbedPlayer":
                 animatorState.GrabbedPlayer = true;
-                break;    
+                break;
+            case "Aerial_Up":
+                animatorState.Aerial_Up = true;
+                break;
+            case "Aerial_Down":
+                animatorState.Aerial_Down = true;
+                break;
+            case "Aerial_Side":
+                animatorState.Aerial_Side = true;
+                break;          
         }
     }
     public void ResetAnimatorTriggers()
@@ -135,6 +147,9 @@ public class Drifter : MonoBehaviour
         animatorState.HasCharge = false;
         animatorState.HitStun = false;
         animatorState.GrabbedPlayer = false;
+        animatorState.Aerial_Up = false;
+        animatorState.Aerial_Down = false;
+        animatorState.Aerial_Side = false;
 
     }
     public void SetAnimatorBool(string s, bool value)
@@ -185,6 +200,9 @@ public class PlayerAnimatorState : ICloneable
     public bool HasCharge = false;
     public bool HitStun = false;
     public bool GrabbedPlayer = false;
+    public bool Aerial_Up = false;
+    public bool Aerial_Down = false;
+    public bool Aerial_Side = false;
 
     public object Clone()
     {
@@ -205,7 +223,10 @@ public class PlayerAnimatorState : ICloneable
             Roll = Roll,
             HasCharge = HasCharge,
             HitStun = HitStun,
-            GrabbedPlayer = GrabbedPlayer
+            GrabbedPlayer = GrabbedPlayer,
+            Aerial_Up = Aerial_Up,
+            Aerial_Down = Aerial_Down,
+            Aerial_Side = Aerial_Side,
         };
     }
 }

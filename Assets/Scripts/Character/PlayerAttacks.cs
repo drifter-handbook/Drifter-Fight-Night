@@ -33,6 +33,9 @@ public class PlayerAttacks : MonoBehaviour
         { DrifterAttackType.W_Side, "W_Side" },
         { DrifterAttackType.W_Down, "W_Down" },
         { DrifterAttackType.Roll, "Roll" },
+        { DrifterAttackType.Aerial_Q_Up, "Aerial_Up" },
+        { DrifterAttackType.Aerial_Q_Down, "Aerial_Down" },
+        { DrifterAttackType.Aerial_Q_Side, "Aerial_Side" },
     };
     public static Dictionary<DrifterAttackType, string> AnimatorStates = new Dictionary<DrifterAttackType, string>()
     {
@@ -44,6 +47,9 @@ public class PlayerAttacks : MonoBehaviour
         { DrifterAttackType.W_Side, "W_Side" },
         { DrifterAttackType.W_Down, "W_Down" },
         { DrifterAttackType.Roll, "Roll" },
+        { DrifterAttackType.Aerial_Q_Up, "Aerial_Up" },
+        { DrifterAttackType.Aerial_Q_Down, "Aerial_Down" },
+        { DrifterAttackType.Aerial_Q_Side, "Aerial_Side" },
     };
 
     static int nextID = 0;
@@ -136,7 +142,10 @@ public class PlayerAttacks : MonoBehaviour
             }
             else
             {
-                StartAttack(DrifterAttackType.Aerial_Q_Neutral);
+                if(drifter.input.MoveX!=0)StartAttack(DrifterAttackType.Aerial_Q_Side);
+                else if(drifter.input.MoveY > 0)StartAttack(DrifterAttackType.Aerial_Q_Up);
+                else if(drifter.input.MoveY < 0)StartAttack(DrifterAttackType.Aerial_Q_Down);
+                else StartAttack(DrifterAttackType.Aerial_Q_Neutral);
             }
         }
     }
