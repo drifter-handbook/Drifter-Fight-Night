@@ -149,7 +149,6 @@ public class RykkeMasterHit : MasterHit
         }
         
     }
-
     
     public void notify()
     {
