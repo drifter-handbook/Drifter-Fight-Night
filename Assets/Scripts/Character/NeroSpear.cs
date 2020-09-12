@@ -44,7 +44,7 @@ public class NeroSpear : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.tag == "Ground")
+        if (col.gameObject.tag == "Ground" || col.gameObject.tag == "Platform")
         {
             if (Active)
             {

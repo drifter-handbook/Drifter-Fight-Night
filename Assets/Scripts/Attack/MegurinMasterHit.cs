@@ -274,7 +274,7 @@ public class MegurinMasterHit : MasterHit
     }
 
     public void chargeNeutralW(){
-        if(neutralWCharge < 10){
+        if(neutralWCharge < 8){
             neutralWCharge +=1;
         }
         else{
@@ -288,10 +288,10 @@ public class MegurinMasterHit : MasterHit
         if(anim.GetBool("Empowered") == true){
             drifter.SetAnimatorBool("Empowered",false);
             drifter.SetAnimatorBool("HasCharge",true);
-            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,1.65f);
+            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,1.4f);
         }
         else{
-            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,1f);
+            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.9f);
         }
 
     }

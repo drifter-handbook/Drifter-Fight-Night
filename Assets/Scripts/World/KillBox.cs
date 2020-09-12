@@ -58,10 +58,9 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Player" && GameController.Instance.IsHost && other.GetType() == typeof(PolygonCollider2D))
+        if (other.gameObject.tag == "Player" && GameController.Instance.IsHost && other.GetType() == typeof(BoxCollider2D))
         {
-            Drifter drifter = other.gameObject?.GetComponent<Drifter>();
-            if(!drifter.GetComponent<PlayerStatus>().HasStatusEffect(PlayerStatusEffect.DEAD)){
+                Drifter drifter = other.gameObject?.GetComponent<Drifter>();
 
                 StartCoroutine(Shake.Shake(.3f,1.5f));
             
@@ -122,7 +121,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                     }
                     CreateExplosion(other, destroyed);
                     other.transform.position = new Vector2(0f,-300f);
-                }
+                
             }
         }
     }
