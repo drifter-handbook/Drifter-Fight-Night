@@ -10,6 +10,7 @@ public class PlayerCard : MonoBehaviour
     public Sprite stockImage;
     public Text percent;
     public int currStocks = 0;
+    public int drifterIndex;
     public SpriteRenderer pips;
     public GameObject charge;
     public GameObject MegurinElements;
@@ -96,6 +97,5 @@ public class PlayerCard : MonoBehaviour
     {
         this.percent.text = (int)sentPercent+"%";
     }
-
 
 }

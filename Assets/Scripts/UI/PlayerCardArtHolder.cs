@@ -50,7 +50,7 @@ public class PlayerCardArtHolder : MonoBehaviour
 
                 int imageIndex = getDrifterTypeIndex(drifter.GetComponent<INetworkSync>().Type);
                 
-
+                playerCards[i].drifterIndex = imageIndex;
                 if(imageIndex == 5 || imageIndex == 1){
                    playerCards[i].charge.active = true;
                 }
@@ -75,6 +75,13 @@ public class PlayerCardArtHolder : MonoBehaviour
         {
             playerCards[i].setPercent(drifters[i].DamageTaken);
             // update stocks
+            if((playerCards[i].drifterIndex == 5 || playerCards[i].drifterIndex == 1) && !playerCards[i].charge.active){
+                   playerCards[i].charge.active = true;
+            }
+            else if(playerCards[i].drifterIndex == 6 && !playerCards[i].MegurinElements.active){
+                    playerCards[i].MegurinElements.active = true;
+            }
+            
             if (drifters[i] != null)
             {
                 playerCards[i].removeToStock(drifters[i].Stocks);
