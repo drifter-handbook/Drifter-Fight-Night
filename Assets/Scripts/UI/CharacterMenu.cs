@@ -10,9 +10,14 @@ public enum PlayerColor
     RED, GOLD, GREEN, BLUE, PURPLE, MAGENTA, ORANGE, CYAN
 }
 
+
+
 // Shows players and selected character [View]
 public class CharacterMenu : MonoBehaviour
 {
+    public GameObject movesetOverlay;
+    public GameObject canvas;
+
     public static Dictionary<PlayerColor, Color> ColorFromEnum = new Dictionary<PlayerColor, Color>()
     {
         { PlayerColor.RED, new Color(1.0f, 0f, 0f) },
@@ -299,6 +304,14 @@ public class CharacterMenu : MonoBehaviour
             }
         }
         return DrifterType.Bojo;
+    }
+
+
+    public void ShowMovesetForDrifter(int drifterNum)
+    {
+        GameObject movesetGuide = Instantiate(movesetOverlay, Vector3.zero, movesetOverlay.transform.rotation);
+        movesetGuide.transform.SetParent(canvas.transform, false);
+        movesetGuide.GetComponentInChildren<TutorialSwapper>().SelectDrifter(drifterNum);
     }
 
 }

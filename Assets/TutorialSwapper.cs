@@ -13,7 +13,8 @@ public class TutorialSwapper : MonoBehaviour
     public GameObject[] buttons = new GameObject[8];
     public GameObject[] controls = new GameObject[8];
     public DrifterTutorialInfo[] tutorialInfo = new DrifterTutorialInfo[8];
-   
+
+    private GameObject myCustomTitle;
 
     [Serializable]
     public class DrifterTutorialInfo
@@ -21,6 +22,9 @@ public class TutorialSwapper : MonoBehaviour
         public string drifterName;
         public bool flipSprites;
         public Sprite background;
+
+        public GameObject customTitle;
+
         public string[] moveTitles = new string[8];
         public string[] moveDescriptions = new string[8]; 
     }
@@ -51,11 +55,34 @@ public class TutorialSwapper : MonoBehaviour
         setupDrifter();
     }
 
+   public void SelectDrifter(int drifterNum)
+    {
+        currentDrifterIndex = drifterNum;
+        setupDrifter();
+    }
+
     private void setupDrifter()
     {
         currentDrifter = tutorialInfo[currentDrifterIndex];
-        name.text = currentDrifter.drifterName;
-        nameShadow.text = currentDrifter.drifterName;
+
+        if(currentDrifter.customTitle != null)
+        {
+            currentDrifter.customTitle.SetActive(true);
+            name.gameObject.SetActive(false);
+            myCustomTitle = currentDrifter.customTitle;
+        } else
+        {
+            if(myCustomTitle != null)
+            {
+                myCustomTitle.SetActive(false);
+                myCustomTitle = null;
+            }
+            name.gameObject.SetActive(true);
+            name.text = currentDrifter.drifterName;
+            nameShadow.text = currentDrifter.drifterName;
+        }
+
+        
         int startMove = 1;
         mainPreviewAnimator.SetInteger("move", 0);
         mainPreviewAnimator.SetInteger("char", currentDrifterIndex);
@@ -69,11 +96,11 @@ public class TutorialSwapper : MonoBehaviour
 
         if (currentDrifter.flipSprites)
         {
-            mainPreviewAnimator.gameObject.transform.localScale = new Vector3(1, 1, 1);
+            mainPreviewAnimator.gameObject.transform.localScale = new Vector3(0.3f, 0.3f, 1);
         }
         else
         {
-            mainPreviewAnimator.gameObject.transform.localScale = new Vector3(-1, 1, 1);
+            mainPreviewAnimator.gameObject.transform.localScale = new Vector3(-0.3f, 0.3f, 1);
         }
         background.GetComponent<Image>().sprite = currentDrifter.background;
     }
@@ -114,5 +141,10 @@ public class TutorialSwapper : MonoBehaviour
         moveDescription.text = currentDrifter.moveDescriptions[index];
         controls[index].SetActive(true);
         mainPreviewAnimator.SetInteger("move",index+1);
+    }
+
+    public void ExitOverlay()
+    {
+        Destroy(this.transform.parent);
     }
 }
