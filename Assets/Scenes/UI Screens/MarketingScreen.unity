@@ -8086,8 +8086,8 @@ MonoBehaviour:
     - Lady Parhelion crushes the ground beneath her feet, knocking back nearby enemies.
     - Lady Parhelion's harp begins to heat up with a magical fire. When unleashed,
       a large firey apparition tears away at opponents.
-    - Lady Parhelion summons a storm bolt to strike a nearby enemy. The bolt's tip
-      is a death sentence to offstage opponents.
+    - 'Lady Parhelion summons a storm bolt to strike a nearby enemy. The bolt will
+      continue to travel until it hits solid ground. '
     - Lady Parhelion strikes up a tune on her harp, and uses bardic magic to destroy
       anyone caught beneath her jump. The weight of her harp allows Lady Parhelion
       to shrug off all knockback during the fall.
@@ -8099,20 +8099,25 @@ MonoBehaviour:
     moveTitles:
     - Stab
     - Spinning Terror
-    - Oh God What
+    - Ecamomics
     - Viscous Mockery
     - Inner Self
-    - WHUFF
+    - Bass Cannon
     - BOOF
     - Horse Head
     moveDescriptions:
     - Bojo does a graceful step forward to attack with his rapier.
     - Bojo does a lovely spin while in the middle of the air.
-    - Bojo puts on a horse head and body slams the enemy in front of him
-    - Please I don't want to write the description for this
-    - Bojo does... things. Please I'm afraid to describe this
-    - Bojo plays a low note into his bag pipes and deals shockwave damage
-    - Bojo plays a chord into his bagpipes and floats away
+    - Bojo dons his horse head and lunges forward, catching shielded opponents off
+      guard.
+    - 'Bojo whispers sweet nothings in an opponent''s general direction, rapidly
+      dealing a small amount of mental damage to those hit. '
+    - Bojo calls upon the power of hist past life, fearlessly charging his oponents.
+      The centaur will continue to run even after bojo dismounts.
+    - Bojo plays a low note into his bag pipes, powerfully knocking opponents away
+      without dealing damage.
+    - Bojo plays a chord into his bagpipes and floats away. Can be used up to three
+      times in rapid succession.
     - Bojo puts on a horse head and nullifies incoming damage
   - drifterName: Megurin
     flipSprites: 1
@@ -8153,8 +8158,8 @@ MonoBehaviour:
     - Hold Person
     - Awaken
     - Hush Now
-    - Daisy Chain
     - The Forever Box
+    - Daisy Chain
     - Squad
     moveDescriptions:
     - Konikryyke pushes away enemies with a quick kick
@@ -8167,10 +8172,10 @@ MonoBehaviour:
     - Konikryyke winds up with her shovel to deliver a fierce hit, dealing more damage
       at the tip. If Chadwick is active, he delivers a devastating punch alongside
       his master.
-    - Whips a chain of zombie arms upward, grabbing ledges and opponents alike.
     - Konikryyke plants a gravestone, dealing small damage and grounding opponents
       in front of her. If the gravestone remains undisturbed for a short while, it
       arms as a deadly trap. Only one can be placed at a time.
+    - Whips a chain of zombie arms upward, grabbing ledges and opponents alike.
     - Konikryyke braces herself for incoming attacks, blocking a small amount of
       damage. If Chadwick is active he guards as well, greatly increasing the damage
       reduction.
