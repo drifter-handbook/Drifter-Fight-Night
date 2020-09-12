@@ -145,6 +145,6 @@ public class TutorialSwapper : MonoBehaviour
 
     public void ExitOverlay()
     {
-        Destroy(this.transform.parent);
+        this.transform.parent.gameObject.SetActive(false);
     }
 }

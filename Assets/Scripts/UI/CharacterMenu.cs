@@ -16,7 +16,6 @@ public enum PlayerColor
 public class CharacterMenu : MonoBehaviour
 {
     public GameObject movesetOverlay;
-    public GameObject canvas;
 
     public static Dictionary<PlayerColor, Color> ColorFromEnum = new Dictionary<PlayerColor, Color>()
     {
@@ -307,11 +306,10 @@ public class CharacterMenu : MonoBehaviour
     }
 
 
-    public void ShowMovesetForDrifter(int drifterNum)
+    public void ShowMovesetForDrifter()
     {
-        GameObject movesetGuide = Instantiate(movesetOverlay, Vector3.zero, movesetOverlay.transform.rotation);
-        movesetGuide.transform.SetParent(canvas.transform, false);
-        movesetGuide.GetComponentInChildren<TutorialSwapper>().SelectDrifter(drifterNum);
+        movesetOverlay.gameObject.SetActive(true);
+        movesetOverlay.GetComponentInChildren<TutorialSwapper>().SelectDrifter(0);
     }
 
 }
