@@ -122,6 +122,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: Attack
     m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: Empowered
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -3617389245757182548}
   m_Solo: 0
@@ -554,6 +557,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 2
     m_ConditionEvent: HasCharge
     m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: Empowered
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -6907695067634762455}
   m_Solo: 0
@@ -653,6 +659,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: Recovery
     m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: Empowered
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -6848973353827543740}
   m_Solo: 0
@@ -708,6 +717,9 @@ AnimatorStateTransition:
     m_EventTreshold: 0
   - m_ConditionMode: 1
     m_ConditionEvent: Aerial
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: Empowered
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1514707365276315898}
@@ -947,6 +959,9 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 1
     m_ConditionEvent: Grab
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: Empowered
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -8459541782939588627}
@@ -1318,7 +1333,7 @@ AnimatorStateMachine:
     m_Position: {x: 570, y: -150, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6848973353827543740}
-    m_Position: {x: -420, y: 230, z: 0}
+    m_Position: {x: -530, y: 100, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1514707365276315898}
     m_Position: {x: -910, y: -200, z: 0}
@@ -1491,6 +1506,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: W_Side
     m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: Empowered
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 5272989353174119731}
   m_Solo: 0
@@ -1564,6 +1582,9 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 1
     m_ConditionEvent: W_Down
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: Empowered
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 6699499583990404939}

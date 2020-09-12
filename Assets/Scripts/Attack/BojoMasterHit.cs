@@ -37,7 +37,8 @@ public class BojoMasterHit : MasterHit
     	else{
     		drifter.SetAnimatorBool("HasCharge",false);
     	}
-    	
+
+
     }
 
     public void freeze(){
@@ -67,6 +68,7 @@ public class BojoMasterHit : MasterHit
 
     public void callTheSideW(){
         facing = movement.Facing;
+        drifter.SetAnimatorBool("Empowered",true);
         rb.velocity = new Vector2(55 *facing, 0);
 
     }
@@ -97,17 +99,18 @@ public class BojoMasterHit : MasterHit
             hitbox.Active = true;
         }
         entities.AddEntity(Centaur);
-    }
-
-    public void centaurCharge(){
-        rb.velocity = new Vector2(55*facing,rb.velocity.y);
+        drifter.SetAnimatorBool("Empowered",false);
     }
 
     public void dodgeRoll(){
         facing = movement.Facing;
+        drifter.SetAnimatorBool("Empowered",false);
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
         rb.velocity = new Vector2(facing * 40f,0f);
+    }
+    public void loseEmpowered(){
+        drifter.SetAnimatorBool("Empowered",false);
     }
 
     public void boof(){
