@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 193b57c47c6e0024ebee715bea3d6f17, type: 3}
-  m_Name: Recovery
+  m_Name: Dair
   m_EditorClassIdentifier: 
-  AttackDamage: 3
-  Knockback: 47
+  AttackDamage: 2
+  Knockback: 15
   KnockbackScale: 0
-  HitStun: 0.2
-  EndLag: 1
+  HitStun: 0.3
+  EndLag: 0.6
   isGrab: 0
-  AngleOfImpact: -361
+  AngleOfImpact: 361
   StatusEffect: 4
-  StatusDuration: 0
-  HitVisual: 8
+  StatusDuration: 0.1
+  HitVisual: 1

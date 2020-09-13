@@ -41,6 +41,10 @@ public class BojoMasterHit : MasterHit
 
     }
 
+    public void multihit(){
+        attacks.SetMultiHitAttackID();
+    }
+
     public void freeze(){
         rb.velocity = Vector2.zero;
     }
