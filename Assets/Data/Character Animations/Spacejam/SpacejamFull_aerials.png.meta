@@ -77,6 +77,24 @@ TextureImporter:
   - first:
       213: -7583992019717130840
     second: SpacejamFull_aerials_16
+  - first:
+      213: 8349037544283632335
+    second: SpacejamFull_aerials_8
+  - first:
+      213: -4489349532121979972
+    second: SpacejamFull_aerials_9
+  - first:
+      213: -4247818068499099048
+    second: SpacejamFull_aerials_11
+  - first:
+      213: 9108276039133106343
+    second: SpacejamFull_aerials_13
+  - first:
+      213: 5415113795581277923
+    second: SpacejamFull_aerials_10
+  - first:
+      213: -2571414704562111266
+    second: SpacejamFull_aerials_12
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -333,7 +351,7 @@ TextureImporter:
       name: SpacejamFull_aerials_8
       rect:
         serializedVersion: 2
-        x: 448
+        x: 0
         y: 192
         width: 64
         height: 64
@@ -344,8 +362,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f646e70a0619e7fe0800000000000000
-      internalID: -1189353407383706513
+      spriteID: fc2fc63596dbdd370800000000000000
+      internalID: 8349037544283632335
       vertices: []
       indices: 
       edges: []
@@ -354,19 +372,19 @@ TextureImporter:
       name: SpacejamFull_aerials_9
       rect:
         serializedVersion: 2
-        x: 0
-        y: 128
-        width: 128
+        x: 64
+        y: 192
+        width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.75, y: 0.5}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b5b1c370e5094f650800000000000000
-      internalID: 6265791715101907803
+      spriteID: cb3ad49d260a2b1c0800000000000000
+      internalID: -4489349532121979972
       vertices: []
       indices: 
       edges: []
@@ -375,19 +393,19 @@ TextureImporter:
       name: SpacejamFull_aerials_11
       rect:
         serializedVersion: 2
-        x: 128
-        y: 128
-        width: 128
+        x: 192
+        y: 192
+        width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.75, y: 0.5}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 940a02bf6545f6820800000000000000
-      internalID: 2913640216489140297
+      spriteID: 85210acf8f7bc05c0800000000000000
+      internalID: -4247818068499099048
       vertices: []
       indices: 
       edges: []
@@ -396,19 +414,82 @@ TextureImporter:
       name: SpacejamFull_aerials_13
       rect:
         serializedVersion: 2
-        x: 256
-        y: 128
-        width: 128
+        x: 320
+        y: 192
+        width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.75, y: 0.5}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 81ba08af9facdbba0800000000000000
-      internalID: -6071473547627156712
+      spriteID: 7a01bb4ccc8176e70800000000000000
+      internalID: 9108276039133106343
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SpacejamFull_aerials_10
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 192
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3e670fb7e49562b40800000000000000
+      internalID: 5415113795581277923
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SpacejamFull_aerials_12
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 192
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: edcfb5c33ff705cd0800000000000000
+      internalID: -2571414704562111266
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SpacejamFull_aerials_14
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 192
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dc8178edafb2ffdb0800000000000000
+      internalID: -4756034325004740403
       vertices: []
       indices: 
       edges: []
@@ -417,12 +498,12 @@ TextureImporter:
       name: SpacejamFull_aerials_15
       rect:
         serializedVersion: 2
-        x: 384
-        y: 128
-        width: 128
+        x: 448
+        y: 192
+        width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.75, y: 0.5}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 7231869747879544512}
   - component: {fileID: 1183884514362129143}
   - component: {fileID: 6357370385861390669}
+  - component: {fileID: 6393229745888334606}
+  - component: {fileID: -8117486799671256351}
   m_Layer: 0
   m_Name: Marble
   m_TagString: Untagged
@@ -27,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 1149823628106317843}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -17.441853, y: 22.501328, z: 75.62633}
-  m_LocalScale: {x: 5, y: 5, z: 1}
+  m_LocalScale: {x: 7.5, y: 7.5, z: 1}
   m_Children:
   - {fileID: 3152879111676337589}
   m_Father: {fileID: 0}
@@ -98,6 +100,40 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   latency: 0.025
   Name: Marble
+--- !u!50 &6393229745888334606
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1149823628106317843}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 4
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!114 &-8117486799671256351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1149823628106317843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0858efbbb62af5e4c8dba1c80bb85222, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 0.5
 --- !u!1 &7511610311706643341
 GameObject:
   m_ObjectHideFlags: 0
@@ -109,7 +145,7 @@ GameObject:
   - component: {fileID: 3152879111676337589}
   - component: {fileID: 5468075720031588571}
   - component: {fileID: 7261369651609080677}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Hitboxes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -140,7 +176,7 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.0021438599, y: 0}
@@ -159,5 +195,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 1149823628106317843}
-  OverrideData: {fileID: 11400000, guid: 6008d7012124eb14a92ece4351605316, type: 2}
+  OverrideData: {fileID: 11400000, guid: 7f46848d3f0f25841bb74908ca62f0f2, type: 2}
   AttackData: {fileID: 0}

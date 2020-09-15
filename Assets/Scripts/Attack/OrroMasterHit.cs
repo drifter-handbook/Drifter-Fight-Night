@@ -92,6 +92,22 @@ public class OrroMasterHit : MasterHit
     }
 
 
+    public void sair()
+    {
+    	facing = movement.Facing;
+        GameObject marble = Instantiate(entities.GetEntityPrefab("Marble"), transform.position + new Vector3(0,3f,0), transform.rotation);
+        foreach (HitboxCollision hitbox in marble.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+        }
+        marble.GetComponent<Rigidbody2D>().velocity = new Vector3(facing * 35f, 0);
+        entities.AddEntity(marble);
+    }
+
+
     public void uair()
     {
     	facing = movement.Facing;
