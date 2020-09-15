@@ -141,10 +141,10 @@ public class PlayerAttacks : MonoBehaviour
                 StartAttack(DrifterAttackType.Ground_Q_Neutral);
             }
             else
-            {
-                if(drifter.input.MoveX!=0)StartAttack(DrifterAttackType.Aerial_Q_Side);
-                else if(drifter.input.MoveY > 0)StartAttack(DrifterAttackType.Aerial_Q_Up);
+            {                
+                if(drifter.input.MoveY > 0)StartAttack(DrifterAttackType.Aerial_Q_Up);
                 else if(drifter.input.MoveY < 0)StartAttack(DrifterAttackType.Aerial_Q_Down);
+                else if(drifter.input.MoveX!=0)StartAttack(DrifterAttackType.Aerial_Q_Side);
                 else StartAttack(DrifterAttackType.Aerial_Q_Neutral);
             }
         }

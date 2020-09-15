@@ -58,6 +58,9 @@ public class NetworkEntityConverter : Newtonsoft.Json.Converters.CustomCreationC
             case "BeanSpit":
             case "Mockery":
             case "Kamikaze":
+            case "Marble":
+            case "DairExplosion":
+            case "UairExplosion":
                 return new BasicProjectileSync.ProjectileData();
             case "ParhelionBolt":
                 return new ParhelionBoltSync.BoltData();

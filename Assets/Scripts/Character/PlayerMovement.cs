@@ -11,7 +11,8 @@ public class PlayerMovement : MonoBehaviour
     public float groundAccelerationTime = .6f;
     public float airAccelerationTime = .8f;
     public float airSpeed = 15f;
-    public float terminalVelocity = 80f;
+    public float terminalVelocity = 25f;
+    public float fastFallTerminalVelocity = 55f;
     public bool flipSprite = false;
 
     public float jumpHeight = 20f;
@@ -48,6 +49,7 @@ public class PlayerMovement : MonoBehaviour
     float dropThroughTime;
 
     int prevMoveX = 0;
+    int prevMoveY = 0;
 
     void Awake()
     {
@@ -188,6 +190,9 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 40f * Time.deltaTime), rb.velocity.y);
         }
 
+        //fastfall
+        //if(canAct && !IsGrounded() && drifter.input.MoveY < 0 && prevMoveY < 0) rb.velocity = new Vector2(rb.velocity.x,-fastFallTerminalVelocity);
+
         //Drop throuhg platforms
         if(canGuard && drifter.input.MoveY <-1){
             gameObject.layer = 13;
@@ -221,7 +226,7 @@ public class PlayerMovement : MonoBehaviour
         //Terminal velocity
 
         if(rb.velocity.y < -terminalVelocity && !status.HasEnemyStunEffect()){
-            rb.velocity = new Vector2(rb.velocity.x,-terminalVelocity);
+            rb.velocity = new Vector2(rb.velocity.x,(drifter.input.MoveY < 0 && prevMoveY < 0 ?-fastFallTerminalVelocity:-terminalVelocity));
         }
 
         //Jump
@@ -252,6 +257,7 @@ public class PlayerMovement : MonoBehaviour
             spawnJuiceParticle(new Vector3(.5f,UnityEngine.Random.Range(1f,3f),0),6);
         }
         prevMoveX = drifter.input.MoveX;
+        prevMoveY = drifter.input.MoveY;
 
         //Pause movement for relevent effects.
         if(status.HasStatusEffect(PlayerStatusEffect.STUNNED) || status.HasStatusEffect(PlayerStatusEffect.PLANTED) || status.HasStatusEffect(PlayerStatusEffect.DEAD) || status.HasStatusEffect(PlayerStatusEffect.HITPAUSE))

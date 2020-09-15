@@ -75,6 +75,39 @@ public class OrroMasterHit : MasterHit
         rb.position += new Vector2(facing* 10,0);
     }
 
+	public void dair()
+    {
+    	facing = movement.Facing;
+        rb.velocity = new Vector2(rb.velocity.x,35f);
+        GameObject orroSplosion = Instantiate(entities.GetEntityPrefab("DairExplosion"), transform.position, transform.rotation);
+        orroSplosion.transform.localScale = new Vector3(7.5f * facing,7.5f,1f);
+        foreach (HitboxCollision hitbox in orroSplosion.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+        }
+        entities.AddEntity(orroSplosion);
+    }
+
+
+    public void uair()
+    {
+    	facing = movement.Facing;
+        rb.velocity = new Vector2(0,10f);
+        GameObject orroSplosion = Instantiate(entities.GetEntityPrefab("UairExplosion"), transform.position + new Vector3(0,.5f,0), transform.rotation);
+        orroSplosion.transform.localScale = new Vector3(7.5f * facing,7.5f,1f);
+        foreach (HitboxCollision hitbox in orroSplosion.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+        }
+        entities.AddEntity(orroSplosion);
+    }
+
      public void cancelGravity(){
         facing = movement.Facing;
         rb.velocity = Vector2.zero;
