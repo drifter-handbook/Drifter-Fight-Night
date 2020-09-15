@@ -98,7 +98,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
                 if(willCollideWithBlastZone(GetComponent<Rigidbody2D>(), HitstunDuration))HitstunDuration*=2f;
 
-                if(HitstunDuration>0)status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,HitstunDuration*.2f);
+                if(HitstunDuration>0)status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,HitstunDuration*.25f);
                 StartCoroutine(drifter.GetComponentInChildren<CameraShake>().Shake(HitstunDuration*.2f,1.5f));
 
                 //Cape logic
@@ -111,7 +111,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             }
 
             //apply attacker hitpause
-            if(hitbox.gameObject.tag != "Projectile")hitbox.parent.GetComponent<PlayerStatus>().ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,HitstunDuration*.18f);          
+            if(hitbox.gameObject.tag != "Projectile")hitbox.parent.GetComponent<PlayerStatus>().ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,HitstunDuration*.22f);          
 
             // create hit sparks
             GameObject hitSparks = Instantiate(Entities.GetEntityPrefab("HitSparks"),
