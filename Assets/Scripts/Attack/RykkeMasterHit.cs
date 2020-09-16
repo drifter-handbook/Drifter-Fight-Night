@@ -109,7 +109,7 @@ public class RykkeMasterHit : MasterHit
 
         else if(tetherTarget != Vector2.zero && tetheredPlayer)
         {
-            rb.position = new Vector3(tetherTarget.x -.5f *facing,tetherTarget.y +.5f,0);
+            rb.position = new Vector3(tetherTarget.x -.7f *facing,tetherTarget.y +.5f,0);
             rb.velocity = new Vector3(facing*35, 45,0);
             if(movement.currentJumps < movement.numberOfJumps-1){
                 movement.currentJumps++;
