@@ -24,6 +24,8 @@ public class PlayerMovement : MonoBehaviour
     float jumpSpeed;
     float baseGravity;
 
+    Vector2 prevVelocity;
+
     SpriteRenderer sprite;
     public int Facing { get; set; } = 1;
     public bool grounded = true;
@@ -77,7 +79,7 @@ public class PlayerMovement : MonoBehaviour
             if(rb.velocity.y < -5 ){
                 status.bounce();
                 Vector3 normal = col.contacts[0].normal;
-                rb.velocity = Vector2.Reflect(rb.velocity,normal) *.8f;
+                rb.velocity = Vector2.Reflect(prevVelocity,normal) *.8f;
                 status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.2f);
                 spawnJuiceParticle(new Vector3(0,1,0),7,Quaternion.Euler(0f,0f,Vector3.Angle(Vector3.down,normal)));
             }
@@ -276,6 +278,8 @@ public class PlayerMovement : MonoBehaviour
         else if(!status.HasStatusEffect(PlayerStatusEffect.END_LAG) || !gravityPaused){
             rb.gravityScale = baseGravity;
         }
+
+        if(rb.velocity != Vector2.zero)prevVelocity = rb.velocity;
         
     }
     void updateFacing()
