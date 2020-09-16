@@ -40,6 +40,8 @@ public class NetworkEntityConverter : Newtonsoft.Json.Converters.CustomCreationC
             case "Swordfrog":
             case "Bojo":
                 return new PlayerSync.PlayerData();
+            case "Summary":
+                return new SummarySync.SummaryData();
             case "Box":
                 return new BoxSync.BoxData();
             case "NeroSpear":

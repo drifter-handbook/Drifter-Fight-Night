@@ -7,6 +7,7 @@ public class TetherRange : MonoBehaviour
     // Start is called before the first frame update
     Rigidbody2D rb;
     public Vector3 TetherPoint;
+    public Vector3 enemyVelocity;
     public string tag;
 
 
@@ -26,6 +27,7 @@ public class TetherRange : MonoBehaviour
     {
         if(col.gameObject.tag == tag)
         {
+            if(tag == "Player")enemyVelocity = col.gameObject.GetComponent<Rigidbody2D>().velocity;
             TetherPoint = col.gameObject.transform.position;
         }
     }
@@ -34,6 +36,7 @@ public class TetherRange : MonoBehaviour
         if(col.gameObject.tag == tag)
         {
             TetherPoint = Vector3.zero;
+            enemyVelocity = Vector3.zero;
         }
     }
 

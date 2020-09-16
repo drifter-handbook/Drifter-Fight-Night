@@ -42,7 +42,7 @@ public class RykkeMasterHit : MasterHit
 
     public override void callTheRecovery()
     {
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.9f);
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.8f);
         Debug.Log("Recovery start!");
     }
     public void RecoveryPauseMidair()
@@ -77,9 +77,9 @@ public class RykkeMasterHit : MasterHit
         }
         else if(playerRange.TetherPoint != Vector3.zero)
         {
-            arms.transform.rotation = Quaternion.Euler(0,0, (Mathf.Atan2(arms.transform.position.x -playerRange.TetherPoint.x,-arms.transform.position.y+playerRange.TetherPoint.y)*180 / Mathf.PI));
-            length = Vector2.Distance(playerRange.TetherPoint,arms.transform.position);
-            tetherTarget = playerRange.TetherPoint;
+            arms.transform.rotation = Quaternion.Euler(0,0, (Mathf.Atan2(arms.transform.position.x -(playerRange.TetherPoint.x + playerRange.enemyVelocity.x *.15f),-arms.transform.position.y+(playerRange.TetherPoint.y+ playerRange.enemyVelocity.y *.15f))*180 / Mathf.PI));
+            length = Vector2.Distance(playerRange.TetherPoint +  playerRange.enemyVelocity * .15f,arms.transform.position);
+            tetherTarget = playerRange.TetherPoint + (playerRange.enemyVelocity *.15f);
             tetheredPlayer = true;
 
         }
@@ -110,11 +110,14 @@ public class RykkeMasterHit : MasterHit
         else if(tetherTarget != Vector2.zero && tetheredPlayer)
         {
             rb.position = new Vector3(tetherTarget.x -.7f *facing,tetherTarget.y +.5f,0);
-            rb.velocity = new Vector3(facing*35, 45,0);
+            rb.velocity = new Vector3(facing*35,30,0);
             if(movement.currentJumps < movement.numberOfJumps-1){
                 movement.currentJumps++;
             }
 
+        }
+        else{
+            attacks.currentRecoveries = 1;
         }
         playerRange.gameObject.transform.parent.gameObject.SetActive(false);
         rb.gravityScale = gravityScale;

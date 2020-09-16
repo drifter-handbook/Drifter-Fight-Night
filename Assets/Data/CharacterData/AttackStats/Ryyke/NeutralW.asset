@@ -13,11 +13,12 @@ MonoBehaviour:
   m_Name: NeutralW
   m_EditorClassIdentifier: 
   AttackDamage: 9
-  Knockback: 25
+  Knockback: 30
   KnockbackScale: 0.41
   HitStun: -1
   EndLag: 0.5
-  AngleOfImpact: 150
+  isGrab: 0
+  AngleOfImpact: 130
   StatusEffect: 4
   StatusDuration: 0.1
   HitVisual: 1

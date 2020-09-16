@@ -315,6 +315,7 @@ GameObject:
   - component: {fileID: 7621577150924959982}
   - component: {fileID: 7621577150924959983}
   - component: {fileID: 7233311471785195386}
+  - component: {fileID: 697692295019984337}
   m_Layer: 5
   m_Name: MiniPlayerSummary
   m_TagString: Untagged
@@ -396,11 +397,25 @@ MonoBehaviour:
   stockImage: {fileID: 0}
   percent: {fileID: 7621577150933987108}
   currStocks: 0
+  drifterIndex: 0
   pips: {fileID: 6658961707365605487}
   charge: {fileID: 434663416759376471}
   MegurinElements: {fileID: 878797370494855589}
   bannerBack: {fileID: 4269954492243433577}
   stockHolder: {fileID: 7621577152168834745}
+--- !u!114 &697692295019984337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7621577150924959969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d4b66b71f05ae84abe32afd9fa0172e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  latency: 0.025
 --- !u!1 &7621577150933987110
 GameObject:
   m_ObjectHideFlags: 0

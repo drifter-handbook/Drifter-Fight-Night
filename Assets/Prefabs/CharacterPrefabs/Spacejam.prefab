@@ -30,7 +30,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4096228818910289489}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1240122744899190065
 MonoBehaviour:
@@ -93,7 +93,7 @@ Transform:
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children: []
   m_Father: {fileID: 4096228818910289489}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5911099935109151692
 MonoBehaviour:
@@ -108,7 +108,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 7638574618725185666}
-  OverrideData: {fileID: 0}
+  OverrideData: {fileID: 11400000, guid: 5d599e2df2c36454284366d747dedad8, type: 2}
   AttackData: {fileID: 11400000, guid: 5d599e2df2c36454284366d747dedad8, type: 2}
 --- !u!70 &5584543368428707303
 CapsuleCollider2D:

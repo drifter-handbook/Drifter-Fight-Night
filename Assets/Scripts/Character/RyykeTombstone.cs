@@ -80,7 +80,8 @@ public class RyykeTombstone : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D col)
     {
-
+        UnityEngine.Debug.Log(Ryyke);
+        UnityEngine.Debug.Log(Ryyke.GetComponentInChildren<HurtboxCollision>().gameObject);
         if(!armed && col.gameObject != Ryyke && col.gameObject != Ryyke.GetComponentInChildren<HurtboxCollision>().gameObject && col.gameObject.tag != "Ground" && col.gameObject.tag != "Platform"){
             anim.SetBool("Grounded",false);
             rb.velocity=Vector2.zero;
