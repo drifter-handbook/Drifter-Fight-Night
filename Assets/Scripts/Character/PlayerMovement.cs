@@ -81,7 +81,7 @@ public class PlayerMovement : MonoBehaviour
                 Vector3 normal = col.contacts[0].normal;
                 rb.velocity = Vector2.Reflect(prevVelocity,normal) *.8f;
                 status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.2f);
-                spawnJuiceParticle(new Vector3(0,1,0),7,Quaternion.Euler(0f,0f,Vector3.Angle(Vector3.down,normal)));
+                spawnJuiceParticle(new Vector3(0,-2.5f,0),7,Quaternion.Euler(0f,0f,Vector3.Angle(Vector3.down,normal)));
             }
 
         }
@@ -316,7 +316,7 @@ public class PlayerMovement : MonoBehaviour
         return false;
     }
 
-    private void spawnJuiceParticle(Vector3 pos, int mode)
+    public void spawnJuiceParticle(Vector3 pos, int mode)
     {
         spawnJuiceParticle(pos, mode, transform.rotation);
     }
