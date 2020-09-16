@@ -74,9 +74,9 @@ public class PlayerMovement : MonoBehaviour
     //Restitution
 
     void OnCollisionEnter2D(Collision2D col){
-        if(!status.HasGroundFriction() && (rb.velocity.y < 0 || col.gameObject.tag !=  "Platform")){
+        if(!status.HasGroundFriction() && (prevVelocity.y < 0 || col.gameObject.tag !=  "Platform") && (-65f >= (Mathf.Atan2(prevVelocity.y, prevVelocity.x)*180f / Mathf.PI) &&  (Mathf.Atan2(prevVelocity.y, prevVelocity.x)*180f / Mathf.PI) >= -115f)){
             
-            if(rb.velocity.y < -5 ){
+            if(prevVelocity.y < -5 ){
                 status.bounce();
                 Vector3 normal = col.contacts[0].normal;
                 rb.velocity = Vector2.Reflect(prevVelocity,normal) *.8f;
