@@ -6,14 +6,14 @@ using UnityEngine;
 public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
 {
     NetworkEntityList Entities;
-    CameraShake Shake;
+    ScreenShake Shake;
     public Animator endgameBanner;
 
     void Awake()
     {
         Entities = GameObject.FindGameObjectWithTag(
             "NetworkEntityList").GetComponent<NetworkEntityList>();
-        Shake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraShake>();
+        Shake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<ScreenShake>();
     }
 
     GameObject CreateExplosion(Collider2D other, int playerIndex)

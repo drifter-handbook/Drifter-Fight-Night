@@ -11,13 +11,13 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
     // for creating hitsparks
     NetworkEntityList Entities;
-    CameraShake Shake;
+    ScreenShake Shake;
 
     // Start is called before the first frame update
     void Start()
     {
         Entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
-        Shake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraShake>();
+        Shake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<ScreenShake>();
 
         StartCoroutine(CleanupOldAttacks());
     }
@@ -76,8 +76,9 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
                 if(!status.HasArmour() || attackData.isGrab){
 
-                    if(Shake != null && attackData.Knockback !=0)StartCoroutine(Shake.Shake((willCollideWithBlastZone(GetComponent<Rigidbody2D>(), HitstunDuration)?0.3f:0.1f),Mathf.Clamp((((attackData.Knockback - 10)/100f + (attackData.AttackDamage-10)/44f)) * attackData.KnockbackScale,.07f,.8f)));//StartCoroutine(Shake.Shake(drifter.DamageTaken/100f * Mathf.Max((attackData.AttackDamage + attackData.KnockbackScale *3f -3f),.1f)/10f * .1f,Mathf.Max((attackData.AttackDamage+ attackData.KnockbackScale*3f - 3f),.2f)/10f));
-                                
+                    if(Shake != null && attackData.Knockback !=0){
+                        Shake.CurrentShake = StartCoroutine(Shake.Shake((willCollideWithBlastZone(GetComponent<Rigidbody2D>(), HitstunDuration)?0.3f:0.1f),Mathf.Clamp((((attackData.Knockback - 10)/100f + (attackData.AttackDamage-10)/44f)) * attackData.KnockbackScale,.07f,.8f)));//StartCoroutine(Shake.Shake(drifter.DamageTaken/100f * Mathf.Max((attackData.AttackDamage + attackData.KnockbackScale *3f -3f),.1f)/10f * .1f,Mathf.Max((attackData.AttackDamage+ attackData.KnockbackScale*3f - 3f),.2f)/10f));
+                    }            
                     if(attackData.Knockback > 0 && attackData.AngleOfImpact > -361){
                         GetComponent<Rigidbody2D>().velocity = new Vector2(forceDir.normalized.x * KB, GetComponent<PlayerMovement>().grounded?Mathf.Abs(forceDir.normalized.y * KB): forceDir.normalized.y * KB);
                         if(GetComponent<PlayerMovement>().grounded)GetComponent<PlayerMovement>().spawnJuiceParticle(new Vector3(0,-2.5f,0),7);
@@ -97,7 +98,9 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
                 //apply defender hitpause
 
-                if(willCollideWithBlastZone(GetComponent<Rigidbody2D>(), HitstunDuration))HitstunDuration*=2f;
+                if(willCollideWithBlastZone(GetComponent<Rigidbody2D>() , HitstunDuration) && drifter.Stocks > 1)HitstunDuration*=2f;
+                else if(willCollideWithBlastZone(GetComponent<Rigidbody2D>(), HitstunDuration) && drifter.Stocks <= 1)HitstunDuration=4f;
+
 
                 if(HitstunDuration>0)status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,HitstunDuration*.25f);
                 StartCoroutine(drifter.GetComponentInChildren<CameraShake>().Shake(HitstunDuration*.2f,1.5f));
@@ -144,6 +147,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 hitSparkKill.GetComponent<HitSparks>().SetAnimation(9);
                 hitSparkKill.transform.localScale = new Vector3(facingDir * 10f, 10f, 10f);
                 Entities.AddEntity(hitSparkKill);
+
+                if(drifter.Stocks <= 1)StartCoroutine(Shake.KillZoom(HitstunDuration*.25f,Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f)));
             }
 
             if (drifter != null)
