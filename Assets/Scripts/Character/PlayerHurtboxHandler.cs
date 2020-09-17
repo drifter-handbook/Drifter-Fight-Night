@@ -274,4 +274,39 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
         return false;
     }
+
+    private bool willCollideWithBlastZoneAccurate(Rigidbody2D rigidbody, float hitstun)
+    {
+        float xDel, yDel;
+        float xVel, yVel;
+
+        GameObject parentZone = GameObject.Find("Kill Zones");
+        Transform hZone, vZone;
+        if (rigidbody.velocity.x > 0)
+            hZone = parentZone.transform.Find("Killzone Right");
+        else
+            hZone = parentZone.transform.Find("Killzone Left");
+
+        if (rigidbody.velocity.y > 0)
+            vZone = parentZone.transform.Find("Killzone Top");
+        else
+            vZone = parentZone.transform.Find("Killzone Bottom");
+
+        xDel = Mathf.Abs(hZone.position.x - rigidbody.position.x);
+        yDel = Mathf.Abs(vZone.position.y - rigidbody.position.y);
+        xVel = Mathf.Abs(rigidbody.velocity.x);
+        yVel = Mathf.Abs(rigidbody.velocity.y);
+
+        float g = rigidbody.gravityScale * Physics2D.gravity.y;
+
+        if (Mathf.Sign(rigidbody.velocity.y) == -1)
+        {
+            g *= -1;
+        }
+
+        if (xVel * hitstun >= xDel || yVel * hitstun + (0.5 * g * hitstun * hitstun) >= yDel)
+            return true;
+
+        return false;
+    }
 }
