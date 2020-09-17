@@ -68,11 +68,11 @@ public class PlayerHurtboxHandler : MonoBehaviour
                             ?1.5f:1)) * attackData.KnockbackScale + attackData.Knockback);
 
             float HitstunDuration = (attackData.HitStun>0)?attackData.HitStun:(KB*.006f + .1f);
+            float hitstunOriginal = HitstunDuration;
 
-            
 
             //Ignore knockback if invincible or armoured
-            if(status != null && (attackData.isGrab || !drifter.animator.GetBool("Guarding"))){
+            if (status != null && (attackData.isGrab || !drifter.animator.GetBool("Guarding"))){
 
                 if(!status.HasArmour() || attackData.isGrab){
 
@@ -97,9 +97,10 @@ public class PlayerHurtboxHandler : MonoBehaviour
                                                                     attackData.StatusDuration));
 
                 //apply defender hitpause
-
-                if(willCollideWithBlastZone(GetComponent<Rigidbody2D>() , HitstunDuration) && drifter.Stocks > 1)HitstunDuration*=2f;
-                else if(willCollideWithBlastZone(GetComponent<Rigidbody2D>(), HitstunDuration) && drifter.Stocks <= 1)HitstunDuration=4f;
+                hitstunOriginal = HitstunDuration;
+                if (willCollideWithBlastZoneAccurate(GetComponent<Rigidbody2D>(), hitstunOriginal) && drifter.Stocks <= 1) HitstunDuration = 4f;
+                else if (willCollideWithBlastZone(GetComponent<Rigidbody2D>() , hitstunOriginal)) HitstunDuration*=2f;
+                
 
 
                 if(HitstunDuration>0)status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,HitstunDuration*.25f);
@@ -139,7 +140,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
             Entities.AddEntity(hitSparks);
         
-            if (drifter != null && willCollideWithBlastZone(GetComponent<Rigidbody2D>(), HitstunDuration))
+            if (drifter != null && willCollideWithBlastZone(GetComponent<Rigidbody2D>(), hitstunOriginal))
             {
                 GameObject hitSparkKill = Instantiate(Entities.GetEntityPrefab("HitSparks"),
                 Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),
@@ -148,7 +149,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 hitSparkKill.transform.localScale = new Vector3(facingDir * 10f, 10f, 10f);
                 Entities.AddEntity(hitSparkKill);
 
-                if(drifter.Stocks <= 1)StartCoroutine(Shake.KillZoom(HitstunDuration*.25f,Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f)));
+                if(drifter.Stocks <= 1 && willCollideWithBlastZoneAccurate(GetComponent<Rigidbody2D>(), hitstunOriginal))
+                    StartCoroutine(Shake.KillZoom(HitstunDuration*.25f,Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f)));
             }
 
             if (drifter != null)
