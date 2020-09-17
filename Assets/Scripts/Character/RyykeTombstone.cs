@@ -80,9 +80,15 @@ public class RyykeTombstone : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D col)
     {
-        UnityEngine.Debug.Log(Ryyke);
-        UnityEngine.Debug.Log(Ryyke.GetComponentInChildren<HurtboxCollision>().gameObject);
-        if(!armed && col.gameObject != Ryyke && col.gameObject != Ryyke.GetComponentInChildren<HurtboxCollision>().gameObject && col.gameObject.tag != "Ground" && col.gameObject.tag != "Platform"){
+
+        if(!armed && col.gameObject.tag == "Player" && col.gameObject != GetComponentInChildren<HitboxCollision>().parent){
+            anim.SetBool("Grounded",false);
+            rb.velocity=Vector2.zero;
+            Break();
+        }
+
+        else if(!armed && col.gameObject.layer == 9 && GetComponentInChildren<HitboxCollision>().parent != col.gameObject.GetComponent<HitboxCollision>().parent)
+        {
             anim.SetBool("Grounded",false);
             rb.velocity=Vector2.zero;
             Break();
