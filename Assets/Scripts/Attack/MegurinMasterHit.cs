@@ -174,6 +174,19 @@ public class MegurinMasterHit : MasterHit
         attacks.SetMultiHitAttackID();
     }
 
+
+    public void Dair(){
+        GameObject dairBolt = Instantiate(entities.GetEntityPrefab("MegurinDairBolt"), transform.position, transform.rotation);
+        foreach (HitboxCollision hitbox in dairBolt.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+        }
+        entities.AddEntity(dairBolt);
+    }
+
     public void resetGravity(){
         movement.gravityPaused= false;
         rb.gravityScale = gravityScale;

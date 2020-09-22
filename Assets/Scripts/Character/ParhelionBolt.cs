@@ -6,6 +6,7 @@ public class ParhelionBolt : MonoBehaviour
 {
 
     public bool destroy = false;
+    public float speed = -55;
     // Start is called before the first frame update
     public float duration;
     Rigidbody2D rb;
@@ -15,7 +16,7 @@ public class ParhelionBolt : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         StartCoroutine(decay());
         anim = GetComponent<Animator>();
-        rb.velocity = new Vector2(0,-55f);
+        rb.velocity = new Vector2(0,speed);
     }
 
     IEnumerator decay(){

@@ -65,6 +65,7 @@ public class NetworkEntityConverter : Newtonsoft.Json.Converters.CustomCreationC
             case "UairExplosion":
                 return new BasicProjectileSync.ProjectileData();
             case "ParhelionBolt":
+            case "MegurinDairBolt":
                 return new ParhelionBoltSync.BoltData();
             case "LongArmOfTheLaw":
                 return new LongArmSync.ArmData();
