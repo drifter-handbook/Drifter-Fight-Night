@@ -51,6 +51,7 @@ public class NetworkEntityConverter : Newtonsoft.Json.Converters.CustomCreationC
             case "Main Camera":
                 return new CameraSync.ShakeData();    
             case "Chadwick":
+            case "Megunado":
             case "HoldPerson":
             case "WeakBolt":
             case "StrongBolt":
