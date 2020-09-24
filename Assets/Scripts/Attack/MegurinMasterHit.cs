@@ -188,8 +188,8 @@ public class MegurinMasterHit : MasterHit
     }
 
     public void Uair(){
-        GameObject Megunado = Instantiate(entities.GetEntityPrefab("Megunado"), transform.position, transform.rotation);
-        Megunado.GetComponent<Rigidbody2D>().velocity = Vector3.up * 25f;
+        GameObject Megunado = Instantiate(entities.GetEntityPrefab("Megunado"), transform.position + new Vector3(0, 3.3f), transform.rotation);
+        Megunado.GetComponent<Rigidbody2D>().velocity = Vector3.up * 18f;
         foreach (HitboxCollision hitbox in Megunado.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
