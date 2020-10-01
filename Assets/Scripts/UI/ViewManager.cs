@@ -72,7 +72,7 @@ public class ViewManager : MonoBehaviour
             savedIPObject = GameObject.Find("InputField");
             //if (savedIPObject != null)
             if (PlayerPrefs.GetString("savedIP") != null)
-                savedIPObject.GetComponent<Text>().text = PlayerPrefs.GetString("savedIP");
+                savedIPObject.GetComponent<InputField>().text = PlayerPrefs.GetString("savedIP");
         }
     }
 
