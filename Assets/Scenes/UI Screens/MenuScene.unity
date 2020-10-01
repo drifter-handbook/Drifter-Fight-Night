@@ -356,7 +356,7 @@ GameObject:
   - component: {fileID: 68248383}
   - component: {fileID: 68248382}
   m_Layer: 5
-  m_Name: Text
+  m_Name: TextInput
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7487,7 +7487,7 @@ GameObject:
   - component: {fileID: 1470206826}
   m_Layer: 5
   m_Name: InputField
-  m_TagString: Untagged
+  m_TagString: Input
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7747,6 +7747,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingMenu: {fileID: 283253440}
   hostIP: {fileID: 1958412167}
+  savedIPObject: {fileID: 0}
 --- !u!1001 &1818602259
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -16,7 +16,7 @@ public class ViewManager : MonoBehaviour
 
     public Text hostIP;
     bool foundIP = false;
-
+    public GameObject savedIPObject;
 
     string currentView;
     Dictionary<string, Transform> views = new Dictionary<string, Transform>();
@@ -43,6 +43,7 @@ public class ViewManager : MonoBehaviour
         currentView = startingMenu.gameObject.name;
     }
 
+
     private void Update()
     {
         
@@ -63,6 +64,16 @@ public class ViewManager : MonoBehaviour
         views[currentView].gameObject.SetActive(false);
         currentView = name;
         views[name].gameObject.SetActive(true);
+
+        if (savedIPObject == null && name == "Join Menu")
+        {
+            //savedIPObject = GameObject.FindWithTag("Input");
+            //savedIP = savedIPObject.GetComponent<UnityEngine.UI.Text>();
+            savedIPObject = GameObject.Find("InputField");
+            //if (savedIPObject != null)
+            if (PlayerPrefs.GetString("savedIP") != null)
+                savedIPObject.GetComponent<Text>().text = PlayerPrefs.GetString("savedIP");
+        }
     }
 
     public void SetIP(string ip)
@@ -70,6 +81,8 @@ public class ViewManager : MonoBehaviour
         string[] ip_id = ip.Split(':');
         GameController.Instance.hostIP = ip_id[0];
         GameController.Instance.HostID = int.Parse(ip_id[1]);
+        PlayerPrefs.SetString("savedIP", ip);
+        PlayerPrefs.Save();
     }
 
     public void GoToCharacterSelect(bool isHost)
