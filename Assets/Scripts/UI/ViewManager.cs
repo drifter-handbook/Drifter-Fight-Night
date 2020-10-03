@@ -14,7 +14,7 @@ public class ViewManager : MonoBehaviour
 #endif
     Transform startingMenu;
 
-    public Text hostIP;
+    public GameObject hostIP;
     bool foundIP = false;
     public GameObject savedIPObject;
 
@@ -49,7 +49,8 @@ public class ViewManager : MonoBehaviour
         
         if (!foundIP && GameController.Instance.GetComponent<IPWebRequest>().complete)
         {
-            hostIP.text = $"{GameController.Instance.GetComponent<IPWebRequest>().result.ToString()}:{UDPHolePuncher.GetLocalID("75.134.27.221", 6969)}";
+            hostIP.GetComponent<InputField>().text = $"{GameController.Instance.GetComponent<IPWebRequest>().result.ToString()}:{UDPHolePuncher.GetLocalID("75.134.27.221", 6969)}";
+            //hostIP.text = $"{GameController.Instance.GetComponent<IPWebRequest>().result.ToString()}:{UDPHolePuncher.GetLocalID("75.134.27.221", 6969)}";
             foundIP = true;
         }
     }
@@ -67,10 +68,7 @@ public class ViewManager : MonoBehaviour
 
         if (savedIPObject == null && name == "Join Menu")
         {
-            //savedIPObject = GameObject.FindWithTag("Input");
-            //savedIP = savedIPObject.GetComponent<UnityEngine.UI.Text>();
             savedIPObject = GameObject.Find("InputField");
-            //if (savedIPObject != null)
             if (PlayerPrefs.GetString("savedIP") != null)
                 savedIPObject.GetComponent<InputField>().text = PlayerPrefs.GetString("savedIP");
         }
