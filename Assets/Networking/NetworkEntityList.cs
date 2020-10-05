@@ -29,18 +29,8 @@ public class NetworkEntityList : MonoBehaviour
         populate();
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public void populate()
     {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-    public void populate(){
         foreach (GameObject obj in StartingEntities)
         {
             AddEntity(obj);
@@ -70,7 +60,8 @@ public class NetworkEntityList : MonoBehaviour
         {
             return false;
         }
-        if (character.GetComponent<Drifter>().Stocks > 0) {
+        if (character.GetComponent<Drifter>().Stocks > 0)
+        {
             return true;
         }
         return false;
