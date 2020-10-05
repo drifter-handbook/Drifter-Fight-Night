@@ -9,13 +9,6 @@ using System.Text;
 using System.Threading;
 using UnityEngine;
 
-public class UDPPacket
-{
-    public IPAddress address;
-    public int port;
-    public byte[] data;
-}
-
 public class UDPConnection : IDisposable
 {
     Thread thread;

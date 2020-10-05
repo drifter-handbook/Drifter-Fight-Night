@@ -9,12 +9,6 @@ using System.Text;
 using System.Threading;
 using UnityEngine;
 
-public class P2PClient
-{
-    public IPAddress DestIP;
-    public int DestPort;
-}
-
 public class UDPHolePuncher : IDisposable
 {
     public UdpClient udpClient { get; private set; }
