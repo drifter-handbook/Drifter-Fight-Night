@@ -59,7 +59,8 @@ public class NetworkHandler
     public void Connect()
     {
         Active = true;
-        HolePuncher = new UDPHolePuncher(hostIP == null ? "127.0.0.1" : hostIP.ToString(), "75.134.27.221", 6969, IsHost, hostID);
+        string holepunch_ip = Resources.Load<TextAsset>("Config/server_ip").text.Trim();
+        HolePuncher = new UDPHolePuncher(hostIP == null ? "127.0.0.1" : hostIP.ToString(), holepunch_ip, 6970, IsHost, hostID);
         HolePunchID = HolePuncher.ID;
         Connection = new UDPConnection(HolePuncher.udpClient);
     }

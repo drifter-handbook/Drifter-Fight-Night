@@ -49,8 +49,8 @@ public class ViewManager : MonoBehaviour
         
         if (!foundIP && GameController.Instance.GetComponent<IPWebRequest>().complete)
         {
-            hostIP.GetComponent<InputField>().text = $"{GameController.Instance.GetComponent<IPWebRequest>().result.ToString()}:{UDPHolePuncher.GetLocalID("75.134.27.221", 6969)}";
-            //hostIP.text = $"{GameController.Instance.GetComponent<IPWebRequest>().result.ToString()}:{UDPHolePuncher.GetLocalID("75.134.27.221", 6969)}";
+            string holepunch_ip = Resources.Load<TextAsset>("Config/server_ip").text.Trim();
+            hostIP.GetComponent<InputField>().text = $"{GameController.Instance.GetComponent<IPWebRequest>().result.ToString()}:{UDPHolePuncher.GetLocalIP(holepunch_ip, 6970).GetAddressBytes()[3]}";
             foundIP = true;
         }
     }

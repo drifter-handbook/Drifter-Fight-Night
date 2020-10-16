@@ -9,12 +9,6 @@ using System.Text;
 using System.Threading;
 using UnityEngine;
 
-public class P2PClient
-{
-    public IPAddress DestIP;
-    public int DestPort;
-}
-
 public class UDPHolePuncher : IDisposable
 {
     public UdpClient udpClient { get; private set; }
@@ -30,6 +24,7 @@ public class UDPHolePuncher : IDisposable
     public bool Failed { get; private set; } = false;
 
     public int ID = -1;
+    public IPAddress LocalIP;
     int hostID;
 
     private class HolePunchID
@@ -41,6 +36,7 @@ public class UDPHolePuncher : IDisposable
         public string RemoteIP = "";
         public int RemotePeerPort = -1;
         public int LocalPeerPort = -1;
+        public string LocalNetworkIP = "";
         public string ConnectionType = "";
     }
     public class HolePunchResponse
@@ -63,7 +59,9 @@ public class UDPHolePuncher : IDisposable
         // send UDP to hole punch server to give it your assigned port
         udpClient = new UdpClient();
         // get ID
-        ID = GetLocalID(holePunchingServerName, holePunchingServerPort);
+        LocalIP = GetLocalIP(holePunchingServerName, holePunchingServerPort);
+        ID = LocalIP.GetAddressBytes()[3];
+        Debug.Log($"Your PlayerID is {ID}");
         byte[] data = Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(new HolePunchID() { PeerPort = ID }));
         udpClient.Send(data, data.Length, holePunchingServerName, holePunchingServerPort);
         // start receive thread
@@ -71,19 +69,18 @@ public class UDPHolePuncher : IDisposable
         thread.Start();
     }
 
-    public static int GetLocalID(string holePunchingServerName, int holePunchingServerPort)
+    public static IPAddress GetLocalIP(string holePunchingServerName, int holePunchingServerPort)
     {
-        int ID = -1;
+        IPAddress localIP = null;
         // get local IP
         byte[] test = Encoding.ASCII.GetBytes("peepeepoopoo");
         using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
         {
             socket.Connect(Dns.GetHostEntry(holePunchingServerName).AddressList[0], holePunchingServerPort);
             IPEndPoint endPoint = socket.LocalEndPoint as IPEndPoint;
-            ID = endPoint.Address.GetAddressBytes()[3];
-            Debug.Log($"Your PlayerID is {ID}");
+            localIP = endPoint.Address;
         }
-        return ID;
+        return localIP;
     }
 
     private void ReceiveClientData()
@@ -93,6 +90,7 @@ public class UDPHolePuncher : IDisposable
         {
             LocalPeerPort = ID,
             RemoteIP = destAddress.ToString(),
+            LocalNetworkIP = LocalIP.ToString(),
             RemotePeerPort = hostID,
             ConnectionType = host ? "Server" : "Client"
         };

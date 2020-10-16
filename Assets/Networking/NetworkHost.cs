@@ -5,12 +5,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public interface NetworkID
-{
-    int PlayerID { get; }
-    bool GameStarted { get; }
-}
-
 public class NetworkHost : MonoBehaviour, NetworkID
 {
     public int PlayerID { get; private set; }
@@ -26,7 +20,8 @@ public class NetworkHost : MonoBehaviour, NetworkID
     void Awake()
     {
         PlayerID = 0;
-        CharacterSelectStates.Add(new CharacterSelectState() {
+        CharacterSelectStates.Add(new CharacterSelectState()
+        {
             PlayerID = 0,
             PlayerIndex = 0,
         });
@@ -118,10 +113,6 @@ public class NetworkHost : MonoBehaviour, NetworkID
         Time.timeScale = GameController.Instance.IsPaused ? 0f : 1f;
         // update
         networkTimer.Update(Time.realtimeSinceStartup);
-    }
-
-    void FixedUpdate()
-    {
     }
 
     void ProcessUpdate()
