@@ -14,9 +14,9 @@ public class ViewManager : MonoBehaviour
 #endif
     Transform startingMenu;
 
-    public Text hostIP;
+    public GameObject hostIP;
     bool foundIP = false;
-
+    public GameObject savedIPObject;
 
     string currentView;
     Dictionary<string, Transform> views = new Dictionary<string, Transform>();
@@ -43,13 +43,14 @@ public class ViewManager : MonoBehaviour
         currentView = startingMenu.gameObject.name;
     }
 
+
     private void Update()
     {
         
         if (!foundIP && GameController.Instance.GetComponent<IPWebRequest>().complete)
         {
             string holepunch_ip = Resources.Load<TextAsset>("Config/server_ip").text.Trim();
-            hostIP.text = $"{GameController.Instance.GetComponent<IPWebRequest>().result.ToString()}:{UDPHolePuncher.GetLocalIP(holepunch_ip, 6970).GetAddressBytes()[3]}";
+            hostIP.GetComponent<InputField>().text = $"{GameController.Instance.GetComponent<IPWebRequest>().result.ToString()}:{UDPHolePuncher.GetLocalIP(holepunch_ip, 6970).GetAddressBytes()[3]}";
             foundIP = true;
         }
     }
@@ -64,6 +65,13 @@ public class ViewManager : MonoBehaviour
         views[currentView].gameObject.SetActive(false);
         currentView = name;
         views[name].gameObject.SetActive(true);
+
+        if (savedIPObject == null && name == "Join Menu")
+        {
+            savedIPObject = GameObject.Find("InputField");
+            if (PlayerPrefs.GetString("savedIP") != null)
+                savedIPObject.GetComponent<InputField>().text = PlayerPrefs.GetString("savedIP");
+        }
     }
 
     public void SetIP(string ip)
@@ -71,6 +79,8 @@ public class ViewManager : MonoBehaviour
         string[] ip_id = ip.Split(':');
         GameController.Instance.hostIP = ip_id[0];
         GameController.Instance.HostID = int.Parse(ip_id[1]);
+        PlayerPrefs.SetString("savedIP", ip);
+        PlayerPrefs.Save();
     }
 
     public void GoToCharacterSelect(bool isHost)
