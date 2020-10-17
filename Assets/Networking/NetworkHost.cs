@@ -143,7 +143,7 @@ public class NetworkHost : MonoBehaviour, NetworkID
         {
             // send game sync packet every frame
             Network.SendToAll(CreateGameSyncPacket());
-            if (GameController.Instance.winner != null && GameController.Instance.winner != "")
+            if (GameController.Instance.winner > -1)
             {
                 EndGame();
             }
@@ -164,17 +164,23 @@ public class NetworkHost : MonoBehaviour, NetworkID
         yield return new WaitForSeconds(.7f);
         yield return SceneManager.LoadSceneAsync("Endgame");
 
-        //TODO: I'll be using this info for the end screen - Savvy
-
+       
+        EndgameImageHandler endHandler = GameObject.FindGameObjectWithTag("EndgamePic").GetComponent<EndgameImageHandler>();
         foreach (CharacterSelectState state in GameController.Instance.CharacterSelectStates)
         {
-            //UnityEngine.Debug.Log(state.PlayerType +" was used");
+            
+            //TODO: Grab player colors
+            if(state.PlayerID == GameController.Instance.winner)
+            {
+                endHandler.playWinnerAudio(state.PlayerIndex);
+                endHandler.setWinnerPic(state.PlayerType, Color.red);
+            } else
+            {
+                endHandler.setSillyImage(state.PlayerType, Color.red);
+            }
         }
 
-        Text winner = GameObject.FindGameObjectWithTag("EndgameName").GetComponent<Text>();
-        GameObject.FindGameObjectWithTag("EndgamePic").GetComponent<EndgameImageHandler>().setImage(GameController.Instance.winner);
-        if (GameController.Instance.winner != null)
-            winner.text = $"Winner: {GameController.Instance.winner.Replace('_', ' ')}";
+        
         while (SceneManager.GetActiveScene().name == "Endgame")
         {
             yield return null;
@@ -182,7 +188,7 @@ public class NetworkHost : MonoBehaviour, NetworkID
             {
                 yield return SceneManager.LoadSceneAsync("MenuScene");
                 GameController.Instance.selectedStage = null;
-                GameController.Instance.winner = null;
+                GameController.Instance.winner = -1;
                 GameController.Instance.CharacterSelectStates = new List<CharacterSelectState>() { };
                 GameController.Instance.Entities = null;
                 Destroy(this);

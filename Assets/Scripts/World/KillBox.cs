@@ -98,7 +98,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                     Destroy(other.gameObject);
                 // check for last one remaining
                     int count = 0;
-                    string winner = null;
+                    int winner = -1;
                     foreach (GameObject go in Entities.Players.Values)
                     {
                         if (Entities.hasStocks(go))
@@ -107,11 +107,11 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                             foreach (CharacterSelectState select in GameController.Instance.CharacterSelectStates)
                             {
                                 if (Entities.Players.ContainsKey(select.PlayerID) && go.Equals(Entities.Players[select.PlayerID]))
-                                victor = select.PlayerIndex;
+                                victor = select.PlayerID;
                             }
                             count++;
                         
-                            winner = go.GetComponent<INetworkSync>().Type + "|" + victor;
+                            winner = victor;
                         }
                     }
 
@@ -130,14 +130,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                         if (deadByOrder.Count > 0)
                         {
                             victor = deadByOrder[deadByOrder.Count - 1].PlayerIndex;
-                            foreach (GameObject go in Entities.Players.Values)
-                            {
-                                if (go.Equals(Entities.Players[deadByOrder[deadByOrder.Count - 1].PlayerID]))
-                                {
-                                    winner = go.GetComponent<INetworkSync>().Type + "|" + victor;
-                                }
-                              
-                            }
+                            winner = deadByOrder[deadByOrder.Count - 1].PlayerID;
                         } else
                         {
                         //well...

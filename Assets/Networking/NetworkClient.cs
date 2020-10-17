@@ -149,7 +149,7 @@ public class NetworkClient : MonoBehaviour, NetworkID
             {
                 input = (PlayerInputData)GetComponent<PlayerInput>().input.Clone()
             });
-            if (GameController.Instance.winner != null && GameController.Instance.winner != "")
+            if (GameController.Instance.winner >= 0)
             {
                 EndGame();
             }
@@ -181,9 +181,23 @@ public class NetworkClient : MonoBehaviour, NetworkID
     {
         yield return new WaitForSeconds(.7f);
         yield return SceneManager.LoadSceneAsync("Endgame");
-        Text winner = GameObject.FindGameObjectWithTag("EndgameName").GetComponent<Text>();
-        GameObject.FindGameObjectWithTag("EndgamePic").GetComponent<EndgameImageHandler>().setImage(GameController.Instance.winner);
-        winner.text = $"Winner: {GameController.Instance.winner.Replace('_', ' ')}";
+
+        EndgameImageHandler endHandler = GameObject.FindGameObjectWithTag("EndgamePic").GetComponent<EndgameImageHandler>();
+        foreach (CharacterSelectState state in GameController.Instance.CharacterSelectStates)
+        {
+            //TODO: Grab player colors
+            if (state.PlayerID == GameController.Instance.winner)
+            {
+                endHandler.playWinnerAudio(state.PlayerID);
+                endHandler.setWinnerPic(state.PlayerType, Color.red);
+            }
+            else
+            {
+                endHandler.setSillyImage(state.PlayerType, Color.red);
+            }
+        }
+
+
         while (SceneManager.GetActiveScene().name == "Endgame")
         {
             yield return null;
@@ -191,7 +205,7 @@ public class NetworkClient : MonoBehaviour, NetworkID
             {
                 yield return SceneManager.LoadSceneAsync("MenuScene");
                 GameController.Instance.selectedStage = null;
-                GameController.Instance.winner = null;
+                GameController.Instance.winner = -1;
                 GameController.Instance.CharacterSelectStates = new List<CharacterSelectState>() { };
                 GameController.Instance.Entities = null;
                 Destroy(this);
@@ -240,7 +254,7 @@ public class NetworkClient : MonoBehaviour, NetworkID
             return;
         }
         // if game over
-        if (data.SyncData.winner != null && data.SyncData.winner != "")
+        if (data.SyncData.winner >= 0)
         {
             GameController.Instance.winner = data.SyncData.winner;
             return;
