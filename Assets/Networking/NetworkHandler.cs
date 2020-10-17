@@ -35,8 +35,8 @@ public class NetworkHandler
     Dictionary<int, P2PConnection> Connections = new Dictionary<int, P2PConnection>();
 
     public bool IsHost { get; private set; } = false;
-    IPAddress hostIP;
-    int hostID;
+    public IPAddress hostIP;
+    public int hostID;
     public UDPHolePuncher HolePuncher;
     public int HolePunchID { get; private set; } = -1;
     UDPConnection Connection;

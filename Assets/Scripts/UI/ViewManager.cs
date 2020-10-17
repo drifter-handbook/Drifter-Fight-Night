@@ -66,25 +66,30 @@ public class ViewManager : MonoBehaviour
         currentView = name;
         views[name].gameObject.SetActive(true);
 
-        if (savedIPObject == null && name == "Join Menu")
+        if (name == "Join Menu")
         {
-            savedIPObject = GameObject.Find("InputField");
             if (PlayerPrefs.GetString("savedIP") != null)
+            {
                 savedIPObject.GetComponent<InputField>().text = PlayerPrefs.GetString("savedIP");
+            }
         }
     }
 
     public void SetIP(string ip)
     {
-        string[] ip_id = ip.Split(':');
-        GameController.Instance.hostIP = ip_id[0];
-        GameController.Instance.HostID = int.Parse(ip_id[1]);
-        PlayerPrefs.SetString("savedIP", ip);
-        PlayerPrefs.Save();
+        if (currentView == "Join Menu")
+        {
+            string[] ip_id = ip.Split(':');
+            GameController.Instance.hostIP = ip_id[0];
+            GameController.Instance.HostID = int.Parse(ip_id[1]);
+            PlayerPrefs.SetString("savedIP", ip);
+            PlayerPrefs.Save();
+        }
     }
 
     public void GoToCharacterSelect(bool isHost)
     {
+        SetIP(savedIPObject.GetComponent<InputField>().text);
         GameController.Instance.IsHost = isHost;
         if (isHost)
         {

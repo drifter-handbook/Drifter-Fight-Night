@@ -17,7 +17,15 @@ public class PlayerIP : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GameController.Instance.IsHost)
+        {
             string holepunch_ip = Resources.Load<TextAsset>("Config/server_ip").text.Trim();
             hostIP.text = $"{GameController.Instance.GetComponent<IPWebRequest>().result.ToString()}:{UDPHolePuncher.GetLocalIP(holepunch_ip, 6970).GetAddressBytes()[3]}";
+        }
+        else
+        {
+            hostIP.text = $"{GameController.Instance.GetComponent<NetworkClient>().Network.hostIP.ToString()}:{GameController.Instance.GetComponent<NetworkClient>().Network.hostID}";
+        }
+
     }
 }
