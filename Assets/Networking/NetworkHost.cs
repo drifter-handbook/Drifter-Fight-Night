@@ -256,4 +256,13 @@ public class NetworkHost : MonoBehaviour, NetworkID
             entities.Players[id]?.GetComponent<Drifter>()?.input?.CopyFrom(input?.input);
         }
     }
+
+    void OnDestroy()
+    {
+        Network.OnDestroy();
+    }
+    void OnApplicationQuit()
+    {
+        Network.OnApplicationQuit();
+    }
 }

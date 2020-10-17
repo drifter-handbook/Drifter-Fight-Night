@@ -221,15 +221,14 @@ public class NetworkHandler
         OnFailureHandlers.RemoveAll(x => x == handler);
     }
 
-    void OnDestroy()
+    public void OnDestroy()
     {
         // kill hole puncher connection
         HolePuncher?.Kill();
         // kill network connection
         Connection?.Kill();
     }
-
-    void OnApplicationQuit()
+    public void OnApplicationQuit()
     {
         OnDestroy();
     }

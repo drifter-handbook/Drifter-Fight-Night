@@ -294,4 +294,14 @@ public class NetworkClient : MonoBehaviour, NetworkID
             }
         }
     }
+
+    void OnDestroy()
+    {
+        Network.OnDestroy();
+    }
+
+    void OnApplicationQuit()
+    {
+        Network.OnApplicationQuit();
+    }
 }
