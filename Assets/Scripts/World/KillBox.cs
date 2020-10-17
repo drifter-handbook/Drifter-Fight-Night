@@ -8,12 +8,13 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
     NetworkEntityList Entities;
     ScreenShake Shake;
     public Animator endgameBanner;
-
+    public List<CharacterSelectState> deadByOrder = new List<CharacterSelectState>(); //keeps track of who died in what order
     void Awake()
     {
         Entities = GameObject.FindGameObjectWithTag(
             "NetworkEntityList").GetComponent<NetworkEntityList>();
         Shake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<ScreenShake>();
+        deadByOrder.Clear();
     }
 
     GameObject CreateExplosion(Collider2D other, int playerIndex)
@@ -88,11 +89,12 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                             if (obj.Equals(other.gameObject))
                             {
                                 destroyed = state.PlayerIndex;
+                                deadByOrder.Add(state);
                                 break;
                             }
                         }
                     }
-                
+                   
                     Destroy(other.gameObject);
                 // check for last one remaining
                     int count = 0;
@@ -108,10 +110,13 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                                 victor = select.PlayerIndex;
                             }
                             count++;
+                        
                             winner = go.GetComponent<INetworkSync>().Type + "|" + victor;
                         }
                     }
-                    if (count <= 1)
+
+                    //down to the last player! End game
+                    if (count == 1)
                     {
 
                         endgameBanner.enabled = true;
@@ -119,7 +124,31 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                         destroyed = -2;
                
                     }
-                    CreateExplosion(other, destroyed);
+                    else if (count < 1){
+                    //There are no players with stocks left, default to the last killed
+                    int victor = -1;
+                        if (deadByOrder.Count > 0)
+                        {
+                            victor = deadByOrder[deadByOrder.Count - 1].PlayerIndex;
+                            foreach (GameObject go in Entities.Players.Values)
+                            {
+                                if (go.Equals(Entities.Players[deadByOrder[deadByOrder.Count - 1].PlayerID]))
+                                {
+                                    winner = go.GetComponent<INetworkSync>().Type + "|" + victor;
+                                }
+                              
+                            }
+                        } else
+                        {
+                        //well...
+                        UnityEngine.Debug.Log("I dunno fam, you really messed up.");
+                        }
+
+                        endgameBanner.enabled = true;
+                        GameController.Instance.winner = winner;
+                        destroyed = -2;
+                }
+                CreateExplosion(other, destroyed);
                     other.transform.position = new Vector2(0f,-300f);
                 
             }

@@ -163,6 +163,14 @@ public class NetworkHost : MonoBehaviour, NetworkID
     {
         yield return new WaitForSeconds(.7f);
         yield return SceneManager.LoadSceneAsync("Endgame");
+
+        //TODO: I'll be using this info for the end screen - Savvy
+
+        foreach (CharacterSelectState state in GameController.Instance.CharacterSelectStates)
+        {
+            //UnityEngine.Debug.Log(state.PlayerType +" was used");
+        }
+
         Text winner = GameObject.FindGameObjectWithTag("EndgameName").GetComponent<Text>();
         GameObject.FindGameObjectWithTag("EndgamePic").GetComponent<EndgameImageHandler>().setImage(GameController.Instance.winner);
         if (GameController.Instance.winner != null)
@@ -194,9 +202,9 @@ public class NetworkHost : MonoBehaviour, NetworkID
     }
     IEnumerator StartGameCoroutine()
     {
-        Debug.Log("Start scene load");
+        //Debug.Log("Start scene load");
         yield return SceneManager.LoadSceneAsync(GameController.Instance.selectedStage);
-        Debug.Log("Finish scene load");
+        //Debug.Log("Finish scene load");
         // find entities
         entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
         // create players
@@ -214,12 +222,12 @@ public class NetworkHost : MonoBehaviour, NetworkID
             // player.GetComponentInChildren<SpriteRenderer>().color = playerColors[i];
             entities.AddPlayer(i, player);
         }
-        Debug.Log("Added players");
+        //Debug.Log("Added players");
         // start game
         Network.StopAcceptingConnections();
         // attach player input to player 1
         GetComponent<PlayerInput>().input = entities.Players[0].GetComponent<Drifter>().input;
-        Debug.Log("Attached input");
+       // Debug.Log("Attached input");
     }
 
     SyncToClientPacket CreateGameSyncPacket()
