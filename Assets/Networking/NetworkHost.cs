@@ -173,10 +173,10 @@ public class NetworkHost : MonoBehaviour, NetworkID
             if(state.PlayerID == GameController.Instance.winner)
             {
                 endHandler.playWinnerAudio(state.PlayerIndex);
-                endHandler.setWinnerPic(state.PlayerType, Color.red);
+                endHandler.setWinnerPic(state.PlayerType, CharacterMenu.ColorFromEnum[(PlayerColor)state.PlayerIndex]);
             } else
             {
-                endHandler.setSillyImage(state.PlayerType, Color.red);
+                endHandler.setSillyImage(state.PlayerType, CharacterMenu.ColorFromEnum[(PlayerColor)state.PlayerIndex]);
             }
         }
 
@@ -278,5 +278,23 @@ public class NetworkHost : MonoBehaviour, NetworkID
     void OnApplicationQuit()
     {
         Network.OnApplicationQuit();
+    }
+
+    public void ExitToMain()
+    {
+        GameController.Instance.selectedStage = null;
+        GameController.Instance.winner = -1;
+        GameController.Instance.CharacterSelectStates = new List<CharacterSelectState>() { };
+        GameController.Instance.Entities = null;
+        Destroy(this);
+    }
+
+    public void ExitToChar()
+    {
+        GameController.Instance.selectedStage = null;
+        GameController.Instance.winner = -1;
+        GameController.Instance.CharacterSelectStates = new List<CharacterSelectState>() { };
+        GameController.Instance.Entities = null;
+        SceneManager.LoadSceneAsync("CharacterSelect");
     }
 }

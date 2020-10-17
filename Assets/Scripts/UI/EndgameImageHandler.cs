@@ -12,16 +12,6 @@ public class EndgameImageHandler : MonoBehaviour
     public GameObject rightPanel;
     public GameObject sillyImagePrefab;
 
-    /*
-     *  int winnerIndex = -1;
-        if (type != DrifterType.None)
-        {
-            winnerIndex = int.Parse(winner.Split('|')[1]);
-            
-            winner = winner.Split('|')[0];
-        }
-        */
-
     public void playWinnerAudio(int winnerIndex)
     {
         gameObject.GetComponent<MultiSound>().PlayAudio(winnerIndex);
@@ -35,7 +25,7 @@ public class EndgameImageHandler : MonoBehaviour
             if (setup.name.Contains(type.ToString()))
             {
                 setup.SetActive(true);
-                setup.transform.GetChild(0).GetComponent<Image>().color = color; //sets player Color on shadow text
+                setup.transform.GetChild(0).GetComponent<Text>().color = color; //sets player Color on shadow text
             } else
             {
                 setup.SetActive(false);
@@ -62,6 +52,34 @@ public class EndgameImageHandler : MonoBehaviour
             case DrifterType.Lady_Parhelion:
             default:  picture = sprites[7]; break;                        
         }
+    }
+
+    public void Exit()
+    {
+        if (GameController.Instance.GetComponent<NetworkClient>() != null)
+        {
+            GameController.Instance.GetComponent<NetworkClient>().ExitToMain();
+        }
+
+        if (GameController.Instance.GetComponent<NetworkHost>() != null)
+        {
+            GameController.Instance.GetComponent<NetworkHost>().ExitToMain();
+        }
+
+    }
+
+    public void Restart()
+    {
+        if (GameController.Instance.GetComponent<NetworkClient>() != null)
+        {
+            GameController.Instance.GetComponent<NetworkClient>().ExitToChar();
+        }
+
+        if (GameController.Instance.GetComponent<NetworkHost>() != null)
+        {
+            GameController.Instance.GetComponent<NetworkHost>().ExitToChar();
+        }
+
     }
 
 }

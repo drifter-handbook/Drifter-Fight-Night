@@ -188,30 +188,26 @@ public class NetworkClient : MonoBehaviour, NetworkID
             //TODO: Grab player colors
             if (state.PlayerID == GameController.Instance.winner)
             {
-                endHandler.playWinnerAudio(state.PlayerID);
-                endHandler.setWinnerPic(state.PlayerType, Color.red);
+                endHandler.playWinnerAudio(state.PlayerIndex);
+                endHandler.setWinnerPic(state.PlayerType, CharacterMenu.ColorFromEnum[(PlayerColor)state.PlayerIndex]);
             }
             else
             {
-                endHandler.setSillyImage(state.PlayerType, Color.red);
+                endHandler.setSillyImage(state.PlayerType, CharacterMenu.ColorFromEnum[(PlayerColor)state.PlayerIndex]);
             }
         }
 
-
+        /*
         while (SceneManager.GetActiveScene().name == "Endgame")
         {
             yield return null;
             if (Input.GetMouseButtonDown(0))
             {
                 yield return SceneManager.LoadSceneAsync("MenuScene");
-                GameController.Instance.selectedStage = null;
-                GameController.Instance.winner = -1;
-                GameController.Instance.CharacterSelectStates = new List<CharacterSelectState>() { };
-                GameController.Instance.Entities = null;
-                Destroy(this);
+                
                 yield break;
             }
-        }
+        }*/
     }
 
     public bool GameStarted { get; set; } = false;
@@ -317,5 +313,23 @@ public class NetworkClient : MonoBehaviour, NetworkID
     void OnApplicationQuit()
     {
         Network.OnApplicationQuit();
+    }
+
+    public void ExitToMain()
+    {
+        GameController.Instance.selectedStage = null;
+        GameController.Instance.winner = -1;
+        GameController.Instance.CharacterSelectStates = new List<CharacterSelectState>() { };
+        GameController.Instance.Entities = null;
+        Destroy(this);
+    }
+
+    public void ExitToChar()
+    {
+        GameController.Instance.selectedStage = null;
+        GameController.Instance.winner = -1;
+        GameController.Instance.CharacterSelectStates = new List<CharacterSelectState>() { };
+        GameController.Instance.Entities = null;
+        SceneManager.LoadSceneAsync("CharacterSelect");
     }
 }
