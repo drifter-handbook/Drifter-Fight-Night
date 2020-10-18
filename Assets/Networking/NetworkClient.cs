@@ -185,7 +185,6 @@ public class NetworkClient : MonoBehaviour, NetworkID
         EndgameImageHandler endHandler = GameObject.FindGameObjectWithTag("EndgamePic").GetComponent<EndgameImageHandler>();
         foreach (CharacterSelectState state in GameController.Instance.CharacterSelectStates)
         {
-            //TODO: Grab player colors
             if (state.PlayerID == GameController.Instance.winner)
             {
                 endHandler.playWinnerAudio(state.PlayerIndex);

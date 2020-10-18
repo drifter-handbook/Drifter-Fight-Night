@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 2318615}
   m_Layer: 5
   m_Name: Text
-  m_TagString: EndgameName
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -287,7 +287,7 @@ GameObject:
   - component: {fileID: 57787424}
   m_Layer: 5
   m_Name: Text
-  m_TagString: EndgameName
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -440,7 +440,7 @@ GameObject:
   - component: {fileID: 130870329}
   m_Layer: 5
   m_Name: Text (1)
-  m_TagString: EndgameName
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -711,7 +711,7 @@ GameObject:
   - component: {fileID: 256092570}
   m_Layer: 5
   m_Name: Text (1)
-  m_TagString: EndgameName
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1139,7 +1139,7 @@ GameObject:
   - component: {fileID: 594255580}
   m_Layer: 5
   m_Name: Text
-  m_TagString: EndgameName
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1369,7 +1369,7 @@ GameObject:
   - component: {fileID: 662833250}
   m_Layer: 5
   m_Name: Text
-  m_TagString: EndgameName
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1526,7 +1526,7 @@ GameObject:
   - component: {fileID: 697262056}
   m_Layer: 5
   m_Name: Text
-  m_TagString: EndgameName
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1604,7 +1604,7 @@ GameObject:
   - component: {fileID: 750626451}
   m_Layer: 5
   m_Name: Text (1)
-  m_TagString: EndgameName
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1694,16 +1694,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 781741839}
-  m_LocalRotation: {x: 0.6065028, y: -0, z: -0, w: 0.7950814}
+  m_LocalRotation: {x: 0.68926364, y: -0, z: -0, w: 0.72451067}
   m_LocalPosition: {x: 0, y: 0, z: -100}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 974345564}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 74.674, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 87.144005, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 281.17}
+  m_AnchoredPosition: {x: 30, y: 305}
   m_SizeDelta: {x: 10, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!199 &781741841
@@ -1906,7 +1906,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 0.76
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -2022,7 +2022,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 4
+      scalar: 4.62
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -2287,7 +2287,7 @@ ParticleSystem:
     startRotation:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: 0.0010471975
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -2403,7 +2403,7 @@ ParticleSystem:
     boxThickness: {x: 0, y: 0, z: 0}
     radiusThickness: 1
     donutRadius: 0.2
-    m_Position: {x: 0, y: 0, z: 0}
+    m_Position: {x: -0.25, y: -41.1, z: 0}
     m_Rotation: {x: 0, y: 0, z: 0}
     m_Scale: {x: 1, y: 1, z: 1}
     placementMode: 0
@@ -2484,7 +2484,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 10
+      value: 6.8
       mode: 0
       spread: 0
       speed:
@@ -2541,9 +2541,9 @@ ParticleSystem:
           m_PostInfinity: 2
           m_RotationOrder: 4
     arc:
-      value: 359.49
-      mode: 0
-      spread: 0
+      value: 329.63
+      mode: 1
+      spread: 0.06
       speed:
         serializedVersion: 2
         minMaxState: 0
@@ -2603,7 +2603,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 4.2
+      scalar: 4.19
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -3041,11 +3041,11 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 0.14129972, g: 0.14129972, b: 0.14129972, a: 0.14129972}
-        key1: {r: 0.4410064, g: 0.6509434, b: 0.43293878, a: 0.43137255}
-        key2: {r: 1, g: 0.92632824, b: 0.6367924, a: 0.11956519}
-        key3: {r: 0.6236205, g: 0.9245283, b: 0.9039336, a: 0}
-        key4: {r: 0.914004, g: 0.9433962, b: 0.7609469, a: 0}
+        key0: {r: 0.14129972, g: 0.14129972, b: 0.14129972, a: 0.039215688}
+        key1: {r: 0.4410064, g: 0.6509434, b: 0.43293878, a: 0.13333334}
+        key2: {r: 1, g: 0.92632824, b: 0.6367924, a: 0.36078432}
+        key3: {r: 0.6236205, g: 0.9245283, b: 0.9039336, a: 0.9647059}
+        key4: {r: 0.914004, g: 0.9433962, b: 0.7609469, a: 0.11956519}
         key5: {r: 0.9528302, g: 0.83185345, b: 0.56181026, a: 0}
         key6: {r: 0.9529412, g: 0.56078434, b: 0.90962154, a: 0}
         key7: {r: 0.4095963, g: 0.1477839, b: 0.764151, a: 0}
@@ -3058,16 +3058,16 @@ ParticleSystem:
         ctime6: 55705
         ctime7: 60716
         atime0: 0
-        atime1: 12143
-        atime2: 29876
-        atime3: 65535
-        atime4: 0
-        atime5: 0
+        atime1: 17348
+        atime2: 21974
+        atime3: 25636
+        atime4: 29876
+        atime5: 65535
         atime6: 0
         atime7: 0
         m_Mode: 0
         m_NumColorKeys: 8
-        m_NumAlphaKeys: 4
+        m_NumAlphaKeys: 6
       minGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -7483,7 +7483,7 @@ GameObject:
   - component: {fileID: 1306119464}
   m_Layer: 5
   m_Name: Text
-  m_TagString: EndgameName
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7561,7 +7561,7 @@ GameObject:
   - component: {fileID: 1327686423}
   m_Layer: 5
   m_Name: Text
-  m_TagString: EndgameName
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7639,7 +7639,7 @@ GameObject:
   - component: {fileID: 1353509796}
   m_Layer: 5
   m_Name: Text (1)
-  m_TagString: EndgameName
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7717,7 +7717,7 @@ GameObject:
   - component: {fileID: 1354692797}
   m_Layer: 5
   m_Name: Text (1)
-  m_TagString: EndgameName
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7827,7 +7827,7 @@ GameObject:
   - component: {fileID: 1421036651}
   m_Layer: 5
   m_Name: Text
-  m_TagString: EndgameName
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8011,7 +8011,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1526633287
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8084,7 +8084,7 @@ GameObject:
   - component: {fileID: 1647989775}
   m_Layer: 5
   m_Name: Text (1)
-  m_TagString: EndgameName
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8314,7 +8314,7 @@ GameObject:
   - component: {fileID: 1821672996}
   m_Layer: 5
   m_Name: Text (1)
-  m_TagString: EndgameName
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8471,7 +8471,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1873354061
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8620,7 +8620,7 @@ GameObject:
   - component: {fileID: 1938878679}
   m_Layer: 5
   m_Name: Text (1)
-  m_TagString: EndgameName
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
