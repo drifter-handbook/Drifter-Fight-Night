@@ -197,17 +197,22 @@ public class NetworkClient : MonoBehaviour, NetworkID
             }
         }
 
-        /*
+
         while (SceneManager.GetActiveScene().name == "Endgame")
         {
             yield return null;
             if (Input.GetMouseButtonDown(0))
             {
                 yield return SceneManager.LoadSceneAsync("MenuScene");
-                
+                GameController.Instance.selectedStage = null;
+                GameController.Instance.winner = -1;
+                GameController.Instance.CharacterSelectStates = new List<CharacterSelectState>() { };
+                GameController.Instance.Entities = null;
+                Destroy(this);
+
                 yield break;
             }
-        }*/
+        }
     }
 
     public bool GameStarted { get; set; } = false;

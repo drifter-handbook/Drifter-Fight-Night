@@ -38,19 +38,18 @@ public class EndgameImageHandler : MonoBehaviour
         GameObject miniIcon = Instantiate(sillyImagePrefab);
         Transform parent = rightPanel.transform;
         miniIcon.transform.SetParent(parent, false);
-        Sprite picture = miniIcon.GetComponent<Image>().sprite;
         miniIcon.transform.GetChild(0).GetComponent<Image>().color = color; //sets player Color on circle
         switch (type)
         {
-            case DrifterType.Nero: picture = sprites[0]; break;
-            case DrifterType.Orro: picture = sprites[1]; break;
-            case DrifterType.Bojo: picture = sprites[2]; break;
-            case DrifterType.Ryyke: picture = sprites[3]; break;
-            case DrifterType.Swordfrog: picture = sprites[4]; break;
-            case DrifterType.Megurin: picture = sprites[5]; break;
-            case DrifterType.Spacejam: picture = sprites[6]; break;
+            case DrifterType.Nero: miniIcon.GetComponent<Image>().sprite = sprites[0]; break;
+            case DrifterType.Orro: miniIcon.GetComponent<Image>().sprite = sprites[1]; break;
+            case DrifterType.Bojo: miniIcon.GetComponent<Image>().sprite = sprites[2]; break;
+            case DrifterType.Ryyke: miniIcon.GetComponent<Image>().sprite = sprites[3]; break;
+            case DrifterType.Swordfrog: miniIcon.GetComponent<Image>().sprite = sprites[4]; break;
+            case DrifterType.Megurin: miniIcon.GetComponent<Image>().sprite = sprites[5]; break;
+            case DrifterType.Spacejam: miniIcon.GetComponent<Image>().sprite = sprites[6]; break;
             case DrifterType.Lady_Parhelion:
-            default:  picture = sprites[7]; break;                        
+            default: miniIcon.GetComponent<Image>().sprite = sprites[7]; break;                        
         }
     }
 

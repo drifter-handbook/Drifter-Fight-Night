@@ -168,7 +168,6 @@ public class NetworkHost : MonoBehaviour, NetworkID
         EndgameImageHandler endHandler = GameObject.FindGameObjectWithTag("EndgamePic").GetComponent<EndgameImageHandler>();
         foreach (CharacterSelectState state in GameController.Instance.CharacterSelectStates)
         {
-            
             //TODO: Grab player colors
             if(state.PlayerID == GameController.Instance.winner)
             {
@@ -179,7 +178,6 @@ public class NetworkHost : MonoBehaviour, NetworkID
                 endHandler.setSillyImage(state.PlayerType, CharacterMenu.ColorFromEnum[(PlayerColor)state.PlayerIndex]);
             }
         }
-
         
         while (SceneManager.GetActiveScene().name == "Endgame")
         {
