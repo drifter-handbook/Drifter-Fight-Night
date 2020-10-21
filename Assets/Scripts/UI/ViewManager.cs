@@ -21,6 +21,10 @@ public class ViewManager : MonoBehaviour
     string currentView;
     Dictionary<string, Transform> views = new Dictionary<string, Transform>();
 
+    public Toggle toggle1;
+    public Toggle toggle2;
+    public Toggle toggle3;
+
     void Awake()
     {
         views = new Dictionary<string, Transform>();
@@ -41,8 +45,42 @@ public class ViewManager : MonoBehaviour
         }
         startingMenu.gameObject.SetActive(true);
         currentView = startingMenu.gameObject.name;
+
+        if (hostIP.activeSelf && PlayerPrefs.GetInt("HideIP") > 0)
+        {
+            hostIP.GetComponent<InputField>().contentType = InputField.ContentType.Password;
+        }
+        else if (hostIP.activeSelf && PlayerPrefs.GetInt("HideIP") == 0)
+        {
+            hostIP.GetComponent<InputField>().contentType = InputField.ContentType.Standard;
+        }
+
     }
 
+    public void UpdateToggles()
+    {
+        toggle1.onValueChanged.RemoveAllListeners();
+        toggle2.onValueChanged.RemoveAllListeners();
+        toggle3.onValueChanged.RemoveAllListeners();
+
+        toggle1.isOn = PlayerPrefs.GetInt("HideIP") > 0;
+        toggle2.isOn = PlayerPrefs.GetInt("HidePing") > 0;
+        toggle3.isOn = PlayerPrefs.GetInt("HideTextInput") > 0;
+        //   ^ toggles the code too. Why? idk, unity makes interesting decisions sometimes
+
+
+        toggle1.onValueChanged.AddListener(delegate {
+            toggleIP();
+        });
+
+        toggle2.onValueChanged.AddListener(delegate {
+            togglePing();
+        });
+
+        toggle3.onValueChanged.AddListener(delegate {
+            toggleTextInput();
+        });
+    }
 
     private void Update()
     {
@@ -62,16 +100,39 @@ public class ViewManager : MonoBehaviour
 
     public void ShowView(string name)
     {
+
         views[currentView].gameObject.SetActive(false);
         currentView = name;
         views[name].gameObject.SetActive(true);
 
+
+        if(hostIP.activeSelf && PlayerPrefs.GetInt("HideIP") > 0)
+        {
+            hostIP.GetComponent<InputField>().contentType = InputField.ContentType.Password;
+        } else if (hostIP.activeSelf && PlayerPrefs.GetInt("HideIP") == 0){
+            hostIP.GetComponent<InputField>().contentType = InputField.ContentType.Standard;
+        }
+
         if (name == "Join Menu")
         {
+            if (PlayerPrefs.GetInt("HideTextInput") > 0)
+            {
+                savedIPObject.GetComponent<InputField>().contentType = InputField.ContentType.Password;
+            } else
+            {
+                savedIPObject.GetComponent<InputField>().contentType = InputField.ContentType.Standard;
+            }
+
             if (PlayerPrefs.GetString("savedIP") != null)
             {
                 savedIPObject.GetComponent<InputField>().text = PlayerPrefs.GetString("savedIP");
             }
+        }
+
+        if(name == "Settings Menu")
+        {
+            UnityEngine.Debug.Log("Update toggles");
+            UpdateToggles();
         }
     }
 
@@ -104,4 +165,27 @@ public class ViewManager : MonoBehaviour
     {
         Application.Quit();
     }
+
+
+    public void toggleIP()
+    {
+        if(PlayerPrefs.GetInt("HideIP") == 0) { PlayerPrefs.SetInt("HideIP", 1); }
+        else{ PlayerPrefs.SetInt("HideIP", 0); }
+        PlayerPrefs.Save();
+    }
+
+    public void togglePing()
+    {
+        if (PlayerPrefs.GetInt("HidePing") == 0) { PlayerPrefs.SetInt("HidePing", 1); }
+        else { PlayerPrefs.SetInt("HidePing", 0); }
+        PlayerPrefs.Save();
+    }
+
+    public void toggleTextInput()
+    {
+        if (PlayerPrefs.GetInt("HideTextInput") == 0) { PlayerPrefs.SetInt("HideTextInput", 1); }
+        else { PlayerPrefs.SetInt("HideTextInput", 0); }
+        PlayerPrefs.Save();
+    }
+  
 }

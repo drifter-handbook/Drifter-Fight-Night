@@ -31,6 +31,7 @@ public class CharacterMenu : MonoBehaviour
 
     public GameObject leftPanel;
     public GameObject rightPanel;
+    public GameObject ipPanel;
 
    
     [Serializable]
@@ -87,6 +88,15 @@ public class CharacterMenu : MonoBehaviour
 
         forwardButton.GetComponent<Animator>().SetBool("present", true);
         UpdateFightzone();
+
+        if (PlayerPrefs.GetInt("HideIP") > 0)
+        {
+            ipPanel.SetActive(false);
+        }
+        else
+        {
+            ipPanel.SetActive(true);
+        }
     }
 
     void FixedUpdate()
