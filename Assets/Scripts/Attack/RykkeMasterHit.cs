@@ -149,9 +149,17 @@ public class RykkeMasterHit : MasterHit
         rb.velocity = new Vector2(facing * 50f,0f);
     }
 
+    public void SideQSlide(){
+        facing = movement.Facing;
+        if(drifter.input.MoveX * facing >0){
+            rb.velocity = new Vector2(facing * 25f,0f);
+        }
+        
+    }
+
     public void DownTiltFollowup(){
         facing = movement.Facing;
-        rb.velocity = new Vector2(facing * 30f,0f);
+        rb.velocity = new Vector2(facing * 40f,0f);
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
     }
 
