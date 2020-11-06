@@ -131,23 +131,8 @@ public class OrroMasterHit : MasterHit
         rb.gravityScale = 0;
     }
     public void inTheHole(){
-        facing = movement.Facing;
-        rb.velocity = Vector2.zero;
-        aLayerMask = ~(1 << LayerMask.NameToLayer ("Player") | 1 << LayerMask.NameToLayer ("Platform"));
-        RaycastHit2D hit = Physics2D.Raycast(rb.position, new Vector2(0,1), 20, aLayerMask);
-        if(hit.collider != null && hit.collider.gameObject!= null && hit.collider.gameObject.tag != "Untagged")
-        {
-            Debug.Log("Hit this" + hit.collider);
-            Debug.Log("Did Hit" + hit.distance);
-            var distance = hit.distance;
-            if (distance <4f){
-              distance = 0;
-            }
-            rb.position += new Vector2(0, distance);
-        }
-        else{
-          rb.position += new Vector2(0,20);
-        }
+
+        rb.velocity = new Vector2(0f,225f);
     }
 
     public void resetGravity(){
