@@ -134,12 +134,26 @@ public class RykkeMasterHit : MasterHit
         rb.gravityScale = gravityScale;
     }
 
+    public void multihit(){
+        attacks.SetMultiHitAttackID();
+    }
+
     public void pauseGravity(){
         movement.gravityPaused= true;
         rb.gravityScale = 0f;
         rb.velocity = Vector2.zero;
     }
 
+    public void DownTilt(){
+        facing = movement.Facing;
+        rb.velocity = new Vector2(facing * 50f,0f);
+    }
+
+    public void DownTiltFollowup(){
+        facing = movement.Facing;
+        rb.velocity = new Vector2(facing * 30f,0f);
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
+    }
 
     public void sideWslide()
     {

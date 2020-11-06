@@ -36,6 +36,9 @@ public class PlayerAttacks : MonoBehaviour
         { DrifterAttackType.Aerial_Q_Up, "Aerial_Up" },
         { DrifterAttackType.Aerial_Q_Down, "Aerial_Down" },
         { DrifterAttackType.Aerial_Q_Side, "Aerial_Side" },
+        { DrifterAttackType.Ground_Q_Up, "Ground_Up" },
+        { DrifterAttackType.Ground_Q_Down, "Ground_Down" },
+        { DrifterAttackType.Ground_Q_Side, "Ground_Side" },
     };
     public static Dictionary<DrifterAttackType, string> AnimatorStates = new Dictionary<DrifterAttackType, string>()
     {
@@ -50,6 +53,9 @@ public class PlayerAttacks : MonoBehaviour
         { DrifterAttackType.Aerial_Q_Up, "Aerial_Up" },
         { DrifterAttackType.Aerial_Q_Down, "Aerial_Down" },
         { DrifterAttackType.Aerial_Q_Side, "Aerial_Side" },
+        { DrifterAttackType.Ground_Q_Up, "Ground_Up" },
+        { DrifterAttackType.Ground_Q_Down, "Ground_Down" },
+        { DrifterAttackType.Ground_Q_Side, "Ground_Side" },
     };
 
     static int nextID = 0;
@@ -138,7 +144,10 @@ public class PlayerAttacks : MonoBehaviour
         {
             if (animator.GetBool("Grounded"))
             {
-                StartAttack(DrifterAttackType.Ground_Q_Neutral);
+                if(drifter.input.MoveY > 0)StartAttack(DrifterAttackType.Ground_Q_Up);
+                else if(drifter.input.MoveY < 0)StartAttack(DrifterAttackType.Ground_Q_Down);
+                else if(drifter.input.MoveX!=0)StartAttack(DrifterAttackType.Ground_Q_Side);
+                else StartAttack(DrifterAttackType.Ground_Q_Neutral);
             }
             else
             {                

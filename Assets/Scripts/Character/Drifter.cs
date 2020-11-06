@@ -81,6 +81,9 @@ public class Drifter : MonoBehaviour
         if (state.Aerial_Up) animator.SetTrigger("Aerial_Up");
         if (state.Aerial_Down) animator.SetTrigger("Aerial_Down");
         if (state.Aerial_Side) animator.SetTrigger("Aerial_Side");
+        if (state.Ground_Up) animator.SetTrigger("Ground_Up");
+        if (state.Ground_Down) animator.SetTrigger("Ground_Down");
+        if (state.Ground_Side) animator.SetTrigger("Ground_Side");
 
     }
     // used by host
@@ -130,7 +133,16 @@ public class Drifter : MonoBehaviour
                 break;
             case "Aerial_Side":
                 animatorState.Aerial_Side = true;
-                break;          
+                break;
+            case "Ground_Up":
+                animatorState.Ground_Up = true;
+                break;
+            case "Ground_Down":
+                animatorState.Ground_Down = true;
+                break;
+            case "Ground_Side":
+                animatorState.Ground_Side = true;
+                break;             
         }
     }
     public void ResetAnimatorTriggers()
@@ -150,6 +162,9 @@ public class Drifter : MonoBehaviour
         animatorState.Aerial_Up = false;
         animatorState.Aerial_Down = false;
         animatorState.Aerial_Side = false;
+        animatorState.Ground_Up = false;
+        animatorState.Ground_Down = false;
+        animatorState.Ground_Side = false;
 
     }
     public void SetAnimatorBool(string s, bool value)
@@ -203,6 +218,9 @@ public class PlayerAnimatorState : ICloneable
     public bool Aerial_Up = false;
     public bool Aerial_Down = false;
     public bool Aerial_Side = false;
+    public bool Ground_Up = false;
+    public bool Ground_Down = false;
+    public bool Ground_Side = false;
 
     public object Clone()
     {
@@ -227,6 +245,9 @@ public class PlayerAnimatorState : ICloneable
             Aerial_Up = Aerial_Up,
             Aerial_Down = Aerial_Down,
             Aerial_Side = Aerial_Side,
+            Ground_Up = Ground_Up,
+            Ground_Down = Ground_Down,
+            Ground_Side = Ground_Side,
         };
     }
 }

@@ -469,6 +469,7 @@ MonoBehaviour:
   airAccelerationTime: 0.8
   airSpeed: 15
   terminalVelocity: 80
+  fastFallTerminalVelocity: 55
   flipSprite: 0
   jumpHeight: 0
   jumpTime: 0
@@ -539,6 +540,12 @@ MonoBehaviour:
   - attack: 7
     attackData: {fileID: 11400000, guid: be94e269e9183e840a9536a046b0df0c, type: 2}
   - attack: 6
+    attackData: {fileID: 11400000, guid: be94e269e9183e840a9536a046b0df0c, type: 2}
+  - attack: 1
+    attackData: {fileID: 11400000, guid: be94e269e9183e840a9536a046b0df0c, type: 2}
+  - attack: 2
+    attackData: {fileID: 11400000, guid: be94e269e9183e840a9536a046b0df0c, type: 2}
+  - attack: 3
     attackData: {fileID: 11400000, guid: be94e269e9183e840a9536a046b0df0c, type: 2}
   maxRecoveries: 1
   currentRecoveries: 0
