@@ -172,6 +172,15 @@ public class ViewManager : MonoBehaviour
         if(PlayerPrefs.GetInt("HideIP") == 0) { PlayerPrefs.SetInt("HideIP", 1); }
         else{ PlayerPrefs.SetInt("HideIP", 0); }
         PlayerPrefs.Save();
+
+        if (hostIP.activeSelf && PlayerPrefs.GetInt("HideIP") > 0)
+        {
+            hostIP.GetComponent<InputField>().contentType = InputField.ContentType.Password;
+        }
+        else if (hostIP.activeSelf && PlayerPrefs.GetInt("HideIP") == 0)
+        {
+            hostIP.GetComponent<InputField>().contentType = InputField.ContentType.Standard;
+        }
     }
 
     public void togglePing()
@@ -186,6 +195,15 @@ public class ViewManager : MonoBehaviour
         if (PlayerPrefs.GetInt("HideTextInput") == 0) { PlayerPrefs.SetInt("HideTextInput", 1); }
         else { PlayerPrefs.SetInt("HideTextInput", 0); }
         PlayerPrefs.Save();
+
+        if (PlayerPrefs.GetInt("HideTextInput") > 0)
+        {
+            savedIPObject.GetComponent<InputField>().contentType = InputField.ContentType.Password;
+        }
+        else
+        {
+            savedIPObject.GetComponent<InputField>().contentType = InputField.ContentType.Standard;
+        }
     }
   
 }
