@@ -21,8 +21,11 @@ public class PlayerMovement : MonoBehaviour
     public int Weight = 90;
 
     public int currentJumps;
+    public float ledgeOffset = 1f;
     float jumpSpeed;
     float baseGravity;
+
+    
 
     Vector2 prevVelocity;
 
@@ -30,10 +33,14 @@ public class PlayerMovement : MonoBehaviour
     public int Facing { get; set; } = 1;
     public bool grounded = true;
     public bool gravityPaused = false;
+    bool ledgeHanging = false;
+    bool strongLedgeGrab = true;
 
     Animator animator;
 
     NetworkEntityList entities;
+
+    PlayerAttacks attacks;
 
     Rigidbody2D rb;
     PolygonCollider2D col;
@@ -62,8 +69,12 @@ public class PlayerMovement : MonoBehaviour
         animator = drifter.animator;
         sprite = GetComponentInChildren<SpriteRenderer>();
 
+        attacks = GetComponent<PlayerAttacks>();
+
         col = GetComponent<PolygonCollider2D>();
         status = GetComponent<PlayerStatus>();
+
+
     }
     void Start(){
         baseGravity = rb.gravityScale;
@@ -108,7 +119,8 @@ public class PlayerMovement : MonoBehaviour
         if(animator.GetBool("Grounded"))
         {
             currentJumps = numberOfJumps;
-
+            strongLedgeGrab = true;
+            
             if(!IsGrounded())
             {
                 currentJumps--;
@@ -231,6 +243,11 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x,(drifter.input.MoveY < 0 && prevMoveY < 0 ?-fastFallTerminalVelocity:-terminalVelocity));
         }
 
+        if(drifter.input.MoveY < 0 && prevMoveY < 0 && ledgeHanging){
+            DropLedge();
+            drifter.SetAnimatorTrigger("Ledge_Drop");
+        }
+
         //Jump
         if (jumpPressed && canAct) //&& rb.velocity.y < 0.8f * jumpSpeed)
         {
@@ -275,7 +292,7 @@ public class PlayerMovement : MonoBehaviour
             
         }
         //makes sure gavity is always reset after using a move
-        else if(!status.HasStatusEffect(PlayerStatusEffect.END_LAG) || !gravityPaused){
+        else if(!status.HasStatusEffect(PlayerStatusEffect.END_LAG) && !gravityPaused && !ledgeHanging){
             rb.gravityScale = baseGravity;
         }
 
@@ -315,6 +332,33 @@ public class PlayerMovement : MonoBehaviour
         }
         return false;
     }
+
+    public void GrabLedge(Vector3 pos){
+        gravityPaused = false;
+        if(strongLedgeGrab)drifter.SetAnimatorTrigger("Ledge_Grab_Strong");
+        else drifter.SetAnimatorTrigger("Ledge_Grab_Weak");
+        Facing = flipSprite ^ rb.position.x > 0 ? -1 :1;
+        transform.localScale = new Vector3(Facing * Mathf.Abs(transform.localScale.x),
+                transform.localScale.y, transform.localScale.z);
+
+        rb.position = new Vector3(pos.x - (rb.position.x > 0 ? -1 :1) *2f, pos.y-ledgeOffset,pos.z);
+ 
+        attacks.resetRecovery();
+
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.2f);
+        ledgeHanging = true;
+        rb.gravityScale = 0f;
+        currentJumps = numberOfJumps - 1;
+
+        rb.velocity = Vector2.zero;
+    }
+
+    public void DropLedge(){
+        ledgeHanging = false;
+        rb.gravityScale = baseGravity;
+        strongLedgeGrab = false;
+    }
+
 
     public void spawnJuiceParticle(Vector3 pos, int mode)
     {

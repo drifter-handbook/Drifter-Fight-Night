@@ -101,7 +101,7 @@ public class RykkeMasterHit : MasterHit
         
         if(tetherTarget != Vector2.zero && !tetheredPlayer)
         {
-            rb.velocity = new Vector2((-rb.position.x + tetherTarget.x) *3f, Mathf.Min((-rb.position.y + tetherTarget.y) *3f,50f) + 30);
+            rb.velocity = new Vector2((-rb.position.x + tetherTarget.x) *3f + 10f, Mathf.Min((-rb.position.y + tetherTarget.y) *3f,50f) + 30);
             if(movement.currentJumps < movement.numberOfJumps-1){
                 movement.currentJumps++;
             }
@@ -185,10 +185,6 @@ public class RykkeMasterHit : MasterHit
     public override void hitTheRecovery(GameObject target)
     {
         Debug.Log("Recovery hit!");
-    }
-    public override void cancelTheRecovery()
-    {
-        resetGravity();
     }
 
     public void sideGrab()

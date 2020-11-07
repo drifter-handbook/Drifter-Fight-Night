@@ -84,6 +84,10 @@ public class Drifter : MonoBehaviour
         if (state.Ground_Up) animator.SetTrigger("Ground_Up");
         if (state.Ground_Down) animator.SetTrigger("Ground_Down");
         if (state.Ground_Side) animator.SetTrigger("Ground_Side");
+        if (state.Ledge_Climb) animator.SetTrigger("Ledge_Climb");
+        if (state.Ledge_Drop) animator.SetTrigger("Ledge_Drop");
+        if (state.Ledge_Grab_Strong) animator.SetTrigger("Ledge_Grab_Strong");
+        if (state.Ledge_Grab_Weak) animator.SetTrigger("Ledge_Grab_Weak");
 
     }
     // used by host
@@ -142,7 +146,19 @@ public class Drifter : MonoBehaviour
                 break;
             case "Ground_Side":
                 animatorState.Ground_Side = true;
-                break;             
+                break;
+            case "Ledge_Climb":
+                animatorState.Ledge_Climb = true;
+                break;
+            case "Ledge_Drop":
+                animatorState.Ledge_Drop = true;
+                break;
+            case "Ledge_Grab_Strong":
+                animatorState.Ledge_Grab_Strong = true;
+                break;
+            case "Ledge_Grab_Weak":
+                animatorState.Ledge_Grab_Weak = true;
+                break;                        
         }
     }
     public void ResetAnimatorTriggers()
@@ -165,6 +181,10 @@ public class Drifter : MonoBehaviour
         animatorState.Ground_Up = false;
         animatorState.Ground_Down = false;
         animatorState.Ground_Side = false;
+        animatorState.Ledge_Climb = false;
+        animatorState.Ledge_Grab_Strong = false;
+        animatorState.Ledge_Grab_Weak = false;
+        animatorState.Ledge_Drop = false;
 
     }
     public void SetAnimatorBool(string s, bool value)
@@ -221,6 +241,10 @@ public class PlayerAnimatorState : ICloneable
     public bool Ground_Up = false;
     public bool Ground_Down = false;
     public bool Ground_Side = false;
+    public bool Ledge_Climb = false;
+    public bool Ledge_Drop = false;
+    public bool Ledge_Grab_Strong = false;
+    public bool Ledge_Grab_Weak = false;
 
     public object Clone()
     {
@@ -248,6 +272,10 @@ public class PlayerAnimatorState : ICloneable
             Ground_Up = Ground_Up,
             Ground_Down = Ground_Down,
             Ground_Side = Ground_Side,
+            Ledge_Climb = Ledge_Climb,
+            Ledge_Drop = Ledge_Drop,
+            Ledge_Grab_Strong = Ledge_Grab_Strong,
+            Ledge_Grab_Weak = Ledge_Grab_Weak,
         };
     }
 }
