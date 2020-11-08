@@ -181,6 +181,15 @@ public class MegurinMasterHit : MasterHit
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
     }
 
+    public void ledgeClimbLag(){
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
+    }
+
+     public void ledgeClimb(){
+        facing = movement.Facing;
+        rb.position += new Vector2(4f* facing,5f);
+    }
+
     public void warpRoll(){
         facing = movement.Facing;
         rb.position += new Vector2(6f* facing,0f);
