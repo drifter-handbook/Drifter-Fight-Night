@@ -25,9 +25,22 @@ public class SwordFrogMasterHit : MasterHit
 
     public void dodgeRoll(){
         facing = movement.Facing;
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.5f);
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.45f);
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.2f);
         rb.velocity = new Vector2(facing * 30f,0f);
+    }
+
+
+     public void pullup(){
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.5f);
+        rb.velocity = new Vector3(facing * -5f,40f,0);
+    }
+
+    public void pullupDodgeRoll()
+    {
+        facing = movement.Facing;
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.2f);
+        rb.velocity = new Vector2(facing * 30f,5f);
     }
 
 
