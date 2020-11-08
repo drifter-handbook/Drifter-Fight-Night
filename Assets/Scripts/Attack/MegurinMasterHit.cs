@@ -141,9 +141,25 @@ public class MegurinMasterHit : MasterHit
         entities.AddEntity(dairBolt);
     }
 
+
+    public void FTilt(){
+        facing = movement.Facing;
+        GameObject windwave = Instantiate(entities.GetEntityPrefab("Windwave"), transform.position + new Vector3(facing * 3f, 1f), transform.rotation);
+        windwave.GetComponent<Rigidbody2D>().velocity = new Vector3(facing  * 18f,0);
+        windwave.transform.localScale = new Vector3(facing * 12f,12f);
+        foreach (HitboxCollision hitbox in windwave.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+        }
+        entities.AddEntity(windwave);
+    }
+
     public void Uair(){
         GameObject Megunado = Instantiate(entities.GetEntityPrefab("Megunado"), transform.position + new Vector3(0, 3.3f), transform.rotation);
-        Megunado.GetComponent<Rigidbody2D>().velocity = Vector3.up * 18f;
+        Megunado.GetComponent<Rigidbody2D>().velocity = Vector3.up * 23f;
         foreach (HitboxCollision hitbox in Megunado.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
