@@ -37,6 +37,19 @@ public class SpaceJamMasterHit : MasterHit
         rb.velocity = new Vector2(facing * -45f,0f);
     }
 
+     public void pullup(){
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.5f);
+        rb.velocity = new Vector3(0f,45f,0);
+    }
+
+    public void pullupDodgeRoll()
+    {
+        facing = movement.Facing;
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.45f);
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
+        rb.velocity = new Vector2(facing * -45f,5f);
+    }
+
     public void multihit(){
         attacks.SetMultiHitAttackID();
     }
@@ -88,15 +101,17 @@ public class SpaceJamMasterHit : MasterHit
         }
     }
 
+
+
     public void callTheRecovery(){
         facing = movement.Facing;
         rb.gravityScale = 0;
         movement.gravityPaused= true;
         rb.velocity= new Vector2(facing * -25,25);
     }
-    public override void cancelTheRecovery(){
+    public void cancelTheRecovery(){
         rb.gravityScale = gravityScale;
-        movement.gravityPaused= false;
+        movement.gravityPaused = false;
     } 
 
     void grantCharges(){
