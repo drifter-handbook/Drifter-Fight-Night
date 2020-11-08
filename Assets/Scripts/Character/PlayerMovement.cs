@@ -163,7 +163,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //Normal walking logic
-        if (moving && canAct)
+        if (moving && canAct && ! ledgeHanging)
         {
         	//UnityEngine.Debug.Log("BEFORE velocity: " + rb.velocity.x);
         	updateFacing();
@@ -190,6 +190,11 @@ public class PlayerMovement : MonoBehaviour
             }
 
             //UnityEngine.Debug.Log("AFTER velocity: " + rb.velocity.x);
+        }
+        else if(moving && canAct && ledgeHanging)
+        {
+            DropLedge();
+            drifter.SetAnimatorTrigger("Ledge_Drop");
         }
         //Turn walking animation off
         else if (!moving && status.HasGroundFriction())
