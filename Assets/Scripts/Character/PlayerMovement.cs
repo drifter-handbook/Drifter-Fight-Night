@@ -222,7 +222,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //Guard
-        else if (drifter.input.Guard && canGuard)
+        else if (drifter.input.Guard && canGuard && !ledgeHanging)
         {
             //shift is guard
             if (!animator.GetBool("Guarding"))
@@ -232,9 +232,15 @@ public class PlayerMovement : MonoBehaviour
             updateFacing();
 
         }
+
         else
         {
             drifter.SetAnimatorBool("Guarding", false);
+        }
+
+        if(drifter.input.Guard && canGuard && ledgeHanging)
+        {
+            drifter.SetAnimatorTrigger("Ledge_Climb");
         }
 
         //Terminal velocity
@@ -335,6 +341,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void GrabLedge(Vector3 pos){
         gravityPaused = false;
+        attacks.ledgeHanging = true;
         if(strongLedgeGrab)drifter.SetAnimatorTrigger("Ledge_Grab_Strong");
         else drifter.SetAnimatorTrigger("Ledge_Grab_Weak");
         Facing = flipSprite ^ rb.position.x > 0 ? -1 :1;
@@ -357,6 +364,7 @@ public class PlayerMovement : MonoBehaviour
         ledgeHanging = false;
         rb.gravityScale = baseGravity;
         strongLedgeGrab = false;
+        attacks.ledgeHanging = false;
     }
 
 

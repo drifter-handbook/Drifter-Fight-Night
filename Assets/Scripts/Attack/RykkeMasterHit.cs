@@ -129,6 +129,19 @@ public class RykkeMasterHit : MasterHit
         status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.7f);
     }
 
+    public void pullup(){
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.5f);
+        rb.velocity = new Vector3(facing * -5f,45f,0);
+    }
+
+    public void pullupDodgeRoll()
+    {
+        facing = movement.Facing;
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.5f);
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
+        rb.velocity = new Vector2(facing * 45f,5f);
+    }
+
     public void resetGravity(){
         movement.gravityPaused = false;
         rb.gravityScale = gravityScale;

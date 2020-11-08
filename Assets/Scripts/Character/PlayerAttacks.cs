@@ -69,6 +69,7 @@ public class PlayerAttacks : MonoBehaviour
     Dictionary<DrifterAttackType,SingleAttackData> Attacks = new Dictionary<DrifterAttackType,SingleAttackData>();
     public int maxRecoveries = 1;
     public int currentRecoveries;
+    public bool ledgeHanging = false;
 
     Drifter drifter;
     PlayerStatus status;
@@ -108,7 +109,7 @@ public class PlayerAttacks : MonoBehaviour
         bool lightPressed = !drifter.prevInput.Light && drifter.input.Light;
         bool specialPressed = !drifter.prevInput.Special && drifter.input.Special;
         bool grabPressed = !drifter.prevInput.Grab && drifter.input.Grab;
-        bool canAct = !status.HasStunEffect() && !animator.GetBool("Guarding");
+        bool canAct = !status.HasStunEffect() && !animator.GetBool("Guarding") && !ledgeHanging;
 
         if((animator.GetBool("Grounded") && !status.HasStatusEffect(PlayerStatusEffect.END_LAG)) || status.HasEnemyStunEffect()){
             resetRecovery();
