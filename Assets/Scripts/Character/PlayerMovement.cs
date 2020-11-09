@@ -193,8 +193,20 @@ public class PlayerMovement : MonoBehaviour
         }
         else if(moving && canAct && ledgeHanging)
         {
-            DropLedge();
-            drifter.SetAnimatorTrigger("Ledge_Drop");
+            if(drifter.input.MoveX * Facing <= 0  && drifter.input.MoveY > 0){
+                DropLedge();
+                drifter.SetAnimatorTrigger("Ledge_Drop");
+                rb.velocity = new Vector3(Facing * (flipSprite?-1:1) * 25f,25f);
+            }
+            
+            else if(drifter.input.MoveX * Facing > 0  && drifter.input.MoveY > 0){
+                //kms
+            }
+
+            else{
+                DropLedge();
+                drifter.SetAnimatorTrigger("Ledge_Drop");
+            }
         }
         //Turn walking animation off
         else if (!moving && status.HasGroundFriction())

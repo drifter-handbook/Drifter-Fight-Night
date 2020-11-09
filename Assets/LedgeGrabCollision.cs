@@ -16,7 +16,7 @@ public class LedgeGrabCollision : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col){
 
-    	if(col.gameObject.tag == "Ledge"){
+    	if(col.gameObject.tag == "Ledge" && !col.GetComponent<HopUp>().locked){
     		UnityEngine.Debug.Log("LEDGE GRAB!");
     		movement.GrabLedge(col.gameObject.transform.position);
     	}

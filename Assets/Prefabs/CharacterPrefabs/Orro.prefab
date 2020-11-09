@@ -570,6 +570,7 @@ MonoBehaviour:
   jumpTime: 2
   Weight: 95
   currentJumps: 0
+  ledgeOffset: 1
   grounded: 1
   gravityPaused: 0
   varyJumpHeightDuration: 0.2
@@ -617,6 +618,7 @@ MonoBehaviour:
     attackData: {fileID: 11400000, guid: 13523a6d472ee504ca1c6a0f395331cb, type: 2}
   maxRecoveries: 1
   currentRecoveries: 0
+  ledgeHanging: 0
 --- !u!114 &1401939795787901855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -870,7 +872,7 @@ GameObject:
   - component: {fileID: 4303643142566066938}
   m_Layer: 8
   m_Name: LedgeGrab
-  m_TagString: Untagged
+  m_TagString: LedgeGrabBox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

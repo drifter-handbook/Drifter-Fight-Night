@@ -145,7 +145,7 @@ public class MegurinMasterHit : MasterHit
     public void FTilt(){
         facing = movement.Facing;
         GameObject windwave = Instantiate(entities.GetEntityPrefab("Windwave"), transform.position + new Vector3(facing * 3f, 1f), transform.rotation);
-        windwave.GetComponent<Rigidbody2D>().velocity = new Vector3(facing  * 18f,0);
+        windwave.GetComponent<Rigidbody2D>().velocity = new Vector3(facing  * 35f,0);
         windwave.transform.localScale = new Vector3(facing * 12f,12f);
         foreach (HitboxCollision hitbox in windwave.GetComponentsInChildren<HitboxCollision>(true))
         {

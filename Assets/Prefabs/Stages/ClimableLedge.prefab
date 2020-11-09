@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4502615407992222421}
   - component: {fileID: 2195316125125702020}
   - component: {fileID: 2988673465016494621}
+  - component: {fileID: 852651778910199636}
   m_Layer: 0
   m_Name: ClimableLedge
   m_TagString: Ledge
@@ -69,3 +70,15 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 3
+--- !u!114 &852651778910199636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4502615407992222420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a10f56fb5de80494d812933aecca1bc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
