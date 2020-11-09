@@ -22,6 +22,7 @@ public class PlayerMovement : MonoBehaviour
 
     public int currentJumps;
     public float ledgeOffset = 1f;
+    public float ledgeClimbOffset = 0f;
     float jumpSpeed;
     float baseGravity;
 
@@ -203,7 +204,7 @@ public class PlayerMovement : MonoBehaviour
                 DropLedge();
                 drifter.SetAnimatorTrigger("Ledge_Climb_Basic");
                 status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.2f);
-                rb.position = new Vector3(rb.position.x + (rb.position.x > 0 ? -1 :1) *2f, rb.position.y + 5f);
+                rb.position = new Vector3(rb.position.x + (rb.position.x > 0 ? -1 :1) *2f, rb.position.y + 5f - ledgeClimbOffset);
             }
 
         }
