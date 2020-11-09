@@ -88,6 +88,7 @@ public class Drifter : MonoBehaviour
         if (state.Ledge_Drop) animator.SetTrigger("Ledge_Drop");
         if (state.Ledge_Grab_Strong) animator.SetTrigger("Ledge_Grab_Strong");
         if (state.Ledge_Grab_Weak) animator.SetTrigger("Ledge_Grab_Weak");
+        if (state.Ledge_Climb_Basic) animator.SetTrigger("Ledge_Climb_Basic");
 
     }
     // used by host
@@ -158,7 +159,10 @@ public class Drifter : MonoBehaviour
                 break;
             case "Ledge_Grab_Weak":
                 animatorState.Ledge_Grab_Weak = true;
-                break;                        
+                break;  
+            case "Ledge_Climb_Basic":
+                animatorState.Ledge_Climb_Basic = true;
+                break;                      
         }
     }
     public void ResetAnimatorTriggers()
@@ -185,6 +189,7 @@ public class Drifter : MonoBehaviour
         animatorState.Ledge_Grab_Strong = false;
         animatorState.Ledge_Grab_Weak = false;
         animatorState.Ledge_Drop = false;
+        animatorState.Ledge_Climb_Basic = false;
 
     }
     public void SetAnimatorBool(string s, bool value)
@@ -245,6 +250,7 @@ public class PlayerAnimatorState : ICloneable
     public bool Ledge_Drop = false;
     public bool Ledge_Grab_Strong = false;
     public bool Ledge_Grab_Weak = false;
+    public bool Ledge_Climb_Basic = false;
 
     public object Clone()
     {
@@ -276,6 +282,7 @@ public class PlayerAnimatorState : ICloneable
             Ledge_Drop = Ledge_Drop,
             Ledge_Grab_Strong = Ledge_Grab_Strong,
             Ledge_Grab_Weak = Ledge_Grab_Weak,
+            Ledge_Climb_Basic = Ledge_Climb_Basic,
         };
     }
 }

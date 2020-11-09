@@ -191,22 +191,21 @@ public class PlayerMovement : MonoBehaviour
 
             //UnityEngine.Debug.Log("AFTER velocity: " + rb.velocity.x);
         }
-        else if(moving && canAct && ledgeHanging)
+        else if(canAct && ledgeHanging)
         {
-            if(drifter.input.MoveX * Facing <= 0  && drifter.input.MoveY > 0){
+            if((drifter.input.MoveX * (flipSprite?-1:1) * Facing < 0)){
                 DropLedge();
                 drifter.SetAnimatorTrigger("Ledge_Drop");
-                rb.velocity = new Vector3(Facing * (flipSprite?-1:1) * 25f,25f);
+                rb.velocity = new Vector3(Facing * (flipSprite?-1:1) * -25f,25f);
             }
             
-            else if(drifter.input.MoveX * Facing > 0  && drifter.input.MoveY > 0){
-                //kms
+            else if((drifter.input.MoveX * (flipSprite?-1:1) * Facing > 0)  || drifter.input.MoveY > 0){
+                DropLedge();
+                drifter.SetAnimatorTrigger("Ledge_Climb_Basic");
+                status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.2f);
+                rb.position = new Vector3(rb.position.x + (rb.position.x > 0 ? -1 :1) *2f, rb.position.y + 5f);
             }
 
-            else{
-                DropLedge();
-                drifter.SetAnimatorTrigger("Ledge_Drop");
-            }
         }
         //Turn walking animation off
         else if (!moving && status.HasGroundFriction())
