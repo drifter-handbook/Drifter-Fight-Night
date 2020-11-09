@@ -73,6 +73,8 @@ public class ScreenShake : MonoBehaviour
             self.orthographicSize = Mathf.Lerp(self.orthographicSize,baseZoom,i);
             yield return null;
          }
+      transform.localPosition = origPos;
+      self.orthographicSize = baseZoom;
       killing = false;
 
       transform.localPosition = origPos;
