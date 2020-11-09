@@ -315,7 +315,7 @@ public class PlayerMovement : MonoBehaviour
             
         }
         //makes sure gavity is always reset after using a move
-        else if(!status.HasStatusEffect(PlayerStatusEffect.END_LAG) && !gravityPaused && !ledgeHanging){
+        else if((!status.HasStatusEffect(PlayerStatusEffect.END_LAG) || !gravityPaused) && !ledgeHanging){
             rb.gravityScale = baseGravity;
         }
 
