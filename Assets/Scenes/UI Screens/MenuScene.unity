@@ -2572,6 +2572,27 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!1 &891306547 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2653818584134388727, guid: 584b9d917f40606479b7600a25ef8a72,
+    type: 3}
+  m_PrefabInstance: {fileID: 1142483613}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &891306551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 891306547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 4, y: -4}
+  m_UseGraphicAlpha: 1
 --- !u!1 &893638187
 GameObject:
   m_ObjectHideFlags: 0
@@ -2856,6 +2877,7 @@ GameObject:
   - component: {fileID: 1083447432}
   - component: {fileID: 1083447431}
   - component: {fileID: 1083447430}
+  - component: {fileID: 1083447433}
   m_Layer: 5
   m_Name: Title
   m_TagString: Untagged
@@ -2879,7 +2901,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 7.151192, y: -297.9659}
+  m_AnchoredPosition: {x: 7.151192, y: -175}
   m_SizeDelta: {x: 349.77057, y: 166.23895}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!95 &1083447430
@@ -2938,6 +2960,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1083447428}
   m_CullTransparentMesh: 0
+--- !u!114 &1083447433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1083447428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!1001 &1142483613
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3098,12 +3135,32 @@ PrefabInstance:
     - target: {fileID: 2653818584134388725, guid: 584b9d917f40606479b7600a25ef8a72,
         type: 3}
       propertyPath: m_Text
-      value: Play
+      value: Click to Play!
+      objectReference: {fileID: 0}
+    - target: {fileID: 2653818584134388726, guid: 584b9d917f40606479b7600a25ef8a72,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2653818584134388726, guid: 584b9d917f40606479b7600a25ef8a72,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -120
+      objectReference: {fileID: 0}
+    - target: {fileID: 2653818584134388726, guid: 584b9d917f40606479b7600a25ef8a72,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2653818584134388726, guid: 584b9d917f40606479b7600a25ef8a72,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2653818584134388727, guid: 584b9d917f40606479b7600a25ef8a72,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 584b9d917f40606479b7600a25ef8a72, type: 3}
