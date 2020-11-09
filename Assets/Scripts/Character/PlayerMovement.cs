@@ -304,15 +304,9 @@ public class PlayerMovement : MonoBehaviour
         //Pause movement for relevent effects.
         if(status.HasStatusEffect(PlayerStatusEffect.STUNNED) || status.HasStatusEffect(PlayerStatusEffect.PLANTED) || status.HasStatusEffect(PlayerStatusEffect.DEAD) || status.HasStatusEffect(PlayerStatusEffect.HITPAUSE))
         {
-            if(status.HasStatusEffect(PlayerStatusEffect.PLANTED) && !IsGrounded())
-            {
-            	status.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,.4f);
-            }
-            else{
-                rb.velocity = Vector2.zero;
-                rb.gravityScale = 0;
-            }
-            
+            rb.velocity = Vector2.zero;
+            rb.gravityScale = 0;
+                        
         }
         //makes sure gavity is always reset after using a move
         else if((!status.HasStatusEffect(PlayerStatusEffect.END_LAG) || !gravityPaused) && !ledgeHanging){

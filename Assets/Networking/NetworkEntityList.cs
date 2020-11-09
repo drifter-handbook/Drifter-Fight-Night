@@ -54,6 +54,16 @@ public class NetworkEntityList : MonoBehaviour
         Entities.Add(entity);
     }
 
+    public int remainingPlayers(){
+        int numRemaining = 0;
+        foreach (GameObject go in Players.Values)
+        {
+            if(hasStocks(go))numRemaining++;
+        }
+        return numRemaining;
+
+    }
+
     public bool hasStocks(GameObject character)
     {
         if (character == null)

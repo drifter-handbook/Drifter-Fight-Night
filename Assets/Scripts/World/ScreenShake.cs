@@ -7,6 +7,7 @@ public class ScreenShake : MonoBehaviour
 
    Camera self;
    float baseZoom;
+   bool killing = false;
    public Coroutine CurrentShake;
 
    void Awake(){
@@ -40,6 +41,12 @@ public class ScreenShake : MonoBehaviour
 
    public IEnumerator KillZoom(float duration, Vector3 position)
    {
+      if(killing){
+         yield break;
+      }
+      else{
+         killing = true;
+      }
       if(CurrentShake != null)StopCoroutine(CurrentShake);
 
       Vector3 origPos = transform.localPosition;
@@ -48,15 +55,17 @@ public class ScreenShake : MonoBehaviour
       UnityEngine.Debug.Log(transform.localPosition);
 
       //transform.localPosition = position;
-
+      
       for(float i = 0f; i <= 1f;i+=.2f)
-         {
+      {
             transform.localPosition = Vector3.Lerp(transform.localPosition,position,i);
             self.orthographicSize = Mathf.Lerp(self.orthographicSize,11f,i);
             yield return null;
-         }
+      }
+      GetComponentInChildren<SpriteRenderer>().enabled = true;
       CurrentShake = StartCoroutine(Shake(duration,.15f));
       yield return new WaitForSeconds(duration);
+      GetComponentInChildren<SpriteRenderer>().enabled = false;  
       transform.localPosition = origPos;
       for(float i = 0f; i <= 1f;i+=.2f)
          {
@@ -64,6 +73,7 @@ public class ScreenShake : MonoBehaviour
             self.orthographicSize = Mathf.Lerp(self.orthographicSize,baseZoom,i);
             yield return null;
          }
+      killing = false;
 
       transform.localPosition = origPos;
       
