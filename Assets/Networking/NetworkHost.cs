@@ -205,9 +205,9 @@ public class NetworkHost : MonoBehaviour, NetworkID
     }
     IEnumerator StartGameCoroutine()
     {
-        //Debug.Log("Start scene load");
+        Debug.Log("Start scene load");
         yield return SceneManager.LoadSceneAsync(GameController.Instance.selectedStage);
-        //Debug.Log("Finish scene load");
+        Debug.Log("Finish scene load");
         // find entities
         entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
         // create players
