@@ -401,7 +401,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 86370427fd72e04428feb975e7b91363, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -571,6 +571,7 @@ MonoBehaviour:
   Weight: 95
   currentJumps: 0
   ledgeOffset: 1
+  ledgeClimbOffset: 0
   grounded: 1
   gravityPaused: 0
   varyJumpHeightDuration: 0.2
@@ -1120,6 +1121,11 @@ PrefabInstance:
       propertyPath: parent
       value: 
       objectReference: {fileID: 3106753082241659636}
+    - target: {fileID: 5076273180305353953, guid: 1e76d2aad5cac964fa578bce301dd12f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 86370427fd72e04428feb975e7b91363, type: 2}
     - target: {fileID: 5434104029671321749, guid: 1e76d2aad5cac964fa578bce301dd12f,
         type: 3}
       propertyPath: m_TagString
