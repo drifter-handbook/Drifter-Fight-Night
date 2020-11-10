@@ -114,7 +114,7 @@ public class PlayerCardArtHolder : MonoBehaviour
             case ("Ryyke"): return 5;
             case ("Megurin"): return 6;
             case ("Nero"): return 7;
-            default: return 7;
+            default: return 8;
         }
     }
 
