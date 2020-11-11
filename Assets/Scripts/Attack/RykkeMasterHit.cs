@@ -137,7 +137,7 @@ public class RykkeMasterHit : MasterHit
     public void pullupDodgeRoll()
     {
         facing = movement.Facing;
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.5f);
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.42f);
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
         rb.velocity = new Vector2(facing * 45f,5f);
     }
