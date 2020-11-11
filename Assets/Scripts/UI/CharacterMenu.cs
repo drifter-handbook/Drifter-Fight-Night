@@ -105,6 +105,13 @@ public class CharacterMenu : MonoBehaviour
         transform.Find("ReadyButton").gameObject.SetActive(GameController.Instance.IsHost);
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            ReturnToTitle();
+        }
+    }
     public void SyncToCharSelectState()
     {
         // add cards if needed
@@ -320,6 +327,21 @@ public class CharacterMenu : MonoBehaviour
     {
         movesetOverlay.gameObject.SetActive(true);
         movesetOverlay.GetComponentInChildren<TutorialSwapper>().SelectDrifter(0);
+    }
+
+    public void ReturnToTitle()
+    {
+        //TODO: C
+        if (GameController.Instance.GetComponent<NetworkClient>() != null)
+        {
+            GameController.Instance.GetComponent<NetworkClient>().ExitToMain();
+        }
+
+        if (GameController.Instance.GetComponent<NetworkHost>() != null)
+        {
+            GameController.Instance.GetComponent<NetworkHost>().ExitToMain();
+        }
+        GameController.Instance.Load("MenuScene");
     }
 
 }
