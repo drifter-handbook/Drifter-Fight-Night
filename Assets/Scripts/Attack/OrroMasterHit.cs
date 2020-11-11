@@ -44,7 +44,7 @@ public class OrroMasterHit : MasterHit
 
     public void ledgeClimb(){
         facing = movement.Facing;
-        rb.position += new Vector2(4f* facing,5f);
+        rb.position += new Vector2(7f* facing,5f);
     }
 
     public void ledgeClimbLag(){
