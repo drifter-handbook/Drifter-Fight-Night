@@ -91,6 +91,18 @@ public class ViewManager : MonoBehaviour
             hostIP.GetComponent<InputField>().text = $"{GameController.Instance.GetComponent<IPWebRequest>().result.ToString()}:{UDPHolePuncher.GetLocalIP(holepunch_ip, 6970).GetAddressBytes()[3]}";
             foundIP = true;
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (currentView == "Main Menu")
+            {
+                Application.Quit();
+            }
+            else
+            {
+                ShowView("Main Menu");
+            }
+        }
     }
 
     public Transform GetView(string name)
