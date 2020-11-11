@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum PlayerStatusEffect
 {
-    AMBERED, PLANTED, STUNNED, EXPOSED, HIT, FEATHERWEIGHT, END_LAG, KNOCKBACK, INVULN, ARMOUR, REVERSED, SLOWED, DEAD, HITPAUSE
+    AMBERED, PLANTED, STUNNED, EXPOSED, HIT, FEATHERWEIGHT, END_LAG, KNOCKBACK, INVULN, ARMOUR, REVERSED, SLOWED, DEAD, HITPAUSE, PARALYZED
 }
 
 
@@ -14,7 +14,7 @@ public class PlayerStatus : MonoBehaviour
     float time = 0f;
     Dictionary<PlayerStatusEffect, float> statusEffects = new Dictionary<PlayerStatusEffect, float>();
 
-    PlayerStatusEffect[] removeableEffects = {PlayerStatusEffect.STUNNED,PlayerStatusEffect.END_LAG,PlayerStatusEffect.REVERSED,PlayerStatusEffect.PLANTED,PlayerStatusEffect.EXPOSED};
+    PlayerStatusEffect[] removeableEffects = {PlayerStatusEffect.STUNNED,PlayerStatusEffect.END_LAG,PlayerStatusEffect.REVERSED,PlayerStatusEffect.PLANTED,PlayerStatusEffect.EXPOSED,PlayerStatusEffect.PARALYZED};
     System.Array allEffects = PlayerStatusEffect.GetValues(typeof(PlayerStatusEffect));
     Rigidbody2D rb;
     Vector2 delayedVelocity;
@@ -71,19 +71,19 @@ public class PlayerStatus : MonoBehaviour
     }
     public bool HasStunEffect()
     {
-        return HasStatusEffect(PlayerStatusEffect.END_LAG) || HasStatusEffect(PlayerStatusEffect.HITPAUSE) || HasStatusEffect(PlayerStatusEffect.KNOCKBACK) || HasStatusEffect(PlayerStatusEffect.PLANTED) || HasStatusEffect(PlayerStatusEffect.STUNNED)|| HasStatusEffect(PlayerStatusEffect.AMBERED) || HasStatusEffect(PlayerStatusEffect.DEAD);
+        return HasStatusEffect(PlayerStatusEffect.END_LAG) || HasStatusEffect(PlayerStatusEffect.HITPAUSE) || HasStatusEffect(PlayerStatusEffect.KNOCKBACK) || HasStatusEffect(PlayerStatusEffect.PLANTED) || HasStatusEffect(PlayerStatusEffect.PARALYZED) || HasStatusEffect(PlayerStatusEffect.STUNNED)|| HasStatusEffect(PlayerStatusEffect.AMBERED) || HasStatusEffect(PlayerStatusEffect.DEAD);
     }
 
     public bool HasRemovableEffect()
     {
-        return HasStatusEffect(PlayerStatusEffect.PLANTED) || HasStatusEffect(PlayerStatusEffect.STUNNED)||  HasStatusEffect(PlayerStatusEffect.EXPOSED) || HasStatusEffect(PlayerStatusEffect.REVERSED)  || HasStatusEffect(PlayerStatusEffect.END_LAG);
+        return HasStatusEffect(PlayerStatusEffect.PLANTED) || HasStatusEffect(PlayerStatusEffect.STUNNED)||  HasStatusEffect(PlayerStatusEffect.EXPOSED) || HasStatusEffect(PlayerStatusEffect.REVERSED) || HasStatusEffect(PlayerStatusEffect.PARALYZED) || HasStatusEffect(PlayerStatusEffect.END_LAG);
     }
     public bool HasEnemyStunEffect()
     {
-        return HasStatusEffect(PlayerStatusEffect.KNOCKBACK) || HasStatusEffect(PlayerStatusEffect.PLANTED)|| HasStatusEffect(PlayerStatusEffect.STUNNED) || HasStatusEffect(PlayerStatusEffect.AMBERED) || HasStatusEffect(PlayerStatusEffect.DEAD);
+        return HasStatusEffect(PlayerStatusEffect.KNOCKBACK) || HasStatusEffect(PlayerStatusEffect.PLANTED)|| HasStatusEffect(PlayerStatusEffect.STUNNED) || HasStatusEffect(PlayerStatusEffect.AMBERED) || HasStatusEffect(PlayerStatusEffect.PARALYZED) || HasStatusEffect(PlayerStatusEffect.DEAD);
     }
     public bool IsEnemyStunEffect(PlayerStatusEffect ef){
-        return (ef == PlayerStatusEffect.KNOCKBACK) || (ef == PlayerStatusEffect.PLANTED) || (ef == PlayerStatusEffect.AMBERED) || (ef == PlayerStatusEffect.STUNNED);
+        return (ef == PlayerStatusEffect.KNOCKBACK) || (ef == PlayerStatusEffect.PLANTED) || (ef == PlayerStatusEffect.AMBERED) || (ef == PlayerStatusEffect.STUNNED || (ef == PlayerStatusEffect.PARALYZED));
     }
     public bool HasGroundFriction()
     {
@@ -120,13 +120,14 @@ public class PlayerStatus : MonoBehaviour
         //Adjust these numbers to make it easier or harder to mash out
         if(HasStatusEffect(PlayerStatusEffect.AMBERED))statusEffects[PlayerStatusEffect.AMBERED]-=.4f;
         if(HasStatusEffect(PlayerStatusEffect.PLANTED))statusEffects[PlayerStatusEffect.PLANTED]-=.4f;
+        if(HasStatusEffect(PlayerStatusEffect.PARALYZED))statusEffects[PlayerStatusEffect.PARALYZED]-=.4f;
     }
 
     public int GetStatusToRender()
     {
         if(HasStatusEffect(PlayerStatusEffect.AMBERED))return 1;
         if(HasStatusEffect(PlayerStatusEffect.PLANTED))return 2;
-        if(HasStatusEffect(PlayerStatusEffect.STUNNED))return 3;
+        if(HasStatusEffect(PlayerStatusEffect.PARALYZED))return 3;
         if(HasStatusEffect(PlayerStatusEffect.EXPOSED))return 4;
         if(HasStatusEffect(PlayerStatusEffect.FEATHERWEIGHT))return 5;
         if(HasStatusEffect(PlayerStatusEffect.REVERSED))return 6;
@@ -143,6 +144,10 @@ public class PlayerStatus : MonoBehaviour
             }
             statusEffects[ef] = duration * 10f;
             return;
+        }
+
+        if(ef == PlayerStatusEffect.PARALYZED){
+            rb.velocity = Vector2.zero;
         }
 
     	if((HasInulvernability() || HasArmour()) && IsEnemyStunEffect(ef)){

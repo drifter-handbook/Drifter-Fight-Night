@@ -81,7 +81,7 @@ public class MegurinMasterHit : MasterHit
         switch(element){
             case -1:
                 if(lightningCharge >= elementChargeMax){
-                    attackData.StatusEffect = PlayerStatusEffect.STUNNED;
+                    attackData.StatusEffect = PlayerStatusEffect.PARALYZED;
                     attackData.StatusDuration = 3.3f;
                     StartCoroutine(resetGauges());
                     return attackData;

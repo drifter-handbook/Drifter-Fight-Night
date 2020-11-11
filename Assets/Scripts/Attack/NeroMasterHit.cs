@@ -129,7 +129,7 @@ public class NeroMasterHit : MasterHit
     public void whiffCounter(){
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
     }
-    public override void cancelTheNeutralW()
+    public void cancelTheNeutralW()
     {
         movement.gravityPaused= false;
         rb.gravityScale = gravityScale;
