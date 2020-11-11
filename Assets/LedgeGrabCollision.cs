@@ -5,6 +5,7 @@ using UnityEngine;
 public class LedgeGrabCollision : MonoBehaviour
 {
 	public PlayerMovement movement;
+	public PlayerStatus status;
 	BoxCollider2D ledgeBox;
     // Start is called before the first frame update
     void Start()
@@ -16,7 +17,7 @@ public class LedgeGrabCollision : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col){
 
-    	if(col.gameObject.tag == "Ledge" && !col.GetComponent<HopUp>().locked){
+    	if(col.gameObject.tag == "Ledge" && !col.GetComponent<HopUp>().locked && !status.HasEnemyStunEffect()){
     		UnityEngine.Debug.Log("LEDGE GRAB!");
     		movement.GrabLedge(col.gameObject.transform.position);
     	}
