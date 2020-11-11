@@ -38,6 +38,20 @@ public class NeroMasterHit : MasterHit
         attacks.SetMultiHitAttackID();
     }
 
+
+    public void pullup(){
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.4f);
+        rb.velocity = new Vector3(0,75f,0);
+    }
+
+    public void pullupDodgeRoll()
+    {
+        facing = movement.Facing;
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.4f);
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
+        rb.velocity = new Vector2(facing * 35f,0f);
+    }
+
     public void dodgeRoll(){
         facing = movement.Facing;
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.4f);
@@ -70,7 +84,7 @@ public class NeroMasterHit : MasterHit
     {
         Debug.Log("Recovery hit!");
     }
-    public override void cancelTheRecovery()
+    public void cancelTheRecovery()
     {
         Debug.Log("Recovery end!");
         movement.gravityPaused= false;

@@ -42,6 +42,15 @@ public class OrroMasterHit : MasterHit
         }
     }
 
+    public void ledgeClimb(){
+        facing = movement.Facing;
+        rb.position += new Vector2(7f* facing,5f);
+    }
+
+    public void ledgeClimbLag(){
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
+    }
+
     public void spawnFireball()
     {
         facing = movement.Facing;
