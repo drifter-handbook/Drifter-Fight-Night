@@ -22,10 +22,12 @@ public enum DrifterType
  */
 [RequireComponent(typeof(PlayerSync))]
 [RequireComponent(typeof(PlayerMovement))]
+[RequireComponent(typeof(PlayerStatus))]
 public class Drifter : MonoBehaviour
 {
     public PlayerMovement movement;
     public PlayerSync sync;
+    public PlayerStatus status;
     public CustomControls controls;
 
     public Animator animator;

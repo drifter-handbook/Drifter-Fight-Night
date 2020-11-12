@@ -10,10 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2483287918784730400}
   - component: {fileID: 2483287918784730401}
-  - component: {fileID: 2483287918784730406}
   m_Layer: 11
   m_Name: Killzone Left
-  m_TagString: Killzone
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26,8 +25,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2483287918784730407}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -60.91, y: 5.9, z: 74.70213}
-  m_LocalScale: {x: 1, y: 0.8, z: 1}
+  m_LocalPosition: {x: -60, y: 46, z: 74.70213}
+  m_LocalScale: {x: 1, y: 160, z: 1}
   m_Children: []
   m_Father: {fileID: 2483287920226936326}
   m_RootOrder: 3
@@ -45,7 +44,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 47.004395}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -56,21 +55,8 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 5, y: 194.00879}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &2483287918784730406
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2483287918784730407}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6237f21e42b45e43b2c2349712e8fef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  endgameBanner: {fileID: 0}
 --- !u!1 &2483287919254341425
 GameObject:
   m_ObjectHideFlags: 0
@@ -84,7 +70,7 @@ GameObject:
   - component: {fileID: 3930115833918187616}
   m_Layer: 11
   m_Name: Killzone Top
-  m_TagString: Killzone
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -97,8 +83,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2483287919254341425}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.43, y: 32.9, z: 74.70213}
-  m_LocalScale: {x: 0.865, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 81, z: 74.70213}
+  m_LocalScale: {x: 120, y: 90, z: 1}
   m_Children: []
   m_Father: {fileID: 2483287920226936326}
   m_RootOrder: 1
@@ -116,7 +102,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 42.680496}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -127,7 +113,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 150, y: 90.36099}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &3930115833918187616
 MonoBehaviour:
@@ -173,6 +159,7 @@ Transform:
   - {fileID: 2483287919254341426}
   - {fileID: 2483287920560247673}
   - {fileID: 2483287918784730400}
+  - {fileID: 1605513067849885201}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -186,10 +173,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2483287920560247673}
   - component: {fileID: 2483287920560247678}
-  - component: {fileID: 2483287920560247672}
   m_Layer: 11
   m_Name: Killzone Bottom
-  m_TagString: Killzone
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -202,8 +188,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2483287920560247679}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.6, y: -36.8, z: 74.70213}
-  m_LocalScale: {x: 2, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: -34, z: 74.70213}
+  m_LocalScale: {x: 120, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2483287920226936326}
   m_RootOrder: 2
@@ -232,21 +218,8 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 150, y: 5}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &2483287920560247672
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2483287920560247679}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6237f21e42b45e43b2c2349712e8fef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  endgameBanner: {fileID: 0}
 --- !u!1 &2483287920723889289
 GameObject:
   m_ObjectHideFlags: 0
@@ -257,10 +230,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2483287920723889290}
   - component: {fileID: 2483287920723889291}
-  - component: {fileID: 2483287920723889288}
   m_Layer: 11
   m_Name: Killzone Right
-  m_TagString: Killzone
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -273,8 +245,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2483287920723889289}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 64.1, y: 5.89, z: 74.70213}
-  m_LocalScale: {x: 1, y: 0.8, z: 1}
+  m_LocalPosition: {x: 60, y: 46, z: 74.70213}
+  m_LocalScale: {x: 1, y: 160, z: 1}
   m_Children: []
   m_Father: {fileID: 2483287920226936326}
   m_RootOrder: 0
@@ -292,7 +264,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 47.004402}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -303,15 +275,73 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 5, y: 194.0088}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &2483287920723889288
+--- !u!1 &8566644782904883384
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1605513067849885201}
+  - component: {fileID: 673618382310701589}
+  - component: {fileID: 8653660580786605937}
+  m_Layer: 11
+  m_Name: Safezone
+  m_TagString: Killzone
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1605513067849885201
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8566644782904883384}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 115, z: 0}
+  m_LocalScale: {x: 120, y: 300, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2483287920226936326}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &673618382310701589
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8566644782904883384}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
+--- !u!114 &8653660580786605937
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2483287920723889289}
+  m_GameObject: {fileID: 8566644782904883384}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c6237f21e42b45e43b2c2349712e8fef, type: 3}

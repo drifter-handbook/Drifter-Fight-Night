@@ -642,6 +642,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 723345332749663707, guid: 5df3c1865bde8da4bb806ac950f18a6e,
+        type: 3}
+      propertyPath: endgameBanner
+      value: 
+      objectReference: {fileID: 83182562}
+    - target: {fileID: 4941785018536565450, guid: 5df3c1865bde8da4bb806ac950f18a6e,
+        type: 3}
+      propertyPath: endgameBanner
+      value: 
+      objectReference: {fileID: 83182562}
     - target: {fileID: 5156570637747085164, guid: 5df3c1865bde8da4bb806ac950f18a6e,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -710,12 +720,12 @@ PrefabInstance:
     - target: {fileID: 5156570639183135474, guid: 5df3c1865bde8da4bb806ac950f18a6e,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5156570639183135474, guid: 5df3c1865bde8da4bb806ac950f18a6e,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5156570639183135474, guid: 5df3c1865bde8da4bb806ac950f18a6e,
         type: 3}
@@ -772,10 +782,25 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wendys Stage
       objectReference: {fileID: 0}
+    - target: {fileID: 5793957857649611948, guid: 5df3c1865bde8da4bb806ac950f18a6e,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5793957857649611948, guid: 5df3c1865bde8da4bb806ac950f18a6e,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 5793957857649611948, guid: 5df3c1865bde8da4bb806ac950f18a6e,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6819448990122589419, guid: 5df3c1865bde8da4bb806ac950f18a6e,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.28
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6819448990122589419, guid: 5df3c1865bde8da4bb806ac950f18a6e,
         type: 3}
@@ -785,7 +810,7 @@ PrefabInstance:
     - target: {fileID: 6819448990122589419, guid: 5df3c1865bde8da4bb806ac950f18a6e,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.82
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6819448990122589419, guid: 5df3c1865bde8da4bb806ac950f18a6e,
         type: 3}
@@ -800,7 +825,7 @@ PrefabInstance:
     - target: {fileID: 9200663931417287561, guid: 5df3c1865bde8da4bb806ac950f18a6e,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5df3c1865bde8da4bb806ac950f18a6e, type: 3}

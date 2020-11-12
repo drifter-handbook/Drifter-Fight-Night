@@ -39,14 +39,13 @@ public class PlayerHurtboxHandler : MonoBehaviour
             oldAttacks[attackID] = Time.time;
             // apply hit effects
             hitbox.parent.GetComponent<PlayerAttacks>().Hit(attackType, attackID, hurtbox.parent);
-
-            PlayerStatus status = GetComponent<PlayerStatus>();
+            Drifter drifter = GetComponent<Drifter>();
+            PlayerStatus status = drifter.status;
             status.ApplyStatusEffect(PlayerStatusEffect.HIT,.3f);
             //Ignore the collision if invulnerable
             if(status.HasInulvernability())return;
 
             // apply damage
-            Drifter drifter = GetComponent<Drifter>();
             if (drifter != null && status != null)
             {
                 drifter.DamageTaken += attackData.AttackDamage * (drifter.animator.GetBool("Guarding") && !attackData.isGrab ? 1 - drifter.BlockReduction : 1f);

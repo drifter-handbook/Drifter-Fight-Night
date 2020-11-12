@@ -49,7 +49,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
 
     IEnumerator Respawn(Collider2D other)
     {
-        other.transform.position = new Vector2(0f, 300f);
+        other.transform.position = new Vector2(0f, 150f);
         yield return new WaitForSeconds(2f);
         CreateHalo();
         other.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
@@ -57,7 +57,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
         yield break;
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerExit2D(Collider2D other)
     {
         killPlayer(other);
     }
@@ -66,15 +66,16 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
     protected void killPlayer(Collider2D other){
     	if (other.gameObject.tag == "Player" && GameController.Instance.IsHost && other.GetType() == typeof(BoxCollider2D))
         {
-                Drifter drifter = other.gameObject?.GetComponent<Drifter>();
-
+            Drifter drifter = other.gameObject?.GetComponent<Drifter>();
+            if(!drifter.status.HasStatusEffect(PlayerStatusEffect.DEAD))
+            {
                 StartCoroutine(Shake.Shake(.3f,1.5f));
             
                 drifter.Stocks--;
                 drifter.DamageTaken = 0f;
                 drifter.Charge = 0;
-                drifter.GetComponent<PlayerStatus>().ApplyStatusEffect(PlayerStatusEffect.DEAD,2f);
-                drifter.GetComponent<PlayerStatus>().ApplyStatusEffect(PlayerStatusEffect.INVULN,3.5f);
+                drifter.status.ApplyStatusEffect(PlayerStatusEffect.DEAD,1.9f);
+                drifter.status.ApplyStatusEffect(PlayerStatusEffect.INVULN,3.5f);
 
                 if (Entities.hasStocks(other.gameObject))
                 {
@@ -146,10 +147,9 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                         GameController.Instance.winner = winner;
                         destroyed = -2;
                 }
-                CreateExplosion(other, destroyed);
-                    other.transform.position = new Vector2(0f,-300f);
-                
-            }
-        }
+                CreateExplosion(other, destroyed);               
+            	}
+        	}
+        }            
     } 
 }

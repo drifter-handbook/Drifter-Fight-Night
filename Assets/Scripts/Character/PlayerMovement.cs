@@ -42,6 +42,7 @@ public class PlayerMovement : MonoBehaviour
     NetworkEntityList entities;
 
     PlayerAttacks attacks;
+    PlayerStatus status;
 
     Rigidbody2D rb;
     PolygonCollider2D col;
@@ -51,8 +52,6 @@ public class PlayerMovement : MonoBehaviour
     public float varyJumpHeightForce = 10f;
 
     int count = 0;
-
-    PlayerStatus status;
 
     Drifter drifter;
 
@@ -73,7 +72,7 @@ public class PlayerMovement : MonoBehaviour
         attacks = GetComponent<PlayerAttacks>();
 
         col = GetComponent<PolygonCollider2D>();
-        status = GetComponent<PlayerStatus>();
+        status = drifter.status;
 
 
     }
