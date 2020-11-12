@@ -105,13 +105,6 @@ public class CharacterMenu : MonoBehaviour
         transform.Find("ReadyButton").gameObject.SetActive(GameController.Instance.IsHost);
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            ReturnToTitle();
-        }
-    }
     public void SyncToCharSelectState()
     {
         // add cards if needed
@@ -252,7 +245,6 @@ public class CharacterMenu : MonoBehaviour
         {
             forwardButton.GetComponent<Animator>().SetBool("present", false);
         }
-        backButton.GetComponent<Animator>().SetBool("present", true);
 
         List<DrifterType> pickedTypes = new List<DrifterType>();
 
@@ -289,7 +281,6 @@ public class CharacterMenu : MonoBehaviour
 
 
         this.GetComponent<Animator>().SetBool("location", false);
-        backButton.GetComponent<Animator>().SetBool("present", false);
 
         foreach (Animator card in rightPanel.GetComponentsInChildren<Animator>())
         {
