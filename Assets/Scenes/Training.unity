@@ -276,6 +276,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 74363b51a2c6fed479512e42c48f85aa, type: 3}
+--- !u!1 &331968336 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5494752818666650690, guid: 74363b51a2c6fed479512e42c48f85aa,
+    type: 3}
+  m_PrefabInstance: {fileID: 331968335}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &791960205 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8308863690101463978, guid: 99f00dda964e6054cb2af4c05ec2139d,
@@ -718,7 +724,7 @@ MonoBehaviour:
   - {fileID: 2945509486353437919}
   - {fileID: 2945509486353437920}
   StartingEntities:
-  - {fileID: 0}
+  - {fileID: 331968336}
 --- !u!4 &1561472485
 Transform:
   m_ObjectHideFlags: 0
@@ -968,7 +974,7 @@ PrefabInstance:
     - target: {fileID: 1232850341074944074, guid: 908190fe8f231ad4bb5bb812f06be118,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -182.48
+      value: -182.47998
       objectReference: {fileID: 0}
     - target: {fileID: 1232850341074944075, guid: 908190fe8f231ad4bb5bb812f06be118,
         type: 3}
@@ -1399,6 +1405,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Training Room
+      objectReference: {fileID: 0}
+    - target: {fileID: 3792459716108457125, guid: a0381e10168aec24a80f4d4b38b5fda6,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -22
+      objectReference: {fileID: 0}
+    - target: {fileID: 8551208513219688206, guid: a0381e10168aec24a80f4d4b38b5fda6,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a0381e10168aec24a80f4d4b38b5fda6, type: 3}

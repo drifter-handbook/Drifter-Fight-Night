@@ -14,7 +14,7 @@ public class OrroMasterHit : MasterHit
     public GameObject localBean;
     Animator localBeanAnim;
     PlayerStatus status;
-    float beanSpeed = 10f;
+    float beanSpeed = 5f;
     LayerMask aLayerMask;
 
     void Start()
@@ -44,11 +44,11 @@ public class OrroMasterHit : MasterHit
 
     public void ledgeClimb(){
         facing = movement.Facing;
-        rb.position += new Vector2(7f* facing,5f);
+        rb.position += new Vector2(7f* facing,5.5f);
     }
 
     public void ledgeClimbLag(){
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.9f);
     }
 
     public void spawnFireball()
@@ -72,7 +72,7 @@ public class OrroMasterHit : MasterHit
 
     public void dodgeRoll()
     {
-        beanSpeed = 10f;
+        beanSpeed = 5f;
         facing = movement.Facing;
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.8f);
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.4f);
@@ -157,7 +157,7 @@ public class OrroMasterHit : MasterHit
     public void chargebean()
     {
         beanSpeed+=10f;
-        if(beanSpeed >= 50){
+        if(beanSpeed >= 55){
             drifter.SetAnimatorTrigger("W_Neutral");
         }
     }
@@ -191,7 +191,7 @@ public class OrroMasterHit : MasterHit
             localBean.GetComponent<BeanWrangler>().Hide = true;
             drifter.SetAnimatorBool("Empowered",false);
             entities.AddEntity(BeanProj);
-            beanSpeed = 20f;
+            beanSpeed = 5f;
         }
         else{
             BeanRecall();

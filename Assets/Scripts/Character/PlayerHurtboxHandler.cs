@@ -53,7 +53,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 //ScreenShake
             }
             // apply knockback
-            float facingDir = Mathf.Sign(hurtbox.parent.transform.position.x - hitbox.parent.transform.position.x);
+            float facingDir = Mathf.Sign(hurtbox.parent.transform.position.x - hitbox.gameObject.transform.position.x);
             facingDir = facingDir == 0 ? 1 : facingDir;
             // rotate direction by angle of impact
             //calculated angle
