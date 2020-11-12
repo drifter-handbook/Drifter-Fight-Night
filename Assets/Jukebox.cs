@@ -29,6 +29,13 @@ public class Jukebox : MonoBehaviour
         if (lastVolume != volume)
         {
             audioSource.volume = volume;
+            lastVolume = volume;
+        }
+        if(GameController.Instance.volume != -1)
+        {
+            volume = GameController.Instance.volume;
+            audioSource.volume = volume;
+            lastVolume = volume;
         }
     }
 
@@ -43,5 +50,4 @@ public class Jukebox : MonoBehaviour
         audioSource.Play();
     }
 
-    
 }

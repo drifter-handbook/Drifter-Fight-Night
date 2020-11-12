@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Assertions;
 
 public struct ConnectedPlayer
 {
@@ -57,6 +58,8 @@ public class GameController : MonoBehaviour
 
     //* Variables
     string SceneName { get; set; }
+
+    public float volume = -1f;
 
     //* This is a singleton (& the only singleton)
     protected GameController() { } // Get instance with GameController.Instance
