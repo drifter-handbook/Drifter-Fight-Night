@@ -32,6 +32,14 @@ public class MegurinMasterHit : MasterHit
         status = drifter.GetComponent<PlayerStatus>();
     }
 
+    void Update(){
+        if(status.HasStatusEffect(PlayerStatusEffect.DEAD)){
+            lightningCharge = 0;
+            windCharge = 0;
+            iceCharge = 0;
+        }
+    }
+
     public override void callTheRecovery()
     {
         Debug.Log("Recovery start!");
