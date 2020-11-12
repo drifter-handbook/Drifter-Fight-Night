@@ -12,7 +12,7 @@ public class Jukebox : MonoBehaviour
     private Random rand;
     private int selectedSong = -1;
     private float lastVolume = 0;
-
+    private float[] gameControllerVolumes = { -1f, -1f, -1f };
 
     void Initialize(int seed)
     {
@@ -31,12 +31,16 @@ public class Jukebox : MonoBehaviour
             audioSource.volume = volume;
             lastVolume = volume;
         }
-        if(GameController.Instance.volume != -1)
+
+        if(gameControllerVolumes[(int)GameController.VolumeType.MUSIC] != GameController.Instance.volume[(int)GameController.VolumeType.MUSIC])
         {
-            volume = GameController.Instance.volume;
+            volume = GameController.Instance.volume[(int)GameController.VolumeType.MUSIC];
+            gameControllerVolumes[(int)GameController.VolumeType.MUSIC] = GameController.Instance.volume[(int)GameController.VolumeType.MUSIC];
+
             audioSource.volume = volume;
             lastVolume = volume;
         }
+        
     }
 
     void Start()

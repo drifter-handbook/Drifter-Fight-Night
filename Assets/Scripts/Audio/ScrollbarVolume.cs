@@ -6,6 +6,7 @@ public class ScrollbarVolume : MonoBehaviour
 {
 
     public Scrollbar scrollbar;
+    public GameController.VolumeType volumeType;
     // Start is called before the first frame update
     void Start()
     {
@@ -14,6 +15,13 @@ public class ScrollbarVolume : MonoBehaviour
 
     void ScrollbarCallback(float value)
     {
-        GameController.Instance.volume = value;
+        if(volumeType == GameController.VolumeType.MUSIC)
+        {
+            GameController.Instance.volume[(int)volumeType] = value;
+        }
+        else if(volumeType == GameController.VolumeType.SFX)
+        {
+            GameController.Instance.UpdateSFXVolume(value);
+        }
     }
 }

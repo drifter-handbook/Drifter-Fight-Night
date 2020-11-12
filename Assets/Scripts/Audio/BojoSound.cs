@@ -6,9 +6,12 @@ public class BojoSound : MonoBehaviour
 {
     [SerializeField] public AudioClip[] Clips;
 
-    public AudioSource source;
+    AudioSource source;
 
-
+    public void Start()
+    {
+        source = GameController.Instance.GetComponent<AudioSource>();
+    }
     public void PlayAudio()
     {
         source.clip = Clips[UnityEngine.Random.Range(0, Clips.Length)];

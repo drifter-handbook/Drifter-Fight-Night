@@ -19,6 +19,13 @@ public struct ConnectedPlayer
 [DisallowMultipleComponent]
 public class GameController : MonoBehaviour
 {
+    public enum VolumeType
+    {
+        MASTER,
+        MUSIC,
+        SFX
+    };
+
     //* Serialized members
     [Header("Check box if hosting")]
     public bool IsHost;
@@ -59,7 +66,7 @@ public class GameController : MonoBehaviour
     //* Variables
     string SceneName { get; set; }
 
-    public float volume = -1f;
+    public float[] volume = { -1f, -1f, -1f };
 
     //* This is a singleton (& the only singleton)
     protected GameController() { } // Get instance with GameController.Instance
@@ -141,5 +148,11 @@ public class GameController : MonoBehaviour
         {
             Application.Quit();
         }*/
+    }
+
+    public void UpdateSFXVolume(float val)
+    {
+        AudioSource source = GetComponent<AudioSource>();
+        source.volume = val;
     }
 }
