@@ -63,6 +63,7 @@ public class CameraSync : MonoBehaviour, INetworkSync
             oldPos = transform.position;
             targetPos = new Vector3(shakeData.x, shakeData.y, shakeData.z);
             GetComponentInChildren<SpriteRenderer>().enabled = shakeData.killcam;
+            GetComponent<Camera>().orthographicSize = shakeData.zoom;
 
         }
     }
