@@ -117,7 +117,7 @@ public class ParhelionMasterHit : MasterHit
     {
         Debug.Log("Recovery hit!");
     }
-    public override void cancelTheRecovery()
+    public void cancelTheRecovery()
     {
         Debug.Log("Recovery end!");
         movement.gravityPaused= false;
