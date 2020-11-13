@@ -79,6 +79,29 @@ public class ParhelionMasterHit : MasterHit
     	
     }
 
+    public void GroundedSlide(){
+        facing = movement.Facing;
+        if(drifter.input.MoveX * facing <0){
+            rb.velocity = new Vector2(facing * -1f * movement.walkSpeed,0f);
+        }
+        
+    }
+
+    public void pullup(){
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.4f);
+        rb.velocity = new Vector3(0,65f,0);
+    }
+
+    public void pullupDodgeRoll()
+    {
+        facing = movement.Facing;
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.4f);
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
+        rb.velocity = new Vector2(facing * -35f,0f);
+    }
+
+
+
     public void downJump(){
         rb.velocity += new Vector2(0,35);
     }

@@ -162,10 +162,10 @@ public class RykkeMasterHit : MasterHit
         rb.velocity = new Vector2(facing * 50f,0f);
     }
 
-    public void SideQSlide(){
+    public void GroundedSlide(){
         facing = movement.Facing;
         if(drifter.input.MoveX * facing >0){
-            rb.velocity = new Vector2(facing * 25f,0f);
+            rb.velocity = new Vector2(facing * movement.walkSpeed,0f);
         }
         
     }
