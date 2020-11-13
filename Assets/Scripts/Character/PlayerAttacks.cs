@@ -221,6 +221,7 @@ public class PlayerAttacks : MonoBehaviour
             yield return null;
         }
         FinishAttack(attackType);
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
         yield break;
     }
     public void Hit(DrifterAttackType attackType, int attackID, GameObject target)

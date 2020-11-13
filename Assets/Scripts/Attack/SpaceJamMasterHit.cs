@@ -100,9 +100,7 @@ public class SpaceJamMasterHit : MasterHit
         charges = 0;
         }
     }
-
-
-
+    
     public void callTheRecovery(){
         facing = movement.Facing;
         rb.gravityScale = 0;
