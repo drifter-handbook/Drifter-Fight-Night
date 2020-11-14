@@ -219,13 +219,21 @@ public class PlayerMovement : MonoBehaviour
         else if (!moving && status.HasGroundFriction())
         {
             drifter.SetAnimatorBool("Walking", false);
+
+            //standing ground friction (When button is not held)
             rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 80f * Time.deltaTime), rb.velocity.y);
         }
 
-        else if(IsGrounded())
+        else if(IsGrounded() && drifter.input.MoveX != (flipSprite?-1:1) * Facing)
         {
+            //Moving Ground Friction
             rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 40f * Time.deltaTime), rb.velocity.y);
         }
+        //Reverse aeral DI
+        // else if(moving && drifter.input.MoveX != (flipSprite?-1:1) * Facing)
+        // {
+        //     rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x *.9f, 0f, 40f * Time.deltaTime), rb.velocity.y);
+        // }
 
         //Drop throuhg platforms
         if(canGuard && drifter.input.MoveY <-1){
