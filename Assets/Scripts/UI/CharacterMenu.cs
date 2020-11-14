@@ -174,18 +174,19 @@ public class CharacterMenu : MonoBehaviour
 
         card.SetParent(parent, false);
 
-        Button kickPlayer = CharacterCard.EnableKickPlayers(card, GameController.Instance.IsHost);
-
-        //Don't let host kick themselves
-        GameObject myCard = menuEntries[GameController.Instance.LocalPlayer.PlayerIndex].characterCard;
-        if(myCard == charCard)
+        if (GameController.Instance.IsHost)
         {
-            CharacterCard.EnableKickPlayers(card, false);
-        }
-        else
-        {
-            //TODO: Call function to add listener for kick button click.
-            //kickPlayer.onClick.AddListener(() => )
+            GameObject myCard = menuEntries[GameController.Instance.LocalPlayer.PlayerIndex].characterCard;
+            if (myCard == charCard)
+            {
+                CharacterCard.EnableKickPlayers(card, false);
+            }
+            else
+            {
+                //TODO: Call function to add listener for kick button click.
+                Button kickPlayer = CharacterCard.EnableKickPlayers(card, GameController.Instance.IsHost);
+                //kickPlayer.onClick.AddListener(() => )
+            }
         }
     }
 
