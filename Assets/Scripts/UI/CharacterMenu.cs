@@ -103,6 +103,11 @@ public class CharacterMenu : MonoBehaviour
     {
         SyncToCharSelectState();
         transform.Find("ReadyButton").gameObject.SetActive(GameController.Instance.IsHost);
+        PlayerMenuEntry playerEntry = menuEntries[GameController.Instance.LocalPlayer.PlayerIndex];
+        if (playerEntry == null)
+        {
+            ReturnToTitle();
+        }
     }
 
     public void SyncToCharSelectState()
