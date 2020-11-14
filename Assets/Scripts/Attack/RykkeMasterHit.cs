@@ -117,7 +117,7 @@ public class RykkeMasterHit : MasterHit
 
         }
         else{
-            attacks.currentRecoveries = 1;
+            //attacks.currentRecoveries = 1;
         }
         playerRange.gameObject.transform.parent.gameObject.SetActive(false);
         rb.gravityScale = gravityScale;
