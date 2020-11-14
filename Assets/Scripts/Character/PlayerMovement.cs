@@ -137,6 +137,7 @@ public class PlayerMovement : MonoBehaviour
         //Sets hitstun state when applicable
         if(status.HasEnemyStunEffect() && !animator.GetBool("HitStun")){
             drifter.SetAnimatorBool("HitStun",true);
+            DropLedge();
         }
         else if(!status.HasEnemyStunEffect() && animator.GetBool("HitStun"))
         {
@@ -220,7 +221,7 @@ public class PlayerMovement : MonoBehaviour
             drifter.SetAnimatorBool("Walking", false);
             rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 80f * Time.deltaTime), rb.velocity.y);
         }
-        
+
         //Drop throuhg platforms
         if(canGuard && drifter.input.MoveY <-1){
             gameObject.layer = 13;

@@ -90,7 +90,7 @@ public class SwordFrogMasterHit : MasterHit
     }
 
      IEnumerator waitOutHitpause(){
-        yield return new WaitForSeconds(.61f);
+        yield return new WaitForSeconds(.65f);
         drifter.SetAnimatorBool("Empowered",true);
     }
 
