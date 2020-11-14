@@ -122,15 +122,15 @@ public class NeroMasterHit : MasterHit
 
     public void counter(){
         if(status.HasStatusEffect(PlayerStatusEffect.HIT)){
-            drifter.SetAnimatorBool("Empowered",false);
+            drifter.SetAnimatorBool("Empowered",true);
             status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.3f);
         }
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.65f);
 
     }
     public void hitCounter(){
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.45f);
-        status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.35f);
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.5f);
+        status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.3f);
         drifter.SetAnimatorBool("Empowered",false);
         
     }
@@ -141,8 +141,9 @@ public class NeroMasterHit : MasterHit
     }
 
     public void whiffCounter(){
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.65f);
     }
+
     public void cancelTheNeutralW()
     {
         movement.gravityPaused= false;
