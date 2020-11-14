@@ -20,6 +20,8 @@ public class RykkeMasterHit : MasterHit
     bool tetheredPlayer = false;
     Vector2 tetherTarget = Vector3.zero;
 
+    int recoveryReset =2;
+
     
 
     void Start()
@@ -38,6 +40,9 @@ public class RykkeMasterHit : MasterHit
                 drifter.SetAnimatorBool("Empowered",false);
                 drifter.BlockReduction = .25f;
             }
+        if(movement.grounded){
+            recoveryReset = 2;
+        }
     }
 
     public override void callTheRecovery()
@@ -116,8 +121,9 @@ public class RykkeMasterHit : MasterHit
             }
 
         }
-        else{
-            //attacks.currentRecoveries = 1;
+        else if (recoveryReset > 0){
+            attacks.currentRecoveries = 1;
+            recoveryReset--;
         }
         playerRange.gameObject.transform.parent.gameObject.SetActive(false);
         rb.gravityScale = gravityScale;
