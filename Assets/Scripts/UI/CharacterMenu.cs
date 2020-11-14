@@ -77,6 +77,7 @@ public class CharacterMenu : MonoBehaviour
         public GameObject characterCard;
     }
     List<PlayerMenuEntry> menuEntries = new List<PlayerMenuEntry>();
+    bool playerIsSet = false;
 
     void Awake()
     {
@@ -104,8 +105,14 @@ public class CharacterMenu : MonoBehaviour
         SyncToCharSelectState();
         transform.Find("ReadyButton").gameObject.SetActive(GameController.Instance.IsHost);
 
-        if (GameController.Instance.LocalPlayer.PlayerIndex < 0)
+        if (GameController.Instance.LocalPlayer.PlayerIndex >= 0)
         {
+            playerIsSet = true;
+        }
+
+        if (GameController.Instance.LocalPlayer.PlayerIndex < 0 && playerIsSet)
+        {
+            playerIsSet = false;
             ReturnToTitle();
         }
     }
