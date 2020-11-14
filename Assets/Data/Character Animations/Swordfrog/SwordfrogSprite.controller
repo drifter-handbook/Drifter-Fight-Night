@@ -1714,10 +1714,7 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions:
-  - m_ConditionMode: 1
-    m_ConditionEvent: Walking
-    m_EventTreshold: 0
+  m_Conditions: []
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 4181644845192014124}
   m_Solo: 0
@@ -2257,7 +2254,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: W_Down1
+  m_Name: W_Down
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -2700,10 +2697,10 @@ AnimatorStateMachine:
     m_Position: {x: 260, y: -110, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 7695242423952417492}
-    m_Position: {x: 770, y: 0, z: 0}
+    m_Position: {x: 720, y: -10, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 5484787690430813877}
-    m_Position: {x: 660, y: -70, z: 0}
+    m_Position: {x: 560, y: -70, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -61638917537301393}
     m_Position: {x: 360, y: -10, z: 0}

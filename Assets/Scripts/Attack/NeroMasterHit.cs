@@ -121,7 +121,7 @@ public class NeroMasterHit : MasterHit
     }     
 
     public void counter(){
-        if(status.HasStatusEffect(PlayerStatusEffect.HITPAUSE)){
+        if(status.HasStatusEffect(PlayerStatusEffect.HIT)){
             StartCoroutine(waitOutHitpause());
         }
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.65f);
@@ -140,7 +140,7 @@ public class NeroMasterHit : MasterHit
     }
 
     IEnumerator waitOutHitpause(){
-        yield return new WaitForSeconds(.65f);
+        yield return new WaitForSeconds(.4f);
         drifter.SetAnimatorBool("Empowered",true);
     }
 

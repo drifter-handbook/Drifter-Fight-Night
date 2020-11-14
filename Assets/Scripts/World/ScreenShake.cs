@@ -7,11 +7,13 @@ public class ScreenShake : MonoBehaviour
 
    Camera self;
    float baseZoom;
+   Vector3 basePos;
    bool killing = false;
    public Coroutine CurrentShake;
 
    void Awake(){
       self = GetComponent<Camera>();
+      basePos = gameObject.transform.localPosition;
       baseZoom = self.orthographicSize;
    }
 
@@ -73,7 +75,7 @@ public class ScreenShake : MonoBehaviour
             self.orthographicSize = Mathf.Lerp(self.orthographicSize,baseZoom,i);
             yield return null;
          }
-      transform.localPosition = origPos;
+      transform.localPosition = basePos;
       self.orthographicSize = baseZoom;
       killing = false;
 

@@ -51,10 +51,9 @@ public class PlayerHurtboxHandler : MonoBehaviour
             UnityEngine.Debug.Log(hurtbox.gameObject.name);
             if(hurtbox.gameObject.name == "Counter")
             {
-
                 UnityEngine.Debug.Log("INTERNAL COUNTER");
                 hitbox.parent.GetComponent<PlayerStatus>().ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.7f);
-                status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.5f);
+                status.ApplyStatusEffect(PlayerStatusEffect.HIT,.3f);
                 return;
             }
            

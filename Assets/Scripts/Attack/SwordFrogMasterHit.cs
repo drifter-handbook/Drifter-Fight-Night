@@ -71,7 +71,7 @@ public class SwordFrogMasterHit : MasterHit
 
     }
     public void counter(){
-        if(status.HasStatusEffect(PlayerStatusEffect.HITPAUSE)){
+        if(status.HasStatusEffect(PlayerStatusEffect.HIT)){
             StartCoroutine(waitOutHitpause());
         }
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.65f);
@@ -86,11 +86,11 @@ public class SwordFrogMasterHit : MasterHit
 
     IEnumerator resetCounter(){
         yield return new WaitForSeconds(.3f);
-         drifter.SetAnimatorBool("Empowered",false);
+        drifter.SetAnimatorBool("Empowered",false);
     }
 
      IEnumerator waitOutHitpause(){
-        yield return new WaitForSeconds(.65f);
+        yield return new WaitForSeconds(.4f);
         drifter.SetAnimatorBool("Empowered",true);
     }
 
