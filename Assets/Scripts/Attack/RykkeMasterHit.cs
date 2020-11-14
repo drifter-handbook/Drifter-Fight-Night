@@ -70,6 +70,7 @@ public class RykkeMasterHit : MasterHit
                     hitbox.AttackID = attacks.AttackID;
                     hitbox.AttackType = attacks.AttackType;
                     hitbox.Active = true;
+                    hitbox.Facing = facing;
         }
         float length = 15f;
 
@@ -209,6 +210,7 @@ public class RykkeMasterHit : MasterHit
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;
+            hitbox.Facing = facing;
         }
         HoldPerson.GetComponentInChildren<RyykeGrab>().drifter = drifter;
         entities.AddEntity(HoldPerson);
@@ -251,6 +253,7 @@ public class RykkeMasterHit : MasterHit
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;
+            hitbox.Facing = facing;
         }
         
         tombstone.GetComponent<RyykeTombstone>().facing=facing;
@@ -271,6 +274,7 @@ public class RykkeMasterHit : MasterHit
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;
+            hitbox.Facing = facing;
         }
         
         tombstone.GetComponent<RyykeTombstone>().facing=facing;

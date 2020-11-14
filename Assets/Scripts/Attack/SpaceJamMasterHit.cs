@@ -71,6 +71,7 @@ public class SpaceJamMasterHit : MasterHit
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;
+            hitbox.Facing = facing;
         }
         entities.AddEntity(GuidingBolt);       
             
@@ -95,6 +96,7 @@ public class SpaceJamMasterHit : MasterHit
                 hitbox.AttackID = attacks.AttackID;
                 hitbox.AttackType = attacks.AttackType;
                 hitbox.Active = true;
+                hitbox.Facing = facing;
             }
             amber.GetComponent<OopsiePoopsie>().hurtbox = gameObject.transform.Find("Hurtboxes").gameObject.GetComponent<CapsuleCollider2D>();
             amber.GetComponent<OopsiePoopsie>().status = status;

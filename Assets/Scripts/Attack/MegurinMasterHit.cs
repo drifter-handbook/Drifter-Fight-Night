@@ -145,6 +145,7 @@ public class MegurinMasterHit : MasterHit
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;
+            hitbox.Facing = facing;
         }
         entities.AddEntity(dairBolt);
     }
@@ -161,6 +162,7 @@ public class MegurinMasterHit : MasterHit
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;
+            hitbox.Facing = facing;
         }
         entities.AddEntity(windwave);
     }
@@ -213,6 +215,7 @@ public class MegurinMasterHit : MasterHit
             hitbox.AttackID = attacks.AttackID + 150;
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;
+            hitbox.Facing = facing;
         }
 
         if(activeStorm){
@@ -239,6 +242,7 @@ public class MegurinMasterHit : MasterHit
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;
+            hitbox.Facing = facing;
         }
         entities.AddEntity(MegurinOrb);
     }
@@ -256,6 +260,7 @@ public class MegurinMasterHit : MasterHit
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;
+            hitbox.Facing = facing;
         }
         entities.AddEntity(smallBolt);
     }
@@ -272,6 +277,7 @@ public class MegurinMasterHit : MasterHit
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;
+            hitbox.Facing = facing;
         }
         entities.AddEntity(largeBolt);
     }

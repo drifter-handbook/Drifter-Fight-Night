@@ -79,6 +79,7 @@ public class NeroMasterHit : MasterHit
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;
+            hitbox.Facing = facing;
         }
         entities.AddEntity(neroSpear);
     }

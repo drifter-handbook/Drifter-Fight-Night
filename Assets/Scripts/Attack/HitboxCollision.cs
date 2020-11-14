@@ -12,6 +12,7 @@ public class HitboxCollision : MonoBehaviour
     public bool Active { get; set; } = true;
     public SingleAttackData OverrideData;
     public SingleAttackData AttackData;
+    public int Facing { get; set; } = 1;
 
     // Start is called before the first frame update
     void Start()

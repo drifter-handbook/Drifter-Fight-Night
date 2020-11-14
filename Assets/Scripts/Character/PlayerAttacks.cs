@@ -70,6 +70,7 @@ public class PlayerAttacks : MonoBehaviour
     public int maxRecoveries = 1;
     public int currentRecoveries;
     public bool ledgeHanging = false;
+    public int Facing = 0;
 
     Drifter drifter;
     PlayerStatus status;
@@ -196,6 +197,7 @@ public class PlayerAttacks : MonoBehaviour
         SetHitboxesActive(false);
         drifter.SetAnimatorTrigger(AnimatorTriggers[attackType]);
         SetupAttackID(attackType);
+
         status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,
             Attacks[attackType].EndLag);
 
@@ -297,6 +299,7 @@ public class PlayerAttacks : MonoBehaviour
             hitbox.AttackType = AttackType;
             hitbox.AttackData = Attacks[AttackType];
             hitbox.Active = false;
+            hitbox.Facing = Facing;
         }
     }
     // called by hitboxes during attack animation

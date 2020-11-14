@@ -65,6 +65,7 @@ public class OrroMasterHit : MasterHit
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;
+            hitbox.Facing = facing;
         }
         orroOrb.GetComponent<OrroSideWProjectile>().facing=facing;
         entities.AddEntity(orroOrb);
@@ -96,6 +97,7 @@ public class OrroMasterHit : MasterHit
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;
+            hitbox.Facing = facing;
         }
         entities.AddEntity(orroSplosion);
     }
@@ -111,6 +113,7 @@ public class OrroMasterHit : MasterHit
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;
+            hitbox.Facing = facing;
         }
         marble.GetComponent<Rigidbody2D>().velocity = new Vector3(facing * 35f, 0);
         entities.AddEntity(marble);
@@ -129,6 +132,7 @@ public class OrroMasterHit : MasterHit
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;
+            hitbox.Facing = facing;
         }
         entities.AddEntity(orroSplosion);
     }
@@ -182,6 +186,7 @@ public class OrroMasterHit : MasterHit
                 hitbox.AttackID = attacks.AttackID;
                 hitbox.AttackType = attacks.AttackType;
                 hitbox.Active = true;
+                hitbox.Facing = facing;
             }
             if(beanRemote){
                 Destroy(beanRemote);
@@ -251,6 +256,7 @@ public class OrroMasterHit : MasterHit
                 hitbox.AttackID = attacks.AttackID;
                 hitbox.AttackType = DrifterAttackType.W_Neutral;
                 hitbox.Active = true;
+                hitbox.Facing = facing;
             }
     }
 

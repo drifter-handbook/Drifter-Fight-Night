@@ -65,6 +65,7 @@ public class BojoMasterHit : MasterHit
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;
+            hitbox.Facing = facing;
         }
         bubble.GetComponent<BojoBubble>().mode = Random.Range(0,8);
         entities.AddEntity(bubble);
@@ -101,6 +102,7 @@ public class BojoMasterHit : MasterHit
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;
+            hitbox.Facing = facing;
         }
         entities.AddEntity(Centaur);
         drifter.SetAnimatorBool("Empowered",false);

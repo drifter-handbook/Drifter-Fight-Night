@@ -51,6 +51,8 @@ public class PlayerMovement : MonoBehaviour
     public float varyJumpHeightDuration = 0.5f;
     public float varyJumpHeightForce = 10f;
 
+    int count = 0;
+
     Drifter drifter;
 
     float dropThroughTime;
@@ -222,15 +224,25 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 80f * Time.deltaTime), rb.velocity.y);
         }
 
-        else if(IsGrounded() && drifter.input.MoveX != (flipSprite?-1:1) * Facing)
+
+        //The Fun Shit
+        else if(IsGrounded())
         {
             //Moving Ground Friction
             rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 40f * Time.deltaTime), rb.velocity.y);
         }
-        //Reverse aeral DI
+
+
+        // //More balanced DI logic
+        // else if(IsGrounded() ||  (moving && drifter.input.MoveX == (flipSprite?-1:1) * Facing))
+        // {
+        //     //Moving Ground Friction
+        //     rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 40f * Time.deltaTime), rb.velocity.y);
+        // }
+        // //Reverse aeral DI
         // else if(moving && drifter.input.MoveX != (flipSprite?-1:1) * Facing)
         // {
-        //     rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x *.9f, 0f, 40f * Time.deltaTime), rb.velocity.y);
+        //     rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x *.97f, 0f, 40f * Time.deltaTime), rb.velocity.y);
         // }
 
         //Drop throuhg platforms
@@ -327,6 +339,7 @@ public class PlayerMovement : MonoBehaviour
             else if(flipSprite ^ drifter.input.MoveX < 0){
                 Facing = -1;
             }
+            attacks.Facing = Facing * (flipSprite?-1:1);
             transform.localScale = new Vector3(Facing * Mathf.Abs(transform.localScale.x),
                 transform.localScale.y, transform.localScale.z);
     }

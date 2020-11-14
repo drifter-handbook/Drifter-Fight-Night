@@ -35,8 +35,6 @@ public class PlayerHurtboxHandler : MonoBehaviour
         if (GameController.Instance.IsHost && hitbox.parent != hurtbox.parent && !oldAttacks.ContainsKey(attackID))
         {
 
-
-
             // register new attack
             oldAttacks[attackID] = Time.time;
             // apply hit effects
@@ -63,8 +61,9 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 //ScreenShake
             }
             // apply knockback
-            float facingDir = Mathf.Sign(hurtbox.parent.transform.position.x - hitbox.gameObject.transform.position.x);
-            facingDir = facingDir == 0 ? 1 : facingDir;
+
+            float facingDir = Mathf.Sign(hitbox.Facing) == 0 ? 1 : Mathf.Sign(hitbox.Facing) ;
+
             // rotate direction by angle of impact
             //calculated angle
             float angle = Mathf.Sign(attackData.AngleOfImpact) * Mathf.Atan2(hurtbox.parent.transform.position.y-hitbox.parent.transform.position.y, hurtbox.parent.transform.position.x-hitbox.parent.transform.position.x)*180 / Mathf.PI;
