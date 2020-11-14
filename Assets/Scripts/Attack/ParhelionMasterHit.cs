@@ -74,6 +74,7 @@ public class ParhelionMasterHit : MasterHit
 
     public void downSmash()
     {
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.3f);
     	status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.4f);
         movement.terminalVelocity = 150;
     	

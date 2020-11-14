@@ -34,8 +34,8 @@ public class PlayerMovement : MonoBehaviour
     public int Facing { get; set; } = 1;
     public bool grounded = true;
     public bool gravityPaused = false;
-    public bool ledgeHanging = false;
-    public bool strongLedgeGrab = true;
+    bool ledgeHanging = false;
+    bool strongLedgeGrab = true;
 
     Animator animator;
 
@@ -177,7 +177,6 @@ public class PlayerMovement : MonoBehaviour
 
             if(IsGrounded())
             {
-            	//UnityEngine.Debug.Log("Ground Accell");
             	rb.velocity = new Vector2(drifter.input.MoveX > 0 ? 
                     Mathf.Lerp((!status.HasStatusEffect(PlayerStatusEffect.SLOWED)?walkSpeed:(.6f*walkSpeed)),rb.velocity.x,groundAccelerationTime) :
                     Mathf.Lerp((!status.HasStatusEffect(PlayerStatusEffect.SLOWED)?-walkSpeed:(-.6f*walkSpeed)),rb.velocity.x,groundAccelerationTime), rb.velocity.y);
@@ -221,16 +220,7 @@ public class PlayerMovement : MonoBehaviour
             drifter.SetAnimatorBool("Walking", false);
             rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 80f * Time.deltaTime), rb.velocity.y);
         }
-        //Tunrs hang animation on
-        else
-        {
-            drifter.SetAnimatorBool("Grounded", false);
-            rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 40f * Time.deltaTime), rb.velocity.y);
-        }
-
-        //fastfall
-        //if(canAct && !IsGrounded() && drifter.input.MoveY < 0 && prevMoveY < 0) rb.velocity = new Vector2(rb.velocity.x,-fastFallTerminalVelocity);
-
+        
         //Drop throuhg platforms
         if(canGuard && drifter.input.MoveY <-1){
             gameObject.layer = 13;
@@ -239,8 +229,8 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //Roll
-        if(drifter.input.Guard && canGuard && moving && IsGrounded()){
-
+        if(drifter.input.Guard && canGuard && moving && IsGrounded())
+        {
             drifter.SetAnimatorTrigger("Roll");
             updateFacing();
         }
@@ -254,7 +244,6 @@ public class PlayerMovement : MonoBehaviour
                 drifter.SetAnimatorBool("Guarding", true);
             }
             updateFacing();
-
         }
 
         else
