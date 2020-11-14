@@ -51,8 +51,6 @@ public class PlayerMovement : MonoBehaviour
     public float varyJumpHeightDuration = 0.5f;
     public float varyJumpHeightForce = 10f;
 
-    int count = 0;
-
     Drifter drifter;
 
     float dropThroughTime;

@@ -7,14 +7,10 @@ public class PlayerInput : MonoBehaviour
 {
     public PlayerInputData input;
     public CustomControls keyBindings;
-    float timeOfFirstButton = 0f;
-    bool firstButtonPressed = false;
 
     // Update is called once per frame
     void Update()
     {
-
-        if(Time.time - timeOfFirstButton>1f) firstButtonPressed = false;
 
         if (input == null)
         {
