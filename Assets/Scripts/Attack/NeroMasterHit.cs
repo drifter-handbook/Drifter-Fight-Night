@@ -140,7 +140,7 @@ public class NeroMasterHit : MasterHit
     }
 
     IEnumerator waitOutHitpause(){
-        yield return new WaitForSeconds(.4f);
+        yield return new WaitForSeconds(.1f);
         drifter.SetAnimatorBool("Empowered",true);
     }
 
