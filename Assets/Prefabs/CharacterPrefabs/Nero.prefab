@@ -150,9 +150,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4765442590020114173}
   - component: {fileID: 4640896446290567778}
-  - component: {fileID: 5348885921363213112}
+  - component: {fileID: 7977440369934103394}
   m_Layer: 10
-  m_Name: Counterbox
+  m_Name: Counter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -188,7 +188,7 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.5, y: 1}
   m_Direction: 0
---- !u!114 &5348885921363213112
+--- !u!114 &7977440369934103394
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -197,9 +197,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 7508068104172143471}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0064c0426948755458fd52f16f260aa6, type: 3}
+  m_Script: {fileID: 11500000, guid: c303c2a3e41d8ad428934a942403f36f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  parent: {fileID: 6949512207643572198}
 --- !u!1 &9041163565162977068
 GameObject:
   m_ObjectHideFlags: 0
