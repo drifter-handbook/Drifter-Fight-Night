@@ -122,7 +122,8 @@ public class NeroMasterHit : MasterHit
 
     public void counter(){
         if(status.HasStatusEffect(PlayerStatusEffect.HIT)){
-            StartCoroutine(waitOutHitpause());
+            drifter.SetAnimatorBool("Empowered",false);
+            status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.3f);
         }
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.65f);
 
@@ -130,20 +131,14 @@ public class NeroMasterHit : MasterHit
     public void hitCounter(){
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.45f);
         status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.35f);
-        StartCoroutine(resetCounter());
+        drifter.SetAnimatorBool("Empowered",false);
         
     }
 
     IEnumerator resetCounter(){
-        yield return new WaitForSeconds(.5f);
-         drifter.SetAnimatorBool("Empowered",false);
+        yield return new WaitForSeconds(.3f);
+        drifter.SetAnimatorBool("Empowered",false);
     }
-
-    IEnumerator waitOutHitpause(){
-        yield return new WaitForSeconds(.1f);
-        drifter.SetAnimatorBool("Empowered",true);
-    }
-
 
     public void whiffCounter(){
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);

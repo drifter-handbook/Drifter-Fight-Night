@@ -21,10 +21,9 @@ public class MegurinHitboxCollision : HitboxCollision
          && hurtbox != this.parent.GetComponentInChildren<HurtboxCollision>()
          && AttackType != DrifterAttackType.Null
          && !hurtbox.parent.GetComponent<PlayerHurtboxHandler>().oldAttacks.ContainsKey(AttackID)
-         && !hurtbox.parent.GetComponent<PlayerHurtboxHandler>().oldAttacks.ContainsKey(-AttackID))
+         && !hurtbox.parent.GetComponent<PlayerHurtboxHandler>().oldAttacks.ContainsKey(-AttackID)
+         && !hurtbox.parent.GetComponent<PlayerStatus>().HasStatusEffect(PlayerStatusEffect.INVULN))
         {
-
-
 
             if(OverrideData != null){
 

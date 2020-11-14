@@ -132,6 +132,7 @@ public class PlayerStatus : MonoBehaviour
         if(HasStatusEffect(PlayerStatusEffect.FEATHERWEIGHT))return 5;
         if(HasStatusEffect(PlayerStatusEffect.REVERSED))return 6;
         if(HasStatusEffect(PlayerStatusEffect.SLOWED))return 7;
+        if(HasStatusEffect(PlayerStatusEffect.INVULN))return 8;
         return 0;
     }
 
