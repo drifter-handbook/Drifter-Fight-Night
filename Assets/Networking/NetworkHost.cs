@@ -102,6 +102,12 @@ public class NetworkHost : MonoBehaviour, NetworkID
         Network.Connect();
     }
 
+    public void ForceKick(int index)
+    {
+        CharacterSelectState player = CharacterSelectStates.Find(x => x.PlayerIndex == index);
+        CharacterSelectStates.RemoveAll(x => x.PlayerID == player.PlayerID);
+    }
+
     void Update()
     {
         Network.Update();

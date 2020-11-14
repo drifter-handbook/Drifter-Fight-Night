@@ -185,7 +185,8 @@ public class CharacterMenu : MonoBehaviour
             {
                 //TODO: Call function to add listener for kick button click.
                 Button kickPlayer = CharacterCard.EnableKickPlayers(card, GameController.Instance.IsHost);
-                //kickPlayer.onClick.AddListener(() => )
+                int cardIndex = menuEntries.IndexOf(entry);
+                kickPlayer.onClick.AddListener(() => GameController.Instance.GetComponent<NetworkHost>().ForceKick(cardIndex));
             }
         }
     }
