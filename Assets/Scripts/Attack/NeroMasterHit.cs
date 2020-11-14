@@ -118,6 +118,13 @@ public class NeroMasterHit : MasterHit
     
     public override void callTheNeutralW(){
         facing = movement.Facing;
+    }
+
+
+    public void counterFrame1(){
+        rb.velocity = rb.velocity = new Vector3(rb.velocity.x,0);
+
+        counter();
     }     
 
     public void counter(){
@@ -129,9 +136,9 @@ public class NeroMasterHit : MasterHit
 
     }
     public void hitCounter(){
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.5f);
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
         status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.3f);
-        drifter.SetAnimatorBool("Empowered",false);
+        StartCoroutine(resetCounter());
         
     }
 
@@ -141,7 +148,7 @@ public class NeroMasterHit : MasterHit
     }
 
     public void whiffCounter(){
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.65f);
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.95f);
     }
 
     public void cancelTheNeutralW()

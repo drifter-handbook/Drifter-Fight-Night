@@ -70,6 +70,12 @@ public class SwordFrogMasterHit : MasterHit
         }
 
     }
+
+    public void counterFrame1(){
+        rb.velocity = new Vector3(rb.velocity.x,0);
+
+        counter();
+    }  
     public void counter(){
         if(status.HasStatusEffect(PlayerStatusEffect.HIT)){
             drifter.SetAnimatorBool("Empowered",true);
@@ -81,7 +87,7 @@ public class SwordFrogMasterHit : MasterHit
     public void hitCounter(){
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.5f);
         status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.3f);
-        drifter.SetAnimatorBool("Empowered",false);
+        StartCoroutine(resetCounter());
         
     }
 
@@ -91,7 +97,7 @@ public class SwordFrogMasterHit : MasterHit
     }
 
     public void whiffCounter(){
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.65f);
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.95f);
     }
 
     public void grantCharge(){
