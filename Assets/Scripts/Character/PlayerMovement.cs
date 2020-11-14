@@ -222,7 +222,7 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 80f * Time.deltaTime), rb.velocity.y);
         }
 
-        else
+        else if(IsGrounded())
         {
             rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 40f * Time.deltaTime), rb.velocity.y);
         }
