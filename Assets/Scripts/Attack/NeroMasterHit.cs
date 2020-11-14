@@ -135,7 +135,7 @@ public class NeroMasterHit : MasterHit
     }
 
     IEnumerator resetCounter(){
-        yield return new WaitForSeconds(.3f);
+        yield return new WaitForSeconds(.5f);
          drifter.SetAnimatorBool("Empowered",false);
     }
 

@@ -48,11 +48,9 @@ public class PlayerHurtboxHandler : MonoBehaviour
             if(status.HasInulvernability())return;
             
             //Freezefame if hit a counter
-            UnityEngine.Debug.Log(hurtbox.gameObject.name);
             if(hurtbox.gameObject.name == "Counter")
             {
-                UnityEngine.Debug.Log("INTERNAL COUNTER");
-                hitbox.parent.GetComponent<PlayerStatus>().ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.7f);
+                hitbox.parent.GetComponent<PlayerStatus>().ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.4f);
                 status.ApplyStatusEffect(PlayerStatusEffect.HIT,.3f);
                 return;
             }
