@@ -120,7 +120,7 @@ public class OrroMasterHit : MasterHit
     public void uair()
     {
     	facing = movement.Facing;
-        rb.velocity = new Vector2(0,10f);
+        rb.velocity = new Vector2(rb.velocity.x,10f);
         GameObject orroSplosion = Instantiate(entities.GetEntityPrefab("UairExplosion"), transform.position + new Vector3(0,.5f,0), transform.rotation);
         orroSplosion.transform.localScale = new Vector3(7.5f * facing,7.5f,1f);
         foreach (HitboxCollision hitbox in orroSplosion.GetComponentsInChildren<HitboxCollision>(true))

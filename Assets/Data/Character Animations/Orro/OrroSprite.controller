@@ -705,7 +705,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Aerial_Side
+  m_Name: Aerial_Q_Side
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -743,7 +743,7 @@ AnimatorStateMachine:
     m_Position: {x: 250, y: -230, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -1743999225270099529}
-    m_Position: {x: 200, y: -10, z: 0}
+    m_Position: {x: 260, y: -50, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1937511368183613672}
     m_Position: {x: -170, y: 10, z: 0}
@@ -752,7 +752,7 @@ AnimatorStateMachine:
     m_Position: {x: 720.5, y: 14, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -4124885545576906809}
-    m_Position: {x: -180, y: -80, z: 0}
+    m_Position: {x: -180, y: -70, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3783152039516845334}
     m_Position: {x: -110, y: 80, z: 0}
@@ -770,7 +770,7 @@ AnimatorStateMachine:
     m_Position: {x: -70, y: -160, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5812953309727818903}
-    m_Position: {x: -290, y: -110, z: 0}
+    m_Position: {x: -300, y: -110, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 4722735609883272403}
     m_Position: {x: -300, y: -180, z: 0}
@@ -797,10 +797,10 @@ AnimatorStateMachine:
     m_Position: {x: 460, y: 160, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 8106977754221716829}
-    m_Position: {x: -75.63562, y: 346.60538, z: 0}
+    m_Position: {x: -60, y: 380, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 6562293476673297421}
-    m_Position: {x: 10.685425, y: 446.32108, z: 0}
+    m_Position: {x: 90, y: 510, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3660278716529779879}
     m_Position: {x: -220, y: 550, z: 0}
@@ -2292,7 +2292,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Aerial_Up
+  m_Name: Aerial_Q_Up
   m_Speed: 1.2
   m_CycleOffset: 0
   m_Transitions:
@@ -2527,7 +2527,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Aerial_Down
+  m_Name: Aeria_Q_Down
   m_Speed: 1.2
   m_CycleOffset: 0
   m_Transitions:
