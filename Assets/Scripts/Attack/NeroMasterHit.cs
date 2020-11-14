@@ -47,6 +47,8 @@ public class NeroMasterHit : MasterHit
     public void pullupDodgeRoll()
     {
         facing = movement.Facing;
+        movement.gravityPaused = false;
+        rb.gravityScale = gravityScale;
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.4f);
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
         rb.velocity = new Vector2(facing * 35f,0f);
@@ -119,12 +121,10 @@ public class NeroMasterHit : MasterHit
     }     
 
     public void counter(){
-        if(!status.HasInulvernability()){
-            status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.2f);
-        }
-        if(status.HasHit()){
+        if(status.HasStatusEffect(PlayerStatusEffect.HITPAUSE)){
             drifter.SetAnimatorBool("Empowered",true);
         }
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.65f);
 
     }
     public void hitCounter(){

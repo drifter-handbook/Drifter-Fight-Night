@@ -1200,8 +1200,8 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: W_Down
-  m_Speed: 1
+  m_Name: W_Down_Start
+  m_Speed: 0.75
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 7290393883389571636}
@@ -1727,7 +1727,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0
   m_TransitionOffset: 0
   m_ExitTime: 1
-  m_HasExitTime: 0
+  m_HasExitTime: 1
   m_HasFixedDuration: 0
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -2703,7 +2703,7 @@ AnimatorStateMachine:
     m_Position: {x: 770, y: 0, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 5484787690430813877}
-    m_Position: {x: 740, y: -60, z: 0}
+    m_Position: {x: 660, y: -70, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -61638917537301393}
     m_Position: {x: 360, y: -10, z: 0}

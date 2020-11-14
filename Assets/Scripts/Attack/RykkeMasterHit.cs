@@ -109,7 +109,7 @@ public class RykkeMasterHit : MasterHit
 
         else if(tetherTarget != Vector2.zero && tetheredPlayer)
         {
-            rb.position = new Vector3(tetherTarget.x -.7f *facing,tetherTarget.y +.5f,0);
+            rb.position = new Vector3(tetherTarget.x -.7f *facing,tetherTarget.y +.7f,0);
             rb.velocity = new Vector3(facing*35,30,0);
             if(movement.currentJumps < movement.numberOfJumps-1){
                 movement.currentJumps++;
@@ -137,6 +137,8 @@ public class RykkeMasterHit : MasterHit
     public void pullupDodgeRoll()
     {
         facing = movement.Facing;
+        movement.gravityPaused = false;
+        rb.gravityScale = gravityScale;
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.42f);
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
         rb.velocity = new Vector2(facing * 45f,5f);
@@ -186,18 +188,6 @@ public class RykkeMasterHit : MasterHit
             rb.velocity = new Vector3(facing * 35,0);
         }
         
-    }
-    
-    public void notify()
-    {
-      Debug.Log("hit something!");
-    }
-    public void updatePosition(Vector3 position){
-        //movement.updatePosition(position);
-    }
-    public override void hitTheRecovery(GameObject target)
-    {
-        Debug.Log("Recovery hit!");
     }
 
     public void sideGrab()

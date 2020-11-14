@@ -20,7 +20,10 @@ public class BojoSound : MonoBehaviour
 
     public void PlayAudio(int index)
     {
-        source.clip = Clips[index];
-        source.PlayOneShot(source.clip);
+        if(index <= Clips.Length){
+            source.clip = Clips[index];
+            source.PlayOneShot(source.clip);
+        }
+       
     }
 }

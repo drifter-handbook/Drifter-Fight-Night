@@ -34,8 +34,8 @@ public class PlayerMovement : MonoBehaviour
     public int Facing { get; set; } = 1;
     public bool grounded = true;
     public bool gravityPaused = false;
-    bool ledgeHanging = false;
-    bool strongLedgeGrab = true;
+    public bool ledgeHanging = false;
+    public bool strongLedgeGrab = true;
 
     Animator animator;
 
@@ -189,11 +189,18 @@ public class PlayerMovement : MonoBehaviour
                     Mathf.Lerp((!status.HasStatusEffect(PlayerStatusEffect.SLOWED)?-airSpeed:(-.6f*airSpeed)),rb.velocity.x,airAccelerationTime), rb.velocity.y);
             }
 
-            //UnityEngine.Debug.Log("AFTER velocity: " + rb.velocity.x);
         }
+        //Ledgegrabs Stuff
         else if(canAct && ledgeHanging)
         {
-            if((drifter.input.MoveX * (flipSprite?-1:1) * Facing < 0)){
+
+            if(drifter.input.Guard)
+            {
+                status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.2f);
+                drifter.SetAnimatorTrigger("Ledge_Climb");
+            }
+
+            else if((drifter.input.MoveX * (flipSprite?-1:1) * Facing < 0)){
                 DropLedge();
                 drifter.SetAnimatorTrigger("Ledge_Drop");
                 rb.velocity = new Vector3(Facing * (flipSprite?-1:1) * -25f,25f);
@@ -201,8 +208,9 @@ public class PlayerMovement : MonoBehaviour
             
             else if((drifter.input.MoveX * (flipSprite?-1:1) * Facing > 0)  || drifter.input.MoveY > 0){
                 DropLedge();
-                drifter.SetAnimatorTrigger("Ledge_Climb_Basic");
                 status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.2f);
+                drifter.SetAnimatorTrigger("Ledge_Climb_Basic");
+                
                 rb.position = new Vector3(rb.position.x + (rb.position.x > 0 ? -1 :1) *2f, rb.position.y + 5f - ledgeClimbOffset);
             }
 
@@ -252,11 +260,6 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             drifter.SetAnimatorBool("Guarding", false);
-        }
-
-        if(drifter.input.Guard && canGuard && ledgeHanging)
-        {
-            drifter.SetAnimatorTrigger("Ledge_Climb");
         }
 
         //Terminal velocity
@@ -352,6 +355,7 @@ public class PlayerMovement : MonoBehaviour
     public void GrabLedge(Vector3 pos){
         gravityPaused = false;
         attacks.ledgeHanging = true;
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.2f);
         if(strongLedgeGrab)drifter.SetAnimatorTrigger("Ledge_Grab_Strong");
         else drifter.SetAnimatorTrigger("Ledge_Grab_Weak");
         Facing = flipSprite ^ rb.position.x > 0 ? -1 :1;
@@ -362,7 +366,7 @@ public class PlayerMovement : MonoBehaviour
  
         attacks.resetRecovery();
 
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.2f);
+        
         ledgeHanging = true;
         rb.gravityScale = 0f;
         currentJumps = numberOfJumps - 1;

@@ -39,7 +39,9 @@ public class SwordFrogMasterHit : MasterHit
     public void pullupDodgeRoll()
     {
         facing = movement.Facing;
-        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.2f);
+        movement.gravityPaused = false;
+        rb.gravityScale = gravityScale;
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.2f);
         rb.velocity = new Vector2(facing * 30f,5f);
     }
 
@@ -69,17 +71,15 @@ public class SwordFrogMasterHit : MasterHit
 
     }
     public void counter(){
-        if(!status.HasInulvernability()){
-            status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.2f);
-        }
-        if(status.HasHit()){
+        if(status.HasStatusEffect(PlayerStatusEffect.HITPAUSE)){
             drifter.SetAnimatorBool("Empowered",true);
         }
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.65f);
 
     }
     public void hitCounter(){
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.5f);
-        status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0.3f);
+        status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.3f);
         StartCoroutine(resetCounter());
         
     }

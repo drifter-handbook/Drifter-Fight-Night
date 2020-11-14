@@ -35,15 +35,26 @@ public class PlayerHurtboxHandler : MonoBehaviour
         if (GameController.Instance.IsHost && hitbox.parent != hurtbox.parent && !oldAttacks.ContainsKey(attackID))
         {
 
+
+
             // register new attack
             oldAttacks[attackID] = Time.time;
             // apply hit effects
             hitbox.parent.GetComponent<PlayerAttacks>().Hit(attackType, attackID, hurtbox.parent);
             Drifter drifter = GetComponent<Drifter>();
             PlayerStatus status = drifter.status;
-            status.ApplyStatusEffect(PlayerStatusEffect.HIT,.3f);
+
             //Ignore the collision if invulnerable
             if(status.HasInulvernability())return;
+            
+            //Freezefame if hit a counter
+            if(hurtbox.gameObject.name == "Counter")
+            {
+                hitbox.parent.GetComponent<PlayerStatus>().ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.7f);
+                status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.7f);
+                return;
+            }
+           
 
             // apply damage
             if (drifter != null && status != null)
@@ -66,7 +77,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                          ((status.HasStatusEffect(PlayerStatusEffect.EXPOSED) || status.HasStatusEffect(PlayerStatusEffect.FEATHERWEIGHT))
                             ?1.5f:1)) * attackData.KnockbackScale + attackData.Knockback);
 
-            float HitstunDuration = (attackData.HitStun>0)?attackData.HitStun:(KB*.006f + .1f);
+            float HitstunDuration = (attackData.HitStun>=0)?attackData.HitStun:(KB*.006f + .1f);
             float hitstunOriginal = HitstunDuration;
 
 
@@ -82,7 +93,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                         GetComponent<Rigidbody2D>().velocity = new Vector2(forceDir.normalized.x * KB, GetComponent<PlayerMovement>().grounded?Mathf.Abs(forceDir.normalized.y * KB): forceDir.normalized.y * KB);
                         if(GetComponent<PlayerMovement>().grounded)GetComponent<PlayerMovement>().spawnJuiceParticle(new Vector3(0,-2.5f,0),7);
                     }
-                    else if(  attackData.AngleOfImpact <= -361){
+                    else if(attackData.Knockback > 0 && attackData.AngleOfImpact <= -361){
                         GetComponent<Rigidbody2D>().velocity = hitbox.parent.GetComponent<Rigidbody2D>().velocity * (1 + attackData.KnockbackScale);
                     }
                                         

@@ -45,6 +45,8 @@ public class SpaceJamMasterHit : MasterHit
     public void pullupDodgeRoll()
     {
         facing = movement.Facing;
+        movement.gravityPaused = false;
+        rb.gravityScale = gravityScale;
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.45f);
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
         rb.velocity = new Vector2(facing * -45f,5f);
