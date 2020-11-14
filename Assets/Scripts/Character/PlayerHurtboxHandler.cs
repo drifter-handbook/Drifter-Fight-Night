@@ -54,7 +54,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
                 UnityEngine.Debug.Log("COUNTER");
                 hitbox.parent.GetComponent<PlayerStatus>().ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.7f);
-                status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.7f);
+                status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.6f);
                 return;
             }
            
