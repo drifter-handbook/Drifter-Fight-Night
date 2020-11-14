@@ -30,5 +30,18 @@ public class CharacterCard : MonoBehaviour
         card.transform.GetChild(1).GetComponent<Text>().text = name;
     }
 
+    public static Button EnableKickPlayers(Transform card, bool enable)
+    {
+        Button kick = card.transform.GetChild(2).GetComponent<Button>();
+        card.transform.GetChild(2).gameObject.SetActive(enable);
+
+        if (enable)
+        {
+            return kick;
+        }
+
+        return null;
+    }
+
 
 }
