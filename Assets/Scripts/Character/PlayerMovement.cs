@@ -135,7 +135,7 @@ public class PlayerMovement : MonoBehaviour
 
         drifter.SetAnimatorBool("Grounded", IsGrounded());
         grounded = IsGrounded();
-        
+
         if(!ledgeHanging && (animator.GetCurrentAnimatorStateInfo(0).IsName("Ledge_Grab_Strong") || animator.GetCurrentAnimatorStateInfo(0).IsName("Ledge_Grab_Weak")))
         {
             drifter.SetAnimatorTrigger("Ledge_Climb_Basic");
@@ -296,7 +296,7 @@ public class PlayerMovement : MonoBehaviour
         //Jump
         if (jumpPressed && canAct) //&& rb.velocity.y < 0.8f * jumpSpeed)
         {
-            DropLedge();
+            if(ledgeHanging)DropLedge();
             //jump
             if (currentJumps > 0)
             {
