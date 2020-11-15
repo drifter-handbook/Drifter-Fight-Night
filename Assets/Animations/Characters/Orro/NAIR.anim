@@ -169,7 +169,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.25
-        value: 0.20055489
+        value: 0.22135472
         inSlope: -0.23726906
         outSlope: -0.23726906
         tangentMode: 136
@@ -215,9 +215,9 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.25
-        value: 0.53869206
-        inSlope: 0.44968978
-        outSlope: 0.44968978
+        value: 0.59415793
+        inSlope: 0
+        outSlope: 0
         tangentMode: 136
         weightedMode: 0
         inWeight: 0.33333334
@@ -260,15 +260,6 @@ AnimationClip:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 0.5
-        value: 1
-        inSlope: Infinity
-        outSlope: Infinity
-        tangentMode: 103
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      - serializedVersion: 3
         time: 0.5833333
         value: 0
         inSlope: Infinity
@@ -281,7 +272,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Enabled
-    path: Hitboxes/Nair_Backswing
+    path: Hitboxes/NairBackswing
     classID: 58
     script: {fileID: 0}
   - curve:
@@ -298,16 +289,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.41666666
-        value: 0.5992133
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 0.5
-        value: 0.5982704
+        value: 0.6170566
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -318,7 +300,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Offset.y
-    path: Hitboxes/Nair_Backswing
+    path: Hitboxes/NairBackswing
     classID: 58
     script: {fileID: 0}
   - curve:
@@ -335,16 +317,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.41666666
-        value: 0.21953951
-        inSlope: -0.15505475
-        outSlope: -0.15505475
-        tangentMode: 136
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 0.5
-        value: 0.20015766
+        value: 0.18453813
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -355,7 +328,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Radius
-    path: Hitboxes/Nair_Backswing
+    path: Hitboxes/NairBackswing
     classID: 58
     script: {fileID: 0}
   - curve:
@@ -371,8 +344,8 @@ AnimationClip:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 0.5
-        value: -0.13436326
+        time: 0.41666666
+        value: -0.2045301
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -383,7 +356,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Offset.x
-    path: Hitboxes/Nair_Backswing
+    path: Hitboxes/NairBackswing
     classID: 58
     script: {fileID: 0}
   m_PPtrCurves:
@@ -471,28 +444,28 @@ AnimationClip:
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 243573091
+      path: 4264466835
       attribute: 3305885265
       script: {fileID: 0}
       typeID: 58
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 243573091
+      path: 4264466835
       attribute: 1872933342
       script: {fileID: 0}
       typeID: 58
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 243573091
+      path: 4264466835
       attribute: 1984117138
       script: {fileID: 0}
       typeID: 58
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 243573091
+      path: 4264466835
       attribute: 413499720
       script: {fileID: 0}
       typeID: 58
@@ -691,7 +664,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.25
-        value: 0.20055489
+        value: 0.22135472
         inSlope: -0.23726906
         outSlope: -0.23726906
         tangentMode: 136
@@ -737,9 +710,9 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.25
-        value: 0.53869206
-        inSlope: 0.44968978
-        outSlope: 0.44968978
+        value: 0.59415793
+        inSlope: 0
+        outSlope: 0
         tangentMode: 136
         weightedMode: 0
         inWeight: 0.33333334
@@ -782,15 +755,6 @@ AnimationClip:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 0.5
-        value: 1
-        inSlope: Infinity
-        outSlope: Infinity
-        tangentMode: 103
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      - serializedVersion: 3
         time: 0.5833333
         value: 0
         inSlope: Infinity
@@ -803,7 +767,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Enabled
-    path: Hitboxes/Nair_Backswing
+    path: Hitboxes/NairBackswing
     classID: 58
     script: {fileID: 0}
   - curve:
@@ -820,16 +784,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.41666666
-        value: 0.5992133
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 0.5
-        value: 0.5982704
+        value: 0.6170566
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -840,7 +795,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Offset.y
-    path: Hitboxes/Nair_Backswing
+    path: Hitboxes/NairBackswing
     classID: 58
     script: {fileID: 0}
   - curve:
@@ -857,16 +812,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.41666666
-        value: 0.21953951
-        inSlope: -0.15505475
-        outSlope: -0.15505475
-        tangentMode: 136
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 0.5
-        value: 0.20015766
+        value: 0.18453813
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -877,7 +823,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Radius
-    path: Hitboxes/Nair_Backswing
+    path: Hitboxes/NairBackswing
     classID: 58
     script: {fileID: 0}
   - curve:
@@ -893,8 +839,8 @@ AnimationClip:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 0.5
-        value: -0.13436326
+        time: 0.41666666
+        value: -0.2045301
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -905,7 +851,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Offset.x
-    path: Hitboxes/Nair_Backswing
+    path: Hitboxes/NairBackswing
     classID: 58
     script: {fileID: 0}
   m_EulerEditorCurves: []

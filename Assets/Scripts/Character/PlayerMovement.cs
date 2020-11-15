@@ -135,6 +135,11 @@ public class PlayerMovement : MonoBehaviour
 
         drifter.SetAnimatorBool("Grounded", IsGrounded());
         grounded = IsGrounded();
+        
+        if(!ledgeHanging && (animator.GetCurrentAnimatorStateInfo(0).IsName("Ledge_Grab_Strong") || animator.GetCurrentAnimatorStateInfo(0).IsName("Ledge_Grab_Weak")))
+        {
+            drifter.SetAnimatorTrigger("Ledge_Climb_Basic");
+        }
 
         //Sets hitstun state when applicable
         if(status.HasEnemyStunEffect() && !animator.GetBool("HitStun")){
