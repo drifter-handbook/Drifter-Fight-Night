@@ -5,7 +5,7 @@ using UnityEngine;
 public class HitboxCollision : MonoBehaviour
 {
     public GameObject parent;
-    INetworkSync playerType;
+    protected INetworkSync playerType;
 
     public int AttackID { get; set; }
     public DrifterAttackType AttackType { get; set; }
@@ -39,7 +39,7 @@ public class HitboxCollision : MonoBehaviour
         {
             string player = playerType.Type;
             if(OverrideData != null){
-                hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, -AttackID, AttackType, OverrideData);
+                hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, OverrideData);
             }
             else{
                 hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, AttackData);

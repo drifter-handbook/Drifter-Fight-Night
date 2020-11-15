@@ -575,6 +575,7 @@ MonoBehaviour:
   ledgeClimbOffset: -0.5
   grounded: 1
   gravityPaused: 0
+  ledgeHanging: 0
   varyJumpHeightDuration: 0.2
   varyJumpHeightForce: 12
 --- !u!114 &9142496942411782138
@@ -1168,6 +1169,11 @@ PrefabInstance:
       propertyPath: parent
       value: 
       objectReference: {fileID: 3106753082241659636}
+    - target: {fileID: 1644472170316004985, guid: 1e76d2aad5cac964fa578bce301dd12f,
+        type: 3}
+      propertyPath: parent
+      value: 
+      objectReference: {fileID: 3106753082241659636}
     - target: {fileID: 2710562965551637604, guid: 1e76d2aad5cac964fa578bce301dd12f,
         type: 3}
       propertyPath: m_Name
@@ -1198,6 +1204,21 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Untagged
       objectReference: {fileID: 0}
+    - target: {fileID: 5932039664161694244, guid: 1e76d2aad5cac964fa578bce301dd12f,
+        type: 3}
+      propertyPath: parent
+      value: 
+      objectReference: {fileID: 3106753082241659636}
+    - target: {fileID: 6043276434097047080, guid: 1e76d2aad5cac964fa578bce301dd12f,
+        type: 3}
+      propertyPath: parent
+      value: 
+      objectReference: {fileID: 3106753082241659636}
+    - target: {fileID: 6096854913047683525, guid: 1e76d2aad5cac964fa578bce301dd12f,
+        type: 3}
+      propertyPath: parent
+      value: 
+      objectReference: {fileID: 3106753082241659636}
     - target: {fileID: 6238866400539476306, guid: 1e76d2aad5cac964fa578bce301dd12f,
         type: 3}
       propertyPath: m_TagString
