@@ -168,7 +168,7 @@ public class RykkeMasterHit : MasterHit
 
     public void DownTilt(){
         facing = movement.Facing;
-        rb.velocity = new Vector2(facing * 50f,0f);
+        rb.velocity = new Vector2(facing * 40f,0f);
     }
 
     public void GroundedSlide(){
