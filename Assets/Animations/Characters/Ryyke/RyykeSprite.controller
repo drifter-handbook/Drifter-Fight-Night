@@ -22,7 +22,7 @@ AnimatorStateTransition:
   m_ExitTime: 0.75
   m_HasExitTime: 0
   m_HasFixedDuration: 0
-  m_InterruptionSource: 0
+  m_InterruptionSource: 2
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 0
 --- !u!1101 &-9141023311504331798
@@ -110,7 +110,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: LedgeHang
+  m_Name: Ledge_Grab_Strong
   m_Speed: 0.14
   m_CycleOffset: 0
   m_Transitions:
@@ -250,7 +250,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: WeakLedgeGrab
+  m_Name: Ledge_Grab_Weak
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -1375,13 +1375,13 @@ AnimatorStateMachine:
     m_Position: {x: -1360, y: -510, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -8099053053395771965}
-    m_Position: {x: -1330, y: -280, z: 0}
+    m_Position: {x: -1330, y: -260, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -2739064839828776227}
     m_Position: {x: -930, y: -750, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 6705259951677292736}
-    m_Position: {x: -1110, y: -30, z: 0}
+    m_Position: {x: -1490, y: -90, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions:
   - {fileID: -2940342105274942092}
@@ -2895,7 +2895,7 @@ AnimatorStateTransition:
   m_ExitTime: 0.75
   m_HasExitTime: 0
   m_HasFixedDuration: 0
-  m_InterruptionSource: 0
+  m_InterruptionSource: 2
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 0
 --- !u!1101 &7093270436664549518

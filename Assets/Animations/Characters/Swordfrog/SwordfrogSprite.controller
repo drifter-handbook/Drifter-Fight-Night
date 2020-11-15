@@ -762,7 +762,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: LedgeHangWeak
+  m_Name: Ledge_Grab_Weak
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -973,7 +973,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: LedgeHangStrong
+  m_Name: Ledge_Grab_Strong
   m_Speed: 0.14
   m_CycleOffset: 0
   m_Transitions:
@@ -1143,7 +1143,7 @@ AnimatorStateTransition:
   m_HasFixedDuration: 0
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
-  m_CanTransitionToSelf: 1
+  m_CanTransitionToSelf: 0
 --- !u!1101 &-572747925911727508
 AnimatorStateTransition:
   m_ObjectHideFlags: 3
@@ -1762,7 +1762,7 @@ AnimatorStateTransition:
   m_HasFixedDuration: 0
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
-  m_CanTransitionToSelf: 1
+  m_CanTransitionToSelf: 0
 --- !u!1101 &1602211574609385926
 AnimatorStateTransition:
   m_ObjectHideFlags: 1

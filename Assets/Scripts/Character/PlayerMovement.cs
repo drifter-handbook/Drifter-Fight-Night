@@ -34,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
     public int Facing { get; set; } = 1;
     public bool grounded = true;
     public bool gravityPaused = false;
-    bool ledgeHanging = false;
+    public bool ledgeHanging = false;
     bool strongLedgeGrab = true;
 
     Animator animator;
@@ -126,10 +126,12 @@ public class PlayerMovement : MonoBehaviour
                 currentJumps--;
             }            
         }
+        
         else if(IsGrounded() && !status.HasStunEffect())
         {
             spawnJuiceParticle(new Vector3(0,-1,0),2);
         }
+
 
         drifter.SetAnimatorBool("Grounded", IsGrounded());
         grounded = IsGrounded();
@@ -289,6 +291,7 @@ public class PlayerMovement : MonoBehaviour
         //Jump
         if (jumpPressed && canAct) //&& rb.velocity.y < 0.8f * jumpSpeed)
         {
+            DropLedge();
             //jump
             if (currentJumps > 0)
             {

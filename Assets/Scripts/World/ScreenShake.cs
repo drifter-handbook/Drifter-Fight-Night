@@ -22,7 +22,6 @@ public class ScreenShake : MonoBehaviour
    		Vector3 origPos = transform.localPosition;
    		float elapsed = 0f;
 
-
    		while(elapsed < duration)
    		{
    			//transform.localPosition = origPos;
@@ -37,7 +36,7 @@ public class ScreenShake : MonoBehaviour
 
    		}
 
-   		transform.localPosition = origPos;
+   		transform.localPosition = basePos;
 
    }
 
