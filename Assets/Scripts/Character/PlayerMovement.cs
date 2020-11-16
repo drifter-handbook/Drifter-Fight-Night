@@ -219,6 +219,11 @@ public class PlayerMovement : MonoBehaviour
                 rb.position = new Vector3(rb.position.x + (rb.position.x > 0 ? -1 :1) *2f, rb.position.y + 5f - ledgeClimbOffset);
             }
 
+            else if(drifter.input.MoveY < 0 && prevMoveY < 0 && ledgeHanging){
+                DropLedge();
+                drifter.SetAnimatorTrigger("Ledge_Drop");
+            }
+
         }
         //Turn walking animation off
         else if (!moving && status.HasGroundFriction())
@@ -284,11 +289,6 @@ public class PlayerMovement : MonoBehaviour
 
         if(rb.velocity.y < -terminalVelocity && !status.HasEnemyStunEffect()){
             rb.velocity = new Vector2(rb.velocity.x,(drifter.input.MoveY < 0 && prevMoveY < 0 ?-fastFallTerminalVelocity:-terminalVelocity));
-        }
-
-        if(drifter.input.MoveY < 0 && prevMoveY < 0 && ledgeHanging){
-            DropLedge();
-            drifter.SetAnimatorTrigger("Ledge_Drop");
         }
 
         //Jump
