@@ -16,6 +16,7 @@ public class NeroSpear : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        StartCoroutine(Fade(5f));
     }
 
     // Update is called once per frame
@@ -35,9 +36,9 @@ public class NeroSpear : MonoBehaviour
         }
     }
 
-    IEnumerator Fade()
+    IEnumerator Fade(float duration)
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(duration);
         Destroy(gameObject);
         yield break;
     }
@@ -48,7 +49,7 @@ public class NeroSpear : MonoBehaviour
         {
             if (Active)
             {
-                StartCoroutine(Fade());
+                StartCoroutine(Fade(1f));
             }
             Active = false;
             anim.SetBool("Active", Active);

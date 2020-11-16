@@ -50,6 +50,7 @@ public class NetworkEntityConverter : Newtonsoft.Json.Converters.CustomCreationC
             case "DairExplosion":
             case "UairExplosion":
             case "Windwave":
+            case "Arrow":
                 return new BasicProjectileSync.ProjectileData();
             case "ParhelionBolt":
             case "MegurinDairBolt":

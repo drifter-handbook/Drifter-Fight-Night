@@ -24,7 +24,7 @@ public class LedgeGrabCollision : MonoBehaviour
             if(insurance !=null)
             {
                 StopCoroutine(insurance);
-                StartCoroutine(makeSureItHappens(col));
+                insurance = StartCoroutine(makeSureItHappens(col));
             }
     	}
 

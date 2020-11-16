@@ -11,6 +11,7 @@ public class SwordFrogMasterHit : MasterHit
     PlayerMovement movement;
     public Animator anim;
     int chargeProgress = 0;
+    float chargeTime = 0;
 
     public int facing;
 
@@ -21,6 +22,19 @@ public class SwordFrogMasterHit : MasterHit
         attacks = drifter.GetComponent<PlayerAttacks>();
         movement = drifter.GetComponent<PlayerMovement>();
         status = drifter.GetComponent<PlayerStatus>();
+    }
+    void Update(){
+        if(drifter.Charge < 4)
+        {
+            chargeTime += Time.deltaTime;
+            if(chargeTime >= 3f)
+            {
+                drifter.SetAnimatorBool("HasCharge",true);
+                drifter.Charge++;
+                chargeTime = 0;
+            }
+        }
+        
     }
 
     public void dodgeRoll(){
@@ -62,8 +76,30 @@ public class SwordFrogMasterHit : MasterHit
 
     public void removeCharge()
     {
+        facing = movement.Facing;
         if(drifter.Charge >0){
             drifter.Charge--;
+            
+            GameObject arrow = Instantiate(entities.GetEntityPrefab("Arrow"), transform.position + new Vector3(0,3.8f,0), transform.rotation);
+            arrow.transform.localScale = new Vector3(7.5f * facing,7.5f,1f);
+            arrow.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x  + facing * 60f,-5f);
+            foreach (HitboxCollision hitbox in arrow.GetComponentsInChildren<HitboxCollision>(true))
+            {
+                hitbox.parent = drifter.gameObject;
+                hitbox.AttackID = attacks.AttackID;
+                hitbox.AttackType = attacks.AttackType;
+                hitbox.Active = true;
+                hitbox.Facing = facing;
+            }
+            entities.AddEntity(arrow);
+
+        }
+        else{
+
+            GameObject poof = Instantiate(entities.GetEntityPrefab("MovementParticle"), transform.position + new Vector3(facing *4f,3.8f,0),  transform.rotation);
+            poof.GetComponent<JuiceParticle>().mode = 1;
+            entities.AddEntity(poof);
+
         }
         if(drifter.Charge ==0){
             drifter.SetAnimatorBool("HasCharge",false);
@@ -98,18 +134,5 @@ public class SwordFrogMasterHit : MasterHit
 
     public void whiffCounter(){
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.95f);
-    }
-
-    public void grantCharge(){
-        chargeProgress++;
-        if(chargeProgress >= 3){
-            chargeProgress = 0;
-            drifter.SetAnimatorBool("HasCharge",true);
-            if(drifter.Charge <3){
-                drifter.Charge++;
-            }
-        }
-        
-        
     }
 }
