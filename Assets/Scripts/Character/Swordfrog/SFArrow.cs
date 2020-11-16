@@ -29,7 +29,7 @@ public class SFArrow : MonoBehaviour
     {
         if (col.gameObject.tag == "Ground" || col.gameObject.tag == "Platform")
         {
-            StartCoroutine(Fade(1f));
+            StartCoroutine(Fade(.5f));
             rb.velocity = Vector2.zero;
             rb.freezeRotation = true;
             rb.gravityScale = 0;
