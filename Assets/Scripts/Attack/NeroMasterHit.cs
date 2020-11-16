@@ -114,6 +114,9 @@ public class NeroMasterHit : MasterHit
         movement.gravityPaused= true;
         rb.gravityScale = 0;
         dashDistance = 30f;
+
+        attacks.SetupAttackID(DrifterAttackType.W_Neutral);
+
         drifter.SetAnimatorBool("HasCharge",false);
     }
     
