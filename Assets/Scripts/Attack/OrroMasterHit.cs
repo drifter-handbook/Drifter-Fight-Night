@@ -104,7 +104,8 @@ public class OrroMasterHit : MasterHit
 
     public void backdash(){
     	facing = movement.Facing;
-    	rb.velocity = new Vector2(facing * -25f,15f);
+
+    	rb.velocity = new Vector2(facing * -25f,23f);
     	beanSpeed = 5f;
     	if(anim.GetBool("Empowered")){
             Vector3 flip = new Vector3(facing *6.7f,6.7f,0f);
