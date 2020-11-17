@@ -131,6 +131,14 @@ public class RykkeMasterHit : MasterHit
         tetheredPlayer = false;
     }
 
+    public void cancelNeutralW(){
+        if(drifter.input.Guard)
+        {
+            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
+            drifter.SetAnimatorBool("Guarding", true);
+        }
+    }
+
 
     public void AmrourUp(){
         status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.7f);

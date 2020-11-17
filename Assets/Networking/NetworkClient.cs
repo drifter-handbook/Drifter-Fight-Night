@@ -200,7 +200,7 @@ public class NetworkClient : MonoBehaviour, NetworkID
         while (SceneManager.GetActiveScene().name == "Endgame")
         {
             yield return null;
-            if (Input.GetMouseButtonDown(0))
+            if (Input.anyKey)
             {
                 yield return SceneManager.LoadSceneAsync("MenuScene");
                 GameController.Instance.selectedStage = null;

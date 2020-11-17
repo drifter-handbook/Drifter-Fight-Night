@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
+using UnityEngine.EventSystems;
 
 // TODO: Rename to Menu Manager
 // Handles the menu logic flow and sends important stuff back to the game controller to disseminate
@@ -20,6 +21,7 @@ public class ViewManager : MonoBehaviour
 
     string currentView;
     Dictionary<string, Transform> views = new Dictionary<string, Transform>();
+    bool mouse = true;
 
     public Toggle toggle1;
     public Toggle toggle2;
@@ -100,9 +102,37 @@ public class ViewManager : MonoBehaviour
             }
             else
             {
+                mouse = false;
                 ShowView("Main Menu");
             }
         }
+
+        if(Input.GetAxis("Mouse X")!=0 || Input.GetAxis("Mouse X")<0 && !mouse)
+        {
+            mouse = true;
+            Cursor.visible = true;
+            EventSystem.current.SetSelectedGameObject(null);
+
+        }
+        if(Input.anyKey && mouse && (!Input.GetMouseButton(0) || Input.GetMouseButton(1) || Input.GetMouseButton(2))){
+            mouse = false;
+            Cursor.visible = false;
+            switch (currentView){
+                case "Matchmaking Menu":
+                    EventSystem.current.SetSelectedGameObject(GameObject.Find("Host"));
+                    break;
+                case "Join Menu":
+                    EventSystem.current.SetSelectedGameObject(GameObject.Find("Join"));
+                    break;
+                case "Main Menu":
+                    ShowView("Matchmaking Menu");
+                    break;
+                case "Settings Menu":
+                    EventSystem.current.SetSelectedGameObject(GameObject.Find("Back"));
+                    break;
+            }
+        }
+
     }
 
     public Transform GetView(string name)
@@ -125,8 +155,16 @@ public class ViewManager : MonoBehaviour
             hostIP.GetComponent<InputField>().contentType = InputField.ContentType.Standard;
         }
 
+        if (name == "Matchmaking Menu" && !mouse)
+        {
+            EventSystem.current.SetSelectedGameObject(GameObject.Find("Host"));
+        }
+        if(name == "Main Menu" && !mouse)
+            EventSystem.current.SetSelectedGameObject(GameObject.Find("Play"));
+
         if (name == "Join Menu")
         {
+            if(!mouse)EventSystem.current.SetSelectedGameObject(GameObject.Find("Join"));
             if (PlayerPrefs.GetInt("HideTextInput") > 0)
             {
                 savedIPObject.GetComponent<InputField>().contentType = InputField.ContentType.Password;
@@ -145,6 +183,7 @@ public class ViewManager : MonoBehaviour
         {
             UnityEngine.Debug.Log("Update toggles");
             UpdateToggles();
+            if(!mouse)EventSystem.current.SetSelectedGameObject(GameObject.Find("Back"));
         }
     }
 

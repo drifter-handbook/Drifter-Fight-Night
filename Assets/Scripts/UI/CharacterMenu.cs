@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -45,9 +46,6 @@ public class CharacterMenu : MonoBehaviour
     [Serializable]
     public class FightZone
     {
-        public GameObject fightzone;
-        public Sprite fightzonePreview;
-        public string fightzoneName;
         public string sceneName;
     }
 
@@ -57,11 +55,10 @@ public class CharacterMenu : MonoBehaviour
 
     private GameObject clientCard;
 
+    public GameObject stageMenu;
+
     private FightZone selectedFightzone;
     private int selectedFightzoneNum = 0;
-
-    public Image fightZonePreview;
-    public Text fightZoneLabel;
 
     //determines how many player cards we can fit on a panel
     private const int PANEL_MAX_PLAYERS = 4;
@@ -78,6 +75,7 @@ public class CharacterMenu : MonoBehaviour
     }
     List<PlayerMenuEntry> menuEntries = new List<PlayerMenuEntry>();
     bool playerIsSet = false;
+    bool mouse = true;
 
     void Awake()
     {
@@ -115,6 +113,19 @@ public class CharacterMenu : MonoBehaviour
             playerIsSet = false;
             ReturnToTitle();
         }
+
+         if(Input.GetAxis("Mouse X")!=0 || Input.GetAxis("Mouse X")<0 && !mouse)
+        {
+            mouse = true;
+            EventSystem.current.SetSelectedGameObject(null);
+
+        }
+        if(Input.anyKey && mouse && (!Input.GetMouseButton(0) || Input.GetMouseButton(1) || Input.GetMouseButton(2))){
+            mouse = false;
+            EventSystem.current.SetSelectedGameObject(everyoneReady()?(this.GetComponent<Animator>().GetBool("location")?GameObject.Find("Training"):forwardButton):GameObject.Find("Lady P Figurine"));
+        }
+
+        Cursor.visible = mouse;
     }
 
     public void SyncToCharSelectState()
@@ -215,23 +226,16 @@ public class CharacterMenu : MonoBehaviour
     {
         selectedFightzoneNum = fightzones.FindIndex(x => x.sceneName == s);
         UpdateFightzone();
-    }
 
-    public void nextFightzone()
-    {
-        selectedFightzoneNum++;
-        if(selectedFightzoneNum >= fightzones.Count)
-        {
-            selectedFightzoneNum = 0;
-        }
-        UpdateFightzone();
+        GameController.Instance.selectedStage = selectedFightzone.sceneName;
+        Cursor.visible = false;
+        GameController.Instance.BeginMatch();
     }
 
     public void UpdateFightzone()
     {
         selectedFightzone = fightzones[selectedFightzoneNum];
-        fightZonePreview.sprite = selectedFightzone.fightzonePreview;
-        fightZoneLabel.text = selectedFightzone.fightzoneName;
+
         if (GetComponent<Animator>().GetBool("location"))
         {
             GameController.Instance.selectedStage = selectedFightzone.sceneName;
@@ -252,8 +256,15 @@ public class CharacterMenu : MonoBehaviour
             CharacterCard.SetCharacter(myCard.characterCard.transform, figurines[drifter].image, drifter.ToString().Replace("_", " "));
         }
         GameController.Instance.CharacterSelectStates[index].PlayerType = drifter;
-    }
 
+        if(everyoneReady()){
+            forwardButton.GetComponent<Button>().interactable = true;
+            if(!mouse)EventSystem.current.SetSelectedGameObject(forwardButton);
+        }
+
+        //if(!mouse && everyoneReady())EventSystem.current.SetSelectedGameObject(forwardButton);
+
+    }
 
     public void HeadToLocationSelect()
     {
@@ -266,7 +277,11 @@ public class CharacterMenu : MonoBehaviour
             return;
         }
 
+        stageMenu.SetActive(true);
 
+        EventSystem.current.SetSelectedGameObject(GameObject.Find("Training"));
+
+        forwardButton.GetComponent<Button>().interactable = false;
 
         this.GetComponent<Animator>().SetBool("location", true);
         if (!GameController.Instance.IsHost)
@@ -294,6 +309,7 @@ public class CharacterMenu : MonoBehaviour
             {
                 drifter.figurine.GetComponent<Animator>().SetBool("present", false);
             }
+            drifter.figurine.GetComponent<Button>().interactable = false;
         }
         UpdateFightzone();
     }
@@ -307,6 +323,9 @@ public class CharacterMenu : MonoBehaviour
             forwardButton.GetComponent<Animator>().SetBool("present", true);
         }
 
+        stageMenu.SetActive(false);
+
+        forwardButton.GetComponent<Button>().interactable = true;
 
         this.GetComponent<Animator>().SetBool("location", false);
 
@@ -326,6 +345,8 @@ public class CharacterMenu : MonoBehaviour
             {
                 drifter.figurine.GetComponent<Animator>().SetBool("present", true);
             }
+            drifter.figurine.GetComponent<Button>().interactable = true;
+            
         }
     }
 
@@ -341,11 +362,53 @@ public class CharacterMenu : MonoBehaviour
         return DrifterType.Bojo;
     }
 
-
     public void ShowMovesetForDrifter()
     {
         movesetOverlay.gameObject.SetActive(true);
-        movesetOverlay.GetComponentInChildren<TutorialSwapper>().SelectDrifter(0);
+        int drifterMoves = 0;
+        switch(GameController.Instance.CharacterSelectStates[GameController.Instance.LocalPlayer.PlayerIndex].PlayerType){
+            case DrifterType.Nero:
+                drifterMoves = 1;
+                break;
+            case DrifterType.Orro:
+                drifterMoves = 2;
+                break;
+            case DrifterType.Lady_Parhelion:
+                drifterMoves = 3;
+                break;
+            case DrifterType.Bojo:
+                drifterMoves = 4;
+                break;
+            case DrifterType.Megurin:
+                drifterMoves = 5;
+                break;
+            case DrifterType.Ryyke:
+                drifterMoves = 6;
+                break;
+            case DrifterType.Swordfrog:
+                drifterMoves = 7;
+                break;
+
+        }
+        movesetOverlay.GetComponentInChildren<TutorialSwapper>().SelectDrifter(drifterMoves);
+    }
+
+    public void BackButton(){
+        if(this.GetComponent<Animator>().GetBool("location")){
+            HeadToCharacterSelect();
+        }
+        else{
+            ReturnToTitle();
+        }
+    }
+
+    public bool everyoneReady(){
+        foreach(CharacterSelectState selectState in GameController.Instance.CharacterSelectStates){
+            if(selectState.PlayerType == DrifterType.None){
+                return false;
+            }
+        }
+        return true;
     }
 
     public void ReturnToTitle()

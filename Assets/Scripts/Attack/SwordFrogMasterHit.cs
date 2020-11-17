@@ -10,7 +10,6 @@ public class SwordFrogMasterHit : MasterHit
     PlayerStatus status;
     PlayerMovement movement;
     public Animator anim;
-    int chargeProgress = 0;
     float chargeTime = 0;
 
     public int facing;
@@ -82,7 +81,7 @@ public class SwordFrogMasterHit : MasterHit
             
             GameObject arrow = Instantiate(entities.GetEntityPrefab("Arrow"), transform.position + new Vector3(0,3.8f,0), transform.rotation);
             arrow.transform.localScale = new Vector3(7.5f * facing,7.5f,1f);
-            arrow.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x  + facing * 60f,-5f);
+            arrow.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x  + facing * 60f,5f);
             foreach (HitboxCollision hitbox in arrow.GetComponentsInChildren<HitboxCollision>(true))
             {
                 hitbox.parent = drifter.gameObject;
