@@ -105,6 +105,31 @@ public class OrroMasterHit : MasterHit
     public void backdash(){
     	facing = movement.Facing;
     	rb.velocity = new Vector2(facing * -25f,15f);
+    	beanSpeed = 5f;
+    	if(anim.GetBool("Empowered")){
+            Vector3 flip = new Vector3(facing *6.7f,6.7f,0f);
+            Vector3 pos = new Vector3(facing *1.3f,2f,1f);
+            GameObject BeanProj = Instantiate(entities.GetEntityPrefab("Bean"), transform.position + pos, transform.rotation);
+            BeanProj.transform.localScale = flip;
+            BeanProj.GetComponent<Rigidbody2D>().simulated = true;
+            BeanProj.GetComponent<Rigidbody2D>().velocity = new Vector2(facing *beanSpeed, 0f);
+            foreach (HitboxCollision hitbox in BeanProj.GetComponentsInChildren<HitboxCollision>(true))
+            {
+                hitbox.parent = drifter.gameObject;
+                hitbox.AttackID = attacks.AttackID;
+                hitbox.AttackType = attacks.AttackType;
+                hitbox.Active = true;
+                hitbox.Facing = facing;
+            }
+            if(beanRemote){
+                Destroy(beanRemote);
+            }
+            BeanProj.GetComponent<BeanWrangler>().facing=facing;
+            beanRemote = BeanProj;
+            localBean.GetComponent<BeanWrangler>().Hide = true;
+            drifter.SetAnimatorBool("Empowered",false);
+            entities.AddEntity(BeanProj);
+        }
     }
 
 
