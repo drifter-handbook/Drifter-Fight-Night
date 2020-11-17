@@ -102,6 +102,11 @@ public class OrroMasterHit : MasterHit
         entities.AddEntity(orroSplosion);
     }
 
+    public void backdash(){
+    	facing = movement.Facing;
+    	rb.velocity = new Vector2(facing * -25f,15f);
+    }
+
 
     public void sair()
     {
