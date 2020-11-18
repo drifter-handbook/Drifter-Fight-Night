@@ -68,6 +68,8 @@ public class CharacterMenu : MonoBehaviour
     public GameObject forwardButton;
     public GameObject backButton;
 
+    public GameObject selectedFigurine = null;
+
     public class PlayerMenuEntry
     {
         public GameObject arrow;
@@ -162,7 +164,7 @@ public class CharacterMenu : MonoBehaviour
             if (drifter.figurine != null)
             {
                 drifter.figurine.GetComponent<Figurine>().SetColor(ColorFromEnum[(PlayerColor)index]);
-                if (drifter.drifter == GameController.Instance.CharacterSelectStates[index].PlayerType)
+                if (drifter.drifter == GameController.Instance.CharacterSelectStates[index].PlayerType && !this.GetComponent<Animator>().GetBool("location"))
                 {
                     drifter.figurine.GetComponent<Figurine>().TurnArrowOn();
                 }
@@ -255,14 +257,17 @@ public class CharacterMenu : MonoBehaviour
         {
             CharacterCard.SetCharacter(myCard.characterCard.transform, figurines[drifter].image, drifter.ToString().Replace("_", " "));
         }
-        GameController.Instance.CharacterSelectStates[index].PlayerType = drifter;
 
-        if(everyoneReady()){
+        if(selectedFigurine!=null)selectedFigurine.GetComponent<Button>().enabled = true;
+        GameController.Instance.CharacterSelectStates[index].PlayerType = drifter;
+        selectedFigurine = figurines[drifter].figurine;
+        selectedFigurine.GetComponent<Button>().enabled = false;
+
+        if(everyoneReady())
+        {
             forwardButton.GetComponent<Button>().interactable = true;
             if(!mouse)EventSystem.current.SetSelectedGameObject(forwardButton);
         }
-
-        //if(!mouse && everyoneReady())EventSystem.current.SetSelectedGameObject(forwardButton);
 
     }
 
@@ -305,10 +310,7 @@ public class CharacterMenu : MonoBehaviour
 
         foreach (PlayerSelectFigurine drifter in drifters)
         {
-            if (!pickedTypes.Contains(drifter.drifter))
-            {
-                drifter.figurine.GetComponent<Animator>().SetBool("present", false);
-            }
+            drifter.figurine.GetComponent<Animator>().SetBool("present", false);
             drifter.figurine.GetComponent<Button>().interactable = false;
         }
         UpdateFightzone();
@@ -341,13 +343,17 @@ public class CharacterMenu : MonoBehaviour
 
         foreach (PlayerSelectFigurine drifter in drifters)
         {
-            if (!drifter.figurine.GetComponent<Animator>().GetBool("present"))
-            {
-                drifter.figurine.GetComponent<Animator>().SetBool("present", true);
-            }
+            drifter.figurine.GetComponent<Animator>().SetBool("present", true);
             drifter.figurine.GetComponent<Button>().interactable = true;
-            
+
         }
+
+
+        selectedFigurine.GetComponent<Button>().enabled = true;
+        EventSystem.current.SetSelectedGameObject(selectedFigurine);
+        selectedFigurine.GetComponent<Button>().enabled = false;
+        EventSystem.current.SetSelectedGameObject(forwardButton);
+
     }
 
     public DrifterType getDrifterTypeFromString(string name)
