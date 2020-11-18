@@ -106,7 +106,11 @@ public class OrroMasterHit : MasterHit
     	facing = movement.Facing;
 
     	rb.velocity = new Vector2(facing * -25f,23f);
+    }
+
+    public void downQBean(){
     	beanSpeed = 5f;
+    	facing = movement.Facing;
     	if(anim.GetBool("Empowered")){
             Vector3 flip = new Vector3(facing *6.7f,6.7f,0f);
             Vector3 pos = new Vector3(facing *1.3f,2f,1f);
