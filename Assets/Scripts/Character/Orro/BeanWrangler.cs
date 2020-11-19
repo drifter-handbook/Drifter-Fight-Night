@@ -54,6 +54,8 @@ public class BeanWrangler : MonoBehaviour
 
     void Update(){
 
+        if(Orro == null) Destroy(this.gameObject);
+
         if (Side) anim.SetTrigger("Side");
         if (Down) anim.SetTrigger("Down");
         if (Up) anim.SetTrigger("Up");
