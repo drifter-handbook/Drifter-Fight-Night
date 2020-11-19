@@ -214,6 +214,11 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
                 }
             }
         }
+        // set stage
+        if (!GameController.Instance.IsHost)
+        {
+            SelectFightzone(NetworkUtils.GetNetworkData<CharacterSelectSyncData>(sync["charSelState"]).stage);
+        }
     }
 
     //try to add player, return false if over max
@@ -251,6 +256,10 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     public void SelectFightzone(string s)
     {
         selectedFightzoneNum = fightzones.FindIndex(x => x.sceneName == s);
+        if (GameController.Instance.IsHost)
+        {
+            NetworkUtils.GetNetworkData<CharacterSelectSyncData>(sync["charSelState"]).stage = s;
+        }
         UpdateFightzone();
     }
 
