@@ -114,7 +114,7 @@ public class ViewManager : MonoBehaviour
             EventSystem.current.SetSelectedGameObject(null);
 
         }
-        if(Input.anyKey && mouse && (!Input.GetMouseButton(0) || Input.GetMouseButton(1) || Input.GetMouseButton(2))){
+        if(Input.anyKey && mouse && (!Input.GetMouseButton(0) || !Input.GetMouseButton(1) || !Input.GetMouseButton(2))){
             mouse = false;
             Cursor.visible = false;
             switch (currentView){
@@ -122,7 +122,7 @@ public class ViewManager : MonoBehaviour
                     EventSystem.current.SetSelectedGameObject(GameObject.Find("Host"));
                     break;
                 case "Join Menu":
-                    EventSystem.current.SetSelectedGameObject(GameObject.Find("Join"));
+                    EventSystem.current.SetSelectedGameObject(GameObject.Find("Input Field"));
                     break;
                 case "Main Menu":
                     ShowView("Matchmaking Menu");
@@ -164,7 +164,7 @@ public class ViewManager : MonoBehaviour
 
         if (name == "Join Menu")
         {
-            if(!mouse)EventSystem.current.SetSelectedGameObject(GameObject.Find("Join"));
+            EventSystem.current.SetSelectedGameObject(GameObject.Find("Join Button"));
             if (PlayerPrefs.GetInt("HideTextInput") > 0)
             {
                 savedIPObject.GetComponent<InputField>().contentType = InputField.ContentType.Password;
@@ -187,21 +187,21 @@ public class ViewManager : MonoBehaviour
         }
     }
 
-    public void SetIP(string ip)
-    {
-        if (currentView == "Join Menu")
-        {
-            string[] ip_id = ip.Split(':');
-            GameController.Instance.hostIP = ip_id[0];
-            GameController.Instance.HostID = int.Parse(ip_id[1]);
-            PlayerPrefs.SetString("savedIP", ip);
-            PlayerPrefs.Save();
-        }
-    }
+    // public void SetIP(string ip)
+    // {
+    //     if (currentView == "Join Menu")
+    //     {
+    //         string[] ip_id = ip.Split(':');
+    //         GameController.Instance.hostIP = ip_id[0];
+    //         if(ip_id.Length > 0)GameController.Instance.HostID = int.Parse(ip_id[1]);
+    //         PlayerPrefs.SetString("savedIP", ip);
+    //         PlayerPrefs.Save();
+    //     }
+    // }
 
     public void GoToCharacterSelect(bool isHost)
     {
-        SetIP(savedIPObject.GetComponent<InputField>().text);
+        //SetIP(savedIPObject.GetComponent<InputField>().text);
         GameController.Instance.IsHost = isHost;
         if (isHost)
         {
