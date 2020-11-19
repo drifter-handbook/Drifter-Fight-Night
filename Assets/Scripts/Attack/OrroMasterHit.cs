@@ -47,7 +47,7 @@ public class OrroMasterHit : MasterHit
         facing = movement.Facing;
         Vector3 flip = new Vector3(facing *12f,12f,0f);
         Vector3 pos = new Vector3(facing *3f,3.5f,1f);
-        GameObject orroOrb = Instantiate(entities.GetEntityPrefab("OrroSideW"), transform.position + pos, transform.rotation);
+        GameObject orroOrb = host.CreateNetworkObject("OrroSideW", transform.position + pos, transform.rotation);
         orroOrb.transform.localScale = flip;
         orroOrb.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * 25, 0);
         foreach (HitboxCollision hitbox in orroOrb.GetComponentsInChildren<HitboxCollision>(true))
@@ -58,7 +58,6 @@ public class OrroMasterHit : MasterHit
             hitbox.Active = true;
         }
         orroOrb.GetComponent<OrroSideWProjectile>().facing=facing;
-        entities.AddEntity(orroOrb);
     }
 
     public void dodgeRoll()
@@ -79,7 +78,7 @@ public class OrroMasterHit : MasterHit
     {
     	facing = movement.Facing;
         rb.velocity = new Vector2(rb.velocity.x,35f);
-        GameObject orroSplosion = Instantiate(entities.GetEntityPrefab("DairExplosion"), transform.position, transform.rotation);
+        GameObject orroSplosion = host.CreateNetworkObject("DairExplosion", transform.position, transform.rotation);
         orroSplosion.transform.localScale = new Vector3(7.5f * facing,7.5f,1f);
         foreach (HitboxCollision hitbox in orroSplosion.GetComponentsInChildren<HitboxCollision>(true))
         {
@@ -88,14 +87,13 @@ public class OrroMasterHit : MasterHit
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;
         }
-        entities.AddEntity(orroSplosion);
     }
 
 
     public void sair()
     {
     	facing = movement.Facing;
-        GameObject marble = Instantiate(entities.GetEntityPrefab("Marble"), transform.position + new Vector3(0,3f,0), transform.rotation);
+        GameObject marble = host.CreateNetworkObject("Marble", transform.position + new Vector3(0,3f,0), transform.rotation);
         foreach (HitboxCollision hitbox in marble.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
@@ -104,7 +102,6 @@ public class OrroMasterHit : MasterHit
             hitbox.Active = true;
         }
         marble.GetComponent<Rigidbody2D>().velocity = new Vector3(facing * 35f, 0);
-        entities.AddEntity(marble);
     }
 
 
@@ -112,7 +109,7 @@ public class OrroMasterHit : MasterHit
     {
     	facing = movement.Facing;
         rb.velocity = new Vector2(0,10f);
-        GameObject orroSplosion = Instantiate(entities.GetEntityPrefab("UairExplosion"), transform.position + new Vector3(0,.5f,0), transform.rotation);
+        GameObject orroSplosion = host.CreateNetworkObject("UairExplosion", transform.position + new Vector3(0,.5f,0), transform.rotation);
         orroSplosion.transform.localScale = new Vector3(7.5f * facing,7.5f,1f);
         foreach (HitboxCollision hitbox in orroSplosion.GetComponentsInChildren<HitboxCollision>(true))
         {
@@ -121,7 +118,6 @@ public class OrroMasterHit : MasterHit
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;
         }
-        entities.AddEntity(orroSplosion);
     }
 
      public void cancelGravity(){
@@ -163,7 +159,7 @@ public class OrroMasterHit : MasterHit
             facing = movement.Facing;
             Vector3 flip = new Vector3(facing *6.7f,6.7f,0f);
             Vector3 pos = new Vector3(facing *1.3f,2f,1f);
-            GameObject BeanProj = Instantiate(entities.GetEntityPrefab("Bean"), transform.position + pos, transform.rotation);
+            GameObject BeanProj = host.CreateNetworkObject("Bean", transform.position + pos, transform.rotation);
             BeanProj.transform.localScale = flip;
             BeanProj.GetComponent<Rigidbody2D>().simulated = true;
             BeanProj.GetComponent<Rigidbody2D>().velocity = new Vector2(facing *beanSpeed, 0f);
@@ -181,7 +177,6 @@ public class OrroMasterHit : MasterHit
             beanRemote = BeanProj;
             localBean.GetComponent<BeanWrangler>().Hide = true;
             drifter.SetAnimatorBool("Empowered",false);
-            entities.AddEntity(BeanProj);
             beanSpeed = 20f;
         }
         else{

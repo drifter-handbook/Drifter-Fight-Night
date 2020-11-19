@@ -3,17 +3,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Net;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
-public struct ConnectedPlayer
-{
-    // unique, find player by Entities.Players[playerID]
-    public int PlayerID { get; set; }
-    public bool IsHost { get; set; }
-    // index in game instance
-    public int PlayerIndex { get; set; }
-}
 
 [DisallowMultipleComponent]
 public class GameController : MonoBehaviour
@@ -21,9 +13,6 @@ public class GameController : MonoBehaviour
     //* Serialized members
     [Header("Check box if hosting")]
     public bool IsHost;
-   
-    public string hostIP = "";
-    public int HostID = 18;
 
     public const int MAX_PLAYERS = 8;
 
@@ -33,22 +22,7 @@ public class GameController : MonoBehaviour
 
     //* Data storage
     // Character List
-    // Source of Truth on CharSel:
-    public List<CharacterSelectState> CharacterSelectStates = new List<CharacterSelectState>() { };
-    // It's you!
-    public ConnectedPlayer LocalPlayer {
-        get
-        {
-            ConnectedPlayer c = new ConnectedPlayer();
-            c.IsHost = IsHost;
-            NetworkID id = GetComponent<NetworkID>();
-            c.PlayerID = id == null ? -1 : id.PlayerID;
-            CharacterSelectState charSelState = CharacterSelectStates.Find(x => x.PlayerID == c.PlayerID);
-            c.PlayerIndex = charSelState == null ? -1 : charSelState.PlayerIndex;
-            return c;
-        }
-    }
-    public NetworkEntityList Entities; // Holds all entities, incl players!!!
+    
     public bool IsPaused { get; private set; } = false;
 
     //* Prefabs
@@ -58,33 +32,39 @@ public class GameController : MonoBehaviour
     //* Variables
     string SceneName { get; set; }
 
-    //* This is a singleton (& the only singleton)
-    protected GameController() { } // Get instance with GameController.Instance
-    private static GameController instance;
-    public static GameController Instance { get { return instance; } }
+    public static GameController Instance { get; private set; }
 
-    private void Awake()
+    public string Username = "test_user";
+
+    [NonSerialized]
+    public NetworkClient client;
+    [NonSerialized]
+    public MatchmakingClient matchmakingClient;
+    [NonSerialized]
+    public NetworkHost host;
+    [NonSerialized]
+    public MatchmakingHost matchmakingHost;
+
+    [NonSerialized]
+    public IPEndPoint NatPunchServer = new IPEndPoint(IPAddress.Parse("75.134.27.221"), 6996);
+    [NonSerialized]
+    public IPEndPoint MatchmakingServer = new IPEndPoint(IPAddress.Parse("75.134.27.221"), 6997);
+
+    public CustomControls controls;
+
+    public int PlayerID = -1;
+
+    void Awake()
     {
-        if (instance != null && instance != this)
+        if (Instance != null && Instance != this)
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
         else
         {
-            instance = this;
+            Instance = this;
         }
-
-        DontDestroyOnLoad(this.gameObject);
-        PreLoad();
-    }
-
-    void PreLoad()
-    {
-        // Do something!
-        if (SceneManager.GetActiveScene().name == "CharacterSelect")
-        {
-            BeginHandshake();
-        }
+        DontDestroyOnLoad(gameObject);
     }
 
     public void Load(string sceneName)
@@ -100,24 +80,6 @@ public class GameController : MonoBehaviour
         return SceneManager.GetActiveScene().name;
     }
 
-    public void ChooseYerDrifter()
-    {
-        BeginHandshake();
-        Load("CharacterSelect");
-    }
-
-    void BeginHandshake()
-    { // I almost named this IWantAGoodCleanFight and you should be thankful I didn't
-        if (IsHost)
-        {
-            gameObject.AddComponent<NetworkHost>();
-        }
-        else
-        {
-            NetworkClient client = gameObject.AddComponent<NetworkClient>();
-        }
-    }
-
     // Only the host gets to see this guy
     public void BeginMatch()
     {
@@ -125,7 +87,7 @@ public class GameController : MonoBehaviour
         // Create appropriate spawn points
         // Create player characters & give them an input
         // Yeet into world and allow playing the game
-        GetComponent<NetworkHost>()?.StartGame();
+        host.SetScene(selectedStage);
     }
 
     void Update()
@@ -138,5 +100,39 @@ public class GameController : MonoBehaviour
         {
             Application.Quit();
         }
+    }
+
+    public void StartNetworkHost()
+    {
+        host = gameObject.AddComponent<NetworkHost>();
+        NetworkSync sync = GetComponent<NetworkSync>() ?? gameObject.AddComponent<NetworkSync>();
+        sync.NetworkType = "GameController";
+        sync.ObjectID = 0;
+        host.Initialize();
+        matchmakingHost = GetComponent<MatchmakingHost>() ?? gameObject.AddComponent<MatchmakingHost>();
+        PlayerID = 0;
+    }
+    public void StartNetworkClient(string roomCode)
+    {
+        client = gameObject.AddComponent<NetworkClient>();
+        NetworkSync sync = GetComponent<NetworkSync>() ?? gameObject.AddComponent<NetworkSync>();
+        sync.NetworkType = "GameController";
+        sync.ObjectID = 0;
+        client.Initialize();
+        matchmakingClient = GetComponent<MatchmakingClient>() ?? gameObject.AddComponent<MatchmakingClient>();
+        matchmakingClient.JoinRoom = roomCode;
+    }
+    public void CleanupNetwork()
+    {
+        PlayerID = -1;
+        if (IsHost)
+        {
+            Destroy(host);
+        }
+        else
+        {
+            Destroy(client);
+        }
+        IsHost = false;
     }
 }

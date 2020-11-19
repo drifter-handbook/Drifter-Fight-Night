@@ -58,7 +58,7 @@ public class RykkeMasterHit : MasterHit
     public void throwHands()
     {
         facing = movement.Facing;
-        GameObject arms = Instantiate(entities.GetEntityPrefab("LongArmOfTheLaw"), transform.position + new Vector3(facing * 2,5,0), transform.rotation);
+        GameObject arms = host.CreateNetworkObject("LongArmOfTheLaw", transform.position + new Vector3(facing * 2,5,0), transform.rotation);
                 foreach (HitboxCollision hitbox in arms.GetComponentsInChildren<HitboxCollision>(true))
                 {
                     hitbox.parent = drifter.gameObject;
@@ -91,8 +91,6 @@ public class RykkeMasterHit : MasterHit
             tetheredPlayer = false;
         }
         arms.transform.localScale = new Vector3(13,length/1.3f,1);
-
-        entities.AddEntity(arms);
     }
 
     public void daisyChain()
@@ -174,7 +172,7 @@ public class RykkeMasterHit : MasterHit
         facing = movement.Facing;
         Vector3 flip = new Vector3(facing *8f,8f,1f);
         Vector3 loc = new Vector3(facing *5f,0f,0f);
-        GameObject HoldPerson = Instantiate(entities.GetEntityPrefab("HoldPerson"), transform.position + loc, transform.rotation);
+        GameObject HoldPerson = host.CreateNetworkObject("HoldPerson", transform.position + loc, transform.rotation);
         HoldPerson.transform.localScale = flip;
         foreach (HitboxCollision hitbox in HoldPerson.GetComponentsInChildren<HitboxCollision>(true))
         {
@@ -184,7 +182,6 @@ public class RykkeMasterHit : MasterHit
             hitbox.Active = true;
         }
         HoldPerson.GetComponentInChildren<RyykeGrab>().drifter = drifter;
-        entities.AddEntity(HoldPerson);
     }
 
     public void grabWhiff()
@@ -216,7 +213,7 @@ public class RykkeMasterHit : MasterHit
         if(!movement.grounded)rb.velocity = new Vector2(0,10);
         Vector3 flip = new Vector3(facing *8f,8f,1f);
         Vector3 loc = new Vector3(facing *1f,.8f,0f);
-        GameObject tombstone = Instantiate(entities.GetEntityPrefab("RyykeTombstone"), transform.position + loc, transform.rotation);
+        GameObject tombstone = host.CreateNetworkObject("RyykeTombstone", transform.position + loc, transform.rotation);
         tombstone.transform.localScale = flip;
         foreach (HitboxCollision hitbox in tombstone.GetComponentsInChildren<HitboxCollision>(true))
         {
@@ -228,7 +225,6 @@ public class RykkeMasterHit : MasterHit
         
         tombstone.GetComponent<RyykeTombstone>().facing=facing;
         activeStone = tombstone;
-        entities.AddEntity(tombstone);
     }
 
     public void awaken(){
@@ -236,7 +232,7 @@ public class RykkeMasterHit : MasterHit
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.2f);
         Vector3 flip = new Vector3(facing *8f,8f,1f);
         Vector3 loc = new Vector3(facing *3.5f,0f,0f);
-        GameObject tombstone = Instantiate(entities.GetEntityPrefab("RyykeTombstone"), transform.position + loc, transform.rotation);
+        GameObject tombstone = host.CreateNetworkObject("RyykeTombstone", transform.position + loc, transform.rotation);
         tombstone.transform.localScale = flip;
         foreach (HitboxCollision hitbox in tombstone.GetComponentsInChildren<HitboxCollision>(true))
         {
@@ -249,7 +245,6 @@ public class RykkeMasterHit : MasterHit
         tombstone.GetComponent<RyykeTombstone>().facing=facing;
         tombstone.GetComponent<RyykeTombstone>().grounded = true;
         tombstone.GetComponent<RyykeTombstone>().activate = true;
-        entities.AddEntity(tombstone);
     }
 
     public void grantStack()

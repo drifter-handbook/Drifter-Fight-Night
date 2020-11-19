@@ -71,6 +71,8 @@ public class PlayerAttacks : MonoBehaviour
 
     INetworkSync sync;
 
+    PlayerInputData prevInput;
+
     void Awake()
     {
         foreach (SingleAttack attack in AttackMap)
@@ -91,7 +93,7 @@ public class PlayerAttacks : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    public void UpdateInput()
     {
         if (!GameController.Instance.IsHost || GameController.Instance.IsPaused)
         {

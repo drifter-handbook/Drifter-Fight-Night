@@ -13,11 +13,9 @@ public class PlayerCardArtHolder : MonoBehaviour
     private Drifter[] drifters;
     private PlayerCard[] playerCards;
 
-    NetworkEntityList Entities;
-
     void Awake()
     {
-        Entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
+
     }
 
     private void Update()

@@ -10,13 +10,13 @@ public class PlayerHurtboxHandler : MonoBehaviour
     const float MAX_ATTACK_DURATION = 7f;
 
     // for creating hitsparks
-    NetworkEntityList Entities;
+    NetworkHost host;
     ScreenShake Shake;
 
     // Start is called before the first frame update
     void Start()
     {
-        Entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
+        host = GameController.Instance.host;
         Shake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<ScreenShake>();
 
         StartCoroutine(CleanupOldAttacks());
@@ -119,7 +119,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             if(hitbox.gameObject.tag != "Projectile")hitbox.parent.GetComponent<PlayerStatus>().ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,HitstunDuration*.22f);          
 
             // create hit sparks
-            GameObject hitSparks = Instantiate(Entities.GetEntityPrefab("HitSparks"),
+            GameObject hitSparks = host.CreateNetworkObject("HitSparks",
                 Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),
                 Quaternion.identity);
 
@@ -136,18 +136,14 @@ public class PlayerHurtboxHandler : MonoBehaviour
             }
 
             hitSparks.transform.eulerAngles = new Vector3(0, 0, facingDir * ((Mathf.Abs(attackData.AngleOfImpact) > 65f && attackData.GetHitSpark() != 7)? Mathf.Sign(attackData.AngleOfImpact)*90f:0f));
-
-
-            Entities.AddEntity(hitSparks);
         
             if (drifter != null && willCollideWithBlastZone(GetComponent<Rigidbody2D>(), hitstunOriginal))
             {
-                GameObject hitSparkKill = Instantiate(Entities.GetEntityPrefab("HitSparks"),
+                GameObject hitSparkKill = host.CreateNetworkObject("HitSparks",
                 Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),
                 Quaternion.identity);
                 hitSparkKill.GetComponent<HitSparks>().SetAnimation(9);
                 hitSparkKill.transform.localScale = new Vector3(facingDir * 10f, 10f, 10f);
-                Entities.AddEntity(hitSparkKill);
 
                 if(drifter.Stocks <= 1 && willCollideWithBlastZoneAccurate(GetComponent<Rigidbody2D>(), hitstunOriginal))
                     StartCoroutine(Shake.KillZoom(HitstunDuration*.25f,Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f)));
@@ -159,25 +155,23 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 {
                     float angleT = attackData.AngleOfImpact + UnityEngine.Random.Range(-45, 45);
 
-                    GameObject hitSparkTri1 = Instantiate(Entities.GetEntityPrefab("HitSparks"),
+                    GameObject hitSparkTri1 = host.CreateNetworkObject("HitSparks",
                     Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),
                     Quaternion.identity);
                     hitSparkTri1.GetComponent<HitSparks>().SetAnimation(11);
                     hitSparkTri1.transform.localScale = new Vector3(10f, 10f, 10f);
                     hitSparkTri1.transform.position += Quaternion.Euler(0, 0, angleT) * new Vector3(-UnityEngine.Random.Range(2, 5), 0, 0);
                     hitSparkTri1.transform.rotation = Quaternion.Euler(0, 0, angleT);
-                    Entities.AddEntity(hitSparkTri1);
 
                     angleT += 180;
 
-                    GameObject hitSparkTri2 = Instantiate(Entities.GetEntityPrefab("HitSparks"),
+                    GameObject hitSparkTri2 = host.CreateNetworkObject("HitSparks",
                     Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),
                     Quaternion.identity);
                     hitSparkTri2.GetComponent<HitSparks>().SetAnimation(11);
                     hitSparkTri2.transform.localScale = new Vector3(10f, 10f, 10f);
                     hitSparkTri2.transform.position += Quaternion.Euler(0, 0, angleT) * new Vector3(-UnityEngine.Random.Range(2, 5), 0, 0);
                     hitSparkTri2.transform.rotation = Quaternion.Euler(0, 0, angleT);
-                    Entities.AddEntity(hitSparkTri2);
                 }
             }
         }

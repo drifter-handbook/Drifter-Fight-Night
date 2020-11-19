@@ -33,8 +33,6 @@ public class PlayerMovement : MonoBehaviour
 
     Animator animator;
 
-    NetworkEntityList entities;
-
     Rigidbody2D rb;
     PolygonCollider2D col;
 
@@ -56,7 +54,6 @@ public class PlayerMovement : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
 
         drifter = GetComponent<Drifter>();
         animator = drifter.animator;
@@ -67,8 +64,11 @@ public class PlayerMovement : MonoBehaviour
     }
     void Start(){
         baseGravity = rb.gravityScale;
-        jumpSpeed = (float)(jumpHeight / jumpTime + .5f*(rb.gravityScale * jumpTime));
-
+        jumpSpeed = (jumpHeight / jumpTime + .5f*(rb.gravityScale * jumpTime));
+        if (!GameController.Instance.IsHost)
+        {
+            rb.isKinematic = true;
+        }
     }
 
     //Restitution
@@ -87,7 +87,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    void Update()
+    public void UpdateInput()
     {
         if (!GameController.Instance.IsHost || GameController.Instance.IsPaused)
         {
@@ -323,11 +323,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void spawnJuiceParticle(Vector3 pos, int mode, Quaternion angle){
 
-    	GameObject juiceParticle = Instantiate(entities.GetEntityPrefab("MovementParticle"), transform.position + pos,  angle);
+    	GameObject juiceParticle = GameController.Instance.host.CreateNetworkObject("MovementParticle", transform.position + pos, angle);
         juiceParticle.GetComponent<JuiceParticle>().mode = mode;
         juiceParticle.transform.localScale = new Vector3( juiceParticle.transform.localScale.x * Facing * (flipSprite?-1:1),juiceParticle.transform.localScale.y,1);
-
-        entities.AddEntity(juiceParticle);
     }
 
     private IEnumerator DelayedJump()

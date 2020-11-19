@@ -5,45 +5,35 @@ using UnityEngine;
 
 public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
 {
-    NetworkEntityList Entities;
     ScreenShake Shake;
     public Animator endgameBanner;
-    public List<CharacterSelectState> deadByOrder = new List<CharacterSelectState>(); //keeps track of who died in what order
+    public List<int> deadByOrder = new List<int>(); //keeps track of who died in what order
+    NetworkHost host;
     void Awake()
     {
-        Entities = GameObject.FindGameObjectWithTag(
-            "NetworkEntityList").GetComponent<NetworkEntityList>();
+        host = GameController.Instance.host;
         Shake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<ScreenShake>();
         deadByOrder.Clear();
     }
 
     GameObject CreateExplosion(Collider2D other, int playerIndex)
     {
-        GameController.Instance.deathExplosionPrefab.GetComponent<DeathExplosionSync>().PlayerIndex = playerIndex;
-        GameObject deathExplosion = Instantiate(
-            GameController.Instance.deathExplosionPrefab,
-            other.transform.position,
-            Quaternion.identity
-        );
-        GameController.Instance.deathExplosionPrefab.GetComponent<DeathExplosionSync>().PlayerIndex = -1;
+        GameObject deathExplosion = host.CreateNetworkObject("DeathExplosion", other.transform.position, Quaternion.identity);
+        deathExplosion.GetComponent<DeathExplosionSync>().Initialize(playerIndex);
         deathExplosion.transform.position =
             ClampObjectToScreenSpace.FindPosition(deathExplosion.transform);
         deathExplosion.transform.eulerAngles =
             ClampObjectToScreenSpace.FindNearestOctagonalAngle(deathExplosion.transform);
-
-        Entities.AddEntity(deathExplosion.gameObject);
         return deathExplosion;    
     }
 
     void CreateHalo()
     {
-        GameObject halo = Instantiate(
-            Entities.GetEntityPrefab("HaloPlatform"),
+        GameObject halo = host.CreateNetworkObject("HaloPlatform",
             new Vector2(5, 23),
             Quaternion.identity
         );
-        halo.transform.localScale = new Vector2(10f,10f);
-        Entities.AddEntity(halo.gameObject);
+        halo.transform.localScale = new Vector2(10f, 10f);
     }
 
 
@@ -71,7 +61,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                 drifter.GetComponent<PlayerStatus>().ApplyStatusEffect(PlayerStatusEffect.DEAD,2f);
                 drifter.GetComponent<PlayerStatus>().ApplyStatusEffect(PlayerStatusEffect.INVULN,3.5f);
 
-                if (Entities.hasStocks(other.gameObject))
+                if (other.gameObject.GetComponent<Drifter>().Stocks > 0)
                 {
                     CreateExplosion(other, -1);
                     StartCoroutine(Respawn(other));
@@ -79,39 +69,26 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                 else
                 {
                     int destroyed = -1;
-                    foreach (CharacterSelectState state in GameController.Instance.CharacterSelectStates)
+                    foreach (GameObject player in NetworkPlayers.Instance.players.Values)
                     {
-                    
-                        if (Entities.Players.ContainsKey(state.PlayerID))
+                        if (player.Equals(other.gameObject))
                         {
-                        Entities.Players.TryGetValue(state.PlayerID, out GameObject obj);
-
-                            if (obj.Equals(other.gameObject))
-                            {
-                                destroyed = state.PlayerIndex;
-                                deadByOrder.Add(state);
-                                break;
-                            }
+                            destroyed = player.GetComponent<Drifter>().peerID;
+                            deadByOrder.Add(player.GetComponent<Drifter>().peerID);
+                            break;
                         }
                     }
                    
                     Destroy(other.gameObject);
-                // check for last one remaining
+                    // check for last one remaining
                     int count = 0;
                     int winner = -1;
-                    foreach (GameObject go in Entities.Players.Values)
+                    foreach (GameObject go in NetworkPlayers.Instance.players.Values)
                     {
-                        if (Entities.hasStocks(go))
+                        if (go.GetComponent<Drifter>().Stocks > 0)
                         {
-                            int victor = -1;
-                            foreach (CharacterSelectState select in GameController.Instance.CharacterSelectStates)
-                            {
-                                if (Entities.Players.ContainsKey(select.PlayerID) && go.Equals(Entities.Players[select.PlayerID]))
-                                victor = select.PlayerID;
-                            }
+                            winner = go.GetComponent<Drifter>().peerID;
                             count++;
-                        
-                            winner = victor;
                         }
                     }
 
@@ -129,8 +106,8 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                     int victor = -1;
                         if (deadByOrder.Count > 0)
                         {
-                            victor = deadByOrder[deadByOrder.Count - 1].PlayerIndex;
-                            winner = deadByOrder[deadByOrder.Count - 1].PlayerID;
+                            victor = deadByOrder[deadByOrder.Count - 1];
+                            winner = deadByOrder[deadByOrder.Count - 1];
                         } else
                         {
                         //well...

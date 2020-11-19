@@ -10,8 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8676352996291465654}
   - component: {fileID: 8676352996291465653}
-  - component: {fileID: 8676352996291465608}
-  - component: {fileID: 8676352996291465609}
   m_Layer: 0
   m_Name: LucilleJohnson
   m_TagString: GameController
@@ -46,38 +44,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsHost: 0
-  hostIP: 68.187.67.135
-  HostID: 18
-  AllData: {fileID: 11400000, guid: 04b59cfe6c0acdc4e88c6e85a3b5a9a0, type: 2}
-  Entities: {fileID: 0}
+  selectedStage: 
+  winner: -1
   characterCardPrefab: {fileID: 4003946031545901092, guid: d6b1f0eec583ffb43bd3b968435124d3,
     type: 3}
   deathExplosionPrefab: {fileID: 7721718320186116860, guid: 197c918cda771a64b9604a408f542ce6,
     type: 3}
---- !u!114 &8676352996291465608
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8676352996291465652}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b53569b7da872d345a265b8f27ec6761, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  keyBindings: {fileID: 11400000, guid: 885ea4674937f97478cc8405e1044828, type: 2}
---- !u!114 &8676352996291465609
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8676352996291465652}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de748ba2ce9338548ba8700a2a8a0763, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  status: 0
-  complete: 1
+  Username: test_user
+  controls: {fileID: 0}
+  PlayerID: -1

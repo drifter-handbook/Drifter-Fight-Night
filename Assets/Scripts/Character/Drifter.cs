@@ -26,7 +26,9 @@ public class Drifter : MonoBehaviour
 {
     public PlayerMovement movement;
     public PlayerSync sync;
-    public CustomControls controls;
+
+    public PlayerInputData input;
+    public PlayerInputData prevInput;
 
     public Animator animator;
     public PlayerAnimatorState animatorState { get; set; } = new PlayerAnimatorState();
@@ -36,17 +38,10 @@ public class Drifter : MonoBehaviour
     public int Charge = 0;
 
     public float BlockReduction = .5f;
-
-    public PlayerInputData input { get; set; } = new PlayerInputData();
-    public PlayerInputData prevInput = new PlayerInputData();
     
     public Color myColor;
 
-    void LateUpdate()
-    {
-        // set previous frame player input
-        prevInput.CopyFrom(input);
-    }
+    public int peerID;
 
     public void SetColor(Color color)
     {

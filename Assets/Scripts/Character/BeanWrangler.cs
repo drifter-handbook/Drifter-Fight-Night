@@ -6,7 +6,6 @@ using System;
 public class BeanWrangler : MonoBehaviour
 {
     // Start is called before the first frame update
-    protected NetworkEntityList entities;
     public bool hide;
     public int facing;
     public Animator anim;
@@ -22,7 +21,6 @@ public class BeanWrangler : MonoBehaviour
 
     void Start()
     {
-        entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
         Orro = gameObject.GetComponentInChildren<HitboxCollision>().parent;
         attacks = gameObject.GetComponentInChildren<HitboxCollision>().parent.GetComponent<PlayerAttacks>();
     }
@@ -38,7 +36,7 @@ public class BeanWrangler : MonoBehaviour
        
         Vector3 flip = new Vector3(facing *8,8,0f);
         Vector3 pos = new Vector3(facing *.7f,2.5f,1f);
-        GameObject spit = Instantiate(entities.GetEntityPrefab("BeanSpit"), transform.position + pos, transform.rotation);
+        GameObject spit = GameController.Instance.host.CreateNetworkObject("BeanSpit", transform.position + pos, transform.rotation);
         spit.transform.localScale = flip;
         try{
 
@@ -51,7 +49,6 @@ public class BeanWrangler : MonoBehaviour
                 hitbox.AttackType = attacks.AttackType;
                 hitbox.Active = true;
             }
-            entities.AddEntity(spit);
         }
         catch(NullReferenceException E){
             //Eventually

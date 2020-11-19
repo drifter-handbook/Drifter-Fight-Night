@@ -78,6 +78,8 @@ public class CharacterMenu : MonoBehaviour
     }
     List<PlayerMenuEntry> menuEntries = new List<PlayerMenuEntry>();
 
+    NetworkSync sync;
+
     void Awake()
     {
         foreach (PlayerSelectFigurine drifter in drifters)
@@ -99,6 +101,20 @@ public class CharacterMenu : MonoBehaviour
         }
     }
 
+    void Start()
+    {
+        sync = GetComponent<NetworkSync>();
+        sync["charSelState"] = new CharacterSelectSyncData()
+        {
+            Type = typeof(CharacterSelectSyncData).Name
+        };
+        NetworkUtils.GetNetworkData<CharacterSelectSyncData>(sync["charSelState"]).charSelState.Add(new CharacterSelectState()
+        {
+            PeerID = 0,
+            PlayerIndex = 0
+        });
+    }
+
     void FixedUpdate()
     {
         SyncToCharSelectState();
@@ -108,12 +124,13 @@ public class CharacterMenu : MonoBehaviour
     public void SyncToCharSelectState()
     {
         // add cards if needed
-        for (int i = menuEntries.Count; i < GameController.Instance.CharacterSelectStates.Count; i++)
+        List<CharacterSelectState> charSelState = NetworkUtils.GetNetworkData<CharacterSelectSyncData>(sync["charSelState"]).charSelState;
+        for (int i = menuEntries.Count; i < charSelState.Count; i++)
         {
             AddPlayerCard();
         }
         // remove cards if needed
-        for (int i = GameController.Instance.CharacterSelectStates.Count; i < menuEntries.Count; i++)
+        for (int i = charSelState.Count; i < menuEntries.Count; i++)
         {
             RemovePlayerCard();
             i--;
@@ -121,7 +138,7 @@ public class CharacterMenu : MonoBehaviour
         // set cards
         for (int i = 0; i < menuEntries.Count; i++)
         {
-            DrifterType drifter = GameController.Instance.CharacterSelectStates[i].PlayerType;
+            DrifterType drifter = charSelState[i].PlayerType;
             
             if(drifter != DrifterType.None){
                 CharacterCard.SetCharacter(menuEntries[i].characterCard.transform, figurines[drifter].image, drifter.ToString().Replace("_", " "));
@@ -129,17 +146,13 @@ public class CharacterMenu : MonoBehaviour
             
         }
         // set arrow color and visibility
-        int index = GameController.Instance.LocalPlayer.PlayerIndex;
-        if (index < 0)
-        {
-            return;
-        }
         foreach (PlayerSelectFigurine drifter in drifters)
         {
+            CharacterSelectState state = charSelState.Find(x => x.PlayerIndex == GameController.Instance.PlayerID);
             if (drifter.figurine != null)
             {
-                drifter.figurine.GetComponent<Figurine>().SetColor(ColorFromEnum[(PlayerColor)index]);
-                if (drifter.drifter == GameController.Instance.CharacterSelectStates[index].PlayerType)
+                drifter.figurine.GetComponent<Figurine>().SetColor(ColorFromEnum[(PlayerColor)state.PlayerIndex]);
+                if (drifter.drifter == charSelState[state.PlayerIndex].PlayerType)
                 {
                     drifter.figurine.GetComponent<Figurine>().TurnArrowOn();
                 }
@@ -213,17 +226,18 @@ public class CharacterMenu : MonoBehaviour
     public void SelectDrifter(string drifterString)
     {
         DrifterType drifter = (DrifterType)Enum.Parse(typeof(DrifterType), drifterString.Replace(" ", "_"));
-        int index = GameController.Instance.LocalPlayer.PlayerIndex;
-        if (index < 0)
+        if (GameController.Instance.IsHost)
         {
-            return;
+            List<CharacterSelectState> charSelState = NetworkUtils.GetNetworkData<CharacterSelectSyncData>(sync["charSelState"]).charSelState;
+            charSelState[GameController.Instance.PlayerID].PlayerType = drifter;
         }
-        PlayerMenuEntry myCard = menuEntries[GameController.Instance.LocalPlayer.PlayerIndex];
-        if (myCard.characterCard != null)
+        else
         {
-            CharacterCard.SetCharacter(myCard.characterCard.transform, figurines[drifter].image, drifter.ToString().Replace("_", " "));
+            sync.SendNetworkMessage(new CharacterSelectClientPacket()
+            {
+                drifter = drifter
+            });
         }
-        GameController.Instance.CharacterSelectStates[index].PlayerType = drifter;
     }
 
 
@@ -322,4 +336,17 @@ public class CharacterMenu : MonoBehaviour
         movesetOverlay.GetComponentInChildren<TutorialSwapper>().SelectDrifter(0);
     }
 
+}
+
+public class CharacterSelectSyncData : INetworkData
+{
+    public string Type { get; set; }
+    public List<CharacterSelectState> charSelState = new List<CharacterSelectState>();
+    public string stage;
+}
+
+public class CharacterSelectClientPacket : INetworkData
+{
+    public string Type { get; set; }
+    public DrifterType drifter { get; set; }
 }

@@ -53,7 +53,7 @@ public class BojoMasterHit : MasterHit
     	facing = movement.Facing;
         Vector3 flip = new Vector3(facing *6f,6f,0f);
         Vector3 pos = new Vector3(facing *3f,4f,1f);
-        GameObject bubble = Instantiate(entities.GetEntityPrefab("Mockery"), transform.position + pos, transform.rotation);
+        GameObject bubble = host.CreateNetworkObject("Mockery", transform.position + pos, transform.rotation);
         bubble.transform.localScale = flip;
         bubble.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * 55, 0);
        	drifter.SetAnimatorBool("HasCharge",true);
@@ -67,7 +67,6 @@ public class BojoMasterHit : MasterHit
             hitbox.Active = true;
         }
         bubble.GetComponent<BojoBubble>().mode = Random.Range(0,8);
-        entities.AddEntity(bubble);
     }
 
     public void callTheSideW(){
@@ -91,7 +90,7 @@ public class BojoMasterHit : MasterHit
 
         Vector3 flip = new Vector3(facing *9f,9f,0f);
         Vector3 pos = new Vector3(facing *0f,0f,1f);
-        GameObject Centaur = Instantiate(entities.GetEntityPrefab("Kamikaze"), transform.position + pos, transform.rotation);
+        GameObject Centaur = host.CreateNetworkObject("Kamikaze", transform.position + pos, transform.rotation);
         Centaur.transform.localScale = flip;
         Centaur.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * 65, 0);
         
@@ -102,7 +101,6 @@ public class BojoMasterHit : MasterHit
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;
         }
-        entities.AddEntity(Centaur);
         drifter.SetAnimatorBool("Empowered",false);
     }
 

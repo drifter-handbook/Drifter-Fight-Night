@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class EndgameImageHandler : MonoBehaviour
@@ -57,28 +58,12 @@ public class EndgameImageHandler : MonoBehaviour
     {
         if (GameController.Instance.GetComponent<NetworkClient>() != null)
         {
-            GameController.Instance.GetComponent<NetworkClient>().ExitToMain();
+            SceneManager.LoadScene("MenuScene");
         }
 
         if (GameController.Instance.GetComponent<NetworkHost>() != null)
         {
-            GameController.Instance.GetComponent<NetworkHost>().ExitToMain();
+            SceneManager.LoadScene("MenuScene");
         }
-
     }
-
-    public void Restart()
-    {
-        if (GameController.Instance.GetComponent<NetworkClient>() != null)
-        {
-            GameController.Instance.GetComponent<NetworkClient>().ExitToChar();
-        }
-
-        if (GameController.Instance.GetComponent<NetworkHost>() != null)
-        {
-            GameController.Instance.GetComponent<NetworkHost>().ExitToChar();
-        }
-
-    }
-
 }

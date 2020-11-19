@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class RyykeTombstone : MonoBehaviour
 {
-    protected NetworkEntityList entities;
     Rigidbody2D rb;
     public Animator anim;
     public int facing = 0;
@@ -21,7 +20,6 @@ public class RyykeTombstone : MonoBehaviour
     {
     	rb = GetComponent<Rigidbody2D>();
     	rb.velocity = new Vector2(0f,-50f);
-        entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
         Ryyke = gameObject.GetComponentInChildren<HitboxCollision>().parent;
         attacks = Ryyke.GetComponent<PlayerAttacks>();
     }
@@ -104,7 +102,7 @@ public class RyykeTombstone : MonoBehaviour
 
     public void SpawnChad(){
         Vector3 flip = new Vector3(facing *8f,8f,1f);
-        GameObject zombie = Instantiate(entities.GetEntityPrefab("Chadwick"), transform.position, transform.transform.rotation);
+        GameObject zombie = GameController.Instance.host.CreateNetworkObject("Chadwick", transform.position, transform.transform.rotation);
         
         try{
              zombie.transform.localScale = flip;        
@@ -117,7 +115,6 @@ public class RyykeTombstone : MonoBehaviour
                 hitbox.Active = true;
             }
             Ryyke.GetComponentInChildren<RykkeMasterHit>().grantStack();
-            entities.AddEntity(zombie);
         }
         catch(NullReferenceException E)
         {

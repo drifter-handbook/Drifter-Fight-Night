@@ -128,7 +128,7 @@ public class MegurinMasterHit : MasterHit
 
 
     public void Dair(){
-        GameObject dairBolt = Instantiate(entities.GetEntityPrefab("MegurinDairBolt"), transform.position, transform.rotation);
+        GameObject dairBolt = host.CreateNetworkObject("MegurinDairBolt", transform.position, transform.rotation);
         foreach (HitboxCollision hitbox in dairBolt.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
@@ -136,11 +136,10 @@ public class MegurinMasterHit : MasterHit
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;
         }
-        entities.AddEntity(dairBolt);
     }
 
     public void Uair(){
-        GameObject Megunado = Instantiate(entities.GetEntityPrefab("Megunado"), transform.position + new Vector3(0, 3.3f), transform.rotation);
+        GameObject Megunado = host.CreateNetworkObject("Megunado", transform.position + new Vector3(0, 3.3f), transform.rotation);
         Megunado.GetComponent<Rigidbody2D>().velocity = Vector3.up * 18f;
         foreach (HitboxCollision hitbox in Megunado.GetComponentsInChildren<HitboxCollision>(true))
         {
@@ -149,7 +148,6 @@ public class MegurinMasterHit : MasterHit
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;
         }
-        entities.AddEntity(Megunado);
     }
 
     public void resetGravity(){
@@ -171,7 +169,7 @@ public class MegurinMasterHit : MasterHit
     public void spawnStorm(){
 
         Vector3 pos = new Vector3(0f,6.5f,0f);
-        GameObject MegurinStorm = Instantiate(entities.GetEntityPrefab("MegurinStorm"), transform.position + pos, transform.rotation);
+        GameObject MegurinStorm = host.CreateNetworkObject("MegurinStorm", transform.position + pos, transform.rotation);
         foreach (HitboxCollision hitbox in MegurinStorm.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
@@ -185,8 +183,6 @@ public class MegurinMasterHit : MasterHit
         }
         MegurinStorm.GetComponent<MegurinStorm>().attacks = attacks;
         activeStorm = MegurinStorm;
-
-        entities.AddEntity(MegurinStorm);
     }
 
     public void spawnOrb(){
@@ -194,7 +190,7 @@ public class MegurinMasterHit : MasterHit
         facing = movement.Facing;
         Vector3 flip = new Vector3(facing *12f,12f,0f);
         Vector3 pos = new Vector3(facing *4f,5,1f);
-        GameObject MegurinOrb = Instantiate(entities.GetEntityPrefab("ChromaticOrb"), transform.position + pos, transform.rotation);
+        GameObject MegurinOrb = host.CreateNetworkObject("ChromaticOrb", transform.position + pos, transform.rotation);
         MegurinOrb.transform.localScale = flip;
         MegurinOrb.GetComponent<Rigidbody2D>().velocity = new Vector2(facing *25, 0);
         MegurinOrb.GetComponent<Animator>().SetInteger("Mode",drifter.Charge);
@@ -205,7 +201,6 @@ public class MegurinMasterHit : MasterHit
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;
         }
-        entities.AddEntity(MegurinOrb);
     }
 
     public void spawnSmallBolt(){
@@ -213,7 +208,7 @@ public class MegurinMasterHit : MasterHit
         facing = movement.Facing;
         Vector3 flip = new Vector3(facing *10f,10f,1f);
         Vector3 pos = new Vector3(facing *3f,4,1f);
-        GameObject smallBolt = Instantiate(entities.GetEntityPrefab("WeakBolt"), transform.position + pos, transform.rotation);
+        GameObject smallBolt = host.CreateNetworkObject("WeakBolt", transform.position + pos, transform.rotation);
         smallBolt.transform.localScale = flip;
         foreach (HitboxCollision hitbox in smallBolt.GetComponentsInChildren<HitboxCollision>(true))
         {
@@ -222,14 +217,13 @@ public class MegurinMasterHit : MasterHit
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;
         }
-        entities.AddEntity(smallBolt);
     }
     public void spawnLargeBolt(){
 
         facing = movement.Facing;
         Vector3 flip = new Vector3(facing *10f,10f,1f);
         Vector3 pos = new Vector3(facing *3f,4,1f);
-        GameObject largeBolt = Instantiate(entities.GetEntityPrefab("StrongBolt"), transform.position + pos, transform.rotation);
+        GameObject largeBolt = host.CreateNetworkObject("StrongBolt", transform.position + pos, transform.rotation);
         largeBolt.transform.localScale = flip;
         foreach (HitboxCollision hitbox in largeBolt.GetComponentsInChildren<HitboxCollision>(true))
         {
@@ -238,7 +232,6 @@ public class MegurinMasterHit : MasterHit
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;
         }
-        entities.AddEntity(largeBolt);
     }
 
     public void setLightning(){

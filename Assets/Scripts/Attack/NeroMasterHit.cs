@@ -56,7 +56,7 @@ public class NeroMasterHit : MasterHit
         rb.velocity = new Vector2(rb.velocity.x, 1.5f * 35f);
         movement.gravityPaused= false;
         rb.gravityScale = gravityScale;
-        GameObject neroSpear = Instantiate(entities.GetEntityPrefab("NeroSpear"), transform.position, transform.rotation);
+        GameObject neroSpear = host.CreateNetworkObject("NeroSpear", transform.position, transform.rotation);
         foreach (HitboxCollision hitbox in neroSpear.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
@@ -64,7 +64,6 @@ public class NeroMasterHit : MasterHit
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;
         }
-        entities.AddEntity(neroSpear);
     }
     public override void hitTheRecovery(GameObject target)
     {

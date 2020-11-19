@@ -47,7 +47,7 @@ public class SpaceJamMasterHit : MasterHit
         facing = movement.Facing;
         Vector3 flip = new Vector3(facing *12f,12f,0f);
         Vector3 pos = new Vector3(facing *-3f,0f,1f);
-        GameObject GuidingBolt = Instantiate(entities.GetEntityPrefab("GuidingBolt"), transform.position + pos, transform.rotation);
+        GameObject GuidingBolt = host.CreateNetworkObject("GuidingBolt", transform.position + pos, transform.rotation);
         GuidingBolt.transform.localScale = flip;
         GuidingBolt.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * -30, 0);
         foreach (HitboxCollision hitbox in GuidingBolt.GetComponentsInChildren<HitboxCollision>(true))
@@ -57,8 +57,6 @@ public class SpaceJamMasterHit : MasterHit
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;
         }
-        entities.AddEntity(GuidingBolt);       
-            
     }
 
     public void oopsiePoopsie()
@@ -71,7 +69,7 @@ public class SpaceJamMasterHit : MasterHit
             audio.PlayOneShot(audioClips[1], 1f);
             Vector3 flip = new Vector3(facing *12f,12f,0f);
             Vector3 pos = new Vector3(facing *-3f,0f,1f);
-            GameObject amber = Instantiate(entities.GetEntityPrefab("Amber"), transform.position + pos, transform.rotation);
+            GameObject amber = host.CreateNetworkObject("Amber", transform.position + pos, transform.rotation);
             amber.transform.localScale = flip;
             amber.GetComponent<Rigidbody2D>().velocity = rb.velocity;
             foreach (HitboxCollision hitbox in amber.GetComponentsInChildren<HitboxCollision>(true))
@@ -83,8 +81,7 @@ public class SpaceJamMasterHit : MasterHit
             }
             amber.GetComponent<OopsiePoopsie>().hurtbox = gameObject.transform.Find("Hurtboxes").gameObject.GetComponent<CapsuleCollider2D>();
             amber.GetComponent<OopsiePoopsie>().status = status;
-        entities.AddEntity(amber);
-        charges = 0;
+            charges = 0;
         }
     }
 
