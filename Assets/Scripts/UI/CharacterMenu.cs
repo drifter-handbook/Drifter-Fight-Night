@@ -256,10 +256,6 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     public void SelectFightzone(string s)
     {
         selectedFightzoneNum = fightzones.FindIndex(x => x.sceneName == s);
-        if (GameController.Instance.IsHost)
-        {
-            NetworkUtils.GetNetworkData<CharacterSelectSyncData>(sync["charSelState"]).stage = s;
-        }
         UpdateFightzone();
     }
 
@@ -281,6 +277,10 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         if (GetComponent<Animator>().GetBool("location"))
         {
             GameController.Instance.selectedStage = selectedFightzone.sceneName;
+            if (GameController.Instance.IsHost)
+            {
+                NetworkUtils.GetNetworkData<CharacterSelectSyncData>(sync["charSelState"]).stage = selectedFightzone.sceneName;
+            }
         }
     }
 
