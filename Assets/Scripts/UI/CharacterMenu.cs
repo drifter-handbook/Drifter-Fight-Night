@@ -57,6 +57,8 @@ public class CharacterMenu : MonoBehaviour
 
     public GameObject stageMenu;
 
+    public Sprite noImage;
+
     private FightZone selectedFightzone;
     private int selectedFightzoneNum = 0;
 
@@ -128,6 +130,8 @@ public class CharacterMenu : MonoBehaviour
         }
 
         Cursor.visible = mouse;
+
+        if(everyoneReady())forwardButton.GetComponent<Button>().interactable = true;
     }
 
     public void SyncToCharSelectState()
@@ -262,6 +266,7 @@ public class CharacterMenu : MonoBehaviour
         GameController.Instance.CharacterSelectStates[index].PlayerType = drifter;
         selectedFigurine = figurines[drifter].figurine;
         selectedFigurine.GetComponent<Button>().enabled = false;
+        EventSystem.current.SetSelectedGameObject(backButton);
 
         if(everyoneReady())
         {
@@ -348,7 +353,6 @@ public class CharacterMenu : MonoBehaviour
 
         }
 
-
         selectedFigurine.GetComponent<Button>().enabled = true;
         EventSystem.current.SetSelectedGameObject(selectedFigurine);
         selectedFigurine.GetComponent<Button>().enabled = false;
@@ -403,6 +407,15 @@ public class CharacterMenu : MonoBehaviour
         if(this.GetComponent<Animator>().GetBool("location")){
             HeadToCharacterSelect();
         }
+        else if(selectedFigurine != null){
+        	
+        	selectedFigurine.GetComponent<Button>().enabled = true;
+        	GameController.Instance.CharacterSelectStates[GameController.Instance.LocalPlayer.PlayerIndex].PlayerType = DrifterType.None;
+        	CharacterCard.SetCharacter(menuEntries[GameController.Instance.LocalPlayer.PlayerIndex].characterCard.transform, noImage, "SELECT DRIFTER");
+        	selectedFigurine = null;
+
+        }
+
         else{
             ReturnToTitle();
         }
