@@ -152,9 +152,17 @@ public class PlayerMovement : MonoBehaviour
         //Pause all animations while in hitpause
         if(status.HasStatusEffect(PlayerStatusEffect.HITPAUSE))
         {
-            animator.enabled = false;
+            if(status.HasEnemyStunEffect())
+            {
+                drifter.SetAnimatorBool("HitStun",true);
+            }
+            else{
+                animator.enabled = false;
+            }
+            
         }
         else{
+
             animator.enabled = true;
         }
 
