@@ -110,8 +110,9 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         {
             Type = typeof(CharacterSelectSyncData).Name
         };
+        sync["location"] = false;
         // add host
-        AddCharSelState(0);
+        AddCharSelState(-1);
     }
 
     public Dictionary<int, int> GetPeerIDsToPlayerIDs()
@@ -163,6 +164,13 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     {
         SyncToCharSelectState();
         transform.Find("ReadyButton").gameObject.SetActive(GameController.Instance.IsHost);
+        if (!GameController.Instance.IsHost)
+        {
+            if ((bool)sync["location"] && !GetComponent<Animator>().GetBool("location"))
+            {
+                HeadToLocationSelect();
+            }
+        }
     }
 
     public void SyncToCharSelectState()
@@ -272,8 +280,14 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         DrifterType drifter = (DrifterType)Enum.Parse(typeof(DrifterType), drifterString.Replace(" ", "_"));
         if (GameController.Instance.IsHost)
         {
-            List<CharacterSelectState> charSelState = NetworkUtils.GetNetworkData<CharacterSelectSyncData>(sync["charSelState"]).charSelState;
-            charSelState[GameController.Instance.PlayerID].PlayerType = drifter;
+            List<CharacterSelectState> charSelStates = NetworkUtils.GetNetworkData<CharacterSelectSyncData>(sync["charSelState"]).charSelState;
+            foreach (CharacterSelectState state in charSelStates)
+            {
+                if (state.PeerID == -1)
+                {
+                    state.PlayerType = drifter;
+                }
+            }
         }
         else
         {
@@ -299,6 +313,10 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
 
         this.GetComponent<Animator>().SetBool("location", true);
+        if (GameController.Instance.IsHost)
+        {
+            sync["location"] = true;
+        }
         if (!GameController.Instance.IsHost)
         {
             forwardButton.GetComponent<Animator>().SetBool("present", false);
