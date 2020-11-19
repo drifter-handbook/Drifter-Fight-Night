@@ -16,13 +16,13 @@ public class NetworkMessages
 
     Dictionary<int, List<Message>> messages = new Dictionary<int, List<Message>>();
 
-    public List<string> PopMessages(int objectID)
+    public List<object> PopMessages(int objectID)
     {
         if (!messages.ContainsKey(objectID))
         {
             messages[objectID] = new List<Message>();
         }
-        List<string> contents = messages[objectID].Select(x => x.message).ToList();
+        List<object> contents = messages[objectID].Select(x => JsonConvert.DeserializeObject<object>(x.message)).ToList();
         messages[objectID].Clear();
         return contents;
     }
@@ -74,7 +74,7 @@ public class NetworkMessages
 
 public class NetworkMessage
 {
-    public string contents;
+    public object contents;
     public int peerId;
 }
 
