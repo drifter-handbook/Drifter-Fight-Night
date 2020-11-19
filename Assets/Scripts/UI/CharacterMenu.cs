@@ -13,7 +13,7 @@ public enum PlayerColor
 
 
 // Shows players and selected character [View]
-public class CharacterMenu : MonoBehaviour
+public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 {
     public GameObject movesetOverlay;
 
@@ -380,6 +380,21 @@ public class CharacterMenu : MonoBehaviour
         movesetOverlay.GetComponentInChildren<TutorialSwapper>().SelectDrifter(0);
     }
 
+    public void ReceiveNetworkMessage(NetworkMessage message)
+    {
+        CharacterSelectClientPacket selectCharacter = NetworkUtils.GetNetworkData<CharacterSelectClientPacket>(message.contents);
+        if (selectCharacter != null)
+        {
+            List<CharacterSelectState> charSelStates = NetworkUtils.GetNetworkData<CharacterSelectSyncData>(sync["charSelState"]).charSelState;
+            foreach (CharacterSelectState state in charSelStates)
+            {
+                if (state.PeerID == message.peerId)
+                {
+                    state.PlayerType = selectCharacter.drifter;
+                }
+            }
+        }
+    }
 }
 
 public class CharacterSelectSyncData : INetworkData
