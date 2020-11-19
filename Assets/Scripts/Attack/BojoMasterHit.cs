@@ -49,6 +49,11 @@ public class BojoMasterHit : MasterHit
         rb.velocity = Vector2.zero;
     }
 
+    public void Side_ground_Dash(){
+        facing = movement.Facing;
+        rb.velocity = new Vector3(facing * 43f,rb.velocity.y);
+    }
+
     public void GUN(){
     	facing = movement.Facing;
         Vector3 flip = new Vector3(facing *6f,6f,0f);
