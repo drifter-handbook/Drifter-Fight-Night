@@ -115,6 +115,7 @@ public class RyykeTombstone : MonoBehaviour
                 hitbox.AttackID = attacks.AttackID;
                 hitbox.AttackType = DrifterAttackType.W_Down;
                 hitbox.Active = true;
+                hitbox.Facing = facing;
             }
             Ryyke.GetComponentInChildren<RykkeMasterHit>().grantStack();
             entities.AddEntity(zombie);
