@@ -68,6 +68,7 @@ public class MatchmakingUI : MonoBehaviour
 
     public void StartClient()
     {
+        SetRoomCode();
         GameController.Instance.StartNetworkClient(roomCode);
     }
 }

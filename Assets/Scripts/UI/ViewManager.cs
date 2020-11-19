@@ -14,7 +14,6 @@ public class ViewManager : MonoBehaviour
 #endif
     Transform startingMenu;
 
-    bool foundIP = false;
     public GameObject savedIPObject;
 
     string currentView;
@@ -99,14 +98,6 @@ public class ViewManager : MonoBehaviour
         {
             UnityEngine.Debug.Log("Update toggles");
             UpdateToggles();
-        }
-    }
-
-    public void SetIP(string ip)
-    {
-        if (currentView == "Join Menu")
-        {
-            // TODO: something
         }
     }
 
