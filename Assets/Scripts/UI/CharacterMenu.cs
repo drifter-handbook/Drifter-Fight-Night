@@ -13,7 +13,7 @@ public enum PlayerColor
 
 
 // Shows players and selected character [View]
-public class CharacterMenu : MonoBehaviour
+public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 {
     public GameObject movesetOverlay;
 
@@ -80,6 +80,8 @@ public class CharacterMenu : MonoBehaviour
 
     NetworkSync sync;
 
+    public static CharacterMenu Instance => GameObject.FindGameObjectWithTag("CharacterMenu")?.GetComponent<CharacterMenu>();
+
     void Awake()
     {
         foreach (PlayerSelectFigurine drifter in drifters)
@@ -108,11 +110,53 @@ public class CharacterMenu : MonoBehaviour
         {
             Type = typeof(CharacterSelectSyncData).Name
         };
-        NetworkUtils.GetNetworkData<CharacterSelectSyncData>(sync["charSelState"]).charSelState.Add(new CharacterSelectState()
+        // add host
+        AddCharSelState(0);
+    }
+
+    public Dictionary<int, int> GetPeerIDsToPlayerIDs()
+    {
+        Dictionary<int, int> peerIDsToPlayerIDs = new Dictionary<int, int>();
+        List<CharacterSelectState> charSelStates = NetworkUtils.GetNetworkData<CharacterSelectSyncData>(sync["charSelState"]).charSelState;
+        foreach (CharacterSelectState state in charSelStates)
         {
-            PeerID = 0,
-            PlayerIndex = 0
+            peerIDsToPlayerIDs[state.PeerID] = state.PlayerIndex;
+        }
+        return peerIDsToPlayerIDs;
+    }
+
+    public void AddCharSelState(int peerID)
+    {
+        List<CharacterSelectState> charSelStates = NetworkUtils.GetNetworkData<CharacterSelectSyncData>(sync["charSelState"]).charSelState;
+        charSelStates.Add(new CharacterSelectState()
+        {
+            PeerID = peerID
         });
+        SortCharSelState(charSelStates);
+    }
+
+    public void RemoveCharSelState(int peerID)
+    {
+        List<CharacterSelectState> charSelStates = NetworkUtils.GetNetworkData<CharacterSelectSyncData>(sync["charSelState"]).charSelState;
+        for (int i = 0; i < charSelStates.Count; i++)
+        {
+            if (charSelStates[i].PeerID == peerID)
+            {
+                charSelStates.RemoveAt(i);
+                i--;
+            }
+        }
+        SortCharSelState(charSelStates);
+    }
+
+    void SortCharSelState(List<CharacterSelectState> charSelStates)
+    {
+        // sort by peer ID
+        charSelStates.Sort((x, y) => x.PeerID.CompareTo(y.PeerID));
+        for (int i = 0; i < charSelStates.Count; i++)
+        {
+            charSelStates[i].PlayerIndex = i;
+        }
     }
 
     void FixedUpdate()
@@ -336,6 +380,21 @@ public class CharacterMenu : MonoBehaviour
         movesetOverlay.GetComponentInChildren<TutorialSwapper>().SelectDrifter(0);
     }
 
+    public void ReceiveNetworkMessage(NetworkMessage message)
+    {
+        CharacterSelectClientPacket selectCharacter = NetworkUtils.GetNetworkData<CharacterSelectClientPacket>(message.contents);
+        if (selectCharacter != null)
+        {
+            List<CharacterSelectState> charSelStates = NetworkUtils.GetNetworkData<CharacterSelectSyncData>(sync["charSelState"]).charSelState;
+            foreach (CharacterSelectState state in charSelStates)
+            {
+                if (state.PeerID == message.peerId)
+                {
+                    state.PlayerType = selectCharacter.drifter;
+                }
+            }
+        }
+    }
 }
 
 public class CharacterSelectSyncData : INetworkData

@@ -38,6 +38,7 @@ public class NetworkHost : MonoBehaviour, ISyncHost
 
     public void Initialize()
     {
+        currentObjectID = 1;
         networkObjects = GetComponent<NetworkObjects>();
         // network handlers
         natPunchEvent.NatIntroductionSuccess += (point, addrType, token) =>
@@ -48,6 +49,23 @@ public class NetworkHost : MonoBehaviour, ISyncHost
         netEvent.PeerConnectedEvent += peer => {
             Peers.Add(peer.Id);
             Debug.Log("PeerConnected: " + peer.EndPoint);
+            CharacterMenu.Instance?.AddCharSelState(peer.Id);
+            if (CharacterMenu.Instance != null)
+            {
+                Dictionary<int, int> peerIDsToPlayerIDs = CharacterMenu.Instance?.GetPeerIDsToPlayerIDs();
+                foreach (int peerID in Peers)
+                {
+                    NetworkUtils.SendNetworkMessageToPeer(peer.Id, 0, new SetPlayerIDPacket()
+                    {
+                        PlayerID = peerIDsToPlayerIDs[peerID]
+                    }, DeliveryMethod.ReliableOrdered);
+                }
+            }
+            NetworkUtils.SendNetworkMessageToPeer(peer.Id, 0, new SceneChangePacket()
+            {
+                scene = "CharacterSelect",
+                startingObjectID = 1
+            }, DeliveryMethod.ReliableOrdered);
         };
         netEvent.ConnectionRequestEvent += request => { request.AcceptIfKey(ConnectionKey); };
         netEvent.NetworkReceiveEvent += (peer, reader, deliveryMethod) => {

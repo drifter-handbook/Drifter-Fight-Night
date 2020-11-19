@@ -104,6 +104,23 @@ public static class NetworkUtils
         throw new InvalidOperationException("That's not how this works.");
     }
 
+    public static void SendNetworkMessageToPeer(int peerID, int objectID, object obj, DeliveryMethod deliveryMethod = DeliveryMethod.ReliableSequenced)
+    {
+        // send message host -> specific client
+        if (!GameController.Instance.IsHost)
+        {
+            throw new InvalidOperationException("Can only use this method as host.");
+        }
+        NetworkHost host = GameController.Instance.host;
+        foreach (NetPeer peer in host.netManager)
+        {
+            if (peer.Id == peerID)
+            {
+                peer.Send(host.netPacketProcessor.Write(NetworkMessages.ToPacket(objectID, obj)), deliveryMethod);
+            }
+        }
+    }
+
     public static void SendNetworkMessage(int objectID, object obj, DeliveryMethod deliveryMethod = DeliveryMethod.ReliableSequenced)
     {
         // send message host -> client
