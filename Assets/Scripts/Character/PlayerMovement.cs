@@ -46,6 +46,7 @@ public class PlayerMovement : MonoBehaviour
 
     Rigidbody2D rb;
     PolygonCollider2D col;
+    CameraShake shake;
 
     Coroutine varyJumpHeight;
     public float varyJumpHeightDuration = 0.5f;
@@ -75,6 +76,7 @@ public class PlayerMovement : MonoBehaviour
 
     }
     void Start(){
+        shake = gameObject.GetComponentInChildren<CameraShake>();
         baseGravity = rb.gravityScale;
         jumpSpeed = (float)(jumpHeight / jumpTime + .5f*(rb.gravityScale * jumpTime));
 
@@ -322,8 +324,10 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //mashout effects
-        if((status.HasStatusEffect(PlayerStatusEffect.PLANTED) || status.HasStatusEffect(PlayerStatusEffect.AMBERED) || status.HasStatusEffect(PlayerStatusEffect.PARALYZED))&& prevMoveX != drifter.input.MoveX){
+        if((status.HasStatusEffect(PlayerStatusEffect.PLANTED) || status.HasStatusEffect(PlayerStatusEffect.AMBERED) || status.HasStatusEffect(PlayerStatusEffect.PARALYZED) || status.HasStatusEffect(PlayerStatusEffect.GRABBED))&& prevMoveX != drifter.input.MoveX){
             status.mashOut();
+
+            StartCoroutine(shake.Shake(.2f,.7f));
 
             spawnJuiceParticle(new Vector3(.5f,UnityEngine.Random.Range(1f,3f),0),6);
         }
@@ -331,7 +335,7 @@ public class PlayerMovement : MonoBehaviour
         prevMoveY = drifter.input.MoveY;
 
         //Pause movement for relevent effects.
-        if(status.HasStatusEffect(PlayerStatusEffect.STUNNED) || status.HasStatusEffect(PlayerStatusEffect.PLANTED) || status.HasStatusEffect(PlayerStatusEffect.DEAD) || status.HasStatusEffect(PlayerStatusEffect.HITPAUSE))
+        if(status.HasStatusEffect(PlayerStatusEffect.STUNNED) || status.HasStatusEffect(PlayerStatusEffect.PLANTED) || status.HasStatusEffect(PlayerStatusEffect.DEAD) || status.HasStatusEffect(PlayerStatusEffect.HITPAUSE) || status.HasStatusEffect(PlayerStatusEffect.GRABBED))
         {
             rb.velocity = Vector2.zero;
             rb.gravityScale = 0;

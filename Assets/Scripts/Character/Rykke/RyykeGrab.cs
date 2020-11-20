@@ -7,6 +7,7 @@ public class RyykeGrab : MonoBehaviour
 
     public float duration;
     public Drifter drifter;
+    //bool grabbed = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +24,7 @@ public class RyykeGrab : MonoBehaviour
     {
         if(col.gameObject.name == "Hurtboxes"){
             drifter.SetAnimatorTrigger("GrabbedPlayer");
+            //grabbed = true;
         }
         
     }
@@ -30,7 +32,10 @@ public class RyykeGrab : MonoBehaviour
     public IEnumerator Fade(float delay)
     {
         yield return new WaitForSeconds(delay);
+        //if(grabbed)StartCoroutine(Fade(.9f));
+        //else 
         Destroy(this.gameObject.transform.parent.gameObject);
+        //grabbed = false;
         yield break;
     }
 }

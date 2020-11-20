@@ -13,6 +13,7 @@ public class RykkeMasterHit : MasterHit
     public TetherRange playerRange;
     public TetherRange ledgeRange;
     GameObject activeStone;
+    GameObject HoldPerson;
     PlayerStatus status;
     public AudioSource audio;
     public AudioClip[] audioClips;
@@ -210,18 +211,22 @@ public class RykkeMasterHit : MasterHit
         facing = movement.Facing;
         Vector3 flip = new Vector3(facing *8f,8f,1f);
         Vector3 loc = new Vector3(facing *5f,0f,0f);
-        GameObject HoldPerson = Instantiate(entities.GetEntityPrefab("HoldPerson"), transform.position + loc, transform.rotation);
-        HoldPerson.transform.localScale = flip;
-        foreach (HitboxCollision hitbox in HoldPerson.GetComponentsInChildren<HitboxCollision>(true))
-        {
-            hitbox.parent = drifter.gameObject;
-            hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
-            hitbox.Active = true;
-            hitbox.Facing = facing;
+        if(HoldPerson == null){
+            HoldPerson = Instantiate(entities.GetEntityPrefab("HoldPerson"), transform.position + loc, transform.rotation);
+            HoldPerson.transform.localScale = flip;
+            foreach (HitboxCollision hitbox in HoldPerson.GetComponentsInChildren<HitboxCollision>(true))
+            {
+                hitbox.parent = drifter.gameObject;
+                hitbox.AttackID = attacks.AttackID;
+                hitbox.AttackType = attacks.AttackType;
+                hitbox.Active = true;
+                hitbox.Facing = facing;
+            }
+            HoldPerson.GetComponentInChildren<RyykeGrab>().drifter = drifter;
+
+            entities.AddEntity(HoldPerson);
         }
-        HoldPerson.GetComponentInChildren<RyykeGrab>().drifter = drifter;
-        entities.AddEntity(HoldPerson);
+        
     }
 
     public void grabWhiff()
