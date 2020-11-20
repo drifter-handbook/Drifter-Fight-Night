@@ -275,6 +275,10 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
     public void UpdateFightzone()
     {
+        if (selectedFightzoneNum < 0)
+        {
+            return;
+        }
         selectedFightzone = fightzones[selectedFightzoneNum];
         fightZonePreview.sprite = selectedFightzone.fightzonePreview;
         fightZoneLabel.text = selectedFightzone.fightzoneName;
