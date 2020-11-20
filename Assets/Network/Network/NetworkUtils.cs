@@ -141,11 +141,9 @@ public static class NetworkUtils
     {
         if (netData is JObject)
         {
-            string data = netData.ToString();
-            if (data == null) { return null; }
             try
             {
-                T obj = JsonConvert.DeserializeObject<T>(data);
+                T obj = (netData as JObject).ToObject<T>();
                 if (obj.Type != typeof(T).Name)
                 {
                     return null;
