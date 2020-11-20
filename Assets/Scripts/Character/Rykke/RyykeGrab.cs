@@ -22,7 +22,7 @@ public class RyykeGrab : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        if(col.gameObject.name == "Hurtboxes"){
+        if(col.gameObject.name == "Hurtboxes" && col.gameObject.GetComponent<HurtboxCollision>().parent.GetComponent<Drifter>() != drifter){
             drifter.SetAnimatorTrigger("GrabbedPlayer");
             //grabbed = true;
         }

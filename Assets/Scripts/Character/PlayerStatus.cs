@@ -158,18 +158,13 @@ public class PlayerStatus : MonoBehaviour
     		return;
     	}
 
-        //If youre planted or stunned, you get unplanted by a hit
-        if(IsEnemyStunEffect(ef) && HasRemovableEffect())
-        {
-            if(HasStatusEffect(ef) || ef == PlayerStatusEffect.KNOCKBACK)clearStatus();
-            if(ef == PlayerStatusEffect.KNOCKBACK){
-                statusEffects[ef] = duration * 10f;
-            }
-            else if( ef == PlayerStatusEffect.PLANTED){
-                 statusEffects[PlayerStatusEffect.KNOCKBACK] = 4f;
-            }
+        if((IsEnemyStunEffect(ef) && HasStatusEffect(ef))|| (HasStatusEffect(PlayerStatusEffect.PLANTED) && (ef == PlayerStatusEffect.GRABBED))){
+            statusEffects[PlayerStatusEffect.KNOCKBACK] = 4f;
+            clearStatus();
             return;
         }
+        //If youre planted or stunned, you get unplanted by a hit
+        if((ef == PlayerStatusEffect.KNOCKBACK || IsEnemyStunEffect(ef))&& HasRemovableEffect())clearStatus();        
 
         if (!statusEffects.ContainsKey(ef))
         {

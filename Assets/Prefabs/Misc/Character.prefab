@@ -479,6 +479,7 @@ MonoBehaviour:
   currentJumps: 0
   ledgeOffset: 1
   ledgeClimbOffset: 0
+  particleOffset: {x: 0, y: 0, z: 0}
   grounded: 1
   gravityPaused: 0
   ledgeHanging: 0
@@ -1019,7 +1020,7 @@ PrefabInstance:
     - target: {fileID: 5683720365398587116, guid: b27b36a35bf8359458967f8e540bf8de,
         type: 3}
       propertyPath: m_Color.a
-      value: 0.68235296
+      value: 0.8666667
       objectReference: {fileID: 0}
     - target: {fileID: 7776010434807558584, guid: b27b36a35bf8359458967f8e540bf8de,
         type: 3}
