@@ -83,7 +83,7 @@ public class ParhelionMasterHit : MasterHit
     public void GroundedSlide(){
         facing = movement.Facing;
         if(drifter.input.MoveX * facing <0){
-            rb.velocity = new Vector2(facing * -1f * movement.walkSpeed,0f);
+            rb.velocity = new Vector2(facing * -1f * movement.walkSpeed,rb.velocity.y);
         }
         
     }
