@@ -26,7 +26,7 @@ public class PlayerMovement : MonoBehaviour
     float jumpSpeed;
     float baseGravity;
 
-    
+    public Vector3 particleOffset =  Vector3.zero;
 
     Vector2 prevVelocity;
 
@@ -353,6 +353,7 @@ public class PlayerMovement : MonoBehaviour
             else if(flipSprite ^ drifter.input.MoveX < 0){
                 Facing = -1;
             }
+
             attacks.Facing = Facing * (flipSprite?-1:1);
             transform.localScale = new Vector3(Facing * Mathf.Abs(transform.localScale.x),
                 transform.localScale.y, transform.localScale.z);
@@ -417,7 +418,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void spawnJuiceParticle(Vector3 pos, int mode, Quaternion angle){
 
-    	GameObject juiceParticle = Instantiate(entities.GetEntityPrefab("MovementParticle"), transform.position + pos,  angle);
+        particleOffset = new Vector3(particleOffset.x * Facing * (flipSprite?-1:1),particleOffset.y,0);
+
+    	GameObject juiceParticle = Instantiate(entities.GetEntityPrefab("MovementParticle"), transform.position + pos + particleOffset,  angle);
         juiceParticle.GetComponent<JuiceParticle>().mode = mode;
         juiceParticle.transform.localScale = new Vector3( juiceParticle.transform.localScale.x * Facing * (flipSprite?-1:1),juiceParticle.transform.localScale.y,1);
 

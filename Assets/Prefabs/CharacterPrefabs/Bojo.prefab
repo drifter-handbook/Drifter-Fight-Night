@@ -250,20 +250,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.5, y: 1}
   m_Direction: 1
---- !u!114 &6905411797981060487
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7713511604616445810}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 567341c8e80e0d048980b49b8baadc54, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  anim: {fileID: 5939196135170664860}
-  facing: 0
 --- !u!1 &5489365407831026343
 GameObject:
   m_ObjectHideFlags: 0
@@ -327,6 +313,20 @@ MonoBehaviour:
   parent: {fileID: 7112284146029398615}
   OverrideData: {fileID: 11400000, guid: 174086d940cab5644b1297c09c45988c, type: 2}
   AttackData: {fileID: 0}
+--- !u!114 &6905411797981060487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7713511604616445810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 567341c8e80e0d048980b49b8baadc54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anim: {fileID: 5939196135170664860}
+  facing: 0
 --- !u!1 &9023296286182694268
 GameObject:
   m_ObjectHideFlags: 0
@@ -638,6 +638,11 @@ PrefabInstance:
         type: 3}
       propertyPath: ledgeClimbOffset
       value: -0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3106753082241659641, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: particleOffset.y
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3106753082241659643, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
