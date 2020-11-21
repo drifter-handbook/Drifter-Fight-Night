@@ -54,7 +54,7 @@ public class BeanWrangler : MonoBehaviour
 
     void Update(){
 
-        if(Orro == null) Destroy(this.gameObject);
+        //if(Orro == null) Destroy(this.gameObject);
 
         if (Side) anim.SetTrigger("Side");
         if (Down) anim.SetTrigger("Down");
@@ -66,7 +66,9 @@ public class BeanWrangler : MonoBehaviour
 
         if(beanUpdateTimer >= 1f && !(beanUpdateTimer < 0))
         {
-            targetPos = states.Dequeue();
+            if(states.Count >0){
+                targetPos = states.Dequeue();
+            }
             beanUpdateTimer = 1f;
         }
 
