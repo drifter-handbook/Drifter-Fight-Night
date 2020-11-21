@@ -39,7 +39,7 @@ public class RykkeMasterHit : MasterHit
     {
         if(status.HasEnemyStunEffect() && tethering)tethering = false;
 
-        if(((Vector2.Distance(tetherTarget,rb.position) < 2.5f && tetheredPlayer) || movement.ledgeHanging)){
+        if(((Vector2.Distance(tetherTarget,rb.position) < 4f && tetheredPlayer) || movement.ledgeHanging)){
             UnityEngine.Debug.Log(Vector2.Distance(tetherTarget,rb.position));
             cancelTethering();
         }
