@@ -35,7 +35,7 @@ public class NetworkEntityConverter : Newtonsoft.Json.Converters.CustomCreationC
                 return new SpacejamBellSync.BellData();
             case "Main Camera":
                 return new CameraSync.ShakeData();
-            case "Ring":
+            case "LaunchRing":
             case "Chadwick":
             case "Megunado":
             case "HoldPerson":
