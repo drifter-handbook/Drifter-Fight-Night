@@ -52,9 +52,6 @@ public class ScreenShake : MonoBehaviour
 
       Vector3 origPos = transform.localPosition;
 
-      UnityEngine.Debug.Log(position);
-      UnityEngine.Debug.Log(transform.localPosition);
-
       //transform.localPosition = position;
       
       for(float i = 0f; i <= 1f;i+=.2f)

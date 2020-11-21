@@ -175,9 +175,9 @@ public class PlayerMovement : MonoBehaviour
             spawnJuiceParticle(Vector3.zero,1,Quaternion.Euler(0,0,UnityEngine.Random.Range(0,180)));
         }
 
-        if(status.HasStatusEffect(PlayerStatusEffect.KNOCKBACK) && rb.velocity.magnitude > 65f){
+        if(status.HasStatusEffect(PlayerStatusEffect.KNOCKBACK) && rb.velocity.magnitude > 75f){
             
-            if(ringTime>= 5){
+            if(ringTime>= 7){
                 particleOffset = new Vector3(particleOffset.x * Facing * (flipSprite?-1:1),particleOffset.y,0);
 
                 GameObject launchRing = Instantiate(entities.GetEntityPrefab("LaunchRing"), transform.position + particleOffset,  Quaternion.Euler(0,0,((rb.velocity.y>0)?1:-1) * Vector3.Angle(rb.velocity, new Vector3(1f,0,0))));
