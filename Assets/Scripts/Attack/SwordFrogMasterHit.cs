@@ -73,6 +73,11 @@ public class SwordFrogMasterHit : MasterHit
         rb.velocity= new Vector2(0,60);
     }
 
+    public void ShieldBash(){
+        facing = movement.Facing;
+        rb.velocity= new Vector2(facing * 35f,5f);
+    }
+
     public void removeCharge()
     {
         facing = movement.Facing;
