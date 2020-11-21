@@ -84,14 +84,7 @@ public class NetworkObjects : MonoBehaviour
     GameObject CreateNetworkObjectForReal(int objectID, string networkType)
     {
         GameObject networkObj = Instantiate(GetNetworkTypePrefab(networkType));
-        RemoveIncorrectComponents(networkObj);
-        // initialize
-        NetworkSync sync = networkObj.GetComponent<NetworkSync>();
-        if (sync == null)
-        {
-            throw new MissingComponentException($"NetworkSync component is required on Network Object {networkObj.name}");
-        }
-        sync.Initialize(objectID, networkType);
+        RegisterNetworkObject(objectID, networkType, networkObj);
         if (GameController.Instance.IsHost)
         {
             NetworkUtils.SendNetworkMessage(0, new CreateNetworkObjectPacket()
@@ -100,9 +93,20 @@ public class NetworkObjects : MonoBehaviour
                 networkType = networkType
             });
         }
+        return networkObj;
+    }
+    public void RegisterNetworkObject(int objectID, string networkType, GameObject networkObj)
+    {
+        RemoveIncorrectComponents(networkObj);
+        // initialize
+        NetworkSync sync = networkObj.GetComponent<NetworkSync>();
+        if (sync == null)
+        {
+            throw new MissingComponentException($"NetworkSync component is required on Network Object {networkObj.name}");
+        }
+        sync.Initialize(objectID, networkType);
         // track created network objects
         networkObjects[objectID] = networkObj;
-        return networkObj;
     }
 
     // these should be only called by client

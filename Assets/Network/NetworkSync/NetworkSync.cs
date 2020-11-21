@@ -27,6 +27,10 @@ public class NetworkSync : MonoBehaviour
         ObjectID = objectID;
         NetworkType = networkType;
         syncData = NetworkUtils.GetNetworkObjectData(ObjectID);
+        foreach (INetworkInit component in GetComponents<INetworkInit>())
+        {
+            component.OnNetworkInit();
+        }
     }
 
     // Start is called before the first frame update
@@ -68,5 +72,10 @@ public interface ISyncClient { }
 public interface INetworkMessageReceiver
 {
     void ReceiveNetworkMessage(NetworkMessage message);
+}
+
+public interface INetworkInit
+{
+    void OnNetworkInit();
 }
 

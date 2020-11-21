@@ -10,9 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 7231869747879544512}
   - component: {fileID: 1183884514362129143}
-  - component: {fileID: 6357370385861390669}
   - component: {fileID: 6393229745888334606}
   - component: {fileID: -8117486799671256351}
+  - component: {fileID: 9069077035002809265}
+  - component: {fileID: 4197082963752336804}
+  - component: {fileID: 3889240412493571690}
   m_Layer: 0
   m_Name: Marble
   m_TagString: Untagged
@@ -86,20 +88,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &6357370385861390669
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1149823628106317843}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c74245efead93d14b9dc6cf2dbed6e98, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  latency: 0.025
-  Name: Marble
 --- !u!50 &6393229745888334606
 Rigidbody2D:
   serializedVersion: 4
@@ -134,6 +122,43 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   duration: 0.4
+--- !u!114 &9069077035002809265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1149823628106317843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c20a1139a9eaca438c79855ebb3b13b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NetworkType: 
+--- !u!114 &4197082963752336804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1149823628106317843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306e0bcc2a374b04ca99fe6fc7a7d042, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3889240412493571690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1149823628106317843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1925752a4980314891b5dbe83f9cfac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7511610311706643341
 GameObject:
   m_ObjectHideFlags: 0

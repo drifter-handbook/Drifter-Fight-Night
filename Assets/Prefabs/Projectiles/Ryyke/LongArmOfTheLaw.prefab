@@ -75,7 +75,9 @@ GameObject:
   - component: {fileID: 5808919247501640327}
   - component: {fileID: 1502886040531748628}
   - component: {fileID: 4445134957357251228}
-  - component: {fileID: 1967259953317990625}
+  - component: {fileID: -1792368551550525880}
+  - component: {fileID: 535390753019579286}
+  - component: {fileID: 105972379062936363}
   m_Layer: 0
   m_Name: LongArmOfTheLaw
   m_TagString: Untagged
@@ -182,7 +184,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   destroy: 0
   duration: 0.5
---- !u!114 &1967259953317990625
+--- !u!114 &-1792368551550525880
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -191,8 +193,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 2782640523891384236}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 107c99b28d2642f4fa4875573e6d0a36, type: 3}
+  m_Script: {fileID: 11500000, guid: 7c20a1139a9eaca438c79855ebb3b13b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  latency: 0.025
-  Name: LongArmOfTheLaw
+  NetworkType: 
+--- !u!114 &535390753019579286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2782640523891384236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306e0bcc2a374b04ca99fe6fc7a7d042, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &105972379062936363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2782640523891384236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1925752a4980314891b5dbe83f9cfac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

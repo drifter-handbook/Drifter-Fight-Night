@@ -7,8 +7,6 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
 {
     NetworkSyncToHost syncFromClients;
 
-    public GameObject playerPrefab;
-
     public List<GameObject> spawnPoints;
 
     GameObject hostPlayer;
@@ -25,7 +23,7 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
         syncFromClients = GetComponent<NetworkSyncToHost>();
         // create host
         int playerNum = 0;
-        hostPlayer = CreatePlayer(0, ref playerNum);
+        hostPlayer = CreatePlayer(-1, ref playerNum);
         // create other players
         foreach (int peerID in GameController.Instance.host.Peers)
         {
@@ -50,7 +48,15 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
 
     GameObject CreatePlayer(int peerID, ref int i)
     {
-        GameObject obj = GameController.Instance.host.CreateNetworkObject("Player",
+        DrifterType drifter = DrifterType.None;
+        foreach (CharacterSelectState state in CharacterMenu.CharSelData.charSelState)
+        {
+            if (state.PeerID == peerID)
+            {
+                drifter = state.PlayerType;
+            }
+        }
+        GameObject obj = GameController.Instance.host.CreateNetworkObject(drifter.ToString().Replace("_", " "),
             spawnPoints[i % spawnPoints.Count].transform.position, Quaternion.identity);
         players[peerID] = obj;
         return obj;

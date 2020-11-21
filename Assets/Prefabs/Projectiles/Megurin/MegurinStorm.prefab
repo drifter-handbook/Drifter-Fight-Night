@@ -12,7 +12,9 @@ GameObject:
   - component: {fileID: 8107631278868043983}
   - component: {fileID: 3445964621854734439}
   - component: {fileID: 5866893930373629177}
-  - component: {fileID: -2781551909887999974}
+  - component: {fileID: 2050063140079490979}
+  - component: {fileID: 6738822441650179701}
+  - component: {fileID: 3272454073746819680}
   m_Layer: 0
   m_Name: MegurinStorm
   m_TagString: Untagged
@@ -119,7 +121,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &-2781551909887999974
+--- !u!114 &2050063140079490979
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -128,11 +130,34 @@ MonoBehaviour:
   m_GameObject: {fileID: 4855802820966953319}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c74245efead93d14b9dc6cf2dbed6e98, type: 3}
+  m_Script: {fileID: 11500000, guid: 7c20a1139a9eaca438c79855ebb3b13b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  latency: 0.025
-  Name: MegurinStorm
+  NetworkType: 
+--- !u!114 &6738822441650179701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4855802820966953319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306e0bcc2a374b04ca99fe6fc7a7d042, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3272454073746819680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4855802820966953319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1925752a4980314891b5dbe83f9cfac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7978536591016880782
 GameObject:
   m_ObjectHideFlags: 0

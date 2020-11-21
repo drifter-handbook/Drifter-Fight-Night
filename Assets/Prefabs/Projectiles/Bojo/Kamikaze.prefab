@@ -13,8 +13,10 @@ GameObject:
   - component: {fileID: 3534170779043924433}
   - component: {fileID: 6172366569522616803}
   - component: {fileID: -8100669845337638089}
-  - component: {fileID: 7602402885049558241}
   - component: {fileID: 2731394533134396280}
+  - component: {fileID: 5203601220736673892}
+  - component: {fileID: 6296876909648444997}
+  - component: {fileID: 1786724783220400201}
   m_Layer: 8
   m_Name: Kamikaze
   m_TagString: Untagged
@@ -154,20 +156,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.48228484, y: 0.31551322}
   m_EdgeRadius: 0
---- !u!114 &7602402885049558241
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1413698060829908408}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c74245efead93d14b9dc6cf2dbed6e98, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  latency: 0.025
-  Name: Kamikaze
 --- !u!114 &2731394533134396280
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -181,6 +169,43 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   duration: 3.5
+--- !u!114 &5203601220736673892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1413698060829908408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c20a1139a9eaca438c79855ebb3b13b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NetworkType: 
+--- !u!114 &6296876909648444997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1413698060829908408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306e0bcc2a374b04ca99fe6fc7a7d042, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1786724783220400201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1413698060829908408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1925752a4980314891b5dbe83f9cfac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7037138312686320679
 GameObject:
   m_ObjectHideFlags: 0

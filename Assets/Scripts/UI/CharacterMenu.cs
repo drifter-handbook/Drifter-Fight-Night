@@ -81,6 +81,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     NetworkSync sync;
 
     public static CharacterMenu Instance => GameObject.FindGameObjectWithTag("CharacterMenu")?.GetComponent<CharacterMenu>();
+    public static CharacterSelectSyncData CharSelData;
 
     void Awake()
     {
@@ -153,6 +154,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     void SortCharSelState(List<CharacterSelectState> charSelStates)
     {
         // sort by peer ID
+        CharSelData = NetworkUtils.GetNetworkData<CharacterSelectSyncData>(sync["charSelState"]);
         charSelStates.Sort((x, y) => x.PeerID.CompareTo(y.PeerID));
         for (int i = 0; i < charSelStates.Count; i++)
         {

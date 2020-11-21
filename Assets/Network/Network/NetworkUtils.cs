@@ -7,6 +7,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 public static class NetworkUtils
 {
@@ -159,6 +160,18 @@ public static class NetworkUtils
             return netData as T;
         }
         return null;
+    }
+
+    public static void RegisterChildObject(string networkType, GameObject obj)
+    {
+        if (GameController.Instance.IsHost)
+        {
+            GameController.Instance.host.networkObjects.RegisterNetworkObject(NetworkHost.NextObjectID, networkType, obj);
+        }
+        else
+        {
+            GameController.Instance.client.networkObjects.RegisterNetworkObject(NetworkClient.NextObjectID, networkType, obj);
+        }
     }
 
     public static byte[] Compress(string dataString)

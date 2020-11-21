@@ -76,9 +76,13 @@ GameObject:
   - component: {fileID: 8409136926372952469}
   - component: {fileID: 2978293314757844014}
   - component: {fileID: -4234936010747675848}
-  - component: {fileID: -3787056016394575284}
   - component: {fileID: -2606029162082251401}
   - component: {fileID: 8081365314418424556}
+  - component: {fileID: 6872793267839410169}
+  - component: {fileID: 3328443294829305301}
+  - component: {fileID: 4049258369412065583}
+  - component: {fileID: 8216702217609055890}
+  - component: {fileID: 2340388035280586343}
   m_Layer: 0
   m_Name: MegurinDairBolt
   m_TagString: Untagged
@@ -186,20 +190,6 @@ MonoBehaviour:
   destroy: 0
   speed: -45
   duration: 4
---- !u!114 &-3787056016394575284
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5179886687491852729}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4454f99cbdc1ee2479efd96dae54d175, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  latency: 0.025
-  Name: MegurinDairBolt
 --- !u!50 &-2606029162082251401
 Rigidbody2D:
   serializedVersion: 4
@@ -247,3 +237,64 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.11698356, y: 0.112179935}
   m_EdgeRadius: 0
+--- !u!114 &6872793267839410169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5179886687491852729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c20a1139a9eaca438c79855ebb3b13b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NetworkType: 
+--- !u!114 &3328443294829305301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5179886687491852729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306e0bcc2a374b04ca99fe6fc7a7d042, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4049258369412065583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5179886687491852729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1925752a4980314891b5dbe83f9cfac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8216702217609055890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5179886687491852729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 966aa641b64b635488c8fe778561ad30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2340388035280586343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5179886687491852729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 375a5dfd8071204439601cc2c3319524, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

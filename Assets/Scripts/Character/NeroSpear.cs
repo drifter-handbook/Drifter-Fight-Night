@@ -21,10 +21,6 @@ public class NeroSpear : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GetComponent<NeroSpearSync>().Active)
-        {
-            return;
-        }
         if (Active)
         {
             rb.velocity = velocity;

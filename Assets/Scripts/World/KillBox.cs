@@ -19,7 +19,6 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
     GameObject CreateExplosion(Collider2D other, int playerIndex)
     {
         GameObject deathExplosion = host.CreateNetworkObject("DeathExplosion", other.transform.position, Quaternion.identity);
-        deathExplosion.GetComponent<DeathExplosionSync>().Initialize(playerIndex);
         deathExplosion.transform.position =
             ClampObjectToScreenSpace.FindPosition(deathExplosion.transform);
         deathExplosion.transform.eulerAngles =

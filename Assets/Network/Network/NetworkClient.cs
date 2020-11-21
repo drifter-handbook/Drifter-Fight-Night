@@ -28,6 +28,10 @@ public class NetworkClient : MonoBehaviour, ISyncClient, INetworkMessageReceiver
     [NonSerialized]
     public bool GameStarted;
 
+    // only used for loading scenes
+    static int currentObjectID = 1;
+    public static int NextObjectID { get { return currentObjectID++; } }
+
     public void Initialize()
     {
         networkObjects = GetComponent<NetworkObjects>();
@@ -125,9 +129,9 @@ public class NetworkClient : MonoBehaviour, ISyncClient, INetworkMessageReceiver
         {
             return;
         }
-        for (int i = 0; i < startingEntities.Count; i++)
+        currentObjectID = sceneStartingObjectID;
+        foreach (GameObject obj in startingEntities)
         {
-            GameObject obj = startingEntities[i];
             // GameController doesn't follow the same rules
             NetworkObjects.RemoveIncorrectComponents(obj);
             NetworkSync sync = obj.GetComponent<NetworkSync>();
@@ -140,7 +144,7 @@ public class NetworkClient : MonoBehaviour, ISyncClient, INetworkMessageReceiver
                 sync.Initialize(sync.ObjectID, sync.NetworkType);
                 continue;
             }
-            sync.Initialize(sceneStartingObjectID + i, sync.NetworkType);
+            sync.Initialize(NextObjectID, sync.NetworkType);
             obj.SetActive(false);
         }
         StartCoroutine(LoadObjectsCoroutine(startingEntities));
