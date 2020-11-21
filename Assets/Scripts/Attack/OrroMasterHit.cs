@@ -25,9 +25,9 @@ public class OrroMasterHit : MasterHit
     }
 
     void Update(){
-        if(beanObject == null){
-            spawnBean();
-        }
+        // if(beanObject == null){
+        //     spawnBean();
+        // }
         if(anim.GetBool("Empowered"))bean.addBeanState(rb.position - new Vector2(-2f * movement.Facing,4f),movement.Facing);
 
     }
