@@ -27,8 +27,19 @@ public class TetherRange : MonoBehaviour
     {
         if(col.gameObject.tag == tag)
         {
-            if(tag == "Player")enemyVelocity = col.gameObject.GetComponent<Rigidbody2D>().velocity;
-            TetherPoint = col.gameObject.transform.position;
+            if(tag == "Player" && !col.gameObject.GetComponent<PlayerStatus>().HasStatusEffect(PlayerStatusEffect.INVULN)){
+                
+                enemyVelocity = col.gameObject.GetComponent<Rigidbody2D>().velocity;
+
+                TetherPoint = col.gameObject.transform.position;
+            }
+
+            else if(tag == "Ledge")
+            {
+                TetherPoint = col.gameObject.transform.position;
+            }
+
+            
         }
     }
 

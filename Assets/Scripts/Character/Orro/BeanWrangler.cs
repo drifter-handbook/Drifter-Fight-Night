@@ -108,7 +108,7 @@ public class BeanWrangler : MonoBehaviour
         try{
 
             attacks.SetMultiHitAttackID();
-            spit.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * 20, 0);
+            spit.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * 30 - rb.velocity.x, 0);
             foreach (HitboxCollision hitbox in spit.GetComponentsInChildren<HitboxCollision>(true))
             {
                 hitbox.parent = Orro;

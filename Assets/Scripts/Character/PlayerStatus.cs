@@ -159,7 +159,7 @@ public class PlayerStatus : MonoBehaviour
     	}
 
         if((IsEnemyStunEffect(ef) && HasStatusEffect(ef))|| (HasStatusEffect(PlayerStatusEffect.PLANTED) && (ef == PlayerStatusEffect.GRABBED))){
-            statusEffects[PlayerStatusEffect.KNOCKBACK] = 4f;
+            statusEffects[PlayerStatusEffect.KNOCKBACK] = 5.5f;
             clearStatus();
             return;
         }
