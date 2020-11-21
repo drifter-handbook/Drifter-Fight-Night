@@ -17,6 +17,7 @@ public class RykkeMasterHit : MasterHit
     public AudioSource audio;
     public AudioClip[] audioClips;
 
+    bool tethering = false;
     bool tetheredPlayer = false;
     Vector2 tetherTarget = Vector3.zero;
 
@@ -36,12 +37,24 @@ public class RykkeMasterHit : MasterHit
 
     void Update()
     {
+        if(status.HasEnemyStunEffect() && tethering)tethering = false;
+
+        if(((Vector2.Distance(tetherTarget,rb.position) < 2.5f && tetheredPlayer) || movement.ledgeHanging)){
+            UnityEngine.Debug.Log(Vector2.Distance(tetherTarget,rb.position));
+            cancelTethering();
+        }
+
         if(drifter.Charge == 0){
                 drifter.SetAnimatorBool("Empowered",false);
                 drifter.BlockReduction = .25f;
             }
         if(movement.grounded){
             recoveryReset = 2;
+        }
+
+        if(tethering){
+            UnityEngine.Debug.Log(Vector2.Distance(tetherTarget,rb.position));
+            rb.position =  Vector3.Lerp(rb.position,tetherTarget,.15f);
         }
     }
 
@@ -50,6 +63,11 @@ public class RykkeMasterHit : MasterHit
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.8f);
         Debug.Log("Recovery start!");
     }
+
+    public void applyEndLag(float lag){
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,lag);
+    }
+
     public void RecoveryPauseMidair()
     {
         // pause in air
@@ -85,7 +103,7 @@ public class RykkeMasterHit : MasterHit
         {
             arms.transform.rotation = Quaternion.Euler(0,0, (Mathf.Atan2(arms.transform.position.x -(playerRange.TetherPoint.x + playerRange.enemyVelocity.x *.15f),-arms.transform.position.y+(playerRange.TetherPoint.y+ playerRange.enemyVelocity.y *.15f))*180 / Mathf.PI));
             length = Vector2.Distance(playerRange.TetherPoint +  playerRange.enemyVelocity * .15f,arms.transform.position);
-            tetherTarget = playerRange.TetherPoint + (playerRange.enemyVelocity *.15f);
+            tetherTarget = playerRange.TetherPoint;// + (playerRange.enemyVelocity *.15f);
             tetheredPlayer = true;
 
         }
@@ -105,30 +123,35 @@ public class RykkeMasterHit : MasterHit
     {
         facing = movement.Facing;
         
-        if(tetherTarget != Vector2.zero && !tetheredPlayer)
+        if(tetherTarget != Vector2.zero)
         {
-            rb.velocity = new Vector2((-rb.position.x + tetherTarget.x) *3f + 10f, Mathf.Min((-rb.position.y + tetherTarget.y) *3f,50f) + 30);
-            if(movement.currentJumps < movement.numberOfJumps-1){
-                movement.currentJumps++;
-            }
+            tethering = true;
         }
 
-        else if(tetherTarget != Vector2.zero && tetheredPlayer)
-        {
-            rb.position = new Vector3(tetherTarget.x -.7f *facing,tetherTarget.y +.7f,0);
-            rb.velocity = new Vector3(facing*35,30,0);
-            if(movement.currentJumps < movement.numberOfJumps-1){
-                movement.currentJumps++;
-            }
-
-        }
         else if (recoveryReset > 0){
             attacks.currentRecoveries = 1;
             recoveryReset--;
         }
         playerRange.gameObject.transform.parent.gameObject.SetActive(false);
         rb.gravityScale = gravityScale;
-        tetheredPlayer = false;
+        movement.gravityPaused = false;
+        //tetheredPlayer = false;
+    }
+
+    void cancelTethering()
+    {
+        if(tethering){
+            UnityEngine.Debug.Log("CANCEL TETHERING");
+            tethering = false;
+            tetherTarget = Vector2.zero;
+            if(tetheredPlayer){
+                drifter.SetAnimatorTrigger("GrabbedPlayer");
+                UnityEngine.Debug.Log("ZOOM");
+                rb.velocity = new Vector3(facing*35,30,0);
+            }
+            
+        }
+        
     }
 
     public void cancelNeutralW(){
