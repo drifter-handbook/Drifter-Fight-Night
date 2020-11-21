@@ -1176,8 +1176,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1943751860}
-  - component: {fileID: 1943751861}
   - component: {fileID: 1943751862}
+  - component: {fileID: 1943751861}
+  - component: {fileID: 1943751863}
+  - component: {fileID: 1943751864}
   m_Layer: 0
   m_Name: Players
   m_TagString: NetworkPlayers
@@ -1229,6 +1231,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NetworkType: Players
+--- !u!114 &1943751863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1943751859}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e95498f031010f647b21dc16607cf471, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1943751864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1943751859}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 498c6039e9873a04b8001f0e91cc9919, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8308863689801224994
 PrefabInstance:
   m_ObjectHideFlags: 0
