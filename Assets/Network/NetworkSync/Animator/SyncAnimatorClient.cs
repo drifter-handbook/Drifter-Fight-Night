@@ -17,6 +17,7 @@ public class SyncAnimatorClient : MonoBehaviour, ISyncClient, INetworkMessageRec
 
     void SetAnimatorParameterValue(AnimatorControllerParameterType type, string name, object value)
     {
+        Debug.Log(value);
         switch (type)
         {
             case AnimatorControllerParameterType.Bool:
@@ -34,10 +35,17 @@ public class SyncAnimatorClient : MonoBehaviour, ISyncClient, INetworkMessageRec
     // Update is called once per frame
     void Update()
     {
-        SyncAnimatorData syncAnim = NetworkUtils.GetNetworkData<SyncAnimatorData>(sync["animator_parameters"]);
-        foreach (SyncAnimatorParameter parameter in syncAnim.parameters)
+        try
         {
-            SetAnimatorParameterValue(parameter.type, parameter.name, parameter.value);
+            SyncAnimatorData syncAnim = NetworkUtils.GetNetworkData<SyncAnimatorData>(sync["animator_parameters"]);
+            foreach (SyncAnimatorParameter parameter in syncAnim.parameters)
+            {
+                SetAnimatorParameterValue(parameter.type, parameter.name, parameter.value);
+            }
+        }
+        catch (KeyNotFoundException)
+        {
+            // host hasn't sent anything yet
         }
     }
 
