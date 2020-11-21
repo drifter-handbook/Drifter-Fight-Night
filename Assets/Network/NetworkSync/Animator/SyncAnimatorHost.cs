@@ -17,11 +17,15 @@ public class SyncAnimatorHost : MonoBehaviour, ISyncHost
         anim = GetComponent<Animator>();
         foreach (AnimatorControllerParameter parameter in anim.parameters)
         {
-            parameters.Add(new SyncAnimatorParameter() {
-                name = parameter.name,
-                type = parameter.type,
-                value = GetAnimatorParameterValue(parameter.type, parameter.name)
-            });
+            if (parameter.type != AnimatorControllerParameterType.Trigger)
+            {
+                parameters.Add(new SyncAnimatorParameter()
+                {
+                    name = parameter.name,
+                    type = parameter.type,
+                    value = GetAnimatorParameterValue(parameter.type, parameter.name)
+                });
+            }
         }
     }
 
