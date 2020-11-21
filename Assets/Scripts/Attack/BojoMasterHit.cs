@@ -37,8 +37,22 @@ public class BojoMasterHit : MasterHit
     	else{
     		drifter.SetAnimatorBool("HasCharge",false);
     	}
+    }
 
 
+     public void pullup(){
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.5f);
+        rb.velocity = new Vector3(0,70f,0);
+    }
+
+    public void pullupDodgeRoll()
+    {
+        facing = movement.Facing;
+        movement.gravityPaused = false;
+        rb.gravityScale = gravityScale;
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.42f);
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
+        rb.velocity = new Vector2(facing * 25f,5f);
     }
 
     public void multihit(){
@@ -51,7 +65,7 @@ public class BojoMasterHit : MasterHit
 
     public void Side_ground_Dash(){
         facing = movement.Facing;
-        rb.velocity = new Vector3(facing * 43f,rb.velocity.y);
+        rb.velocity += new Vector2(facing * 10f,0f);
     }
 
     public void GUN(){
@@ -89,6 +103,11 @@ public class BojoMasterHit : MasterHit
     public void misfire(){
         facing = movement.Facing;
         rb.velocity = new Vector2(50f * facing,15f);
+    }
+
+    public void trip(){
+        facing = movement.Facing;
+        rb.velocity += new Vector2(15f * facing,0f);
     }
 
     public void dismount(){

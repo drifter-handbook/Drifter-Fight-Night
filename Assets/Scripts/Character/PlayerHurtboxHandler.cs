@@ -65,6 +65,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             float facingDir = Mathf.Sign(hitbox.Facing) == 0 ? 1 : Mathf.Sign(hitbox.Facing) ;
 
             // rotate direction by angle of impact
+            //Do we still need all this math?
             //calculated angle
             float angle = Mathf.Sign(attackData.AngleOfImpact) * Mathf.Atan2(hurtbox.parent.transform.position.y-hitbox.parent.transform.position.y, hurtbox.parent.transform.position.x-hitbox.parent.transform.position.x)*180 / Mathf.PI;
             Vector2 forceDir = Mathf.Abs(attackData.AngleOfImpact) <= 360?

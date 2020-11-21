@@ -48,6 +48,8 @@ public class PlayerMovement : MonoBehaviour
     PolygonCollider2D col;
     CameraShake shake;
 
+    int ringTime = 0;
+
     Coroutine varyJumpHeight;
     public float varyJumpHeightDuration = 0.5f;
     public float varyJumpHeightForce = 10f;
@@ -171,6 +173,27 @@ public class PlayerMovement : MonoBehaviour
         //Smoke trail
         if(status.HasStatusEffect(PlayerStatusEffect.KNOCKBACK) && rb.velocity.magnitude > 45f){
             spawnJuiceParticle(Vector3.zero,1,Quaternion.Euler(0,0,UnityEngine.Random.Range(0,180)));
+        }
+
+        if(status.HasStatusEffect(PlayerStatusEffect.KNOCKBACK) && rb.velocity.magnitude > 65f){
+            
+            if(ringTime>= 5){
+                particleOffset = new Vector3(particleOffset.x * Facing * (flipSprite?-1:1),particleOffset.y,0);
+
+                GameObject launchRing = Instantiate(entities.GetEntityPrefab("LaunchRing"), transform.position + particleOffset,  Quaternion.Euler(0,0,((rb.velocity.y>0)?1:-1) * Vector3.Angle(rb.velocity, new Vector3(1f,0,0))));
+
+                launchRing.transform.localScale = new Vector3(  7.5f* Facing * (flipSprite?-1:1),7.5f,1);
+
+                entities.AddEntity(launchRing);
+
+                ringTime = 0;
+
+            }
+            else{
+                ringTime++;
+            }
+
+            
         }
 
         //Reversed controls
