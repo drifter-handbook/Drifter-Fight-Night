@@ -130,7 +130,9 @@ public class CharacterMenu : MonoBehaviour
         }
 
         Cursor.visible = mouse;
+    }
 
+    void Update(){
         if(everyoneReady())forwardButton.GetComponent<Button>().interactable = true;
     }
 

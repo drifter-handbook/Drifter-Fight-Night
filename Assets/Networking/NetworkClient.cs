@@ -48,7 +48,7 @@ public class NetworkClient : MonoBehaviour, NetworkID
         Network.OnReceive(new ClientSetupPacket(), (id, packet) =>
         {
             PlayerID = ((ClientSetupPacket)packet).ID;
-            Debug.Log($"Connected to host at {packet.address.ToString()}:{packet.port}, we are Client #{PlayerID}");
+            //Debug.Log($"Connected to host at {packet.address.ToString()}:{packet.port}, we are Client #{PlayerID}");
             // attach player input to player with ID
             GetComponent<PlayerInput>().input = new PlayerInputData();
         });
