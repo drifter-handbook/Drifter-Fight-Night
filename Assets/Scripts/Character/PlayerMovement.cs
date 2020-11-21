@@ -48,7 +48,7 @@ public class PlayerMovement : MonoBehaviour
     PolygonCollider2D col;
     CameraShake shake;
 
-    int ringTime = 0;
+    int ringTime = 6;
 
     Coroutine varyJumpHeight;
     public float varyJumpHeightDuration = 0.5f;
@@ -151,6 +151,7 @@ public class PlayerMovement : MonoBehaviour
         else if(!status.HasEnemyStunEffect() && animator.GetBool("HitStun"))
         {
             drifter.SetAnimatorBool("HitStun",false);
+            ringTime = 6;
         }
 
         //Pause all animations while in hitpause
@@ -177,7 +178,7 @@ public class PlayerMovement : MonoBehaviour
 
         if(status.HasStatusEffect(PlayerStatusEffect.KNOCKBACK) && rb.velocity.magnitude > 75f){
             
-            if(ringTime>= 7){
+            if(ringTime>= 6){
                 particleOffset = new Vector3(particleOffset.x * Facing * (flipSprite?-1:1),particleOffset.y,0);
 
                 GameObject launchRing = Instantiate(entities.GetEntityPrefab("LaunchRing"), transform.position + particleOffset,  Quaternion.Euler(0,0,((rb.velocity.y>0)?1:-1) * Vector3.Angle(rb.velocity, new Vector3(1f,0,0))));

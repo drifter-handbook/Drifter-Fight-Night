@@ -22,6 +22,7 @@ public class BeanWrangler : MonoBehaviour
     BeanState targetPos;
     Rigidbody2D rb;
     float beanUpdateTimer = 0f;
+    float timeSinceState = 0f;
 
     Queue<BeanState> states = new Queue<BeanState>();
 
@@ -54,14 +55,14 @@ public class BeanWrangler : MonoBehaviour
 
     void Update(){
 
-        //if(Orro == null) Destroy(this.gameObject);
+        if(states.Count == 0 && timeSinceState >= 5f && beanUpdateTimer >=0) Destroy(this.gameObject);
 
         if (Side) anim.SetTrigger("Side");
         if (Down) anim.SetTrigger("Down");
         if (Up) anim.SetTrigger("Up");
         if (Neutral) anim.SetTrigger("Neutral");
 
-
+        timeSinceState += Time.deltaTime;
         if(beanUpdateTimer >= 0) beanUpdateTimer += Time.deltaTime;
 
         if(beanUpdateTimer >= 1f && !(beanUpdateTimer < 0))
@@ -83,6 +84,7 @@ public class BeanWrangler : MonoBehaviour
 
     public void addBeanState(Vector3 pos,int facing)
     {
+        timeSinceState =  0;
         states.Enqueue(new BeanState(pos,facing));
     }
 
