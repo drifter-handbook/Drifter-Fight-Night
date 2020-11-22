@@ -4,37 +4,17 @@ using UnityEngine;
 
 public class ParhelionMasterHit : MasterHit
 {
-    Rigidbody2D rb;
-    PlayerAttacks attacks;
-    float gravityScale;
-    PlayerMovement movement;
-    PlayerStatus status;
     float terminalVelocity;
-    public int facing;
 
     void Start()
     {
-
-        rb = drifter.GetComponent<Rigidbody2D>();
-        gravityScale = rb.gravityScale;
-        attacks = drifter.GetComponent<PlayerAttacks>();
-        movement = drifter.GetComponent<PlayerMovement>();
-        status = drifter.GetComponent<PlayerStatus>();
         terminalVelocity = movement.terminalVelocity;
     }
 
-    public void nairMultihit(){
-        attacks.SetMultiHitAttackID();
-    }
+    
+    //Side W Projectile
 
-    public void dodgeRoll(){
-        facing = movement.Facing;
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
-        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
-        rb.velocity = new Vector2(facing * -30f,0f);
-    }
-
-    public void SpikeBolt()
+    public void lightningStrike()
     {
         // jump upwards and create spear projectile
         facing = movement.Facing;
@@ -49,51 +29,35 @@ public class ParhelionMasterHit : MasterHit
         }
         entities.AddEntity(bolt);
     }
+    
 
-
-    public void RecoveryPauseMidair()
+    //Terminal Veloity Controls for Down W
+    
+    public void setTerminalVelocity()
     {
-        Debug.Log("Recovery start!");
-        rb.gravityScale = 0f;
-        rb.velocity = Vector2.zero;
-        movement.gravityPaused= true;
-    }
-    public override void callTheRecovery()
-    {
-        facing = movement.Facing;
-        // pause in air
-        rb.velocity = new Vector2(facing *-50, 20);
-    }
-
-    public void neutralSmash()
-    {
-    	facing = movement.Facing;
-    	status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.4f);
-    	rb.velocity = new Vector2(facing *-35f,5f);
-    }
-
-    public void downSmash()
-    {
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.3f);
-    	status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.4f);
         movement.terminalVelocity = 150;
-    	
     }
 
-    public void GroundedSlide(){
+    public void resetTerminal(){
+        movement.terminalVelocity = terminalVelocity;
+    }
+
+
+    //Inherited Roll Methods
+
+    public override void roll(){
         facing = movement.Facing;
-        if(drifter.input.MoveX * facing <0){
-            rb.velocity = new Vector2(facing * -1f * movement.walkSpeed,rb.velocity.y);
-        }
-        
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
+        rb.velocity = new Vector2(facing * -30f,0f);
     }
 
-    public void pullup(){
+    public override void rollGetupStart(){
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.4f);
         rb.velocity = new Vector3(0,75f,0);
     }
 
-    public void pullupDodgeRoll()
+    public override void rollGetupEnd()
     {
         facing = movement.Facing;
         movement.gravityPaused = false;
@@ -101,29 +65,5 @@ public class ParhelionMasterHit : MasterHit
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.4f);
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
         rb.velocity = new Vector2(facing * -35f,0f);
-    }
-
-
-
-    public void downJump(){
-        rb.velocity += new Vector2(0,35);
-    }
-
-    public void downSlam(){
-        rb.velocity += new Vector2(0,-60);
-    }
-    public void resetTerminal(){
-        movement.terminalVelocity = terminalVelocity;
-    }
-    
-    public override void hitTheRecovery(GameObject target)
-    {
-        Debug.Log("Recovery hit!");
-    }
-    public void cancelTheRecovery()
-    {
-        Debug.Log("Recovery end!");
-        movement.gravityPaused= false;
-        rb.gravityScale = gravityScale;
     }
 }

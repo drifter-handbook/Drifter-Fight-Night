@@ -4,23 +4,12 @@ using UnityEngine;
 
 public class OrroMasterHit : MasterHit
 {
-    Rigidbody2D rb;
-    PlayerAttacks attacks;
-    float gravityScale;
-    PlayerMovement movement;
-    public int facing = 0;
     public Animator anim;
     BeanWrangler bean;
     GameObject beanObject;
-    PlayerStatus status;
 
     void Start()
     {
-        rb = drifter.GetComponent<Rigidbody2D>();
-        gravityScale = rb.gravityScale;
-        attacks = drifter.GetComponent<PlayerAttacks>();
-        movement = drifter.GetComponent<PlayerMovement>();
-        status = drifter.GetComponent<PlayerStatus>();
         spawnBean();
     }
 
@@ -32,14 +21,14 @@ public class OrroMasterHit : MasterHit
 
     }
 
-    public void ledgeClimb(){
+    public override void rollGetupEnd(){
         facing = movement.Facing;
         rb.position += new Vector2(7f* facing,5.5f);
     }
 
-    public void ledgeClimbLag(){
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.9f);
-    }
+    // public void ledgeClimbLag(){
+    //     status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.9f);
+    // }
 
     public void spawnFireball()
     {
@@ -61,18 +50,24 @@ public class OrroMasterHit : MasterHit
         entities.AddEntity(orroOrb);
     }
 
-    public void dodgeRoll()
-    {
-        facing = movement.Facing;
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.8f);
-        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.4f);
-    }
+    // public void dodgeRoll()
+    // {
+    //     facing = movement.Facing;
+    //     status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.8f);
+    //     status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.4f);
+    // }
 
-    public void rollTele()
+    public override void roll()
     {
         facing = movement.Facing;
         rb.position += new Vector2(facing* 10,0);
     }
+
+    public override void rollGetupStart()
+    {
+        //unused
+    }
+
 
 	public void dair()
     {
@@ -91,11 +86,11 @@ public class OrroMasterHit : MasterHit
         entities.AddEntity(orroSplosion);
     }
 
-    public void backdash(){
-    	facing = movement.Facing;
+    // public void backdash(){
+    // 	facing = movement.Facing;
 
-    	rb.velocity = new Vector2(facing * -25f,23f);
-    }
+    // 	rb.velocity = new Vector2(facing * -25f,23f);
+    // }
 
 
     public void sair()
@@ -153,17 +148,6 @@ public class OrroMasterHit : MasterHit
     }
 
     
-
-    public void jabCombo()
-    {
-        attacks.SetupAttackID(DrifterAttackType.Ground_Q_Neutral);
-    }
-
-
-    public void multihit()
-    {
-        attacks.SetMultiHitAttackID();
-    }
 
     public void BeanSide()
     {

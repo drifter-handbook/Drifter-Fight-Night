@@ -4,16 +4,10 @@ using UnityEngine;
 
 public class MegurinMasterHit : MasterHit
 {
-    Rigidbody2D rb;
-    PlayerAttacks attacks;
-    PlayerStatus status;
-    float gravityScale;
-    PlayerMovement movement;
     public Animator anim;
     public SpriteRenderer sprite;
     GameObject activeStorm;
     Vector2 HeldDirection;
-    LayerMask myLayerMask;
 
     int neutralWCharge = 0;
     public float lightningCharge = 0f;
@@ -25,11 +19,6 @@ public class MegurinMasterHit : MasterHit
 
     void Start()
     {
-        rb = drifter.GetComponent<Rigidbody2D>();
-        gravityScale = rb.gravityScale;
-        attacks = drifter.GetComponent<PlayerAttacks>();
-        movement = drifter.GetComponent<PlayerMovement>();
-        status = drifter.GetComponent<PlayerStatus>();
     }
 
     void Update(){
@@ -40,10 +29,6 @@ public class MegurinMasterHit : MasterHit
         }
     }
 
-    public override void callTheRecovery()
-    {
-        Debug.Log("Recovery start!");
-    }
     public void RecoveryPauseMidair()
     {
         // pause in air
@@ -191,16 +176,16 @@ public class MegurinMasterHit : MasterHit
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
     }
 
-    public void ledgeClimbLag(){
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
+    public override void rollGetupStart(){
+        //Unused
     }
 
-     public void ledgeClimb(){
+     public override void rollGetupEnd(){
         facing = movement.Facing;
         rb.position += new Vector2(4f* facing,5f);
     }
 
-    public void warpRoll(){
+    public override void roll(){
         facing = movement.Facing;
         rb.position += new Vector2(6f* facing,0f);
     }
@@ -329,9 +314,9 @@ public class MegurinMasterHit : MasterHit
     }
 
 
-    public override void cancelTheNeutralW()
-    {
-        rb.gravityScale = gravityScale;
-        movement.gravityPaused= false;
-    }
+    // public override void cancelTheNeutralW()
+    // {
+    //     rb.gravityScale = gravityScale;
+    //     movement.gravityPaused= false;
+    // }
 }

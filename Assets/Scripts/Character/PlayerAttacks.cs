@@ -167,41 +167,14 @@ public class PlayerAttacks : MonoBehaviour
 
     void StartAttack(DrifterAttackType attackType)
     {
-        switch (attackType)
-        {
-            case DrifterAttackType.Ground_Q_Neutral:
-                hit?.callTheLight();
-                break;
-            case DrifterAttackType.Aerial_Q_Neutral:
-                hit?.callTheAerial();
-                break;
-            case DrifterAttackType.W_Up:
-                hit?.callTheRecovery();
-                break;
-            case DrifterAttackType.E_Side:
-                hit?.callTheGrab();
-                break;
-            case DrifterAttackType.W_Neutral:
-                hit?.callTheNeutralW();
-                break;
-            case DrifterAttackType.W_Side:
-                hit?.callTheSideW();
-                break;
-            case DrifterAttackType.W_Down:
-                hit?.callTheDownW();
-                break;
-            case DrifterAttackType.Roll:
-                hit?.callTheRoll();
-                break;    
-        }
         SetHitboxesActive(false);
         drifter.SetAnimatorTrigger(AnimatorTriggers[attackType]);
         SetupAttackID(attackType);
 
-        status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,
-            Attacks[attackType].EndLag);
+        status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,4f);
+            //Attacks[attackType].EndLag);
 
-        StartCoroutine(ListenForAttackEvents(attackType));
+        //StartCoroutine(ListenForAttackEvents(attackType));
     }
     public IEnumerator ListenForAttackEvents(DrifterAttackType attackType)
     {
@@ -222,70 +195,14 @@ public class PlayerAttacks : MonoBehaviour
         {
             yield return null;
         }
-        FinishAttack(attackType);
+        //FinishAttack(attackType);
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
         yield break;
     }
+
     public void Hit(DrifterAttackType attackType, int attackID, GameObject target)
     {
-        switch (attackType)
-        {
-            case DrifterAttackType.Ground_Q_Neutral:
-                hit?.hitTheLight(target);
-                break;
-            case DrifterAttackType.Aerial_Q_Neutral:
-                hit?.hitTheAerial(target);
-                break;
-            case DrifterAttackType.W_Up:
-                hit?.hitTheRecovery(target);
-                break;
-            case DrifterAttackType.E_Side:
-                hit?.hitTheGrab(target);
-                break;
-            case DrifterAttackType.W_Neutral:
-                hit?.hitTheNeutralW(target);
-                break;
-            case DrifterAttackType.W_Side:
-                hit?.hitTheSideW(target);
-                break;
-            case DrifterAttackType.W_Down:
-                hit?.hitTheDownW(target);
-                break;
-            case DrifterAttackType.Roll:
-                hit?.hitTheRoll(target);
-                break;       
-        }
-    }
-    void FinishAttack(DrifterAttackType attackType)
-    {
-        switch (attackType)
-        {
-            case DrifterAttackType.Ground_Q_Neutral:
-                hit?.cancelTheLight();
-                break;
-            case DrifterAttackType.Aerial_Q_Neutral:
-                hit?.cancelTheAerial();
-                break;
-            case DrifterAttackType.W_Up:
-                hit?.cancelTheRecovery();
-                break;
-            case DrifterAttackType.E_Side:
-                hit?.cancelTheGrab();
-                break;
-            case DrifterAttackType.W_Neutral:
-                hit?.cancelTheNeutralW();
-                break;
-            case DrifterAttackType.W_Side:
-                hit?.cancelTheSideW();
-                break;
-            case DrifterAttackType.W_Down:
-                hit?.cancelTheDownW();
-                break;
-            case DrifterAttackType.Roll:
-                hit?.cancelTheRoll();
-                break;   
-        }
-        SetHitboxesActive(false);
+        UnityEngine.Debug.Log("HIT DETECTED IN PLAYER ATTACKS");
     }
 
     public void SetupAttackID(DrifterAttackType attackType)

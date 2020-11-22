@@ -4,59 +4,18 @@ using UnityEngine;
 
 public class SpaceJamMasterHit : MasterHit
 {
-    Rigidbody2D rb;
-    PlayerAttacks attacks;
-    float gravityScale;
-    PlayerMovement movement;
+   
     public SpriteRenderer sprite;
-    public Drifter self;
     public Animator anim;
-    public int charges;
-    PlayerStatus status;
-    int maxCharge = 30;
+    int charges = 0;
+    int maxCharge = 65;
 
     public AudioSource audio;
     public AudioClip[] audioClips;
 
-    public int facing;
 
-    void Start()
-    {
-        rb = drifter.GetComponent<Rigidbody2D>();
-        gravityScale = rb.gravityScale;
-        attacks = drifter.GetComponent<PlayerAttacks>();
-        movement = drifter.GetComponent<PlayerMovement>();
-        status = drifter.GetComponent<PlayerStatus>();
-    }
-
-    public void dodgeRoll(){
-        audio.Pause();
-        facing = movement.Facing;
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.5f);
-        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
-        rb.velocity = new Vector2(facing * -45f,0f);
-    }
-
-     public void pullup(){
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.5f);
-        rb.velocity = new Vector3(0f,45f,0);
-    }
-
-    public void pullupDodgeRoll()
-    {
-        facing = movement.Facing;
-        movement.gravityPaused = false;
-        rb.gravityScale = gravityScale;
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.45f);
-        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
-        rb.velocity = new Vector2(facing * -45f,5f);
-    }
-
-    public void multihit(){
-        attacks.SetMultiHitAttackID();
-    }
-
-    public void sideW()
+    //Side W
+    public void GuidingBolt()
     {
         audio.PlayOneShot(audioClips[1], 1f);
         facing = movement.Facing;
@@ -77,6 +36,8 @@ public class SpaceJamMasterHit : MasterHit
             
     }
 
+
+    //Down W
     public void oopsiePoopsie()
     {
         facing = movement.Facing;
@@ -104,45 +65,65 @@ public class SpaceJamMasterHit : MasterHit
         charges = 0;
         }
     }
-    
-    public void callTheRecovery(){
-        facing = movement.Facing;
-        rb.gravityScale = 0;
-        movement.gravityPaused= true;
-        rb.velocity= new Vector2(facing * -25,25);
-    }
-    public void cancelTheRecovery(){
-        rb.gravityScale = gravityScale;
-        movement.gravityPaused = false;
-    } 
 
-    void grantCharges(){
-    	if(charges < maxCharge){
-            charges++;
-            
+
+    //Neutral W Charge
+
+    public void chargeOopsie()
+    {
+        if(charges < maxCharge){
+    			charges++;
+    		}
+        
+        if(drifter.DamageTaken >= .2f){
+            drifter.DamageTaken -= .2f;
         }
+        else{
+            drifter.DamageTaken = 0f;
+        }
+
         if(charges >= maxCharge){
             audio.Stop();
             audio.PlayOneShot(audioClips[2],1f);
             drifter.SetAnimatorBool("Empowered",true);
             sprite.color = new Color(255,165,0);
         }
+
     }
 
-    public void chargeNeutral()
+    public void cancelableOopsie()
     {
-        if(charges < maxCharge){
-    			grantCharges();
-    		}
-        
-        if(self.DamageTaken >= .5f){
-            self.DamageTaken -= .5f;
+        if(TransitionFromChanneledAttack())
+        {
+            return;
         }
         else{
-            self.DamageTaken = 0f;
+            chargeOopsie();
         }
-
-        
-
     }
+
+    //Inherited Dodge roll methods
+
+    public override void roll(){
+        audio.Pause();
+        facing = movement.Facing;
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,1f);
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
+        rb.velocity = new Vector2(facing * -35f,0f);
+    }
+
+     public override void rollGetupStart(){
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,1f);
+        rb.velocity = new Vector3(0f,45f,0);
+    }
+
+    public override void rollGetupEnd()
+    {
+        facing = movement.Facing;
+        movement.gravityPaused = false;
+        rb.gravityScale = gravityScale;
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
+        rb.velocity = new Vector2(facing * -35f,5f);
+    }
+
 }

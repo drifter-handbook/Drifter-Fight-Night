@@ -311,7 +311,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 drifter.SetAnimatorBool("Guarding", true);
             }
-            updateFacing();
+            //updateFacing();
         }
 
         else
@@ -328,23 +328,7 @@ public class PlayerMovement : MonoBehaviour
         //Jump
         if (jumpPressed && canAct) //&& rb.velocity.y < 0.8f * jumpSpeed)
         {
-            if(ledgeHanging)DropLedge();
-            //jump
-            if (currentJumps > 0)
-            {
-                currentJumps--;
-                drifter.SetAnimatorTrigger("Jump");
-                //Particles
-                if(IsGrounded()){
-                    spawnJuiceParticle(new Vector3(0,-1,0),3);
-                }
-                else{
-                    spawnJuiceParticle(new Vector3(0,-1,0),4);
-                }
-                //jump needs a little delay so character animations can spend
-                //a frame of two preparing to jump
-                StartCoroutine(DelayedJump());
-            }
+            jump();
         }
 
         //mashout effects
@@ -436,6 +420,29 @@ public class PlayerMovement : MonoBehaviour
         rb.gravityScale = baseGravity;
         strongLedgeGrab = false;
         attacks.ledgeHanging = false;
+    }
+
+
+    //Public jump method allows for forced jumps from attacks
+    public void jump()
+    {
+        if(ledgeHanging)DropLedge();
+            //jump
+            if (currentJumps > 0)
+            {
+                currentJumps--;
+                drifter.SetAnimatorTrigger("Jump");
+                //Particles
+                if(IsGrounded()){
+                    spawnJuiceParticle(new Vector3(0,-1,0),3);
+                }
+                else{
+                    spawnJuiceParticle(new Vector3(0,-1,0),4);
+                }
+                //jump needs a little delay so character animations can spend
+                //a frame of two preparing to jump
+                StartCoroutine(DelayedJump());
+            }
     }
 
 

@@ -4,14 +4,8 @@ using UnityEngine;
 
 public class BojoMasterHit : MasterHit
 {
-    Rigidbody2D rb;
-    PlayerAttacks attacks;
-    float gravityScale;
-    PlayerMovement movement;
-    PlayerStatus status;
     public Animator anim;
     float timeSinceGun = 0f;
-    public int facing;
     float boofTime;
     bool checkBoof;
 
@@ -40,12 +34,12 @@ public class BojoMasterHit : MasterHit
     }
 
 
-     public void pullup(){
+     public override void rollGetupStart(){
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.5f);
         rb.velocity = new Vector3(0,70f,0);
     }
 
-    public void pullupDodgeRoll()
+    public override void rollGetupEnd()
     {
         facing = movement.Facing;
         movement.gravityPaused = false;
@@ -55,9 +49,6 @@ public class BojoMasterHit : MasterHit
         rb.velocity = new Vector2(facing * 25f,5f);
     }
 
-    public void multihit(){
-        attacks.SetMultiHitAttackID();
-    }
 
     public void freeze(){
         rb.velocity = Vector2.zero;
@@ -132,7 +123,7 @@ public class BojoMasterHit : MasterHit
         drifter.SetAnimatorBool("Empowered",false);
     }
 
-    public void dodgeRoll(){
+    public override void roll(){
         facing = movement.Facing;
         drifter.SetAnimatorBool("Empowered",false);
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);

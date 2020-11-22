@@ -58,6 +58,8 @@ AnimationClip:
         type: 3}
     - time: 0.25
       value: {fileID: 13695940400761238, guid: 9b4fc3a882dd0094195efb97fcb39c64, type: 3}
+    - time: 0.33333334
+      value: {fileID: 13695940400761238, guid: 9b4fc3a882dd0094195efb97fcb39c64, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -88,12 +90,13 @@ AnimationClip:
     - {fileID: 1881914616335151426, guid: 9b4fc3a882dd0094195efb97fcb39c64, type: 3}
     - {fileID: -88071088861388321, guid: 9b4fc3a882dd0094195efb97fcb39c64, type: 3}
     - {fileID: 13695940400761238, guid: 9b4fc3a882dd0094195efb97fcb39c64, type: 3}
+    - {fileID: 13695940400761238, guid: 9b4fc3a882dd0094195efb97fcb39c64, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.33333334
+    m_StopTime: 0.4166667
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -142,7 +145,7 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0
-    functionName: dodgeRoll
+    functionName: roll
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

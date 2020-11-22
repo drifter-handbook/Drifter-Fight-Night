@@ -54,9 +54,12 @@ AnimationClip:
       value: {fileID: 8904562859120066959, guid: 0bb78c6b8f1e9c04b81b7011a01ec15a,
         type: 3}
     - time: 0.16666667
-      value: {fileID: -586743775086709878, guid: 0bb78c6b8f1e9c04b81b7011a01ec15a,
+      value: {fileID: -7599314450587668782, guid: 0bb78c6b8f1e9c04b81b7011a01ec15a,
         type: 3}
     - time: 0.25
+      value: {fileID: -586743775086709878, guid: 0bb78c6b8f1e9c04b81b7011a01ec15a,
+        type: 3}
+    - time: 0.41666666
       value: {fileID: 5316254281960486745, guid: 0bb78c6b8f1e9c04b81b7011a01ec15a,
         type: 3}
     attribute: m_Sprite
@@ -87,6 +90,7 @@ AnimationClip:
     pptrCurveMapping:
     - {fileID: 5878415336286284439, guid: 0bb78c6b8f1e9c04b81b7011a01ec15a, type: 3}
     - {fileID: 8904562859120066959, guid: 0bb78c6b8f1e9c04b81b7011a01ec15a, type: 3}
+    - {fileID: -7599314450587668782, guid: 0bb78c6b8f1e9c04b81b7011a01ec15a, type: 3}
     - {fileID: -586743775086709878, guid: 0bb78c6b8f1e9c04b81b7011a01ec15a, type: 3}
     - {fileID: 5316254281960486745, guid: 0bb78c6b8f1e9c04b81b7011a01ec15a, type: 3}
   m_AnimationClipSettings:
@@ -94,7 +98,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.33333334
+    m_StopTime: 0.5
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -143,7 +147,7 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0
-    functionName: dodgeRoll
+    functionName: roll
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

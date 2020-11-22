@@ -4,16 +4,10 @@ using UnityEngine;
 
 public class RykkeMasterHit : MasterHit
 {
-    Rigidbody2D rb;
-    PlayerAttacks attacks;
-    float gravityScale;
-    PlayerMovement movement;
     public Animator anim;
-    public int facing;
     public TetherRange playerRange;
     public TetherRange ledgeRange;
     GameObject activeStone;
-    PlayerStatus status;
     public AudioSource audio;
     public AudioClip[] audioClips;
 
@@ -27,12 +21,6 @@ public class RykkeMasterHit : MasterHit
 
     void Start()
     {
-        rb = drifter.GetComponent<Rigidbody2D>();
-        gravityScale = rb.gravityScale;
-        attacks = drifter.GetComponent<PlayerAttacks>();
-        movement = drifter.GetComponent<PlayerMovement>();
-        status = drifter.GetComponent<PlayerStatus>();
-
     }
 
     void Update()
@@ -58,11 +46,11 @@ public class RykkeMasterHit : MasterHit
         }
     }
 
-    public override void callTheRecovery()
-    {
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.8f);
-        Debug.Log("Recovery start!");
-    }
+    // public override void callTheRecovery()
+    // {
+    //     status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.8f);
+    //     Debug.Log("Recovery start!");
+    // }
 
     public void applyEndLag(float lag){
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,lag);
@@ -138,7 +126,7 @@ public class RykkeMasterHit : MasterHit
         //tetheredPlayer = false;
     }
 
-    void cancelTethering()
+    public void cancelTethering()
     {
         if(tethering){
             UnityEngine.Debug.Log("CANCEL TETHERING");
@@ -162,17 +150,12 @@ public class RykkeMasterHit : MasterHit
         }
     }
 
-
-    public void AmrourUp(){
-        status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.7f);
-    }
-
-    public void pullup(){
+    public override void rollGetupStart(){
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.5f);
         rb.velocity = new Vector3(0,78f,0);
     }
 
-    public void pullupDodgeRoll()
+    public override void rollGetupEnd()
     {
         facing = movement.Facing;
         movement.gravityPaused = false;
@@ -202,13 +185,6 @@ public class RykkeMasterHit : MasterHit
         rb.velocity = new Vector2(facing * 40f,0f);
     }
 
-    public void GroundedSlide(){
-        facing = movement.Facing;
-        if(drifter.input.MoveX * facing >0){
-            rb.velocity = new Vector2(facing * movement.walkSpeed,0f);
-        }
-        
-    }
 
     public void DownTiltFollowup(){
         facing = movement.Facing;
@@ -253,7 +229,7 @@ public class RykkeMasterHit : MasterHit
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.8f);
     }
 
-    public void dodgeRoll()
+    public override void roll()
     {
         facing = movement.Facing;
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);

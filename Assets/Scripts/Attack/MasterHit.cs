@@ -6,11 +6,30 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 {
     protected Drifter drifter;
     protected NetworkEntityList entities;
+    protected Rigidbody2D rb;
+    protected PlayerMovement movement;
+    protected PlayerStatus status;
+    protected float gravityScale;
+    protected PlayerAttacks attacks;
+
+    public int facing;
+
+
     // Start is called before the first frame update
     void Awake()
     {
-        drifter = transform.parent.gameObject.GetComponent<Drifter>();
+        //For creating projectiles
         entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
+        
+
+        //Paretn Components
+        drifter = transform.parent.gameObject.GetComponent<Drifter>();
+        rb = drifter.GetComponent<Rigidbody2D>();
+        movement = drifter.GetComponent<PlayerMovement>();
+        attacks = drifter.GetComponent<PlayerAttacks>();
+        status = drifter.GetComponent<PlayerStatus>();
+
+        gravityScale = rb.gravityScale;
     }
 
     // Update is called once per frame
@@ -19,111 +38,66 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
     }
 
-    public virtual void callTheAerial()
+    public void setYVelocity(float y)
     {
-
-    }
-    public virtual void hitTheAerial(GameObject target)
-    {
-
-    }
-    public virtual void cancelTheAerial()
-    {
-
+        rb.velocity = new Vector2(rb.velocity.x,y);
     }
 
-    public virtual void callTheLight()
+    public void setXVelocity(float x)
     {
-
-    }
-    public virtual void hitTheLight(GameObject target)
-    {
-
-    }
-    public virtual void cancelTheLight()
-    {
-
+        rb.velocity = new Vector2(movement.Facing * x,rb.velocity.y);
     }
 
-    public virtual void callTheGrab()
+    public void applyEndLag(float statusDuration)
     {
-
-    }
-    public virtual void hitTheGrab(GameObject target)
-    {
-
-    }
-    public virtual void cancelTheGrab()
-    {
-
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,statusDuration);
     }
 
-    public virtual void callTheRecovery()
+    public void applyArmour(float statusDuration)
     {
-
-    }
-    public virtual void hitTheRecovery(GameObject target)
-    {
-
-    }
-    public virtual void cancelTheRecovery()
-    {
-
+        status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,statusDuration);
     }
 
-    //Side W
-    public virtual void callTheSideW()
-    {
-
-    }
-    public virtual void hitTheSideW(GameObject target)
-    {
-
-    }
-    public virtual void cancelTheSideW()
-    {
-
+    public void pauseGravity(){
+        movement.gravityPaused= true;
+        rb.gravityScale = 0f;
+        rb.velocity = Vector2.zero;
     }
 
-    //Down W
-    public virtual void callTheDownW()
+    public void unpauseGravity()
     {
-
-    }
-    public virtual void hitTheDownW(GameObject target)
-    {
-
-    }
-    public virtual void cancelTheDownW()
-    {
-
+        movement.gravityPaused= false;
+        rb.gravityScale = gravityScale;
     }
 
-     //Neutral W
-    public virtual void callTheNeutralW()
-    {
-
-    }
-    public virtual void hitTheNeutralW(GameObject target)
-    {
-
-    }
-    public virtual void cancelTheNeutralW()
-    {
-
+    public void refreshHitboxID(){
+        attacks.SetMultiHitAttackID();
     }
 
-     //Roll
-    public virtual void callTheRoll()
+    //Allows for jump and shild canceling of moves. Returns true if it's condition was met
+    public bool TransitionFromChanneledAttack()
     {
+        if(drifter.input.Guard)
+        {
+            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
+            drifter.SetAnimatorBool("Guarding", true);
+            return true;
+        }
+        else if(drifter.input.Jump){
+            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
+            movement.jump();
+            return true;
+        }
 
+        return false;
     }
-    public virtual void hitTheRoll(GameObject target)
-    {
 
-    }
-    public virtual void cancelTheRoll()
-    {
 
-    }
+    public abstract void roll();
+
+    public abstract void rollGetupStart();
+    
+
+    public abstract void rollGetupEnd();
+   
 }
