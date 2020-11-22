@@ -24,15 +24,22 @@ public enum DrifterType
 public class Drifter : MonoBehaviour, INetworkInit
 {
     public PlayerMovement movement;
-    public PlayerSync sync;
 
     public PlayerInputData input;
     public PlayerInputData prevInput;
 
     public Animator animator;
 
-    public int Stocks = 0;
-    public float DamageTaken = 0f;
+    NetworkSync sync;
+    public int Stocks {
+        get { return (int)sync["stocks"]; }
+        set { sync["stocks"] = value; }
+    }
+    public float DamageTaken {
+        get { return (float)sync["damageTaken"]; }
+        set { sync["damageTaken"] = value; }
+    }
+
     public int Charge = 0;
 
     public float BlockReduction = .5f;
@@ -45,6 +52,13 @@ public class Drifter : MonoBehaviour, INetworkInit
     {
         NetworkUtils.RegisterChildObject("PlayerAnimator", transform.Find("Sprite").gameObject);
         NetworkUtils.RegisterChildObject("PlayerStatusController", transform.Find("PlayerStatusController").gameObject);
+    }
+
+    public void Start()
+    {
+        sync = GetComponent<NetworkSync>();
+        Stocks = 3;
+        DamageTaken = 0f;
     }
 
     public void SetColor(Color color)

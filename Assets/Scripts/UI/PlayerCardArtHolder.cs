@@ -46,7 +46,7 @@ public class PlayerCardArtHolder : MonoBehaviour
 
                 playerCards[i].SetColor(drifter.myColor);
 
-                int imageIndex = getDrifterTypeIndex(drifter.GetComponent<INetworkSync>().Type);
+                int imageIndex = getDrifterTypeIndex(drifter.GetComponent<NetworkSync>().NetworkType);
                 
                 playerCards[i].drifterIndex = imageIndex;
                 if(imageIndex == 5 || imageIndex == 1){
