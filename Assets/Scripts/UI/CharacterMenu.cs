@@ -126,14 +126,14 @@ public class CharacterMenu : MonoBehaviour
         }
         if(Input.anyKey && mouse && (!Input.GetMouseButton(0) || Input.GetMouseButton(1) || Input.GetMouseButton(2))){
             mouse = false;
-            EventSystem.current.SetSelectedGameObject(everyoneReady()?(this.GetComponent<Animator>().GetBool("location")?GameObject.Find("Training"):forwardButton):GameObject.Find("Lady P Figurine"));
+            EventSystem.current.SetSelectedGameObject(everyoneReady()?(this.GetComponent<Animator>().GetBool("location")?GameObject.Find("Training"):forwardButton):GameObject.Find("Random Figurine"));
         }
 
         Cursor.visible = mouse;
     }
 
     void Update(){
-        if(everyoneReady())forwardButton.GetComponent<Button>().interactable = true;
+        if(everyoneReady() && !this.GetComponent<Animator>().GetBool("location"))forwardButton.GetComponent<Button>().interactable = true;
     }
 
     public void SyncToCharSelectState()
@@ -248,6 +248,42 @@ public class CharacterMenu : MonoBehaviour
         {
             GameController.Instance.selectedStage = selectedFightzone.sceneName;
         }
+    }
+
+    public void SelectRandomDrifter()
+    {
+
+    	//Update sound climp in here
+    	switch(UnityEngine.Random.Range(0, 7)){
+    		case 0:
+    			SelectDrifter("Nero");
+    			break;
+    		case 1:
+    			SelectDrifter("Orro");
+    			break;
+    		case 2:
+    			SelectDrifter("Swordfrog");
+    			break;
+    		case 3:
+    			SelectDrifter("Megurin");
+    			break;
+    		case 4:
+    			SelectDrifter("Ryyke");
+    			break;
+    		case 5:
+    			SelectDrifter("Lady_Parhelion");
+    			break;
+    		case 6:
+    			SelectDrifter("Bojo");
+    			break;
+    		case 7:
+    			SelectDrifter("Spacejam");
+    			break;
+    		default:
+    			SelectDrifter("Spacejam");
+    			break;						
+    	}
+
     }
 
     public void SelectDrifter(string drifterString)

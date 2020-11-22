@@ -15,6 +15,7 @@ public enum DrifterType
     Ryyke,
     Megurin,
     Nero,
+    Random,
 }
 
 /** 
