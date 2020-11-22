@@ -69,7 +69,7 @@ public class PlayerAttacks : MonoBehaviour
     Animator animator;
     IMasterHit hit;
 
-    INetworkSync sync;
+    NetworkSync sync;
 
     PlayerInputData prevInput;
 
@@ -88,7 +88,7 @@ public class PlayerAttacks : MonoBehaviour
         animator = drifter.animator;
         status = GetComponent<PlayerStatus>();
         hit = GetComponentInChildren<IMasterHit>();
-        sync = GetComponent<INetworkSync>();
+        sync = GetComponent<NetworkSync>();
         currentRecoveries = maxRecoveries;
     }
 

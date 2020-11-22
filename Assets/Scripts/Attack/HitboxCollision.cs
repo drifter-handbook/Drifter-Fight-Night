@@ -5,7 +5,7 @@ using UnityEngine;
 public class HitboxCollision : MonoBehaviour
 {
     public GameObject parent;
-    INetworkSync playerType;
+    NetworkSync playerType;
 
     public int AttackID { get; set; }
     public DrifterAttackType AttackType { get; set; }
@@ -16,7 +16,7 @@ public class HitboxCollision : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerType = parent.GetComponent<INetworkSync>();
+        playerType = parent.GetComponent<NetworkSync>();
     }
 
     // Update is called once per frame
@@ -36,7 +36,7 @@ public class HitboxCollision : MonoBehaviour
     
         if (hurtbox != null && AttackType != DrifterAttackType.Null)
         {
-            string player = playerType.Type;
+            string player = playerType.NetworkType;
             if(OverrideData != null){
                 hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, -AttackID, AttackType, OverrideData);
             }

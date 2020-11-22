@@ -32,11 +32,11 @@ public class Drifter : MonoBehaviour, INetworkInit
 
     NetworkSync sync;
     public int Stocks {
-        get { return (int)sync["stocks"]; }
+        get { return (int)(long)sync["stocks"]; }
         set { sync["stocks"] = value; }
     }
     public float DamageTaken {
-        get { return (float)sync["damageTaken"]; }
+        get { return (float)(double)sync["damageTaken"]; }
         set { sync["damageTaken"] = value; }
     }
 
@@ -54,9 +54,13 @@ public class Drifter : MonoBehaviour, INetworkInit
         NetworkUtils.RegisterChildObject("PlayerStatusController", transform.Find("PlayerStatusController").gameObject);
     }
 
-    public void Start()
+    public void Awake()
     {
         sync = GetComponent<NetworkSync>();
+    }
+
+    public void Start()
+    {
         Stocks = 3;
         DamageTaken = 0f;
     }
