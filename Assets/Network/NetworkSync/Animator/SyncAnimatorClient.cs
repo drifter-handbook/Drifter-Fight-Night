@@ -25,7 +25,7 @@ public class SyncAnimatorClient : MonoBehaviour, ISyncClient, INetworkMessageRec
                 anim.SetInteger(name, (int)(long)value);
                 break;
             case AnimatorControllerParameterType.Float:
-                anim.SetFloat(name, (float)(double)value);
+                anim.SetFloat(name, (float)value);
                 break;
         }
     }

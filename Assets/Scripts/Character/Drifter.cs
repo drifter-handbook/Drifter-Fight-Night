@@ -36,7 +36,7 @@ public class Drifter : MonoBehaviour, INetworkInit
         set { sync["stocks"] = value; }
     }
     public float DamageTaken {
-        get { return (float)(double)sync["damageTaken"]; }
+        get { return (float)sync["damageTaken"]; }
         set { sync["damageTaken"] = value; }
     }
 
