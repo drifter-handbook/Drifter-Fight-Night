@@ -32,7 +32,7 @@ public class Drifter : MonoBehaviour, INetworkInit
 
     NetworkSync sync;
     public int Stocks {
-        get { return (int)(long)sync["stocks"]; }
+        get { return (int)sync["stocks"]; }
         set { sync["stocks"] = value; }
     }
     public float DamageTaken {
