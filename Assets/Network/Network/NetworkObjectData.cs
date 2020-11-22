@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -32,7 +33,16 @@ public class NetworkObjectData
             }
             foreach (string field in newData[objectID].Keys)
             {
-                data[objectID][field] = newData[objectID][field];
+                object value = newData[objectID][field];
+                if (value is double)
+                {
+                    value = (float)value;
+                }
+                if (value is long)
+                {
+                    value = (int)value;
+                }
+                data[objectID][field] = value;
             }
         }
     }
