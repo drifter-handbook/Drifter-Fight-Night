@@ -35,20 +35,15 @@ public class NeroMasterHit : MasterHit
         dashDistance = 10;
     }
 
-    public void neutralWCharge()
-    {
-
-        rb.gravityScale = .5f;
-        dashDistance += 5;
-     }
-
-     public void neutralWChargeCancelable()
+     public void neutralWCharge(int cancelable)
      {
-
-        TransitionFromChanneledAttack();
-        if(drifter.input.MoveX != 0 || drifter.input.Special || dashDistance>=60) drifter.SetAnimatorBool("HasCharge",true);
+        if(cancelable != 0)
+        {
+            TransitionFromChanneledAttack();
+            if(drifter.input.MoveX != 0 || drifter.input.Special || dashDistance>=60) drifter.SetAnimatorBool("HasCharge",true);
+        }
         movement.gravityPaused= true;        
-        rb.gravityScale = .5f;
+        rb.gravityScale = 5f;
         dashDistance += 5;
      }
 
@@ -72,11 +67,10 @@ public class NeroMasterHit : MasterHit
             drifter.SetAnimatorBool("Empowered",true);
             status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.3f);
         }
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.65f);
+        
 
     }
     public void hitCounter(){
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
         status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.3f);
         StartCoroutine(resetCounter());
         
@@ -87,23 +81,17 @@ public class NeroMasterHit : MasterHit
         drifter.SetAnimatorBool("Empowered",false);
     }
 
-    public void whiffCounter(){
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.95f);
-    }
-
-
-
     //Inhereted Roll Methods
 
     public override void roll(){
         facing = movement.Facing;
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.4f);
+        applyEndLag(1f);
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
         rb.velocity = new Vector2(facing * 30f,0f);
     }
 
     public override void rollGetupStart(){
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.4f);
+        applyEndLag(1f);
         rb.velocity = new Vector3(0,75f,0);
     }
 
@@ -112,7 +100,6 @@ public class NeroMasterHit : MasterHit
         facing = movement.Facing;
         movement.gravityPaused = false;
         rb.gravityScale = gravityScale;
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.4f);
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
         rb.velocity = new Vector2(facing * 35f,0f);
     }

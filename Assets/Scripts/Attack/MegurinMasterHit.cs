@@ -9,19 +9,24 @@ public class MegurinMasterHit : MasterHit
     GameObject activeStorm;
     Vector2 HeldDirection;
 
+    float terminalVelocity;
+
     int neutralWCharge = 0;
     public float lightningCharge = 0f;
     public float windCharge = 0f;
     public float iceCharge = 0f;
     float elementChargeMax = 30f;
 
-    public int facing;
 
     void Start()
     {
+        terminalVelocity = movement.terminalVelocity;
     }
 
-    void Update(){
+
+    void Update()
+    {
+        //Reset charges on death
         if(status.HasStatusEffect(PlayerStatusEffect.DEAD)){
             lightningCharge = 0;
             windCharge = 0;
@@ -29,20 +34,16 @@ public class MegurinMasterHit : MasterHit
         }
     }
 
-    public void RecoveryPauseMidair()
-    {
-        // pause in air
-        movement.gravityPaused= true;
-        rb.gravityScale = 0f;
-        rb.velocity = Vector2.zero;
-    }
+  
+    //Recovery Logic  
+
     public void saveDirection(){
         Vector2 TestDirection = new Vector2(drifter.input.MoveX,drifter.input.MoveY);
         HeldDirection = TestDirection == Vector2.zero? HeldDirection: TestDirection;
     }
 
 
-    public void RecoveryWarpStart(){
+    public void recoveryWarpStart(){
 
         HeldDirection.Normalize();
 
@@ -52,75 +53,14 @@ public class MegurinMasterHit : MasterHit
 
     }
 
-    public void RecoveryWarpEnd(){
+    public void resetTerminalVelocity(){
 
-        movement.terminalVelocity = 36f;
+        movement.terminalVelocity = terminalVelocity;
 
     }
 
-    IEnumerator resetGauges()
-    {
-        yield return new WaitForSeconds(.2f);
-        lightningCharge = 0;
-        windCharge = 0;
-        iceCharge = 0;
-    }
 
-    public SingleAttackData handleElements(SingleAttackData attackData, int element){
-        //-1 lightning
-        //0 wind
-        //1 ice
-
-        switch(element){
-            case -1:
-                if(lightningCharge >= elementChargeMax){
-                    attackData.StatusEffect = PlayerStatusEffect.PARALYZED;
-                    attackData.StatusDuration = 3.3f;
-                    StartCoroutine(resetGauges());
-                    return attackData;
-                }
-                else{
-                    lightningCharge += attackData.AttackDamage;
-                    if(lightningCharge>elementChargeMax)lightningCharge = elementChargeMax;
-                    break;
-                }
-            case 0:
-                if(windCharge >= elementChargeMax){
-                    attackData.StatusEffect = PlayerStatusEffect.FEATHERWEIGHT;
-                    attackData.StatusDuration = 7f;
-                    StartCoroutine(resetGauges());
-                    return attackData;
-                }
-                else{
-                    windCharge += attackData.AttackDamage;
-                    if(windCharge>elementChargeMax)windCharge = elementChargeMax;
-                    break;
-                }
-            case 1:
-                if(iceCharge >= elementChargeMax){
-                    attackData.StatusEffect = PlayerStatusEffect.SLOWED;
-                    attackData.StatusDuration = 7f;
-                    StartCoroutine(resetGauges());
-                    return attackData;
-                }
-                else{
-                    iceCharge += attackData.AttackDamage;
-                    if(iceCharge>elementChargeMax)iceCharge = elementChargeMax;
-                    break;
-                }
-            default:
-                break;
-        }
-        UnityEngine.Debug.Log("RESET");
-        attackData.StatusDuration = .1f;
-        attackData.StatusEffect = PlayerStatusEffect.HIT;
-        return attackData;
-    }
-
-    public void Nair(){
-        attacks.SetMultiHitAttackID();
-    }
-
+    //Projectiles
 
     public void Dair(){
         GameObject dairBolt = Instantiate(entities.GetEntityPrefab("MegurinDairBolt"), transform.position, transform.rotation);
@@ -163,32 +103,7 @@ public class MegurinMasterHit : MasterHit
             hitbox.Active = true;
         }
         entities.AddEntity(Megunado);
-    }
-
-    public void resetGravity(){
-        movement.gravityPaused= false;
-        rb.gravityScale = gravityScale;
-    }
-
-    public void dodgeRoll(){
-
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.7f);
-        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
-    }
-
-    public override void rollGetupStart(){
-        //Unused
-    }
-
-     public override void rollGetupEnd(){
-        facing = movement.Facing;
-        rb.position += new Vector2(4f* facing,5f);
-    }
-
-    public override void roll(){
-        facing = movement.Facing;
-        rb.position += new Vector2(6f* facing,0f);
-    }
+    }   
 
     public void spawnStorm(){
 
@@ -267,6 +182,9 @@ public class MegurinMasterHit : MasterHit
         entities.AddEntity(largeBolt);
     }
 
+
+    //Elemental Logic
+
     public void setLightning(){
         drifter.Charge = -1;
     }
@@ -277,8 +195,82 @@ public class MegurinMasterHit : MasterHit
         drifter.Charge = 0;
     }
 
-    public void chargeNeutralW(){
-        if(neutralWCharge < 8){
+    public SingleAttackData handleElements(SingleAttackData attackData, int element){
+        //-1 lightning
+        //0 wind
+        //1 ice
+
+        switch(element){
+            case -1:
+                if(lightningCharge >= elementChargeMax){
+                    attackData.StatusEffect = PlayerStatusEffect.PARALYZED;
+                    attackData.StatusDuration = 3.3f;
+                    StartCoroutine(resetGauges());
+                    return attackData;
+                }
+                else{
+                    lightningCharge += attackData.AttackDamage;
+                    if(lightningCharge>elementChargeMax)lightningCharge = elementChargeMax;
+                    break;
+                }
+            case 0:
+                if(windCharge >= elementChargeMax){
+                    attackData.StatusEffect = PlayerStatusEffect.FEATHERWEIGHT;
+                    attackData.StatusDuration = 7f;
+                    StartCoroutine(resetGauges());
+                    return attackData;
+                }
+                else{
+                    windCharge += attackData.AttackDamage;
+                    if(windCharge>elementChargeMax)windCharge = elementChargeMax;
+                    break;
+                }
+            case 1:
+                if(iceCharge >= elementChargeMax){
+                    attackData.StatusEffect = PlayerStatusEffect.SLOWED;
+                    attackData.StatusDuration = 7f;
+                    StartCoroutine(resetGauges());
+                    return attackData;
+                }
+                else{
+                    iceCharge += attackData.AttackDamage;
+                    if(iceCharge>elementChargeMax)iceCharge = elementChargeMax;
+                    break;
+                }
+            default:
+                break;
+        }
+        UnityEngine.Debug.Log("RESET");
+        attackData.StatusDuration = .1f;
+        attackData.StatusEffect = PlayerStatusEffect.HIT;
+        return attackData;
+    }
+
+    IEnumerator resetGauges()
+    {
+        yield return new WaitForSeconds(.2f);
+        lightningCharge = 0;
+        windCharge = 0;
+        iceCharge = 0;
+    }
+
+
+    //Neutral W Logic
+
+    public void chargeNeutralW()
+    {
+        if(TransitionFromChanneledAttack()){
+            return;
+        }
+        if(drifter.input.Special)
+        {
+            applyEndLag(0);
+            neutralWCharge = 0;
+            drifter.SetAnimatorTrigger("W_Neutral");
+            applyEndLag(3);
+        }
+
+        if(neutralWCharge < 33){
             neutralWCharge +=1;
         }
         else{
@@ -292,16 +284,13 @@ public class MegurinMasterHit : MasterHit
         if(anim.GetBool("Empowered") == true){
             drifter.SetAnimatorBool("Empowered",false);
             drifter.SetAnimatorBool("HasCharge",true);
-            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,1.4f);
         }
-        else{
-            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.9f);
-        }
-
     }
-    public void fireLightningbolt(){
+    public void fireLightningbolt()
+    {
+        sprite.color = Color.white;
         neutralWCharge = 0;
-        if(anim.GetBool("HasCharge") == true){
+        if(anim.GetBool("Empowered") == true){
             spawnLargeBolt();
         }
         else{
@@ -309,14 +298,25 @@ public class MegurinMasterHit : MasterHit
         }
 
     }
-    public void removeBoltStored(){
+
+    public void removeCharge(){
          drifter.SetAnimatorBool("HasCharge",false);
     }
 
 
-    // public override void cancelTheNeutralW()
-    // {
-    //     rb.gravityScale = gravityScale;
-    //     movement.gravityPaused= false;
-    // }
+
+    //Inhereted Roll Methods
+
+    public override void rollGetupStart(){
+        //Unused
+    }
+
+     public override void rollGetupEnd(){
+        facing = movement.Facing;
+        rb.position += new Vector2(4f* facing,5f);
+    }
+
+    public override void roll(){
+        //unused
+    }
 }

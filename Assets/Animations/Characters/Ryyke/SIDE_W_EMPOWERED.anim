@@ -2155,10 +2155,17 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.33333334
-    functionName: sideWslide
+    functionName: setYVelocity
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.33333334
+    functionName: setXVelocity
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 30
     intParameter: 0
     messageOptions: 0
   - time: 0.41666666
@@ -2169,7 +2176,7 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.41666666
-    functionName: multihit
+    functionName: refreshHitboxID
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

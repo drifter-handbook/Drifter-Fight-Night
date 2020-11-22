@@ -1561,28 +1561,28 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0
-    functionName: callTheRecovery
+    functionName: pauseGravity
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.083333336
-    functionName: RecoveryPauseMidair
+    functionName: enableTetherBox
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.41666666
-    functionName: throwHands
+    functionName: selectTetherTarget
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.75
-    functionName: daisyChain
+    functionName: moveToTetherTarget
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

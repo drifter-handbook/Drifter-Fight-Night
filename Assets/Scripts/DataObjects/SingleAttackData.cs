@@ -15,7 +15,7 @@ public class SingleAttackData : ScriptableObject
     public float Knockback = 10.0f;
     public float KnockbackScale = .5f;
     public float HitStun = -1f;
-    public float EndLag = 0.1f;
+    //public float EndLag = 0.1f;
     public bool isGrab = false;
     public float AngleOfImpact = 45f;
     public PlayerStatusEffect StatusEffect = PlayerStatusEffect.HIT;

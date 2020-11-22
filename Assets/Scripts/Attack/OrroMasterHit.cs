@@ -14,23 +14,15 @@ public class OrroMasterHit : MasterHit
     }
 
     void Update(){
-        // if(beanObject == null){
-        //     spawnBean();
-        // }
+        
+        //Keep Bean up to date
         if(anim.GetBool("Empowered"))bean.addBeanState(rb.position - new Vector2(-2f * movement.Facing,4f),movement.Facing);
 
     }
 
-    public override void rollGetupEnd(){
-        facing = movement.Facing;
-        rb.position += new Vector2(7f* facing,5.5f);
-    }
+    //Projectiles
 
-    // public void ledgeClimbLag(){
-    //     status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.9f);
-    // }
-
-    public void spawnFireball()
+    public void fireball()
     {
         facing = movement.Facing;
         Vector3 flip = new Vector3(facing *12f,12f,0f);
@@ -50,26 +42,8 @@ public class OrroMasterHit : MasterHit
         entities.AddEntity(orroOrb);
     }
 
-    // public void dodgeRoll()
-    // {
-    //     facing = movement.Facing;
-    //     status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.8f);
-    //     status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.4f);
-    // }
 
-    public override void roll()
-    {
-        facing = movement.Facing;
-        rb.position += new Vector2(facing* 10,0);
-    }
-
-    public override void rollGetupStart()
-    {
-        //unused
-    }
-
-
-	public void dair()
+	public void downwardsExplosion()
     {
     	facing = movement.Facing;
         rb.velocity = new Vector2(rb.velocity.x,35f);
@@ -86,14 +60,7 @@ public class OrroMasterHit : MasterHit
         entities.AddEntity(orroSplosion);
     }
 
-    // public void backdash(){
-    // 	facing = movement.Facing;
-
-    // 	rb.velocity = new Vector2(facing * -25f,23f);
-    // }
-
-
-    public void sair()
+    public void marble()
     {
     	facing = movement.Facing;
         GameObject marble = Instantiate(entities.GetEntityPrefab("Marble"), transform.position + new Vector3(0,3f,0), transform.rotation);
@@ -110,7 +77,7 @@ public class OrroMasterHit : MasterHit
     }
 
 
-    public void uair()
+    public void upwardsExplosion()
     {
     	facing = movement.Facing;
         rb.velocity = new Vector2(rb.velocity.x,10f);
@@ -127,27 +94,7 @@ public class OrroMasterHit : MasterHit
         entities.AddEntity(orroSplosion);
     }
 
-     public void cancelGravity(){
-        facing = movement.Facing;
-        rb.velocity = Vector2.zero;
-        movement.gravityPaused= true;
-        rb.gravityScale = 0;
-    }
-    public void inTheHole(){
-        
-        rb.velocity = new Vector2(0f,225f);
-    }
-
-    public void resetGravity(){
-        movement.gravityPaused= false;
-        rb.gravityScale = gravityScale;
-    }
-
-    public void grabEndlag(){
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.55f);
-    }
-
-    
+    //Bean!
 
     public void BeanSide()
     {
@@ -169,6 +116,8 @@ public class OrroMasterHit : MasterHit
         refreshBeanHitboxes();
         bean.Neutral = true;
     }
+
+
 
     public void spawnBean()
     {
@@ -218,6 +167,25 @@ public class OrroMasterHit : MasterHit
 
         }
        
+    }
+
+    //Inhereted Roll Methods
+    public override void roll()
+    {
+        //unused
+
+        // facing = movement.Facing;
+        // rb.position += new Vector2(facing* 10,0);
+    }
+
+    public override void rollGetupStart()
+    {
+        //unused
+    }
+
+    public override void rollGetupEnd(){
+        facing = movement.Facing;
+        rb.position += new Vector2(7f* facing,5.5f);
     }
 
 }

@@ -47,13 +47,13 @@ public class ParhelionMasterHit : MasterHit
 
     public override void roll(){
         facing = movement.Facing;
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
+        applyEndLag(1);
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
         rb.velocity = new Vector2(facing * -30f,0f);
     }
 
     public override void rollGetupStart(){
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.4f);
+        applyEndLag(1);
         rb.velocity = new Vector3(0,75f,0);
     }
 
@@ -62,7 +62,6 @@ public class ParhelionMasterHit : MasterHit
         facing = movement.Facing;
         movement.gravityPaused = false;
         rb.gravityScale = gravityScale;
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.4f);
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
         rb.velocity = new Vector2(facing * -35f,0f);
     }

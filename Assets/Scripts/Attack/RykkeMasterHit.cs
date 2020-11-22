@@ -17,11 +17,6 @@ public class RykkeMasterHit : MasterHit
 
     int recoveryReset =2;
 
-    
-
-    void Start()
-    {
-    }
 
     void Update()
     {
@@ -46,27 +41,16 @@ public class RykkeMasterHit : MasterHit
         }
     }
 
-    // public override void callTheRecovery()
-    // {
-    //     status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.8f);
-    //     Debug.Log("Recovery start!");
-    // }
 
-    public void applyEndLag(float lag){
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,lag);
-    }
+    //Tether Recovery Logic
 
-    public void RecoveryPauseMidair()
+    public void enableTetherBox()
     {
-        // pause in air
-        movement.gravityPaused= true;
-        rb.gravityScale = 0f;
-        rb.velocity = Vector2.zero;
         playerRange.gameObject.transform.parent.gameObject.SetActive(true);
         
     }
 
-    public void throwHands()
+    public void selectTetherTarget()
     {
         facing = movement.Facing;
         GameObject arms = Instantiate(entities.GetEntityPrefab("LongArmOfTheLaw"), transform.position + new Vector3(facing * 2,5,0), transform.rotation);
@@ -107,7 +91,7 @@ public class RykkeMasterHit : MasterHit
         entities.AddEntity(arms);
     }
 
-    public void daisyChain()
+    public void moveToTetherTarget()
     {
         facing = movement.Facing;
         
@@ -142,67 +126,8 @@ public class RykkeMasterHit : MasterHit
         
     }
 
-    public void cancelNeutralW(){
-        if(drifter.input.Guard)
-        {
-            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
-            drifter.SetAnimatorBool("Guarding", true);
-        }
-    }
 
-    public override void rollGetupStart(){
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.5f);
-        rb.velocity = new Vector3(0,78f,0);
-    }
-
-    public override void rollGetupEnd()
-    {
-        facing = movement.Facing;
-        movement.gravityPaused = false;
-        rb.gravityScale = gravityScale;
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.42f);
-        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
-        rb.velocity = new Vector2(facing * 45f,5f);
-    }
-
-    public void resetGravity(){
-        movement.gravityPaused = false;
-        rb.gravityScale = gravityScale;
-    }
-
-    public void multihit(){
-        attacks.SetMultiHitAttackID();
-    }
-
-    public void pauseGravity(){
-        movement.gravityPaused= true;
-        rb.gravityScale = 0f;
-        rb.velocity = Vector2.zero;
-    }
-
-    public void DownTilt(){
-        facing = movement.Facing;
-        rb.velocity = new Vector2(facing * 40f,0f);
-    }
-
-
-    public void DownTiltFollowup(){
-        facing = movement.Facing;
-        rb.velocity = new Vector2(facing * 40f,0f);
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
-    }
-
-    public void sideWslide()
-    {
-        facing = movement.Facing;
-        if(!anim.GetBool("Empowered")){
-            rb.velocity = new Vector3(facing * 25,0);
-        }
-        else{
-            rb.velocity = new Vector3(facing * 35,0);
-        }
-        
-    }
+    //Side Grab "Projectile"
 
     public void sideGrab()
     {
@@ -224,26 +149,8 @@ public class RykkeMasterHit : MasterHit
         
     }
 
-    public void grabWhiff()
-    {
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.8f);
-    }
-
-    public override void roll()
-    {
-        facing = movement.Facing;
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
-        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
-        rb.velocity = new Vector2(facing * 40f,0f);
-    }
-
-    public void grabEmpowered(){
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.9f);
-        pauseGravity();
-    }
-
     //Down W
-    public void dropStone()
+    public void plantGravestone()
     {
 
         if(activeStone){
@@ -269,9 +176,9 @@ public class RykkeMasterHit : MasterHit
         entities.AddEntity(tombstone);
     }
 
+    //Neutral W
     public void awaken(){
         facing = movement.Facing;
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.2f);
         Vector3 flip = new Vector3(facing *8f,8f,1f);
         Vector3 loc = new Vector3(facing *3.5f,0f,0f);
         GameObject tombstone = Instantiate(entities.GetEntityPrefab("RyykeTombstone"), transform.position + loc, transform.rotation);
@@ -312,5 +219,31 @@ public class RykkeMasterHit : MasterHit
                 drifter.BlockReduction = .25f;
     		}
     	}
+    }
+
+
+
+    //Inhereted Roll Methods
+
+    public override void roll()
+    {
+        facing = movement.Facing;
+        applyEndLag(1);
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
+        rb.velocity = new Vector2(facing * 40f,0f);
+    }
+
+    public override void rollGetupStart(){
+        applyEndLag(1);
+        rb.velocity = new Vector3(0,78f,0);
+    }
+
+    public override void rollGetupEnd()
+    {
+        facing = movement.Facing;
+        movement.gravityPaused = false;
+        rb.gravityScale = gravityScale;
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
+        rb.velocity = new Vector2(facing * 45f,5f);
     }
 }

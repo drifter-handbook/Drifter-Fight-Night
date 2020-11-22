@@ -69,21 +69,13 @@ public class SwordFrogMasterHit : MasterHit
             drifter.SetAnimatorBool("Empowered",true);
             status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.3f);
         }
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.65f);
-
     }
 
     public void hitCounter()
     {
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.5f);
         status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.3f);
         StartCoroutine(resetCounter());
         
-    }
-
-    public void failCounter()
-    {
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.95f);
     }
 
     IEnumerator resetCounter()
@@ -97,7 +89,7 @@ public class SwordFrogMasterHit : MasterHit
     public override void roll()
     {
         facing = movement.Facing;
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.45f);
+        applyEndLag(1);
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.2f);
         rb.velocity = new Vector2(facing * 30f,0f);
     }
@@ -105,7 +97,7 @@ public class SwordFrogMasterHit : MasterHit
 
      public override void rollGetupStart()
      {
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.5f);
+        applyEndLag(1);
         rb.velocity = new Vector3(facing * -5f,40f,0);
     }
 
@@ -114,7 +106,6 @@ public class SwordFrogMasterHit : MasterHit
         facing = movement.Facing;
         movement.gravityPaused = false;
         rb.gravityScale = gravityScale;
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.2f);
         rb.velocity = new Vector2(facing * 30f,5f);
     }
 }

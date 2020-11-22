@@ -69,37 +69,37 @@ public class SpaceJamMasterHit : MasterHit
 
     //Neutral W Charge
 
-    public void chargeOopsie()
+    public void chargeOopsie(int cancelable)
     {
-        if(charges < maxCharge){
-    			charges++;
-    		}
-        
-        if(drifter.DamageTaken >= .2f){
-            drifter.DamageTaken -= .2f;
-        }
-        else{
-            drifter.DamageTaken = 0f;
-        }
-
-        if(charges >= maxCharge){
-            audio.Stop();
-            audio.PlayOneShot(audioClips[2],1f);
-            drifter.SetAnimatorBool("Empowered",true);
-            sprite.color = new Color(255,165,0);
-        }
-
-    }
-
-    public void cancelableOopsie()
-    {
-        if(TransitionFromChanneledAttack())
+        if(TransitionFromChanneledAttack() && cancelable != 0)
         {
             return;
         }
-        else{
-            chargeOopsie();
+        else
+        {
+            if(charges < maxCharge)
+            {
+                charges++;
+            }
+        
+            if(drifter.DamageTaken >= .2f)
+            {
+                drifter.DamageTaken -= .2f;
+            }
+            else
+            {
+                    drifter.DamageTaken = 0f;
+            }
+
+            if(charges >= maxCharge)
+            {
+                audio.Stop();
+                audio.PlayOneShot(audioClips[2],1f);
+                    drifter.SetAnimatorBool("Empowered",true);
+                    sprite.color = new Color(255,165,0);
+            }
         }
+
     }
 
     //Inherited Dodge roll methods
@@ -107,13 +107,13 @@ public class SpaceJamMasterHit : MasterHit
     public override void roll(){
         audio.Pause();
         facing = movement.Facing;
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,1f);
+        applyEndLag(1f);
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
         rb.velocity = new Vector2(facing * -35f,0f);
     }
 
      public override void rollGetupStart(){
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,1f);
+        applyEndLag(1);
         rb.velocity = new Vector3(0f,45f,0);
     }
 

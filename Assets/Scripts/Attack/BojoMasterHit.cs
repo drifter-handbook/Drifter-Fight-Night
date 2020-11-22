@@ -4,18 +4,14 @@ using UnityEngine;
 
 public class BojoMasterHit : MasterHit
 {
-    public Animator anim;
     float timeSinceGun = 0f;
     float boofTime;
     bool checkBoof;
 
-    void Start()
-    {
-        rb = drifter.GetComponent<Rigidbody2D>();
-        gravityScale = rb.gravityScale;
-        attacks = drifter.GetComponent<PlayerAttacks>();
-        movement = drifter.GetComponent<PlayerMovement>();
-        status = drifter.GetComponent<PlayerStatus>();
+    GameObject Centaur = null;
+
+    void Start(){
+
     }
 
     void Update()
@@ -25,41 +21,18 @@ public class BojoMasterHit : MasterHit
             attacks.currentRecoveries = 0;
             checkBoof = false;
         }
-    	if(timeSinceGun < .7f){
-    		timeSinceGun += Time.deltaTime;
-    	}
+    	// if(timeSinceGun < 1f){
+    	// 	timeSinceGun += Time.deltaTime;
+    	// }
     	else{
     		drifter.SetAnimatorBool("HasCharge",false);
     	}
     }
 
-
-     public override void rollGetupStart(){
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.5f);
-        rb.velocity = new Vector3(0,70f,0);
-    }
-
-    public override void rollGetupEnd()
-    {
-        facing = movement.Facing;
-        movement.gravityPaused = false;
-        rb.gravityScale = gravityScale;
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.42f);
-        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
-        rb.velocity = new Vector2(facing * 25f,5f);
-    }
-
-
-    public void freeze(){
-        rb.velocity = Vector2.zero;
-    }
-
-    public void Side_ground_Dash(){
-        facing = movement.Facing;
-        rb.velocity += new Vector2(facing * 10f,0f);
-    }
-
     public void GUN(){
+
+        applyEndLag(drifter.input.Special?0:1);
+        
     	facing = movement.Facing;
         Vector3 flip = new Vector3(facing *6f,6f,0f);
         Vector3 pos = new Vector3(facing *3f,4f,1f);
@@ -67,7 +40,7 @@ public class BojoMasterHit : MasterHit
         bubble.transform.localScale = flip;
         bubble.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * 55, 0);
        	drifter.SetAnimatorBool("HasCharge",true);
-       	timeSinceGun = 0f;
+       	//timeSinceGun = 0f;
         
         foreach (HitboxCollision hitbox in bubble.GetComponentsInChildren<HitboxCollision>(true))
         {
@@ -81,47 +54,42 @@ public class BojoMasterHit : MasterHit
         entities.AddEntity(bubble);
     }
 
-    public void callTheSideW(){
+    public void dismount()
+    {
         facing = movement.Facing;
-        drifter.SetAnimatorBool("Empowered",true);
-        rb.velocity = new Vector2(55 *facing, 0);
-
-    }
-    public void continueCharge(){
-        rb.velocity = new Vector2(55 *facing, rb.velocity.y);
-    }
-
-    public void misfire(){
-        facing = movement.Facing;
-        rb.velocity = new Vector2(50f * facing,15f);
-    }
-
-    public void trip(){
-        facing = movement.Facing;
-        rb.velocity += new Vector2(15f * facing,0f);
-    }
-
-    public void dismount(){
-         rb.velocity = new Vector2(rb.velocity.x - facing * 10, 45f);
-         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.4f);
-
-        Vector3 flip = new Vector3(facing *9f,9f,0f);
-        Vector3 pos = new Vector3(facing *0f,0f,1f);
-        GameObject Centaur = Instantiate(entities.GetEntityPrefab("Kamikaze"), transform.position + pos, transform.rotation);
-        Centaur.transform.localScale = flip;
-        Centaur.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * 65, 0);
-        
-        foreach (HitboxCollision hitbox in Centaur.GetComponentsInChildren<HitboxCollision>(true))
+        if(TransitionFromChanneledAttack())
         {
-            hitbox.parent = drifter.gameObject;
-            hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
-            hitbox.Active = true;
-            hitbox.Facing = facing;
+
+            if(Centaur != null)Destroy(Centaur);
+            Vector3 flip = new Vector3(facing *9f,9f,0f);
+            Vector3 pos = new Vector3(facing *0f,0f,1f);
+            Centaur = Instantiate(entities.GetEntityPrefab("Kamikaze"), transform.position + pos, transform.rotation);
+            Centaur.transform.localScale = flip;
+            Centaur.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * 50, 0);
+        
+            foreach (HitboxCollision hitbox in Centaur.GetComponentsInChildren<HitboxCollision>(true))
+            {
+                hitbox.parent = drifter.gameObject;
+                hitbox.AttackID = attacks.AttackID;
+                hitbox.AttackType = attacks.AttackType;
+                hitbox.Active = true;
+                hitbox.Facing = facing;
         }
         entities.AddEntity(Centaur);
-        drifter.SetAnimatorBool("Empowered",false);
+        }
+
     }
+
+    public void boof(){
+        facing = movement.Facing;
+        rb.velocity = new Vector2(rb.velocity.x  + facing * 10,45);
+        boofTime = Time.time;
+        checkBoof = true;
+    }
+
+
+
+    //Inhereted Roll Methods
 
     public override void roll(){
         facing = movement.Facing;
@@ -130,15 +98,22 @@ public class BojoMasterHit : MasterHit
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
         rb.velocity = new Vector2(facing * 40f,0f);
     }
-    public void loseEmpowered(){
-        drifter.SetAnimatorBool("Empowered",false);
+
+
+    public override void rollGetupStart(){
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.5f);
+        rb.velocity = new Vector3(0,70f,0);
     }
 
-    public void boof(){
+
+    public override void rollGetupEnd()
+    {
         facing = movement.Facing;
-        rb.velocity = new Vector2(rb.velocity.x  + facing * 10,45);
-        boofTime = Time.time;
-        checkBoof = true;
+        movement.gravityPaused = false;
+        rb.gravityScale = gravityScale;
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.42f);
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
+        rb.velocity = new Vector2(facing * 25f,5f);
     }
 
 }

@@ -159,10 +159,10 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0
-    functionName: ledgeClimbLag
+    functionName: applyEndLag
     data: 
     objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
+    floatParameter: 2
     intParameter: 0
     messageOptions: 0
   - time: 0.41666666
