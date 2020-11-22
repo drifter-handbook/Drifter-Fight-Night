@@ -36,11 +36,11 @@ public class NetworkObjectData
                 object value = newData[objectID][field];
                 if (value is double)
                 {
-                    value = (float)value;
+                    value = (float)(double)value;
                 }
                 if (value is long)
                 {
-                    value = (int)value;
+                    value = (int)(long)value;
                 }
                 data[objectID][field] = value;
             }
