@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -36,8 +37,11 @@ public class NetworkObjects : MonoBehaviour
         Dictionary<int, bool> destroyObjects = new Dictionary<int, bool>(destroyQueue);
         foreach (int objectID in destroyObjects.Keys)
         {
-            DestroyNetworkObjectForReal(objectID);
-            destroyQueue.Remove(objectID);
+            if (networkObjects.ContainsKey(objectID))
+            {
+                DestroyNetworkObjectForReal(objectID);
+                destroyQueue.Remove(objectID);
+            }
         }
     }
 
@@ -83,6 +87,11 @@ public class NetworkObjects : MonoBehaviour
     }
     GameObject CreateNetworkObjectForReal(int objectID, string networkType)
     {
+        if (!GameController.Instance.IsHost)
+        {
+            NetworkClient.currentObjectID = objectID;
+            objectID = NetworkClient.NextObjectID;
+        }
         GameObject networkObj = Instantiate(GetNetworkTypePrefab(networkType));
         RegisterNetworkObject(objectID, networkType, networkObj);
         if (GameController.Instance.IsHost)
@@ -97,6 +106,10 @@ public class NetworkObjects : MonoBehaviour
     }
     public void RegisterNetworkObject(int objectID, string networkType, GameObject networkObj)
     {
+        if (networkObjects.ContainsKey(objectID))
+        {
+            throw new InvalidOperationException($"Object ID {objectID} already exists. GameObjects: {networkObjects[objectID].name}, {networkObj.name}");
+        }
         RemoveIncorrectComponents(networkObj);
         // initialize
         NetworkSync sync = networkObj.GetComponent<NetworkSync>();
@@ -128,8 +141,8 @@ public class NetworkObjects : MonoBehaviour
     }
     void DestroyNetworkObjectForReal(int objectID)
     {
-        networkObjects.Remove(objectID);
         Destroy(networkObjects[objectID]);
+        networkObjects.Remove(objectID);
     }
 
     // this should only be called by host

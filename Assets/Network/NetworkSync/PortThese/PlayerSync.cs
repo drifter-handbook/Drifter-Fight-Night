@@ -74,7 +74,6 @@ public class PlayerSync : MonoBehaviour, INetworkSync
         public int stocks = 0;
         public int charge = 0;
         public float damageTaken = 0f;
-        public PlayerAnimatorState animatorState = new PlayerAnimatorState();
         public SyncColor color;
         public Dictionary<PlayerStatusEffect,float> statusState;
         public SyncColor chargeColor;
@@ -98,7 +97,6 @@ public class PlayerSync : MonoBehaviour, INetworkSync
                 gameObject.transform.localScale.y, gameObject.transform.localScale.z);
             oldPos = transform.position;
             targetPos = new Vector3(playerData.x, playerData.y, playerData.z);
-            GetComponent<Drifter>().SyncAnimatorState(playerData.animatorState);
             gameObject.GetComponent<Drifter>().Stocks = playerData.stocks;
             gameObject.GetComponent<Drifter>().DamageTaken = playerData.damageTaken;
             gameObject.GetComponent<Drifter>().Charge = playerData.charge;
@@ -118,7 +116,6 @@ public class PlayerSync : MonoBehaviour, INetworkSync
             y = transform.position.y,
             z = transform.position.z,
             facing = (int)Mathf.Sign(gameObject.transform.localScale.x),
-            animatorState = (PlayerAnimatorState)gameObject.GetComponent<Drifter>().animatorState.Clone(),
             stocks = gameObject.GetComponent<Drifter>().Stocks,
             damageTaken = gameObject.GetComponent<Drifter>().DamageTaken,
             charge = gameObject.GetComponent<Drifter>().Charge,
@@ -126,7 +123,6 @@ public class PlayerSync : MonoBehaviour, INetworkSync
             statusState =  gameObject.GetComponentInChildren<PlayerStatus>().getStatusState(),
             chargeColor = new SyncColor(gameObject.transform.Find("Sprite").GetComponent<SpriteRenderer>().color)
         };
-        GetComponent<Drifter>().ResetAnimatorTriggers();
         return data;
     }
 }

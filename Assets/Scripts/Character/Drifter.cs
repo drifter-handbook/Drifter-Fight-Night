@@ -30,7 +30,6 @@ public class Drifter : MonoBehaviour, INetworkInit
     public PlayerInputData prevInput;
 
     public Animator animator;
-    public PlayerAnimatorState animatorState { get; set; } = new PlayerAnimatorState();
 
     public int Stocks = 0;
     public float DamageTaken = 0f;
@@ -58,175 +57,16 @@ public class Drifter : MonoBehaviour, INetworkInit
         return transform.GetChild(0).transform.GetChild(1).GetComponent<SpriteRenderer>().color;
     }
 
-    // used by clients
-    public void SyncAnimatorState(PlayerAnimatorState state)
-    {
-        int ID = GetComponent<INetworkSync>().ID;
-        animator.SetBool("Grounded", state.Grounded);
-        animator.SetBool("Walking", state.Walking);
-        animator.SetBool("Guarding", state.Guarding);
-        animator.SetBool("Empowered", state.Empowered);
-        animator.SetBool("HasCharge", state.HasCharge);
-        animator.SetBool("HitStun", state.HitStun);
-        if (state.Attack) animator.SetTrigger("Attack");
-        if (state.Grab) animator.SetTrigger("Grab");
-        if (state.Jump) animator.SetTrigger("Jump");
-        if (state.Recovery) animator.SetTrigger("Recovery");
-        if (state.Aerial) animator.SetTrigger("Aerial");
-        if (state.W_Side) animator.SetTrigger("W_Side");
-        if (state.W_Neutral) animator.SetTrigger("W_Neutral");
-        if (state.W_Down) animator.SetTrigger("W_Down");
-        if (state.Roll) animator.SetTrigger("Roll");
-        if (state.GrabbedPlayer) animator.SetTrigger("GrabbedPlayer");
-        if (state.Aerial_Up) animator.SetTrigger("Aerial_Up");
-        if (state.Aerial_Down) animator.SetTrigger("Aerial_Down");
-        if (state.Aerial_Side) animator.SetTrigger("Aerial_Side");
-
-    }
     // used by host
     public void SetAnimatorTrigger(string s)
     {
         if (GameController.Instance.IsHost)
         {
-            animator.SetTrigger(s);
+            animator.gameObject.GetComponent<SyncAnimatorHost>().SetTrigger(s);
         }
-        switch (s)
-        {
-            case "Attack":
-                animatorState.Attack = true;
-                break;
-            case "Grab":
-                animatorState.Grab = true;
-                break;
-            case "Jump":
-                animatorState.Jump = true;
-                break;
-            case "Recovery":
-                animatorState.Recovery = true;
-                break;
-            case "Aerial":
-                animatorState.Aerial = true;
-                break;
-            case "W_Side":
-                animatorState.W_Side = true;
-                break;
-            case "W_Neutral":
-                animatorState.W_Neutral = true;
-                break;
-            case "W_Down":
-                animatorState.W_Down = true;
-                break;
-            case "Roll":
-                animatorState.Roll = true;
-                break;
-            case "GrabbedPlayer":
-                animatorState.GrabbedPlayer = true;
-                break;
-            case "Aerial_Up":
-                animatorState.Aerial_Up = true;
-                break;
-            case "Aerial_Down":
-                animatorState.Aerial_Down = true;
-                break;
-            case "Aerial_Side":
-                animatorState.Aerial_Side = true;
-                break;          
-        }
-    }
-    public void ResetAnimatorTriggers()
-    {
-        animatorState.Attack = false;
-        animatorState.Grab = false;
-        animatorState.Jump = false;
-        animatorState.Recovery = false;
-        animatorState.Aerial = false;
-        animatorState.W_Neutral = false;
-        animatorState.W_Side = false;
-        animatorState.W_Down = false;
-        animatorState.Roll = false;
-        animatorState.HasCharge = false;
-        animatorState.HitStun = false;
-        animatorState.GrabbedPlayer = false;
-        animatorState.Aerial_Up = false;
-        animatorState.Aerial_Down = false;
-        animatorState.Aerial_Side = false;
-
     }
     public void SetAnimatorBool(string s, bool value)
     {
-        if (GameController.Instance.IsHost)
-        {
-            animator.SetBool(s, value);
-        }
-        switch (s)
-        {
-            case "Grounded":
-                animatorState.Grounded = value;
-                break;
-            case "Walking":
-                animatorState.Walking = value;
-                break;
-            case "Guarding":
-                animatorState.Guarding = value;
-                break;
-            case "Empowered":
-                animatorState.Empowered = value;
-                break;
-            case "HasCharge":
-                animatorState.HasCharge = value;
-                break;
-            case "HitStun":
-                animatorState.HitStun = value;
-                break;                 
-        }
-    }
-}
-
-public class PlayerAnimatorState : ICloneable
-{
-    public bool Grounded = false;
-    public bool Walking = false;
-    public bool Guarding = false;
-    public bool Empowered = false;
-    public bool Attack = false;
-    public bool Grab = false;
-    public bool Jump = false;
-    public bool Recovery = false;
-    public bool Aerial = false;
-    public bool W_Side = false;
-    public bool W_Down = false;
-    public bool W_Neutral = false;
-    public bool Roll = false;
-    public bool HasCharge = false;
-    public bool HitStun = false;
-    public bool GrabbedPlayer = false;
-    public bool Aerial_Up = false;
-    public bool Aerial_Down = false;
-    public bool Aerial_Side = false;
-
-    public object Clone()
-    {
-        return new PlayerAnimatorState()
-        {
-            Grounded = Grounded,
-            Walking = Walking,
-            Guarding = Guarding,
-            Empowered = Empowered,
-            Attack = Attack,
-            Grab = Grab,
-            Jump = Jump,
-            Recovery = Recovery,
-            Aerial = Aerial,
-            W_Side = W_Side,
-            W_Down = W_Down,
-            W_Neutral = W_Neutral,
-            Roll = Roll,
-            HasCharge = HasCharge,
-            HitStun = HitStun,
-            GrabbedPlayer = GrabbedPlayer,
-            Aerial_Up = Aerial_Up,
-            Aerial_Down = Aerial_Down,
-            Aerial_Side = Aerial_Side,
-        };
+        animator.SetBool(s, value);
     }
 }

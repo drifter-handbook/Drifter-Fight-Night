@@ -29,7 +29,7 @@ public class NetworkClient : MonoBehaviour, ISyncClient, INetworkMessageReceiver
     public bool GameStarted;
 
     // only used for loading scenes
-    static int currentObjectID = 1;
+    public static int currentObjectID = 1;
     public static int NextObjectID { get { return currentObjectID++; } }
 
     public void Initialize()

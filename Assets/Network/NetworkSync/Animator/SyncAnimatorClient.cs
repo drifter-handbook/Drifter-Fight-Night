@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class SyncAnimatorClient : MonoBehaviour, ISyncClient, INetworkMessageReceiver
@@ -17,14 +16,13 @@ public class SyncAnimatorClient : MonoBehaviour, ISyncClient, INetworkMessageRec
 
     void SetAnimatorParameterValue(AnimatorControllerParameterType type, string name, object value)
     {
-        Debug.Log(value);
         switch (type)
         {
             case AnimatorControllerParameterType.Bool:
                 anim.SetBool(name, (bool)value);
                 break;
             case AnimatorControllerParameterType.Int:
-                anim.SetInteger(name, (int)value);
+                anim.SetInteger(name, (int)(long)value);
                 break;
             case AnimatorControllerParameterType.Float:
                 anim.SetFloat(name, (float)value);
