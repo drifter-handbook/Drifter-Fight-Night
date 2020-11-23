@@ -44,18 +44,21 @@ public class SpaceJamMasterHit : MasterHit
     public void sideW()
     {
         audio.PlayOneShot(audioClips[1], 1f);
-        facing = movement.Facing;
-        Vector3 flip = new Vector3(facing *12f,12f,0f);
-        Vector3 pos = new Vector3(facing *-3f,0f,1f);
-        GameObject GuidingBolt = host.CreateNetworkObject("GuidingBolt", transform.position + pos, transform.rotation);
-        GuidingBolt.transform.localScale = flip;
-        GuidingBolt.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * -30, 0);
-        foreach (HitboxCollision hitbox in GuidingBolt.GetComponentsInChildren<HitboxCollision>(true))
+        if (GameController.Instance.IsHost)
         {
-            hitbox.parent = drifter.gameObject;
-            hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
-            hitbox.Active = true;
+            facing = movement.Facing;
+            Vector3 flip = new Vector3(facing * 12f, 12f, 0f);
+            Vector3 pos = new Vector3(facing * -3f, 0f, 1f);
+            GameObject GuidingBolt = host.CreateNetworkObject("GuidingBolt", transform.position + pos, transform.rotation);
+            GuidingBolt.transform.localScale = flip;
+            GuidingBolt.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * -30, 0);
+            foreach (HitboxCollision hitbox in GuidingBolt.GetComponentsInChildren<HitboxCollision>(true))
+            {
+                hitbox.parent = drifter.gameObject;
+                hitbox.AttackID = attacks.AttackID;
+                hitbox.AttackType = attacks.AttackType;
+                hitbox.Active = true;
+            }
         }
     }
 
@@ -67,20 +70,23 @@ public class SpaceJamMasterHit : MasterHit
             drifter.SetAnimatorBool("Empowered",false);
             sprite.color = Color.white;
             audio.PlayOneShot(audioClips[1], 1f);
-            Vector3 flip = new Vector3(facing *12f,12f,0f);
-            Vector3 pos = new Vector3(facing *-3f,0f,1f);
-            GameObject amber = host.CreateNetworkObject("Amber", transform.position + pos, transform.rotation);
-            amber.transform.localScale = flip;
-            amber.GetComponent<Rigidbody2D>().velocity = rb.velocity;
-            foreach (HitboxCollision hitbox in amber.GetComponentsInChildren<HitboxCollision>(true))
+            if (GameController.Instance.IsHost)
             {
-                hitbox.parent = drifter.gameObject;
-                hitbox.AttackID = attacks.AttackID;
-                hitbox.AttackType = attacks.AttackType;
-                hitbox.Active = true;
+                Vector3 flip = new Vector3(facing * 12f, 12f, 0f);
+                Vector3 pos = new Vector3(facing * -3f, 0f, 1f);
+                GameObject amber = host.CreateNetworkObject("Amber", transform.position + pos, transform.rotation);
+                amber.transform.localScale = flip;
+                amber.GetComponent<Rigidbody2D>().velocity = rb.velocity;
+                foreach (HitboxCollision hitbox in amber.GetComponentsInChildren<HitboxCollision>(true))
+                {
+                    hitbox.parent = drifter.gameObject;
+                    hitbox.AttackID = attacks.AttackID;
+                    hitbox.AttackType = attacks.AttackType;
+                    hitbox.Active = true;
+                }
+                amber.GetComponent<OopsiePoopsie>().hurtbox = gameObject.transform.Find("Hurtboxes").gameObject.GetComponent<CapsuleCollider2D>();
+                amber.GetComponent<OopsiePoopsie>().status = status;
             }
-            amber.GetComponent<OopsiePoopsie>().hurtbox = gameObject.transform.Find("Hurtboxes").gameObject.GetComponent<CapsuleCollider2D>();
-            amber.GetComponent<OopsiePoopsie>().status = status;
             charges = 0;
         }
     }
