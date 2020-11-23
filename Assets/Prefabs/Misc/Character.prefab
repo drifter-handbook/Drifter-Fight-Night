@@ -435,6 +435,8 @@ MonoBehaviour:
   grounded: 1
   gravityPaused: 0
   ledgeHanging: 0
+  activeFriction: 0.01
+  inactiveFriction: 0.4
   varyJumpHeightDuration: 0.2
   varyJumpHeightForce: 12
 --- !u!114 &1401939795787901855
@@ -539,7 +541,7 @@ PolygonCollider2D:
   m_GameObject: {fileID: 3106753082241659636}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 6200000, guid: fb13e85e8cd5db74c934ea1d0908ec67, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0

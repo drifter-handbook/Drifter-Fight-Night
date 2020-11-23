@@ -76,12 +76,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef69b8a934d07334c8235094d4ca0d8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  facing: 0
   anim: {fileID: 5813596663097594925}
   sprite: {fileID: 2613209421641134793}
   lightningCharge: 0
   windCharge: 0
   iceCharge: 0
-  facing: 0
 --- !u!114 &1833645724151641344
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -199,6 +199,11 @@ PrefabInstance:
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[0].y
       value: -17.494486
       objectReference: {fileID: 0}
+    - target: {fileID: 364774633814311839, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: 30b9e28cc7e2d2d41a8344fa0042d704, type: 2}
     - target: {fileID: 577463835414975583, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: m_LocalPosition.x

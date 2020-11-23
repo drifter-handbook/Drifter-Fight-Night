@@ -378,6 +378,20 @@ MonoBehaviour:
   parent: {fileID: 6949512207643572198}
   OverrideData: {fileID: 11400000, guid: f6f0ead685bc12547a0aa4d251bd56e7, type: 2}
   AttackData: {fileID: 0}
+--- !u!114 &734985217640566712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7622814988858049219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03f91ae802959464882f0f549807e011, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  facing: 0
+  anim: {fileID: 5813596663097594925}
 --- !u!1 &7400219937348291156
 GameObject:
   m_ObjectHideFlags: 0
@@ -502,20 +516,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 6949512207643572198}
---- !u!114 &734985217640566712
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7622814988858049219}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03f91ae802959464882f0f549807e011, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  facing: 0
-  anim: {fileID: 5813596663097594925}
 --- !u!1 &7986416119268482520
 GameObject:
   m_ObjectHideFlags: 0
@@ -695,6 +695,11 @@ PrefabInstance:
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[2].y
       value: -16.52366
       objectReference: {fileID: 0}
+    - target: {fileID: 364774633814311839, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: 9350f09aba6bb664e8304f8f8d51d3e6, type: 2}
     - target: {fileID: 577463835414975583, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: m_LocalPosition.x

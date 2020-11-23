@@ -37,6 +37,10 @@ public class PlayerMovement : MonoBehaviour
     public bool ledgeHanging = false;
     bool strongLedgeGrab = true;
 
+
+    public float activeFriction = .1f;
+    public float inactiveFriction = .4f;
+
     Animator animator;
 
     NetworkEntityList entities;
@@ -47,7 +51,7 @@ public class PlayerMovement : MonoBehaviour
     PlayerStatus status;
 
     Rigidbody2D rb;
-    PolygonCollider2D col;
+    PolygonCollider2D frictionCollider;
     CameraShake shake;
 
     int ringTime = 6;
@@ -74,7 +78,7 @@ public class PlayerMovement : MonoBehaviour
 
         attacks = GetComponent<PlayerAttacks>();
 
-        col = GetComponent<PolygonCollider2D>();
+        frictionCollider = GetComponent<PolygonCollider2D>();
         status = drifter.status;
 
 
@@ -206,6 +210,17 @@ public class PlayerMovement : MonoBehaviour
         if(status.HasStatusEffect(PlayerStatusEffect.REVERSED)){
             drifter.input.MoveX *= -1;
         }
+
+
+        //Friciton Active Input
+        if(moving && grounded && !status.HasEnemyStunEffect())
+        {
+            frictionCollider.sharedMaterial.friction = activeFriction;
+        }
+        else{
+            frictionCollider.sharedMaterial.friction = inactiveFriction;
+        }
+
 
         //Normal walking logic
         if (moving && canAct && ! ledgeHanging)
@@ -387,7 +402,7 @@ public class PlayerMovement : MonoBehaviour
     RaycastHit2D[] hits = new RaycastHit2D[10];
     private bool IsGrounded()
     {
-        int count = Physics2D.RaycastNonAlloc(col.bounds.center + col.bounds.extents.y * Vector3.down, Vector3.down, hits, 0.2f);
+        int count = Physics2D.RaycastNonAlloc(frictionCollider.bounds.center + frictionCollider.bounds.extents.y * Vector3.down, Vector3.down, hits, 0.2f);
         for (int i = 0; i < count; i++)
         {
             if (hits[i].collider.gameObject.tag == "Ground" || (hits[i].collider.gameObject.tag == "Platform" && status.HasGroundFriction()))
