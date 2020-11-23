@@ -81,11 +81,13 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         {
             status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
             drifter.SetAnimatorBool("Guarding", true);
+            unpauseGravity();
             return true;
         }
-        else if(drifter.input.Jump){
+        else if(drifter.input.Jump && movement.currentJumps>0){
             status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
             movement.jump();
+            unpauseGravity();
             return true;
         }
 

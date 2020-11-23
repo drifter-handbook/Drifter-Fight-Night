@@ -41,6 +41,8 @@ public class PlayerMovement : MonoBehaviour
 
     NetworkEntityList entities;
 
+    Coroutine jumpCoroutine;
+
     PlayerAttacks attacks;
     PlayerStatus status;
 
@@ -133,6 +135,9 @@ public class PlayerMovement : MonoBehaviour
         {
             spawnJuiceParticle(new Vector3(0,-1,0),2);
         }
+
+        if(gravityPaused && jumpCoroutine!= null)StopCoroutine(jumpCoroutine);
+        if(gravityPaused && varyJumpHeight!= null)StopCoroutine(varyJumpHeight);
 
 
         drifter.SetAnimatorBool("Grounded", IsGrounded());
@@ -441,7 +446,7 @@ public class PlayerMovement : MonoBehaviour
                 }
                 //jump needs a little delay so character animations can spend
                 //a frame of two preparing to jump
-                StartCoroutine(DelayedJump());
+                jumpCoroutine = StartCoroutine(DelayedJump());
             }
     }
 

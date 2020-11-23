@@ -5,7 +5,7 @@ using UnityEngine;
 public class NeroMasterHit : MasterHit
 {
     public Animator anim;
-    int dashDistance = 10;
+    int dashDistance = 25;
 
     public void RecoveryThrowSpear()
     {
@@ -32,19 +32,20 @@ public class NeroMasterHit : MasterHit
     public  void neutralWInitialize()
     {
         facing = movement.Facing;
-        dashDistance = 10;
+        dashDistance = 25;
     }
 
      public void neutralWCharge(int cancelable)
      {
-        if(cancelable != 0)
-        {
-            TransitionFromChanneledAttack();
-            if(drifter.input.MoveX != 0 || drifter.input.Special || dashDistance>=60) drifter.SetAnimatorBool("HasCharge",true);
-        }
         movement.gravityPaused= true;        
         rb.gravityScale = 5f;
-        dashDistance += 5;
+        if(cancelable != 0)
+        {
+            if(TransitionFromChanneledAttack()) return;
+            if(drifter.input.MoveX != 0 || drifter.input.Special || dashDistance>=55) drifter.SetAnimatorBool("HasCharge",true);
+        }
+
+        dashDistance += 3;
      }
 
      public void neutralWDash()
