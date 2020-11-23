@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum HitSpark
 {
-    NONE, POKE, BASH, PIERCE, GRAB ,GUARD_WEAK, GUARD_STRONG, SPIKE, MAGICWEAK, CRIT, MAGICSTRONG, OOMPHSPARK
+    NONE, POKE, BASH, PIERCE, GRAB, GUARD_STRONG, GUARD_WEAK, SPIKE, MAGICWEAK, CRIT, MAGICSTRONG, OOMPHSPARK
 }
 
 
@@ -21,38 +21,4 @@ public class SingleAttackData : ScriptableObject
     public PlayerStatusEffect StatusEffect = PlayerStatusEffect.HIT;
     public float StatusDuration =.1f;
     public HitSpark HitVisual = HitSpark.POKE;
-
-    public int GetHitSpark(){
-    	switch(HitVisual){
-    		case HitSpark.NONE:
-    			return 0;
-    		case HitSpark.POKE:
-    			return 1;
-    		case HitSpark.BASH:
-    			return 2;
-    		case HitSpark.PIERCE:
-    			return 3;
-    		case HitSpark.GRAB:
-    			return 4;
-    		case HitSpark.GUARD_STRONG:
-    			return 5;	
-    		case HitSpark.GUARD_WEAK:
-    			return 6;
-            case HitSpark.SPIKE:
-                return 7;
-            case HitSpark.MAGICWEAK:
-                return 8;
-            case HitSpark.CRIT:
-                return 9;
-            case HitSpark.MAGICSTRONG:
-                return 10;
-            case HitSpark.OOMPHSPARK:
-                return 11;                      
-    		
-    		default:
-    			return 0;		
-    	}
-
-    }
-
 }

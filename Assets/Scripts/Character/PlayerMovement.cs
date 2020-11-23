@@ -81,7 +81,7 @@ public class PlayerMovement : MonoBehaviour
                 Vector3 normal = col.contacts[0].normal;
                 rb.velocity = Vector2.Reflect(prevVelocity,normal) *.8f;
                 status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.2f);
-                spawnJuiceParticle(new Vector3(0,-2.5f,0),7,Quaternion.Euler(0f,0f,Vector3.Angle(Vector3.down,normal)));
+                spawnJuiceParticle(new Vector3(0,-2.5f,0), MovementParticleMode.Restitution, Quaternion.Euler(0f,0f,Vector3.Angle(Vector3.down,normal)));
             }
 
         }
@@ -116,7 +116,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else if(IsGrounded() && !status.HasStunEffect())
         {
-            spawnJuiceParticle(new Vector3(0,-1,0),2);
+            spawnJuiceParticle(new Vector3(0,-1,0), MovementParticleMode.Land);
         }
 
         drifter.SetAnimatorBool("Grounded", IsGrounded());
@@ -142,7 +142,7 @@ public class PlayerMovement : MonoBehaviour
 
         //Smoke trail
         if(status.HasStatusEffect(PlayerStatusEffect.KNOCKBACK) && rb.velocity.magnitude > 45f){
-            spawnJuiceParticle(Vector3.zero,1,Quaternion.Euler(0,0,UnityEngine.Random.Range(0,180)));
+            spawnJuiceParticle(Vector3.zero, MovementParticleMode.SmokeTrail, Quaternion.Euler(0,0,UnityEngine.Random.Range(0,180)));
         }
 
         //Reversed controls
@@ -160,7 +160,7 @@ public class PlayerMovement : MonoBehaviour
 
             //If just started moving or switched directions
             if((rb.velocity.x == 0 || rb.velocity.x * drifter.input.MoveX < 0) && IsGrounded()){
-                spawnJuiceParticle(new Vector3(-Facing * (flipSprite?-1:1)* 1.5f,-1.3f,0),5);
+                spawnJuiceParticle(new Vector3(-Facing * (flipSprite?-1:1)* 1.5f,-1.3f,0), MovementParticleMode.KickOff);
             }
 
             if(IsGrounded())
@@ -241,10 +241,10 @@ public class PlayerMovement : MonoBehaviour
                 drifter.SetAnimatorTrigger("Jump");
                 //Particles
                 if(IsGrounded()){
-                    spawnJuiceParticle(new Vector3(0,-1,0),3);
+                    spawnJuiceParticle(new Vector3(0,-1,0), MovementParticleMode.Jump);
                 }
                 else{
-                    spawnJuiceParticle(new Vector3(0,-1,0),4);
+                    spawnJuiceParticle(new Vector3(0,-1,0), MovementParticleMode.DoubleJump);
                 }
                 //jump needs a little delay so character animations can spend
                 //a frame of two preparing to jump
@@ -256,7 +256,7 @@ public class PlayerMovement : MonoBehaviour
         if((status.HasStatusEffect(PlayerStatusEffect.PLANTED) || status.HasStatusEffect(PlayerStatusEffect.AMBERED)) && prevMoveX != drifter.input.MoveX){
             status.mashOut();
 
-            spawnJuiceParticle(new Vector3(.5f,UnityEngine.Random.Range(1f,3f),0),6);
+            spawnJuiceParticle(new Vector3(.5f,UnityEngine.Random.Range(1f,3f),0), MovementParticleMode.Mash);
         }
         prevMoveX = drifter.input.MoveX;
         prevMoveY = drifter.input.MoveY;
@@ -316,16 +316,14 @@ public class PlayerMovement : MonoBehaviour
         return false;
     }
 
-    public void spawnJuiceParticle(Vector3 pos, int mode)
+    public void spawnJuiceParticle(Vector3 pos, MovementParticleMode mode)
     {
         spawnJuiceParticle(pos, mode, transform.rotation);
     }
 
-    private void spawnJuiceParticle(Vector3 pos, int mode, Quaternion angle){
-
-    	GameObject juiceParticle = GameController.Instance.host.CreateNetworkObject("MovementParticle", transform.position + pos, angle);
-        juiceParticle.GetComponent<JuiceParticle>().mode = mode;
-        juiceParticle.transform.localScale = new Vector3( juiceParticle.transform.localScale.x * Facing * (flipSprite?-1:1),juiceParticle.transform.localScale.y,1);
+    private void spawnJuiceParticle(Vector3 pos, MovementParticleMode mode, Quaternion angle){
+        GraphicalEffectManager.Instance.CreateMovementParticle(mode, transform.position + pos, angle.eulerAngles.z,
+            new Vector2(Facing * (flipSprite ? -1 : 1), 1));
     }
 
     private IEnumerator DelayedJump()

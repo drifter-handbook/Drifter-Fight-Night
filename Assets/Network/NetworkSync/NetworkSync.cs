@@ -38,7 +38,7 @@ public class NetworkSync : MonoBehaviour
     {
         if (syncData == null)
         {
-            throw new InvalidOperationException("Initialize(objectID, networkType) was not called before Start(). Was this object registered with NetworkStartingEntities?");
+            throw new InvalidOperationException($"Initialize(objectID, networkType) on GameObject {name} was not called before Start(). Was this object registered with NetworkStartingEntities?");
         }
         this["NetworkType"] = NetworkType;
     }
