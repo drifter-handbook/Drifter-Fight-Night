@@ -57,40 +57,43 @@ public class RykkeMasterHit : MasterHit
 
     public void throwHands()
     {
-        facing = movement.Facing;
-        GameObject arms = host.CreateNetworkObject("LongArmOfTheLaw", transform.position + new Vector3(facing * 2,5,0), transform.rotation);
-                foreach (HitboxCollision hitbox in arms.GetComponentsInChildren<HitboxCollision>(true))
-                {
-                    hitbox.parent = drifter.gameObject;
-                    hitbox.AttackID = attacks.AttackID;
-                    hitbox.AttackType = attacks.AttackType;
-                    hitbox.Active = true;
-        }
-        float length = 15f;
+        if (GameController.Instance.IsHost)
+        {
+            facing = movement.Facing;
+            GameObject arms = host.CreateNetworkObject("LongArmOfTheLaw", transform.position + new Vector3(facing * 2, 5, 0), transform.rotation);
+            foreach (HitboxCollision hitbox in arms.GetComponentsInChildren<HitboxCollision>(true))
+            {
+                hitbox.parent = drifter.gameObject;
+                hitbox.AttackID = attacks.AttackID;
+                hitbox.AttackType = attacks.AttackType;
+                hitbox.Active = true;
+            }
+            float length = 15f;
 
-        if(ledgeRange.TetherPoint != Vector3.zero)
-        {
-            arms.transform.rotation = Quaternion.Euler(0,0, (Mathf.Atan2(arms.transform.position.x -ledgeRange.TetherPoint.x,-arms.transform.position.y+ledgeRange.TetherPoint.y)*180 / Mathf.PI));
-            length = Vector2.Distance(ledgeRange.TetherPoint,arms.transform.position);
-            tetherTarget = ledgeRange.TetherPoint;
-            tetheredPlayer = false;
-        }
-        else if(playerRange.TetherPoint != Vector3.zero)
-        {
-            arms.transform.rotation = Quaternion.Euler(0,0, (Mathf.Atan2(arms.transform.position.x -(playerRange.TetherPoint.x + playerRange.enemyVelocity.x *.15f),-arms.transform.position.y+(playerRange.TetherPoint.y+ playerRange.enemyVelocity.y *.15f))*180 / Mathf.PI));
-            length = Vector2.Distance(playerRange.TetherPoint +  playerRange.enemyVelocity * .15f,arms.transform.position);
-            tetherTarget = playerRange.TetherPoint + (playerRange.enemyVelocity *.15f);
-            tetheredPlayer = true;
+            if (ledgeRange.TetherPoint != Vector3.zero)
+            {
+                arms.transform.rotation = Quaternion.Euler(0, 0, (Mathf.Atan2(arms.transform.position.x - ledgeRange.TetherPoint.x, -arms.transform.position.y + ledgeRange.TetherPoint.y) * 180 / Mathf.PI));
+                length = Vector2.Distance(ledgeRange.TetherPoint, arms.transform.position);
+                tetherTarget = ledgeRange.TetherPoint;
+                tetheredPlayer = false;
+            }
+            else if (playerRange.TetherPoint != Vector3.zero)
+            {
+                arms.transform.rotation = Quaternion.Euler(0, 0, (Mathf.Atan2(arms.transform.position.x - (playerRange.TetherPoint.x + playerRange.enemyVelocity.x * .15f), -arms.transform.position.y + (playerRange.TetherPoint.y + playerRange.enemyVelocity.y * .15f)) * 180 / Mathf.PI));
+                length = Vector2.Distance(playerRange.TetherPoint + playerRange.enemyVelocity * .15f, arms.transform.position);
+                tetherTarget = playerRange.TetherPoint + (playerRange.enemyVelocity * .15f);
+                tetheredPlayer = true;
 
+            }
+
+            else
+            {
+                arms.transform.rotation = Quaternion.Euler(0, 0, 45 * -facing);
+                tetherTarget = Vector2.zero;
+                tetheredPlayer = false;
+            }
+            arms.transform.localScale = new Vector3(13, length / 1.3f, 1);
         }
-        
-        else
-        {
-            arms.transform.rotation = Quaternion.Euler(0,0,45 * -facing);
-            tetherTarget = Vector2.zero;
-            tetheredPlayer = false;
-        }
-        arms.transform.localScale = new Vector3(13,length/1.3f,1);
     }
 
     public void daisyChain()
@@ -172,16 +175,19 @@ public class RykkeMasterHit : MasterHit
         facing = movement.Facing;
         Vector3 flip = new Vector3(facing *8f,8f,1f);
         Vector3 loc = new Vector3(facing *5f,0f,0f);
-        GameObject HoldPerson = host.CreateNetworkObject("HoldPerson", transform.position + loc, transform.rotation);
-        HoldPerson.transform.localScale = flip;
-        foreach (HitboxCollision hitbox in HoldPerson.GetComponentsInChildren<HitboxCollision>(true))
+        if (GameController.Instance.IsHost)
         {
-            hitbox.parent = drifter.gameObject;
-            hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
-            hitbox.Active = true;
+            GameObject HoldPerson = host.CreateNetworkObject("HoldPerson", transform.position + loc, transform.rotation);
+            HoldPerson.transform.localScale = flip;
+            foreach (HitboxCollision hitbox in HoldPerson.GetComponentsInChildren<HitboxCollision>(true))
+            {
+                hitbox.parent = drifter.gameObject;
+                hitbox.AttackID = attacks.AttackID;
+                hitbox.AttackType = attacks.AttackType;
+                hitbox.Active = true;
+            }
+            HoldPerson.GetComponentInChildren<RyykeGrab>().drifter = drifter;
         }
-        HoldPerson.GetComponentInChildren<RyykeGrab>().drifter = drifter;
     }
 
     public void grabWhiff()
@@ -213,18 +219,21 @@ public class RykkeMasterHit : MasterHit
         if(!movement.grounded)rb.velocity = new Vector2(0,10);
         Vector3 flip = new Vector3(facing *8f,8f,1f);
         Vector3 loc = new Vector3(facing *1f,.8f,0f);
-        GameObject tombstone = host.CreateNetworkObject("RyykeTombstone", transform.position + loc, transform.rotation);
-        tombstone.transform.localScale = flip;
-        foreach (HitboxCollision hitbox in tombstone.GetComponentsInChildren<HitboxCollision>(true))
+        if (GameController.Instance.IsHost)
         {
-            hitbox.parent = drifter.gameObject;
-            hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
-            hitbox.Active = true;
+            GameObject tombstone = host.CreateNetworkObject("RyykeTombstone", transform.position + loc, transform.rotation);
+            tombstone.transform.localScale = flip;
+            foreach (HitboxCollision hitbox in tombstone.GetComponentsInChildren<HitboxCollision>(true))
+            {
+                hitbox.parent = drifter.gameObject;
+                hitbox.AttackID = attacks.AttackID;
+                hitbox.AttackType = attacks.AttackType;
+                hitbox.Active = true;
+            }
+
+            tombstone.GetComponent<RyykeTombstone>().facing = facing;
+            activeStone = tombstone;
         }
-        
-        tombstone.GetComponent<RyykeTombstone>().facing=facing;
-        activeStone = tombstone;
     }
 
     public void awaken(){
@@ -232,19 +241,23 @@ public class RykkeMasterHit : MasterHit
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.2f);
         Vector3 flip = new Vector3(facing *8f,8f,1f);
         Vector3 loc = new Vector3(facing *3.5f,0f,0f);
-        GameObject tombstone = host.CreateNetworkObject("RyykeTombstone", transform.position + loc, transform.rotation);
-        tombstone.transform.localScale = flip;
-        foreach (HitboxCollision hitbox in tombstone.GetComponentsInChildren<HitboxCollision>(true))
+        if (GameController.Instance.IsHost)
         {
-            hitbox.parent = drifter.gameObject;
-            hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
-            hitbox.Active = true;
+            GameObject tombstone = host.CreateNetworkObject("RyykeTombstone", transform.position + loc, transform.rotation);
+            tombstone.transform.localScale = flip;
+            foreach (HitboxCollision hitbox in tombstone.GetComponentsInChildren<HitboxCollision>(true))
+            {
+                hitbox.parent = drifter.gameObject;
+                hitbox.AttackID = attacks.AttackID;
+                hitbox.AttackType = attacks.AttackType;
+                hitbox.Active = true;
+            }
+
+            tombstone.GetComponent<RyykeTombstone>().facing = facing;
+            tombstone.GetComponent<RyykeTombstone>().grounded = true;
+            tombstone.GetComponent<RyykeTombstone>().activate = true;
         }
-        
-        tombstone.GetComponent<RyykeTombstone>().facing=facing;
-        tombstone.GetComponent<RyykeTombstone>().grounded = true;
-        tombstone.GetComponent<RyykeTombstone>().activate = true;
+
     }
 
     public void grantStack()

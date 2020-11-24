@@ -36,22 +36,27 @@ public class BeanWrangler : MonoBehaviour
        
         Vector3 flip = new Vector3(facing *8,8,0f);
         Vector3 pos = new Vector3(facing *.7f,2.5f,1f);
-        GameObject spit = GameController.Instance.host.CreateNetworkObject("BeanSpit", transform.position + pos, transform.rotation);
-        spit.transform.localScale = flip;
-        try{
-
-            attacks.SetMultiHitAttackID();
-            spit.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * 20, 0);
-            foreach (HitboxCollision hitbox in spit.GetComponentsInChildren<HitboxCollision>(true))
+        if (GameController.Instance.IsHost)
+        {
+            GameObject spit = GameController.Instance.host.CreateNetworkObject("BeanSpit", transform.position + pos, transform.rotation);
+            spit.transform.localScale = flip;
+            try
             {
-                hitbox.parent = Orro;
-                hitbox.AttackID = attacks.AttackID;
-                hitbox.AttackType = attacks.AttackType;
-                hitbox.Active = true;
+
+                attacks.SetMultiHitAttackID();
+                spit.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * 20, 0);
+                foreach (HitboxCollision hitbox in spit.GetComponentsInChildren<HitboxCollision>(true))
+                {
+                    hitbox.parent = Orro;
+                    hitbox.AttackID = attacks.AttackID;
+                    hitbox.AttackType = attacks.AttackType;
+                    hitbox.Active = true;
+                }
             }
-        }
-        catch(NullReferenceException E){
-            //Eventually
+            catch (NullReferenceException E)
+            {
+                //Eventually
+            }
         }
     }
  

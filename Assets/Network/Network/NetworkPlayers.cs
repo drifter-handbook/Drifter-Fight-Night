@@ -58,6 +58,7 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
         }
         GameObject obj = GameController.Instance.host.CreateNetworkObject(drifter.ToString().Replace("_", " "),
             spawnPoints[i % spawnPoints.Count].transform.position, Quaternion.identity);
+        i++;
         obj.GetComponent<Drifter>().peerID = peerID;
         players[peerID] = obj;
         return obj;

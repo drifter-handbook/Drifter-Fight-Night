@@ -102,24 +102,27 @@ public class RyykeTombstone : MonoBehaviour
 
     public void SpawnChad(){
         Vector3 flip = new Vector3(facing *8f,8f,1f);
-        GameObject zombie = GameController.Instance.host.CreateNetworkObject("Chadwick", transform.position, transform.transform.rotation);
-        
-        try{
-             zombie.transform.localScale = flip;        
-            foreach (HitboxCollision hitbox in zombie.GetComponentsInChildren<HitboxCollision>(true))
-            {
-                attacks.SetupAttackID(DrifterAttackType.W_Down);
-                hitbox.parent = Ryyke;
-                hitbox.AttackID = attacks.AttackID;
-                hitbox.AttackType = DrifterAttackType.W_Down;
-                hitbox.Active = true;
-            }
-            Ryyke.GetComponentInChildren<RykkeMasterHit>().grantStack();
-        }
-        catch(NullReferenceException E)
+        if (GameController.Instance.IsHost)
         {
-            //I'm sick of this shit
-        }
+            GameObject zombie = GameController.Instance.host.CreateNetworkObject("Chadwick", transform.position, transform.transform.rotation);
 
+            try
+            {
+                zombie.transform.localScale = flip;
+                foreach (HitboxCollision hitbox in zombie.GetComponentsInChildren<HitboxCollision>(true))
+                {
+                    attacks.SetupAttackID(DrifterAttackType.W_Down);
+                    hitbox.parent = Ryyke;
+                    hitbox.AttackID = attacks.AttackID;
+                    hitbox.AttackType = DrifterAttackType.W_Down;
+                    hitbox.Active = true;
+                }
+                Ryyke.GetComponentInChildren<RykkeMasterHit>().grantStack();
+            }
+            catch (NullReferenceException E)
+            {
+                //I'm sick of this shit
+            }
+        }
     }  
 }
