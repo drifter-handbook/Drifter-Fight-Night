@@ -15,6 +15,10 @@ public class MegurinHitboxCollision : HitboxCollision
     // Start is called before the first frame update   
     void OnTriggerStay2D(Collider2D collider)
     {
+        if (!GameController.Instance.IsHost)
+        {
+            return;
+        }
         //Debug.Log("name " + name + " " + (gameObject.activeSelf || gameObject.activeInHierarchy));
         HurtboxCollision hurtbox = collider.GetComponent<HurtboxCollision>();    
         if (hurtbox != null

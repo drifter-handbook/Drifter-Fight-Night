@@ -44,8 +44,11 @@ public class MegurinMasterHit : MasterHit
         rb.velocity = Vector2.zero;
     }
     public void saveDirection(){
-        Vector2 TestDirection = new Vector2(drifter.input.MoveX,drifter.input.MoveY);
-        HeldDirection = TestDirection == Vector2.zero? HeldDirection: TestDirection;
+        if (GameController.Instance.IsHost)
+        {
+            Vector2 TestDirection = new Vector2(drifter.input.MoveX, drifter.input.MoveY);
+            HeldDirection = TestDirection == Vector2.zero ? HeldDirection : TestDirection;
+        }
     }
      public void RecoveryWarpStart(){
 
