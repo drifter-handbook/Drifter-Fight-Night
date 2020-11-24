@@ -13,11 +13,11 @@ GameObject:
   - component: {fileID: 4742937968009250531}
   - component: {fileID: 9016843426336431674}
   - component: {fileID: 8052798006598364633}
-  - component: {fileID: 8372495433342105790}
   - component: {fileID: 6092786280909705361}
   - component: {fileID: 112180435066656422}
   - component: {fileID: 5498516268860826426}
   - component: {fileID: 2667119000911843987}
+  - component: {fileID: 4691752932841800066}
   m_Layer: 0
   m_Name: Bean
   m_TagString: Untagged
@@ -150,19 +150,6 @@ MonoBehaviour:
   Neutral: 0
   Hide: 0
   facing: 0
---- !u!114 &4691752932841800066
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2710562965551637604}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c20a1139a9eaca438c79855ebb3b13b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  NetworkType: 
 --- !u!114 &6092786280909705361
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -211,6 +198,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 375a5dfd8071204439601cc2c3319524, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4691752932841800066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2710562965551637604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c20a1139a9eaca438c79855ebb3b13b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NetworkType: Bean
 --- !u!1 &4098096189212201271
 GameObject:
   m_ObjectHideFlags: 0
@@ -272,6 +272,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 2710562965551637604}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: a7fb4aba0c421ed408b91d0b5bbbf6b6, type: 2}
   AttackData: {fileID: 0}
 --- !u!1 &6238866400539476306
@@ -335,6 +336,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 2710562965551637604}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: 9af21edb38b643b408d6774dbb08bf44, type: 2}
   AttackData: {fileID: 0}
 --- !u!1 &6642733380923921335
@@ -398,6 +400,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 2710562965551637604}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: 0eea991a0fdd1004e98be37f58a1d097, type: 2}
   AttackData: {fileID: 0}
 --- !u!1 &7113186010434642531
@@ -461,6 +464,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 2710562965551637604}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: 787c1e8a42e4c7d419e068f9efa3c3df, type: 2}
   AttackData: {fileID: 0}
 --- !u!1 &8879790841671161615
