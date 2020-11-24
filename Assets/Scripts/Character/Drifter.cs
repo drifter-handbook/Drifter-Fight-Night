@@ -52,6 +52,12 @@ public class Drifter : MonoBehaviour, INetworkInit
     {
         NetworkUtils.RegisterChildObject("PlayerAnimator", transform.Find("Sprite").gameObject);
         NetworkUtils.RegisterChildObject("PlayerStatusController", transform.Find("PlayerStatusController").gameObject);
+        // TODO: remove when merge in austin's changes
+        GameObject potentialBean = transform.Find("Sprite").Find("Bean")?.gameObject;
+        if (potentialBean != null)
+        {
+            NetworkUtils.RegisterChildObject("Bean", potentialBean);
+        }
     }
 
     public void Awake()

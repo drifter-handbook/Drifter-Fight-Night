@@ -483,10 +483,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movement: {fileID: 3106753082241659641}
-  sync: {fileID: 0}
   animator: {fileID: 2000386183588008255}
-  Stocks: 0
-  DamageTaken: 0
   Charge: 0
   BlockReduction: 0.5
   myColor: {r: 0, g: 0, b: 0, a: 0}
@@ -745,43 +742,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &1850802793656103415
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5865651158578087698}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 375a5dfd8071204439601cc2c3319524, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &6736759905532077252
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5865651158578087698}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 966aa641b64b635488c8fe778561ad30, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3966920873294062115
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5865651158578087698}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c20a1139a9eaca438c79855ebb3b13b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  NetworkType: PlayerStatusController
 --- !u!1 &7083992111526413055
 GameObject:
   m_ObjectHideFlags: 0
@@ -1094,12 +1054,6 @@ PrefabInstance:
 --- !u!4 &577463835414975583 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7776010434807558584, guid: b27b36a35bf8359458967f8e540bf8de,
-    type: 3}
-  m_PrefabInstance: {fileID: 7199672537031386599}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &5865651158578087698 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3642456212089594613, guid: b27b36a35bf8359458967f8e540bf8de,
     type: 3}
   m_PrefabInstance: {fileID: 7199672537031386599}
   m_PrefabAsset: {fileID: 0}
