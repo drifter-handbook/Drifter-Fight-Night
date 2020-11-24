@@ -107,21 +107,37 @@ public class OrroMasterHit : MasterHit
 
     public void BeanSide()
     {
+        if (!GameController.Instance.IsHost)
+        {
+            return;
+        }
         refreshBeanHitboxes();
         bean.Side = true;
     }
     public void BeanDown()
     {
+        if (!GameController.Instance.IsHost)
+        {
+            return;
+        }
         refreshBeanHitboxes();
         bean.Down = true;
     }
     public void BeanUp()
     {
+        if (!GameController.Instance.IsHost)
+        {
+            return;
+        }
         refreshBeanHitboxes();
         bean.Up = true;
     }
     public void BeanNeutral()
     {
+        if (!GameController.Instance.IsHost)
+        {
+            return;
+        }
         refreshBeanHitboxes();
         bean.Neutral = true;
     }
@@ -149,19 +165,27 @@ public class OrroMasterHit : MasterHit
     }
 
     private void refreshBeanHitboxes(){
+        if (!GameController.Instance.IsHost)
+        {
+            return;
+        }
         foreach (HitboxCollision hitbox in beanObject.GetComponentsInChildren<HitboxCollision>(true))
-            {
-                hitbox.parent = drifter.gameObject;
-                hitbox.AttackID = attacks.AttackID;
-                hitbox.AttackType = DrifterAttackType.W_Neutral;
-                hitbox.Active = true;
-                hitbox.Facing = facing;
-            }
+        {
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = DrifterAttackType.W_Neutral;
+            hitbox.Active = true;
+            hitbox.Facing = facing;
+        }
     }
 
     public void BeanRecall()
     {
-        if(anim.GetBool("Empowered"))
+        if (!GameController.Instance.IsHost)
+        {
+            return;
+        }
+        if (anim.GetBool("Empowered"))
         {
             UnityEngine.Debug.Log("SENT OUT");
             drifter.SetAnimatorBool("Empowered",false);

@@ -84,16 +84,19 @@ public class MegurinMasterHit : MasterHit
 
     public void FTilt(){
         facing = movement.Facing;
-        GameObject windwave = host.CreateNetworkObject("Windwave", transform.position + new Vector3(facing * 3f, 1f), transform.rotation);
-        windwave.GetComponent<Rigidbody2D>().velocity = new Vector3(facing  * 35f,0);
-        windwave.transform.localScale = new Vector3(facing * 12f,12f);
-        foreach (HitboxCollision hitbox in windwave.GetComponentsInChildren<HitboxCollision>(true))
+        if (GameController.Instance.IsHost)
         {
-            hitbox.parent = drifter.gameObject;
-            hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
-            hitbox.Active = true;
-            hitbox.Facing = facing;
+            GameObject windwave = host.CreateNetworkObject("Windwave", transform.position + new Vector3(facing * 3f, 1f), transform.rotation);
+            windwave.GetComponent<Rigidbody2D>().velocity = new Vector3(facing * 35f, 0);
+            windwave.transform.localScale = new Vector3(facing * 12f, 12f);
+            foreach (HitboxCollision hitbox in windwave.GetComponentsInChildren<HitboxCollision>(true))
+            {
+                hitbox.parent = drifter.gameObject;
+                hitbox.AttackID = attacks.AttackID;
+                hitbox.AttackType = attacks.AttackType;
+                hitbox.Active = true;
+                hitbox.Facing = facing;
+            }
         }
     }
 
@@ -270,7 +273,11 @@ public class MegurinMasterHit : MasterHit
 
     public void chargeNeutralW()
     {
-        if(TransitionFromChanneledAttack()){
+        if (!GameController.Instance.IsHost)
+        {
+            return;
+        }
+        if (TransitionFromChanneledAttack()){
             return;
         }
         if(drifter.input.Special)

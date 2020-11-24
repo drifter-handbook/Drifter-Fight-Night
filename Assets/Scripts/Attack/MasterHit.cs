@@ -88,7 +88,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     {
         if (!GameController.Instance.IsHost)
         {
-            return false;
+            return true;
         }
         if(drifter.input.Guard)
         {
