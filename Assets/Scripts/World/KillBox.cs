@@ -9,6 +9,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
     ScreenShake Shake;
     public Animator endgameBanner;
     public List<CharacterSelectState> deadByOrder = new List<CharacterSelectState>(); //keeps track of who died in what order
+    
     void Awake()
     {
         Entities = GameObject.FindGameObjectWithTag(
@@ -63,7 +64,8 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
     }
 
 
-    protected void killPlayer(Collider2D other){
+    protected void killPlayer(Collider2D other)
+    {
     	if (other.gameObject.tag == "Player" && GameController.Instance.IsHost && other.GetType() == typeof(BoxCollider2D))
         {
             Drifter drifter = other.gameObject?.GetComponent<Drifter>();
@@ -83,73 +85,39 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                     StartCoroutine(Respawn(other));
                 }
                 else
-                {
-                    int destroyed = -1;
-                    foreach (CharacterSelectState state in GameController.Instance.CharacterSelectStates)
-                    {
-                    
-                        if (Entities.Players.ContainsKey(state.PlayerID))
-                        {
-                        Entities.Players.TryGetValue(state.PlayerID, out GameObject obj);
+                {   
+                    CreateExplosion(other, -1); 
 
-                            if (obj.Equals(other.gameObject))
-                            {
-                                destroyed = state.PlayerIndex;
-                                deadByOrder.Add(state);
-                                break;
-                            }
-                        }
-                    }
-                   
                     Destroy(other.gameObject);
-                // check for last one remaining
-                    int count = 0;
-                    int winner = -1;
-                    foreach (GameObject go in Entities.Players.Values)
+
+                    //Default the winner when two remain
+                    if(Entities.Players.Count == 2)
                     {
-                        if (Entities.hasStocks(go))
+                        foreach (KeyValuePair<int, GameObject> kvp in Entities.Players)
                         {
-                            int victor = -1;
-                            foreach (CharacterSelectState select in GameController.Instance.CharacterSelectStates)
-                            {
-                                if (Entities.Players.ContainsKey(select.PlayerID) && go.Equals(Entities.Players[select.PlayerID]))
-                                victor = select.PlayerID;
-                            }
-                            count++;
-                        
-                            winner = victor;
+                            GameController.Instance.winner = kvp.Key;
                         }
                     }
-
-                    //down to the last player! End game
-                    if (count == 1)
+                    //If last one standing, WIN!
+                    if(Entities.Players.Count == 1)
                     {
+                        foreach (KeyValuePair<int, GameObject> kvp in Entities.Players)
+                        {
+                            endgameBanner.enabled = true;
+                            GameController.Instance.winner = kvp.Key;
 
-                        endgameBanner.enabled = true;
-                        GameController.Instance.winner = winner;
-                        destroyed = -2;
-               
-                    }
-                    else if (count < 1){
-                    //There are no players with stocks left, default to the last killed
-                    int victor = -1;
-                        if (deadByOrder.Count > 0)
-                        {
-                            victor = deadByOrder[deadByOrder.Count - 1].PlayerIndex;
-                            winner = deadByOrder[deadByOrder.Count - 1].PlayerID;
-                        } else
-                        {
-                        //well...
-                        UnityEngine.Debug.Log("I dunno fam, you really messed up.");
                         }
-
+                    }
+                    //Uh oh, stinky, player 1 wins
+                    else if(Entities.Players.Count == 0)
+                    {
                         endgameBanner.enabled = true;
-                        GameController.Instance.winner = winner;
-                        destroyed = -2;
+                        GameController.Instance.winner = 0;
+                    }
+
                 }
-                CreateExplosion(other, destroyed);               
-            	}
-        	}
-        }            
+
+            }
+        }
     } 
 }
