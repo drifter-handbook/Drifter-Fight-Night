@@ -19,13 +19,17 @@ public class ParhelionMasterHit : MasterHit
         // jump upwards and create spear projectile
         facing = movement.Facing;
         Vector3 pos = new Vector3(facing * - 4.3f,2.8f,0);
-        GameObject bolt = GameController.Instance.host.CreateNetworkObject("ParhelionBolt", transform.position + pos, transform.rotation);
-        foreach (HitboxCollision hitbox in bolt.GetComponentsInChildren<HitboxCollision>(true))
+        if (GameController.Instance.IsHost)
         {
-            hitbox.parent = drifter.gameObject;
-            hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
-            hitbox.Active = true;
+            GameObject bolt = GameController.Instance.host.CreateNetworkObject("ParhelionBolt", transform.position + pos, transform.rotation);
+            foreach (HitboxCollision hitbox in bolt.GetComponentsInChildren<HitboxCollision>(true))
+            {
+                hitbox.parent = drifter.gameObject;
+                hitbox.AttackID = attacks.AttackID;
+                hitbox.AttackType = attacks.AttackType;
+                hitbox.Active = true;
+                hitbox.Facing = facing;
+            }
         }
     }
     

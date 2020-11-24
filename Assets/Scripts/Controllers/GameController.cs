@@ -96,7 +96,7 @@ public class GameController : MonoBehaviour
         // Create appropriate spawn points
         // Create player characters & give them an input
         // Yeet into world and allow playing the game
-        host.SetScene(selectedStage);
+        host?.SetScene(selectedStage);
     }
 
     void Update()
