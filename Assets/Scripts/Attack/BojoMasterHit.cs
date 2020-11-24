@@ -36,7 +36,6 @@ public class BojoMasterHit : MasterHit
         bubble.transform.localScale = flip;
         bubble.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * 55, 0);
        	drifter.SetAnimatorBool("HasCharge",true);
-       	//timeSinceGun = 0f;
         
         foreach (HitboxCollision hitbox in bubble.GetComponentsInChildren<HitboxCollision>(true))
         {

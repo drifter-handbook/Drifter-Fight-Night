@@ -10,14 +10,14 @@ public class SpaceJamMasterHit : MasterHit
     int charges = 0;
     int maxCharge = 65;
 
-    public AudioSource audio;
+    public AudioSource audioSource;
     public AudioClip[] audioClips;
 
 
     //Side W
     public void GuidingBolt()
     {
-        audio.PlayOneShot(audioClips[1], 1f);
+        audioSource.PlayOneShot(audioClips[1], 1f);
         facing = movement.Facing;
         Vector3 flip = new Vector3(facing *12f,12f,0f);
         Vector3 pos = new Vector3(facing *-3f,0f,1f);
@@ -45,7 +45,7 @@ public class SpaceJamMasterHit : MasterHit
         if(anim.GetBool("Empowered")){
             drifter.SetAnimatorBool("Empowered",false);
             sprite.color = Color.white;
-            audio.PlayOneShot(audioClips[1], 1f);
+            audioSource.PlayOneShot(audioClips[1], 1f);
             Vector3 flip = new Vector3(facing *12f,12f,0f);
             Vector3 pos = new Vector3(facing *-3f,0f,1f);
             GameObject amber = Instantiate(entities.GetEntityPrefab("Amber"), transform.position + pos, transform.rotation);
@@ -93,8 +93,8 @@ public class SpaceJamMasterHit : MasterHit
 
             if(charges >= maxCharge)
             {
-                audio.Stop();
-                audio.PlayOneShot(audioClips[2],1f);
+                audioSource.Stop();
+                audioSource.PlayOneShot(audioClips[2],1f);
                     drifter.SetAnimatorBool("Empowered",true);
                     sprite.color = new Color(255,165,0);
             }
@@ -105,7 +105,7 @@ public class SpaceJamMasterHit : MasterHit
     //Inherited Dodge roll methods
 
     public override void roll(){
-        audio.Pause();
+        audioSource.Pause();
         facing = movement.Facing;
         applyEndLag(1f);
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);

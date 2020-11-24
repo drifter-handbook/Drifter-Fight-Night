@@ -42,7 +42,7 @@ public class TutorialSwapper : MonoBehaviour
     public Text moveTitle;
     public Text moveDescription;
 
-    public Text name;
+    public Text characterName;
     public Text nameShadow;
 
     public int currentDrifterIndex = 0;
@@ -68,7 +68,7 @@ public class TutorialSwapper : MonoBehaviour
         if(currentDrifter.customTitle != null)
         {
             currentDrifter.customTitle.SetActive(true);
-            name.gameObject.SetActive(false);
+            characterName.gameObject.SetActive(false);
             myCustomTitle = currentDrifter.customTitle;
         } else
         {
@@ -77,8 +77,8 @@ public class TutorialSwapper : MonoBehaviour
                 myCustomTitle.SetActive(false);
                 myCustomTitle = null;
             }
-            name.gameObject.SetActive(true);
-            name.text = currentDrifter.drifterName;
+            characterName.gameObject.SetActive(true);
+            characterName.text = currentDrifter.drifterName;
             nameShadow.text = currentDrifter.drifterName;
         }
 

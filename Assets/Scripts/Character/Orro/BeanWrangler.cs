@@ -121,6 +121,7 @@ public class BeanWrangler : MonoBehaviour
             }
             entities.AddEntity(spit);
         }
+        //TODO: Remove after network rework
         catch(NullReferenceException E){
             //Eventually
         }
@@ -131,7 +132,8 @@ public class BeanWrangler : MonoBehaviour
         try{
             attacks.SetMultiHitAttackID();    
         }
-        catch(NullReferenceException E){
+        //TODO: Remove after network rework
+        catch (NullReferenceException E){
             //Eventually
         }
         
