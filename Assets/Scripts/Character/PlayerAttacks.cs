@@ -20,7 +20,6 @@ public class SingleAttack
     public SingleAttackData attackData;
 }
 
-
 public class PlayerAttacks : MonoBehaviour
 {
     public static Dictionary<DrifterAttackType, string> AnimatorTriggers = new Dictionary<DrifterAttackType, string>()
@@ -172,37 +171,12 @@ public class PlayerAttacks : MonoBehaviour
         SetupAttackID(attackType);
 
         status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,4f);
-            //Attacks[attackType].EndLag);
-
-        //StartCoroutine(ListenForAttackEvents(attackType));
-    }
-    public IEnumerator ListenForAttackEvents(DrifterAttackType attackType)
-    {
-        // check for when animator state changes.
-        // If animator states aren't named properly, hits won't be detected,
-        // FinishAttack will never be called,
-        // and we will have a memory and performance leak.
-        // Make sure they're named as described in AnimatorStates!
-
-        // enter the state
-        while (!animator.GetCurrentAnimatorStateInfo(0).IsName(AnimatorStates[attackType]))
-        {
-            yield return null;
-        }
-        SetHitboxesActive(true);
-        // exit the state
-        while (animator.GetCurrentAnimatorStateInfo(0).IsName(AnimatorStates[attackType]))
-        {
-            yield return null;
-        }
-        //FinishAttack(attackType);
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
-        yield break;
+        
     }
 
     public void Hit(DrifterAttackType attackType, int attackID, GameObject target)
     {
-        UnityEngine.Debug.Log("HIT DETECTED IN PLAYER ATTACKS");
+        //UnityEngine.Debug.Log("HIT DETECTED IN PLAYER ATTACKS");
     }
 
     public void SetupAttackID(DrifterAttackType attackType)

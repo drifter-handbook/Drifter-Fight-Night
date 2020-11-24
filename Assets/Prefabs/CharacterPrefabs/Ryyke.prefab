@@ -614,7 +614,7 @@ MonoBehaviour:
   anim: {fileID: 6547671940963507017}
   playerRange: {fileID: 7620757468852097558}
   ledgeRange: {fileID: 8407490936574412438}
-  audio: {fileID: 365055630044564581}
+  audioSource: {fileID: 365055630044564581}
   audioClips:
   - {fileID: 8300000, guid: 6c93b402833b2be43a21b66d7d38f65f, type: 3}
 --- !u!1 &5382567413343814450
@@ -1468,6 +1468,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7638574618725185677}
     m_Modifications:
+    - target: {fileID: 2476079393626422129, guid: 964fd6376f370e24e956a547953245d3,
+        type: 3}
+      propertyPath: tetherTargetType
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 4554260631318196209, guid: 964fd6376f370e24e956a547953245d3,
+        type: 3}
+      propertyPath: tetherTargetType
+      value: Ledge
+      objectReference: {fileID: 0}
     - target: {fileID: 7213217260119940695, guid: 964fd6376f370e24e956a547953245d3,
         type: 3}
       propertyPath: m_Name
