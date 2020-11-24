@@ -54,7 +54,7 @@ public class PlayerInput : MonoBehaviour
         }
 
 
-        input.Jump = Input.GetKey(keyBindings.jumpKey);
+        input.Jump = Input.GetKey(keyBindings.jumpKey) || Input.GetKey(keyBindings.jumpKeyAlt);
         input.Light = Input.GetKey(keyBindings.lightKey);
         input.Special = Input.GetKey(keyBindings.specialKey);
         input.Grab = Input.GetKey(keyBindings.grabKey);

@@ -103,7 +103,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
 
                     CreateExplosion(other, -1); 
 
-                    if(playerList.Count != 1)
+                    if(playerList.Count > 1)
                     {
                         playerList.Remove(other.gameObject);
 
@@ -113,9 +113,9 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
 
                     if(playerList.Count == 1)
                     {
-                        foreach (KeyValuePair<int, GameObject> kvp in Entities.Players)
+                        foreach (KeyValuePair<GameObject, int> kvp in playerList)
                         {
-                            GameController.Instance.winner = kvp.Key;
+                            GameController.Instance.winner = kvp.Value;
                             endgameBanner.enabled = true;
                         }
 
