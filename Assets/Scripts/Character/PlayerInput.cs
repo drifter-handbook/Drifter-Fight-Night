@@ -17,28 +17,39 @@ public class PlayerInput : MonoBehaviour
             return;
         }
         // get player input
-        input.MoveX = 0;
-        if (Input.GetKey(keyBindings.leftKey))
+
+        //controller movement input
+        if(Input.GetJoystickNames().Length > 0)
         {
-            input.MoveX--;
-        }
-        if (Input.GetKey(keyBindings.rightKey))
-        {
-            input.MoveX++;
-        }
-        input.MoveY = 0;
-        if (Input.GetKey(keyBindings.downKey))
-        {
-            // down key does nothing
-            input.MoveY--;
-        }
-        if (Input.GetKey(keyBindings.upKey))
-        {
-            input.MoveY++;
+            input.MoveX = (int)Input.GetAxis("Horizontal");
+            input.MoveY = (int)Input.GetAxis("Vertical");
         }
 
+        //keyboard movement input
+        else
+        {
+            input.MoveX = 0;
+            if (Input.GetKey(keyBindings.leftKey))
+            {
+                input.MoveX--;
+            }
+            if (Input.GetKey(keyBindings.rightKey) || Input.GetButtonDown("Horizontal"))
+            {
+                input.MoveX++;
+            }
+            input.MoveY = 0;
+            if (Input.GetKey(keyBindings.downKey))
+            {
+                // down key does nothing
+                input.MoveY--;
+            }
+            if (Input.GetKey(keyBindings.upKey))
+            {
+                input.MoveY++;
+            }
+        }
 
-        if(Input.GetKey(keyBindings.guard1Key) && Input.GetKey(keyBindings.downKey)){
+        if (Input.GetKey(keyBindings.guard1Key) && Input.GetKey(keyBindings.downKey)){
             input.MoveY--;
         }
 
