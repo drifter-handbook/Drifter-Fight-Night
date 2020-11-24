@@ -9,6 +9,8 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
     ScreenShake Shake;
     public Animator endgameBanner;
     public List<CharacterSelectState> deadByOrder = new List<CharacterSelectState>(); //keeps track of who died in what order
+
+    Dictionary<GameObject,int> playerList = new Dictionary<GameObject,int>();
     
     void Awake()
     {
@@ -16,6 +18,15 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
             "NetworkEntityList").GetComponent<NetworkEntityList>();
         Shake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<ScreenShake>();
         deadByOrder.Clear();
+
+    }
+
+    void Start()
+    {
+        foreach (KeyValuePair<int, GameObject> kvp in Entities.Players)
+        {
+            playerList.Add(kvp.Value,kvp.Key);
+        }
     }
 
     GameObject CreateExplosion(Collider2D other, int playerIndex)
@@ -66,6 +77,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
 
     protected void killPlayer(Collider2D other)
     {
+
     	if (other.gameObject.tag == "Player" && GameController.Instance.IsHost && other.GetType() == typeof(BoxCollider2D))
         {
             Drifter drifter = other.gameObject?.GetComponent<Drifter>();
@@ -86,40 +98,27 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                 }
                 else
                 {   
+
+                    UnityEngine.Debug.Log(playerList.Count);
+
                     CreateExplosion(other, -1); 
 
-                    Destroy(other.gameObject);
-
-                    //Default the winner when two remain
-                    if(Entities.Players.Count == 2)
+                    if(playerList.Count != 1)
                     {
-                        foreach (KeyValuePair<int, GameObject> kvp in Entities.Players)
-                        {
+                        playerList.Remove(other.gameObject);
 
-                            UnityEngine.Debug.Log(Entities.Players[kvp.Key] + ": 2");
-                            GameController.Instance.winner = kvp.Key;
-                        }
+                        Destroy(other.gameObject);
                     }
-                    //If last one standing, WIN!
-                    if(Entities.Players.Count == 1)
+
+
+                    if(playerList.Count == 1)
                     {
                         foreach (KeyValuePair<int, GameObject> kvp in Entities.Players)
                         {
-
-
-                            UnityEngine.Debug.Log(Entities.Players[kvp.Key] + ": Winner");
                             GameController.Instance.winner = kvp.Key;
                             endgameBanner.enabled = true;
-                            
                         }
-                    }
-                    //Uh oh, stinky, player 1 wins
-                    else if(Entities.Players.Count == 0)
-                    {
-                        UnityEngine.Debug.Log("UH OH");
-                        GameController.Instance.winner = 0;
-                        endgameBanner.enabled = true;
-                        
+
                     }
 
                 }
