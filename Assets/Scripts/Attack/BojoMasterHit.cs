@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class BojoMasterHit : MasterHit
 {
-    float timeSinceGun = 0f;
     float boofTime;
     bool checkBoof;
 
@@ -21,9 +20,6 @@ public class BojoMasterHit : MasterHit
             attacks.currentRecoveries = 0;
             checkBoof = false;
         }
-    	// if(timeSinceGun < 1f){
-    	// 	timeSinceGun += Time.deltaTime;
-    	// }
     	else{
     		drifter.SetAnimatorBool("HasCharge",false);
     	}
