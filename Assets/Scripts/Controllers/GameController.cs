@@ -6,10 +6,18 @@ using System.Collections.Generic;
 using System.Net;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Assertions;
 
 [DisallowMultipleComponent]
 public class GameController : MonoBehaviour
 {
+    public enum VolumeType
+    {
+        MASTER,
+        MUSIC,
+        SFX
+    };
+
     //* Serialized members
     [Header("Check box if hosting")]
     public bool IsHost;
@@ -53,6 +61,7 @@ public class GameController : MonoBehaviour
     public CustomControls controls;
 
     public int PlayerID = -1;
+    public float[] volume = { -1f, -1f, -1f };
 
     void Awake()
     {
@@ -96,10 +105,16 @@ public class GameController : MonoBehaviour
         {
             IsPaused = !IsPaused;
         }
-        if (Input.GetKeyDown(KeyCode.Escape))
+       /* if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
-        }
+        }*/
+    }
+
+    public void UpdateSFXVolume(float val)
+    {
+        AudioSource source = GetComponent<AudioSource>();
+        source.volume = val;
     }
 
     public void StartNetworkHost()

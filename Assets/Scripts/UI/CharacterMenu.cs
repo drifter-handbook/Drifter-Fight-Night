@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -45,9 +46,6 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     [Serializable]
     public class FightZone
     {
-        public GameObject fightzone;
-        public Sprite fightzonePreview;
-        public string fightzoneName;
         public string sceneName;
     }
 
@@ -57,11 +55,12 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
     private GameObject clientCard;
 
+    public GameObject stageMenu;
+
+    public Sprite noImage;
+
     private FightZone selectedFightzone;
     private int selectedFightzoneNum = 0;
-
-    public Image fightZonePreview;
-    public Text fightZoneLabel;
 
     //determines how many player cards we can fit on a panel
     private const int PANEL_MAX_PLAYERS = 4;
@@ -71,17 +70,23 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     public GameObject forwardButton;
     public GameObject backButton;
 
+    public GameObject selectedFigurine = null;
+
     public class PlayerMenuEntry
     {
         public GameObject arrow;
         public GameObject characterCard;
     }
     List<PlayerMenuEntry> menuEntries = new List<PlayerMenuEntry>();
+    bool playerIsSet = false;
+    bool mouse = true;
 
     NetworkSync sync;
 
     public static CharacterMenu Instance => GameObject.FindGameObjectWithTag("CharacterMenu")?.GetComponent<CharacterMenu>();
     public static CharacterSelectSyncData CharSelData;
+
+    DrifterType currentDrifter = DrifterType.None;
 
     void Awake()
     {
@@ -94,7 +99,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         forwardButton.GetComponent<Animator>().SetBool("present", true);
         UpdateFightzone();
 
-        if (PlayerPrefs.GetInt("HideIP") > 0)
+        if (PlayerPrefs.GetInt("HideRoomCode") > 0)
         {
             ipPanel.SetActive(false);
         }
@@ -166,13 +171,23 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     {
         SyncToCharSelectState();
         transform.Find("ReadyButton").gameObject.SetActive(GameController.Instance.IsHost);
-        if (!GameController.Instance.IsHost)
+
+         if(Input.GetAxis("Mouse X")!=0 || Input.GetAxis("Mouse X")<0 && !mouse)
         {
-            if ((bool)sync["location"] && !GetComponent<Animator>().GetBool("location"))
-            {
-                HeadToLocationSelect();
-            }
+            mouse = true;
+            EventSystem.current.SetSelectedGameObject(null);
+
         }
+        if(Input.anyKey && mouse && (!Input.GetMouseButton(0) || Input.GetMouseButton(1) || Input.GetMouseButton(2))){
+            mouse = false;
+            EventSystem.current.SetSelectedGameObject(everyoneReady()?(this.GetComponent<Animator>().GetBool("location")?GameObject.Find("Training"):forwardButton):GameObject.Find("Random Figurine"));
+        }
+
+        Cursor.visible = mouse;
+    }
+
+    void Update(){
+        if(everyoneReady() && !this.GetComponent<Animator>().GetBool("location"))forwardButton.GetComponent<Button>().interactable = true;
     }
 
     public void SyncToCharSelectState()
@@ -196,6 +211,10 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
             
             if(drifter != DrifterType.None){
                 CharacterCard.SetCharacter(menuEntries[i].characterCard.transform, figurines[drifter].image, drifter.ToString().Replace("_", " "));
+            }
+            else
+            {
+                CharacterCard.SetCharacter(menuEntries[i].characterCard.transform, noImage, "SELECT DRIFTER");
             }
             
         }
@@ -245,6 +264,23 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
             leftPanel.transform : rightPanel.transform;
 
         card.SetParent(parent, false);
+
+        if (GameController.Instance.IsHost)
+        {
+            // TODO: search for player index with peer ID -1
+            GameObject myCard = menuEntries[0].characterCard;
+            if (myCard == charCard)
+            {
+                CharacterCard.EnableKickPlayers(card, false);
+            }
+            else
+            {
+                //TODO: Call function to add listener for kick button click.
+                Button kickPlayer = CharacterCard.EnableKickPlayers(card, GameController.Instance.IsHost);
+                int cardIndex = menuEntries.IndexOf(entry);
+                // kickPlayer.onClick.AddListener(() => GameController.Instance.GetComponent<NetworkHost>().ForceKick(cardIndex));
+            }
+        }
     }
 
     public void RemovePlayerCard()
@@ -259,16 +295,10 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     {
         selectedFightzoneNum = fightzones.FindIndex(x => x.sceneName == s);
         UpdateFightzone();
-    }
 
-    public void nextFightzone()
-    {
-        selectedFightzoneNum++;
-        if(selectedFightzoneNum >= fightzones.Count)
-        {
-            selectedFightzoneNum = 0;
-        }
-        UpdateFightzone();
+        GameController.Instance.selectedStage = selectedFightzone.sceneName;
+        Cursor.visible = false;
+        GameController.Instance.BeginMatch();
     }
 
     public void UpdateFightzone()
@@ -278,8 +308,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
             return;
         }
         selectedFightzone = fightzones[selectedFightzoneNum];
-        fightZonePreview.sprite = selectedFightzone.fightzonePreview;
-        fightZoneLabel.text = selectedFightzone.fightzoneName;
+
         if (GetComponent<Animator>().GetBool("location"))
         {
             GameController.Instance.selectedStage = selectedFightzone.sceneName;
@@ -290,9 +319,46 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         }
     }
 
+    public void SelectRandomDrifter()
+    {
+
+    	//Update sound climp in here
+    	switch(UnityEngine.Random.Range(0, 7)){
+    		case 0:
+    			SelectDrifter("Nero");
+    			break;
+    		case 1:
+    			SelectDrifter("Orro");
+    			break;
+    		case 2:
+    			SelectDrifter("Swordfrog");
+    			break;
+    		case 3:
+    			SelectDrifter("Megurin");
+    			break;
+    		case 4:
+    			SelectDrifter("Ryyke");
+    			break;
+    		case 5:
+    			SelectDrifter("Lady_Parhelion");
+    			break;
+    		case 6:
+    			SelectDrifter("Bojo");
+    			break;
+    		case 7:
+    			SelectDrifter("Spacejam");
+    			break;
+    		default:
+    			SelectDrifter("Spacejam");
+    			break;						
+    	}
+
+    }
+
     public void SelectDrifter(string drifterString)
     {
         DrifterType drifter = (DrifterType)Enum.Parse(typeof(DrifterType), drifterString.Replace(" ", "_"));
+        currentDrifter = drifter;
         if (GameController.Instance.IsHost)
         {
             List<CharacterSelectState> charSelStates = NetworkUtils.GetNetworkData<CharacterSelectSyncData>(sync["charSelState"]).charSelState;
@@ -311,8 +377,19 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
                 drifter = drifter
             });
         }
-    }
 
+        if(selectedFigurine!=null)selectedFigurine.GetComponent<Button>().enabled = true;
+        selectedFigurine = figurines[drifter].figurine;
+        selectedFigurine.GetComponent<Button>().enabled = false;
+        EventSystem.current.SetSelectedGameObject(backButton);
+
+        if(everyoneReady())
+        {
+            forwardButton.GetComponent<Button>().interactable = true;
+            if(!mouse)EventSystem.current.SetSelectedGameObject(forwardButton);
+        }
+
+    }
 
     public void HeadToLocationSelect()
     {
@@ -325,7 +402,11 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
             return;
         }
 
+        stageMenu.SetActive(true);
 
+        EventSystem.current.SetSelectedGameObject(GameObject.Find("Training"));
+
+        forwardButton.GetComponent<Button>().interactable = false;
 
         this.GetComponent<Animator>().SetBool("location", true);
         if (GameController.Instance.IsHost)
@@ -336,7 +417,6 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         {
             forwardButton.GetComponent<Animator>().SetBool("present", false);
         }
-        backButton.GetComponent<Animator>().SetBool("present", true);
 
         List<DrifterType> pickedTypes = new List<DrifterType>();
 
@@ -354,10 +434,8 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
         foreach (PlayerSelectFigurine drifter in drifters)
         {
-            if (!pickedTypes.Contains(drifter.drifter))
-            {
-                drifter.figurine.GetComponent<Animator>().SetBool("present", false);
-            }
+            drifter.figurine.GetComponent<Animator>().SetBool("present", false);
+            drifter.figurine.GetComponent<Button>().interactable = false;
         }
         UpdateFightzone();
     }
@@ -371,9 +449,11 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
             forwardButton.GetComponent<Animator>().SetBool("present", true);
         }
 
+        stageMenu.SetActive(false);
+
+        forwardButton.GetComponent<Button>().interactable = true;
 
         this.GetComponent<Animator>().SetBool("location", false);
-        backButton.GetComponent<Animator>().SetBool("present", false);
 
         foreach (Animator card in rightPanel.GetComponentsInChildren<Animator>())
         {
@@ -387,11 +467,16 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
         foreach (PlayerSelectFigurine drifter in drifters)
         {
-            if (!drifter.figurine.GetComponent<Animator>().GetBool("present"))
-            {
-                drifter.figurine.GetComponent<Animator>().SetBool("present", true);
-            }
+            drifter.figurine.GetComponent<Animator>().SetBool("present", true);
+            drifter.figurine.GetComponent<Button>().interactable = true;
+
         }
+
+        selectedFigurine.GetComponent<Button>().enabled = true;
+        EventSystem.current.SetSelectedGameObject(selectedFigurine);
+        selectedFigurine.GetComponent<Button>().enabled = false;
+        EventSystem.current.SetSelectedGameObject(forwardButton);
+
     }
 
     public DrifterType getDrifterTypeFromString(string name)
@@ -406,11 +491,79 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         return DrifterType.Bojo;
     }
 
-
     public void ShowMovesetForDrifter()
     {
         movesetOverlay.gameObject.SetActive(true);
-        movesetOverlay.GetComponentInChildren<TutorialSwapper>().SelectDrifter(0);
+        int drifterMoves = 0;
+        switch(currentDrifter)
+        {
+            case DrifterType.Nero:
+                drifterMoves = 1;
+                break;
+            case DrifterType.Orro:
+                drifterMoves = 2;
+                break;
+            case DrifterType.Lady_Parhelion:
+                drifterMoves = 3;
+                break;
+            case DrifterType.Bojo:
+                drifterMoves = 4;
+                break;
+            case DrifterType.Megurin:
+                drifterMoves = 5;
+                break;
+            case DrifterType.Ryyke:
+                drifterMoves = 6;
+                break;
+            case DrifterType.Swordfrog:
+                drifterMoves = 7;
+                break;
+
+        }
+        movesetOverlay.GetComponentInChildren<TutorialSwapper>().SelectDrifter(drifterMoves);
+    }
+
+    public void BackButton(){
+        if(this.GetComponent<Animator>().GetBool("location")){
+            HeadToCharacterSelect();
+        }
+        else if(selectedFigurine != null){
+        	
+        	selectedFigurine.GetComponent<Button>().enabled = true;
+            currentDrifter = DrifterType.None;
+        	selectedFigurine = null;
+
+        }
+
+        else{
+            ReturnToTitle();
+        }
+    }
+
+    public bool everyoneReady(){
+        List<CharacterSelectState> charSelStates = NetworkUtils.GetNetworkData<CharacterSelectSyncData>(sync["charSelState"]).charSelState;
+        foreach (CharacterSelectState selectState in charSelStates)
+        {
+            if(selectState.PlayerType == DrifterType.None){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void ReturnToTitle()
+    {
+        //TODO: C
+        if (GameController.Instance.GetComponent<NetworkClient>() != null)
+        {
+            GameController.Instance.CleanupNetwork();
+        }
+
+        if (GameController.Instance.GetComponent<NetworkHost>() != null)
+        {
+            GameController.Instance.CleanupNetwork();
+        }
+        GameController.Instance.Load("MenuScene");
     }
 
     public void ReceiveNetworkMessage(NetworkMessage message)

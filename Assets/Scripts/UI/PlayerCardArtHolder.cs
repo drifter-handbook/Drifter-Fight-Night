@@ -50,16 +50,16 @@ public class PlayerCardArtHolder : MonoBehaviour
                 
                 playerCards[i].drifterIndex = imageIndex;
                 if(imageIndex == 5 || imageIndex == 1){
-                   playerCards[i].charge.active = true;
+                   playerCards[i].charge.SetActive(true);
                 }
                 else if(imageIndex == 6){
-                    playerCards[i].MegurinElements.active = true;
+                    playerCards[i].MegurinElements.SetActive(true);
                     playerCards[i].MegurinElements.GetComponent<MegurinGauges>().megurin = drifter.GetComponentInChildren<MegurinMasterHit>();
                 }
                 else
                 {
-                    playerCards[i].charge.active = false;
-                    playerCards[i].MegurinElements.active = false;
+                    playerCards[i].charge.SetActive(false);
+                    playerCards[i].MegurinElements.SetActive(false);
                 }
 
                 playerCards[i].setChargeDrifter(drifter);
@@ -73,11 +73,11 @@ public class PlayerCardArtHolder : MonoBehaviour
         {
             playerCards[i].setPercent(drifters[i].DamageTaken);
             // update stocks
-            if((playerCards[i].drifterIndex == 5 || playerCards[i].drifterIndex == 1) && !playerCards[i].charge.active){
-                   playerCards[i].charge.active = true;
+            if((playerCards[i].drifterIndex == 5 || playerCards[i].drifterIndex == 1) && !playerCards[i].charge.activeSelf){
+                   playerCards[i].charge.SetActive(true);
             }
-            else if(playerCards[i].drifterIndex == 6 && !playerCards[i].MegurinElements.active){
-                    playerCards[i].MegurinElements.active = true;
+            else if(playerCards[i].drifterIndex == 6 && !playerCards[i].MegurinElements.activeSelf){
+                    playerCards[i].MegurinElements.SetActive(true);
             }
             
             if (drifters[i] != null)
@@ -112,7 +112,7 @@ public class PlayerCardArtHolder : MonoBehaviour
             case ("Ryyke"): return 5;
             case ("Megurin"): return 6;
             case ("Nero"): return 7;
-            default: return 7;
+            default: return 8;
         }
     }
 

@@ -59,8 +59,8 @@ PolygonCollider2D:
     m_Paths:
     - - {x: -0.54, y: 0.54}
       - {x: -0.74, y: -0.54}
-      - {x: -0.5425381, y: -0.54}
-      - {x: 0.54, y: 0}
+      - {x: -0.65, y: -0.54}
+      - {x: 0.54, y: 0.1}
       - {x: 0.54, y: 0.54}
 --- !u!114 &2476079393626422129
 MonoBehaviour:
@@ -75,6 +75,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TetherPoint: {x: 0, y: 0, z: 0}
+  enemyVelocity: {x: 0, y: 0, z: 0}
   tag: Player
 --- !u!1 &6919235589867908307
 GameObject:
@@ -121,6 +122,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TetherPoint: {x: 0, y: 0, z: 0}
+  enemyVelocity: {x: 0, y: 0, z: 0}
   tag: Ledge
 --- !u!60 &1642111748983376232
 PolygonCollider2D:
@@ -147,8 +149,8 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -1.5, y: 0.54}
-      - {x: -1.5, y: 0}
+    - - {x: -1.2, y: 0.54}
+      - {x: -1.2, y: 0}
       - {x: -0.94, y: 0}
       - {x: -0.94, y: -0.54}
       - {x: 0.54, y: -0.54}

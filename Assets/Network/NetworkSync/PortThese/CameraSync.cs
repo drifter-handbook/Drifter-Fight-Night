@@ -45,6 +45,7 @@ public class CameraSync : MonoBehaviour, INetworkSync
         public float y = 0f;
         public float z = 0f;
         public float zoom = 0f;
+        public bool killcam = false;
     }
 
     public void Deserialize(INetworkEntityData data)
@@ -61,7 +62,9 @@ public class CameraSync : MonoBehaviour, INetworkSync
             time = 0f;
             oldPos = transform.position;
             targetPos = new Vector3(shakeData.x, shakeData.y, shakeData.z);
+            GetComponentInChildren<SpriteRenderer>().enabled = shakeData.killcam;
             GetComponent<Camera>().orthographicSize = shakeData.zoom;
+
         }
     }
 
@@ -74,7 +77,8 @@ public class CameraSync : MonoBehaviour, INetworkSync
             x = transform.position.x,
             y = transform.position.y,
             z = transform.position.z,
-            zoom = GetComponent<Camera>().orthographicSize
+            zoom = GetComponent<Camera>().orthographicSize,
+            killcam = GetComponentInChildren<SpriteRenderer>().enabled
         };
     }
 }

@@ -16,7 +16,7 @@ public class HitSparks : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         StartCoroutine(DestroyAfter(.3f));
-        StartCoroutine(GetComponent<CameraShake>().Shake(.3f,.1f));
+        //StartCoroutine(GetComponent<CameraShake>().Shake(.3f,.1f));
     }
 
     // Update is called once per frame

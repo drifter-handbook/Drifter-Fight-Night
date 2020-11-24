@@ -5,13 +5,14 @@ using UnityEngine;
 public class HitboxCollision : MonoBehaviour
 {
     public GameObject parent;
-    NetworkSync playerType;
+    public NetworkSync playerType;
 
     public int AttackID { get; set; }
     public DrifterAttackType AttackType { get; set; }
     public bool Active { get; set; } = true;
     public SingleAttackData OverrideData;
     public SingleAttackData AttackData;
+    public int Facing { get; set; } = 1;
 
     // Start is called before the first frame update
     void Start()
@@ -38,7 +39,7 @@ public class HitboxCollision : MonoBehaviour
         {
             string player = playerType.NetworkType;
             if(OverrideData != null){
-                hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, -AttackID, AttackType, OverrideData);
+                hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, OverrideData);
             }
             else{
                 hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, AttackData);

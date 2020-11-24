@@ -4,92 +4,112 @@ using UnityEngine;
 
 public class SwordFrogMasterHit : MasterHit
 {
-    Rigidbody2D rb;
-    PlayerAttacks attacks;
-    float gravityScale;
-    PlayerStatus status;
-    PlayerMovement movement;
-    public Animator anim;
-    int chargeProgress = 0;
 
-    public int facing;
+    float chargeTime = 0;
 
-    void Start()
+    void Update()
     {
-        rb = drifter.GetComponent<Rigidbody2D>();
-        gravityScale = rb.gravityScale;
-        attacks = drifter.GetComponent<PlayerAttacks>();
-        movement = drifter.GetComponent<PlayerMovement>();
-        status = drifter.GetComponent<PlayerStatus>();
+
+        //Generate a new arrow every 3 seconds
+        if(drifter.Charge < 3)
+        {
+            chargeTime += Time.deltaTime;
+            if(chargeTime >= 3f)
+            {
+                drifter.SetAnimatorBool("HasCharge",true);
+                drifter.Charge++;
+                chargeTime = 0;
+            }
+        }
+        
     }
 
-    public void dodgeRoll(){
+    //Neutral W
+
+    public void fireCrossbow()
+    {
         facing = movement.Facing;
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.5f);
-        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.2f);
-        rb.velocity = new Vector2(facing * 30f,0f);
-    }
 
-
-    public override void callTheRecovery()
-    {
-        rb.gravityScale = 0;
-        rb.velocity = Vector2.zero;
-        movement.gravityPaused= true;
-    }
-
-    public void bigLeap(){
-        facing = movement.Facing;
-        rb.gravityScale = gravityScale;
-        movement.gravityPaused= false;
-        rb.velocity= new Vector2(0,60);
-    }
-
-    public void removeCharge()
-    {
+        //Fire an arrow if Swordfrog has a charge
         if(drifter.Charge >0){
             drifter.Charge--;
+            if (GameController.Instance.IsHost)
+            {
+                GameObject arrow = host.CreateNetworkObject("Arrow", transform.position + new Vector3(0, 3.8f, 0), transform.rotation);
+                arrow.transform.localScale = new Vector3(7.5f * facing, 7.5f, 1f);
+                arrow.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + facing * 60f, 5f);
+                foreach (HitboxCollision hitbox in arrow.GetComponentsInChildren<HitboxCollision>(true))
+                {
+                    hitbox.parent = drifter.gameObject;
+                    hitbox.AttackID = attacks.AttackID;
+                    hitbox.AttackType = attacks.AttackType;
+                    hitbox.Active = true;
+                    hitbox.Facing = facing;
+                }
+            }
         }
+
+        //Spawn a smoke puff for juice
+        if (GameController.Instance.IsHost)
+        {
+            GameObject poof = host.CreateNetworkObject("MovementParticle", transform.position + new Vector3(facing * 4f, 3.8f, 0), transform.rotation);
+            poof.GetComponent<JuiceParticle>().mode = MovementParticleMode.SmokeTrail;
+        }
+
+        //Update charge count
         if(drifter.Charge ==0){
             drifter.SetAnimatorBool("HasCharge",false);
         }
 
     }
-    public void counter(){
-        if(!status.HasInulvernability()){
-            status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.2f);
-        }
-        if(status.HasHit()){
-            drifter.SetAnimatorBool("Empowered",true);
-        }
+ 
+    //Down W, Counter Logic (Gaming)
 
+    public void counter()
+    {
+        if(status.HasStatusEffect(PlayerStatusEffect.HIT)){
+            drifter.SetAnimatorBool("Empowered",true);
+            status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.3f);
+        }
     }
-    public void hitCounter(){
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.5f);
-        status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0.3f);
+
+    public void hitCounter()
+    {
+        status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.3f);
         StartCoroutine(resetCounter());
         
     }
 
-    IEnumerator resetCounter(){
+    IEnumerator resetCounter()
+    {
         yield return new WaitForSeconds(.3f);
-         drifter.SetAnimatorBool("Empowered",false);
+        drifter.SetAnimatorBool("Empowered",false);
     }
 
-    public void whiffCounter(){
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.65f);
+    //Roll Methods
+
+    public override void roll()
+    {
+        facing = movement.Facing;
+        applyEndLag(1);
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.2f);
+        rb.velocity = new Vector2(facing * 30f,0f);
     }
 
-    public void grantCharge(){
-        chargeProgress++;
-        if(chargeProgress >= 3){
-            chargeProgress = 0;
-            drifter.SetAnimatorBool("HasCharge",true);
-            if(drifter.Charge <3){
-                drifter.Charge++;
-            }
-        }
-        
-        
+
+     public override void rollGetupStart()
+     {
+        applyEndLag(1);
+        rb.velocity = new Vector3(facing * -5f,40f,0);
+    }
+
+    public override void rollGetupEnd()
+    {
+        facing = movement.Facing;
+        movement.gravityPaused = false;
+        rb.gravityScale = gravityScale;
+        rb.velocity = new Vector2(facing * 30f,5f);
     }
 }
+
+

@@ -48,8 +48,8 @@ public class SummarySync : MonoBehaviour, INetworkSync
         SummaryData summaryData = data as SummaryData;
         if (summaryData != null)
         {
-            gameObject.transform.Find("megurinBars").gameObject.active = summaryData.elementCounter;
-            gameObject.transform.Find("Counter3Pip").gameObject.active = summaryData.pipCounter;
+            gameObject.transform.Find("megurinBars").gameObject.SetActive(summaryData.elementCounter);
+            gameObject.transform.Find("Counter3Pip").gameObject.SetActive(summaryData.pipCounter);
         }
     }
 
@@ -59,8 +59,8 @@ public class SummarySync : MonoBehaviour, INetworkSync
         {
             name = gameObject.name,
             ID = ID,
-            pipCounter = gameObject.transform.Find("Counter3Pip").gameObject.active,
-            elementCounter = gameObject.transform.Find("megurinBars").gameObject.active
+            pipCounter = gameObject.transform.Find("Counter3Pip").gameObject.activeSelf,
+            elementCounter = gameObject.transform.Find("megurinBars").gameObject.activeSelf
         };
         return data;
     }

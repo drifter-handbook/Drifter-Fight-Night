@@ -4,24 +4,13 @@ using UnityEngine;
 
 public class BojoMasterHit : MasterHit
 {
-    Rigidbody2D rb;
-    PlayerAttacks attacks;
-    float gravityScale;
-    PlayerMovement movement;
-    PlayerStatus status;
-    public Animator anim;
-    float timeSinceGun = 0f;
-    public int facing;
     float boofTime;
     bool checkBoof;
 
-    void Start()
-    {
-        rb = drifter.GetComponent<Rigidbody2D>();
-        gravityScale = rb.gravityScale;
-        attacks = drifter.GetComponent<PlayerAttacks>();
-        movement = drifter.GetComponent<PlayerMovement>();
-        status = drifter.GetComponent<PlayerStatus>();
+    GameObject Centaur = null;
+
+    void Start(){
+
     }
 
     void Update()
@@ -31,94 +20,64 @@ public class BojoMasterHit : MasterHit
             attacks.currentRecoveries = 0;
             checkBoof = false;
         }
-    	if(timeSinceGun < .7f){
-    		timeSinceGun += Time.deltaTime;
-    	}
     	else{
     		drifter.SetAnimatorBool("HasCharge",false);
     	}
-
-
-    }
-
-    public void multihit(){
-        attacks.SetMultiHitAttackID();
-    }
-
-    public void freeze(){
-        rb.velocity = Vector2.zero;
     }
 
     public void GUN(){
+
+        applyEndLag(drifter.input.Special?0:1);
+        
     	facing = movement.Facing;
         Vector3 flip = new Vector3(facing *6f,6f,0f);
         Vector3 pos = new Vector3(facing *3f,4f,1f);
-        if (GameController.Instance.IsHost)
+        if (!GameController.Instance.IsHost)
         {
-            GameObject bubble = host.CreateNetworkObject("Mockery", transform.position + pos, transform.rotation);
-            bubble.transform.localScale = flip;
-            bubble.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * 55, 0);
-            drifter.SetAnimatorBool("HasCharge", true);
-            timeSinceGun = 0f;
-
-            foreach (HitboxCollision hitbox in bubble.GetComponentsInChildren<HitboxCollision>(true))
-            {
-                hitbox.parent = drifter.gameObject;
-                hitbox.AttackID = attacks.AttackID;
-                hitbox.AttackType = attacks.AttackType;
-                hitbox.Active = true;
-            }
-            bubble.GetComponent<BojoBubble>().mode = Random.Range(0, 8);
+            return;
+        }
+        GameObject bubble = host.CreateNetworkObject("Mockery", transform.position + pos, transform.rotation);
+        bubble.transform.localScale = flip;
+        bubble.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * 55, 0);
+       	drifter.SetAnimatorBool("HasCharge",true);
+        
+        foreach (HitboxCollision hitbox in bubble.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+            hitbox.Facing = facing;
         }
     }
 
-    public void callTheSideW(){
+    public void dismount()
+    {
         facing = movement.Facing;
-        drifter.SetAnimatorBool("Empowered",true);
-        rb.velocity = new Vector2(55 *facing, 0);
-
-    }
-    public void continueCharge(){
-        rb.velocity = new Vector2(55 *facing, rb.velocity.y);
-    }
-
-    public void misfire(){
-        facing = movement.Facing;
-        rb.velocity = new Vector2(50f * facing,15f);
-    }
-
-    public void dismount(){
-         rb.velocity = new Vector2(rb.velocity.x - facing * 10, 45f);
-         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.4f);
-
-        Vector3 flip = new Vector3(facing *9f,9f,0f);
-        Vector3 pos = new Vector3(facing *0f,0f,1f);
-        if (GameController.Instance.IsHost)
+        if(TransitionFromChanneledAttack())
         {
-            GameObject Centaur = host.CreateNetworkObject("Kamikaze", transform.position + pos, transform.rotation);
-            Centaur.transform.localScale = flip;
-            Centaur.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * 65, 0);
 
+            if(Centaur != null)Destroy(Centaur);
+            Vector3 flip = new Vector3(facing *9f,9f,0f);
+            Vector3 pos = new Vector3(facing *0f,0f,1f);
+            if (!GameController.Instance.IsHost)
+            {
+                return;
+            }
+            Centaur = host.CreateNetworkObject("Kamikaze", transform.position + pos, transform.rotation);
+            Centaur.transform.localScale = flip;
+            Centaur.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * 50, 0);
+        
             foreach (HitboxCollision hitbox in Centaur.GetComponentsInChildren<HitboxCollision>(true))
             {
                 hitbox.parent = drifter.gameObject;
                 hitbox.AttackID = attacks.AttackID;
                 hitbox.AttackType = attacks.AttackType;
                 hitbox.Active = true;
+                hitbox.Facing = facing;
             }
         }
-        drifter.SetAnimatorBool("Empowered",false);
-    }
 
-    public void dodgeRoll(){
-        facing = movement.Facing;
-        drifter.SetAnimatorBool("Empowered",false);
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
-        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
-        rb.velocity = new Vector2(facing * 40f,0f);
-    }
-    public void loseEmpowered(){
-        drifter.SetAnimatorBool("Empowered",false);
     }
 
     public void boof(){
@@ -126,6 +85,35 @@ public class BojoMasterHit : MasterHit
         rb.velocity = new Vector2(rb.velocity.x  + facing * 10,45);
         boofTime = Time.time;
         checkBoof = true;
+    }
+
+
+
+    //Inhereted Roll Methods
+
+    public override void roll(){
+        facing = movement.Facing;
+        drifter.SetAnimatorBool("Empowered",false);
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
+        rb.velocity = new Vector2(facing * 40f,0f);
+    }
+
+
+    public override void rollGetupStart(){
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.5f);
+        rb.velocity = new Vector3(0,70f,0);
+    }
+
+
+    public override void rollGetupEnd()
+    {
+        facing = movement.Facing;
+        movement.gravityPaused = false;
+        rb.gravityScale = gravityScale;
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.42f);
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
+        rb.velocity = new Vector2(facing * 25f,5f);
     }
 
 }

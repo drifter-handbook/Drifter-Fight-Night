@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerHurtboxHandler : MonoBehaviour
@@ -39,23 +40,33 @@ public class PlayerHurtboxHandler : MonoBehaviour
             oldAttacks[attackID] = Time.time;
             // apply hit effects
             hitbox.parent.GetComponent<PlayerAttacks>().Hit(attackType, attackID, hurtbox.parent);
+            Drifter drifter = GetComponent<Drifter>();
+            PlayerStatus status = drifter.status;
 
-            PlayerStatus status = GetComponent<PlayerStatus>();
-            status.ApplyStatusEffect(PlayerStatusEffect.HIT,.3f);
             //Ignore the collision if invulnerable
             if(status.HasInulvernability())return;
+            
+            //Freezefame if hit a counter
+            if(hurtbox.gameObject.name == "Counter")
+            {
+                hitbox.parent.GetComponent<PlayerStatus>().ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.4f);
+                status.ApplyStatusEffect(PlayerStatusEffect.HIT,.3f);
+                return;
+            }
+           
 
             // apply damage
-            Drifter drifter = GetComponent<Drifter>();
             if (drifter != null && status != null)
             {
                 drifter.DamageTaken += attackData.AttackDamage * (drifter.animator.GetBool("Guarding") && !attackData.isGrab ? 1 - drifter.BlockReduction : 1f);
                 //ScreenShake
             }
             // apply knockback
-            float facingDir = Mathf.Sign(hurtbox.parent.transform.position.x - hitbox.parent.transform.position.x);
-            facingDir = facingDir == 0 ? 1 : facingDir;
+
+            float facingDir = Mathf.Sign(hitbox.Facing) == 0 ? 1 : Mathf.Sign(hitbox.Facing) ;
+
             // rotate direction by angle of impact
+            //Do we still need all this math?
             //calculated angle
             float angle = Mathf.Sign(attackData.AngleOfImpact) * Mathf.Atan2(hurtbox.parent.transform.position.y-hitbox.parent.transform.position.y, hurtbox.parent.transform.position.x-hitbox.parent.transform.position.x)*180 / Mathf.PI;
             Vector2 forceDir = Mathf.Abs(attackData.AngleOfImpact) <= 360?
@@ -67,7 +78,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                          ((status.HasStatusEffect(PlayerStatusEffect.EXPOSED) || status.HasStatusEffect(PlayerStatusEffect.FEATHERWEIGHT))
                             ?1.5f:1)) * attackData.KnockbackScale + attackData.Knockback);
 
-            float HitstunDuration = (attackData.HitStun>0)?attackData.HitStun:(KB*.006f + .1f);
+            float HitstunDuration = (attackData.HitStun>=0)?attackData.HitStun:(KB*.006f + .1f);
             float hitstunOriginal = HitstunDuration;
 
 
@@ -83,7 +94,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                         GetComponent<Rigidbody2D>().velocity = new Vector2(forceDir.normalized.x * KB, GetComponent<PlayerMovement>().grounded?Mathf.Abs(forceDir.normalized.y * KB): forceDir.normalized.y * KB);
                         if(GetComponent<PlayerMovement>().grounded)GetComponent<PlayerMovement>().spawnJuiceParticle(new Vector3(0,-2.5f,0), MovementParticleMode.Restitution);
                     }
-                    else if(  attackData.AngleOfImpact <= -361){
+                    else if(attackData.Knockback > 0 && attackData.AngleOfImpact <= -361){
                         GetComponent<Rigidbody2D>().velocity = hitbox.parent.GetComponent<Rigidbody2D>().velocity * (1 + attackData.KnockbackScale);
                     }
                                         
@@ -91,20 +102,27 @@ public class PlayerHurtboxHandler : MonoBehaviour
                         status?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, HitstunDuration);
                     }
                 }
+                if(attackData.StatusEffect != PlayerStatusEffect.PLANTED || GetComponent<PlayerMovement>().grounded){
 
-                status.ApplyStatusEffect(attackData.StatusEffect, (attackData.StatusEffect == PlayerStatusEffect.PLANTED || attackData.StatusEffect == PlayerStatusEffect.AMBERED?
+                	if(attackData.StatusEffect == PlayerStatusEffect.PLANTED && !status.HasStatusEffect(PlayerStatusEffect.PLANTED)) GetComponent<Rigidbody2D>().velocity = Vector3.down*5f;
+                	status.ApplyStatusEffect(attackData.StatusEffect, (attackData.StatusEffect == PlayerStatusEffect.PLANTED || attackData.StatusEffect == PlayerStatusEffect.AMBERED?
                                                                     attackData.StatusDuration *2f* 4f/(1f+Mathf.Exp(-0.03f * (drifter.DamageTaken -80f))):
                                                                     attackData.StatusDuration));
 
+                	
+                }
+                else if(attackData.StatusEffect == PlayerStatusEffect.PLANTED && !GetComponent<PlayerMovement>().grounded){
+                	status.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,.4f);
+                }
+
                 //apply defender hitpause
                 hitstunOriginal = HitstunDuration;
-                if (willCollideWithBlastZoneAccurate(GetComponent<Rigidbody2D>(), hitstunOriginal) && drifter.Stocks <= 1) HitstunDuration = 4f;
-                else if (willCollideWithBlastZone(GetComponent<Rigidbody2D>() , hitstunOriginal)) HitstunDuration*=2f;
+                if (willCollideWithBlastZoneAccurate(GetComponent<Rigidbody2D>(), hitstunOriginal) && drifter.Stocks <= 1 && NetworkPlayers.Instance.players.Values.Where(x => x != null).ToList().Count <=2) HitstunDuration = 3f;
+                else if (willCollideWithBlastZone(GetComponent<Rigidbody2D>() , hitstunOriginal)) Mathf.Min(HitstunDuration*=2f,3f);
                 
 
-
-                if(HitstunDuration>0)status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,HitstunDuration*.25f);
-                StartCoroutine(drifter.GetComponentInChildren<CameraShake>().Shake(HitstunDuration*.2f,1.5f));
+                if(HitstunDuration>0 && attackData.StatusEffect != PlayerStatusEffect.HITPAUSE)status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,HitstunDuration*.25f);
+                StartCoroutine(drifter.GetComponentInChildren<CameraShake>().Shake(attackData.StatusEffect != PlayerStatusEffect.HITPAUSE?HitstunDuration*.2f:attackData.StatusDuration,attackData.StatusEffect != PlayerStatusEffect.HITPAUSE?1.5f:2.5f));
 
                 //Cape logic
                 if(attackData.StatusEffect == PlayerStatusEffect.REVERSED)
@@ -156,7 +174,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                     hitSparkPos += Quaternion.Euler(0, 0, angleT) * new Vector3(-Random.Range(2, 5), 0, 0);
                     GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.OOMPHSPARK, hitSparkPos, angleT, new Vector2(10f, 10f));
 
-                    angleT += 180;
+                    angle += 180;
 
                     hitSparkPos = Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f);
                     hitSparkPos += Quaternion.Euler(0, 0, angleT) * new Vector3(-Random.Range(2, 5), 0, 0);

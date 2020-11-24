@@ -15,6 +15,7 @@ public enum DrifterType
     Ryyke,
     Megurin,
     Nero,
+    Random,
 }
 
 /** 
@@ -48,21 +49,18 @@ public class Drifter : MonoBehaviour, INetworkInit
 
     public int peerID;
 
+    public PlayerStatus status;
+
     public void OnNetworkInit()
     {
         NetworkUtils.RegisterChildObject("PlayerAnimator", transform.Find("Sprite").gameObject);
         NetworkUtils.RegisterChildObject("PlayerStatusController", transform.Find("PlayerStatusController").gameObject);
-        // TODO: remove when merge in austin's changes
-        GameObject potentialBean = transform.Find("Sprite").Find("Bean")?.gameObject;
-        if (potentialBean != null)
-        {
-            NetworkUtils.RegisterChildObject("Bean", potentialBean);
-        }
     }
 
     public void Awake()
     {
         sync = GetComponent<NetworkSync>();
+        status = GetComponent<PlayerStatus>();
     }
 
     public void Start()

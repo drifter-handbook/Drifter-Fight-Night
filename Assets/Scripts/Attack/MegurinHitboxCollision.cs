@@ -20,24 +20,26 @@ public class MegurinHitboxCollision : HitboxCollision
             return;
         }
         //Debug.Log("name " + name + " " + (gameObject.activeSelf || gameObject.activeInHierarchy));
-        HurtboxCollision hurtbox = collider.GetComponent<HurtboxCollision>();    
-        if (hurtbox != null
-         && hurtbox != this.parent.GetComponentInChildren<HurtboxCollision>()
-         && AttackType != DrifterAttackType.Null
-         && !hurtbox.parent.GetComponent<PlayerHurtboxHandler>().oldAttacks.ContainsKey(AttackID)
-         && !hurtbox.parent.GetComponent<PlayerHurtboxHandler>().oldAttacks.ContainsKey(-AttackID))
+        if(Megurin!= null)
         {
+            HurtboxCollision hurtbox = collider.GetComponent<HurtboxCollision>();    
+            if (hurtbox != null
+                && hurtbox != this.parent.GetComponentInChildren<HurtboxCollision>()
+                && AttackType != DrifterAttackType.Null
+                && !hurtbox.parent.GetComponent<PlayerHurtboxHandler>().oldAttacks.ContainsKey(AttackID)
+                && !hurtbox.parent.GetComponent<PlayerHurtboxHandler>().oldAttacks.ContainsKey(-AttackID)
+                && !hurtbox.parent.GetComponent<PlayerStatus>().HasStatusEffect(PlayerStatusEffect.INVULN))
+            {
 
+                if(OverrideData != null){
 
-
-            if(OverrideData != null){
-
-                hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, -AttackID, AttackType, Megurin.handleElements(OverrideData, element));
+                    hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, -AttackID, AttackType, Megurin.handleElements(OverrideData, element));
+                }
+                else{
+                    hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, Megurin.handleElements(this.AttackData, element));
+                }
+                
             }
-            else{
-                hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, Megurin.handleElements(this.AttackData, element));
-            }
-            
         }
     }
 }

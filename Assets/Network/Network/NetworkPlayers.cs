@@ -15,7 +15,7 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
     [NonSerialized]
     public Dictionary<int, GameObject> players = new Dictionary<int, GameObject>();
 
-    public static NetworkPlayers Instance => GameObject.FindGameObjectWithTag("NetworkPlayers").GetComponent<NetworkPlayers>();
+    public static NetworkPlayers Instance => GameObject.FindGameObjectWithTag("NetworkPlayers")?.GetComponent<NetworkPlayers>();
 
     // Start is called before the first frame update
     void Start()
@@ -83,26 +83,37 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
     public static PlayerInputData GetInput(CustomControls keyBindings)
     {
         PlayerInputData input = new PlayerInputData();
-
         // get player input
-        input.MoveX = 0;
-        if (Input.GetKey(keyBindings.leftKey))
+
+        //controller movement input
+        if (Input.GetJoystickNames().Length > 0)
         {
-            input.MoveX--;
+            input.MoveX = (int)Mathf.Sign(Input.GetAxis("Horizontal"));
+            input.MoveY = (int)Mathf.Sign(Input.GetAxis("Vertical"));
         }
-        if (Input.GetKey(keyBindings.rightKey))
+
+        //keyboard movement input
+        else
         {
-            input.MoveX++;
-        }
-        input.MoveY = 0;
-        if (Input.GetKey(keyBindings.downKey))
-        {
-            // down key does nothing
-            input.MoveY--;
-        }
-        if (Input.GetKey(keyBindings.upKey))
-        {
-            input.MoveY++;
+            input.MoveX = 0;
+            if (Input.GetKey(keyBindings.leftKey))
+            {
+                input.MoveX--;
+            }
+            if (Input.GetKey(keyBindings.rightKey) || Input.GetButtonDown("Horizontal"))
+            {
+                input.MoveX++;
+            }
+            input.MoveY = 0;
+            if (Input.GetKey(keyBindings.downKey))
+            {
+                // down key does nothing
+                input.MoveY--;
+            }
+            if (Input.GetKey(keyBindings.upKey))
+            {
+                input.MoveY++;
+            }
         }
 
         if (Input.GetKey(keyBindings.guard1Key) && Input.GetKey(keyBindings.downKey))
@@ -120,7 +131,7 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
     }
 }
 
-public class PlayerInputData : INetworkData
+public class PlayerInputData : INetworkData, ICloneable
 {
     public string Type { get; set; }
     public int MoveX;
@@ -130,4 +141,31 @@ public class PlayerInputData : INetworkData
     public bool Special;
     public bool Grab;
     public bool Guard;
+
+    public object Clone()
+    {
+        return new PlayerInputData()
+        {
+            Type = Type,
+            MoveX = MoveX,
+            MoveY = MoveY,
+            Jump = Jump,
+            Light = Light,
+            Special = Special,
+            Grab = Grab,
+            Guard = Guard
+        };
+    }
+
+    public void CopyFrom(PlayerInputData data)
+    {
+        Type = data.Type;
+        MoveX = data.MoveX;
+        MoveY = data.MoveY;
+        Jump = data.Jump;
+        Light = data.Light;
+        Special = data.Special;
+        Grab = data.Grab;
+        Guard = data.Guard;
+    }
 }

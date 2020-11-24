@@ -11,6 +11,7 @@ public class SingleSound : MonoBehaviour
     {
         AudioSource source = GameController.Instance.GetComponent<AudioSource>();
         source.clip = Clip;
+        source.Stop();
         source.PlayOneShot(source.clip);
     }
 }

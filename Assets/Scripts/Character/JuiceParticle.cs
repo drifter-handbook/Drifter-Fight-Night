@@ -11,15 +11,15 @@ public class JuiceParticle : MonoBehaviour
 {
     // Start is called before the first frame update
     public float duration;
-    public MovementParticleMode mode = 0;
+    public MovementParticleMode mode = MovementParticleMode.Hidden;
     public Animator anim;
-    public AudioSource audio;
+    public AudioSource audioSource;
     void Start()
     {
         StartCoroutine(Fade(duration));
         if(mode == MovementParticleMode.Jump || mode == MovementParticleMode.DoubleJump)
         {
-            audio.Play();
+            audioSource.Play();
         }
     }
 

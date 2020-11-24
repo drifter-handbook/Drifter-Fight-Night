@@ -4,49 +4,29 @@ using UnityEngine;
 
 public class OrroMasterHit : MasterHit
 {
-    Rigidbody2D rb;
-    PlayerAttacks attacks;
-    float gravityScale;
-    PlayerMovement movement;
-    public int facing;
     public Animator anim;
-    GameObject beanRemote;
-    public GameObject localBean;
-    Animator localBeanAnim;
-    PlayerStatus status;
-    float beanSpeed = 10f;
-    LayerMask aLayerMask;
+    BeanWrangler bean;
+    GameObject beanObject;
 
     void Start()
     {
-
-        localBeanAnim = localBean.GetComponent<Animator>();
-        rb = drifter.GetComponent<Rigidbody2D>();
-        gravityScale = rb.gravityScale;
-        attacks = drifter.GetComponent<PlayerAttacks>();
-        movement = drifter.GetComponent<PlayerMovement>();
-        status = drifter.GetComponent<PlayerStatus>();
+        spawnBean();
     }
+
     void Update(){
-        localBean.GetComponent<BeanWrangler>().facing =  movement.Facing;
+        
+        //Keep Bean up to date
+        if(anim.GetBool("Empowered"))bean.addBeanState(rb.position - new Vector2(-2f * movement.Facing,4f),movement.Facing);
 
-        if(!anim.GetBool("Empowered"))
-        {
-            localBean.GetComponent<BeanWrangler>().Hide = true;
-            localBeanAnim.SetBool("Hide",true);
-        }
-        else
-        {
-            localBean.GetComponent<BeanWrangler>().Hide = false;
-            localBeanAnim.SetBool("Hide",false);
-        }
     }
 
-    public void spawnFireball()
+    //Projectiles
+
+    public void fireball()
     {
         facing = movement.Facing;
-        Vector3 flip = new Vector3(facing *12f,12f,0f);
-        Vector3 pos = new Vector3(facing *3f,3.5f,1f);
+        Vector3 flip = new Vector3(facing * 12f, 12f, 0f);
+        Vector3 pos = new Vector3(facing * 3f, 3.5f, 1f);
         if (GameController.Instance.IsHost)
         {
             GameObject orroOrb = host.CreateNetworkObject("OrroSideW", transform.position + pos, transform.rotation);
@@ -58,29 +38,16 @@ public class OrroMasterHit : MasterHit
                 hitbox.AttackID = attacks.AttackID;
                 hitbox.AttackType = attacks.AttackType;
                 hitbox.Active = true;
+                hitbox.Facing = facing;
             }
             orroOrb.GetComponent<OrroSideWProjectile>().facing = facing;
         }
     }
 
-    public void dodgeRoll()
-    {
-        beanSpeed = 10f;
-        facing = movement.Facing;
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.8f);
-        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.4f);
-    }
-
-    public void rollTele()
+    public void downwardsExplosion()
     {
         facing = movement.Facing;
-        rb.position += new Vector2(facing* 10,0);
-    }
-
-	public void dair()
-    {
-    	facing = movement.Facing;
-        rb.velocity = new Vector2(rb.velocity.x,35f);
+        rb.velocity = new Vector2(rb.velocity.x, 35f);
         if (GameController.Instance.IsHost)
         {
             GameObject orroSplosion = host.CreateNetworkObject("DairExplosion", transform.position, transform.rotation);
@@ -91,14 +58,14 @@ public class OrroMasterHit : MasterHit
                 hitbox.AttackID = attacks.AttackID;
                 hitbox.AttackType = attacks.AttackType;
                 hitbox.Active = true;
+                hitbox.Facing = facing;
             }
         }
     }
 
-
-    public void sair()
+    public void marble()
     {
-    	facing = movement.Facing;
+        facing = movement.Facing;
         if (GameController.Instance.IsHost)
         {
             GameObject marble = host.CreateNetworkObject("Marble", transform.position + new Vector3(0, 3f, 0), transform.rotation);
@@ -108,16 +75,17 @@ public class OrroMasterHit : MasterHit
                 hitbox.AttackID = attacks.AttackID;
                 hitbox.AttackType = attacks.AttackType;
                 hitbox.Active = true;
+                hitbox.Facing = facing;
             }
             marble.GetComponent<Rigidbody2D>().velocity = new Vector3(facing * 35f, 0);
         }
     }
 
 
-    public void uair()
+    public void upwardsExplosion()
     {
     	facing = movement.Facing;
-        rb.velocity = new Vector2(0,10f);
+        rb.velocity = new Vector2(rb.velocity.x,10f);
         if (GameController.Instance.IsHost)
         {
             GameObject orroSplosion = host.CreateNetworkObject("UairExplosion", transform.position + new Vector3(0, .5f, 0), transform.rotation);
@@ -128,144 +96,101 @@ public class OrroMasterHit : MasterHit
                 hitbox.AttackID = attacks.AttackID;
                 hitbox.AttackType = attacks.AttackType;
                 hitbox.Active = true;
+                hitbox.Facing = facing;
             }
         }
     }
 
-     public void cancelGravity(){
-        facing = movement.Facing;
-        rb.velocity = Vector2.zero;
-        movement.gravityPaused= true;
-        rb.gravityScale = 0;
-    }
-    public void inTheHole(){
-
-        rb.velocity = new Vector2(0f,225f);
-    }
-
-    public void resetGravity(){
-        movement.gravityPaused= false;
-        rb.gravityScale = gravityScale;
-    }
-
-    public void grabEndlag(){
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.55f);
-    }
-    //Bean
-
-    public void chargebean()
-    {
-        beanSpeed+=10f;
-        if(beanSpeed >= 50){
-            drifter.SetAnimatorTrigger("W_Neutral");
-        }
-    }
-
-    public void startFireBean(){
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.33f);
-    }
-
-    public void fireBean()
-    {
-        if(anim.GetBool("Empowered")){
-            facing = movement.Facing;
-            Vector3 flip = new Vector3(facing *6.7f,6.7f,0f);
-            Vector3 pos = new Vector3(facing *1.3f,2f,1f);
-            if (GameController.Instance.IsHost)
-            {
-                GameObject BeanProj = host.CreateNetworkObject("Bean", transform.position + pos, transform.rotation);
-                BeanProj.transform.localScale = flip;
-                BeanProj.GetComponent<Rigidbody2D>().simulated = true;
-                BeanProj.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * beanSpeed, 0f);
-                foreach (HitboxCollision hitbox in BeanProj.GetComponentsInChildren<HitboxCollision>(true))
-                {
-                    hitbox.parent = drifter.gameObject;
-                    hitbox.AttackID = attacks.AttackID;
-                    hitbox.AttackType = attacks.AttackType;
-                    hitbox.Active = true;
-                }
-                if (beanRemote)
-                {
-                    Destroy(beanRemote);
-                }
-                BeanProj.GetComponent<BeanWrangler>().facing = facing;
-                beanRemote = BeanProj;
-                localBean.GetComponent<BeanWrangler>().Hide = true;
-                drifter.SetAnimatorBool("Empowered", false);
-                beanSpeed = 20f;
-            }
-        }
-        else{
-            if (GameController.Instance.IsHost)
-            {
-                BeanRecall();
-            }
-        }
-
-    }
-
-    public void jabCombo()
-    {
-        attacks.SetupAttackID(DrifterAttackType.Ground_Q_Neutral);
-    }
-
-
-    public void multihit()
-    {
-        attacks.SetMultiHitAttackID();
-    }
-
+    //Bean!
 
     public void BeanSide()
     {
-        beanAttack("Side").GetComponent<BeanWrangler>().Side = true;
+        refreshBeanHitboxes();
+        bean.Side = true;
     }
     public void BeanDown()
     {
-        beanAttack("Down").GetComponent<BeanWrangler>().Down = true;
+        refreshBeanHitboxes();
+        bean.Down = true;
     }
     public void BeanUp()
     {
-        beanAttack("Up").GetComponent<BeanWrangler>().Up = true;
+        refreshBeanHitboxes();
+        bean.Up = true;
     }
     public void BeanNeutral()
     {
-        beanAttack("Neutral").GetComponent<BeanWrangler>().Neutral = true;
+        refreshBeanHitboxes();
+        bean.Neutral = true;
     }
 
-    private GameObject beanAttack(string direction)
+
+
+    public void spawnBean()
     {
-        attacks.SetMultiHitAttackID();
+        facing = movement.Facing;
+        if (GameController.Instance.IsHost)
+        {
+            beanObject = host.CreateNetworkObject("Bean", rb.position - new Vector2(-2f * movement.Facing, 4f), transform.rotation);
+            foreach (HitboxCollision hitbox in beanObject.GetComponentsInChildren<HitboxCollision>(true))
+            {
+                hitbox.parent = drifter.gameObject;
+                hitbox.AttackID = attacks.AttackID;
+                hitbox.AttackType = attacks.AttackType;
+                hitbox.Active = true;
+                hitbox.Facing = facing;
+            }
 
-        if(beanRemote){
-            refreshBeanHitboxes(beanRemote);
-            return beanRemote;
+            bean = beanObject.GetComponent<BeanWrangler>();
+            bean.facing = facing;
         }
-        else{
-           refreshBeanHitboxes(localBean);
-           return localBean;
-        }
-
     }
 
-    private void refreshBeanHitboxes(GameObject bean){
-        bean.GetComponent<BeanWrangler>().resetAnimatorTriggers();
-        foreach (HitboxCollision hitbox in bean.GetComponentsInChildren<HitboxCollision>(true))
+    private void refreshBeanHitboxes(){
+        foreach (HitboxCollision hitbox in beanObject.GetComponentsInChildren<HitboxCollision>(true))
             {
                 hitbox.parent = drifter.gameObject;
                 hitbox.AttackID = attacks.AttackID;
                 hitbox.AttackType = DrifterAttackType.W_Neutral;
                 hitbox.Active = true;
+                hitbox.Facing = facing;
             }
     }
 
     public void BeanRecall()
     {
-        Destroy(beanRemote);
-        localBean.GetComponent<BeanWrangler>().Hide = false;
-        drifter.SetAnimatorBool("Empowered",true);
-        beanRemote = null;
+        if(anim.GetBool("Empowered"))
+        {
+            UnityEngine.Debug.Log("SENT OUT");
+            drifter.SetAnimatorBool("Empowered",false);
+            bean.setBean();
+        }
+        else{
+            UnityEngine.Debug.Log("COME BACK");
+            drifter.SetAnimatorBool("Empowered",true);
+            bean.recallBean(rb.position - new Vector2(-2f * movement.Facing,4f),movement.Facing);
+
+        }
+       
     }
 
+    //Inhereted Roll Methods
+    public override void roll()
+    {
+        //unused
+
+        // facing = movement.Facing;
+        // rb.position += new Vector2(facing* 10,0);
+    }
+
+    public override void rollGetupStart()
+    {
+        //unused
+    }
+
+    public override void rollGetupEnd(){
+        facing = movement.Facing;
+        rb.position += new Vector2(7f* facing,5.5f);
+    }
 
 }
