@@ -95,6 +95,8 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                     {
                         foreach (KeyValuePair<int, GameObject> kvp in Entities.Players)
                         {
+
+                            UnityEngine.Debug.Log(Entities.Players[kvp.Key] + ": 2");
                             GameController.Instance.winner = kvp.Key;
                         }
                     }
@@ -103,16 +105,21 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                     {
                         foreach (KeyValuePair<int, GameObject> kvp in Entities.Players)
                         {
-                            endgameBanner.enabled = true;
-                            GameController.Instance.winner = kvp.Key;
 
+
+                            UnityEngine.Debug.Log(Entities.Players[kvp.Key] + ": Winner");
+                            GameController.Instance.winner = kvp.Key;
+                            endgameBanner.enabled = true;
+                            
                         }
                     }
                     //Uh oh, stinky, player 1 wins
                     else if(Entities.Players.Count == 0)
                     {
-                        endgameBanner.enabled = true;
+                        UnityEngine.Debug.Log("UH OH");
                         GameController.Instance.winner = 0;
+                        endgameBanner.enabled = true;
+                        
                     }
 
                 }
