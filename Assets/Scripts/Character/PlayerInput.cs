@@ -21,8 +21,8 @@ public class PlayerInput : MonoBehaviour
         //controller movement input
         if(Input.GetJoystickNames().Length > 0)
         {
-            input.MoveX = (int)Input.GetAxis("Horizontal");
-            input.MoveY = (int)Input.GetAxis("Vertical");
+            input.MoveX = Input.GetAxis("Horizontal");
+            input.MoveY = Input.GetAxis("Vertical");
         }
 
         //keyboard movement input

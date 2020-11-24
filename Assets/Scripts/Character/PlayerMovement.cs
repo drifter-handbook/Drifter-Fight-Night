@@ -64,8 +64,8 @@ public class PlayerMovement : MonoBehaviour
 
     float dropThroughTime;
 
-    int prevMoveX = 0;
-    int prevMoveY = 0;
+    float prevMoveX = 0;
+    float prevMoveY = 0;
 
     void Awake()
     {

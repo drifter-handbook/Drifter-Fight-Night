@@ -5,8 +5,8 @@ using System.Net;
 
 public class PlayerInputData : ICloneable
 {
-    public int MoveX = 0;
-    public int MoveY = 0;
+    public float MoveX = 0;
+    public float MoveY = 0;
     public bool Jump = false;
     public bool Light = false;
     public bool Special = false;
