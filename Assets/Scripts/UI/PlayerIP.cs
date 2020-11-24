@@ -31,7 +31,8 @@ public class PlayerIP : MonoBehaviour
                 try{
                     hostIP.text = $"{GameController.Instance.GetComponent<NetworkClient>().Network.hostIP.ToString()}:{GameController.Instance.GetComponent<NetworkClient>().Network.hostID}";
                 }
-                catch(NullReferenceException E){
+                //TODO: Remove after network rework
+                catch (NullReferenceException E){
                     failcount++;
                 }
                 

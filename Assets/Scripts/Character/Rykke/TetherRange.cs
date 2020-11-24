@@ -8,7 +8,7 @@ public class TetherRange : MonoBehaviour
     Rigidbody2D rb;
     public Vector3 TetherPoint;
     public Vector3 enemyVelocity;
-    public string tag;
+    public string tetherTargetType;
 
 
     void Start()
@@ -25,16 +25,16 @@ public class TetherRange : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D col)
     {
-        if(col.gameObject.tag == tag)
+        if(col.gameObject.tag == tetherTargetType)
         {
-            if(tag == "Player" && !col.gameObject.GetComponent<PlayerStatus>().HasStatusEffect(PlayerStatusEffect.INVULN)){
+            if(tetherTargetType == "Player" && !col.gameObject.GetComponent<PlayerStatus>().HasStatusEffect(PlayerStatusEffect.INVULN)){
                 
                 enemyVelocity = col.gameObject.GetComponent<Rigidbody2D>().velocity;
 
                 TetherPoint = col.gameObject.transform.position;
             }
 
-            else if(tag == "Ledge")
+            else if(tetherTargetType == "Ledge")
             {
                 TetherPoint = col.gameObject.transform.position;
             }
@@ -44,7 +44,7 @@ public class TetherRange : MonoBehaviour
     }
 
     void OnTriggerExit2D(Collider2D col){
-        if(col.gameObject.tag == tag)
+        if(col.gameObject.tag == tetherTargetType)
         {
             TetherPoint = Vector3.zero;
             enemyVelocity = Vector3.zero;

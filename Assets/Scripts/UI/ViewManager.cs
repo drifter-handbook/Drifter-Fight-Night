@@ -13,7 +13,7 @@ public class ViewManager : MonoBehaviour
 #if UNITY_EDITOR
     [Help("All views must be registered by being children of this game object!", UnityEditor.MessageType.Warning)]
 #endif
-    Transform startingMenu;
+    public Transform startingMenu;
 
     public GameObject hostIP;
     bool foundIP = false;

@@ -120,7 +120,8 @@ public class RyykeTombstone : MonoBehaviour
             Ryyke.GetComponentInChildren<RykkeMasterHit>().grantStack();
             entities.AddEntity(zombie);
         }
-        catch(NullReferenceException E)
+        //TODO: Remove after network rework
+        catch (NullReferenceException E)
         {
             //I'm sick of this shit
         }

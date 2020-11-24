@@ -8,12 +8,12 @@ public class JuiceParticle : MonoBehaviour
     public float duration;
     public int mode = 0;
     public Animator anim;
-    public AudioSource audio;
+    public AudioSource audioSource;
     void Start()
     {
         StartCoroutine(Fade(duration));
         if(mode == 3 || mode == 4){
-            audio.Play();
+            audioSource.Play();
         }
     }
 
