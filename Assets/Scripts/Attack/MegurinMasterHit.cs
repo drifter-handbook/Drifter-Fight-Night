@@ -38,6 +38,10 @@ public class MegurinMasterHit : MasterHit
     //Recovery Logic  
 
     public void saveDirection(){
+        if (!GameController.Instance.IsHost)
+        {
+            return;
+        }
         Vector2 TestDirection = new Vector2(drifter.input.MoveX,drifter.input.MoveY);
         HeldDirection = TestDirection == Vector2.zero? HeldDirection: TestDirection;
     }

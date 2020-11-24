@@ -86,6 +86,10 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     //Allows for jump and shild canceling of moves. Returns true if it's condition was met
     public bool TransitionFromChanneledAttack()
     {
+        if (!GameController.Instance.IsHost)
+        {
+            return false;
+        }
         if(drifter.input.Guard)
         {
             status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);

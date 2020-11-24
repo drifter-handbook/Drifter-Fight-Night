@@ -16,8 +16,10 @@ public class OrroMasterHit : MasterHit
     void Update(){
         
         //Keep Bean up to date
-        if(anim.GetBool("Empowered"))bean.addBeanState(rb.position - new Vector2(-2f * movement.Facing,4f),movement.Facing);
-
+        if (GameController.Instance.IsHost)
+        {
+            if (anim.GetBool("Empowered")) bean.addBeanState(rb.position - new Vector2(-2f * movement.Facing, 4f), movement.Facing);
+        }
     }
 
     //Projectiles
