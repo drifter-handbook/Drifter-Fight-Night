@@ -6,6 +6,7 @@ public class SwordFrogMasterHit : MasterHit
 {
 
     float chargeTime = 0;
+    bool cancel = false;
 
     void Update()
     {
