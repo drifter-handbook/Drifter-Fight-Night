@@ -178,9 +178,9 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
             EventSystem.current.SetSelectedGameObject(null);
 
         }
-        if(Input.anyKey && mouse && (!Input.GetMouseButton(0) || Input.GetMouseButton(1) || Input.GetMouseButton(2))){
+        if((Input.anyKey || Input.GetAxis ("Horizontal") !=0 || Input.GetAxis ("Vertical") != 0) && mouse && (!Input.GetMouseButton(0) || Input.GetMouseButton(1) || Input.GetMouseButton(2))){
             mouse = false;
-            EventSystem.current.SetSelectedGameObject(everyoneReady()?(this.GetComponent<Animator>().GetBool("location")?GameObject.Find("Training"):forwardButton):GameObject.Find("Random Figurine"));
+            EventSystem.current.SetSelectedGameObject(everyoneReady() && GameController.Instance.IsHost ?(this.GetComponent<Animator>().GetBool("location")?GameObject.Find("Training"):forwardButton):GameObject.Find("Random Figurine"));
         }
 
         Cursor.visible = mouse;
@@ -188,6 +188,14 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
     void Update(){
         if(everyoneReady() && !this.GetComponent<Animator>().GetBool("location"))forwardButton.GetComponent<Button>().interactable = true;
+        else forwardButton.GetComponent<Button>().interactable = false;
+
+        //Press B or esc to bo back a screen
+
+        if((Input.GetKeyDown("joystick button 1") || Input.GetKeyDown(KeyCode.Escape))){
+            UnityEngine.Debug.Log("BACK DETECTED");
+            BackButton();
+        }
     }
 
     public void SyncToCharSelectState()
@@ -222,7 +230,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         foreach (PlayerSelectFigurine drifter in drifters)
         {
             CharacterSelectState state = charSelState.Find(x => x.PlayerIndex == GameController.Instance.PlayerID);
-            if (drifter.figurine != null)
+            if (drifter.figurine != null && !GetComponent<Animator>().GetBool("location"))
             {
                 drifter.figurine.GetComponent<Figurine>().SetColor(ColorFromEnum[(PlayerColor)state.PlayerIndex]);
                 if (drifter.drifter == charSelState[state.PlayerIndex].PlayerType)
@@ -322,7 +330,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     public void SelectRandomDrifter()
     {
 
-    	//Update sound climp in here
+    	//Update sound clip in here
     	switch(UnityEngine.Random.Range(0, 7)){
     		case 0:
     			SelectDrifter("Nero");
@@ -357,8 +365,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
     public void SelectDrifter(string drifterString)
     {
-        DrifterType drifter = (DrifterType)Enum.Parse(typeof(DrifterType), drifterString.Replace(" ", "_"));
-        currentDrifter = drifter;
+        currentDrifter = Drifter.DrifterTypeFromString(drifterString);
         if (GameController.Instance.IsHost)
         {
             List<CharacterSelectState> charSelStates = NetworkUtils.GetNetworkData<CharacterSelectSyncData>(sync["charSelState"]).charSelState;
@@ -366,7 +373,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
             {
                 if (state.PeerID == -1)
                 {
-                    state.PlayerType = drifter;
+                    state.PlayerType = currentDrifter;
                 }
             }
         }
@@ -374,13 +381,22 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         {
             sync.SendNetworkMessage(new CharacterSelectClientPacket()
             {
-                drifter = drifter
+                drifter = currentDrifter
             });
         }
 
         if(selectedFigurine!=null)selectedFigurine.GetComponent<Button>().enabled = true;
-        selectedFigurine = figurines[drifter].figurine;
-        selectedFigurine.GetComponent<Button>().enabled = false;
+        if(drifterString !="None")
+        {
+            selectedFigurine = figurines[currentDrifter].figurine;
+            selectedFigurine.GetComponent<Button>().enabled = false;
+        }
+        else
+        {
+            selectedFigurine = null;
+
+        }
+        
         EventSystem.current.SetSelectedGameObject(backButton);
 
         if(everyoneReady())
@@ -434,6 +450,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
         foreach (PlayerSelectFigurine drifter in drifters)
         {
+            drifter.figurine.GetComponent<Figurine>().TurnArrowOff();
             drifter.figurine.GetComponent<Animator>().SetBool("present", false);
             drifter.figurine.GetComponent<Button>().interactable = false;
         }
@@ -472,6 +489,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
         }
 
+        selectedFigurine.GetComponent<Figurine>().TurnArrowOn();
         selectedFigurine.GetComponent<Button>().enabled = true;
         EventSystem.current.SetSelectedGameObject(selectedFigurine);
         selectedFigurine.GetComponent<Button>().enabled = false;
@@ -524,6 +542,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     }
 
     public void BackButton(){
+        UnityEngine.Debug.Log("BACK PRESSED");
         if(this.GetComponent<Animator>().GetBool("location")){
             HeadToCharacterSelect();
         }
@@ -531,7 +550,9 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         	
         	selectedFigurine.GetComponent<Button>().enabled = true;
             currentDrifter = DrifterType.None;
-        	selectedFigurine = null;
+            SelectDrifter("None");
+            EventSystem.current.SetSelectedGameObject(backButton);
+            
 
         }
 

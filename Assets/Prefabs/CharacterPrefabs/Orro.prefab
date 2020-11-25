@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 7381590716426873936}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: 3693c1036dfe1854694feacdf60dc261, type: 2}
   AttackData: {fileID: 0}
 --- !u!70 &1917786860184944428
@@ -125,6 +126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 7381590716426873936}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: ed20f4c3c6215ca4b8b59dde99376786, type: 2}
   AttackData: {fileID: 0}
 --- !u!114 &1213926046409023020
@@ -185,6 +187,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 7381590716426873936}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: 88d915201360e3443a5b8c4f92b06bb8, type: 2}
   AttackData: {fileID: 0}
 --- !u!58 &2519230291473151503
@@ -278,6 +281,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 7381590716426873936}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: 4d992fc39a1174040846689c76879d43, type: 2}
   AttackData: {fileID: 0}
 --- !u!1001 &5579338518790725284
@@ -603,6 +607,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.y
       value: -35.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5578303729342035337, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: drifterType
+      value: Orro
       objectReference: {fileID: 0}
     - target: {fileID: 5798512003942249155, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}

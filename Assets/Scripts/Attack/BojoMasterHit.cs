@@ -9,13 +9,9 @@ public class BojoMasterHit : MasterHit
 
     GameObject Centaur = null;
 
-    void Start(){
-
-    }
-
     void Update()
     {
-
+        if(!isHost)return;
         if(checkBoof && Time.time - boofTime > 1f){
             attacks.currentRecoveries = 0;
             checkBoof = false;
@@ -27,15 +23,13 @@ public class BojoMasterHit : MasterHit
 
     public void GUN(){
 
+        if(!isHost)return;
+
         applyEndLag(drifter.input.Special?0:1);
         
     	facing = movement.Facing;
         Vector3 flip = new Vector3(facing *6f,6f,0f);
         Vector3 pos = new Vector3(facing *3f,4f,1f);
-        if (!GameController.Instance.IsHost)
-        {
-            return;
-        }
         GameObject bubble = host.CreateNetworkObject("Mockery", transform.position + pos, transform.rotation);
         bubble.transform.localScale = flip;
         bubble.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * 55, 0);
@@ -53,6 +47,7 @@ public class BojoMasterHit : MasterHit
 
     public void dismount()
     {
+        if(!isHost)return;
         facing = movement.Facing;
         if(TransitionFromChanneledAttack())
         {
@@ -60,10 +55,6 @@ public class BojoMasterHit : MasterHit
             if(Centaur != null)Destroy(Centaur);
             Vector3 flip = new Vector3(facing *9f,9f,0f);
             Vector3 pos = new Vector3(facing *0f,0f,1f);
-            if (!GameController.Instance.IsHost)
-            {
-                return;
-            }
             Centaur = host.CreateNetworkObject("Kamikaze", transform.position + pos, transform.rotation);
             Centaur.transform.localScale = flip;
             Centaur.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * 50, 0);
@@ -80,7 +71,9 @@ public class BojoMasterHit : MasterHit
 
     }
 
-    public void boof(){
+    public void boof()
+    {
+        if(!isHost)return;
         facing = movement.Facing;
         rb.velocity = new Vector2(rb.velocity.x  + facing * 10,45);
         boofTime = Time.time;
@@ -91,16 +84,19 @@ public class BojoMasterHit : MasterHit
 
     //Inhereted Roll Methods
 
-    public override void roll(){
+    public override void roll()
+    {
+        if(!isHost)return;
         facing = movement.Facing;
-        drifter.SetAnimatorBool("Empowered",false);
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
         rb.velocity = new Vector2(facing * 40f,0f);
     }
 
 
-    public override void rollGetupStart(){
+    public override void rollGetupStart()
+    {
+        if(!isHost)return;
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.5f);
         rb.velocity = new Vector3(0,70f,0);
     }
@@ -108,6 +104,7 @@ public class BojoMasterHit : MasterHit
 
     public override void rollGetupEnd()
     {
+        if(!isHost)return;
         facing = movement.Facing;
         movement.gravityPaused = false;
         rb.gravityScale = gravityScale;

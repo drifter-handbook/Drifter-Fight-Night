@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 6949512207643572198}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: 959e70f74de542d48b3c692dd088dd63, type: 2}
   AttackData: {fileID: 0}
 --- !u!58 &9780128646020160
@@ -124,6 +125,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 6949512207643572198}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: 935240acaecb52e4eb750b4ad854e506, type: 2}
   AttackData: {fileID: 0}
 --- !u!1 &1762981457315328297
@@ -171,6 +173,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 6949512207643572198}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: 805e926ef7afe914f9dd866dc4733227, type: 2}
   AttackData: {fileID: 0}
 --- !u!70 &599925243413337928
@@ -234,6 +237,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 6949512207643572198}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: 814331ff15ca84740a686c430b714136, type: 2}
   AttackData: {fileID: 0}
 --- !u!70 &9185870113630436100
@@ -252,19 +256,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.5, y: 1}
   m_Direction: 0
---- !u!114 &1782705573909285491
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7622814988858049219}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf1ec17287edcad42b479a53b9cd58be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  facing: 0
 --- !u!1 &6495976254834591183
 GameObject:
   m_ObjectHideFlags: 0
@@ -310,6 +301,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 6949512207643572198}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: 7331573e54e3c174abef342dd2a55a51, type: 2}
   AttackData: {fileID: 0}
 --- !u!70 &3344700366886707780
@@ -373,6 +365,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 6949512207643572198}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: 068ff3bf642012a4983d2e6bdeca8e64, type: 2}
   AttackData: {fileID: 0}
 --- !u!58 &2867042388012652495
@@ -452,6 +445,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 6949512207643572198}
+--- !u!114 &1782705573909285491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7622814988858049219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf1ec17287edcad42b479a53b9cd58be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  facing: 0
 --- !u!1 &8059173722021555438
 GameObject:
   m_ObjectHideFlags: 0
@@ -497,6 +503,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 6949512207643572198}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: 22bcd3058ae29a14f820d236c823e669, type: 2}
   AttackData: {fileID: 0}
 --- !u!58 &1173259967892791948
@@ -885,6 +892,11 @@ PrefabInstance:
         type: 3}
       propertyPath: drifterData
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5578303729342035337, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: drifterType
+      value: Lady Parhelion
       objectReference: {fileID: 0}
     - target: {fileID: 5798512003942249155, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}

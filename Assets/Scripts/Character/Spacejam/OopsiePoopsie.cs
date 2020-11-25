@@ -8,11 +8,13 @@ public class OopsiePoopsie : MonoBehaviour
     public Animator anim;
     public Rigidbody2D rb;
     public bool empowered = false;
-    public Collider2D hurtbox;
-    public PlayerStatus status;
+    Collider2D hurtbox;
+    PlayerStatus status;
 
     void Start()
     {
+        hurtbox = gameObject.GetComponentInChildren<PuppetHitboxCollision>().parent.GetComponentInChildren<HurtboxCollision>().gameObject.GetComponentInChildren<CapsuleCollider2D>();
+        status = gameObject.GetComponentInChildren<PuppetHitboxCollision>().parent.GetComponentInChildren<PlayerStatus>();
     }
 
     void Update(){

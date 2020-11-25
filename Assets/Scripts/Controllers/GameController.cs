@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Net;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -63,6 +64,8 @@ public class GameController : MonoBehaviour
     public int PlayerID = -1;
     public float[] volume = { -1f, -1f, -1f };
 
+    Coroutine endingGame = null;
+
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -97,6 +100,57 @@ public class GameController : MonoBehaviour
         // Create player characters & give them an input
         // Yeet into world and allow playing the game
         host?.SetScene(selectedStage);
+    }
+
+    public void EndMatch(float delay)
+    {
+        // Get player count & choices
+        // Create appropriate spawn points
+        // Create player characters & give them an input
+        // Yeet into world and allow playing the game
+        //host?.SetScene("Endgame");
+        if(endingGame==null)endingGame=StartCoroutine(EndGameCoroutine(delay));
+    }
+
+    IEnumerator EndGameCoroutine(float delay)
+    {
+        //Save Players in the game before the list is yeeted.
+        Dictionary<int,DrifterType> temp = new Dictionary<int,DrifterType>();
+
+        foreach(KeyValuePair<int, GameObject> kvp in NetworkPlayers.Instance.players){
+            temp.Add(kvp.Key,kvp.Value.GetComponent<Drifter>().GetDrifterType());
+        }
+
+        yield return new WaitForSeconds(delay);
+        yield return SceneManager.LoadSceneAsync("Endgame");
+
+        EndgameImageHandler endHandler = GameObject.FindGameObjectWithTag("EndgamePic").GetComponent<EndgameImageHandler>();
+
+        foreach (KeyValuePair<int, DrifterType> kvp in temp)
+        {
+            if(kvp.Key == Instance.winner)
+            {
+                endHandler.playWinnerAudio(kvp.Key==-1?0:kvp.Key);
+                endHandler.setWinnerPic(kvp.Value, CharacterMenu.ColorFromEnum[(PlayerColor)(kvp.Key==-1?0:kvp.Key)]);
+
+            }
+            else
+            {
+                endHandler.setSillyImage(kvp.Value, CharacterMenu.ColorFromEnum[(PlayerColor)(kvp.Key==-1?0:kvp.Key)]);
+            }
+        }
+
+         while (SceneManager.GetActiveScene().name == "Endgame")
+        {
+            yield return null;
+            if (Input.anyKey)
+            {
+                yield return SceneManager.LoadSceneAsync("MenuScene");
+                CleanupNetwork();
+                endingGame = null;
+                yield break;
+            }
+        }
     }
 
     void Update()

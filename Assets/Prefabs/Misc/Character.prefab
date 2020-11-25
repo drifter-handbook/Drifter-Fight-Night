@@ -61,6 +61,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 3106753082241659636}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 0}
   AttackData: {fileID: 0}
 --- !u!1 &1853559347
@@ -124,6 +125,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 3106753082241659636}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 0}
   AttackData: {fileID: 0}
 --- !u!1 &428734560881909087
@@ -187,6 +189,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 3106753082241659636}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 0}
   AttackData: {fileID: 0}
 --- !u!1 &1709800075325733094
@@ -257,7 +260,7 @@ Transform:
   - {fileID: 8774267968347264039}
   - {fileID: 8846725125743929202}
   m_Father: {fileID: 3106753082241659643}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8011688095535036379
 SpriteRenderer:
@@ -418,8 +421,8 @@ Transform:
   m_Children:
   - {fileID: 868922314134636865}
   - {fileID: 577463835414975583}
-  - {fileID: 5306829202166808911}
   - {fileID: 4529236691621279111}
+  - {fileID: 5306829202166808911}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -436,14 +439,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movement: {fileID: 3106753082241659641}
-  sync: {fileID: 1401939795787901855}
-  status: {fileID: 8182132679057442092}
-  controls: {fileID: 0}
+  input:
+    MoveX: 0
+    MoveY: 0
+    Jump: 0
+    Light: 0
+    Special: 0
+    Grab: 0
+    Guard: 0
+  prevInput:
+    MoveX: 0
+    MoveY: 0
+    Jump: 0
+    Light: 0
+    Special: 0
+    Grab: 0
+    Guard: 0
   animator: {fileID: 2000386183588008255}
   Charge: 0
   BlockReduction: 0.5
   myColor: {r: 0, g: 0, b: 0, a: 0}
   peerID: 0
+  status: {fileID: 8182132679057442092}
 --- !u!114 &3106753082241659641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -803,7 +820,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3106753082241659643}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &5099238868719654467
 BoxCollider2D:
@@ -890,6 +907,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 3106753082241659636}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 0}
   AttackData: {fileID: 0}
 --- !u!70 &1801323591959772194

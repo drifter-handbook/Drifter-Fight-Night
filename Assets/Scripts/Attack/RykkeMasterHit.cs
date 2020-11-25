@@ -25,7 +25,6 @@ public class RykkeMasterHit : MasterHit
         if(status.HasEnemyStunEffect() && tethering)tethering = false;
 
         if(((Vector2.Distance(tetherTarget,rb.position) < 4.5f && tetheredPlayer) || movement.ledgeHanging)){
-            UnityEngine.Debug.Log(Vector2.Distance(tetherTarget,rb.position));
             cancelTethering();
         }
 
@@ -38,7 +37,6 @@ public class RykkeMasterHit : MasterHit
         }
 
         if(tethering){
-            UnityEngine.Debug.Log(Vector2.Distance(tetherTarget,rb.position));
             rb.position =  Vector3.Lerp(rb.position,tetherTarget,.15f);
         }
     }
@@ -117,11 +115,15 @@ public class RykkeMasterHit : MasterHit
             if(tethering){
                 UnityEngine.Debug.Log("CANCEL TETHERING");
                 tethering = false;
-                tetherTarget = Vector2.zero;
                 if(tetheredPlayer){
+                    tetherTarget = Vector2.zero;
                     drifter.SetAnimatorTrigger("GrabbedPlayer");
                     UnityEngine.Debug.Log("ZOOM");
                     rb.velocity = new Vector3(facing*35,30,0);
+                }
+                else if (!movement.ledgeHanging){
+                    rb.position =  Vector3.Lerp(rb.position,tetherTarget,.55f);
+                    tetherTarget = Vector2.zero;
                 }
                 
             }

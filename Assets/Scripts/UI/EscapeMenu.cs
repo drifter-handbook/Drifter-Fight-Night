@@ -30,14 +30,13 @@ public class EscapeMenu : MonoBehaviour
         //TODO: C
         if (GameController.Instance.GetComponent<NetworkClient>() != null)
         {
-            GameController.Instance.CleanupNetwork();
+            GameController.Instance.EndMatch(0);
         }
 
         if (GameController.Instance.GetComponent<NetworkHost>() != null)
         {
-            GameController.Instance.CleanupNetwork();
+            GameController.Instance.EndMatch(0);
         }
-        GameController.Instance.Load("MenuScene");
     }
 
     public void QuitGame()

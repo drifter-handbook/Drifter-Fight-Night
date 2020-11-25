@@ -18,6 +18,8 @@ public enum DrifterType
     Random,
 }
 
+
+
 /** 
  * This is the class that will be put into a prefab and instantiated 
  */
@@ -47,6 +49,8 @@ public class Drifter : MonoBehaviour, INetworkInit
     
     public Color myColor;
 
+    public String drifterType;
+
     public int peerID;
 
     public PlayerStatus status;
@@ -69,14 +73,16 @@ public class Drifter : MonoBehaviour, INetworkInit
         DamageTaken = 0f;
     }
 
-    public void SetColor(Color color)
-    {
-        myColor = color;
-        transform.GetChild(0).transform.GetChild(1).GetComponent<SpriteRenderer>().color = color;
-    }
     public Color GetColor()
-    {
+    { 
         return transform.GetChild(0).transform.GetChild(1).GetComponent<SpriteRenderer>().color;
+    }
+
+    public void SetPeerId(int id){
+        peerID = id;
+        myColor = CharacterMenu.ColorFromEnum[(PlayerColor)(peerID>0?peerID:0)];
+        transform.GetChild(0).transform.GetChild(1).GetComponent<SpriteRenderer>().color = myColor;
+        transform.GetChild(3).GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),myColor);
     }
 
     // used by host
@@ -90,5 +96,13 @@ public class Drifter : MonoBehaviour, INetworkInit
     public void SetAnimatorBool(string s, bool value)
     {
         animator.SetBool(s, value);
+    }
+
+    public DrifterType GetDrifterType(){
+        return DrifterTypeFromString(drifterType);
+    }
+
+    public static DrifterType DrifterTypeFromString(String drfiterString){
+        return (DrifterType)Enum.Parse(typeof(DrifterType), drfiterString.Replace(" ", "_"));
     }
 }

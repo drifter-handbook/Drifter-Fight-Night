@@ -100,7 +100,7 @@ public class PlayerSync : MonoBehaviour, INetworkSync
             gameObject.GetComponent<Drifter>().Stocks = playerData.stocks;
             gameObject.GetComponent<Drifter>().DamageTaken = playerData.damageTaken;
             gameObject.GetComponent<Drifter>().Charge = playerData.charge;
-            gameObject.GetComponent<Drifter>().SetColor(playerData.color.ToColor());
+            //gameObject.GetComponent<Drifter>().SetColor(playerData.color.ToColor());
             gameObject.GetComponentInChildren<PlayerStatus>().setStatusState(playerData.statusState);
             gameObject.transform.Find("Sprite").GetComponent<SpriteRenderer>().color = playerData.chargeColor.ToColor();
         }
@@ -119,7 +119,7 @@ public class PlayerSync : MonoBehaviour, INetworkSync
             stocks = gameObject.GetComponent<Drifter>().Stocks,
             damageTaken = gameObject.GetComponent<Drifter>().DamageTaken,
             charge = gameObject.GetComponent<Drifter>().Charge,
-            color = new SyncColor(gameObject.GetComponentInChildren<Drifter>().GetColor()),
+            //color = new SyncColor(gameObject.GetComponentInChildren<Drifter>().GetColor()),
             statusState =  gameObject.GetComponentInChildren<PlayerStatus>().getStatusState(),
             chargeColor = new SyncColor(gameObject.transform.Find("Sprite").GetComponent<SpriteRenderer>().color)
         };

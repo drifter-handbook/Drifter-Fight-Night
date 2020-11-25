@@ -7,19 +7,18 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
 {
     ScreenShake Shake;
     public Animator endgameBanner;
-    public List<int> deadByOrder = new List<int>(); //keeps track of who died in what order
+    //public List<int> deadByOrder = new List<int>(); //keeps track of who died in what order
+
+    int startingPlayers;
+    int currentPlayers;
+
     Dictionary<GameObject, int> playerList = new Dictionary<GameObject, int>();
     NetworkHost host;
     void Awake()
     {
         host = GameController.Instance.host;
         Shake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<ScreenShake>();
-        deadByOrder.Clear();
-
-    }
-
-    void Start()
-    {
+        //deadByOrder.Clear();
 
     }
 
@@ -31,6 +30,9 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
             {
                 playerList.Add(kvp.Value, kvp.Key);
             }
+
+            startingPlayers = playerList.Count;
+            currentPlayers = startingPlayers;
         }
     }
 
@@ -93,30 +95,28 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                 }
                 else
                 {
-                    int destroyed = -1;
-                    foreach (GameObject player in NetworkPlayers.Instance.players.Values)
-                    {
-                        if (player.Equals(other.gameObject))
-                        {
-                            destroyed = player.GetComponent<Drifter>().peerID;
-                            deadByOrder.Add(player.GetComponent<Drifter>().peerID);
-                            break;
-                        }
-                    }
+
+                    currentPlayers--;
+
+                    UnityEngine.Debug.Log("PLAYER " + other.gameObject.GetComponent<Drifter>().peerID + " KILLED! " + currentPlayers+ " OF " + startingPlayers + "PLAYERS REMAINING");
+
+                    if(playerList.Count !=1)playerList.Remove(other.gameObject);
 
                     Destroy(other.gameObject);
-                    // check for last one remaining
-                    int count = 0;
-                    int winner = -1;
-                    foreach (GameObject go in NetworkPlayers.Instance.players.Values)
+
+                    if(playerList.Count ==1)
                     {
-                        if (go.GetComponent<Drifter>().Stocks > 0)
+
+                        foreach (KeyValuePair<GameObject, int> kvp in playerList)
                         {
-                            winner = go.GetComponent<Drifter>().peerID;
-                            count++;
+                            GameController.Instance.winner = kvp.Key.GetComponent<Drifter>().peerID;
+                            endgameBanner.enabled = true;
+                            
                         }
 
+                        GameController.Instance.EndMatch(.8f);
                     }
+                        
                 }
             }
         }

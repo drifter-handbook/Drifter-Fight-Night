@@ -106,19 +106,14 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
 
+        drifter.SetAnimatorBool("Grounded", IsGrounded());
+        grounded = IsGrounded();
+
         bool moving = drifter.input.MoveX != 0;
 
         if(!status.HasGroundFriction())gravityPaused=false;
 
-        //Friciton Active Input
-        if(moving && grounded && !status.HasEnemyStunEffect())
-        {
-            frictionCollider.sharedMaterial.friction = activeFriction;
-        }
-        else
-        {
-            frictionCollider.sharedMaterial.friction = inactiveFriction;
-        }
+       
 
         if(status.HasStatusEffect(PlayerStatusEffect.HITPAUSE))
         {
@@ -239,7 +234,18 @@ public class PlayerMovement : MonoBehaviour
             gameObject.layer = 8;
         }
 
-        //Handle jump resets
+         //Friciton Active Input
+       
+        // if(moving && grounded && !status.HasEnemyStunEffect())
+        // {
+        //     //UnityEngine.Debug.Log("activeFriction set");
+        //     frictionCollider.sharedMaterial.friction = activeFriction;
+        // }
+        // else
+        // {
+        //     //UnityEngine.Debug.Log("inactiveFriction set");
+        //     frictionCollider.sharedMaterial.friction = inactiveFriction;
+        // }
         
         //Normal walking logic
         if (moving && canAct && ! ledgeHanging)

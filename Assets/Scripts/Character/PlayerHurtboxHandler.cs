@@ -171,13 +171,13 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 {
                     float angleT = attackData.AngleOfImpact + Random.Range(-45, 45);
                     hitSparkPos = Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f);
-                    hitSparkPos += Quaternion.Euler(0, 0, angleT) * new Vector3(-Random.Range(2, 5), 0, 0);
+                    hitSparkPos += Quaternion.Euler(0, 0, angleT) * new Vector3(-Random.Range(1, 4), 0, 0);
                     GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.OOMPHSPARK, hitSparkPos, angleT, new Vector2(10f, 10f));
 
-                    angle += 180;
+                    angleT += 180;
 
                     hitSparkPos = Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f);
-                    hitSparkPos += Quaternion.Euler(0, 0, angleT) * new Vector3(-Random.Range(2, 5), 0, 0);
+                    hitSparkPos += Quaternion.Euler(0, 0, angleT) * new Vector3(-Random.Range(1, 4), 0, 0);
                     GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.OOMPHSPARK, hitSparkPos, angleT, new Vector2(10f, 10f));
                 }
             }

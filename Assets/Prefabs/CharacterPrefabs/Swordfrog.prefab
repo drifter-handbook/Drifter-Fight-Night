@@ -61,6 +61,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 6949512207643572198}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: 3693c1036dfe1854694feacdf60dc261, type: 2}
   AttackData: {fileID: 0}
 --- !u!1 &2319162438002447649
@@ -124,6 +125,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 6949512207643572198}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: 659a6d6fef49b214790c615aa4c267ce, type: 2}
   AttackData: {fileID: 0}
 --- !u!1 &3534580512135710466
@@ -277,6 +279,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 6949512207643572198}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: 7d81cc8d3d125f44fa3499895fae0ee3, type: 2}
   AttackData: {fileID: 0}
 --- !u!1 &6893001133691210844
@@ -324,6 +327,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 6949512207643572198}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: 791389b70a960994e91399c95fecd89b, type: 2}
   AttackData: {fileID: 0}
 --- !u!58 &8770615239595660839
@@ -760,6 +764,11 @@ PrefabInstance:
         type: 3}
       propertyPath: Charge
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5578303729342035337, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: drifterType
+      value: Swordfrog
       objectReference: {fileID: 0}
     - target: {fileID: 5798512003942249155, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}

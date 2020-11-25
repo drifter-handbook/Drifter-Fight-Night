@@ -61,6 +61,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 7638574618725185666}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: e9bb44863e762854db392448168d82b5, type: 2}
   AttackData: {fileID: 0}
 --- !u!1 &2212919173542985222
@@ -108,6 +109,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 7638574618725185666}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: f97fe776db8390543bcfeeb6859e69b3, type: 2}
   AttackData: {fileID: 0}
 --- !u!58 &5521973391614987680
@@ -171,6 +173,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 7638574618725185666}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: 5d599e2df2c36454284366d747dedad8, type: 2}
   AttackData: {fileID: 11400000, guid: 5d599e2df2c36454284366d747dedad8, type: 2}
 --- !u!70 &5584543368428707303
@@ -234,6 +237,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 7638574618725185666}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: b5655b2d2f065454389c0b26cd9ae61d, type: 2}
   AttackData: {fileID: 0}
 --- !u!58 &8000176596380762009
@@ -413,6 +417,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 7638574618725185666}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: 5a7f1d8090b66ca4a86c148cc1127082, type: 2}
   AttackData: {fileID: 0}
 --- !u!58 &5225520604657597225
@@ -476,6 +481,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 7638574618725185666}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: 24de4480af67c44419440174715d8986, type: 2}
   AttackData: {fileID: 11400000, guid: 24de4480af67c44419440174715d8986, type: 2}
 --- !u!58 &4835588987933749513
@@ -539,6 +545,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 7638574618725185666}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: c353e10bb13f97f46a6aa0d5b41e480a, type: 2}
   AttackData: {fileID: 0}
 --- !u!58 &8263479130366815019
@@ -900,6 +907,11 @@ PrefabInstance:
         type: 3}
       propertyPath: BlockReduction
       value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5578303729342035337, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: drifterType
+      value: Spacejam
       objectReference: {fileID: 0}
     - target: {fileID: 5798512003942249155, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}

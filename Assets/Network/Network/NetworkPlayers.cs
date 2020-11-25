@@ -59,7 +59,7 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
         GameObject obj = GameController.Instance.host.CreateNetworkObject(drifter.ToString().Replace("_", " "),
             spawnPoints[i % spawnPoints.Count].transform.position, Quaternion.identity);
         i++;
-        obj.GetComponent<Drifter>().peerID = peerID;
+        obj.GetComponent<Drifter>().SetPeerId(peerID);
         players[peerID] = obj;
         return obj;
     }
@@ -115,10 +115,6 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
                 input.MoveY++;
             }
         }
-
-        UnityEngine.Debug.Log("X: " + input.MoveX);
-        UnityEngine.Debug.Log("Y: " + input.MoveY);
-
 
         if (Input.GetKey(keyBindings.guard1Key) && Input.GetKey(keyBindings.downKey))
         {

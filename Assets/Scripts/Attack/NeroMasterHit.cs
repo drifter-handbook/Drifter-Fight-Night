@@ -10,11 +10,11 @@ public class NeroMasterHit : MasterHit
     public void RecoveryThrowSpear()
     {
         // jump upwards and create spear projectile
+        if(!isHost)return;
         rb.velocity = new Vector2(rb.velocity.x, 1.5f * 35f);
         movement.gravityPaused = false;
         rb.gravityScale = gravityScale;
-        if (GameController.Instance.IsHost)
-        {
+        
             GameObject neroSpear = host.CreateNetworkObject("NeroSpear", transform.position, transform.rotation);
             foreach (HitboxCollision hitbox in neroSpear.GetComponentsInChildren<HitboxCollision>(true))
             {
@@ -23,7 +23,7 @@ public class NeroMasterHit : MasterHit
                 hitbox.AttackType = attacks.AttackType;
                 hitbox.Active = true;
                 hitbox.Facing = facing;
-            }
+            
         }
     }
 
@@ -33,12 +33,14 @@ public class NeroMasterHit : MasterHit
 
     public  void neutralWInitialize()
     {
+        if(!isHost)return;
         facing = movement.Facing;
         dashDistance = 25;
     }
 
      public void neutralWCharge(int cancelable)
      {
+        if(!isHost)return;
         movement.gravityPaused= true;        
         rb.gravityScale = 5f;
         if(cancelable != 0)
@@ -52,6 +54,7 @@ public class NeroMasterHit : MasterHit
 
      public void neutralWDash()
      {
+        if(!isHost)return;
         rb.velocity = new Vector3( facing * dashDistance, 0);
         movement.gravityPaused= true;
         rb.gravityScale = 0;
@@ -65,7 +68,9 @@ public class NeroMasterHit : MasterHit
 
     //Counter Logic
 
-    public void counter(){
+    public void counter()
+    {
+        if(!isHost)return;
         if(status.HasStatusEffect(PlayerStatusEffect.HIT)){
             drifter.SetAnimatorBool("Empowered",true);
             status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.3f);
@@ -73,7 +78,9 @@ public class NeroMasterHit : MasterHit
         
 
     }
-    public void hitCounter(){
+    public void hitCounter()
+    {
+        if(!isHost)return;
         status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.3f);
         StartCoroutine(resetCounter());
         
@@ -86,20 +93,25 @@ public class NeroMasterHit : MasterHit
 
     //Inhereted Roll Methods
 
-    public override void roll(){
+    public override void roll()
+    {
+        if(!isHost)return;
         facing = movement.Facing;
         applyEndLag(1f);
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
         rb.velocity = new Vector2(facing * 30f,0f);
     }
 
-    public override void rollGetupStart(){
+    public override void rollGetupStart()
+    {
+        if(!isHost)return;
         applyEndLag(1f);
         rb.velocity = new Vector3(0,75f,0);
     }
 
     public override void rollGetupEnd()
     {
+        if(!isHost)return;
         facing = movement.Facing;
         movement.gravityPaused = false;
         rb.gravityScale = gravityScale;
