@@ -76,7 +76,7 @@ public class RykkeMasterHit : MasterHit
         {
             arms.transform.rotation = Quaternion.Euler(0, 0, (Mathf.Atan2(arms.transform.position.x - (playerRange.TetherPoint.x + playerRange.enemyVelocity.x * .15f), -arms.transform.position.y + (playerRange.TetherPoint.y + playerRange.enemyVelocity.y * .15f)) * 180 / Mathf.PI));
             length = Vector2.Distance(playerRange.TetherPoint + playerRange.enemyVelocity * .15f, arms.transform.position);
-                tetherTarget = playerRange.TetherPoint;// + (playerRange.enemyVelocity *.15f);
+                tetherTarget = playerRange.TetherPoint + (playerRange.enemyVelocity *.15f);
                 tetheredPlayer = true;
             }
 

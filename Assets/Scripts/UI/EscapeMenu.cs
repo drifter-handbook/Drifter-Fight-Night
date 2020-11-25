@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class EscapeMenu : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class EscapeMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown("joystick button 7"))
         {
             ToggleMenu();
         }
@@ -23,6 +24,7 @@ public class EscapeMenu : MonoBehaviour
     public void ToggleMenu()
     {
         escapeMenu.SetActive(!(escapeMenu.activeSelf));
+        EventSystem.current.SetSelectedGameObject(GameObject.Find("Continue"));
     }
 
     public void ReturnToTitle()
