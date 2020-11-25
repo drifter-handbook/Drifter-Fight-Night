@@ -57,6 +57,10 @@ public static class NetworkUtils
         else
         {
             NetworkClient client = GameController.Instance.client;
+            if (client == null)
+            {
+                return new List<NetworkMessage>();
+            }
             return client.messages.PopMessages(objectID).Select(x => new NetworkMessage() {
                 contents = x,
                 peerId = client.netManager.FirstPeer.Id
@@ -79,7 +83,7 @@ public static class NetworkUtils
         // destroy client's data
         else
         {
-            GameController.Instance.client.data.DestroyData(objectID);
+            GameController.Instance.client?.data.DestroyData(objectID);
         }
     }
 

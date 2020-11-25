@@ -144,6 +144,10 @@ public class NetworkHost : MonoBehaviour, ISyncHost
         }
         foreach (GameObject obj in startingEntities)
         {
+            if (obj == null)
+            {
+                continue;
+            }
             NetworkObjects.RemoveIncorrectComponents(obj);
             NetworkSync sync = obj.GetComponent<NetworkSync>();
             if (obj == gameObject)

@@ -120,9 +120,8 @@ public class GameController : MonoBehaviour
     public void StartNetworkHost()
     {
         host = gameObject.AddComponent<NetworkHost>();
-        NetworkSync sync = GetComponent<NetworkSync>() ?? gameObject.AddComponent<NetworkSync>();
-        sync.NetworkType = "GameController";
-        sync.ObjectID = 0;
+        NetworkSync sync = gameObject.AddComponent<NetworkSync>();
+        sync.Initialize(0, "GameController");
         host.Initialize();
         matchmakingHost = GetComponent<MatchmakingHost>() ?? gameObject.AddComponent<MatchmakingHost>();
         PlayerID = 0;
@@ -130,9 +129,8 @@ public class GameController : MonoBehaviour
     public void StartNetworkClient(string roomCode)
     {
         client = gameObject.AddComponent<NetworkClient>();
-        NetworkSync sync = GetComponent<NetworkSync>() ?? gameObject.AddComponent<NetworkSync>();
-        sync.NetworkType = "GameController";
-        sync.ObjectID = 0;
+        NetworkSync sync = gameObject.AddComponent<NetworkSync>();
+        sync.Initialize(0, "GameController");
         client.Initialize();
         matchmakingClient = GetComponent<MatchmakingClient>() ?? gameObject.AddComponent<MatchmakingClient>();
         matchmakingClient.JoinRoom = roomCode;
@@ -143,11 +141,18 @@ public class GameController : MonoBehaviour
         if (IsHost)
         {
             Destroy(host);
+            host = null;
+            Destroy(matchmakingHost);
+            matchmakingHost = null;
         }
         else
         {
             Destroy(client);
+            client = null;
+            Destroy(matchmakingClient);
+            matchmakingClient = null;
         }
+        Destroy(GetComponent<NetworkSync>());
         IsHost = false;
     }
 }
