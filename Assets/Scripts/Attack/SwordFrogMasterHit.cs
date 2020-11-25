@@ -9,7 +9,7 @@ public class SwordFrogMasterHit : MasterHit
 
     void Update()
     {
-
+        if(!isHost)return;
         //Generate a new arrow every 3 seconds
         if(drifter.Charge < 3)
         {
@@ -28,33 +28,31 @@ public class SwordFrogMasterHit : MasterHit
 
     public void fireCrossbow()
     {
+        if(!isHost)return;
         facing = movement.Facing;
 
         //Fire an arrow if Swordfrog has a charge
         if(drifter.Charge >0){
             drifter.Charge--;
-            if (GameController.Instance.IsHost)
+            
+            GameObject arrow = host.CreateNetworkObject("Arrow", transform.position + new Vector3(0, 3.8f, 0), transform.rotation);
+            arrow.transform.localScale = new Vector3(7.5f * facing, 7.5f, 1f);
+            arrow.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + facing * 60f, 5f);
+            foreach (HitboxCollision hitbox in arrow.GetComponentsInChildren<HitboxCollision>(true))
             {
-                GameObject arrow = host.CreateNetworkObject("Arrow", transform.position + new Vector3(0, 3.8f, 0), transform.rotation);
-                arrow.transform.localScale = new Vector3(7.5f * facing, 7.5f, 1f);
-                arrow.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + facing * 60f, 5f);
-                foreach (HitboxCollision hitbox in arrow.GetComponentsInChildren<HitboxCollision>(true))
-                {
-                    hitbox.parent = drifter.gameObject;
-                    hitbox.AttackID = attacks.AttackID;
-                    hitbox.AttackType = attacks.AttackType;
-                    hitbox.Active = true;
-                    hitbox.Facing = facing;
-                }
+                hitbox.parent = drifter.gameObject;
+                hitbox.AttackID = attacks.AttackID;
+                hitbox.AttackType = attacks.AttackType;
+                hitbox.Active = true;
+                hitbox.Facing = facing;
             }
+            
         }
 
         //Spawn a smoke puff for juice
-        if (GameController.Instance.IsHost)
-        {
-            GameObject poof = host.CreateNetworkObject("MovementParticle", transform.position + new Vector3(facing * 4f, 3.8f, 0), transform.rotation);
-            poof.GetComponent<JuiceParticle>().mode = MovementParticleMode.SmokeTrail;
-        }
+
+        GraphicalEffectManager.Instance.CreateMovementParticle(MovementParticleMode.SmokeTrail, transform.position + new Vector3(facing * 4f, 3.8f, 0), transform.rotation.eulerAngles.z,new Vector2(1, 1));
+        
 
         //Update charge count
         if(drifter.Charge ==0){
@@ -62,11 +60,12 @@ public class SwordFrogMasterHit : MasterHit
         }
 
     }
- 
+
     //Down W, Counter Logic (Gaming)
 
     public void counter()
     {
+        if(!isHost)return;
         if(status.HasStatusEffect(PlayerStatusEffect.HIT)){
             drifter.SetAnimatorBool("Empowered",true);
             status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.3f);
@@ -75,6 +74,7 @@ public class SwordFrogMasterHit : MasterHit
 
     public void hitCounter()
     {
+        if(!isHost)return;
         status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.3f);
         StartCoroutine(resetCounter());
         
@@ -90,6 +90,7 @@ public class SwordFrogMasterHit : MasterHit
 
     public override void roll()
     {
+        if(!isHost)return;
         facing = movement.Facing;
         applyEndLag(1);
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.2f);
@@ -97,14 +98,16 @@ public class SwordFrogMasterHit : MasterHit
     }
 
 
-     public override void rollGetupStart()
-     {
+    public override void rollGetupStart()
+    {
+        if(!isHost)return;
         applyEndLag(1);
         rb.velocity = new Vector3(facing * -5f,40f,0);
     }
 
     public override void rollGetupEnd()
     {
+        if(!isHost)return;
         facing = movement.Facing;
         movement.gravityPaused = false;
         rb.gravityScale = gravityScale;

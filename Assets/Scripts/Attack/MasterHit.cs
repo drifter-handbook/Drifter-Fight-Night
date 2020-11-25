@@ -13,21 +13,15 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     protected PlayerAttacks attacks;
     public int facing;
 
-    public virtual void callTheAerial()
-    {
-
-    }
-    public virtual void hitTheAerial(GameObject target)
-    {
-
-    }
-    public virtual void cancelTheAerial()
-    {
-    }
+    protected bool isHost = false;
 
     // Start is called before the first frame update
     void Awake()
     {
+        //Is Host
+        isHost = GameController.Instance.IsHost;
+
+        if(!isHost)return;
         drifter = transform.parent.gameObject.GetComponent<Drifter>();
         host = GameController.Instance.host;
 
@@ -41,33 +35,33 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         gravityScale = rb.gravityScale;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void setYVelocity(float y)
     {
+        if(!isHost)return;
         rb.velocity = new Vector2(rb.velocity.x,y);
     }
 
     public void setXVelocity(float x)
     {
+        if(!isHost)return;
         rb.velocity = new Vector2(movement.Facing * x,rb.velocity.y);
     }
 
     public void applyEndLag(float statusDuration)
     {
+        if(!isHost)return;
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,statusDuration);
     }
 
     public void applyArmour(float statusDuration)
     {
+        if(!isHost)return;
         status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,statusDuration);
     }
 
-    public void pauseGravity(){
+    public void pauseGravity()
+    {
+        if(!isHost)return;
         movement.gravityPaused= true;
         rb.gravityScale = 0f;
         rb.velocity = Vector2.zero;
@@ -75,21 +69,22 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
     public void unpauseGravity()
     {
+        if(!isHost)return;
         movement.gravityPaused= false;
         rb.gravityScale = gravityScale;
     }
 
-    public void refreshHitboxID(){
+    public void refreshHitboxID()
+    {
+        if(!isHost)return;
         attacks.SetMultiHitAttackID();
     }
 
     //Allows for jump and shild canceling of moves. Returns true if it's condition was met
     public bool TransitionFromChanneledAttack()
     {
-        if (!GameController.Instance.IsHost)
-        {
-            return true;
-        }
+        if(!isHost)return false;
+
         if(drifter.input.Guard)
         {
             status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);

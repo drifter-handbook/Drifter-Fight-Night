@@ -34,14 +34,11 @@ public class MegurinMasterHit : MasterHit
         }
     }
 
-  
+    
     //Recovery Logic  
 
     public void saveDirection(){
-        if (!GameController.Instance.IsHost)
-        {
-            return;
-        }
+        if(!isHost)return;
         Vector2 TestDirection = new Vector2(drifter.input.MoveX,drifter.input.MoveY);
         HeldDirection = TestDirection == Vector2.zero? HeldDirection: TestDirection;
     }
@@ -67,132 +64,127 @@ public class MegurinMasterHit : MasterHit
     //Projectiles
 
     public void Dair(){
-        if (GameController.Instance.IsHost)
+        if(!isHost)return;
+        GameObject dairBolt = host.CreateNetworkObject("MegurinDairBolt", transform.position, transform.rotation);
+        foreach (HitboxCollision hitbox in dairBolt.GetComponentsInChildren<HitboxCollision>(true))
         {
-            GameObject dairBolt = host.CreateNetworkObject("MegurinDairBolt", transform.position, transform.rotation);
-            foreach (HitboxCollision hitbox in dairBolt.GetComponentsInChildren<HitboxCollision>(true))
-            {
-                hitbox.parent = drifter.gameObject;
-                hitbox.AttackID = attacks.AttackID;
-                hitbox.AttackType = attacks.AttackType;
-                hitbox.Active = true;
-                hitbox.Facing = facing;
-            }
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+            hitbox.Facing = facing;
         }
     }
 
 
     public void FTilt(){
+        if(!isHost)return;
         facing = movement.Facing;
-        if (GameController.Instance.IsHost)
+        GameObject windwave = host.CreateNetworkObject("Windwave", transform.position + new Vector3(facing * 3f, 1f), transform.rotation);
+        windwave.GetComponent<Rigidbody2D>().velocity = new Vector3(facing * 35f, 0);
+        windwave.transform.localScale = new Vector3(facing * 12f, 12f);
+        foreach (HitboxCollision hitbox in windwave.GetComponentsInChildren<HitboxCollision>(true))
         {
-            GameObject windwave = host.CreateNetworkObject("Windwave", transform.position + new Vector3(facing * 3f, 1f), transform.rotation);
-            windwave.GetComponent<Rigidbody2D>().velocity = new Vector3(facing * 35f, 0);
-            windwave.transform.localScale = new Vector3(facing * 12f, 12f);
-            foreach (HitboxCollision hitbox in windwave.GetComponentsInChildren<HitboxCollision>(true))
-            {
-                hitbox.parent = drifter.gameObject;
-                hitbox.AttackID = attacks.AttackID;
-                hitbox.AttackType = attacks.AttackType;
-                hitbox.Active = true;
-                hitbox.Facing = facing;
-            }
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+            hitbox.Facing = facing;
         }
+        
     }
 
     public void Uair(){
-        if (GameController.Instance.IsHost)
+        if(!isHost)return;
+        GameObject Megunado = host.CreateNetworkObject("Megunado", transform.position + new Vector3(0, 3.3f), transform.rotation);
+        Megunado.GetComponent<Rigidbody2D>().velocity = Vector3.up * 23f;
+        foreach (HitboxCollision hitbox in Megunado.GetComponentsInChildren<HitboxCollision>(true))
         {
-            GameObject Megunado = host.CreateNetworkObject("Megunado", transform.position + new Vector3(0, 3.3f), transform.rotation);
-            Megunado.GetComponent<Rigidbody2D>().velocity = Vector3.up * 23f;
-            foreach (HitboxCollision hitbox in Megunado.GetComponentsInChildren<HitboxCollision>(true))
-            {
-                hitbox.parent = drifter.gameObject;
-                hitbox.AttackID = attacks.AttackID;
-                hitbox.AttackType = attacks.AttackType;
-                hitbox.Active = true;
-            }
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
         }
     }   
 
     public void spawnStorm(){
+        if(!isHost)return;
         Vector3 pos = new Vector3(0f, 6.5f, 0f);
-        if (GameController.Instance.IsHost)
+        
+        GameObject MegurinStorm = host.CreateNetworkObject("MegurinStorm", transform.position + pos, transform.rotation);
+        foreach (HitboxCollision hitbox in MegurinStorm.GetComponentsInChildren<HitboxCollision>(true))
         {
-            GameObject MegurinStorm = host.CreateNetworkObject("MegurinStorm", transform.position + pos, transform.rotation);
-            foreach (HitboxCollision hitbox in MegurinStorm.GetComponentsInChildren<HitboxCollision>(true))
-            {
-                hitbox.parent = drifter.gameObject;
-                hitbox.AttackID = attacks.AttackID + 150;
-                hitbox.AttackType = attacks.AttackType;
-                hitbox.Active = true;
-                hitbox.Facing = facing;
-            }
-
-            if (activeStorm)
-            {
-                StartCoroutine(activeStorm.GetComponent<MegurinStorm>().Fade(0));
-            }
-            MegurinStorm.GetComponent<MegurinStorm>().attacks = attacks;
-            activeStorm = MegurinStorm;
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID + 150;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+            hitbox.Facing = facing;
         }
+
+        if (activeStorm)
+        {
+            StartCoroutine(activeStorm.GetComponent<MegurinStorm>().Fade(0));
+        }
+        MegurinStorm.GetComponent<MegurinStorm>().attacks = attacks;
+        activeStorm = MegurinStorm;
+        
     }
 
     public void spawnOrb(){
+        if(!isHost)return;
         facing = movement.Facing;
         Vector3 flip = new Vector3(facing * 12f, 12f, 0f);
         Vector3 pos = new Vector3(facing * 4f, 5, 1f);
-        if (GameController.Instance.IsHost)
+        
+        GameObject MegurinOrb = host.CreateNetworkObject("ChromaticOrb", transform.position + pos, transform.rotation);
+        MegurinOrb.transform.localScale = flip;
+        MegurinOrb.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * 25, 0);
+        MegurinOrb.GetComponent<Animator>().SetInteger("Mode", drifter.Charge);
+        foreach (HitboxCollision hitbox in MegurinOrb.GetComponentsInChildren<HitboxCollision>(true))
         {
-            GameObject MegurinOrb = host.CreateNetworkObject("ChromaticOrb", transform.position + pos, transform.rotation);
-            MegurinOrb.transform.localScale = flip;
-            MegurinOrb.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * 25, 0);
-            MegurinOrb.GetComponent<Animator>().SetInteger("Mode", drifter.Charge);
-            foreach (HitboxCollision hitbox in MegurinOrb.GetComponentsInChildren<HitboxCollision>(true))
-            {
-                hitbox.parent = drifter.gameObject;
-                hitbox.AttackID = attacks.AttackID;
-                hitbox.AttackType = attacks.AttackType;
-                hitbox.Active = true;
-                hitbox.Facing = facing;
-            }
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+            hitbox.Facing = facing;
         }
     }
 
-    public void spawnSmallBolt(){
+    public void spawnSmallBolt()
+    {
+        if(!isHost)return;
         facing = movement.Facing;
         Vector3 flip = new Vector3(facing * 10f, 10f, 1f);
         Vector3 pos = new Vector3(facing * 3f, 4, 1f);
-        if (GameController.Instance.IsHost)
+        
+        GameObject smallBolt = host.CreateNetworkObject("WeakBolt", transform.position + pos, transform.rotation);
+        smallBolt.transform.localScale = flip;
+        foreach (HitboxCollision hitbox in smallBolt.GetComponentsInChildren<HitboxCollision>(true))
         {
-            GameObject smallBolt = host.CreateNetworkObject("WeakBolt", transform.position + pos, transform.rotation);
-            smallBolt.transform.localScale = flip;
-            foreach (HitboxCollision hitbox in smallBolt.GetComponentsInChildren<HitboxCollision>(true))
-            {
-                hitbox.parent = drifter.gameObject;
-                hitbox.AttackID = attacks.AttackID;
-                hitbox.AttackType = attacks.AttackType;
-                hitbox.Active = true;
-                hitbox.Facing = facing;
-            }
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+            hitbox.Facing = facing;
+            
         }
     }
-    public void spawnLargeBolt(){
+    public void spawnLargeBolt()
+    {
+        if(!isHost)return;
         facing = movement.Facing;
         Vector3 flip = new Vector3(facing * 10f, 10f, 1f);
         Vector3 pos = new Vector3(facing * 3f, 4, 1f);
-        if (GameController.Instance.IsHost)
+        
+        GameObject largeBolt = host.CreateNetworkObject("StrongBolt", transform.position + pos, transform.rotation);
+        largeBolt.transform.localScale = flip;
+        foreach (HitboxCollision hitbox in largeBolt.GetComponentsInChildren<HitboxCollision>(true))
         {
-            GameObject largeBolt = host.CreateNetworkObject("StrongBolt", transform.position + pos, transform.rotation);
-            largeBolt.transform.localScale = flip;
-            foreach (HitboxCollision hitbox in largeBolt.GetComponentsInChildren<HitboxCollision>(true))
-            {
-                hitbox.parent = drifter.gameObject;
-                hitbox.AttackID = attacks.AttackID;
-                hitbox.AttackType = attacks.AttackType;
-                hitbox.Active = true;
-                hitbox.Facing = facing;
-            }
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+            hitbox.Facing = facing;
         }
     }
 
@@ -216,43 +208,43 @@ public class MegurinMasterHit : MasterHit
 
         switch(element){
             case -1:
-                if(lightningCharge >= elementChargeMax){
-                    attackData.StatusEffect = PlayerStatusEffect.PARALYZED;
-                    attackData.StatusDuration = 3.3f;
-                    StartCoroutine(resetGauges());
-                    return attackData;
-                }
-                else{
-                    lightningCharge += attackData.AttackDamage;
-                    if(lightningCharge>elementChargeMax)lightningCharge = elementChargeMax;
-                    break;
-                }
-            case 0:
-                if(windCharge >= elementChargeMax){
-                    attackData.StatusEffect = PlayerStatusEffect.FEATHERWEIGHT;
-                    attackData.StatusDuration = 7f;
-                    StartCoroutine(resetGauges());
-                    return attackData;
-                }
-                else{
-                    windCharge += attackData.AttackDamage;
-                    if(windCharge>elementChargeMax)windCharge = elementChargeMax;
-                    break;
-                }
-            case 1:
-                if(iceCharge >= elementChargeMax){
-                    attackData.StatusEffect = PlayerStatusEffect.SLOWED;
-                    attackData.StatusDuration = 7f;
-                    StartCoroutine(resetGauges());
-                    return attackData;
-                }
-                else{
-                    iceCharge += attackData.AttackDamage;
-                    if(iceCharge>elementChargeMax)iceCharge = elementChargeMax;
-                    break;
-                }
-            default:
+            if(lightningCharge >= elementChargeMax){
+                attackData.StatusEffect = PlayerStatusEffect.PARALYZED;
+                attackData.StatusDuration = 3.3f;
+                StartCoroutine(resetGauges());
+                return attackData;
+            }
+            else{
+                lightningCharge += attackData.AttackDamage;
+                if(lightningCharge>elementChargeMax)lightningCharge = elementChargeMax;
                 break;
+            }
+            case 0:
+            if(windCharge >= elementChargeMax){
+                attackData.StatusEffect = PlayerStatusEffect.FEATHERWEIGHT;
+                attackData.StatusDuration = 7f;
+                StartCoroutine(resetGauges());
+                return attackData;
+            }
+            else{
+                windCharge += attackData.AttackDamage;
+                if(windCharge>elementChargeMax)windCharge = elementChargeMax;
+                break;
+            }
+            case 1:
+            if(iceCharge >= elementChargeMax){
+                attackData.StatusEffect = PlayerStatusEffect.SLOWED;
+                attackData.StatusDuration = 7f;
+                StartCoroutine(resetGauges());
+                return attackData;
+            }
+            else{
+                iceCharge += attackData.AttackDamage;
+                if(iceCharge>elementChargeMax)iceCharge = elementChargeMax;
+                break;
+            }
+            default:
+            break;
         }
         UnityEngine.Debug.Log("RESET");
         attackData.StatusDuration = .1f;
@@ -273,10 +265,7 @@ public class MegurinMasterHit : MasterHit
 
     public void chargeNeutralW()
     {
-        if (!GameController.Instance.IsHost)
-        {
-            return;
-        }
+        if(!isHost)return;
         if (TransitionFromChanneledAttack()){
             return;
         }
@@ -318,23 +307,23 @@ public class MegurinMasterHit : MasterHit
     }
 
     public void removeCharge(){
-         drifter.SetAnimatorBool("HasCharge",false);
-    }
+       drifter.SetAnimatorBool("HasCharge",false);
+   }
 
 
 
     //Inhereted Roll Methods
 
-    public override void rollGetupStart(){
+   public override void rollGetupStart(){
         //Unused
-    }
+   }
 
-     public override void rollGetupEnd(){
-        facing = movement.Facing;
-        rb.position += new Vector2(4f* facing,5f);
-    }
+   public override void rollGetupEnd(){
+    facing = movement.Facing;
+    rb.position += new Vector2(4f* facing,5f);
+}
 
-    public override void roll(){
+public override void roll(){
         //unused
-    }
+}
 }

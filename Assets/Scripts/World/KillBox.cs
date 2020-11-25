@@ -47,7 +47,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
     void CreateHalo()
     {
         GameObject halo = host.CreateNetworkObject("HaloPlatform",
-            new Vector2(5, 23),
+            new Vector2(0, 23),
             Quaternion.identity
         );
         halo.transform.localScale = new Vector2(10f, 10f);

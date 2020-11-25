@@ -88,8 +88,8 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
         //controller movement input
         if (Input.GetJoystickNames().Length > 0)
         {
-            input.MoveX = (int)Mathf.Sign(Input.GetAxis("Horizontal"));
-            input.MoveY = (int)Mathf.Sign(Input.GetAxis("Vertical"));
+            input.MoveX = Input.GetAxis("Horizontal");
+            input.MoveY = Input.GetAxis("Vertical");
         }
 
         //keyboard movement input
@@ -100,7 +100,7 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
             {
                 input.MoveX--;
             }
-            if (Input.GetKey(keyBindings.rightKey) || Input.GetButtonDown("Horizontal"))
+            if (Input.GetKey(keyBindings.rightKey)) //|| Input.GetButtonDown("Horizontal"))
             {
                 input.MoveX++;
             }
@@ -115,6 +115,10 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
                 input.MoveY++;
             }
         }
+
+        UnityEngine.Debug.Log("X: " + input.MoveX);
+        UnityEngine.Debug.Log("Y: " + input.MoveY);
+
 
         if (Input.GetKey(keyBindings.guard1Key) && Input.GetKey(keyBindings.downKey))
         {
@@ -131,11 +135,13 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
     }
 }
 
+
+[Serializable]
 public class PlayerInputData : INetworkData, ICloneable
 {
     public string Type { get; set; }
-    public int MoveX;
-    public int MoveY;
+    public float MoveX;
+    public float MoveY;
     public bool Jump;
     public bool Light;
     public bool Special;

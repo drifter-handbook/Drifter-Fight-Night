@@ -7,11 +7,6 @@ public class BeanWrangler : MonoBehaviour
 {
     // Start is called before the first frame update
     public Animator anim;
-    public bool Up = false;
-    public bool Down = false;
-    public bool Side = false;
-    public bool Neutral = false;
-    public bool Hide = false;
 
     public int facing = 1;
 
@@ -45,17 +40,11 @@ public class BeanWrangler : MonoBehaviour
         Orro = gameObject.GetComponentInChildren<HitboxCollision>().parent;
         attacks = gameObject.GetComponentInChildren<HitboxCollision>().parent.GetComponent<PlayerAttacks>();
 
-        
     }
 
     void Update(){
 
         if(states.Count == 0 && timeSinceState >= 5f && beanUpdateTimer >=0) Destroy(this.gameObject);
-
-        if (Side) anim.SetTrigger("Side");
-        if (Down) anim.SetTrigger("Down");
-        if (Up) anim.SetTrigger("Up");
-        if (Neutral) anim.SetTrigger("Neutral");
 
         timeSinceState += Time.deltaTime;
         if(beanUpdateTimer >= 0) beanUpdateTimer += Time.deltaTime;
@@ -124,6 +113,13 @@ public class BeanWrangler : MonoBehaviour
         }
     }
 
+    public void returnToNeutral(){
+        anim.Play("BEAN_IDLE");
+    }
+
+    public void playeState(String stateName){
+        anim.Play(stateName);
+    }
  
     public void multihit(){
         try{

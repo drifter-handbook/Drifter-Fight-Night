@@ -13,93 +13,92 @@ public class OrroMasterHit : MasterHit
         spawnBean();
     }
 
-    void Update(){
-        
-        //Keep Bean up to date
-        if (GameController.Instance.IsHost)
-        {
-            if (anim.GetBool("Empowered")) bean.addBeanState(rb.position - new Vector2(-2f * movement.Facing, 4f), movement.Facing);
-        }
+    void Update()
+    {
+        if(!isHost)return;
+
+        //Keep Bean up to date        
+        if (anim.GetBool("Empowered")) bean.addBeanState(rb.position - new Vector2(-2f * movement.Facing, 4f), movement.Facing);
     }
 
     //Projectiles
 
     public void fireball()
     {
+        if(!isHost)return;
         facing = movement.Facing;
         Vector3 flip = new Vector3(facing * 12f, 12f, 0f);
         Vector3 pos = new Vector3(facing * 3f, 3.5f, 1f);
-        if (GameController.Instance.IsHost)
+        
+        GameObject orroOrb = host.CreateNetworkObject("OrroSideW", transform.position + pos, transform.rotation);
+        orroOrb.transform.localScale = flip;
+        orroOrb.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * 25, 0);
+        foreach (HitboxCollision hitbox in orroOrb.GetComponentsInChildren<HitboxCollision>(true))
         {
-            GameObject orroOrb = host.CreateNetworkObject("OrroSideW", transform.position + pos, transform.rotation);
-            orroOrb.transform.localScale = flip;
-            orroOrb.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * 25, 0);
-            foreach (HitboxCollision hitbox in orroOrb.GetComponentsInChildren<HitboxCollision>(true))
-            {
-                hitbox.parent = drifter.gameObject;
-                hitbox.AttackID = attacks.AttackID;
-                hitbox.AttackType = attacks.AttackType;
-                hitbox.Active = true;
-                hitbox.Facing = facing;
-            }
-            orroOrb.GetComponent<OrroSideWProjectile>().facing = facing;
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+            hitbox.Facing = facing;
         }
+        orroOrb.GetComponent<OrroSideWProjectile>().facing = facing;
+
     }
 
     public void downwardsExplosion()
     {
+        if(!isHost)return;
         facing = movement.Facing;
         rb.velocity = new Vector2(rb.velocity.x, 35f);
-        if (GameController.Instance.IsHost)
+        
+        GameObject orroSplosion = host.CreateNetworkObject("DairExplosion", transform.position, transform.rotation);
+        orroSplosion.transform.localScale = new Vector3(7.5f * facing, 7.5f, 1f);
+        foreach (HitboxCollision hitbox in orroSplosion.GetComponentsInChildren<HitboxCollision>(true))
         {
-            GameObject orroSplosion = host.CreateNetworkObject("DairExplosion", transform.position, transform.rotation);
-            orroSplosion.transform.localScale = new Vector3(7.5f * facing, 7.5f, 1f);
-            foreach (HitboxCollision hitbox in orroSplosion.GetComponentsInChildren<HitboxCollision>(true))
-            {
-                hitbox.parent = drifter.gameObject;
-                hitbox.AttackID = attacks.AttackID;
-                hitbox.AttackType = attacks.AttackType;
-                hitbox.Active = true;
-                hitbox.Facing = facing;
-            }
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+            hitbox.Facing = facing;
+
         }
     }
 
     public void marble()
     {
+        if(!isHost)return;
         facing = movement.Facing;
-        if (GameController.Instance.IsHost)
+
+        GameObject marble = host.CreateNetworkObject("Marble", transform.position + new Vector3(0, 3f, 0), transform.rotation);
+        foreach (HitboxCollision hitbox in marble.GetComponentsInChildren<HitboxCollision>(true))
         {
-            GameObject marble = host.CreateNetworkObject("Marble", transform.position + new Vector3(0, 3f, 0), transform.rotation);
-            foreach (HitboxCollision hitbox in marble.GetComponentsInChildren<HitboxCollision>(true))
-            {
-                hitbox.parent = drifter.gameObject;
-                hitbox.AttackID = attacks.AttackID;
-                hitbox.AttackType = attacks.AttackType;
-                hitbox.Active = true;
-                hitbox.Facing = facing;
-            }
-            marble.GetComponent<Rigidbody2D>().velocity = new Vector3(facing * 35f, 0);
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+            hitbox.Facing = facing;
         }
+        marble.GetComponent<Rigidbody2D>().velocity = new Vector3(facing * 35f, 0);
+
     }
 
 
     public void upwardsExplosion()
     {
-    	facing = movement.Facing;
+        if(!isHost)return;
+        facing = movement.Facing;
         rb.velocity = new Vector2(rb.velocity.x,10f);
-        if (GameController.Instance.IsHost)
+
+        GameObject orroSplosion = host.CreateNetworkObject("UairExplosion", transform.position + new Vector3(0, .5f, 0), transform.rotation);
+        orroSplosion.transform.localScale = new Vector3(7.5f * facing, 7.5f, 1f);
+        foreach (HitboxCollision hitbox in orroSplosion.GetComponentsInChildren<HitboxCollision>(true))
         {
-            GameObject orroSplosion = host.CreateNetworkObject("UairExplosion", transform.position + new Vector3(0, .5f, 0), transform.rotation);
-            orroSplosion.transform.localScale = new Vector3(7.5f * facing, 7.5f, 1f);
-            foreach (HitboxCollision hitbox in orroSplosion.GetComponentsInChildren<HitboxCollision>(true))
-            {
-                hitbox.parent = drifter.gameObject;
-                hitbox.AttackID = attacks.AttackID;
-                hitbox.AttackType = attacks.AttackType;
-                hitbox.Active = true;
-                hitbox.Facing = facing;
-            }
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+            hitbox.Facing = facing;
+
         }
     }
 
@@ -107,68 +106,53 @@ public class OrroMasterHit : MasterHit
 
     public void BeanSide()
     {
-        if (!GameController.Instance.IsHost)
-        {
-            return;
-        }
+        if(!isHost)return;
         refreshBeanHitboxes();
-        bean.Side = true;
+        bean.playeState("BEAN_SIDE");
     }
     public void BeanDown()
     {
-        if (!GameController.Instance.IsHost)
-        {
-            return;
-        }
+        if(!isHost)return;
         refreshBeanHitboxes();
-        bean.Down = true;
+        bean.playeState("BEAN_DOWN");
     }
     public void BeanUp()
     {
-        if (!GameController.Instance.IsHost)
-        {
-            return;
-        }
+        if(!isHost)return;
         refreshBeanHitboxes();
-        bean.Up = true;
+        bean.playeState("BEAN_UP");
     }
     public void BeanNeutral()
     {
-        if (!GameController.Instance.IsHost)
-        {
-            return;
-        }
+        if(!isHost)return;
         refreshBeanHitboxes();
-        bean.Neutral = true;
+        bean.playeState("BEAN_NEUTRAL");
     }
 
 
 
     public void spawnBean()
     {
+        if(!isHost)return;
         facing = movement.Facing;
-        if (GameController.Instance.IsHost)
-        {
-            beanObject = host.CreateNetworkObject("Bean", rb.position - new Vector2(-2f * movement.Facing, 4f), transform.rotation);
-            foreach (HitboxCollision hitbox in beanObject.GetComponentsInChildren<HitboxCollision>(true))
-            {
-                hitbox.parent = drifter.gameObject;
-                hitbox.AttackID = attacks.AttackID;
-                hitbox.AttackType = attacks.AttackType;
-                hitbox.Active = true;
-                hitbox.Facing = facing;
-            }
 
-            bean = beanObject.GetComponent<BeanWrangler>();
-            bean.facing = facing;
+        beanObject = host.CreateNetworkObject("Bean", rb.position - new Vector2(-2f * movement.Facing, 4f), transform.rotation);
+        foreach (HitboxCollision hitbox in beanObject.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+            hitbox.Facing = facing;
         }
+
+        bean = beanObject.GetComponent<BeanWrangler>();
+        bean.facing = facing;
+
     }
 
     private void refreshBeanHitboxes(){
-        if (!GameController.Instance.IsHost)
-        {
-            return;
-        }
+        if(!isHost)return;
         foreach (HitboxCollision hitbox in beanObject.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
@@ -181,10 +165,7 @@ public class OrroMasterHit : MasterHit
 
     public void BeanRecall()
     {
-        if (!GameController.Instance.IsHost)
-        {
-            return;
-        }
+        if(!isHost)return;
         if (anim.GetBool("Empowered"))
         {
             UnityEngine.Debug.Log("SENT OUT");
@@ -197,7 +178,7 @@ public class OrroMasterHit : MasterHit
             bean.recallBean(rb.position - new Vector2(-2f * movement.Facing,4f),movement.Facing);
 
         }
-       
+
     }
 
     //Inhereted Roll Methods
@@ -214,9 +195,12 @@ public class OrroMasterHit : MasterHit
         //unused
     }
 
-    public override void rollGetupEnd(){
+    public override void rollGetupEnd()
+    {
+        if(!isHost)return;
         facing = movement.Facing;
         rb.position += new Vector2(7f* facing,5.5f);
     }
 
 }
+

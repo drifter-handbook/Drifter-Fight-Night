@@ -121,27 +121,37 @@ public class PlayerAttacks : MonoBehaviour
         {
             StartAttack(DrifterAttackType.E_Side);
         }
-        else if (specialPressed && drifter.input.MoveY > 0 && canAct && currentRecoveries >0)
+        // else if (specialPressed && drifter.input.MoveY > .3f && canAct && currentRecoveries >0)
+        // {
+        //     // recovery
+        //     StartAttack(DrifterAttackType.W_Up);
+        //     currentRecoveries--;
+        // }
+        // else if (specialPressed && drifter.input.MoveY < -.3f && canAct)
+        // {
+        //     // Down W
+        //     StartAttack(DrifterAttackType.W_Down);
+        // }
+        // else if (specialPressed && drifter.input.MoveX != 0 && canAct)
+        // {
+        //     // Side W
+        //     StartAttack(DrifterAttackType.W_Side);
+        // }
+        // else if (specialPressed && drifter.input.MoveX == 0 && drifter.input.MoveY == 0 && canAct)
+        // {
+        //     // Neutral W
+        //     StartAttack(DrifterAttackType.W_Neutral);
+        // }
+
+
+        else if(specialPressed && canAct)
         {
-            // recovery
-            StartAttack(DrifterAttackType.W_Up);
-            currentRecoveries--;
+            if(drifter.input.MoveY > 0 && currentRecoveries >0)StartAttack(DrifterAttackType.W_Up);
+            else if(drifter.input.MoveY < 0)StartAttack(DrifterAttackType.W_Down);
+            else if(drifter.input.MoveX!=0)StartAttack(DrifterAttackType.W_Side);
+            else StartAttack(DrifterAttackType.W_Neutral);
         }
-        else if (specialPressed && drifter.input.MoveY < 0 && canAct)
-        {
-            // Down W
-            StartAttack(DrifterAttackType.W_Down);
-        }
-        else if (specialPressed && drifter.input.MoveX != 0 && canAct)
-        {
-            // Side W
-            StartAttack(DrifterAttackType.W_Side);
-        }
-        else if (specialPressed && drifter.input.MoveX == 0 && drifter.input.MoveY == 0 && canAct)
-        {
-            // Neutral W
-            StartAttack(DrifterAttackType.W_Neutral);
-        }
+
         //attack  //neutral aerial
         else if (lightPressed && canAct)
         {

@@ -103,64 +103,23 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void UpdateInput()
+    void Update()
     {
-        if (!GameController.Instance.IsHost || GameController.Instance.IsPaused)
-        {
-            return;
-        }
 
-        bool jumpPressed = !drifter.prevInput.Jump && drifter.input.Jump;
-        // TODO: spawn hitboxes
-        bool canAct = !status.HasStunEffect() && !animator.GetBool("Guarding");
-        bool canGuard = !status.HasStunEffect();
         bool moving = drifter.input.MoveX != 0;
-       
-        if(gameObject.layer != 8 && Time.time - dropThroughTime > .55f){
-            gameObject.layer = 8;
-        }
 
-        //Handle jump resets
-        if(animator.GetBool("Grounded"))
+        if(!status.HasGroundFriction())gravityPaused=false;
+
+        //Friciton Active Input
+        if(moving && grounded && !status.HasEnemyStunEffect())
         {
-            currentJumps = numberOfJumps;
-            strongLedgeGrab = true;
-            
-            if(!IsGrounded())
-            {
-                currentJumps--;
-            }            
+            frictionCollider.sharedMaterial.friction = activeFriction;
         }
-        
-        else if(IsGrounded() && !status.HasStunEffect())
+        else
         {
-            spawnJuiceParticle(new Vector3(0,-1,0), MovementParticleMode.Land);
+            frictionCollider.sharedMaterial.friction = inactiveFriction;
         }
 
-        if(gravityPaused && jumpCoroutine!= null)StopCoroutine(jumpCoroutine);
-        if(gravityPaused && varyJumpHeight!= null)StopCoroutine(varyJumpHeight);
-
-
-        drifter.SetAnimatorBool("Grounded", IsGrounded());
-        grounded = IsGrounded();
-
-        if(!ledgeHanging && (animator.GetCurrentAnimatorStateInfo(0).IsName("Ledge_Grab_Strong") || animator.GetCurrentAnimatorStateInfo(0).IsName("Ledge_Grab_Weak")))
-        {
-            drifter.SetAnimatorTrigger("Ledge_Climb_Basic");
-        }
-
-        //Sets hitstun state when applicable
-        if(status.HasEnemyStunEffect() && !animator.GetBool("HitStun")){
-            drifter.SetAnimatorBool("HitStun",true);
-            DropLedge();
-        }
-        else if(!status.HasEnemyStunEffect() && animator.GetBool("HitStun"))
-        {
-            drifter.SetAnimatorBool("HitStun",false);
-            ringTime = 6;
-        }
-
-        //Pause all animations while in hitpause
         if(status.HasStatusEffect(PlayerStatusEffect.HITPAUSE))
         {
             if(status.HasEnemyStunEffect())
@@ -177,7 +136,48 @@ public class PlayerMovement : MonoBehaviour
             animator.enabled = true;
         }
 
-        //Smoke trail
+        drifter.SetAnimatorBool("Grounded", IsGrounded());
+        grounded = IsGrounded();
+
+
+        if(animator.GetBool("Grounded"))
+        {
+            currentJumps = numberOfJumps;
+            strongLedgeGrab = true;
+            
+            if(!IsGrounded())
+            {
+                currentJumps--;
+            }            
+        }
+        
+        else if(IsGrounded() && !status.HasStunEffect())
+        {
+            spawnJuiceParticle(new Vector3(0,-1,0), MovementParticleMode.Land);
+        }
+
+
+        if(gravityPaused && jumpCoroutine!= null)StopCoroutine(jumpCoroutine);
+        if(gravityPaused && varyJumpHeight!= null)StopCoroutine(varyJumpHeight);
+
+
+         if(!ledgeHanging && (animator.GetCurrentAnimatorStateInfo(0).IsName("Ledge_Grab_Strong") || animator.GetCurrentAnimatorStateInfo(0).IsName("Ledge_Grab_Weak")))
+        {
+            drifter.SetAnimatorTrigger("Ledge_Climb_Basic");
+        }
+
+        //Sets hitstun state when applicable
+        if(status.HasEnemyStunEffect() && !animator.GetBool("HitStun")){
+            drifter.SetAnimatorBool("HitStun",true);
+            DropLedge();
+        }
+        else if(!status.HasEnemyStunEffect() && animator.GetBool("HitStun"))
+        {
+            drifter.SetAnimatorBool("HitStun",false);
+            ringTime = 6;
+        }
+
+
         if(status.HasStatusEffect(PlayerStatusEffect.KNOCKBACK) && rb.velocity.magnitude > 45f){
             spawnJuiceParticle(Vector3.zero, MovementParticleMode.SmokeTrail, Quaternion.Euler(0,0,UnityEngine.Random.Range(0,180)));
         }
@@ -198,25 +198,49 @@ public class PlayerMovement : MonoBehaviour
                 ringTime++;
             }
 
-            
         }
 
-        //Reversed controls
+
         if(status.HasStatusEffect(PlayerStatusEffect.REVERSED)){
             drifter.input.MoveX *= -1;
         }
 
 
-        //Friciton Active Input
-        if(moving && grounded && !status.HasEnemyStunEffect())
+        if(status.HasStatusEffect(PlayerStatusEffect.STUNNED) || status.HasStatusEffect(PlayerStatusEffect.PLANTED) || status.HasStatusEffect(PlayerStatusEffect.DEAD) || status.HasStatusEffect(PlayerStatusEffect.HITPAUSE) || status.HasStatusEffect(PlayerStatusEffect.GRABBED))
         {
-            frictionCollider.sharedMaterial.friction = activeFriction;
+            rb.velocity = Vector2.zero;
+            rb.gravityScale = 0;
+                        
         }
-        else{
-            frictionCollider.sharedMaterial.friction = inactiveFriction;
+        //makes sure gavity is always reset after using a move
+        else if((!status.HasStatusEffect(PlayerStatusEffect.END_LAG) || !gravityPaused) && !ledgeHanging){
+            rb.gravityScale = baseGravity;
         }
 
+        if(rb.velocity != Vector2.zero)prevVelocity = rb.velocity;
 
+    }
+
+
+    public void UpdateInput()
+    {
+        if (!GameController.Instance.IsHost || GameController.Instance.IsPaused)
+        {
+            return;
+        }
+
+        bool jumpPressed = !drifter.prevInput.Jump && drifter.input.Jump;
+        // TODO: spawn hitboxes
+        bool canAct = !status.HasStunEffect() && !animator.GetBool("Guarding");
+        bool canGuard = !status.HasStunEffect();
+        bool moving = drifter.input.MoveX != 0;
+       
+        if(gameObject.layer != 8 && Time.time - dropThroughTime > .55f){
+            gameObject.layer = 8;
+        }
+
+        //Handle jump resets
+        
         //Normal walking logic
         if (moving && canAct && ! ledgeHanging)
         {
@@ -358,20 +382,9 @@ public class PlayerMovement : MonoBehaviour
         prevMoveY = drifter.input.MoveY;
 
         //Pause movement for relevent effects.
-        if(status.HasStatusEffect(PlayerStatusEffect.STUNNED) || status.HasStatusEffect(PlayerStatusEffect.PLANTED) || status.HasStatusEffect(PlayerStatusEffect.DEAD) || status.HasStatusEffect(PlayerStatusEffect.HITPAUSE) || status.HasStatusEffect(PlayerStatusEffect.GRABBED))
-        {
-            rb.velocity = Vector2.zero;
-            rb.gravityScale = 0;
-                        
-        }
-        //makes sure gavity is always reset after using a move
-        else if((!status.HasStatusEffect(PlayerStatusEffect.END_LAG) || !gravityPaused) && !ledgeHanging){
-            rb.gravityScale = baseGravity;
-        }
-
-        if(rb.velocity != Vector2.zero)prevVelocity = rb.velocity;
         
     }
+
     void updateFacing()
     {
         if(flipSprite ^ drifter.input.MoveX > 0){
