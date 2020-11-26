@@ -152,6 +152,51 @@ public class RykkeMasterHit : MasterHit
             HoldPerson.GetComponentInChildren<RyykeGrab>().drifter = drifter;
         }
 
+
+    public void sideWEmpowered()
+        {
+            if(!isHost)return;
+            conmsumeStack();
+            facing = movement.Facing;
+            Vector3 flip = new Vector3(facing *10f,10f,1f);
+            Vector3 loc = new Vector3(facing *-1f,0f,0f);
+            
+            GameObject ChadPunch = host.CreateNetworkObject("ChadwickPunch", transform.position + loc, transform.rotation);
+            ChadPunch.transform.localScale = flip;
+            foreach (HitboxCollision hitbox in ChadPunch.GetComponentsInChildren<HitboxCollision>(true))
+            {
+                hitbox.parent = drifter.gameObject;
+                hitbox.AttackID = attacks.AttackID;
+                hitbox.AttackType = attacks.AttackType;
+                hitbox.Active = true;
+                hitbox.Facing = facing;
+            }
+            ChadPunch.GetComponentInChildren<Chadwick_Basic>().speed = new Vector2(facing * 65f,0);
+            ChadPunch.GetComponentInChildren<Chadwick_Basic>().drifter = drifter;
+        }
+
+    public void Buster_Wolf()
+        {
+            if(!isHost)return;
+            conmsumeStack();
+            facing = movement.Facing;
+            Vector3 flip = new Vector3(facing *10f,10f,1f);
+            Vector3 loc = new Vector3(facing *-1f,0f,0f);
+            
+            GameObject ChadPunch = host.CreateNetworkObject("Chadwick_Buster", transform.position + loc, transform.rotation);
+            ChadPunch.transform.localScale = flip;
+            foreach (HitboxCollision hitbox in ChadPunch.GetComponentsInChildren<HitboxCollision>(true))
+            {
+                hitbox.parent = drifter.gameObject;
+                hitbox.AttackID = attacks.AttackID;
+                hitbox.AttackType = attacks.AttackType;
+                hitbox.Active = true;
+                hitbox.Facing = facing;
+            }
+            ChadPunch.GetComponentInChildren<Chadwick_Buster>().speed = new Vector2(facing * 65f,0);
+            ChadPunch.GetComponentInChildren<Chadwick_Buster>().drifter = drifter;
+        }
+
     //Down W
         public void plantGravestone()
         {

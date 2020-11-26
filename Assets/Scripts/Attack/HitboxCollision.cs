@@ -37,7 +37,7 @@ public class HitboxCollision : MonoBehaviour
     
         if (hurtbox != null && AttackType != DrifterAttackType.Null)
         {
-            string player = playerType.NetworkType;
+            //string player = playerType.NetworkType;
             if(OverrideData != null){
                 hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, OverrideData);
             }

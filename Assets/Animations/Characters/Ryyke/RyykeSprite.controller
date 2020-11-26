@@ -1348,9 +1348,6 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: Empowered
     m_EventTreshold: 0
-  - m_ConditionMode: 1
-    m_ConditionEvent: GrabbedPlayer
-    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -1513112524207873490}
   m_Solo: 0
@@ -1394,7 +1391,7 @@ AnimatorStateMachine:
     m_Position: {x: -340, y: -370, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -2029028927881371205}
-    m_Position: {x: 70, y: 290, z: 0}
+    m_Position: {x: 0, y: 300, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1229814088829407147}
     m_Position: {x: -40, y: -30, z: 0}
@@ -1433,7 +1430,7 @@ AnimatorStateMachine:
     m_Position: {x: -390, y: -420, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -1513112524207873490}
-    m_Position: {x: 330, y: 320, z: 0}
+    m_Position: {x: 330, y: 350, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 213936586549191206}
     m_Position: {x: 340, y: 610, z: 0}
