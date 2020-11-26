@@ -11,7 +11,7 @@ public class RyykeUppercutZombie : MonoBehaviour
     void Start()
     {
     	rb = GetComponent<Rigidbody2D>();
-    	rb.velocity= new Vector2(0f,30f);
+    	rb.velocity= new Vector2(0f,40f);
         StartCoroutine(Delete());
     }
 

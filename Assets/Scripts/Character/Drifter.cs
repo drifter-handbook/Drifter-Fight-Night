@@ -69,7 +69,7 @@ public class Drifter : MonoBehaviour, INetworkInit
 
     public void Start()
     {
-        Stocks = 3;
+        Stocks = drifterType!="Sandbag"?3:999;
         DamageTaken = 0f;
     }
 

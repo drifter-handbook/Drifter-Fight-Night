@@ -24,17 +24,14 @@ public class RyykeTombstone : MonoBehaviour
         attacks = Ryyke.GetComponent<PlayerAttacks>();
     }
 
-    public IEnumerator Delete()
+    public void Delete()
     {
-
-        yield return new WaitForSeconds(0.75f);
         Destroy(gameObject);
-        yield break;
     }
+
     public void Break(){
         broken = true;
         anim.SetTrigger("Delete");
-        StartCoroutine(Delete());
     }
 
     void Update()
@@ -45,11 +42,9 @@ public class RyykeTombstone : MonoBehaviour
         }
         if(activate){
             anim.SetTrigger("Activate");
-            StartCoroutine(Delete());
         }
         if(broken){
              anim.SetTrigger("Delete");
-             StartCoroutine(Delete());
         }
         anim.SetBool("Grounded",grounded);
     }
@@ -96,12 +91,11 @@ public class RyykeTombstone : MonoBehaviour
         {
             activate = true;
             anim.SetTrigger("Activate");
-            StartCoroutine(Delete());
         }
     }
 
     public void SpawnChad(){
-        Vector3 flip = new Vector3(facing * 8f, 8f, 1f);
+        Vector3 flip = new Vector3(facing * 12f, 12f, 1f);
         if (GameController.Instance.IsHost)
         {
             GameObject zombie = GameController.Instance.host.CreateNetworkObject("Chadwick", transform.position, transform.transform.rotation);

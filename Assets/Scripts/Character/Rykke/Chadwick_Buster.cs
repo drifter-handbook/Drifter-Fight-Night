@@ -6,7 +6,6 @@ public class Chadwick_Buster : Chadwick_Basic
 {
 
     public Animator anim;
-    public Drifter drifter;
 
     void OnTriggerEnter2D(Collider2D col)
     {

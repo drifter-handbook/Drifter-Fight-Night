@@ -32,7 +32,7 @@ Transform:
   m_GameObject: {fileID: 716693809758128051}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -543.06604, y: -209.2188, z: 1620.022}
-  m_LocalScale: {x: 4.6418967, y: 4.6418967, z: 4.6418967}
+  m_LocalScale: {x: 10, y: 10, z: 4.6418967}
   m_Children:
   - {fileID: 8238546068133516066}
   m_Father: {fileID: 0}
@@ -77,8 +77,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 8645839407525424958, guid: 036ea68fa05aeab4e85fb4cb07595614,
-    type: 3}
+  m_Sprite: {fileID: 704755689286372869, guid: b77095d9c7858ce46839c3451daefab4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -133,7 +132,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 2
+  m_LinearDrag: 4
   m_AngularDrag: 0.05
   m_GravityScale: 3.5
   m_Material: {fileID: 0}
@@ -239,5 +238,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 716693809758128051}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 0}
   AttackData: {fileID: 11400000, guid: 641e24cdf21b71d428208fc0b66f2184, type: 2}
