@@ -464,6 +464,7 @@ public class PlayerMovement : MonoBehaviour
             //jump
             if (currentJumps > 0)
             {
+                gravityPaused = false;
                 currentJumps--;
                 drifter.SetAnimatorTrigger("Jump");
                 //Particles
