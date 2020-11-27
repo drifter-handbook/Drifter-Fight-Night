@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 8769729962295595785}
   - component: {fileID: 4629084733465974596}
   - component: {fileID: 128413426835657745}
+  - component: {fileID: 3312576410804427954}
   m_Layer: 0
   m_Name: GuidingBolt
   m_TagString: Untagged
@@ -179,6 +180,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1925752a4980314891b5dbe83f9cfac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3312576410804427954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 663234561344376033}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad955f5683686da4883d3776c88e35e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7705867303362332612
 GameObject:
   m_ObjectHideFlags: 0
@@ -224,6 +237,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 663234561344376033}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: 082471061e6a8e94c8d100d0fce4a982, type: 2}
   AttackData: {fileID: 0}
 --- !u!70 &1038058115588671554

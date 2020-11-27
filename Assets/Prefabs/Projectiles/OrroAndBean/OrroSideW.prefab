@@ -62,6 +62,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 5902266580795054831}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: 3d82480900a80b94180064524906ab65, type: 2}
   AttackData: {fileID: 0}
 --- !u!1 &5902266580795054831
@@ -82,6 +83,7 @@ GameObject:
   - component: {fileID: 8630263293772783721}
   - component: {fileID: 5263688230348169308}
   - component: {fileID: 1113557978157867786}
+  - component: {fileID: 3087543693083685248}
   m_Layer: 0
   m_Name: OrroSideW
   m_TagString: Untagged
@@ -273,6 +275,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 375a5dfd8071204439601cc2c3319524, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3087543693083685248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5902266580795054831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad955f5683686da4883d3776c88e35e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8637832393931384079
 GameObject:
   m_ObjectHideFlags: 0
@@ -334,5 +348,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 5902266580795054831}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: a3c2800dbdb72f7439e2c572b520b15a, type: 2}
   AttackData: {fileID: 0}

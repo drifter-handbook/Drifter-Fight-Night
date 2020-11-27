@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 5203601220736673892}
   - component: {fileID: 6296876909648444997}
   - component: {fileID: 1786724783220400201}
+  - component: {fileID: 8467069752091205106}
   m_Layer: 8
   m_Name: Kamikaze
   m_TagString: Untagged
@@ -206,6 +207,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1925752a4980314891b5dbe83f9cfac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8467069752091205106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1413698060829908408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad955f5683686da4883d3776c88e35e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7037138312686320679
 GameObject:
   m_ObjectHideFlags: 0
@@ -267,5 +280,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 1413698060829908408}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: 2a578c65be6fca14ca7ebd9c380e0f40, type: 2}
   AttackData: {fileID: 11400000, guid: 2a578c65be6fca14ca7ebd9c380e0f40, type: 2}

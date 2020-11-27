@@ -26,27 +26,15 @@ public class OopsiePoopsie : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {
-
-         if(col.gameObject.name == "Reflector"){
-            rb.velocity =  rb.velocity * -1.5f;
-
-            gameObject.transform.localScale = new Vector3(gameObject.transform.localScale.x * -1,gameObject.transform.localScale.y,gameObject.transform.localScale.z);
-
-            foreach (HitboxCollision hitbox in gameObject.GetComponentsInChildren<HitboxCollision>(true))
-                {
-                    hitbox.parent = col.gameObject.transform.parent.GetComponentInChildren<HitboxCollision>().parent;
-                    //Mkae this not suck laters
-                    hitbox.AttackID = 300 + Random.Range(0,25);
-                }
-
-        }
-        else{
+        if(col.gameObject.name != "Reflector")
+        {
             anim.SetTrigger("Empower");
             empowered = true;
             rb.gravityScale = 0f;
             rb.velocity = Vector3.zero;
             StartCoroutine(delete(.4f));
         }
+
     }
     void OnTriggerStay2D(Collider2D col){
         if(col == hurtbox){

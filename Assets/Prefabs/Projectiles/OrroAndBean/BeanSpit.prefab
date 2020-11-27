@@ -61,6 +61,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 8940445788500619895}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: 6835b63878e676e4abaaab168aad0044, type: 2}
   AttackData: {fileID: 0}
 --- !u!1 &8940445788500619895
@@ -79,6 +80,7 @@ GameObject:
   - component: {fileID: 5752160339368794783}
   - component: {fileID: 2603261473610151205}
   - component: {fileID: 1148131773242885438}
+  - component: {fileID: 9193595533066794228}
   m_Layer: 0
   m_Name: BeanSpit
   m_TagString: Untagged
@@ -240,5 +242,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d1925752a4980314891b5dbe83f9cfac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &9193595533066794228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8940445788500619895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad955f5683686da4883d3776c88e35e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

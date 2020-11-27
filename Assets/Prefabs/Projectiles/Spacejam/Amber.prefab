@@ -61,6 +61,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 8588162288674083642}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: d431bf6417d36614baecdc806dce0b58, type: 2}
   AttackData: {fileID: 0}
 --- !u!1 &8588162288674083642
@@ -82,6 +83,7 @@ GameObject:
   - component: {fileID: 2943569461429346699}
   - component: {fileID: 1888719984752093742}
   - component: {fileID: 5340829938620944833}
+  - component: {fileID: 8853522291277778040}
   m_Layer: 0
   m_Name: Amber
   m_TagString: Untagged
@@ -226,8 +228,6 @@ MonoBehaviour:
   anim: {fileID: 7946148366151414869}
   rb: {fileID: 8344995058333733698}
   empowered: 0
-  hurtbox: {fileID: 0}
-  status: {fileID: 0}
 --- !u!114 &5886390688411313003
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -287,5 +287,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 375a5dfd8071204439601cc2c3319524, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8853522291277778040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8588162288674083642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad955f5683686da4883d3776c88e35e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
