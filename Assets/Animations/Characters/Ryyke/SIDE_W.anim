@@ -2082,6 +2082,13 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
+  - time: 0
+    functionName: playStateIfEmpowered
+    data: W_Side_Empowered
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 0.33333334
     functionName: setYVelocity
     data: 
@@ -2094,5 +2101,12 @@ AnimationClip:
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 25
+    intParameter: 0
+    messageOptions: 0
+  - time: 1
+    functionName: returnToIdle
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
     intParameter: 0
     messageOptions: 0

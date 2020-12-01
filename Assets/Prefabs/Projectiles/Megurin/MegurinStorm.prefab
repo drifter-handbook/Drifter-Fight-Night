@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 6738822441650179701}
   - component: {fileID: 3272454073746819680}
   - component: {fileID: 1418827370138372343}
+  - component: {fileID: 1366650533070401731}
   m_Layer: 0
   m_Name: MegurinStorm
   m_TagString: Untagged
@@ -102,7 +103,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attacks: {fileID: 0}
-  duration: 7
 --- !u!95 &5866893930373629177
 Animator:
   serializedVersion: 3
@@ -171,6 +171,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad955f5683686da4883d3776c88e35e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1366650533070401731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4855802820966953319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1ef945a1776594438c7a9223e2d7bb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 7
 --- !u!1 &7978536591016880782
 GameObject:
   m_ObjectHideFlags: 0

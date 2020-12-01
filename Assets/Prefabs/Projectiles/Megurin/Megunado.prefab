@@ -179,6 +179,7 @@ GameObject:
   - component: {fileID: 4915618120178248275}
   - component: {fileID: 809670904163452175}
   - component: {fileID: 6045002550374276911}
+  - component: {fileID: 8126668909997000500}
   m_Layer: 0
   m_Name: Megunado
   m_TagString: Untagged
@@ -304,7 +305,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attacks: {fileID: 0}
-  duration: 0.63
 --- !u!114 &2301911555656971338
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -354,3 +354,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad955f5683686da4883d3776c88e35e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8126668909997000500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7934963267439609778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1ef945a1776594438c7a9223e2d7bb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 0.7

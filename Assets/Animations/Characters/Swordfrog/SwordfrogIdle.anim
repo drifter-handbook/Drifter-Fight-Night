@@ -418,8 +418,8 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0
-    functionName: applyEndLag
+  - time: 0.6666666
+    functionName: returnToIdle
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

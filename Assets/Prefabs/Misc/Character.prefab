@@ -236,8 +236,8 @@ GameObject:
   - component: {fileID: 2000386183588008255}
   - component: {fileID: 3448103185150702309}
   - component: {fileID: 3247885099993127352}
-  - component: {fileID: 5339041706276020576}
-  - component: {fileID: 23149160537807390}
+  - component: {fileID: 5319769755297366692}
+  - component: {fileID: 963154100030091591}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -357,7 +357,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NetworkType: PlayerAnimator
---- !u!114 &5339041706276020576
+--- !u!114 &5319769755297366692
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -366,10 +366,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2496518287981053905}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 966aa641b64b635488c8fe778561ad30, type: 3}
+  m_Script: {fileID: 11500000, guid: 4133822f74fe7224ea726bb338e62949, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &23149160537807390
+--- !u!114 &963154100030091591
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -378,7 +378,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2496518287981053905}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 375a5dfd8071204439601cc2c3319524, type: 3}
+  m_Script: {fileID: 11500000, guid: cda61db25d2ac7b48a171625f4fc23c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &3106753082241659636
@@ -459,6 +459,7 @@ MonoBehaviour:
   Charge: 0
   BlockReduction: 0.5
   myColor: {r: 0, g: 0, b: 0, a: 0}
+  drifterType: 
   peerID: 0
   status: {fileID: 8182132679057442092}
 --- !u!114 &3106753082241659641
@@ -485,15 +486,9 @@ MonoBehaviour:
   jumpHeight: 0
   jumpTime: 0
   Weight: 90
-  currentJumps: 0
   ledgeOffset: 1
   ledgeClimbOffset: 0
   particleOffset: {x: 0, y: 0, z: 0}
-  grounded: 1
-  gravityPaused: 0
-  ledgeHanging: 0
-  activeFriction: 0.01
-  inactiveFriction: 0.4
   varyJumpHeightDuration: 0.2
   varyJumpHeightForce: 12
 --- !u!114 &9142496942411782138
@@ -538,9 +533,6 @@ MonoBehaviour:
   - attack: 3
     attackData: {fileID: 11400000, guid: be94e269e9183e840a9536a046b0df0c, type: 2}
   maxRecoveries: 1
-  currentRecoveries: 0
-  ledgeHanging: 0
-  Facing: 0
 --- !u!50 &3106753082241659639
 Rigidbody2D:
   serializedVersion: 4

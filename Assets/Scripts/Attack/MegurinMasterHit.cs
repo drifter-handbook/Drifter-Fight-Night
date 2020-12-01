@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class MegurinMasterHit : MasterHit
 {
-    public Animator anim;
     public SpriteRenderer sprite;
     GameObject activeStorm;
     Vector2 HeldDirection;
@@ -121,10 +120,7 @@ public class MegurinMasterHit : MasterHit
             hitbox.Facing = facing;
         }
 
-        if (activeStorm)
-        {
-            StartCoroutine(activeStorm.GetComponent<MegurinStorm>().Fade(0));
-        }
+        if (activeStorm)Destroy(activeStorm);
         MegurinStorm.GetComponent<MegurinStorm>().attacks = attacks;
         activeStorm = MegurinStorm;
         
@@ -263,54 +259,33 @@ public class MegurinMasterHit : MasterHit
 
     //Neutral W Logic
 
-    public void chargeNeutralW()
+    public void chargeNeutralW(int canCancel = 1)
     {
         if(!isHost)return;
-        if (TransitionFromChanneledAttack()){
+        if(Empowered)
+        {
+            Empowered = false;
+            neutralWCharge = 0;
+            playState("W_Neutral_Recover_Slow");
+
+        }
+        if (canCancel != 0 &&TransitionFromChanneledAttack()){
             return;
         }
-        if(drifter.input.Special)
+        if(canCancel != 0 && drifter.input.Special)
         {
-            applyEndLag(0);
             neutralWCharge = 0;
-            drifter.SetAnimatorTrigger("W_Neutral");
-            applyEndLag(3);
+            playState("W_Neutral_Recover_Fast");
         }
 
-        if(neutralWCharge < 33){
+        if(neutralWCharge < 43){
             neutralWCharge +=1;
         }
         else{
-            sprite.color = new Color(1f,1f,.5f);
-            drifter.SetAnimatorBool("Empowered",true);
+            Empowered = true;
+            returnToIdle();
         }
     }
-
-    public void beginLightningbolt(){
-        sprite.color = Color.white;
-        if(anim.GetBool("Empowered") == true){
-            drifter.SetAnimatorBool("Empowered",false);
-            drifter.SetAnimatorBool("HasCharge",true);
-        }
-    }
-    public void fireLightningbolt()
-    {
-        sprite.color = Color.white;
-        neutralWCharge = 0;
-        if(anim.GetBool("Empowered") == true){
-            spawnLargeBolt();
-        }
-        else{
-            spawnSmallBolt();
-        }
-
-    }
-
-    public void removeCharge(){
-       drifter.SetAnimatorBool("HasCharge",false);
-   }
-
-
 
     //Inhereted Roll Methods
 

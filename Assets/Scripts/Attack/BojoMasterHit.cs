@@ -4,28 +4,15 @@ using UnityEngine;
 
 public class BojoMasterHit : MasterHit
 {
-    float boofTime;
-    bool checkBoof;
 
     GameObject Centaur = null;
-
-    void Update()
-    {
-        if(!isHost)return;
-        if(checkBoof && Time.time - boofTime > 1f){
-            attacks.currentRecoveries = 0;
-            checkBoof = false;
-        }
-    	else{
-    		drifter.SetAnimatorBool("HasCharge",false);
-    	}
-    }
 
     public void GUN(){
 
         if(!isHost)return;
 
-        applyEndLag(drifter.input.Special?0:1);
+        //applyEndLag(drifter.input.Special?0:1);
+        Empowered = drifter.input.Special;
         
     	facing = movement.Facing;
         Vector3 flip = new Vector3(facing *6f,6f,0f);
@@ -33,8 +20,7 @@ public class BojoMasterHit : MasterHit
         GameObject bubble = host.CreateNetworkObject("Mockery", transform.position + pos, transform.rotation);
         bubble.transform.localScale = flip;
         bubble.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * 55, 0);
-       	drifter.SetAnimatorBool("HasCharge",true);
-        
+        refreshHitboxID();
         foreach (HitboxCollision hitbox in bubble.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
@@ -71,16 +57,17 @@ public class BojoMasterHit : MasterHit
 
     }
 
-    public void boof()
+    public void upWGlide()
     {
-        if(!isHost)return;
-        facing = movement.Facing;
-        rb.velocity = new Vector2(rb.velocity.x  + facing * 10,45);
-        boofTime = Time.time;
-        checkBoof = true;
+        if(!isHost || TransitionFromChanneledAttack())return;
+
+        if(drifter.input.MoveY <0 || movement.grounded)returnToIdle();
+        else
+        {
+            movement.updateFacing();
+            rb.velocity = new Vector2(drifter.input.MoveX * 15f,rb.velocity.y*.5f);
+        }
     }
-
-
 
     //Inhereted Roll Methods
 

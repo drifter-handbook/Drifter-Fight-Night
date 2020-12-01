@@ -27,6 +27,9 @@ public class NetworkHost : MonoBehaviour, ISyncHost
     public string ConnectionKey = "";
 
     [NonSerialized]
+    public string RoomKey = "";
+
+    [NonSerialized]
     public bool GameStarted;
 
     // peers

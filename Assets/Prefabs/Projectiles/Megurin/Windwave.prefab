@@ -12,11 +12,12 @@ GameObject:
   - component: {fileID: 717018464911386942}
   - component: {fileID: -3824839200053066957}
   - component: {fileID: 3698930982184408949}
-  - component: {fileID: -610982695736407485}
   - component: {fileID: 1508606858533727895}
   - component: {fileID: 5786600882086825812}
   - component: {fileID: -2188143464769519695}
   - component: {fileID: 5272164527727386307}
+  - component: {fileID: 918483526829085292}
+  - component: {fileID: 8405436157704433800}
   m_Layer: 0
   m_Name: Windwave
   m_TagString: Untagged
@@ -130,19 +131,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 6
---- !u!114 &-610982695736407485
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2303260047689096306}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0858efbbb62af5e4c8dba1c80bb85222, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  duration: 0.5
 --- !u!114 &1508606858533727895
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -192,6 +180,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad955f5683686da4883d3776c88e35e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &918483526829085292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2303260047689096306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e616ba64b17e466408d647622dd28ac7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8405436157704433800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2303260047689096306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1ef945a1776594438c7a9223e2d7bb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 0.4
 --- !u!1 &2861753682283224697
 GameObject:
   m_ObjectHideFlags: 0

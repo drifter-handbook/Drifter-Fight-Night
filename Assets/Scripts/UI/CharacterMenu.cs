@@ -32,7 +32,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
     public GameObject leftPanel;
     public GameObject rightPanel;
-    public GameObject ipPanel;
+    public GameObject roomCode;
 
    
     [Serializable]
@@ -78,7 +78,6 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         public GameObject characterCard;
     }
     List<PlayerMenuEntry> menuEntries = new List<PlayerMenuEntry>();
-    bool playerIsSet = false;
     bool mouse = true;
 
     NetworkSync sync;
@@ -99,13 +98,17 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         forwardButton.GetComponent<Animator>().SetBool("present", true);
         UpdateFightzone();
 
+        if(GameController.Instance.IsHost){
+            GameObject.Find("RoomCodeValue").GetComponent<Text>().text = GameController.Instance.host.RoomKey;
+        }
+
         if (PlayerPrefs.GetInt("HideRoomCode") > 0)
         {
-            ipPanel.SetActive(false);
+            roomCode.SetActive(false);
         }
         else
         {
-            ipPanel.SetActive(true);
+            roomCode.SetActive(true);
         }
     }
 

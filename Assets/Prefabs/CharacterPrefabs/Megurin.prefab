@@ -65,23 +65,23 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: afbcc1a56b667d4478d389ea996a633e, type: 2}
   AttackData: {fileID: 0}
   element: 0
---- !u!114 &3761947454739589551
+--- !u!114 &1839771838832836201
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4342980891642874993}
+  m_GameObject: {fileID: 7622814988858049219}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0590c2ccf3fcca42b52b658fedfa594, type: 3}
+  m_Script: {fileID: 11500000, guid: ef69b8a934d07334c8235094d4ca0d8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parent: {fileID: 6949512207643572198}
-  playerType: {fileID: 0}
-  OverrideData: {fileID: 0}
-  AttackData: {fileID: 0}
-  element: 2
+  facing: 0
+  sprite: {fileID: 2613209421641134793}
+  lightningCharge: 0
+  windCharge: 0
+  iceCharge: 0
 --- !u!114 &1833645724151641344
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,24 +116,23 @@ MonoBehaviour:
   OverrideData: {fileID: 0}
   AttackData: {fileID: 0}
   element: 0
---- !u!114 &1839771838832836201
+--- !u!114 &3761947454739589551
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7622814988858049219}
+  m_GameObject: {fileID: 4342980891642874993}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef69b8a934d07334c8235094d4ca0d8a, type: 3}
+  m_Script: {fileID: 11500000, guid: c0590c2ccf3fcca42b52b658fedfa594, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  facing: 0
-  anim: {fileID: 5813596663097594925}
-  sprite: {fileID: 2613209421641134793}
-  lightningCharge: 0
-  windCharge: 0
-  iceCharge: 0
+  parent: {fileID: 6949512207643572198}
+  playerType: {fileID: 0}
+  OverrideData: {fileID: 0}
+  AttackData: {fileID: 0}
+  element: 2
 --- !u!1001 &5434938751262967058
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -381,7 +380,7 @@ PrefabInstance:
     - target: {fileID: 3106753082241659641, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: numberOfJumps
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3106753082241659643, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
@@ -698,12 +697,6 @@ GameObject:
 --- !u!212 &2613209421641134793 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 8011688095535036379, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
-    type: 3}
-  m_PrefabInstance: {fileID: 5434938751262967058}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &5813596663097594925 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 2000386183588008255, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
     type: 3}
   m_PrefabInstance: {fileID: 5434938751262967058}
   m_PrefabAsset: {fileID: 0}

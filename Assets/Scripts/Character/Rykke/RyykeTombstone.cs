@@ -9,115 +9,109 @@ public class RyykeTombstone : MonoBehaviour
     public Animator anim;
     public int facing = 0;
     bool armed = false;
-    public bool activate = false;
-    public GameObject Ryyke;
+    GameObject Ryyke;
     public PlayerAttacks attacks;
-    public bool grounded = false;
-    public bool broken = false;
+    bool grounded = false;
+    bool broken = false;
+    bool isHost = false;
+
+    void Awake()
+    {
+        isHost = GameController.Instance.IsHost;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-    	rb = GetComponent<Rigidbody2D>();
-    	rb.velocity = new Vector2(0f,-50f);
+        if(!isHost)return;
+        rb = GetComponent<Rigidbody2D>();
+        if(!armed)rb.velocity = new Vector2(0f,-50f);
         Ryyke = gameObject.GetComponentInChildren<HitboxCollision>().parent;
         attacks = Ryyke.GetComponent<PlayerAttacks>();
     }
 
-    public void Delete()
+    public void Break()
     {
-        Destroy(gameObject);
+        if(!isHost)return;
+        if(grounded)anim.Play("Grounded_Delete");
+        else anim.Play("Aerial_Delete");
     }
 
-    public void Break(){
-        broken = true;
-        anim.SetTrigger("Delete");
-    }
-
-    void Update()
+    public void arm()
     {
-        if (grounded)
-        {
-            rb.velocity = Vector2.zero;
-        }
-        if(activate){
-            anim.SetTrigger("Activate");
-        }
-        if(broken){
-             anim.SetTrigger("Delete");
-        }
-        anim.SetBool("Grounded",grounded);
-    }
-
- 	IEnumerator Arm()
-    {
-        yield return new WaitForSeconds(1f);
-        UnityEngine.Debug.Log("ARMED!");
+        if(!isHost)return;
         armed = true;
-        yield break;
     }
 
+    public void awakenActivate()
+    {
+        if(!isHost)return;
+        armed = true;
+        anim.Play("Raw_Activate");
+    }
 
     void OnTriggerEnter2D(Collider2D col)
-    {  
-        if (col.gameObject.tag == "Ground" || col.gameObject.tag == "Platform")
+    {
+        if(!isHost)return;  
+        if ((col.gameObject.tag == "Ground" || col.gameObject.tag == "Platform") && !broken && !armed)
         {
             grounded = true;  
-            
-            anim.SetBool("Grounded",true);
+            anim.Play("Place");
             rb.velocity=Vector2.zero;
-            StartCoroutine(Arm());
-            return;
         }
     }
 
     void OnTriggerStay2D(Collider2D col)
     {
-
+        if(!isHost)return;
         if(!armed && col.gameObject.tag == "Player" && col.gameObject != GetComponentInChildren<HitboxCollision>().parent){
-            anim.SetBool("Grounded",false);
+            broken = true;
+            anim.Play("Aerial_Delete");
             rb.velocity=Vector2.zero;
-            Break();
         }
 
         else if(!armed && col.gameObject.layer == 9 && GetComponentInChildren<HitboxCollision>().parent != col.gameObject.GetComponent<HitboxCollision>().parent)
         {
-            anim.SetBool("Grounded",false);
+            broken = true;
+            anim.Play("Aerial_Delete");
             rb.velocity=Vector2.zero;
-            Break();
         }
 
         else if(armed && col.gameObject != Ryyke && col.gameObject.tag == "Player") //&& col.gameObject != hitbox.parent)
         {
-            activate = true;
-            anim.SetTrigger("Activate");
+            //activate = true;
+            anim.Play("Activate");
         }
     }
 
-    public void SpawnChad(){
-        Vector3 flip = new Vector3(facing * 12f, 12f, 1f);
-        if (GameController.Instance.IsHost)
-        {
-            GameObject zombie = GameController.Instance.host.CreateNetworkObject("Chadwick", transform.position, transform.transform.rotation);
+    public void PlayAnimation(string state){
+        if(!isHost)return;
+        anim.Play(state);
+    }
 
-            try
+    public void SpawnChad()
+    {
+        if(!isHost)return;
+        Vector3 flip = new Vector3(facing * 12f, 12f, 1f);
+        GameObject zombie = GameController.Instance.host.CreateNetworkObject("Chadwick", transform.position, transform.transform.rotation);
+
+        try
+        {
+            zombie.transform.localScale = flip;
+            foreach (HitboxCollision hitbox in zombie.GetComponentsInChildren<HitboxCollision>(true))
             {
-                zombie.transform.localScale = flip;
-                foreach (HitboxCollision hitbox in zombie.GetComponentsInChildren<HitboxCollision>(true))
-                {
-                    attacks.SetupAttackID(DrifterAttackType.W_Down);
-                    hitbox.parent = Ryyke;
-                    hitbox.AttackID = attacks.AttackID;
-                    hitbox.AttackType = DrifterAttackType.W_Down;
-                    hitbox.Active = true;
-                    hitbox.Facing = facing;
-                }
-                Ryyke.GetComponentInChildren<RykkeMasterHit>().grantStack();
+                attacks.SetupAttackID(DrifterAttackType.W_Down);
+                hitbox.parent = Ryyke;
+                hitbox.AttackID = attacks.AttackID;
+                hitbox.AttackType = DrifterAttackType.W_Down;
+                hitbox.Active = true;
+                hitbox.Facing = facing;
             }
-            catch (NullReferenceException E)
-            {
+            Ryyke.GetComponentInChildren<RykkeMasterHit>().grantStack();
+        }
+        catch (NullReferenceException E)
+        {
                 //I'm sick of this shit
-            }
         }
     }  
 }

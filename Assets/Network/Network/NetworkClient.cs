@@ -145,7 +145,7 @@ public class NetworkClient : MonoBehaviour, ISyncClient, INetworkMessageReceiver
                 continue;
             }
             sync.Initialize(NextObjectID, sync.NetworkType);
-            obj.SetActive(false);
+            obj.SetActive(true);
         }
         StartCoroutine(LoadObjectsCoroutine(startingEntities));
     }

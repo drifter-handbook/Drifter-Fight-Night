@@ -4,24 +4,44 @@ using UnityEngine;
 
 public class OrroMasterHit : MasterHit
 {
-    public Animator anim;
     BeanWrangler bean;
     GameObject beanObject;
+
+    bool continueJabFlag = false;
 
     void Start()
     {
         spawnBean();
+        Empowered = true;
     }
 
     void Update()
     {
         if(!isHost)return;
 
-        //Keep Bean up to date        
-        if (anim.GetBool("Empowered")) bean.addBeanState(rb.position - new Vector2(-2f * movement.Facing, 4f), movement.Facing);
+        if(Empowered)bean.addBeanState(rb.position - new Vector2(-2f * movement.Facing, 4f), movement.Facing);
     }
 
     //Projectiles
+
+    public void checkForContinueJab()
+    {
+        if(!isHost)return;
+        if(drifter.input.Light)continueJabFlag = true;
+    }
+
+    public void continueJab(string state)
+    {
+        if(!isHost)return;
+        if(continueJabFlag)
+        {
+            refreshHitboxID();
+            continueJabFlag = false;
+            playState(state);
+        }
+        else returnToIdle();
+
+    }
 
     public void fireball()
     {
@@ -129,8 +149,6 @@ public class OrroMasterHit : MasterHit
         bean.playeState("BEAN_NEUTRAL");
     }
 
-
-
     public void spawnBean()
     {
         if(!isHost)return;
@@ -166,18 +184,23 @@ public class OrroMasterHit : MasterHit
     public void BeanRecall()
     {
         if(!isHost)return;
-        if (anim.GetBool("Empowered"))
-        {
-            UnityEngine.Debug.Log("SENT OUT");
-            drifter.SetAnimatorBool("Empowered",false);
-            bean.setBean();
-        }
-        else{
-            UnityEngine.Debug.Log("COME BACK");
-            drifter.SetAnimatorBool("Empowered",true);
-            bean.recallBean(rb.position - new Vector2(-2f * movement.Facing,4f),movement.Facing);
 
-        }
+        if(Empowered)bean.setBean();
+        else bean.recallBean(rb.position - new Vector2(-2f * movement.Facing,4f),movement.Facing);
+        Empowered =!Empowered;
+
+        // if (anim.GetBool("Empowered"))
+        // {
+        //     UnityEngine.Debug.Log("SENT OUT");
+        //     drifter.SetAnimatorBool("Empowered",false);
+        //     
+        // }
+        // else{
+        //     UnityEngine.Debug.Log("COME BACK");
+        //     drifter.SetAnimatorBool("Empowered",true);
+        //     bean.recallBean(rb.position - new Vector2(-2f * movement.Facing,4f),movement.Facing);
+
+        // }
 
     }
 

@@ -13,20 +13,14 @@ public class SFArrow : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if(!GameController.Instance.IsHost)return;
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        StartCoroutine(Fade(5f));
-    }
-
-    IEnumerator Fade(float duration)
-    {
-        yield return new WaitForSeconds(duration);
-        Destroy(gameObject);
-        yield break;
     }
 
     void OnCollisionEnter2D(Collision2D col)
     {
+        if(!GameController.Instance.IsHost)return;
         if (col.gameObject.tag == "Ground" || col.gameObject.tag == "Platform")
         {
             foreach (HitboxCollision hitbox in gameObject.GetComponentsInChildren<HitboxCollision>(true))
@@ -34,7 +28,7 @@ public class SFArrow : MonoBehaviour
                     hitbox.enabled = false;
                 }
 
-            StartCoroutine(Fade(.5f));
+            anim.Play("Break");
             rb.velocity = Vector2.zero;
             rb.freezeRotation = true;
             rb.gravityScale = 0;

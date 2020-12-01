@@ -55,6 +55,22 @@ public class Drifter : MonoBehaviour, INetworkInit
 
     public PlayerStatus status;
 
+    bool isHost;
+
+    //
+    [NonSerialized]
+    public string GroundIdleStateName = "Idle";
+    [NonSerialized]
+    public string AirIdleStateName = "Hang";
+    [NonSerialized]
+    public string GuardStateName = "Guard";
+    [NonSerialized]
+    public string WalkStateName = "Walk";
+
+
+    [NonSerialized]
+    public bool guarding = false;
+
     public void OnNetworkInit()
     {
         NetworkUtils.RegisterChildObject("PlayerAnimator", transform.Find("Sprite").gameObject);
@@ -63,6 +79,7 @@ public class Drifter : MonoBehaviour, INetworkInit
 
     public void Awake()
     {
+        isHost = GameController.Instance.IsHost;
         sync = GetComponent<NetworkSync>();
         status = GetComponent<PlayerStatus>();
     }
@@ -85,17 +102,23 @@ public class Drifter : MonoBehaviour, INetworkInit
         transform.GetChild(3).GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),myColor);
     }
 
-    // used by host
-    public void SetAnimatorTrigger(string s)
+    //Replaces the animator state transition function
+    public void PlayAnimation(string state)
     {
-        if (GameController.Instance.IsHost)
+        if(!isHost)return;
+        if(Animator.StringToHash(state) != animator.GetCurrentAnimatorStateInfo(0).fullPathHash)
         {
-            animator.gameObject.GetComponent<SyncAnimatorHost>().SetTrigger(s);
+            animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState(state);
         }
     }
-    public void SetAnimatorBool(string s, bool value)
+
+    //Return to idle is called anytime the player regains control
+    public void returnToIdle()
     {
-        animator.SetBool(s, value);
+        movement.canLandingCancel = false;
+        if(movement.grounded)animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState(GroundIdleStateName);
+        else animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState(AirIdleStateName);
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
     }
 
     public DrifterType GetDrifterType(){

@@ -16,7 +16,7 @@ public class SwordFrogMasterHit : MasterHit
             chargeTime += Time.deltaTime;
             if(chargeTime >= 3f)
             {
-                drifter.SetAnimatorBool("HasCharge",true);
+                Empowered = true;
                 drifter.Charge++;
                 chargeTime = 0;
             }
@@ -56,7 +56,7 @@ public class SwordFrogMasterHit : MasterHit
 
         //Update charge count
         if(drifter.Charge ==0){
-            drifter.SetAnimatorBool("HasCharge",false);
+            Empowered = false;
         }
 
     }
@@ -67,23 +67,9 @@ public class SwordFrogMasterHit : MasterHit
     {
         if(!isHost)return;
         if(status.HasStatusEffect(PlayerStatusEffect.HIT)){
-            drifter.SetAnimatorBool("Empowered",true);
+            drifter.PlayAnimation("W_Down_Success");
             status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.3f);
         }
-    }
-
-    public void hitCounter()
-    {
-        if(!isHost)return;
-        status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.3f);
-        StartCoroutine(resetCounter());
-        
-    }
-
-    IEnumerator resetCounter()
-    {
-        yield return new WaitForSeconds(.3f);
-        drifter.SetAnimatorBool("Empowered",false);
     }
 
     //Roll Methods

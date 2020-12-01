@@ -6,7 +6,6 @@ public class SpaceJamMasterHit : MasterHit
 {
  
     public SpriteRenderer sprite;
-    public Animator anim;
     int charges = 0;
     int maxCharge = 65;
 
@@ -42,29 +41,36 @@ public class SpaceJamMasterHit : MasterHit
     public void oopsiePoopsie()
     {
         if(!isHost)return;
+
         facing = movement.Facing;
+        
         rb.velocity += new Vector2(-20*facing,0);
-        if(anim.GetBool("Empowered")){
-            drifter.SetAnimatorBool("Empowered",false);
-            sprite.color = Color.white;
-            audioSource.PlayOneShot(audioClips[1], 1f);
-            Vector3 flip = new Vector3(facing *12f,12f,0f);
-            Vector3 pos = new Vector3(facing *-3f,0f,1f);
+        if(!Empowered)return;
+
+        Empowered = false;
+
+        drifter.AirIdleStateName = "Hang";
+        drifter.WalkStateName = "Walk";
+        drifter.GroundIdleStateName = "Idle";
+
+        
+        audioSource.PlayOneShot(audioClips[1], 1f);
+        Vector3 flip = new Vector3(facing *12f,12f,0f);
+        Vector3 pos = new Vector3(facing *-3f,0f,1f);
             
-            GameObject amber = host.CreateNetworkObject("Amber", transform.position + pos, transform.rotation);
-            amber.transform.localScale = flip;
-            amber.GetComponent<Rigidbody2D>().velocity = rb.velocity;
-            foreach (HitboxCollision hitbox in amber.GetComponentsInChildren<HitboxCollision>(true))
-            {
-                hitbox.parent = drifter.gameObject;
-                hitbox.AttackID = attacks.AttackID;
-                hitbox.AttackType = attacks.AttackType;
-                hitbox.Active = true;
-                hitbox.Facing = facing;
+        GameObject amber = host.CreateNetworkObject("Amber", transform.position + pos, transform.rotation);
+        amber.transform.localScale = flip;
+        amber.GetComponent<Rigidbody2D>().velocity = rb.velocity;
+        foreach (HitboxCollision hitbox in amber.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+            hitbox.Facing = facing;
                 
-            }
-            charges = 0;
         }
+        charges = 0;
     }
 
 
@@ -97,8 +103,13 @@ public class SpaceJamMasterHit : MasterHit
             {
                 audioSource.Stop();
                 audioSource.PlayOneShot(audioClips[2],1f);
-                drifter.SetAnimatorBool("Empowered",true);
-                sprite.color = new Color(255,165,0);
+                Empowered = true;
+
+                drifter.AirIdleStateName = "Amber_Hang";
+                drifter.WalkStateName = "Amber_Walk";
+                drifter.GroundIdleStateName = "Amber_Idle";
+                drifter.PlayAnimation("W_Neutral_Finish");
+                //sprite.color = new Color(255,165,0);
             }
         }
 

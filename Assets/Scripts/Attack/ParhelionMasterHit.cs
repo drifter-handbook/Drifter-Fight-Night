@@ -5,10 +5,20 @@ using UnityEngine;
 public class ParhelionMasterHit : MasterHit
 {
     float terminalVelocity;
+    bool listeningForGround;
 
     void Start()
     {
+        if(!isHost)return;
         terminalVelocity = movement.terminalVelocity;
+    }
+
+    void Update(){
+        if(listeningForGround && movement.grounded)
+        {
+            drifter.PlayAnimation("W_Down_Land");
+            listeningForGround = false;
+        }
     }
 
     
@@ -38,6 +48,7 @@ public class ParhelionMasterHit : MasterHit
     
     public void setTerminalVelocity()
     {
+        listeningForGround = true;
         movement.terminalVelocity = 150;
     }
 
@@ -45,7 +56,6 @@ public class ParhelionMasterHit : MasterHit
     {
         movement.terminalVelocity = terminalVelocity;
     }
-
 
     //Inherited Roll Methods
 

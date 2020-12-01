@@ -14,7 +14,7 @@ public class ReflectableProjectile : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {
-
+        if(!GameController.Instance.IsHost)return;
         if(col.gameObject.name == "Reflector"){
             rb.velocity =  new Vector2(rb.velocity.x * -1.5f,rb.velocity.y);
 

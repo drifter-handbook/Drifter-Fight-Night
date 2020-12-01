@@ -58,7 +58,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             // apply damage
             if (drifter != null && status != null)
             {
-                drifter.DamageTaken += attackData.AttackDamage * (drifter.animator.GetBool("Guarding") && !attackData.isGrab ? 1 - drifter.BlockReduction : 1f);
+                drifter.DamageTaken += attackData.AttackDamage * (drifter.guarding && !attackData.isGrab ? 1 - drifter.BlockReduction : 1f);
                 //ScreenShake
             }
             // apply knockback
@@ -83,7 +83,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
 
             //Ignore knockback if invincible or armoured
-            if (status != null && (attackData.isGrab || !drifter.animator.GetBool("Guarding"))){
+            if (status != null && (attackData.isGrab || !drifter.guarding)){
 
                 if(!status.HasArmour() || attackData.isGrab){
 
@@ -140,7 +140,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             Vector3 hitSparkPos = Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f);
             HitSpark hitSparkMode = HitSpark.POKE;
             Vector2 hitSparkScale = Vector2.one;
-            if (drifter != null && drifter.animator.GetBool("Guarding") && !attackData.isGrab){
+            if (drifter != null && drifter.guarding && !attackData.isGrab){
                 hitSparkMode = drifter.BlockReduction > 0.5f ? HitSpark.GUARD_WEAK : HitSpark.GUARD_STRONG;
                 hitSparkScale = new Vector2(facingDir * 10f, 10f);
             }

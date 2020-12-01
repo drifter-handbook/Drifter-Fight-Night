@@ -41,8 +41,8 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
         GameObject deathExplosion = host.CreateNetworkObject("DeathExplosion", other.transform.position, Quaternion.identity);
         deathExplosion.transform.position =
             ClampObjectToScreenSpace.FindPosition(deathExplosion.transform);
-        deathExplosion.transform.eulerAngles =
-            ClampObjectToScreenSpace.FindNearestOctagonalAngle(deathExplosion.transform);
+        deathExplosion.transform.eulerAngles = new Vector3(0,0,((other.gameObject.GetComponent<Rigidbody2D>().velocity.y>0)?1:-1) * Vector3.Angle(other.gameObject.GetComponent<Rigidbody2D>().velocity, new Vector3(1f,0,0)));
+            //ClampObjectToScreenSpace.FindNearestOctagonalAngle(deathExplosion.transform);
         return deathExplosion;    
     }
 
@@ -88,9 +88,10 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                 drifter.status.ApplyStatusEffect(PlayerStatusEffect.DEAD, 1.9f);
                 drifter.status.ApplyStatusEffect(PlayerStatusEffect.INVULN, 7f);
 
+                CreateExplosion(other, -1);
+
                 if (other.gameObject.GetComponent<Drifter>().Stocks > 0)
                 {
-                    CreateExplosion(other, -1);
                     StartCoroutine(Respawn(other));
                 }
                 else

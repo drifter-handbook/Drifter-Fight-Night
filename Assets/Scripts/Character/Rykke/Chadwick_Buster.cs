@@ -10,6 +10,7 @@ public class Chadwick_Buster : Chadwick_Basic
 
     void OnTriggerEnter2D(Collider2D col)
     {
+        if(!GameController.Instance.IsHost)return;
         if(col.gameObject.name == "Reflector" && !reflected)
         {
                 reflected = true;

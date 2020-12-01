@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2500366524564274172}
   - component: {fileID: 3666978349253754902}
   - component: {fileID: 7668598605610115087}
+  - component: {fileID: 8875812254790699898}
   m_Layer: 0
   m_Name: HoldPerson
   m_TagString: Untagged
@@ -143,6 +144,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1925752a4980314891b5dbe83f9cfac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8875812254790699898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2198231603327798865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1ef945a1776594438c7a9223e2d7bb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6067338647227602392
 GameObject:
   m_ObjectHideFlags: 0
@@ -154,7 +167,7 @@ GameObject:
   - component: {fileID: 8352988573582540426}
   - component: {fileID: 3685943693562576563}
   - component: {fileID: 7960624543146640104}
-  - component: {fileID: 2153637533272270687}
+  - component: {fileID: 7746271856892216308}
   m_Layer: 9
   m_Name: HitBox
   m_TagString: Untagged
@@ -205,9 +218,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 2198231603327798865}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 0}
   AttackData: {fileID: 11400000, guid: c53dcc323aa708044bbca05414169ce4, type: 2}
---- !u!114 &2153637533272270687
+--- !u!114 &7746271856892216308
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -216,8 +230,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 6067338647227602392}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df179948d3a121141bab089d76551e09, type: 3}
+  m_Script: {fileID: 11500000, guid: 824b53936bb9ee14f89527ff6f9879d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  duration: 0.5
   drifter: {fileID: 0}
+  GrabState: 

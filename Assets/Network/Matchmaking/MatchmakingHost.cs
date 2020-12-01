@@ -40,6 +40,7 @@ public class MatchmakingHost : MonoBehaviour
         {
             createResponse = JsonConvert.DeserializeObject<MatchmakingCreateResponse>(www.downloadHandler.text);
             host.ConnectionKey = createResponse.connection_key;
+            host.RoomKey = createResponse.room_code;
             Debug.Log($"Room code: {createResponse.room_code}");
         }
         // continuously refresh room until start

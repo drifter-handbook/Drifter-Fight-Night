@@ -74,13 +74,14 @@ GameObject:
   m_Component:
   - component: {fileID: 972673139615811195}
   - component: {fileID: 4856517584088442834}
-  - component: {fileID: 73206151101622462}
   - component: {fileID: 8095940008517152496}
   - component: {fileID: -5196309034029731879}
   - component: {fileID: 5752160339368794783}
   - component: {fileID: 2603261473610151205}
   - component: {fileID: 1148131773242885438}
   - component: {fileID: 9193595533066794228}
+  - component: {fileID: 6798639412585500225}
+  - component: {fileID: 7087465242181077749}
   m_Layer: 0
   m_Name: BeanSpit
   m_TagString: Untagged
@@ -154,19 +155,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &73206151101622462
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8940445788500619895}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0858efbbb62af5e4c8dba1c80bb85222, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  duration: 0.4
 --- !u!95 &8095940008517152496
 Animator:
   serializedVersion: 3
@@ -254,5 +242,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad955f5683686da4883d3776c88e35e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6798639412585500225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8940445788500619895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1ef945a1776594438c7a9223e2d7bb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 0.4
+--- !u!114 &7087465242181077749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8940445788500619895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e616ba64b17e466408d647622dd28ac7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

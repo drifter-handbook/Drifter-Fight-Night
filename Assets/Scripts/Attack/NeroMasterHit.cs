@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class NeroMasterHit : MasterHit
 {
-    public Animator anim;
     int dashDistance = 25;
 
     public void RecoveryThrowSpear()
@@ -30,7 +29,6 @@ public class NeroMasterHit : MasterHit
 
     //Neutral W  logic
 
-
     public  void neutralWInitialize()
     {
         if(!isHost)return;
@@ -46,7 +44,7 @@ public class NeroMasterHit : MasterHit
         if(cancelable != 0)
         {
             if(TransitionFromChanneledAttack()) return;
-            if(drifter.input.MoveX != 0 || drifter.input.Special || dashDistance>=55) drifter.SetAnimatorBool("HasCharge",true);
+            if(drifter.input.MoveX != 0 || drifter.input.Special || dashDistance>=55) drifter.PlayAnimation("W_Neutral_Dash");
         }
 
         dashDistance += 3;
@@ -60,8 +58,6 @@ public class NeroMasterHit : MasterHit
         rb.gravityScale = 0;
 
         attacks.SetupAttackID(DrifterAttackType.W_Neutral);
-
-        drifter.SetAnimatorBool("HasCharge",false);
     }
 
 
@@ -72,7 +68,7 @@ public class NeroMasterHit : MasterHit
     {
         if(!isHost)return;
         if(status.HasStatusEffect(PlayerStatusEffect.HIT)){
-            drifter.SetAnimatorBool("Empowered",true);
+            drifter.PlayAnimation("W_Down_Hit");
             status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.3f);
         }
         
@@ -82,13 +78,6 @@ public class NeroMasterHit : MasterHit
     {
         if(!isHost)return;
         status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.3f);
-        StartCoroutine(resetCounter());
-        
-    }
-
-    IEnumerator resetCounter(){
-        yield return new WaitForSeconds(.3f);
-        drifter.SetAnimatorBool("Empowered",false);
     }
 
     //Inhereted Roll Methods

@@ -11,9 +11,16 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     protected PlayerStatus status;
     protected float gravityScale;
     protected PlayerAttacks attacks;
+    protected Animator anim;
+
     public int facing;
 
     protected bool isHost = false;
+
+    protected bool listeningForInput = false;
+
+    protected bool Empowered = false;
+
 
     // Start is called before the first frame update
     void Awake()
@@ -22,15 +29,14 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         isHost = GameController.Instance.IsHost;
 
         if(!isHost)return;
-        drifter = transform.parent.gameObject.GetComponent<Drifter>();
         host = GameController.Instance.host;
-
         //Paretn Components
         drifter = transform.parent.gameObject.GetComponent<Drifter>();
         rb = drifter.GetComponent<Rigidbody2D>();
         movement = drifter.GetComponent<PlayerMovement>();
         attacks = drifter.GetComponent<PlayerAttacks>();
         status = drifter.GetComponent<PlayerStatus>();
+        anim = drifter.GetComponent<Animator>();
 
         gravityScale = rb.gravityScale;
     }
@@ -62,6 +68,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     public void pauseGravity()
     {
         if(!isHost)return;
+        movement.cancelJump();
         movement.gravityPaused= true;
         rb.gravityScale = 0f;
         rb.velocity = Vector2.zero;
@@ -70,8 +77,8 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     public void unpauseGravity()
     {
         if(!isHost)return;
+        if(rb.gravityScale != gravityScale) rb.gravityScale=gravityScale;
         movement.gravityPaused= false;
-        rb.gravityScale = gravityScale;
     }
 
     public void refreshHitboxID()
@@ -80,7 +87,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         attacks.SetMultiHitAttackID();
     }
 
-    //Allows for jump and shild canceling of moves. Returns true if it's condition was met
+    //Allows for jump and shield canceling of moves. Returns true if it's condition was met
     public bool TransitionFromChanneledAttack()
     {
         if(!isHost)return false;
@@ -88,7 +95,8 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         if(drifter.input.Guard)
         {
             status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
-            drifter.SetAnimatorBool("Guarding", true);
+            playState(drifter.GuardStateName);
+            drifter.guarding = true;
             unpauseGravity();
             return true;
         }
@@ -102,6 +110,34 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         return false;
     }
 
+
+    public void returnToIdle()
+	{
+        if(!isHost)return;
+		movement.jumping = false;
+		unpauseGravity();
+		listeningForInput = false;
+    	drifter.returnToIdle();
+    }
+
+    public void playState(string state)
+    {
+        if(!isHost)return;
+    	drifter.PlayAnimation(state);
+    }
+
+    public void playStateIfEmpowered(string state)
+    {
+        if(!isHost)return;
+        if(Empowered)drifter.PlayAnimation(state);
+    }
+
+    public void playStateIfEmpoweredOrRetunToIdle(string state)
+    {
+        if(!isHost)return;
+        if(Empowered)drifter.PlayAnimation(state);
+        else returnToIdle();
+    }
 
     public abstract void roll();
 

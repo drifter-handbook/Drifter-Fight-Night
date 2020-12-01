@@ -62,6 +62,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 6296654603608758130}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: ed7b39424606acc4e940a6ebd0ba49fb, type: 2}
   AttackData: {fileID: 0}
 --- !u!1 &6296654603608758130
@@ -81,8 +82,9 @@ GameObject:
   - component: {fileID: 3389640118042620027}
   - component: {fileID: 5470345268959372728}
   - component: {fileID: 7886195267023075697}
-  - component: {fileID: 1708368437208199655}
-  - component: {fileID: 5766792958142897920}
+  - component: {fileID: 1487623735782179076}
+  - component: {fileID: 1904457097153504290}
+  - component: {fileID: 5673164972487264968}
   m_Layer: 0
   m_Name: RyykeTombstone
   m_TagString: Untagged
@@ -160,11 +162,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 5253896854285998856}
   facing: 0
-  activate: 0
-  Ryyke: {fileID: 0}
   attacks: {fileID: 0}
-  grounded: 0
-  broken: 0
 --- !u!212 &2025754852541153630
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -269,7 +267,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1925752a4980314891b5dbe83f9cfac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1708368437208199655
+--- !u!114 &1487623735782179076
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -278,10 +276,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6296654603608758130}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 966aa641b64b635488c8fe778561ad30, type: 3}
+  m_Script: {fileID: 11500000, guid: b1ef945a1776594438c7a9223e2d7bb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5766792958142897920
+--- !u!114 &1904457097153504290
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -290,7 +288,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 6296654603608758130}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 375a5dfd8071204439601cc2c3319524, type: 3}
+  m_Script: {fileID: 11500000, guid: 4133822f74fe7224ea726bb338e62949, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5673164972487264968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6296654603608758130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cda61db25d2ac7b48a171625f4fc23c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &6484447763738667867
@@ -354,6 +364,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 6296654603608758130}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: c976d7367f4a4a646b4c9d4926f01f0c, type: 2}
   AttackData: {fileID: 0}
 --- !u!1 &7599516960564962806

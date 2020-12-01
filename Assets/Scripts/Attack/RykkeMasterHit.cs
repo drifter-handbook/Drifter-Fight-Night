@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class RykkeMasterHit : MasterHit
 {
-    public Animator anim;
     public TetherRange playerRange;
     public TetherRange ledgeRange;
     GameObject activeStone;
@@ -17,7 +16,6 @@ public class RykkeMasterHit : MasterHit
 
     int recoveryReset =2;
 
-
     void Update()
     {
 
@@ -28,10 +26,6 @@ public class RykkeMasterHit : MasterHit
             cancelTethering();
         }
 
-        if(drifter.Charge == 0){
-            drifter.SetAnimatorBool("Empowered",false);
-            drifter.BlockReduction = .25f;
-        }
         if(movement.grounded){
             recoveryReset = 2;
         }
@@ -39,6 +33,8 @@ public class RykkeMasterHit : MasterHit
         if(tethering){
             rb.position =  Vector3.Lerp(rb.position,tetherTarget,.15f);
         }
+
+        if(drifter.Charge <=0)Empowered = false;
     }
 
 
@@ -113,12 +109,10 @@ public class RykkeMasterHit : MasterHit
         {
             if(!isHost)return;
             if(tethering){
-                UnityEngine.Debug.Log("CANCEL TETHERING");
                 tethering = false;
                 if(tetheredPlayer){
                     tetherTarget = Vector2.zero;
-                    drifter.SetAnimatorTrigger("GrabbedPlayer");
-                    UnityEngine.Debug.Log("ZOOM");
+                    drifter.PlayAnimation("W_Up_Attack");
                     rb.velocity = new Vector3(facing*35,30,0);
                 }
                 else if (!movement.ledgeHanging){
@@ -149,7 +143,8 @@ public class RykkeMasterHit : MasterHit
                 hitbox.Active = true;
                 hitbox.Facing = facing;
             }
-            HoldPerson.GetComponentInChildren<RyykeGrab>().drifter = drifter;
+            HoldPerson.GetComponentInChildren<DetectGrab>().drifter = drifter;
+            HoldPerson.GetComponentInChildren<DetectGrab>().GrabState = Empowered?"Grab_Empowered":"";
         }
 
 
@@ -205,7 +200,7 @@ public class RykkeMasterHit : MasterHit
                 activeStone.GetComponent<RyykeTombstone>().Break();
             }  
             facing = movement.Facing;
-            if(!movement.grounded)rb.velocity = new Vector2(0,10);
+            if(!movement.grounded)rb.velocity = new Vector2(rb.velocity.x *.5f,10);
             Vector3 flip = new Vector3(facing *8f,8f,1f);
             Vector3 loc = new Vector3(facing *1f,.8f,0f);
 
@@ -243,8 +238,7 @@ public class RykkeMasterHit : MasterHit
             }
 
             tombstone.GetComponent<RyykeTombstone>().facing = facing;
-            tombstone.GetComponent<RyykeTombstone>().grounded = true;
-            tombstone.GetComponent<RyykeTombstone>().activate = true;
+            tombstone.GetComponent<RyykeTombstone>().awakenActivate();
             
 
         }
@@ -255,7 +249,8 @@ public class RykkeMasterHit : MasterHit
             if(drifter.Charge < 3){
                 audioSource.PlayOneShot(audioClips[0]);
                 drifter.Charge++;
-                drifter.SetAnimatorBool("Empowered",true);
+                Empowered = true;
+                drifter.GuardStateName = "Guard_Strong";
                 drifter.BlockReduction = .75f;
             }
 
@@ -267,8 +262,8 @@ public class RykkeMasterHit : MasterHit
             if(drifter.Charge > 0){
               drifter.Charge--;
               if(drifter.Charge == 0){
-    			//anim.SetBool("Empowered",false);
-                drifter.SetAnimatorBool("Empowered",false);
+    			Empowered = false;
+                drifter.GuardStateName = "Guard";
                 drifter.BlockReduction = .25f;
             }
         }

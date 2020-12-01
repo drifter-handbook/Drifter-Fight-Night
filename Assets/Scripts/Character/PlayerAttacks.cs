@@ -22,28 +22,11 @@ public class SingleAttack
 
 public class PlayerAttacks : MonoBehaviour
 {
-    public static Dictionary<DrifterAttackType, string> AnimatorTriggers = new Dictionary<DrifterAttackType, string>()
-    {
-        { DrifterAttackType.Ground_Q_Neutral, "Attack" },
-        { DrifterAttackType.Aerial_Q_Neutral, "Aerial" },
-        { DrifterAttackType.W_Up, "Recovery" },
-        { DrifterAttackType.E_Side, "Grab" },
-        { DrifterAttackType.W_Neutral, "W_Neutral" },
-        { DrifterAttackType.W_Side, "W_Side" },
-        { DrifterAttackType.W_Down, "W_Down" },
-        { DrifterAttackType.Roll, "Roll" },
-        { DrifterAttackType.Aerial_Q_Up, "Aerial_Up" },
-        { DrifterAttackType.Aerial_Q_Down, "Aerial_Down" },
-        { DrifterAttackType.Aerial_Q_Side, "Aerial_Side" },
-        { DrifterAttackType.Ground_Q_Up, "Ground_Up" },
-        { DrifterAttackType.Ground_Q_Down, "Ground_Down" },
-        { DrifterAttackType.Ground_Q_Side, "Ground_Side" },
-    };
     public static Dictionary<DrifterAttackType, string> AnimatorStates = new Dictionary<DrifterAttackType, string>()
     {
-        { DrifterAttackType.Ground_Q_Neutral, "Attack" },
-        { DrifterAttackType.Aerial_Q_Neutral, "Aerial" },
-        { DrifterAttackType.W_Up, "Recovery" },
+        { DrifterAttackType.Ground_Q_Neutral, "Ground_Neutral" },
+        { DrifterAttackType.Aerial_Q_Neutral, "Aerial_Neutral" },
+        { DrifterAttackType.W_Up, "W_Up" },
         { DrifterAttackType.E_Side, "Grab" },
         { DrifterAttackType.W_Neutral, "W_Neutral" },
         { DrifterAttackType.W_Side, "W_Side" },
@@ -67,14 +50,19 @@ public class PlayerAttacks : MonoBehaviour
     public List<SingleAttack> AttackMap = new List<SingleAttack>();
     Dictionary<DrifterAttackType,SingleAttackData> Attacks = new Dictionary<DrifterAttackType,SingleAttackData>();
     public int maxRecoveries = 1;
+
+    [NonSerialized]
     public int currentRecoveries;
+    [NonSerialized]
     public bool ledgeHanging = false;
+    [NonSerialized]
     public int Facing = 0;
 
     Drifter drifter;
     PlayerStatus status;
     Animator animator;
     IMasterHit hit;
+    PlayerMovement movement;
 
     NetworkSync sync;
 
@@ -94,6 +82,7 @@ public class PlayerAttacks : MonoBehaviour
         drifter = GetComponent<Drifter>();
         animator = drifter.animator;
         status = GetComponent<PlayerStatus>();
+        movement = GetComponent<PlayerMovement>();
         hit = GetComponentInChildren<IMasterHit>();
         sync = GetComponent<NetworkSync>();
         currentRecoveries = maxRecoveries;
@@ -111,9 +100,9 @@ public class PlayerAttacks : MonoBehaviour
         bool lightPressed = !drifter.prevInput.Light && drifter.input.Light;
         bool specialPressed = !drifter.prevInput.Special && drifter.input.Special;
         bool grabPressed = !drifter.prevInput.Grab && drifter.input.Grab;
-        bool canAct = !status.HasStunEffect() && !animator.GetBool("Guarding") && !ledgeHanging;
+        bool canAct = !status.HasStunEffect() && !drifter.guarding && !ledgeHanging;
 
-        if((animator.GetBool("Grounded") && !status.HasStatusEffect(PlayerStatusEffect.END_LAG)) || status.HasEnemyStunEffect()){
+        if((movement.grounded && !status.HasStatusEffect(PlayerStatusEffect.END_LAG)) || status.HasEnemyStunEffect()){
             resetRecovery();
         }
 
@@ -123,19 +112,30 @@ public class PlayerAttacks : MonoBehaviour
         }
         else if(specialPressed && canAct)
         {
-            if(drifter.input.MoveY > 0 && currentRecoveries >0){
+            if(drifter.input.MoveY > 0 && currentRecoveries >0)
+            {
                 StartAttack(DrifterAttackType.W_Up);
                 currentRecoveries--;
             }
-            else if(drifter.input.MoveY < 0)StartAttack(DrifterAttackType.W_Down);
-            else if(drifter.input.MoveX!=0)StartAttack(DrifterAttackType.W_Side);
-            else if(drifter.input.MoveY==0 && drifter.input.MoveX==0)StartAttack(DrifterAttackType.W_Neutral);
+            else if(drifter.input.MoveY < 0)
+            {
+                StartAttack(DrifterAttackType.W_Down);
+            }
+            else if(drifter.input.MoveX!=0)
+            {
+                StartAttack(DrifterAttackType.W_Side);
+            }
+            else if(drifter.input.MoveY==0 && drifter.input.MoveX==0)
+            {
+                StartAttack(DrifterAttackType.W_Neutral);
+                
+            }
         }
 
         //attack  //neutral aerial
         else if (lightPressed && canAct)
         {
-            if (animator.GetBool("Grounded"))
+            if (movement.grounded)
             {
                 if(drifter.input.MoveY > 0)StartAttack(DrifterAttackType.Ground_Q_Up);
                 else if(drifter.input.MoveY < 0)StartAttack(DrifterAttackType.Ground_Q_Down);
@@ -143,7 +143,8 @@ public class PlayerAttacks : MonoBehaviour
                 else StartAttack(DrifterAttackType.Ground_Q_Neutral);
             }
             else
-            {                
+            {    
+                movement.canLandingCancel = true;            
                 if(drifter.input.MoveY > 0)StartAttack(DrifterAttackType.Aerial_Q_Up);
                 else if(drifter.input.MoveY < 0)StartAttack(DrifterAttackType.Aerial_Q_Down);
                 else if(drifter.input.MoveX!=0)StartAttack(DrifterAttackType.Aerial_Q_Side);
@@ -159,10 +160,10 @@ public class PlayerAttacks : MonoBehaviour
     void StartAttack(DrifterAttackType attackType)
     {
         SetHitboxesActive(false);
-        drifter.SetAnimatorTrigger(AnimatorTriggers[attackType]);
+        drifter.PlayAnimation(AnimatorStates[attackType]);
         SetupAttackID(attackType);
 
-        status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,4f);
+        status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,8f);
         
     }
 

@@ -10,19 +10,6 @@ public class OrroSideWProjectile : MonoBehaviour
     public Animator anim;
     public Rigidbody2D rb;
     public bool empowered = false;
-    void Start()
-    {
-
-        StartCoroutine(Empower());
-        StartCoroutine(delete(duration));
-        
-    }
-    void Update(){
-        if(empowered)
-        {
-            anim.SetTrigger("Empower");
-        }
-    }
 
     void OnTriggerEnter2D(Collider2D col)
     {
@@ -31,14 +18,11 @@ public class OrroSideWProjectile : MonoBehaviour
             StartCoroutine(delete(.1f));
         }
     }
-
-    IEnumerator Empower(){
-        yield return new WaitForSeconds(duration * .15f);
-        anim.SetTrigger("Empower"); 
+    
+    public void empower()
+    {
         empowered = true;
         rb.velocity += new Vector2(facing *15f,0f);
-
-        yield break;
     }
 
     IEnumerator delete(float time){

@@ -13,11 +13,11 @@ GameObject:
   - component: {fileID: 3534170779043924433}
   - component: {fileID: 6172366569522616803}
   - component: {fileID: -8100669845337638089}
-  - component: {fileID: 2731394533134396280}
   - component: {fileID: 5203601220736673892}
   - component: {fileID: 6296876909648444997}
   - component: {fileID: 1786724783220400201}
   - component: {fileID: 8467069752091205106}
+  - component: {fileID: 1073075783042121366}
   m_Layer: 8
   m_Name: Kamikaze
   m_TagString: Untagged
@@ -126,7 +126,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 13
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: fb13e85e8cd5db74c934ea1d0908ec67, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -157,19 +157,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.48228484, y: 0.31551322}
   m_EdgeRadius: 0
---- !u!114 &2731394533134396280
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1413698060829908408}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0c3110010e3c06498bc825a139111a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  duration: 3.5
 --- !u!114 &5203601220736673892
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -219,6 +206,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad955f5683686da4883d3776c88e35e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1073075783042121366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1413698060829908408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1ef945a1776594438c7a9223e2d7bb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 3.5
 --- !u!1 &7037138312686320679
 GameObject:
   m_ObjectHideFlags: 0
