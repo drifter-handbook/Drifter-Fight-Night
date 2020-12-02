@@ -94,6 +94,20 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         return false;
     }
 
+    
+    public void returnToIdle()
+    {
+        Debug.Log("hYEYO");
+        attacks.ChangeAnimationState("Idle");
+        applyEndLag(0);
+    }
+    
+    public void returnToHang()
+    {
+        Debug.Log("hYEYoyoO");
+        attacks.ChangeAnimationState("Jump Hang");
+        applyEndLag(0);
+    }
 
     public abstract void roll();
 

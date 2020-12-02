@@ -197,7 +197,7 @@ public class MegurinIsTheBest : MonoBehaviour
                 }
                 else if(drifter.input.MoveY < 0){
                     SetHitboxesActive(false);
-                    drifter.animator.Play("W_Down");
+                    drifter.animator.Play("W_Down_Start");
                     SetupAttackID(DrifterAttackType.Aerial_Q_Down);
                     status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,4f); 
                 }
@@ -231,13 +231,19 @@ public class MegurinIsTheBest : MonoBehaviour
         AttackType = attackType;
         AttackID = NextID;
         Debug.Log("in here " + AttackType);
+        Debug.Log("in here 2 " + AttackID);
         foreach (HitboxCollision hitbox in GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.GetComponent<Collider2D>().enabled = false;
+            Debug.Log("1");
             hitbox.AttackID = AttackID;
+            Debug.Log("2");
             hitbox.AttackType = AttackType;
+            Debug.Log("3");
             hitbox.AttackData = Attacks[AttackType];
+            Debug.Log("4");
             hitbox.Active = false;
+            Debug.Log("5");
             hitbox.Facing = Facing;
         }
     }

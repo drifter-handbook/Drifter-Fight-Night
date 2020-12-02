@@ -71,6 +71,7 @@ public class PlayerAttacks : MonoBehaviour
     public int currentRecoveries;
     public bool ledgeHanging = false;
     public int Facing = 0;
+    private string currentState;
 
     Drifter drifter;
     PlayerStatus status;
@@ -99,7 +100,7 @@ public class PlayerAttacks : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+      void Update()
     {
         if (!GameController.Instance.IsHost || GameController.Instance.IsPaused)
         {
@@ -110,94 +111,118 @@ public class PlayerAttacks : MonoBehaviour
         bool lightPressed = !drifter.prevInput.Light && drifter.input.Light;
         bool specialPressed = !drifter.prevInput.Special && drifter.input.Special;
         bool grabPressed = !drifter.prevInput.Grab && drifter.input.Grab;
+        //bool rollPressed = !drifter.prevInput.Roll && drifter.input.Roll;
         bool canAct = !status.HasStunEffect() && !animator.GetBool("Guarding") && !ledgeHanging;
+        //if (canAct){
+           // ChangeAnimationState("Idle");
+           // status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
+       // }
 
+        //Testing shit here:
+        //bool dashPressed = !drifter.prevInput.Dash && drifter.input.Dash;
+
+        //if (dashPressed && canAct){
+            //drifter.animator.Play("NeroTesting");
+        //}
         if((animator.GetBool("Grounded") && !status.HasStatusEffect(PlayerStatusEffect.END_LAG)) || status.HasEnemyStunEffect()){
             resetRecovery();
         }
-
-        if (grabPressed && canAct)
-        {
-            StartAttack(DrifterAttackType.E_Side);
+        if (grabPressed && canAct){
+            SetHitboxesActive(false);
+            ChangeAnimationState("Grab");
+            SetupAttackID(DrifterAttackType.E_Side);
+            status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,4f);
         }
-        else if (specialPressed && drifter.input.MoveY > 0 && canAct && currentRecoveries >0)
-        {
-            // recovery
-            StartAttack(DrifterAttackType.W_Up);
+        else if (specialPressed && drifter.input.MoveY> 0 && canAct && currentRecoveries > 0){
+            Debug.Log("test");
+            SetHitboxesActive(false);
+            ChangeAnimationState("W_Up");
+            SetupAttackID(DrifterAttackType.W_Up);
+            status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,4f);
             currentRecoveries--;
         }
-        else if (specialPressed && drifter.input.MoveY < 0 && canAct)
-        {
-            // Down W
-            StartAttack(DrifterAttackType.W_Down);
+        else if (specialPressed && drifter.input.MoveY < 0 && canAct){
+            // Down W - need to setup the correct play state for the multilayered move
+            SetHitboxesActive(false);
+            ChangeAnimationState("W_Down");
+            SetupAttackID(DrifterAttackType.W_Down);
+            status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,4f);
         }
-        else if (specialPressed && drifter.input.MoveX != 0 && canAct)
-        {
+        else if (specialPressed && drifter.input.MoveX != 0 && canAct){
             // Side W
-            StartAttack(DrifterAttackType.W_Side);
+            SetHitboxesActive(false);
+            ChangeAnimationState("W_Side");
+            SetupAttackID(DrifterAttackType.W_Side);
+            status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,4f);
         }
-        else if (specialPressed && drifter.input.MoveX == 0 && drifter.input.MoveY == 0 && canAct)
-        {
-            // Neutral W
-            StartAttack(DrifterAttackType.W_Neutral);
+        else if (specialPressed && drifter.input.MoveX == 0 && drifter.input.MoveY == 0 && canAct){
+             //Neutral W - need to setup the correct play state for the multilayered move
+            SetHitboxesActive(false);
+            ChangeAnimationState("NeutralWCharge");
+            SetupAttackID(DrifterAttackType.W_Neutral);
+            status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,4f); 
         }
-        //attack  //neutral aerial
         else if (lightPressed && canAct)
         {
             if (animator.GetBool("Grounded"))
             {
-                if(drifter.input.MoveY > 0)StartAttack(DrifterAttackType.Ground_Q_Up);
-                else if(drifter.input.MoveY < 0)StartAttack(DrifterAttackType.Ground_Q_Down);
-                else if(drifter.input.MoveX!=0)StartAttack(DrifterAttackType.Ground_Q_Side);
-                else StartAttack(DrifterAttackType.Ground_Q_Neutral);
+                if(drifter.input.MoveY > 0){
+                    SetHitboxesActive(false);
+                    ChangeAnimationState("Ground_Up");
+                    SetupAttackID(DrifterAttackType.Ground_Q_Up);
+                    status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,4f); 
+                }
+                else if(drifter.input.MoveY < 0){
+                    SetHitboxesActive(false);
+                    ChangeAnimationState("Ground_Down");
+                    SetupAttackID(DrifterAttackType.Ground_Q_Down);
+                    status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,4f); 
+                }
+                else if(drifter.input.MoveX!=0){
+                    SetHitboxesActive(false);
+                    ChangeAnimationState("Ground_Side");
+                    SetupAttackID(DrifterAttackType.Ground_Q_Side);
+                    status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,4f); 
+                }
+                else {
+                    SetHitboxesActive(false);
+                    ChangeAnimationState("Attack");
+                    SetupAttackID(DrifterAttackType.Ground_Q_Neutral);
+                    status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,4f); 
+                }
             }
             else
-            {                
-                if(drifter.input.MoveY > 0)StartAttack(DrifterAttackType.Aerial_Q_Up);
-                else if(drifter.input.MoveY < 0)StartAttack(DrifterAttackType.Aerial_Q_Down);
-                else if(drifter.input.MoveX!=0)StartAttack(DrifterAttackType.Aerial_Q_Side);
-                else StartAttack(DrifterAttackType.Aerial_Q_Neutral);
+            {
+                if(drifter.input.MoveY > 0){
+                    SetHitboxesActive(false);
+                    ChangeAnimationState("Aerial_Up");
+                    SetupAttackID(DrifterAttackType.Aerial_Q_Up);
+                    status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,4f); 
+                }
+                else if(drifter.input.MoveY < 0){
+                    SetHitboxesActive(false);
+                    ChangeAnimationState("Aerial_Down");
+                    SetupAttackID(DrifterAttackType.Aerial_Q_Down);
+                    status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,4f); 
+                }
+                else if(drifter.input.MoveX != 0){
+                    SetHitboxesActive(false);
+                    ChangeAnimationState("Aerial_Side");
+                    SetupAttackID(DrifterAttackType.Aerial_Q_Side);
+                    status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,4f); 
+                }
+                else {
+                    SetHitboxesActive(false);
+                    ChangeAnimationState("Aerial");
+                    SetupAttackID(DrifterAttackType.Aerial_Q_Neutral);
+                    status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,4f); 
+                }
             }
         }
     }
 
     public void resetRecovery(){
         currentRecoveries = maxRecoveries;
-    }
-
-    void StartAttack(DrifterAttackType attackType)
-    {
-        SetHitboxesActive(false);
-        drifter.SetAnimatorTrigger(AnimatorTriggers[attackType]);
-        SetupAttackID(attackType);
-
-        status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,4f);
-            //Attacks[attackType].EndLag);
-
-        //StartCoroutine(ListenForAttackEvents(attackType));
-    }
-    public IEnumerator ListenForAttackEvents(DrifterAttackType attackType)
-    {
-        // check for when animator state changes.
-        // If animator states aren't named properly, hits won't be detected,
-        // FinishAttack will never be called,
-        // and we will have a memory and performance leak.
-        // Make sure they're named as described in AnimatorStates!
-
-        // enter the state
-        while (!animator.GetCurrentAnimatorStateInfo(0).IsName(AnimatorStates[attackType]))
-        {
-            yield return null;
-        }
-        SetHitboxesActive(true);
-        // exit the state
-        while (animator.GetCurrentAnimatorStateInfo(0).IsName(AnimatorStates[attackType]))
-        {
-            yield return null;
-        }
-        //FinishAttack(attackType);
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
-        yield break;
     }
 
     public void Hit(DrifterAttackType attackType, int attackID, GameObject target)
@@ -236,5 +261,16 @@ public class PlayerAttacks : MonoBehaviour
         {
             hitbox.Active = active;
         }
+    }
+    
+    public void ChangeAnimationState(string newState){
+        if (currentState == newState){
+            return;
+        }
+        //play Animation
+        drifter.animator.Play(newState, -1);
+
+        //reassign currstate
+        currentState = newState;
     }
 }
