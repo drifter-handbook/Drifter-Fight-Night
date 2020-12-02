@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 631160681623942775}
   - component: {fileID: 4787246157836015593}
   - component: {fileID: -755196437019343233}
-  - component: {fileID: 836318552652841040}
   - component: {fileID: 1156674152667159934}
   - component: {fileID: 7885566430873926550}
   - component: {fileID: 327939099038928480}
+  - component: {fileID: 6937552203893894572}
   m_Layer: 0
   m_Name: UairExplosion
   m_TagString: Untagged
@@ -107,19 +107,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &836318552652841040
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4194847039124982796}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c754f2fc81a43144ba4bba90a232d7e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  duration: 0.4
 --- !u!114 &1156674152667159934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -157,6 +144,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1925752a4980314891b5dbe83f9cfac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6937552203893894572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4194847039124982796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1ef945a1776594438c7a9223e2d7bb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: -1
 --- !u!1 &7725935128402090560
 GameObject:
   m_ObjectHideFlags: 0
@@ -218,5 +218,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 7725935128402090560}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: 158fca66a8b529a43bc50f01f6d3ee12, type: 2}
   AttackData: {fileID: 0}

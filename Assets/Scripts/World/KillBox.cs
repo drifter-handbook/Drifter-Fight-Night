@@ -75,13 +75,16 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
     protected void killPlayer(Collider2D other)
     {
 
-    	if (other.gameObject.tag == "Player" && other.GetType() == typeof(BoxCollider2D))
+    	if (other.gameObject.tag == "Player" &&other.GetType() == typeof(BoxCollider2D))
         {
             Drifter drifter = other.gameObject?.GetComponent<Drifter>();
             if (!drifter.status.HasStatusEffect(PlayerStatusEffect.DEAD))
             {   
-                if(GameController.Instance.IsHost){
-                     StartCoroutine(Shake.Shake(.3f, 1.5f));
+
+                    if(GameController.Instance.IsHost)
+                    {
+
+                    StartCoroutine(Shake.Shake(.3f, 1.5f));
 
                     drifter.Stocks--;
                     drifter.DamageTaken = 0f;
@@ -108,7 +111,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
 
                     if(GameController.Instance.IsHost)Destroy(other.gameObject);
 
-                    if(playerList.Count ==1)
+                    if(playerList.Count == 1)
                     {
 
                         foreach (KeyValuePair<GameObject, int> kvp in playerList)
@@ -117,7 +120,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                             endgameBanner.enabled = true;
                             
                         }
-
+                        UnityEngine.Debug.Log("ENDING GAME");
                         GameController.Instance.EndMatch(.8f);
                     }
                         

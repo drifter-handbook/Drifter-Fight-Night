@@ -156,8 +156,6 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
             continueJabFlag = false;
             playState(state);
         }
-        else returnToIdle();
-
     }
 
 

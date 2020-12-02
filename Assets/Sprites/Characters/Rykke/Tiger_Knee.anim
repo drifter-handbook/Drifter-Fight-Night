@@ -255,6 +255,9 @@ AnimationClip:
     - time: 0.25
       value: {fileID: 1513094992074782272, guid: 1263a3744d67b274890a26211f3eef47,
         type: 3}
+    - time: 0.33333334
+      value: {fileID: -1481522454458299324, guid: 1263a3744d67b274890a26211f3eef47,
+        type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -334,12 +337,13 @@ AnimationClip:
     - {fileID: 4835602662833849449, guid: 1263a3744d67b274890a26211f3eef47, type: 3}
     - {fileID: -8554611044215781622, guid: 1263a3744d67b274890a26211f3eef47, type: 3}
     - {fileID: 1513094992074782272, guid: 1263a3744d67b274890a26211f3eef47, type: 3}
+    - {fileID: -1481522454458299324, guid: 1263a3744d67b274890a26211f3eef47, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.33333334
+    m_StopTime: 0.4166667
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -600,6 +604,13 @@ AnimationClip:
   - time: 0.25
     functionName: continueJab
     data: Ground_Neutral_Kick
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.41666666
+    functionName: returnToIdle
+    data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0

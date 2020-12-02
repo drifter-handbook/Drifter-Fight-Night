@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 8093001406261527663}
+  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: 13523a6d472ee504ca1c6a0f395331cb, type: 2}
   AttackData: {fileID: 0}
 --- !u!58 &1752239417965232684
@@ -74,10 +75,10 @@ GameObject:
   - component: {fileID: 6999333704027081153}
   - component: {fileID: 305001863249051264}
   - component: {fileID: 2900363545522518179}
-  - component: {fileID: -8741771159838107614}
   - component: {fileID: 8101410409317906828}
   - component: {fileID: 5326105489022101784}
   - component: {fileID: 1097151004613660895}
+  - component: {fileID: 1314306951773243049}
   m_Layer: 0
   m_Name: DairExplosion
   m_TagString: Untagged
@@ -170,19 +171,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &-8741771159838107614
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8093001406261527663}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c754f2fc81a43144ba4bba90a232d7e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  duration: 0.4
 --- !u!114 &8101410409317906828
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -220,3 +208,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1925752a4980314891b5dbe83f9cfac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1314306951773243049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8093001406261527663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1ef945a1776594438c7a9223e2d7bb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: -1

@@ -120,7 +120,6 @@ public class GameController : MonoBehaviour
         foreach(KeyValuePair<int, GameObject> kvp in NetworkPlayers.Instance.players){
             temp.Add(kvp.Key,kvp.Value.GetComponent<Drifter>().GetDrifterType());
         }
-        GameController.Instance.CleanupNetwork();
         yield return new WaitForSeconds(delay);
         yield return SceneManager.LoadSceneAsync("Endgame");
 
