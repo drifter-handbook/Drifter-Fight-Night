@@ -7,7 +7,7 @@ public class OrroMasterHit : MasterHit
     BeanWrangler bean;
     GameObject beanObject;
 
-    bool continueJabFlag = false;
+    
 
     void Start()
     {
@@ -23,25 +23,6 @@ public class OrroMasterHit : MasterHit
     }
 
     //Projectiles
-
-    public void checkForContinueJab()
-    {
-        if(!isHost)return;
-        if(drifter.input.Light)continueJabFlag = true;
-    }
-
-    public void continueJab(string state)
-    {
-        if(!isHost)return;
-        if(continueJabFlag)
-        {
-            refreshHitboxID();
-            continueJabFlag = false;
-            playState(state);
-        }
-        else returnToIdle();
-
-    }
 
     public void fireball()
     {
@@ -189,28 +170,12 @@ public class OrroMasterHit : MasterHit
         else bean.recallBean(rb.position - new Vector2(-2f * movement.Facing,4f),movement.Facing);
         Empowered =!Empowered;
 
-        // if (anim.GetBool("Empowered"))
-        // {
-        //     UnityEngine.Debug.Log("SENT OUT");
-        //     drifter.SetAnimatorBool("Empowered",false);
-        //     
-        // }
-        // else{
-        //     UnityEngine.Debug.Log("COME BACK");
-        //     drifter.SetAnimatorBool("Empowered",true);
-        //     bean.recallBean(rb.position - new Vector2(-2f * movement.Facing,4f),movement.Facing);
-
-        // }
-
     }
 
     //Inhereted Roll Methods
     public override void roll()
     {
         //unused
-
-        // facing = movement.Facing;
-        // rb.position += new Vector2(facing* 10,0);
     }
 
     public override void rollGetupStart()

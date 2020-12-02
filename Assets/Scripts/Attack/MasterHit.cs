@@ -21,6 +21,8 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
     protected bool Empowered = false;
 
+    protected bool continueJabFlag = false;
+
 
     // Start is called before the first frame update
     void Awake()
@@ -138,6 +140,26 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         if(Empowered)drifter.PlayAnimation(state);
         else returnToIdle();
     }
+
+    public void checkForContinueJab()
+    {
+        if(!isHost)return;
+        if(drifter.input.Light)continueJabFlag = true;
+    }
+
+    public void continueJab(string state)
+    {
+        if(!isHost)return;
+        if(continueJabFlag)
+        {
+            refreshHitboxID();
+            continueJabFlag = false;
+            playState(state);
+        }
+        else returnToIdle();
+
+    }
+
 
     public abstract void roll();
 

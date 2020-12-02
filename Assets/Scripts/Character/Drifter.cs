@@ -102,6 +102,13 @@ public class Drifter : MonoBehaviour, INetworkInit
         transform.GetChild(3).GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),myColor);
     }
 
+    public void SetColor(int colorID)
+    {
+        myColor = CharacterMenu.ColorFromEnum[(PlayerColor)(colorID>0?colorID:0)];
+        transform.GetChild(0).transform.GetChild(1).GetComponent<SpriteRenderer>().color = myColor;
+        transform.GetChild(3).GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),myColor);
+    }
+
     //Replaces the animator state transition function
     public void PlayAnimation(string state)
     {

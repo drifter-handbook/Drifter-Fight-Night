@@ -38,5 +38,11 @@ public class SyncAnimatorStateClient : MonoBehaviour, ISyncClient, INetworkMessa
     public void ReceiveNetworkMessage(NetworkMessage message)
     {
         state = NetworkUtils.GetNetworkData<SyncAnimatorState>(sync["animator_state"]);
+
+        if(anim.GetCurrentAnimatorStateInfo(0).fullPathHash != state.stateHash)
+            {
+                anim.Play(state.stateHash);
+            }
+            anim.enabled = state.active;
     }
 }
