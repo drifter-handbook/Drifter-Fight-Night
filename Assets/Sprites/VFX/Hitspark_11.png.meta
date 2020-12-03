@@ -1,22 +1,28 @@
 fileFormatVersion: 2
-guid: 985e6cccca940e74c83d9c29e9e13c4a
+guid: 8724a00b65dd38243afccaf38883724f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 9204196500355728536
-    second: restituted_0
+      213: -3064802883779282558
+    second: Hitspark_11_0
   - first:
-      213: -5532971667693295556
-    second: restituted_1
+      213: -8922143326942877402
+    second: Hitspark_11_1
   - first:
-      213: -4633827747284606939
-    second: restituted_2
+      213: -7719785702776244265
+    second: Hitspark_11_2
   - first:
-      213: 429432392402122836
-    second: restituted_3
+      213: 7738261435318873097
+    second: Hitspark_11_3
   - first:
-      213: 6023661657313109347
-    second: restituted_4
+      213: -2327734716594919666
+    second: Hitspark_11_4
+  - first:
+      213: 6735278155398167668
+    second: Hitspark_11_5
+  - first:
+      213: -7944804961196514612
+    second: Hitspark_11_6
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -46,7 +52,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: -1
+    filterMode: 0
     aniso: -1
     mipBias: -100
     wrapU: 1
@@ -79,7 +85,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -91,7 +97,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -102,12 +108,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: restituted_0
+      name: Hitspark_11_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 96
+        width: 64
         height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -116,19 +122,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 894c89e73ffdbbf70800000000000000
-      internalID: 9204196500355728536
+      spriteID: 2893eb5e302a775d0800000000000000
+      internalID: -3064802883779282558
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: restituted_1
+      name: Hitspark_11_1
       rect:
         serializedVersion: 2
-        x: 96
+        x: 64
         y: 0
-        width: 96
+        width: 64
         height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -137,19 +143,40 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c3827da459fe633b0800000000000000
-      internalID: -5532971667693295556
+      spriteID: 629a27a6aed2e2480800000000000000
+      internalID: -8922143326942877402
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: restituted_2
+      name: Hitspark_11_2
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7d7f1e3fdcfcdd490800000000000000
+      internalID: -7719785702776244265
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hitspark_11_3
       rect:
         serializedVersion: 2
         x: 192
         y: 0
-        width: 96
+        width: 64
         height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -158,19 +185,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 520a0c4073651bfb0800000000000000
-      internalID: -4633827747284606939
+      spriteID: 90c294fb6c3d36b60800000000000000
+      internalID: 7738261435318873097
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: restituted_3
+      name: Hitspark_11_4
       rect:
         serializedVersion: 2
-        x: 288
+        x: 256
         y: 0
-        width: 96
+        width: 64
         height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -179,19 +206,40 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 458bc245c76a5f500800000000000000
-      internalID: 429432392402122836
+      spriteID: e07e30eab9932bfd0800000000000000
+      internalID: -2327734716594919666
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: restituted_4
+      name: Hitspark_11_5
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 47cb4fb1cc3887d50800000000000000
+      internalID: 6735278155398167668
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hitspark_11_6
       rect:
         serializedVersion: 2
         x: 384
         y: 0
-        width: 96
+        width: 64
         height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -200,8 +248,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 365e943dc58589350800000000000000
-      internalID: 6023661657313109347
+      spriteID: cc2ee1e2bf16eb190800000000000000
+      internalID: -7944804961196514612
       vertices: []
       indices: 
       edges: []
