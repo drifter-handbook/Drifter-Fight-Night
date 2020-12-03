@@ -279,7 +279,11 @@ public class PlayerMovement : MonoBehaviour
 
             if(IsGrounded())
             {
-                if(!jumping)drifter.PlayAnimation(drifter.WalkStateName);
+                if(!jumping)
+                {
+                    drifter.PlayAnimation(drifter.WalkStateName);
+                    status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0);
+                }
             	rb.velocity = new Vector2(drifter.input.MoveX > 0 ? 
                     Mathf.Lerp((!status.HasStatusEffect(PlayerStatusEffect.SLOWED)?walkSpeed:(.6f*walkSpeed)),rb.velocity.x,groundAccelerationTime) :
                     Mathf.Lerp((!status.HasStatusEffect(PlayerStatusEffect.SLOWED)?-walkSpeed:(-.6f*walkSpeed)),rb.velocity.x,groundAccelerationTime), rb.velocity.y);
@@ -337,7 +341,8 @@ public class PlayerMovement : MonoBehaviour
             
             if(canAct && !jumping)drifter.returnToIdle();
             //standing ground friction (When button is not held)
-            rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 80f * Time.deltaTime), rb.velocity.y);
+            if(!grounded)rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 20f * Time.deltaTime), rb.velocity.y);
+            else rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 80f * Time.deltaTime), rb.velocity.y);
         }
 
 
