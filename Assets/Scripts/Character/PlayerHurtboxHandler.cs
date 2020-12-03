@@ -117,13 +117,12 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
                 //apply defender hitpause
                 hitstunOriginal = HitstunDuration;
-                if(attackData.HitVisual == HitSpark.CRIT) HitstunDuration = 1.5f;
-                else if (willCollideWithBlastZoneAccurate(GetComponent<Rigidbody2D>(), hitstunOriginal) && drifter.Stocks <= 1 && NetworkPlayers.Instance.players.Values.Where(x => x != null).ToList().Count <=2) HitstunDuration = 3f;
+                if (willCollideWithBlastZoneAccurate(GetComponent<Rigidbody2D>(), hitstunOriginal) && drifter.Stocks <= 1 && NetworkPlayers.Instance.players.Values.Where(x => x != null).ToList().Count <=2) HitstunDuration = 3f;
                 else if (willCollideWithBlastZone(GetComponent<Rigidbody2D>() , hitstunOriginal) ) Mathf.Min(HitstunDuration*=2f,3f);
                 
                 
 
-                if(HitstunDuration>0 && attackData.StatusEffect != PlayerStatusEffect.HITPAUSE)status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,HitstunDuration*.25f);
+                if(HitstunDuration>0 && attackData.StatusEffect != PlayerStatusEffect.HITPAUSE)status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,attackData.HitVisual == HitSpark.CRIT?.6f:HitstunDuration*.25f);
                 StartCoroutine(drifter.GetComponentInChildren<CameraShake>().Shake(attackData.StatusEffect != PlayerStatusEffect.HITPAUSE?HitstunDuration*.2f:attackData.StatusDuration,attackData.StatusEffect != PlayerStatusEffect.HITPAUSE?1.5f:2.5f));
 
                 //Cape logic
@@ -145,7 +144,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             }
 
             //apply attacker hitpause
-            if(hitbox.gameObject.tag != "Projectile" || attackData.HitVisual == HitSpark.CRIT)hitbox.parent.GetComponent<PlayerStatus>().ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,HitstunDuration*.22f);
+            if(hitbox.gameObject.tag != "Projectile" || attackData.HitVisual == HitSpark.CRIT)hitbox.parent.GetComponent<PlayerStatus>().ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,attackData.HitVisual == HitSpark.CRIT ? .6f : HitstunDuration*.22f);
 
             // create hit sparks
             Vector3 hitSparkPos = Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f);
@@ -178,7 +177,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
             if(attackData.HitVisual == HitSpark.CRIT && ! drifter.guarding)
             {
-                StartCoroutine(Shake.zoomEffect(HitstunDuration *.35f,Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),false));
+                StartCoroutine(Shake.zoomEffect(.6f,Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),false));
             }
 
             if (drifter != null)

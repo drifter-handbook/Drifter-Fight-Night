@@ -315,6 +315,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 99f00dda964e6054cb2af4c05ec2139d, type: 3}
+--- !u!1 &80741482 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8308863690101463978, guid: 99f00dda964e6054cb2af4c05ec2139d,
+    type: 3}
+  m_PrefabInstance: {fileID: 80741481}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &83182561
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -648,6 +654,7 @@ MonoBehaviour:
   startingEntities:
   - {fileID: 130681}
   - {fileID: 478000081}
+  - {fileID: 80741482}
 --- !u!4 &353127244
 Transform:
   m_ObjectHideFlags: 0
@@ -1007,6 +1014,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6819448990122589418, guid: 5df3c1865bde8da4bb806ac950f18a6e,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 6819448990122589419, guid: 5df3c1865bde8da4bb806ac950f18a6e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1036,6 +1048,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9200663932095536652, guid: 5df3c1865bde8da4bb806ac950f18a6e,
+        type: 3}
+      propertyPath: m_SortingLayerID
+      value: 592851037
+      objectReference: {fileID: 0}
+    - target: {fileID: 9200663932095536652, guid: 5df3c1865bde8da4bb806ac950f18a6e,
+        type: 3}
+      propertyPath: m_SortingLayer
+      value: -1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5df3c1865bde8da4bb806ac950f18a6e, type: 3}

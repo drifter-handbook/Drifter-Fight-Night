@@ -423,6 +423,7 @@ MonoBehaviour:
   startingEntities:
   - {fileID: 2049225742}
   - {fileID: 694650902}
+  - {fileID: 1126252821}
 --- !u!4 &643544333
 Transform:
   m_ObjectHideFlags: 0
@@ -539,6 +540,16 @@ PrefabInstance:
       propertyPath: endgameBanner
       value: 
       objectReference: {fileID: 1084686273}
+    - target: {fileID: 5156570637720607460, guid: c6335b54d7903ca478353699c205f47c,
+        type: 3}
+      propertyPath: m_SortingLayerID
+      value: 592851037
+      objectReference: {fileID: 0}
+    - target: {fileID: 5156570637720607460, guid: c6335b54d7903ca478353699c205f47c,
+        type: 3}
+      propertyPath: m_SortingLayer
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 5156570637747085166, guid: c6335b54d7903ca478353699c205f47c,
         type: 3}
       propertyPath: endgameBanner
@@ -929,6 +940,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 99f00dda964e6054cb2af4c05ec2139d, type: 3}
+--- !u!1 &1126252821 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8308863690101463978, guid: 99f00dda964e6054cb2af4c05ec2139d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1126252820}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1177374913
 GameObject:
   m_ObjectHideFlags: 0

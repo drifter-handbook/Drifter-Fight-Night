@@ -65,19 +65,20 @@ public class ScreenShake : MonoBehaviour , INetworkInit
 
       //transform.localPosition = position;
       
-      for(float i = 0f; i <= 1f;i+=.2f)
+      GetComponentInChildren<SyncAnimatorStateHost>().SetState(finalKill?"Final_Kill":"Critical_Attack"); 
+      for(float i = 0f; i <= 1f;i+=.05f)
       {
             transform.localPosition = Vector3.Lerp(transform.localPosition,position,i);
-            self.orthographicSize = Mathf.Lerp(self.orthographicSize,15f,i);
+            self.orthographicSize = Mathf.Lerp(self.orthographicSize,13f,i);
             yield return null;
       }
-      GetComponentInChildren<SyncAnimatorStateHost>().SetState(finalKill?"Final_Kill":"Critical_Attack"); 
-      CurrentShake = StartCoroutine(Shake(duration,.5f));
+      
+      CurrentShake = StartCoroutine(Shake(duration,.2f));
       yield return new WaitForSeconds(duration);
       GetComponentInChildren<SyncAnimatorStateHost>().SetState("Hidden"); 
        
       transform.localPosition = origPos;
-      for(float i = 0f; i <= 1f;i+=.2f)
+      for(float i = 0f; i <= 1f;i+=.01f)
          {
             transform.localPosition = Vector3.Lerp(transform.localPosition,origPos,i);
             self.orthographicSize = Mathf.Lerp(self.orthographicSize,baseZoom,i);
