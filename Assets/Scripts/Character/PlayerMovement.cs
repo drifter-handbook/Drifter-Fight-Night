@@ -40,12 +40,14 @@ public class PlayerMovement : MonoBehaviour
 
     public float activeFriction = .1f;
     public float inactiveFriction = .4f;
+    public string currentMoveState;
 
     Animator animator;
 
     NetworkEntityList entities;
 
     Coroutine jumpCoroutine;
+    Coroutine startCoroutino;
 
     PlayerAttacks attacks;
     PlayerStatus status;
@@ -149,7 +151,7 @@ public class PlayerMovement : MonoBehaviour
 
         if(!ledgeHanging && (animator.GetCurrentAnimatorStateInfo(0).IsName("Ledge_Grab_Strong") || animator.GetCurrentAnimatorStateInfo(0).IsName("Ledge_Grab_Weak")))
         {
-            drifter.SetAnimatorTrigger("Ledge_Climb_Basic");
+            ChangeAnimationState("Ledge_Climb_Basic");
         }
 
         //Sets hitstun state when applicable
@@ -202,8 +204,6 @@ public class PlayerMovement : MonoBehaviour
             else{
                 ringTime++;
             }
-
-            
         }
 
         //Reversed controls
@@ -211,8 +211,7 @@ public class PlayerMovement : MonoBehaviour
             drifter.input.MoveX *= -1;
         }
 
-
-        //Friciton Active Input
+        //Friction Active Input
         if(moving && grounded && !status.HasEnemyStunEffect())
         {
             frictionCollider.sharedMaterial.friction = activeFriction;
@@ -227,9 +226,8 @@ public class PlayerMovement : MonoBehaviour
         {
         	//UnityEngine.Debug.Log("BEFORE velocity: " + rb.velocity.x);
         	updateFacing();
-
-            drifter.SetAnimatorBool("Walking", true);
-
+            ChangeAnimationState("Walk");
+            //drifter.SetAnimatorBool("Walking", true);
             //If just started moving or switched directions
             if((rb.velocity.x == 0 || rb.velocity.x * drifter.input.MoveX < 0) && IsGrounded()){
                 spawnJuiceParticle(new Vector3(-Facing * (flipSprite?-1:1)* 1.5f,-1.3f,0),5);
@@ -241,6 +239,7 @@ public class PlayerMovement : MonoBehaviour
                     Mathf.Lerp((!status.HasStatusEffect(PlayerStatusEffect.SLOWED)?walkSpeed:(.6f*walkSpeed)),rb.velocity.x,groundAccelerationTime) :
                     Mathf.Lerp((!status.HasStatusEffect(PlayerStatusEffect.SLOWED)?-walkSpeed:(-.6f*walkSpeed)),rb.velocity.x,groundAccelerationTime), rb.velocity.y);
             }
+
             else
             {
             	rb.velocity = new Vector2(drifter.input.MoveX > 0 ? 
@@ -252,43 +251,37 @@ public class PlayerMovement : MonoBehaviour
         //Ledgegrabs Stuff
         else if(canAct && ledgeHanging)
         {
-
             if(drifter.input.Guard)
             {
                 status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.2f);
-                drifter.SetAnimatorTrigger("Ledge_Climb");
+                ChangeAnimationState("Climb");
             }
 
             else if((drifter.input.MoveX * (flipSprite?-1:1) * Facing < 0)){
                 DropLedge();
-                drifter.SetAnimatorTrigger("Ledge_Drop");
+                ChangeAnimationState("Jump Hang");
                 rb.velocity = new Vector3(Facing * (flipSprite?-1:1) * -25f,25f);
             }
-            
             else if((drifter.input.MoveX * (flipSprite?-1:1) * Facing > 0)  || drifter.input.MoveY > 0){
                 DropLedge();
                 status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.2f);
-                drifter.SetAnimatorTrigger("Ledge_Climb_Basic");
+                ChangeAnimationState("BasicLedgeClimb");
                 
                 rb.position = new Vector3(rb.position.x + (rb.position.x > 0 ? -1 :1) *2f, rb.position.y + 5f - ledgeClimbOffset);
             }
-
             else if(drifter.input.MoveY < 0 && prevMoveY < 0 && ledgeHanging){
                 DropLedge();
-                drifter.SetAnimatorTrigger("Ledge_Drop");
+                ChangeAnimationState("Jump Hang");
             }
 
         }
         //Turn walking animation off
         else if (!moving && status.HasGroundFriction())
         {
-            drifter.SetAnimatorBool("Walking", false);
-
+            ChangeAnimationState("Idle");
             //standing ground friction (When button is not held)
             rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 80f * Time.deltaTime), rb.velocity.y);
         }
-
-
         //The Fun Shit
         else if(IsGrounded())
         {
@@ -319,7 +312,7 @@ public class PlayerMovement : MonoBehaviour
         //Roll
         if(drifter.input.Guard && canGuard && moving && IsGrounded())
         {
-            drifter.SetAnimatorTrigger("Roll");
+            ChangeAnimationState("Roll");
             updateFacing();
         }
 
@@ -417,8 +410,8 @@ public class PlayerMovement : MonoBehaviour
         gravityPaused = false;
         attacks.ledgeHanging = true;
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.2f);
-        if(strongLedgeGrab)drifter.SetAnimatorTrigger("Ledge_Grab_Strong");
-        else drifter.SetAnimatorTrigger("Ledge_Grab_Weak");
+        if(strongLedgeGrab)ChangeAnimationState("Ledge_Grab_Strong");
+        else ChangeAnimationState("Ledge_Grab_Weak");;
         Facing = flipSprite ^ rb.position.x > 0 ? -1 :1;
         transform.localScale = new Vector3(Facing * Mathf.Abs(transform.localScale.x),
                 transform.localScale.y, transform.localScale.z);
@@ -451,7 +444,8 @@ public class PlayerMovement : MonoBehaviour
             if (currentJumps > 0)
             {
                 currentJumps--;
-                drifter.SetAnimatorTrigger("Jump");
+                Debug.Log("attempt");
+                ChangeAnimationState("Jump Start");
                 //Particles
                 if(IsGrounded()){
                     spawnJuiceParticle(new Vector3(0,-1,0),3);
@@ -464,8 +458,6 @@ public class PlayerMovement : MonoBehaviour
                 jumpCoroutine = StartCoroutine(DelayedJump());
             }
     }
-
-
     public void spawnJuiceParticle(Vector3 pos, int mode)
     {
         spawnJuiceParticle(pos, mode, transform.rotation);
@@ -513,5 +505,21 @@ public class PlayerMovement : MonoBehaviour
             }
         }
         varyJumpHeight = null;
+    }
+    public void cancelJump(){         
+        if(jumpCoroutine!= null)StopCoroutine(jumpCoroutine);         
+        if(varyJumpHeight!= null)StopCoroutine(varyJumpHeight);     
+    }
+    public void ChangeAnimationState(string newState){
+        Debug.Log("llllll" + currentMoveState);
+        Debug.Log("lalalalala " + newState);
+        if (currentMoveState == newState){
+            return;
+        }
+        //play Animation
+        drifter.animator.Play(newState, -1);
+
+        //reassign currstate
+        currentMoveState = newState;
     }
 }

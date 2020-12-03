@@ -175,9 +175,7 @@ public class PlayerStatus : MonoBehaviour
             //save delayed velocity
             delayedVelocity = rb.velocity;
         }
-
-
+        
         statusEffects[ef] = duration * 10f;
-
     }
 }

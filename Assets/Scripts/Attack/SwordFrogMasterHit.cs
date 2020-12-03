@@ -69,6 +69,12 @@ public class SwordFrogMasterHit : MasterHit
         if(status.HasStatusEffect(PlayerStatusEffect.HIT)){
             drifter.SetAnimatorBool("Empowered",true);
             status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.3f);
+            //success
+            attacks.ChangeAnimationState("W_Down2");
+        }
+        else{
+            //fail
+            attacks.ChangeAnimationState("W_Down");
         }
     }
 

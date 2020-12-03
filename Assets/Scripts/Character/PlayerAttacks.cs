@@ -158,7 +158,7 @@ public class PlayerAttacks : MonoBehaviour
         else if (specialPressed && drifter.input.MoveX == 0 && drifter.input.MoveY == 0 && canAct){
              //Neutral W - need to setup the correct play state for the multilayered move
             SetHitboxesActive(false);
-            ChangeAnimationState("NeutralWCharge");
+            ChangeAnimationState("W_Neutral");
             SetupAttackID(DrifterAttackType.W_Neutral);
             status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,4f); 
         }

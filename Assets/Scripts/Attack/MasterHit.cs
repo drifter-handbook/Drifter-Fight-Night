@@ -22,7 +22,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
         
 
-        //Paretn Components
+        //Parent Components
         drifter = transform.parent.gameObject.GetComponent<Drifter>();
         rb = drifter.GetComponent<Rigidbody2D>();
         movement = drifter.GetComponent<PlayerMovement>();
@@ -94,26 +94,44 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         return false;
     }
 
-    
+    //life is idle by default
     public void returnToIdle()
     {
-        Debug.Log("hYEYO");
         attacks.ChangeAnimationState("Idle");
         applyEndLag(0);
     }
     
+    //get back to hang
     public void returnToHang()
     {
-        Debug.Log("hYEYoyoO");
         attacks.ChangeAnimationState("Jump Hang");
         applyEndLag(0);
+    }
+    
+    //NEEEEEEEUUUUUUUUUUUTRRRRRRRAAAAAAAAALLLLLLLLLLLLLLL
+    public void returnToNeutral()
+    {
+        //if state is in midair
+        if(movement.grounded == false){
+            attacks.ChangeAnimationState("Jump Hang");
+            movement.currentMoveState = "Jump Hang";
+            applyEndLag(0);
+        }
+        //if state is in ground
+        else{
+            attacks.ChangeAnimationState("Idle");
+            movement.currentMoveState = "Idle";
+            applyEndLag(0);
+        }
+    }
+    public void changeToJumpEnd(){
+        attacks.ChangeAnimationState("JumpEnd");
     }
 
     public abstract void roll();
 
     public abstract void rollGetupStart();
     
-
     public abstract void rollGetupEnd();
    
 }
