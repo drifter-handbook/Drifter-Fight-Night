@@ -66,7 +66,6 @@ public class Drifter : MonoBehaviour, INetworkInit
     public string GuardStateName = "Guard";
     [NonSerialized]
     public string WalkStateName = "Walk";
-
     
     //public bool forceGuard = false;
 
@@ -77,6 +76,7 @@ public class Drifter : MonoBehaviour, INetworkInit
     {
         NetworkUtils.RegisterChildObject("PlayerAnimator", transform.Find("Sprite").gameObject);
         NetworkUtils.RegisterChildObject("PlayerStatusController", transform.Find("PlayerStatusController").gameObject);
+        NetworkUtils.RegisterChildObject("PlayerNumberIndicator", transform.Find("PlayerIndicator").gameObject);
     }
 
     public void Awake()
@@ -99,16 +99,24 @@ public class Drifter : MonoBehaviour, INetworkInit
 
     public void SetPeerId(int id){
         peerID = id;
-        myColor = CharacterMenu.ColorFromEnum[(PlayerColor)(peerID>0?peerID:0)];
-        transform.GetChild(0).transform.GetChild(1).GetComponent<SpriteRenderer>().color = myColor;
-        transform.GetChild(3).GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),myColor);
+        //myColor = CharacterMenu.ColorFromEnum[(PlayerColor)(peerID>0?peerID:0)];
+        //transform.GetChild(0).GetComponent<SpriteRenderer>().color = myColor;
+        //transform.GetChild(3).GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),myColor);
     }
 
     public void SetColor(int colorID)
     {
+
+        UnityEngine.Debug.Log(colorID);
         myColor = CharacterMenu.ColorFromEnum[(PlayerColor)(colorID>0?colorID:0)];
-        transform.GetChild(0).transform.GetChild(1).GetComponent<SpriteRenderer>().color = myColor;
+        transform.GetChild(0).GetComponent<SpriteRenderer>().color = myColor;
         transform.GetChild(3).GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),myColor);
+        if(isHost)transform.GetChild(0).GetComponent<SyncAnimatorStateHost>().SetState("P" + (colorID + 1));
+    }
+
+    public void SetIndicatorDirection(float facing)
+    {
+        if(isHost)transform.GetChild(0).localScale = new Vector2(Mathf.Abs(transform.GetChild(0).localScale.x) * facing,transform.GetChild(0).localScale.y);
     }
 
     //Replaces the animator state transition function

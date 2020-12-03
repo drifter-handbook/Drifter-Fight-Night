@@ -425,6 +425,7 @@ public class PlayerMovement : MonoBehaviour
             }
 
             attacks.Facing = Facing * (flipSprite?-1:1);
+            drifter.SetIndicatorDirection(Facing);
             transform.localScale = new Vector3(Facing * Mathf.Abs(transform.localScale.x),
                 transform.localScale.y, transform.localScale.z);
     }
@@ -433,6 +434,7 @@ public class PlayerMovement : MonoBehaviour
     //TODO This seems like it could be lumped in somewhere else
     public void flipFacing(){
         Facing *= -1;
+        drifter.SetIndicatorDirection(Facing);
         transform.localScale = new Vector3(Facing * Mathf.Abs(transform.localScale.x),transform.localScale.y, transform.localScale.z);
     }
 
