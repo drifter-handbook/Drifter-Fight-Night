@@ -119,6 +119,10 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
 
+        // if(drifter.forceGuard){
+        //     drifter.guarding = true;
+        // }
+
         bool moving = drifter.input.MoveX != 0;
 
         //Unpause gravity when hit
@@ -352,6 +356,11 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //Roll
+        // if(drifter.forceGuard){
+        //     drifter.guarding = true;
+        // }
+
+        // else 
         if(drifter.input.Guard && canGuard && moving && IsGrounded())
         {
             drifter.PlayAnimation("Roll");
@@ -365,7 +374,7 @@ public class PlayerMovement : MonoBehaviour
             drifter.PlayAnimation(drifter.GuardStateName);
             drifter.guarding = true;
         }
-
+      
         //Disable Guarding
         else
         {

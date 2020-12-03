@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -75,7 +75,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
     protected void killPlayer(Collider2D other)
     {
 
-    	if (other.gameObject.tag == "Player" &&other.GetType() == typeof(BoxCollider2D))
+    	if (other.gameObject.tag == "Player" && other.GetType() == typeof(BoxCollider2D))
         {
             Drifter drifter = other.gameObject?.GetComponent<Drifter>();
             if (!drifter.status.HasStatusEffect(PlayerStatusEffect.DEAD))

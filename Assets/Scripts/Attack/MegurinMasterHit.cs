@@ -151,7 +151,7 @@ public class MegurinMasterHit : MasterHit
         if(!isHost)return;
         facing = movement.Facing;
         Vector3 flip = new Vector3(facing * 10f, 10f, 1f);
-        Vector3 pos = new Vector3(facing * 3f, 4, 1f);
+        Vector3 pos = new Vector3(facing * 3f, 3.3f, 1f);
         
         GameObject smallBolt = host.CreateNetworkObject("WeakBolt", transform.position + pos, transform.rotation);
         smallBolt.transform.localScale = flip;
@@ -170,7 +170,7 @@ public class MegurinMasterHit : MasterHit
         if(!isHost)return;
         facing = movement.Facing;
         Vector3 flip = new Vector3(facing * 10f, 10f, 1f);
-        Vector3 pos = new Vector3(facing * 3f, 4, 1f);
+        Vector3 pos = new Vector3(facing * 3f, 3.3f, 1f);
         
         GameObject largeBolt = host.CreateNetworkObject("StrongBolt", transform.position + pos, transform.rotation);
         largeBolt.transform.localScale = flip;

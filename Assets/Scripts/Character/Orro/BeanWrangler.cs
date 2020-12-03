@@ -6,10 +6,11 @@ using System;
 public class BeanWrangler : MonoBehaviour
 {
     // Start is called before the first frame update
-    public Animator anim;
+    
 
     public int facing = 1;
 
+    SyncAnimatorStateHost anim;
     PlayerAttacks attacks;
     GameObject Orro;
     BeanState targetPos;
@@ -34,6 +35,9 @@ public class BeanWrangler : MonoBehaviour
     void Start()
     {
 
+        if(!GameController.Instance.IsHost)return;
+
+        anim = GetComponent<SyncAnimatorStateHost>();
         //Movement Stuff
         rb = GetComponent<Rigidbody2D>();
         targetPos = new BeanState(rb.position, facing);
@@ -42,7 +46,10 @@ public class BeanWrangler : MonoBehaviour
 
     }
 
-    void Update(){
+    void Update()
+    {
+
+        if(!GameController.Instance.IsHost)return;
 
         if(states.Count == 0 && timeSinceState >= 5f && beanUpdateTimer >=0) Destroy(this.gameObject);
 
@@ -68,67 +75,62 @@ public class BeanWrangler : MonoBehaviour
 
     public void addBeanState(Vector3 pos,int facing)
     {
+        if(!GameController.Instance.IsHost)return;
         timeSinceState =  0;
         states.Enqueue(new BeanState(pos,facing));
     }
 
 
-    public void recallBean(Vector3 pos,int facing){
+    public void recallBean(Vector3 pos,int facing)
+    {
+        if(!GameController.Instance.IsHost)return;
         states.Clear();
         targetPos = new BeanState(pos, facing);
 
         beanUpdateTimer = 0f;
     }
 
-    public void setBean(){
+    public void setBean()
+    {
+        if(!GameController.Instance.IsHost)return;
         states.Clear();
         beanUpdateTimer = -1f;
     }
 
     public void beanSpit()
     {
+        if(!GameController.Instance.IsHost)return;
         Vector3 flip = new Vector3(facing *8,8,0f);
         Vector3 pos = new Vector3(facing *.7f,3.5f,1f);
-        if (GameController.Instance.IsHost)
+        GameObject spit = GameController.Instance.host.CreateNetworkObject("BeanSpit", transform.position + pos, transform.rotation);
+        spit.transform.localScale = flip;
+        attacks.SetMultiHitAttackID();
+        spit.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * 30 - rb.velocity.x, 0);
+        foreach (HitboxCollision hitbox in spit.GetComponentsInChildren<HitboxCollision>(true))
         {
-            GameObject spit = GameController.Instance.host.CreateNetworkObject("BeanSpit", transform.position + pos, transform.rotation);
-            spit.transform.localScale = flip;
-            try{
-
-                attacks.SetMultiHitAttackID();
-                spit.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * 30 - rb.velocity.x, 0);
-                foreach (HitboxCollision hitbox in spit.GetComponentsInChildren<HitboxCollision>(true))
-                {
-                    hitbox.parent = Orro;
-                    hitbox.AttackID = attacks.AttackID;
-                    hitbox.AttackType = attacks.AttackType;
-                    hitbox.Active = true;
-                    hitbox.Facing = facing;
-                }
-            }
-            //TODO: Remove after network rework
-            catch(NullReferenceException E){
-                //Eventually
-            }
+                hitbox.parent = Orro;
+                hitbox.AttackID = attacks.AttackID;
+                hitbox.AttackType = attacks.AttackType;
+                hitbox.Active = true;
+                 hitbox.Facing = facing;
         }
     }
 
-    public void returnToNeutral(){
-        anim.Play("BEAN_IDLE");
+    public void returnToNeutral()
+    {
+        if(!GameController.Instance.IsHost)return;
+        anim.SetState("BEAN_IDLE");
     }
 
-    public void playeState(String stateName){
-        anim.Play(stateName);
+    public void playeState(String stateName)
+    {
+        if(!GameController.Instance.IsHost)return;
+        anim.SetState(stateName);
     }
  
-    public void multihit(){
-        try{
-            attacks.SetMultiHitAttackID();    
-        }
-        //TODO: Remove after network rework
-        catch (NullReferenceException E){
-            //Eventually
-        }
-        
+    public void multihit()
+    {
+        if(!GameController.Instance.IsHost)return;
+        attacks.SetMultiHitAttackID();    
     }
 }

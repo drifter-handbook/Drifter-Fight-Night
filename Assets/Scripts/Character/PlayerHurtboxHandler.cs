@@ -117,8 +117,10 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
                 //apply defender hitpause
                 hitstunOriginal = HitstunDuration;
-                if (willCollideWithBlastZoneAccurate(GetComponent<Rigidbody2D>(), hitstunOriginal) && drifter.Stocks <= 1 && NetworkPlayers.Instance.players.Values.Where(x => x != null).ToList().Count <=2) HitstunDuration = 3f;
-                else if (willCollideWithBlastZone(GetComponent<Rigidbody2D>() , hitstunOriginal)) Mathf.Min(HitstunDuration*=2f,3f);
+                if(attackData.HitVisual == HitSpark.CRIT) HitstunDuration = 1.5f;
+                else if (willCollideWithBlastZoneAccurate(GetComponent<Rigidbody2D>(), hitstunOriginal) && drifter.Stocks <= 1 && NetworkPlayers.Instance.players.Values.Where(x => x != null).ToList().Count <=2) HitstunDuration = 3f;
+                else if (willCollideWithBlastZone(GetComponent<Rigidbody2D>() , hitstunOriginal) ) Mathf.Min(HitstunDuration*=2f,3f);
+                
                 
 
                 if(HitstunDuration>0 && attackData.StatusEffect != PlayerStatusEffect.HITPAUSE)status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,HitstunDuration*.25f);
@@ -132,9 +134,18 @@ public class PlayerHurtboxHandler : MonoBehaviour
                     GetComponent<PlayerMovement>().flipFacing();
                 }            
             }
+            else if(drifter.guarding)
+            {
+                //push bloth players back on guarrd
+
+                if(hitbox.gameObject.tag != "Projectile")hitbox.parent.GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(HitstunDuration,.2f,.8f) * hitbox.Facing *-45f, hitbox.parent.GetComponent<Rigidbody2D>().velocity.y);
+               
+                GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(HitstunDuration,.2f,.8f) *40f  * hitbox.Facing , GetComponent<Rigidbody2D>().velocity.y);
+
+            }
 
             //apply attacker hitpause
-            if(hitbox.gameObject.tag != "Projectile")hitbox.parent.GetComponent<PlayerStatus>().ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,HitstunDuration*.22f);
+            if(hitbox.gameObject.tag != "Projectile" || attackData.HitVisual == HitSpark.CRIT)hitbox.parent.GetComponent<PlayerStatus>().ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,HitstunDuration*.22f);
 
             // create hit sparks
             Vector3 hitSparkPos = Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f);
@@ -162,7 +173,12 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.CRIT, hitSparkPos, 0, new Vector2(facingDir * 10f, 10f));
 
                 if(drifter.Stocks <= 1 && willCollideWithBlastZoneAccurate(GetComponent<Rigidbody2D>(), hitstunOriginal))
-                    StartCoroutine(Shake.KillZoom(HitstunDuration*.25f,Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f)));
+                    StartCoroutine(Shake.zoomEffect(HitstunDuration*.25f,Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),true));
+            }
+
+            if(attackData.HitVisual == HitSpark.CRIT && ! drifter.guarding)
+            {
+                StartCoroutine(Shake.zoomEffect(HitstunDuration *.35f,Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),false));
             }
 
             if (drifter != null)

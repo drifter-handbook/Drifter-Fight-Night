@@ -4,17 +4,18 @@ using UnityEngine;
 
 public class AnimatedProjectileUtil : MonoBehaviour
 {
-
-	Animator anim;
+    SyncAnimatorStateHost anim;
+	  //Animator anim;
     // Start is called before the first frame update
     void Start()
     {
-        anim = GetComponent<Animator>();
+        if(!GameController.Instance.IsHost)return;
+        anim = GetComponent<SyncAnimatorStateHost>();
     }
 
    public void PlayAnimation(string state)
    {
    		if(!GameController.Instance.IsHost)return;
-   		anim.Play(state);
+   		anim.SetState(state);
    }
 }

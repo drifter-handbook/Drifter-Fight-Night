@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class Chadwick_Buster : Chadwick_Basic
 {
-
-    public Animator anim;
-    bool reflected = false;
+    protected bool reflected = false;
 
     void OnTriggerEnter2D(Collider2D col)
     {
@@ -32,13 +30,15 @@ public class Chadwick_Buster : Chadwick_Basic
         if(col.gameObject.name == "Hurtboxes" && col.gameObject.GetComponent<HurtboxCollision>().parent.GetComponent<Drifter>() != drifter){
             rb.velocity = Vector2.zero;
 
-            anim.Play("Busta_Wolf");
+            anim.SetState("Busta_Wolf");
 
         }
         
     }
 
-    public void refreshHitboxes(){
+    public void refreshHitboxes()
+    {
+        if(!GameController.Instance.IsHost)return;
         foreach (HitboxCollision hitbox in gameObject.GetComponentsInChildren<HitboxCollision>())
             {
                 hitbox.AttackID = hitbox.AttackID-=55;

@@ -160,9 +160,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 716dfe0e59174d642afa9c605171679a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anim: {fileID: 5253896854285998856}
+  anim: {fileID: 1904457097153504290}
   facing: 0
-  attacks: {fileID: 0}
 --- !u!212 &2025754852541153630
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -279,6 +278,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ef945a1776594438c7a9223e2d7bb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  duration: -1
 --- !u!114 &1904457097153504290
 MonoBehaviour:
   m_ObjectHideFlags: 0

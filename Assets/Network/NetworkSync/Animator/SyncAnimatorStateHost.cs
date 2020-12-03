@@ -9,7 +9,7 @@ public class SyncAnimatorStateHost : MonoBehaviour, ISyncHost
     Animator anim;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         sync = GetComponent<NetworkSync>();
         anim = GetComponent<Animator>();
@@ -31,6 +31,7 @@ public class SyncAnimatorStateHost : MonoBehaviour, ISyncHost
 
     public void SetState(string name)
     {
+        //if(anim.)
         anim.Play(Animator.StringToHash(name));
         if (GameController.Instance.IsHost)
         {

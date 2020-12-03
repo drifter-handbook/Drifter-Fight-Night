@@ -2,23 +2,34 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScreenShake : MonoBehaviour
+public class ScreenShake : MonoBehaviour , INetworkInit
 {
 
    Camera self;
    float baseZoom;
    Vector3 basePos;
    bool killing = false;
+   bool isHost;
+
+
    public Coroutine CurrentShake;
 
-   void Awake(){
+   void Awake()
+   {
+      isHost = GameController.Instance.IsHost;
       self = GetComponent<Camera>();
       basePos = gameObject.transform.localPosition;
       baseZoom = self.orthographicSize;
    }
 
+   public void OnNetworkInit()
+   {
+        NetworkUtils.RegisterChildObject("Dynamic_Background", transform.Find("Dynamic_Background").gameObject);
+   }
+
    public IEnumerator Shake(float duration, float magnitude)
    {
+         if(!isHost)yield break;
    		Vector3 origPos = transform.localPosition;
    		float elapsed = 0f;
 
@@ -40,9 +51,9 @@ public class ScreenShake : MonoBehaviour
 
    }
 
-   public IEnumerator KillZoom(float duration, Vector3 position)
+   public IEnumerator zoomEffect(float duration, Vector3 position, bool finalKill)
    {
-      if(killing){
+      if(killing || !isHost){
          yield break;
       }
       else{
@@ -57,13 +68,14 @@ public class ScreenShake : MonoBehaviour
       for(float i = 0f; i <= 1f;i+=.2f)
       {
             transform.localPosition = Vector3.Lerp(transform.localPosition,position,i);
-            self.orthographicSize = Mathf.Lerp(self.orthographicSize,11f,i);
+            self.orthographicSize = Mathf.Lerp(self.orthographicSize,15f,i);
             yield return null;
       }
-      GetComponentInChildren<SpriteRenderer>().enabled = true;
-      CurrentShake = StartCoroutine(Shake(duration,.15f));
+      GetComponentInChildren<SyncAnimatorStateHost>().SetState(finalKill?"Final_Kill":"Critical_Attack"); 
+      CurrentShake = StartCoroutine(Shake(duration,.5f));
       yield return new WaitForSeconds(duration);
-      GetComponentInChildren<SpriteRenderer>().enabled = false;  
+      GetComponentInChildren<SyncAnimatorStateHost>().SetState("Hidden"); 
+       
       transform.localPosition = origPos;
       for(float i = 0f; i <= 1f;i+=.2f)
          {
