@@ -114,16 +114,20 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         //if state is in midair
         if(movement.grounded == false){
             attacks.ChangeAnimationState("Jump Hang");
+            //set my flying self back
             movement.currentMoveState = "Jump Hang";
             applyEndLag(0);
         }
         //if state is in ground
         else{
             attacks.ChangeAnimationState("Idle");
+            //set my self back
             movement.currentMoveState = "Idle";
             applyEndLag(0);
         }
     }
+    
+    //end my flying dream.
     public void changeToJumpEnd(){
         attacks.ChangeAnimationState("JumpEnd");
     }
