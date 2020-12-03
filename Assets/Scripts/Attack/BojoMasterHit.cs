@@ -6,6 +6,26 @@ public class BojoMasterHit : MasterHit
 {
 
     GameObject Centaur = null;
+    float terminalVelocity;
+    bool listeningForGround;
+
+
+    void Start()
+    {
+        if(!isHost)return;
+        terminalVelocity = movement.terminalVelocity;
+    }
+
+    void Update()
+    {
+        if(!isHost)return;
+
+        if(listeningForGround && (movement.ledgeHanging || status.HasEnemyStunEffect()))
+        {
+            listeningForGround = false;
+            resetTerminal();
+        }
+    }
 
     public void GUN(){
 
@@ -59,15 +79,41 @@ public class BojoMasterHit : MasterHit
 
     public void upWGlide()
     {
-        if(!isHost || TransitionFromChanneledAttack())return;
+        if(!isHost)return;
 
-        if(drifter.input.MoveY <0 || movement.grounded)returnToIdle();
+        listeningForGround = true;
+
+
+        if(TransitionFromChanneledAttack())
+        {
+        	resetTerminal();
+        }
+
+        else if(drifter.input.MoveY <0 || movement.grounded)
+        {
+        	resetTerminal();
+        	returnToIdle();
+        }
         else
         {
+
+        	movement.updateFacing();
+        	rb.velocity = new Vector2(drifter.input.MoveX > 0 ? 
+                    Mathf.Lerp((!status.HasStatusEffect(PlayerStatusEffect.SLOWED)?20f:(.6f*20f)),rb.velocity.x,.85f) : 
+                    Mathf.Lerp((!status.HasStatusEffect(PlayerStatusEffect.SLOWED)?-20f:(-.6f*20f)),rb.velocity.x,.85f), rb.velocity.y);
+
             movement.updateFacing();
-            rb.velocity = new Vector2(drifter.input.MoveX * 15f,rb.velocity.y*.5f);
+            movement.terminalVelocity = 10f;
         }
     }
+
+    public void resetTerminal()
+    {
+    	if(!isHost)return;
+    	listeningForGround = false;
+        movement.terminalVelocity = terminalVelocity;
+    }
+
 
     //Inhereted Roll Methods
 

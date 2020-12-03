@@ -13,11 +13,18 @@ public class ParhelionMasterHit : MasterHit
         terminalVelocity = movement.terminalVelocity;
     }
 
-    void Update(){
+    void Update()
+    {
+        if(!isHost)return;
         if(listeningForGround && movement.grounded)
         {
             drifter.PlayAnimation("W_Down_Land");
             listeningForGround = false;
+        }
+        if(listeningForGround && (movement.ledgeHanging || status.HasEnemyStunEffect()))
+        {
+            listeningForGround = false;
+            resetTerminal();
         }
     }
 
@@ -48,12 +55,14 @@ public class ParhelionMasterHit : MasterHit
     
     public void setTerminalVelocity()
     {
+        if(!isHost)return;
         listeningForGround = true;
         movement.terminalVelocity = 150;
     }
 
     public void resetTerminal()
     {
+        if(!isHost)return;
         movement.terminalVelocity = terminalVelocity;
     }
 

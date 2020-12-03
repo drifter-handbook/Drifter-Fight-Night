@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -67,8 +67,8 @@ public class Drifter : MonoBehaviour, INetworkInit
     [NonSerialized]
     public string WalkStateName = "Walk";
 
-
-    public bool forceGuard = false;
+    
+    //public bool forceGuard = false;
 
     [NonSerialized]
     public bool guarding = false;
