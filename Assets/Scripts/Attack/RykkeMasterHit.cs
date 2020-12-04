@@ -172,7 +172,7 @@ public class RykkeMasterHit : MasterHit
 
     public void Buster_Wolf()
         {
-            if(!isHost)return;
+            if(!isHost || !Empowered)return;
             conmsumeStack();
             facing = movement.Facing;
             Vector3 flip = new Vector3(facing *10f,10f,1f);
