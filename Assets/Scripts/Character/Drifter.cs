@@ -132,10 +132,11 @@ public class Drifter : MonoBehaviour, INetworkInit
     //Return to idle is called anytime the player regains control
     public void returnToIdle()
     {
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
         movement.canLandingCancel = false;
         if(movement.grounded)animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState(GroundIdleStateName);
         else animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState(AirIdleStateName);
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
+        
     }
 
     public DrifterType GetDrifterType(){

@@ -88,7 +88,7 @@ public class SwordFrogMasterHit : MasterHit
     {
         if(!isHost)return;
         applyEndLag(1);
-        rb.velocity = new Vector3(facing * -5f,40f,0);
+        rb.velocity = new Vector3(0f,35f,0);
     }
 
     public override void rollGetupEnd()

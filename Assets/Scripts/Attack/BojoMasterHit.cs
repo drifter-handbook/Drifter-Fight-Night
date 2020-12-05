@@ -131,7 +131,7 @@ public class BojoMasterHit : MasterHit
     {
         if(!isHost)return;
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.5f);
-        rb.velocity = new Vector3(0,70f,0);
+        rb.velocity = new Vector3(0,75f,0);
     }
 
 

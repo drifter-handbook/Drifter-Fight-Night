@@ -81,7 +81,7 @@ public class ParhelionMasterHit : MasterHit
     {
         if(!isHost)return;
         applyEndLag(1);
-        rb.velocity = new Vector3(0,75f,0);
+        rb.velocity = new Vector3(0,70f,0);
     }
 
     public override void rollGetupEnd()

@@ -187,7 +187,7 @@ public class OrroMasterHit : MasterHit
     {
         if(!isHost)return;
         facing = movement.Facing;
-        rb.position += new Vector2(7f* facing,5.5f);
+        rb.position += new Vector2(7f* facing,4.9f);
     }
 
 }

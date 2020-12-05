@@ -29,6 +29,11 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
     }
 
+    public bool CanHit(int attackID)
+    {
+        return !oldAttacks.ContainsKey(attackID);
+    }
+
     public void RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, DrifterAttackType attackType, SingleAttackData attackData)
     {
         //UnityEngine.Debug.Log(attackID);
@@ -92,7 +97,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                     }            
                     if(attackData.Knockback > 0 && attackData.AngleOfImpact > -361){
                         GetComponent<Rigidbody2D>().velocity = new Vector2(forceDir.normalized.x * KB, GetComponent<PlayerMovement>().grounded?Mathf.Abs(forceDir.normalized.y * KB): forceDir.normalized.y * KB);
-                        if(GetComponent<PlayerMovement>().grounded)GetComponent<PlayerMovement>().spawnJuiceParticle(new Vector3(0,-2.5f,0), MovementParticleMode.Restitution);
+                        if(GetComponent<PlayerMovement>().grounded && attackData.AngleOfImpact < -75 &&  attackData.AngleOfImpact > -105)GetComponent<PlayerMovement>().spawnJuiceParticle(transform.position + new Vector3(0,-2.5f,0), MovementParticleMode.Restitution);
                     }
                     else if(attackData.Knockback > 0 && attackData.AngleOfImpact <= -361){
                         GetComponent<Rigidbody2D>().velocity = hitbox.parent.GetComponent<Rigidbody2D>().velocity * (1 + attackData.KnockbackScale);

@@ -295,7 +295,7 @@ public class MegurinMasterHit : MasterHit
 
    public override void rollGetupEnd(){
     facing = movement.Facing;
-    rb.position += new Vector2(4f* facing,5f);
+    rb.position += new Vector2(4f* facing,4.5f);
 }
 
 public override void roll(){

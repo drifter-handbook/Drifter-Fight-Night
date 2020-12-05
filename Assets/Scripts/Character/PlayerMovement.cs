@@ -102,16 +102,24 @@ public class PlayerMovement : MonoBehaviour
 
     //Restitution
     //TODO Redo this whole mess
-    void OnCollisionEnter2D(Collision2D col){
-        if(!status.HasGroundFriction() && (prevVelocity.y < 0 || col.gameObject.tag !=  "Platform") && (-40f >= (Mathf.Atan2(prevVelocity.y, prevVelocity.x)*180f / Mathf.PI) &&  (Mathf.Atan2(prevVelocity.y, prevVelocity.x)*180f / Mathf.PI) >= -115f)){
-            
-            if(prevVelocity.y < -5f ){
-                status.bounce();
+    void OnCollisionEnter2D(Collision2D col)
+    {
+
+        if(!status.HasGroundFriction()
+         && ((prevVelocity.y < 0 || col.gameObject.tag !=  "Platform" ) && prevVelocity.magnitude > 35f))
+         // && ((30f >= (Mathf.Atan2(prevVelocity.y, prevVelocity.x)*180f / Mathf.PI)
+         // &&  (Mathf.Atan2(prevVelocity.y, prevVelocity.x)*180f / Mathf.PI) <= 150f)
+         // || (-30f <= (Mathf.Atan2(prevVelocity.y, prevVelocity.x)*180f / Mathf.PI) 
+         // && (Mathf.Atan2(prevVelocity.y, prevVelocity.x)*180f / Mathf.PI) >= -150f)))
+        {
+            //if(prevVelocity.y < -5f ){
+
+                //status.bounce();
                 Vector3 normal = col.contacts[0].normal;
                 rb.velocity = Vector2.Reflect(prevVelocity,normal) *.8f;
-                status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.2f);
-                spawnJuiceParticle(new Vector3(0,-2.5f,0), MovementParticleMode.Restitution, Quaternion.Euler(0f,0f,Vector3.Angle(Vector3.down,normal)));
-            }
+                //status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, Mathf.Min(rb.velocity.magnitude * .005f,.3f));
+                spawnJuiceParticle(col.contacts[0].point, MovementParticleMode.Restitution, Quaternion.Euler(0f,0f, ( (rb.velocity.x < 0)?1:-1 ) * Vector3.Angle(Vector3.up,normal)));
+            //}
 
         }
     }
@@ -134,6 +142,7 @@ public class PlayerMovement : MonoBehaviour
             if(status.HasEnemyStunEffect())
             {
                 drifter.PlayAnimation("HitStun");
+                StartCoroutine(shake.Shake(.2f,.7f));
             }
             else{
                 animator.enabled = false;
@@ -166,7 +175,7 @@ public class PlayerMovement : MonoBehaviour
         else if(IsGrounded() && !status.HasStunEffect())
         {
             //drifter.PlayAnimation("Jump_End");
-            spawnJuiceParticle(new Vector3(0,-1,0), MovementParticleMode.Land);
+            spawnJuiceParticle(transform.position + particleOffset + new Vector3(0,-1,0), MovementParticleMode.Land);
         }
 
         grounded = IsGrounded();
@@ -187,7 +196,7 @@ public class PlayerMovement : MonoBehaviour
 
         //Smoke Trail
         if(status.HasStatusEffect(PlayerStatusEffect.KNOCKBACK) && rb.velocity.magnitude > 45f){
-            spawnJuiceParticle(Vector3.zero, MovementParticleMode.SmokeTrail, Quaternion.Euler(0,0,UnityEngine.Random.Range(0,180)));
+            spawnJuiceParticle(transform.position, MovementParticleMode.SmokeTrail, Quaternion.Euler(0,0,UnityEngine.Random.Range(0,180)));
         }
 
         //Sonic Boom Trail
@@ -274,7 +283,7 @@ public class PlayerMovement : MonoBehaviour
 
             //If just started moving or switched directions
             if((rb.velocity.x == 0 || rb.velocity.x * drifter.input.MoveX < 0) && IsGrounded()){
-                spawnJuiceParticle(new Vector3(-Facing * (flipSprite?-1:1)* 1.5f,-1.3f,0), MovementParticleMode.KickOff);
+                spawnJuiceParticle( transform.position + particleOffset + new Vector3(-Facing * (flipSprite?-1:1)* 1.5f,-1.3f,0), MovementParticleMode.KickOff);
             }
 
             if(IsGrounded())
@@ -291,6 +300,7 @@ public class PlayerMovement : MonoBehaviour
             else
             {
                 if(!jumping)drifter.PlayAnimation(drifter.AirIdleStateName);
+                status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0);
             	rb.velocity = new Vector2(drifter.input.MoveX > 0 ? 
                     Mathf.Lerp((!status.HasStatusEffect(PlayerStatusEffect.SLOWED)?airSpeed:(.6f*airSpeed)),rb.velocity.x,airAccelerationTime) : 
                     Mathf.Lerp((!status.HasStatusEffect(PlayerStatusEffect.SLOWED)?-airSpeed:(-.6f*airSpeed)),rb.velocity.x,airAccelerationTime), rb.velocity.y);
@@ -404,7 +414,7 @@ public class PlayerMovement : MonoBehaviour
 
             StartCoroutine(shake.Shake(.2f,.7f));
 
-            spawnJuiceParticle(new Vector3(.5f,UnityEngine.Random.Range(1f,3f),0), MovementParticleMode.Mash);
+            spawnJuiceParticle( transform.position + particleOffset + new Vector3(.5f,UnityEngine.Random.Range(1f,3f),0), MovementParticleMode.Mash);
         }
         //Save previous inputs for mashout. Move to Player input?
         prevMoveX = drifter.input.MoveX;
@@ -476,7 +486,7 @@ public class PlayerMovement : MonoBehaviour
         transform.localScale = new Vector3(Facing * Mathf.Abs(transform.localScale.x),
                 transform.localScale.y, transform.localScale.z);
 
-        rb.position = new Vector3(pos.x - (rb.position.x > 0 ? -1 :1) *2f, pos.y-ledgeOffset,pos.z);
+        rb.position = new Vector3(pos.x - (rb.position.x > 0 ? -1 :1) *1.5f, pos.y - 1.75f - ledgeOffset,pos.z);
  
         attacks.resetRecovery();
 
@@ -510,10 +520,10 @@ public class PlayerMovement : MonoBehaviour
                 else drifter.PlayAnimation("Jump_Start");
                 //Particles
                 if(IsGrounded()){
-                    spawnJuiceParticle(new Vector3(0,-1,0), MovementParticleMode.Jump);
+                    spawnJuiceParticle(transform.position + particleOffset + new Vector3(0,-1,0), MovementParticleMode.Jump);
                 }
                 else{
-                    spawnJuiceParticle(new Vector3(0,-1,0), MovementParticleMode.DoubleJump);
+                    spawnJuiceParticle(transform.position + particleOffset +new Vector3(0,-1,0), MovementParticleMode.DoubleJump);
                 }
                 //jump needs a little delay so character animations can spend
                 //a frame of two preparing to jump
@@ -530,7 +540,7 @@ public class PlayerMovement : MonoBehaviour
     private void spawnJuiceParticle(Vector3 pos, MovementParticleMode mode, Quaternion angle){
 
         particleOffset = new Vector3(particleOffset.x * Facing * (flipSprite?-1:1),particleOffset.y,0);
-    	GraphicalEffectManager.Instance.CreateMovementParticle(mode, transform.position + pos + particleOffset, angle.eulerAngles.z, new Vector2(Facing * (flipSprite ? -1 : 1), 1));
+    	GraphicalEffectManager.Instance.CreateMovementParticle(mode, pos, angle.eulerAngles.z, new Vector2(Facing * (flipSprite ? -1 : 1), 1));
     }
 
     private IEnumerator DelayedJump()
