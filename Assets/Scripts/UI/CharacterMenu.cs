@@ -334,7 +334,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     {
 
     	//Update sound clip in here
-    	switch(UnityEngine.Random.Range(0, 7)){
+    	switch(UnityEngine.Random.Range(0, 8)){
     		case 0:
     			SelectDrifter("Nero");
     			break;
@@ -359,6 +359,9 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     		case 7:
     			SelectDrifter("Spacejam");
     			break;
+            case 8:
+                SelectDrifter("Lucille");
+                break;    
     		default:
     			SelectDrifter("Spacejam");
     			break;						

@@ -10915,6 +10915,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 328656672, guid: 21d3d693e1a1b2f4c922a311d6d70f92, type: 3}
+      propertyPath: NetworkTypePrefabs.Array.size
+      value: 43
+      objectReference: {fileID: 0}
+    - target: {fileID: 328656672, guid: 21d3d693e1a1b2f4c922a311d6d70f92, type: 3}
+      propertyPath: NetworkTypePrefabs.Array.data[41]
+      value: 
+      objectReference: {fileID: 1016780505216394531, guid: 326da3b7589a9be4291faa24183e94fc,
+        type: 3}
+    - target: {fileID: 328656672, guid: 21d3d693e1a1b2f4c922a311d6d70f92, type: 3}
+      propertyPath: NetworkTypePrefabs.Array.data[42]
+      value: 
+      objectReference: {fileID: 4403905309752678501, guid: 63bcc3b3b37e83848b0a40469d3f523f,
+        type: 3}
     - target: {fileID: 8676352996291465652, guid: 21d3d693e1a1b2f4c922a311d6d70f92,
         type: 3}
       propertyPath: m_Name

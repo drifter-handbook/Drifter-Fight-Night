@@ -16,6 +16,7 @@ public enum DrifterType
     Megurin,
     Nero,
     Random,
+    Lucille,
 }
 
 

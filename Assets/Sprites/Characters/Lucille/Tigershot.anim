@@ -32,15 +32,12 @@ AnimationClip:
       value: {fileID: 4811594103414714499, guid: 86771de532f11cb47942f1f131c116fb,
         type: 3}
     - time: 0.33333334
-      value: {fileID: 4818860668851710861, guid: 86771de532f11cb47942f1f131c116fb,
-        type: 3}
-    - time: 0.41666666
       value: {fileID: -2091014683082286418, guid: 86771de532f11cb47942f1f131c116fb,
         type: 3}
-    - time: 0.5
+    - time: 0.41666666
       value: {fileID: -5501297128450535560, guid: 86771de532f11cb47942f1f131c116fb,
         type: 3}
-    - time: 0.5833333
+    - time: 0.5
       value: {fileID: 1612022147692661732, guid: 86771de532f11cb47942f1f131c116fb,
         type: 3}
     attribute: m_Sprite
@@ -66,7 +63,6 @@ AnimationClip:
     - {fileID: -6213064973320603072, guid: 86771de532f11cb47942f1f131c116fb, type: 3}
     - {fileID: -3174669304679368450, guid: 86771de532f11cb47942f1f131c116fb, type: 3}
     - {fileID: 4811594103414714499, guid: 86771de532f11cb47942f1f131c116fb, type: 3}
-    - {fileID: 4818860668851710861, guid: 86771de532f11cb47942f1f131c116fb, type: 3}
     - {fileID: -2091014683082286418, guid: 86771de532f11cb47942f1f131c116fb, type: 3}
     - {fileID: -5501297128450535560, guid: 86771de532f11cb47942f1f131c116fb, type: 3}
     - {fileID: 1612022147692661732, guid: 86771de532f11cb47942f1f131c116fb, type: 3}
@@ -75,7 +71,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.6666666
+    m_StopTime: 0.5833333
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -94,4 +90,18 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 0.33333334
+    functionName: Side_Attack_Fireball
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.5833333
+    functionName: returnToIdle
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
