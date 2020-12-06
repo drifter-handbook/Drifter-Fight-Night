@@ -121,7 +121,8 @@ public class GameController : MonoBehaviour
             temp.Add(kvp.Key,kvp.Value.GetComponent<Drifter>().GetDrifterType());
         }
         yield return new WaitForSeconds(delay);
-        yield return SceneManager.LoadSceneAsync("Endgame");
+        host.SetScene("Endgame");
+        yield return new WaitForSeconds(.1f);
 
         EndgameImageHandler endHandler = GameObject.FindGameObjectWithTag("EndgamePic").GetComponent<EndgameImageHandler>();
 

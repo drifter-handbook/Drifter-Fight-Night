@@ -561,6 +561,12 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1165910689}
   m_PrefabAsset: {fileID: 0}
+--- !u!95 &1165910691 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8089335417975486876, guid: b7472ea8ca06c2b47b57bb0484c1a2c1,
+    type: 3}
+  m_PrefabInstance: {fileID: 1165910689}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1194280590
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1245,6 +1251,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 248926427381265401, guid: a0381e10168aec24a80f4d4b38b5fda6,
+        type: 3}
+      propertyPath: endgameBanner
+      value: 
+      objectReference: {fileID: 1165910691}
     - target: {fileID: 1347981869293385827, guid: a0381e10168aec24a80f4d4b38b5fda6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1310,6 +1321,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -15
       objectReference: {fileID: 0}
+    - target: {fileID: 5614076347673908456, guid: a0381e10168aec24a80f4d4b38b5fda6,
+        type: 3}
+      propertyPath: endgameBanner
+      value: 
+      objectReference: {fileID: 1165910691}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a0381e10168aec24a80f4d4b38b5fda6, type: 3}
 --- !u!1 &1765972629 stripped
