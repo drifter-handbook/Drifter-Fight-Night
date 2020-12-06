@@ -182,6 +182,11 @@ public class GameController : MonoBehaviour
     }
     public void StartNetworkClient(string roomCode)
     {
+        if(client != null)
+        {
+            UnityEngine.Debug.Log("STINKY");
+        }
+        
         client = gameObject.AddComponent<NetworkClient>();
         NetworkSync sync = gameObject.AddComponent<NetworkSync>();
         sync.Initialize(0, "GameController");

@@ -75,30 +75,27 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
     protected void killPlayer(Collider2D other)
     {
 
-    	if (other.gameObject.tag == "Player" && other.GetType() == typeof(BoxCollider2D))
+    	if (other.gameObject.tag == "Player" && GameController.Instance.IsHost && other.GetType() == typeof(BoxCollider2D))
         {
             Drifter drifter = other.gameObject?.GetComponent<Drifter>();
             if (!drifter.status.HasStatusEffect(PlayerStatusEffect.DEAD))
             {   
 
-                    if(GameController.Instance.IsHost)
-                    {
 
-                    StartCoroutine(Shake.Shake(.3f, 1.5f));
+                StartCoroutine(Shake.Shake(.3f, 1.5f));
 
-                    drifter.Stocks--;
-                    drifter.DamageTaken = 0f;
-                    drifter.Charge = 0;
-                    drifter.status.ApplyStatusEffect(PlayerStatusEffect.DEAD, 1.9f);
-                    drifter.status.ApplyStatusEffect(PlayerStatusEffect.INVULN, 7f);
+                drifter.Stocks--;
+                drifter.DamageTaken = 0f;
+                drifter.Charge = 0;
+                drifter.status.ApplyStatusEffect(PlayerStatusEffect.DEAD, 1.9f);
+                drifter.status.ApplyStatusEffect(PlayerStatusEffect.INVULN, 7f);
 
-                    CreateExplosion(other, -1);
-                }
-               
+                CreateExplosion(other, -1);
+                           
 
                 if (other.gameObject.GetComponent<Drifter>().Stocks > 0)
                 {
-                    if(GameController.Instance.IsHost)StartCoroutine(Respawn(other));
+                    StartCoroutine(Respawn(other));
                 }
                 else
                 {
@@ -109,7 +106,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
 
                     if(playerList.Count !=1)playerList.Remove(other.gameObject);
 
-                    if(GameController.Instance.IsHost)Destroy(other.gameObject);
+                    Destroy(other.gameObject);
 
                     if(playerList.Count == 1)
                     {

@@ -5,6 +5,8 @@ using UnityEngine;
 public class LucilleMasterHit : MasterHit
 {
 
+    Queue<GameObject> rifts = new Queue<GameObject>();
+
 
     public void Side_Attack_Fireball()
     {
@@ -26,6 +28,68 @@ public class LucilleMasterHit : MasterHit
             hitbox.Active = true;
             hitbox.Facing = facing;
             
+        }
+    }
+
+    public void SpawnRift()
+    {
+        // jump upwards and create spear projectile
+        if(!isHost)return;
+
+        facing = movement.Facing;
+
+        if(rifts.Count == 3)
+        {
+            //Play animation here
+            Destroy(rifts.Dequeue());
+        }
+       
+        GameObject rift = GameController.Instance.host.CreateNetworkObject("Lucille_Rift", transform.position + new Vector3(0,3.5f,0), transform.rotation);
+
+        foreach (HitboxCollision hitbox in rift.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+            hitbox.Facing = facing;
+            
+        }
+        rifts.Enqueue(rift);
+    }
+
+    public void warpToNearestRift()
+    {
+        GameObject[] riftarray = rifts.ToArray();
+
+        float shortestDistance = 8000f;
+        GameObject targetPortal = null;
+
+        foreach(GameObject rift in riftarray)
+        {
+            if(shortestDistance > Vector3.Distance(rift.transform.position, drifter.transform.position))
+            {
+                shortestDistance = Vector3.Distance(rift.transform.position, drifter.transform.position);
+                targetPortal = rift;
+            }
+        }
+
+        if(targetPortal != null)
+        {
+            rb.transform.position = targetPortal.transform.position;
+            rifts.Clear(); 
+             foreach(GameObject rift in riftarray)
+            {
+                if(rift != targetPortal)rifts.Enqueue(rift);
+            }
+
+            //TODO play destory animation here instead
+            Destroy(targetPortal);
+        }
+        else
+        {
+            UnityEngine.Debug.Log("NO PORTALS");
+            //Play animation here
         }
     }
 

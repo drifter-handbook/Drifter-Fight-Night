@@ -49,6 +49,7 @@ public class EndgameImageHandler : MonoBehaviour
             case DrifterType.Swordfrog: miniIcon.GetComponent<Image>().sprite = sprites[4]; break;
             case DrifterType.Megurin: miniIcon.GetComponent<Image>().sprite = sprites[5]; break;
             case DrifterType.Spacejam: miniIcon.GetComponent<Image>().sprite = sprites[6]; break;
+            case DrifterType.Lucille: miniIcon.GetComponent<Image>().sprite = sprites[8]; break;
             case DrifterType.Lady_Parhelion:
             default: miniIcon.GetComponent<Image>().sprite = sprites[7]; break;                        
         }

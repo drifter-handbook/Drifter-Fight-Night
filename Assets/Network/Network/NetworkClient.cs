@@ -130,9 +130,17 @@ public class NetworkClient : MonoBehaviour, ISyncClient, INetworkMessageReceiver
             return;
         }
         currentObjectID = sceneStartingObjectID;
+
+        //Readsds LucilleJohnson if player tries to host, then goes to join
+        if(startingEntities.ToArray()[0] == null && startingEntities.Count == 1){
+            startingEntities.RemoveAt(0);
+            startingEntities.Add(GameObject.FindGameObjectWithTag("GameController"));
+        } 
+
         foreach (GameObject obj in startingEntities)
         {
-            // GameController doesn't follow the same rules
+            // GameController doesn't follow the same rules  
+            if(obj == null)continue;
             NetworkObjects.RemoveIncorrectComponents(obj);
             NetworkSync sync = obj.GetComponent<NetworkSync>();
             if (string.IsNullOrWhiteSpace(sync.NetworkType))

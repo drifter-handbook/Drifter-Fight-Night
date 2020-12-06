@@ -34,7 +34,13 @@ public class MatchmakingClient : MonoBehaviour
         {
             // TODO: room has closed error or something, or host left,
             // or bad room code
+            UnityEngine.Debug.Log("ROOM CLEANED");
+
+            GameController.Instance.CleanupNetwork();
             throw new UnityException("Invalid room code.");
+
+
+
         }
         else
         {

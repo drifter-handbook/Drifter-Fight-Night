@@ -70,6 +70,8 @@ public class NetworkObjects : MonoBehaviour
     public static void RemoveIncorrectComponents(GameObject networkObj)
     {
         // remove components of wrong type
+        if(networkObj == null)networkObj = GameController.Instance.gameObject;
+
         if (GameController.Instance.IsHost)
         {
             foreach (ISyncClient script in networkObj.GetComponents<ISyncClient>())

@@ -49,16 +49,18 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
     GameObject CreatePlayer(int peerID, ref int i)
     {
         DrifterType drifter = DrifterType.None;
+        int playerIndex = 0;
         foreach (CharacterSelectState state in CharacterMenu.CharSelData.charSelState)
         {
             if (state.PeerID == peerID)
             {
                 drifter = state.PlayerType;
+                playerIndex = state.PlayerIndex;
             }
         }
         GameObject obj = GameController.Instance.host.CreateNetworkObject(drifter.ToString().Replace("_", " "),
             spawnPoints[i % spawnPoints.Count].transform.position, Quaternion.identity);
-        obj.GetComponent<Drifter>().SetColor(i);
+        obj.GetComponent<Drifter>().SetColor(playerIndex);
         i++;
         obj.GetComponent<Drifter>().SetPeerId(peerID);
         players[peerID] = obj;

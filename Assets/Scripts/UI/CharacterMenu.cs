@@ -80,6 +80,8 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     List<PlayerMenuEntry> menuEntries = new List<PlayerMenuEntry>();
     bool mouse = true;
 
+    bool stageSelect = false;
+
     NetworkSync sync;
 
     public static CharacterMenu Instance => GameObject.FindGameObjectWithTag("CharacterMenu")?.GetComponent<CharacterMenu>();
@@ -92,17 +94,16 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         foreach (PlayerSelectFigurine drifter in drifters)
         {
             figurines[drifter.drifter] = drifter;
-            drifter.figurine.GetComponent<Animator>().SetBool("present", true);
+            //drifter.figurine.GetComponent<Animator>().SetBool("present", true);
         }
 
-        forwardButton.GetComponent<Animator>().SetBool("present", true);
         UpdateFightzone();
 
         if(GameController.Instance.IsHost){
             GameObject.Find("RoomCodeValue").GetComponent<Text>().text = GameController.Instance.host.RoomKey;
         }
 
-        if (PlayerPrefs.GetInt("HideRoomCode") > 0)
+        if (PlayerPrefs.GetInt("HideRoomCode") > 0 || !GameController.Instance.IsHost)
         {
             roomCode.SetActive(false);
         }
@@ -183,14 +184,14 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         }
         if((Input.anyKey || Input.GetAxis ("Horizontal") !=0 || Input.GetAxis ("Vertical") != 0) && mouse && (!Input.GetMouseButton(0) || Input.GetMouseButton(1) || Input.GetMouseButton(2))){
             mouse = false;
-            EventSystem.current.SetSelectedGameObject(everyoneReady() && GameController.Instance.IsHost ?(this.GetComponent<Animator>().GetBool("location")?GameObject.Find("Training"):forwardButton):GameObject.Find("Random Figurine"));
+            EventSystem.current.SetSelectedGameObject(everyoneReady() && GameController.Instance.IsHost ?(stageSelect?GameObject.Find("Training"):forwardButton):GameObject.Find("Random Figurine"));
         }
 
         Cursor.visible = mouse;
     }
 
     void Update(){
-        if(everyoneReady() && !this.GetComponent<Animator>().GetBool("location"))forwardButton.GetComponent<Button>().interactable = true;
+        if(everyoneReady() && !stageSelect)forwardButton.GetComponent<Button>().interactable = true;
         else forwardButton.GetComponent<Button>().interactable = false;
 
         //Press B or esc to bo back a screen
@@ -233,7 +234,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         foreach (PlayerSelectFigurine drifter in drifters)
         {
             CharacterSelectState state = charSelState.Find(x => x.PlayerIndex == GameController.Instance.PlayerID);
-            if (drifter.figurine != null && !GetComponent<Animator>().GetBool("location"))
+            if (drifter.figurine != null && !stageSelect)
             {
                 drifter.figurine.GetComponent<Figurine>().SetColor(ColorFromEnum[(PlayerColor)state.PlayerIndex]);
                 if (drifter.drifter == charSelState[state.PlayerIndex].PlayerType)
@@ -320,7 +321,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         }
         selectedFightzone = fightzones[selectedFightzoneNum];
 
-        if (GetComponent<Animator>().GetBool("location"))
+        if (stageSelect)
         {
             GameController.Instance.selectedStage = selectedFightzone.sceneName;
             if (GameController.Instance.IsHost)
@@ -416,7 +417,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     public void HeadToLocationSelect()
     {
 
-        if (this.GetComponent<Animator>().GetBool("location"))
+        if (stageSelect)
         {
             //So you're the host?
             //LET'S GO TO THE GAME!
@@ -430,15 +431,18 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
         forwardButton.GetComponent<Button>().interactable = false;
 
-        this.GetComponent<Animator>().SetBool("location", true);
+        stageSelect =  true;
+
         if (GameController.Instance.IsHost)
         {
-            sync["location"] = true;
+            sync["location"] = stageSelect;
+            GetComponent<SyncAnimatorStateHost>().SetState("BoardMove");
+
         }
-        if (!GameController.Instance.IsHost)
-        {
-            forwardButton.GetComponent<Animator>().SetBool("present", false);
-        }
+        // if (!GameController.Instance.IsHost)
+        // {
+        //     //forwardButton.GetComponent<Animator>().SetBool("present", false);
+        // }
 
         List<DrifterType> pickedTypes = new List<DrifterType>();
 
@@ -457,7 +461,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         foreach (PlayerSelectFigurine drifter in drifters)
         {
             drifter.figurine.GetComponent<Figurine>().TurnArrowOff();
-            drifter.figurine.GetComponent<Animator>().SetBool("present", false);
+            //drifter.figurine.GetComponent<Animator>().SetBool("present", false);
             drifter.figurine.GetComponent<Button>().interactable = false;
         }
         UpdateFightzone();
@@ -466,17 +470,20 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     public void HeadToCharacterSelect()
     {
 
-        if (!GameController.Instance.IsHost)
+        if (GameController.Instance.IsHost)
         {
-            //non-hosts don't get to start the game, so bring me back!
-            forwardButton.GetComponent<Animator>().SetBool("present", true);
-        }
+            stageSelect =  true;
 
+            sync["location"] = stageSelect;
+            GetComponent<SyncAnimatorStateHost>().SetState("BoardMoveBack");
+
+        }
+        
         stageMenu.SetActive(false);
 
         forwardButton.GetComponent<Button>().interactable = true;
 
-        this.GetComponent<Animator>().SetBool("location", false);
+        stageSelect = false;
 
         foreach (Animator card in rightPanel.GetComponentsInChildren<Animator>())
         {
@@ -490,7 +497,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
         foreach (PlayerSelectFigurine drifter in drifters)
         {
-            drifter.figurine.GetComponent<Animator>().SetBool("present", true);
+            //drifter.figurine.GetComponent<Animator>().SetBool("present", true);
             drifter.figurine.GetComponent<Button>().interactable = true;
 
         }
@@ -549,7 +556,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
     public void BackButton(){
         UnityEngine.Debug.Log("BACK PRESSED");
-        if(this.GetComponent<Animator>().GetBool("location")){
+        if(stageSelect){
             HeadToCharacterSelect();
         }
         else if(selectedFigurine != null){
