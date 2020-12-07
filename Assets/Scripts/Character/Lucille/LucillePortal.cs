@@ -19,7 +19,16 @@ public class LucillePortal : MonoBehaviour
     	{
     		GetComponent<Rigidbody2D>().velocity = new Vector3(hitbox.Facing * ((hitbox.OverrideData.AngleOfImpact < 45f && hitbox.OverrideData.AngleOfImpact > -45f)?35f:0f),((hitbox.OverrideData.AngleOfImpact > 45f || hitbox.OverrideData.AngleOfImpact < -45f)?35f:0f),0);
 
-    		GetComponent<SyncAnimatorStateHost>().SetState("Move_up");
+
+    		if((hitbox.OverrideData.AngleOfImpact > 45f && hitbox.OverrideData.AngleOfImpact < 135f))GetComponent<SyncAnimatorStateHost>().SetState("Move_up");
+    		else if(hitbox.Facing > 0)GetComponent<SyncAnimatorStateHost>().SetState("Move_Right");
+    		else GetComponent<SyncAnimatorStateHost>().SetState("Move_Left");
+
+    		foreach (HitboxCollision portalHitbox in GetComponentsInChildren<HitboxCollision>(true))
+        	{
+            	portalHitbox.AttackID -= 3;
+            	portalHitbox.Facing = hitbox.Facing;
+        	}
 
     		GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.LUCILLE,  Vector3.Lerp(transform.position, hitbox.parent.transform.position, 0.1f), 0, new Vector2(6f, 6f));
     	}

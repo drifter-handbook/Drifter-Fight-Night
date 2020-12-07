@@ -19,7 +19,7 @@ public class LucilleMasterHit : MasterHit
 
          bolt.transform.localScale = new Vector3(facing * 10f,10f,0);
 
-        bolt.GetComponent<Rigidbody2D>().velocity = new Vector3(facing * 20f,0f,0);
+        bolt.GetComponent<Rigidbody2D>().velocity = new Vector3(facing * 10f,0f,0);
         foreach (HitboxCollision hitbox in bolt.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
