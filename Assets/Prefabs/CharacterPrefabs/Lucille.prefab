@@ -141,6 +141,70 @@ CapsuleCollider2D:
   m_Offset: {x: -0.013213574, y: 0.32421547}
   m_Size: {x: 0.6930655, y: 0.21334851}
   m_Direction: 1
+--- !u!1 &8316399269328120959
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2943577653049627648}
+  - component: {fileID: 6403282287477242891}
+  - component: {fileID: 5225571035154125188}
+  m_Layer: 9
+  m_Name: LucilleKick
+  m_TagString: Lucille_Portal_Contact
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2943577653049627648
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8316399269328120959}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6684825320623129584}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6403282287477242891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8316399269328120959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parent: {fileID: 1016780505216394531}
+  playerType: {fileID: 0}
+  OverrideData: {fileID: 11400000, guid: 5b1591ce11926334c9e306337754ccb3, type: 2}
+  AttackData: {fileID: 0}
+--- !u!70 &5225571035154125188
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8316399269328120959}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.102219366, y: 0.44818732}
+  m_Size: {x: 0.34770218, y: 0.4524354}
+  m_Direction: 0
 --- !u!1001 &2666468584035325911
 PrefabInstance:
   m_ObjectHideFlags: 0

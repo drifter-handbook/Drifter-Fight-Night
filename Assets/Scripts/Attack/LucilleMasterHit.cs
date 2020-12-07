@@ -55,6 +55,7 @@ public class LucilleMasterHit : MasterHit
             hitbox.Facing = facing;
             
         }
+        rift.GetComponent<LucillePortal>().drifter = drifter.gameObject;
         rifts.Enqueue(rift);
     }
 
@@ -92,7 +93,6 @@ public class LucilleMasterHit : MasterHit
             //Play animation here
         }
     }
-
 
 
     public override void roll()
