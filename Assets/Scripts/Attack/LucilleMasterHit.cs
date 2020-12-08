@@ -111,7 +111,7 @@ public class LucilleMasterHit : MasterHit
         while(rifts.Count >0)
         {
             rifts.Dequeue().GetComponent<LucillePortal>().playState("HardDelete");
-            yield return new WaitForSeconds(.15f);
+            yield return new WaitForSeconds(.05f);
         }
         yield break;
     }
