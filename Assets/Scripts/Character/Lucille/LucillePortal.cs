@@ -34,5 +34,12 @@ public class LucillePortal : MonoBehaviour
     	}
 
     }
+
+    public void playState(string state)
+    {
+    	if(!GameController.Instance.IsHost)return;
+    	GetComponent<SyncAnimatorStateHost>().SetState(state);
+
+    }
     
 }

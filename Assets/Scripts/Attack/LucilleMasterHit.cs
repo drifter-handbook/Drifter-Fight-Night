@@ -7,6 +7,8 @@ public class LucilleMasterHit : MasterHit
 
     Queue<GameObject> rifts = new Queue<GameObject>();
 
+    Coroutine riftDetonation;
+
 
     public void Side_Attack_Fireball()
     {
@@ -41,7 +43,7 @@ public class LucilleMasterHit : MasterHit
         if(rifts.Count == 3)
         {
             //Play animation here
-            Destroy(rifts.Dequeue());
+            rifts.Dequeue().GetComponent<LucillePortal>().playState("SoftDelete");
         }
        
         GameObject rift = GameController.Instance.host.CreateNetworkObject("Lucille_Rift", transform.position + new Vector3(0,3.5f,0), transform.rotation);
@@ -79,19 +81,39 @@ public class LucilleMasterHit : MasterHit
         {
             rb.transform.position = targetPortal.transform.position;
             rifts.Clear(); 
-             foreach(GameObject rift in riftarray)
+            foreach(GameObject rift in riftarray)
             {
                 if(rift != targetPortal)rifts.Enqueue(rift);
             }
 
-            //TODO play destory animation here instead
-            Destroy(targetPortal);
+            foreach (HitboxCollision hitbox in targetPortal.GetComponentsInChildren<HitboxCollision>(true))
+            {
+                hitbox.AttackID -=3;
+            }
+
+            targetPortal.GetComponent<LucillePortal>().playState("HardDelete");
         }
         else
         {
             UnityEngine.Debug.Log("NO PORTALS");
             //Play animation here
         }
+    }
+
+    public void collapseAllPortals()
+    {
+        if(riftDetonation != null)StopCoroutine(riftDetonation);
+        riftDetonation = StartCoroutine(portalDetonateDelay());
+    }
+
+    IEnumerator portalDetonateDelay()
+    {
+        while(rifts.Count >0)
+        {
+            rifts.Dequeue().GetComponent<LucillePortal>().playState("HardDelete");
+            yield return new WaitForSeconds(.15f);
+        }
+        yield break;
     }
 
 

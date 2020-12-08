@@ -134,7 +134,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8936619961583540242}
   - component: {fileID: 3456216841151344973}
-  - component: {fileID: 8393398759766010564}
+  - component: {fileID: 8636112319358836473}
   m_Layer: 9
   m_Name: Roswell
   m_TagString: Lucille_Portal_Contact
@@ -172,8 +172,8 @@ MonoBehaviour:
   playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: 5c0b2f7b1ffb2d8439d37356a4933dee, type: 2}
   AttackData: {fileID: 0}
---- !u!58 &8393398759766010564
-CircleCollider2D:
+--- !u!70 &8636112319358836473
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -185,9 +185,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5
+  m_Offset: {x: 0.163377, y: 0.29411182}
+  m_Size: {x: 0.17324601, y: 0.41177636}
+  m_Direction: 0
 --- !u!1 &8028542857373867485
 GameObject:
   m_ObjectHideFlags: 0
