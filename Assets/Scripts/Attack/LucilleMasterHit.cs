@@ -63,6 +63,7 @@ public class LucilleMasterHit : MasterHit
 
     public void warpToNearestRift()
     {
+        if(!isHost)return;
         GameObject[] riftarray = rifts.ToArray();
 
         float shortestDistance = 8000f;
@@ -96,21 +97,31 @@ public class LucilleMasterHit : MasterHit
         else
         {
             UnityEngine.Debug.Log("NO PORTALS");
-            //Play animation here
         }
     }
 
     public void collapseAllPortals()
     {
+        if(!isHost)return;
         if(riftDetonation != null)StopCoroutine(riftDetonation);
         riftDetonation = StartCoroutine(portalDetonateDelay());
     }
 
     IEnumerator portalDetonateDelay()
     {
+        GameObject rift;
+        facing = movement.Facing;
         while(rifts.Count >0)
         {
-            rifts.Dequeue().GetComponent<LucillePortal>().playState("HardDelete");
+
+            rift = rifts.Dequeue();
+
+            foreach (HitboxCollision hitbox in rift.GetComponentsInChildren<HitboxCollision>(true))
+            {
+                hitbox.AttackID -=3;
+                hitbox.Facing = facing;
+            }
+            rift.GetComponent<LucillePortal>().playState("HardDelete");
             yield return new WaitForSeconds(.05f);
         }
         yield break;
