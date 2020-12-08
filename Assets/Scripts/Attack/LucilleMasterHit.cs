@@ -7,7 +7,7 @@ public class LucilleMasterHit : MasterHit
 
     Queue<GameObject> rifts = new Queue<GameObject>();
 
-    Coroutine riftDetonation;
+    //Coroutine riftDetonation;
 
 
     public void Side_Attack_Fireball()
@@ -103,12 +103,6 @@ public class LucilleMasterHit : MasterHit
     public void collapseAllPortals()
     {
         if(!isHost)return;
-        if(riftDetonation != null)StopCoroutine(riftDetonation);
-        riftDetonation = StartCoroutine(portalDetonateDelay());
-    }
-
-    IEnumerator portalDetonateDelay()
-    {
         GameObject rift;
         facing = movement.Facing;
         while(rifts.Count >0)
@@ -122,11 +116,8 @@ public class LucilleMasterHit : MasterHit
                 hitbox.Facing = facing;
             }
             rift.GetComponent<LucillePortal>().playState("HardDelete");
-            yield return new WaitForSeconds(.05f);
         }
-        yield break;
     }
-
 
     public override void roll()
     {
