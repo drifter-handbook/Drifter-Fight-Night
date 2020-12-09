@@ -13,11 +13,13 @@ public class LucillePortal : MonoBehaviour
     {
         if(!GameController.Instance.IsHost)return;
 
+ 
+
         HitboxCollision hitbox = collider.gameObject.GetComponent<HitboxCollision>();
 
     	if(hitbox != null && hitbox.parent == drifter && collider.gameObject.tag == "Lucille_Portal_Contact")
     	{
-    		GetComponent<Rigidbody2D>().velocity = new Vector3(hitbox.Facing * ((hitbox.OverrideData.AngleOfImpact < 45f && hitbox.OverrideData.AngleOfImpact > -45f)?35f:0f),((hitbox.OverrideData.AngleOfImpact > 45f || hitbox.OverrideData.AngleOfImpact < -45f)?35f:0f),0);
+    		GetComponent<Rigidbody2D>().velocity = new Vector3(hitbox.Facing * ((hitbox.OverrideData.AngleOfImpact < 45f && hitbox.OverrideData.AngleOfImpact > -30f)?35f:0f),(hitbox.OverrideData.AngleOfImpact > 45f ?35f:(hitbox.OverrideData.AngleOfImpact > 20?0:-35f )),0);
 
 
     		if((hitbox.OverrideData.AngleOfImpact > 45f && hitbox.OverrideData.AngleOfImpact < 135f))GetComponent<SyncAnimatorStateHost>().SetState("Move_up");

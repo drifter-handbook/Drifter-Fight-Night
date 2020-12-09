@@ -6,8 +6,36 @@ public class LucilleMasterHit : MasterHit
 {
 
     Queue<GameObject> rifts = new Queue<GameObject>();
+    float terminalVelocity;
 
     //Coroutine riftDetonation;
+
+    void Start()
+    {
+        if(!isHost)return;
+        terminalVelocity = movement.terminalVelocity;
+    }
+
+    void Update()
+    {
+        if(!isHost)return;
+        if(movement.terminalVelocity !=  terminalVelocity && (movement.ledgeHanging || status.HasEnemyStunEffect()))
+        {
+            resetTerminal();
+        }
+    }
+
+    public void setTerminalVelocity()
+    {
+        if(!isHost)return;
+        movement.terminalVelocity = 75;
+    }
+
+    public void resetTerminal()
+    {
+        if(!isHost)return;
+        movement.terminalVelocity = terminalVelocity;
+    }
 
 
     public void Side_Attack_Fireball()
@@ -118,6 +146,8 @@ public class LucilleMasterHit : MasterHit
             rift.GetComponent<LucillePortal>().playState("HardDelete");
         }
     }
+
+
 
     public override void roll()
     {

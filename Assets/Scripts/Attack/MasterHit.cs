@@ -134,6 +134,12 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         if(Empowered)drifter.PlayAnimation(state);
     }
 
+    public void playStateIfGrounded(string state)
+    {
+        if(!isHost)return;
+        if(movement.grounded)drifter.PlayAnimation(state);
+    }
+
     public void playStateIfEmpoweredOrRetunToIdle(string state)
     {
         if(!isHost)return;
