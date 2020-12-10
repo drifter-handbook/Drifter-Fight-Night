@@ -13,9 +13,11 @@ public class LucillePortalCollision : MonoBehaviour
     {
         if(!GameController.Instance.IsHost)return;
 
-        try{
+        try
+        {
             if(collider.GetComponent<LucillePortal>().drifter == drifter)
             {
+                drifter.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
                 drifter.GetComponent<Drifter>().PlayAnimation(StateToPlay);
             }
         }
