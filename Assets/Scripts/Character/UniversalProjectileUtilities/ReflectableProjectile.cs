@@ -21,6 +21,8 @@ public class ReflectableProjectile : MonoBehaviour
 
             gameObject.transform.localScale = new Vector3(gameObject.transform.localScale.x * -1,gameObject.transform.localScale.y,gameObject.transform.localScale.z);
 
+            GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.REFLECT, Vector3.Lerp(col.gameObject.transform.position, transform.position, 0.1f), 0, new Vector2(10f, 10f));
+
             foreach (HitboxCollision hitbox in gameObject.GetComponentsInChildren<HitboxCollision>(true))
                 {
                     hitbox.parent = col.gameObject.transform.parent.GetComponentInChildren<HitboxCollision>().parent;

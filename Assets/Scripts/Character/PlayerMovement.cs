@@ -116,6 +116,8 @@ public class PlayerMovement : MonoBehaviour
 
                 //status.bounce();
                 Vector3 normal = col.contacts[0].normal;
+
+                UnityEngine.Debug.Log(normal);
                 rb.velocity = Vector2.Reflect(prevVelocity,normal) *.8f;
                 //status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, Mathf.Min(rb.velocity.magnitude * .005f,.3f));
                 spawnJuiceParticle(col.contacts[0].point, MovementParticleMode.Restitution, Quaternion.Euler(0f,0f, ( (rb.velocity.x < 0)?1:-1 ) * Vector3.Angle(Vector3.up,normal)));

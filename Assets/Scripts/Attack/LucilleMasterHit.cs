@@ -155,7 +155,6 @@ public class LucilleMasterHit : MasterHit
         facing = movement.Facing;
         applyEndLag(1);
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
-        rb.velocity = new Vector2(facing * -30f,0f);
     }
 
     public override void rollGetupStart()
