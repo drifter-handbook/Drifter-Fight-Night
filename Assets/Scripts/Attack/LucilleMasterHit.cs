@@ -7,6 +7,7 @@ public class LucilleMasterHit : MasterHit
 
     Queue<GameObject> rifts = new Queue<GameObject>();
     float terminalVelocity;
+    bool jumpGranted = false;
 
     //Coroutine riftDetonation;
 
@@ -22,7 +23,9 @@ public class LucilleMasterHit : MasterHit
         if(movement.terminalVelocity !=  terminalVelocity && (movement.ledgeHanging || status.HasEnemyStunEffect()))
         {
             resetTerminal();
+            jumpGranted = false;
         }
+        if(jumpGranted && movement.grounded)jumpGranted = false;
     }
 
     public void setTerminalVelocity()
@@ -148,6 +151,15 @@ public class LucilleMasterHit : MasterHit
     }
 
 
+    //Can gain 1 extra jump by bouncing on a portal. Only works once per airtime.
+    public void grantJump()
+    {
+        if(!isHost || movement.currentJumps == movement.numberOfJumps || jumpGranted)return;
+        movement.currentJumps++;
+        jumpGranted = true;
+    }
+
+
 
     public override void roll()
     {
@@ -159,18 +171,13 @@ public class LucilleMasterHit : MasterHit
 
     public override void rollGetupStart()
     {
-        if(!isHost)return;
-        applyEndLag(1);
-        rb.velocity = new Vector3(0,70f,0);
+        //unused
     }
 
     public override void rollGetupEnd()
     {
         if(!isHost)return;
         facing = movement.Facing;
-        movement.gravityPaused = false;
-        rb.gravityScale = gravityScale;
-        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
-        rb.velocity = new Vector2(facing * -35f,0f);
+        rb.position += new Vector2(8.5f* facing,5.8f);
     }
 }

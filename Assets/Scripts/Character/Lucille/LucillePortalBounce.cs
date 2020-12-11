@@ -26,5 +26,12 @@ public class LucillePortalBounce : MonoBehaviour
         {
             return;
         }
-    }    
+    }
+
+     void OnTriggerExit2D(Collider2D collider)
+     {
+        if(!GameController.Instance.IsHost)return;
+        if(collider.gameObject.tag == "Killzone")sprite.GetComponent<SyncAnimatorStateHost>().SetState("SoftDelete");
+
+     }    
 }
