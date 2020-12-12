@@ -131,6 +131,26 @@ public class LucilleMasterHit : MasterHit
         }
     }
 
+    public void breakRift(GameObject self)
+    {
+        GameObject[] riftarray = rifts.ToArray();
+
+        status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, .2f);
+
+        rifts.Clear(); 
+
+        for(int i = riftarray.Length; i >1; i--)
+        {
+
+            if(riftarray[i-1] != self)
+            {
+                UnityEngine.Debug.Log("NOT MINE");
+                rifts.Enqueue(riftarray[i-1]);
+            }
+        } 
+
+    }
+
     public void collapseAllPortals()
     {
         if(!isHost)return;
@@ -138,8 +158,9 @@ public class LucilleMasterHit : MasterHit
         facing = movement.Facing;
         while(rifts.Count >0)
         {
-
             rift = rifts.Dequeue();
+
+            if(rift == null)continue;
 
             foreach (HitboxCollision hitbox in rift.GetComponentsInChildren<HitboxCollision>(true))
             {

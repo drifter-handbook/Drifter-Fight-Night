@@ -36,6 +36,13 @@ public class LucillePortal : MonoBehaviour
 
 				GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.LUCILLE,  Vector3.Lerp(transform.position, hitbox.parent.transform.position, 0.1f), 0, new Vector2(6f, 6f));
 			}
+			else if(hitbox != null && hitbox.parent == drifter && collider.gameObject.tag == "Lucille_Portal_Detonate")
+			{
+				drifter.GetComponentInChildren<LucilleMasterHit>().breakRift(this.gameObject);
+				GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.LUCILLE,  Vector3.Lerp(transform.position, hitbox.parent.transform.position, 0.1f), 0, new Vector2(6f, 6f));
+				GetComponent<SyncAnimatorStateHost>().SetState("HardDelete");
+
+			}
 
 		}
 
