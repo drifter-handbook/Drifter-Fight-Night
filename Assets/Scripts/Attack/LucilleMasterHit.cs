@@ -31,6 +31,7 @@ public class LucilleMasterHit : MasterHit
     public void setTerminalVelocity()
     {
         if(!isHost)return;
+        movement.canLandingCancel = false;  
         movement.terminalVelocity = 75;
     }
 
