@@ -87,7 +87,7 @@ public class LucilleMasterHit : MasterHit
         // jump upwards and create spear projectile
         if(!isHost)return;
         facing = movement.Facing;
-        Vector3 pos = new Vector3(facing * 2.7f,3.5f,0);
+        Vector3 pos = new Vector3(facing * 3.7f,3.5f,0);
 
         bomb = GameController.Instance.host.CreateNetworkObject("Lucille_Bomb", transform.position + pos, transform.rotation);
 
