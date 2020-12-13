@@ -134,11 +134,11 @@ public class LucilleMasterHit : MasterHit
 
     public void breakRift(GameObject self)
     {
-        GameObject[] riftarray = rifts.ToArray();
-
-        status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, .2f);
+        GameObject[] riftarray = rifts.ToArray();   
 
         rifts.Clear(); 
+
+        status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, .2f);
 
         for(int i = riftarray.Length; i >1; i--)
         {
