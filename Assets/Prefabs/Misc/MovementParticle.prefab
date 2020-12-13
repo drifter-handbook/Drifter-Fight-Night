@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6565862755811548165}
   - component: {fileID: 6677944643662402389}
   - component: {fileID: 74453966156855863}
+  - component: {fileID: 8517507229317356540}
   m_Layer: 0
   m_Name: MovementParticle
   m_TagString: Untagged
@@ -46,7 +47,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef087e555f8c38641b95a246f341e912, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  duration: 0.3
   mode: 0
   anim: {fileID: 6677944643662402389}
   audioSource: {fileID: 74453966156855863}
@@ -216,3 +216,16 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &8517507229317356540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8885772332369040047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1ef945a1776594438c7a9223e2d7bb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 0.5
