@@ -9,12 +9,17 @@ public class LucilleMasterHit : MasterHit
     float terminalVelocity;
     bool jumpGranted = false;
 
+    GameObject bomb;
+
+    DetectGrab grab;
+
     //Coroutine riftDetonation;
 
     void Start()
     {
         if(!isHost)return;
         terminalVelocity = movement.terminalVelocity;
+        grab = GetComponentInChildren<DetectGrab>();
     }
 
     void Update()
@@ -64,6 +69,40 @@ public class LucilleMasterHit : MasterHit
             
         }
     }
+
+    public void setBombTarget()
+    {
+        if(!isHost)return;
+        if(bomb != null)
+        {
+            bomb.GetComponent<StickToTarget>().victim = grab.victim;
+            grab.victim = null;
+            bomb = null;
+        } 
+    }
+
+
+    public void Side_Grab_Bomb()
+    {
+        // jump upwards and create spear projectile
+        if(!isHost)return;
+        facing = movement.Facing;
+        Vector3 pos = new Vector3(facing * 2.7f,3.5f,0);
+
+        bomb = GameController.Instance.host.CreateNetworkObject("Lucille_Bomb", transform.position + pos, transform.rotation);
+
+        foreach (HitboxCollision hitbox in bomb.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+            hitbox.Facing = facing;
+            
+        }
+    }
+
+
 
     public void SpawnRift()
     {
