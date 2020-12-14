@@ -571,6 +571,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   drifter: {fileID: 7524158882088821342}
   GrabState: Grab_Success
+  victim: {fileID: 0}
 --- !u!1 &8028542857373867485
 GameObject:
   m_ObjectHideFlags: 0
@@ -772,6 +773,11 @@ PrefabInstance:
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[0].y
       value: -15.203086
       objectReference: {fileID: 0}
+    - target: {fileID: 364774633814311839, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: 6d779fae8e455ba40aea63fb7a2ec1f9, type: 2}
     - target: {fileID: 577463835414975583, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -877,6 +883,11 @@ PrefabInstance:
       propertyPath: m_GravityScale
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 3106753082241659639, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: fb13e85e8cd5db74c934ea1d0908ec67, type: 2}
     - target: {fileID: 3106753082241659641, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: Weight
