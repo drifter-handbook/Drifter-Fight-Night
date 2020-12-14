@@ -88,17 +88,12 @@ public class SpaceJamMasterHit : MasterHit
             if(charges < maxCharge)
             {
                 charges++;
+                if(charges % 3 == 0)GraphicalEffectManager.Instance.CreateMovementParticle(MovementParticleMode.Heal, transform.position + new Vector3(UnityEngine.Random.Range(-1.5f,2.5f), UnityEngine.Random.Range(-1.5f,1f)), 0, new Vector2(1, 1));
             }
             
-            if(drifter.DamageTaken >= .2f)
-            {
-                drifter.DamageTaken -= .2f;
-                GraphicalEffectManager.Instance.CreateMovementParticle(MovementParticleMode.Heal, transform.position + new Vector3(UnityEngine.Random.Range(-1.5f,2f), UnityEngine.Random.Range(-1.5f,1f)), 0, new Vector2(1, 1));
-            }
-            else
-            {
-                drifter.DamageTaken = 0f;
-            }
+            if(drifter.DamageTaken >= .2f) drifter.DamageTaken -= .2f;
+
+            else drifter.DamageTaken = 0f;
 
             if(charges >= maxCharge)
             {
