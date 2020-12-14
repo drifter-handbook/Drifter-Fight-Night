@@ -7,8 +7,6 @@ public class BojoMasterHit : MasterHit
 
     GameObject Centaur = null;
     float terminalVelocity;
-    bool listeningForGround;
-
 
     void Start()
     {
@@ -20,9 +18,8 @@ public class BojoMasterHit : MasterHit
     {
         if(!isHost)return;
 
-        if(listeningForGround && (movement.ledgeHanging || status.HasEnemyStunEffect()))
+        if(movement.terminalVelocity != terminalVelocity && (movement.ledgeHanging || status.HasEnemyStunEffect()))
         {
-            listeningForGround = false;
             resetTerminal();
         }
     }
@@ -81,9 +78,6 @@ public class BojoMasterHit : MasterHit
     {
         if(!isHost)return;
 
-        listeningForGround = true;
-
-
         if(TransitionFromChanneledAttack())
         {
         	resetTerminal();
@@ -107,7 +101,6 @@ public class BojoMasterHit : MasterHit
     public void resetTerminal()
     {
     	if(!isHost)return;
-    	listeningForGround = false;
         movement.terminalVelocity = terminalVelocity;
     }
 

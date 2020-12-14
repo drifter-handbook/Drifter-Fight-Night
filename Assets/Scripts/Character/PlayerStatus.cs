@@ -103,6 +103,14 @@ public class PlayerStatus : MonoBehaviour
         }
     }
 
+    public void clearAllStatus()
+    {
+        foreach(PlayerStatusEffect ef in allEffects)
+        {
+         if(statusEffects.ContainsKey(ef))statusEffects[ef] = 0f;
+        }
+    }
+
     public Dictionary<PlayerStatusEffect,float> getStatusState(){
         return statusEffects;
     }
