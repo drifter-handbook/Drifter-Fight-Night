@@ -52,7 +52,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             if(status.HasInulvernability())return;
             
             //Freezefame if hit a counter
-            if(hurtbox.gameObject.name == "Counter")
+            if(hurtbox.gameObject.name == "Counter" &&  attackData.AttackDamage >0f)
             {
                 hitbox.parent.GetComponent<PlayerStatus>().ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.4f);
                 status.ApplyStatusEffect(PlayerStatusEffect.HIT,.3f);
@@ -63,7 +63,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             // apply damage
             if (drifter != null && status != null)
             {
-                drifter.DamageTaken += (attackData.AttackDamage  + (status.HasStatusEffect(PlayerStatusEffect.HEXED) ? 2f : 0f) )* (drifter.guarding && !attackData.isGrab ? 1 - drifter.BlockReduction : 1f);
+                drifter.DamageTaken += (attackData.AttackDamage  + (status.HasStatusEffect(PlayerStatusEffect.HEXED) &&  attackData.AttackDamage >0 ? 2f : 0f) )* (drifter.guarding && !attackData.isGrab ? 1 - drifter.BlockReduction : 1f);
                 //ScreenShake
             }
             // apply knockback
@@ -185,7 +185,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 StartCoroutine(Shake.zoomEffect(.6f,Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),false));
             }
 
-            if (drifter != null)
+            if (drifter != null && attackData.AttackDamage >0f)
             {
                 for (int i = 0; i < (attackData.AttackDamage + 2) / 5; i++)
                 {

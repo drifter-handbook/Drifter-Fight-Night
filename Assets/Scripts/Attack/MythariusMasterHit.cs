@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MythariusMasterHit : MasterHit
 {
-
+ 	GameObject slowfield;
 
 	//Down W, Counter Logic (Gaming)
 
@@ -20,7 +20,26 @@ public class MythariusMasterHit : MasterHit
 
     public void spawnSlowZone()
     {
-    	//DO THING
+
+    	if(!isHost)return;
+
+        Vector3 pos = new Vector3(0f, 4.5f, 0f);
+        //TODO Add delete animation here
+        if (slowfield)Destroy(slowfield);
+        slowfield = host.CreateNetworkObject("myth_slowfield", transform.position + pos, transform.rotation);
+        foreach (HitboxCollision hitbox in slowfield.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID + 150;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+            hitbox.Facing = facing;
+        }
+
+        
+        
+
+        slowfield.GetComponent<MultihitZoneProjectile>().attacks = attacks;
     }
 
     public override void roll()

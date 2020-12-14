@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MegurinStorm : MonoBehaviour
+public class MultihitZoneProjectile : MonoBehaviour
 {
     public PlayerAttacks attacks;
     // Start is called before the first frame update
