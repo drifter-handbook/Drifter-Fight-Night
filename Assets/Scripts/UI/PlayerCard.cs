@@ -14,6 +14,9 @@ public class PlayerCard : MonoBehaviour
     public SpriteRenderer pips;
     public GameObject charge;
     public GameObject MegurinElements;
+    public GameObjectShake shake;
+
+    float previousPercent =0f;
 
     public Image bannerBack;
 
@@ -95,6 +98,12 @@ public class PlayerCard : MonoBehaviour
 
     public void setPercent(float sentPercent)
     {
+        if(previousPercent  < sentPercent)
+        {
+            StartCoroutine(shake.Shake(.3f,(sentPercent - previousPercent)/7f));
+        }
+        previousPercent = sentPercent;
+
         this.percent.text = (int)sentPercent+"%";
     }
 

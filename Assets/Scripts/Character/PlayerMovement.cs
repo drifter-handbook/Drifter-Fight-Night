@@ -60,7 +60,7 @@ public class PlayerMovement : MonoBehaviour
     SpriteRenderer sprite;
     Rigidbody2D rb;
     Drifter drifter;
-    CameraShake shake;
+    GameObjectShake shake;
 
     
     //Jump Coroutines
@@ -81,7 +81,7 @@ public class PlayerMovement : MonoBehaviour
         drifter = GetComponent<Drifter>();
         sprite = GetComponentInChildren<SpriteRenderer>();
         attacks = GetComponent<PlayerAttacks>();
-        shake = gameObject.GetComponentInChildren<CameraShake>();
+        shake = gameObject.GetComponentInChildren<GameObjectShake>();
 
         status = drifter.status;
         animator = drifter.animator;

@@ -49,7 +49,7 @@ public class PlayerCardArtHolder : MonoBehaviour
                 int imageIndex = getDrifterTypeIndex(drifter.GetComponent<NetworkSync>().NetworkType);
                 
                 playerCards[i].drifterIndex = imageIndex;
-                if(imageIndex == 5 || imageIndex == 1){
+                if(imageIndex == 5 || imageIndex == 1 || imageIndex == 9){
                    playerCards[i].charge.SetActive(true);
                 }
                 else if(imageIndex == 6){

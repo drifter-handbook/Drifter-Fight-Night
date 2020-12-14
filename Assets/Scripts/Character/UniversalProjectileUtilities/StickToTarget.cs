@@ -17,4 +17,10 @@ public class StickToTarget : MonoBehaviour
         if(!GameController.Instance.IsHost)return;
         if(victim != null)GetComponent<SyncAnimatorStateHost>().SetState(state);
     }
+
+    public void clearVictim()
+    {
+        if(!GameController.Instance.IsHost)return;
+        victim = null;
+    }
 }
