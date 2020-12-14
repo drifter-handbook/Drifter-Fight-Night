@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum PlayerStatusEffect
 {
-    AMBERED, PLANTED, STUNNED, EXPOSED, HIT, FEATHERWEIGHT, END_LAG, KNOCKBACK, INVULN, ARMOUR, REVERSED, SLOWED, DEAD, HITPAUSE, PARALYZED, GRABBED
+    AMBERED, PLANTED, STUNNED, EXPOSED, HIT, FEATHERWEIGHT, END_LAG, KNOCKBACK, INVULN, ARMOUR, REVERSED, SLOWED, DEAD, HITPAUSE, PARALYZED, GRABBED, HEXED
 }
 
 
@@ -136,6 +136,7 @@ public class PlayerStatus : MonoBehaviour
         if(HasStatusEffect(PlayerStatusEffect.SLOWED))return 7;
         if(HasStatusEffect(PlayerStatusEffect.INVULN))return 8;
         if(HasStatusEffect(PlayerStatusEffect.GRABBED))return 9;
+        if(HasStatusEffect(PlayerStatusEffect.HEXED))return 10;
         return 0;
     }
 
