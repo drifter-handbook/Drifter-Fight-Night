@@ -1,22 +1,19 @@
 fileFormatVersion: 2
-guid: 4c75938d8c1d4fd4982145bf4ae46144
+guid: 1dc3a11fc31a96449b05deceae3d4538
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6835207971012020503
-    second: Wave 2 Stocks_0
+      213: 6307480912545394906
+    second: Myth_Down_W_Miss_0
   - first:
-      213: 3212876704003174435
-    second: Wave 2 Stocks_1
+      213: 7030020979331294295
+    second: Myth_Down_W_Miss_1
   - first:
-      213: -5707333905773927027
-    second: Wave 2 Stocks_0
+      213: -6149335804875076686
+    second: Myth_Down_W_Miss_2
   - first:
-      213: -4516399530359264931
-    second: Wave 2 Stocks_1
-  - first:
-      213: 6843032846522327759
-    second: Wave 2 Stocks_2
+      213: -6172067088689487707
+    second: Myth_Down_W_Miss_3
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -60,7 +57,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 16
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -102,64 +99,85 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Wave 2 Stocks_0
+      name: Myth_Down_W_Miss_0
       rect:
         serializedVersion: 2
-        x: 3
-        y: 2
-        width: 15
-        height: 17
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d856dcb2d0a7bc0b0800000000000000
-      internalID: -5707333905773927027
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Wave 2 Stocks_1
-      rect:
-        serializedVersion: 2
-        x: 23
-        y: 1
-        width: 14
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d59e1395e868251c0800000000000000
-      internalID: -4516399530359264931
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Wave 2 Stocks_2
-      rect:
-        serializedVersion: 2
-        x: 43
+        x: 0
         y: 0
-        width: 15
-        height: 20
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 64
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fc22b433e1657fe50800000000000000
-      internalID: 6843032846522327759
+      spriteID: ad033d3b87ca88750800000000000000
+      internalID: 6307480912545394906
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Myth_Down_W_Miss_1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 64
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 754e59485d6af8160800000000000000
+      internalID: 7030020979331294295
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Myth_Down_W_Miss_2
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 64
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2bb84d18aab29aaa0800000000000000
+      internalID: -6149335804875076686
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Myth_Down_W_Miss_3
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 0
+        width: 64
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a0a8c01fa9685aa0800000000000000
+      internalID: -6172067088689487707
       vertices: []
       indices: 
       edges: []

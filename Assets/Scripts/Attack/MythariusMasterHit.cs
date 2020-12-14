@@ -5,6 +5,24 @@ using UnityEngine;
 public class MythariusMasterHit : MasterHit
 {
 
+
+	//Down W, Counter Logic (Gaming)
+
+    public void counter()
+    {
+        if(!isHost)return;
+        if(status.HasStatusEffect(PlayerStatusEffect.HIT)){
+            drifter.PlayAnimation("W_Down_Success");
+            status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.2f);
+        }
+    }
+
+
+    public void spawnSlowZone()
+    {
+    	//DO THING
+    }
+
     public override void roll()
     {
         if(!isHost)return;
