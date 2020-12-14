@@ -17,6 +17,7 @@ public enum DrifterType
     Nero,
     Random,
     Lucille,
+    Mytharius,
 }
 
 
