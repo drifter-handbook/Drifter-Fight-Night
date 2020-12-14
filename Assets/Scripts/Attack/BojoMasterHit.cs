@@ -98,10 +98,7 @@ public class BojoMasterHit : MasterHit
         {
 
         	movement.updateFacing();
-        	rb.velocity = new Vector2(drifter.input.MoveX > 0 ? 
-                    Mathf.Lerp((!status.HasStatusEffect(PlayerStatusEffect.SLOWED)?20f:(.6f*20f)),rb.velocity.x,.85f) : 
-                    Mathf.Lerp((!status.HasStatusEffect(PlayerStatusEffect.SLOWED)?-20f:(-.6f*20f)),rb.velocity.x,.85f), rb.velocity.y);
-
+        	rb.velocity = new Vector2(Mathf.Lerp((!status.HasStatusEffect(PlayerStatusEffect.SLOWED)? drifter.input.MoveX * 20f:(.6f*20f)),rb.velocity.x,.85f),rb.velocity.y);
             movement.updateFacing();
             movement.terminalVelocity = 10f;
         }
