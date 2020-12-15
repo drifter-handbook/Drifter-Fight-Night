@@ -63,7 +63,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             // apply damage
             if (drifter != null && status != null)
             {
-                drifter.DamageTaken += (attackData.AttackDamage  + (status.HasStatusEffect(PlayerStatusEffect.HEXED) &&  attackData.AttackDamage >0 ? 2f : 0f) )* (drifter.guarding && !attackData.isGrab ? 1 - drifter.BlockReduction : 1f);
+                drifter.DamageTaken += (attackData.AttackDamage  + (status.HasStatusEffect(PlayerStatusEffect.HEXED) &&  attackData.AttackDamage >0 ? 1.7f : 0f) )* (drifter.guarding && !attackData.isGrab ? 1 - drifter.BlockReduction : 1f);
                 //ScreenShake
             }
             // apply knockback
