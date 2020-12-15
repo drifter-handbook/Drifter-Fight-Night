@@ -16,6 +16,8 @@ public class MegurinMasterHit : MasterHit
     public float windCharge = 0f;
     public float iceCharge = 0f;
     float elementChargeMax = 30f;
+    public bool Empowered = false;
+    public bool HasCharge = false;
 
 
     void Start()
@@ -266,7 +268,7 @@ public class MegurinMasterHit : MasterHit
         {
             applyEndLag(0);
             neutralWCharge = 0;
-            drifter.SetAnimatorTrigger("W_Neutral");
+            attacks.ChangeAnimationState("BOLT_FIRE");
             applyEndLag(3);
         }
 
@@ -275,14 +277,14 @@ public class MegurinMasterHit : MasterHit
         }
         else{
             sprite.color = new Color(1f,1f,.5f);
-            drifter.SetAnimatorBool("Empowered",true);
+            Empowered = true;
+            attacks.ChangeAnimationState("Idle");
         }
     }
 
     public void beginLightningbolt(){
         sprite.color = Color.white;
-        if(anim.GetBool("Empowered") == true){
-            drifter.SetAnimatorBool("Empowered",false);
+        if(Empowered){
             drifter.SetAnimatorBool("HasCharge",true);
         }
     }
@@ -290,7 +292,7 @@ public class MegurinMasterHit : MasterHit
     {
         sprite.color = Color.white;
         neutralWCharge = 0;
-        if(anim.GetBool("Empowered") == true){
+        if(Empowered){
             spawnLargeBolt();
         }
         else{
@@ -315,7 +317,24 @@ public class MegurinMasterHit : MasterHit
         facing = movement.Facing;
         rb.position += new Vector2(4f* facing,5f);
     }
+    public void boltFired(){
+        if (Empowered){
+            attacks.ChangeAnimationState("SLOW_BOLT_RECOVER");
+            Empowered = false;
+        }
+        else{
+            attacks.ChangeAnimationState("FAST_BOLT_RECOVER");
+        }
+    }
 
+    public void checkCharge(){
+        if (Empowered){
+            attacks.ChangeAnimationState("BOLT_FIRE");
+        }
+        else{
+            attacks.ChangeAnimationState("W_Neutral_Charge");
+        }
+    }
     public override void roll(){
         //unused
     }

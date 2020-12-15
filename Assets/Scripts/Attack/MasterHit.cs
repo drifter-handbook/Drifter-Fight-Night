@@ -112,6 +112,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     public void returnToNeutral()
     {
         //if state is in midair
+        Debug.Log("here");
         if(movement.grounded == false){
             attacks.ChangeAnimationState("Jump Hang");
             //set my flying self back

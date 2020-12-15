@@ -400,6 +400,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (hits[i].collider.gameObject.tag == "Ground" || (hits[i].collider.gameObject.tag == "Platform" && status.HasGroundFriction()))
             {
+                attacks.ChangeAnimationState("Idle");
                 return true;
             }
         }
