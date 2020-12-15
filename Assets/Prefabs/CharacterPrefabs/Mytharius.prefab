@@ -75,7 +75,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 3717247101430522421}
   playerType: {fileID: 0}
-  OverrideData: {fileID: 11400000, guid: fb12e3985af9b7242b0cd360fa2adc39, type: 2}
+  OverrideData: {fileID: 11400000, guid: 8aa57045a358dad4ab6af29107db554a, type: 2}
   AttackData: {fileID: 0}
 --- !u!1 &5467588057728215321
 GameObject:
@@ -209,6 +209,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 300831261, guid: 03006bf76a5e1274aaf3da8b9c69d8f9, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 300831261, guid: 03006bf76a5e1274aaf3da8b9c69d8f9, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 300831261, guid: 03006bf76a5e1274aaf3da8b9c69d8f9, type: 3}
+      propertyPath: m_Radius
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 300831261, guid: 03006bf76a5e1274aaf3da8b9c69d8f9, type: 3}
+      propertyPath: m_Offset.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 364774633814311839, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[1].y

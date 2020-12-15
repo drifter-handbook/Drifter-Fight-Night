@@ -156,6 +156,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ef945a1776594438c7a9223e2d7bb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  duration: -1
 --- !u!1 &6067338647227602392
 GameObject:
   m_ObjectHideFlags: 0
@@ -234,4 +235,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drifter: {fileID: 0}
-  GrabState: 
+  GrabState: Ground_Neutral_Kick
+  victim: {fileID: 0}
