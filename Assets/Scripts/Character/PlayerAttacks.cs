@@ -134,7 +134,6 @@ public class PlayerAttacks : MonoBehaviour
             status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,4f);
         }
         else if (specialPressed && drifter.input.MoveY> 0 && canAct && currentRecoveries > 0){
-            Debug.Log("test");
             SetHitboxesActive(false);
             ChangeAnimationState("W_Up");
             SetupAttackID(DrifterAttackType.W_Up);

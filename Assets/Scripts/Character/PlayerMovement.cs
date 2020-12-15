@@ -68,6 +68,8 @@ public class PlayerMovement : MonoBehaviour
 
     int prevMoveX = 0;
     int prevMoveY = 0;
+    float pastfall = 0f;
+    bool WasGrounded = false;
 
     void Awake()
     {
@@ -107,14 +109,13 @@ public class PlayerMovement : MonoBehaviour
 
         }
     }
-
     void Update()
     {
         if (!GameController.Instance.IsHost || GameController.Instance.IsPaused)
         {
             return;
         }
-
+        
         bool jumpPressed = !drifter.prevInput.Jump && drifter.input.Jump;
         // TODO: spawn hitboxes
         bool canAct = !status.HasStunEffect() && !animator.GetBool("Guarding");
@@ -124,7 +125,12 @@ public class PlayerMovement : MonoBehaviour
         if(gameObject.layer != 8 && Time.time - dropThroughTime > .55f){
             gameObject.layer = 8;
         }
-
+        if(WasGrounded && IsGrounded()){
+            Debug.Log("hayo");
+            ChangeAnimationState("Idle");
+            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0);
+            WasGrounded = false;
+        }
         //Handle jump resets
         if(animator.GetBool("Grounded"))
         {
@@ -226,7 +232,12 @@ public class PlayerMovement : MonoBehaviour
         {
         	//UnityEngine.Debug.Log("BEFORE velocity: " + rb.velocity.x);
         	updateFacing();
-            ChangeAnimationState("Walk");
+            if(IsGrounded()){
+                ChangeAnimationState("Walk");
+            }
+            else{
+                ChangeAnimationState("Jump Hang");
+            }
             //drifter.SetAnimatorBool("Walking", true);
             //If just started moving or switched directions
             if((rb.velocity.x == 0 || rb.velocity.x * drifter.input.MoveX < 0) && IsGrounded()){
@@ -368,6 +379,11 @@ public class PlayerMovement : MonoBehaviour
         }
 
         if(rb.velocity != Vector2.zero)prevVelocity = rb.velocity;
+
+        
+        if (!IsGrounded()){
+            WasGrounded = true;
+        }
         
     }
     void updateFacing()
@@ -400,7 +416,6 @@ public class PlayerMovement : MonoBehaviour
         {
             if (hits[i].collider.gameObject.tag == "Ground" || (hits[i].collider.gameObject.tag == "Platform" && status.HasGroundFriction()))
             {
-                attacks.ChangeAnimationState("Idle");
                 return true;
             }
         }
@@ -445,7 +460,6 @@ public class PlayerMovement : MonoBehaviour
             if (currentJumps > 0)
             {
                 currentJumps--;
-                Debug.Log("attempt");
                 ChangeAnimationState("Jump Start");
                 //Particles
                 if(IsGrounded()){
@@ -512,8 +526,7 @@ public class PlayerMovement : MonoBehaviour
         if(varyJumpHeight!= null)StopCoroutine(varyJumpHeight);     
     }
     public void ChangeAnimationState(string newState){
-        Debug.Log("llllll" + currentMoveState);
-        Debug.Log("lalalalala " + newState);
+        Debug.Log("going to this state " + newState);
         if (currentMoveState == newState){
             return;
         }
