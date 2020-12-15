@@ -185,22 +185,9 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 StartCoroutine(Shake.zoomEffect(.6f,Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),false));
             }
 
-            if (drifter != null && attackData.AttackDamage >0f)
-            {
-                for (int i = 0; i < (attackData.AttackDamage + 2) / 5; i++)
-                {
-                    float angleT = attackData.AngleOfImpact + Random.Range(-45, 45);
-                    hitSparkPos = Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f);
-                    hitSparkPos += Quaternion.Euler(0, 0, angleT) * new Vector3(-Random.Range(1, 4), 0, 0);
-                    GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.OOMPHSPARK, hitSparkPos, angleT, new Vector2(10f, 10f));
 
-                    angleT += 180;
-
-                    hitSparkPos = Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f);
-                    hitSparkPos += Quaternion.Euler(0, 0, angleT) * new Vector3(-Random.Range(1, 4), 0, 0);
-                    GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.OOMPHSPARK, hitSparkPos, angleT, new Vector2(10f, 10f));
-                }
-            }
+            // Ancillary Hitsparks
+            if (drifter != null && attackData.AttackDamage >0f) StartCoroutine(delayHitsparks(Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),attackData.AngleOfImpact,attackData.AttackDamage,HitstunDuration *.25f));
         }
     }
 
@@ -224,6 +211,41 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 oldAttacks.Remove(attackID);
             }
         }
+    }
+
+    IEnumerator delayHitsparks(Vector3 position, float angle,float damage, float duration)
+    {
+        Vector3 hitSparkPos = position;
+        float angleT;
+        float stepSize = duration / ((damage + 3) / 5);
+
+
+        for (int i = 0; i < (damage + 2) / 4; i++)
+        {
+            angleT = angle + Random.Range(-45, 45);
+            hitSparkPos += Quaternion.Euler(0, 0, angleT) * new Vector3(-Random.Range(1, 4), 0, 0);
+            GraphicalEffectManager.Instance.CreateHitSparks(randomSpark(), position, angleT, new Vector2(10f, 10f));
+
+            angleT += 180;
+
+            hitSparkPos += Quaternion.Euler(0, 0, angleT) * new Vector3(-Random.Range(1, 4), 0, 0);
+            GraphicalEffectManager.Instance.CreateHitSparks(randomSpark(), hitSparkPos, angleT, new Vector2(10f, 10f));
+
+            yield return new WaitForSeconds(stepSize);
+        }
+        yield break;
+    }
+
+    HitSpark randomSpark()
+    {
+        int index = Random.Range(0, 11);
+
+        //Preferantially spawn oomph sparks
+        if(index <= 4 ) return HitSpark.OOMPHSPARK;
+        else if(index >= 6 ) return HitSpark.OOMPHDARK;
+
+        //1/11 are stars
+        return HitSpark.STAR_FAST;
     }
 
     // Super-armor logic
