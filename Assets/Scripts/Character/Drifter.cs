@@ -91,6 +91,7 @@ public class Drifter : MonoBehaviour, INetworkInit
     public void Start()
     {
         Stocks = drifterType!="Sandbag"?3:999;
+        if(drifterType=="Sandbag")SetColor(8);
         DamageTaken = 0f;
     }
 

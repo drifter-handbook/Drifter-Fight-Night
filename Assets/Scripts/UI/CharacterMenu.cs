@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public enum PlayerColor
 {
-    RED, GOLD, GREEN, BLUE, PURPLE, MAGENTA, ORANGE, CYAN
+    RED, GOLD, GREEN, BLUE, PURPLE, MAGENTA, ORANGE, CYAN, GREY
 }
 
 
@@ -27,7 +27,8 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         { PlayerColor.PURPLE, new Color(0.725f, 0.063f, 1.0f) },
         { PlayerColor.MAGENTA, new Color(1.0f, 0.063f, 0.565f) },
         { PlayerColor.ORANGE, new Color(1.0f, 0.55f, 0.165f) },
-        { PlayerColor.CYAN, new Color(0.0f, 1.0f, 0.702f) }
+        { PlayerColor.CYAN, new Color(0.0f, 1.0f, 0.702f) },
+        { PlayerColor.GREY, new Color(0.4f, 0.4f, 0.4f) }
     };
 
     public GameObject leftPanel;
