@@ -88,6 +88,7 @@ public class PlayerCardArtHolder : MonoBehaviour
             {
                 playerCards[i].removeToStock(0);
             }
+            playerCards[i].isMyColor(CharacterMenu.ColorFromEnum[(PlayerColor)drifters[i].myColor]);
         }
     }
 

@@ -110,10 +110,13 @@ public class Drifter : MonoBehaviour, INetworkInit
     public void SetColor(int colorID)
     {
         UnityEngine.Debug.Log(colorID);
-        myColor = (colorID>0?colorID:0);
+        myColor = (colorID>=0?colorID:0);
         transform.GetChild(0).GetComponent<SpriteRenderer>().color = CharacterMenu.ColorFromEnum[(PlayerColor)myColor];
         transform.GetChild(3).GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)myColor]);
-        if(isHost)transform.GetChild(0).GetComponent<SyncAnimatorStateHost>().SetState("P" + (colorID + 1));
+        if(isHost){
+            transform.GetChild(0).GetComponent<SyncAnimatorStateHost>().SetState("P" + (colorID + 1));
+            gameObject.GetComponent<SyncColorDataHost>().SetColor(myColor);
+        }
     }
 
     public void SetIndicatorDirection(float facing)

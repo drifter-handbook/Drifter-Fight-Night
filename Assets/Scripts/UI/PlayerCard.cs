@@ -22,6 +22,8 @@ public class PlayerCard : MonoBehaviour
 
     const int MAX_STOCKS = 4;
 
+    Color mycolor; 
+
 
     public GameObject stockHolder;
 
@@ -46,11 +48,16 @@ public class PlayerCard : MonoBehaviour
         }
     }
 
-     public void SetColor(Color color)
+    public void SetColor(Color color)
     {
+        mycolor = color;
         bannerBack.GetComponent<Image>().color = color;
         pips.color = color;
 
+    }
+
+    public void isMyColor(Color color){
+        if (color != mycolor) SetColor(color);
     }
 
     public void setChargeDrifter(Drifter drifter)
