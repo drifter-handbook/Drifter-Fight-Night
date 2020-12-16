@@ -427,6 +427,8 @@ GameObject:
   - component: {fileID: 6950276592306512683}
   - component: {fileID: 269394106408985046}
   - component: {fileID: 5205799262885996287}
+  - component: {fileID: 2210516852150294222}
+  - component: {fileID: 3471376511451389528}
   m_Layer: 8
   m_Name: Character
   m_TagString: Player
@@ -484,7 +486,7 @@ MonoBehaviour:
   animator: {fileID: 2000386183588008255}
   Charge: 0
   BlockReduction: 0.5
-  myColor: {r: 0, g: 0, b: 0, a: 0}
+  myColor: 0
   drifterType: 
   peerID: 0
   status: {fileID: 8182132679057442092}
@@ -693,6 +695,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d1925752a4980314891b5dbe83f9cfac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2210516852150294222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3106753082241659636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77ee63309d4e24541b90e399246f5f37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3471376511451389528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3106753082241659636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38ff8a53b8571024bbe4a77e1906c435, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &4227067111414324707

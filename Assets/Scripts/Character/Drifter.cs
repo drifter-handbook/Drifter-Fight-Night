@@ -49,7 +49,7 @@ public class Drifter : MonoBehaviour, INetworkInit
 
     public float BlockReduction = .5f;
     
-    public Color myColor;
+    public int myColor;
 
     public String drifterType;
 
@@ -94,9 +94,9 @@ public class Drifter : MonoBehaviour, INetworkInit
         DamageTaken = 0f;
     }
 
-    public Color GetColor()
+    public int GetColor()
     { 
-        return transform.GetChild(0).transform.GetChild(1).GetComponent<SpriteRenderer>().color;
+        return myColor;
     }
 
     public void SetPeerId(int id){
@@ -108,11 +108,10 @@ public class Drifter : MonoBehaviour, INetworkInit
 
     public void SetColor(int colorID)
     {
-
         UnityEngine.Debug.Log(colorID);
-        myColor = CharacterMenu.ColorFromEnum[(PlayerColor)(colorID>0?colorID:0)];
-        transform.GetChild(0).GetComponent<SpriteRenderer>().color = myColor;
-        transform.GetChild(3).GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),myColor);
+        myColor = (colorID>0?colorID:0);
+        transform.GetChild(0).GetComponent<SpriteRenderer>().color = CharacterMenu.ColorFromEnum[(PlayerColor)myColor];
+        transform.GetChild(3).GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)myColor]);
         if(isHost)transform.GetChild(0).GetComponent<SyncAnimatorStateHost>().SetState("P" + (colorID + 1));
     }
 

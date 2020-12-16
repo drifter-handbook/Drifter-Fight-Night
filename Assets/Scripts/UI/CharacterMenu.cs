@@ -559,6 +559,10 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     {
         stageMenu.SetActive(false);
     }
+    public void enableStages()
+    {
+        stageMenu.SetActive(true);
+    }
 
     public void BackButton(){
         UnityEngine.Debug.Log("BACK PRESSED");

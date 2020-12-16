@@ -140,17 +140,7 @@ public class GameController : MonoBehaviour
             }
         }
 
-         while (SceneManager.GetActiveScene().name == "Endgame")
-        {
-            yield return null;
-            if (Input.anyKey)
-            {
-                yield return SceneManager.LoadSceneAsync("MenuScene");
-                CleanupNetwork();
-                endingGame = null;
-                yield break;
-            }
-        }
+        CleanupNetwork();
     }
 
     void Update()

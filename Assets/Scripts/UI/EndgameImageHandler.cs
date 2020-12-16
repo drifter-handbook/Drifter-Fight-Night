@@ -34,6 +34,14 @@ public class EndgameImageHandler : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+    	if (Input.anyKey)
+            {
+                SceneManager.LoadSceneAsync("MenuScene");
+            }
+    }
+
     public void setSillyImage(DrifterType type, Color color)
     {
         GameObject miniIcon = Instantiate(sillyImagePrefab);

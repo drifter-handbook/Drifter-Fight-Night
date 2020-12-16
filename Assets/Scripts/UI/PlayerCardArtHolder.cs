@@ -44,7 +44,7 @@ public class PlayerCardArtHolder : MonoBehaviour
                 newCard.transform.localScale = new Vector3(1, 1, 1);
                 playerCards[i] = newCard.GetComponent<PlayerCard>();
 
-                playerCards[i].SetColor(drifter.myColor);
+                playerCards[i].SetColor(CharacterMenu.ColorFromEnum[(PlayerColor)drifter.myColor]);
 
                 int imageIndex = getDrifterTypeIndex(drifter.GetComponent<NetworkSync>().NetworkType);
                 
