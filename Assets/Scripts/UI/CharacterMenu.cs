@@ -481,8 +481,6 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
             GetComponent<SyncAnimatorStateHost>().SetState("BoardMoveBack");
 
         }
-        
-        stageMenu.SetActive(false);
 
         forwardButton.GetComponent<Button>().interactable = true;
 
@@ -555,6 +553,11 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
         }
         movesetOverlay.GetComponentInChildren<TutorialSwapper>().SelectDrifter(drifterMoves);
+    }
+
+    public void disableStages()
+    {
+        stageMenu.SetActive(false);
     }
 
     public void BackButton(){
