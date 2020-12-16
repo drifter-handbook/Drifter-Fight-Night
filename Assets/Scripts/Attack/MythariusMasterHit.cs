@@ -7,6 +7,16 @@ public class MythariusMasterHit : MasterHit
  	GameObject slowfield;
  	float terminalVelocity;
 
+    enum PROJECTILE_TYPE
+    {
+        beet,
+        mail,
+        bird,
+        chilltouch,
+        rayoffrost,
+        sugarbeet
+    }
+
  	void Start()
     {
         if(!isHost)return;
@@ -27,6 +37,24 @@ public class MythariusMasterHit : MasterHit
         {
         	fightOrFlight();
         }
+    }
+
+    public void W_Side_Projectile()
+    {
+        if(!isHost)return;
+
+        PROJECTILE_TYPE projectile = (PROJECTILE_TYPE)Random.Range(0,6);
+
+        GameObject wildcard = host.CreateNetworkObject(projectile.ToString(), transform.position + new Vector3(0f, 4.5f, 0f), transform.rotation);
+        foreach (HitboxCollision hitbox in wildcard.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID + 150;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+            hitbox.Facing = facing;
+        }
+
     }
 
 	//Down W
