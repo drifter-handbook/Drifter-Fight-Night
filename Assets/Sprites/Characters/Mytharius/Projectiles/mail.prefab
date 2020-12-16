@@ -72,7 +72,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 5127640868740741578}
   playerType: {fileID: 0}
-  OverrideData: {fileID: 0}
+  OverrideData: {fileID: 11400000, guid: bb26f49670a765a43867e91b2a7453a4, type: 2}
   AttackData: {fileID: 0}
 --- !u!1 &5127640868740741578
 GameObject:
@@ -91,7 +91,8 @@ GameObject:
   - component: {fileID: 5805032751599763652}
   - component: {fileID: 3477562579334113960}
   - component: {fileID: 876407840923763560}
-  m_Layer: 0
+  - component: {fileID: 7667618538224429761}
+  m_Layer: 8
   m_Name: mail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,7 +108,7 @@ Transform:
   m_GameObject: {fileID: 5127640868740741578}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 10, y: 10, z: 1}
+  m_LocalScale: {x: 12, y: 12, z: 1}
   m_Children:
   - {fileID: 1161411179878631154}
   m_Father: {fileID: 0}
@@ -151,7 +152,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: b1c060ddd7c9d0b4886de62141240641, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -271,4 +272,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ef945a1776594438c7a9223e2d7bb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  duration: 1
+  duration: 3
+--- !u!114 &7667618538224429761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5127640868740741578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e616ba64b17e466408d647622dd28ac7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
