@@ -133,7 +133,6 @@ public class Drifter : MonoBehaviour, INetworkInit
 
     public void SetColor(int colorID)
     {
-        UnityEngine.Debug.Log(colorID);
         myColor = (colorID>=0?colorID:0);
         transform.GetChild(0).GetComponent<SpriteRenderer>().color = CharacterMenu.ColorFromEnum[(PlayerColor)myColor];
         transform.GetChild(3).GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)myColor]);

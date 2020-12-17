@@ -74,8 +74,8 @@ public class PlayerCardArtHolder : MonoBehaviour
                 playerCards[i].SetCharge(drifters[i].GetCharge());
 
                 //Prolly remove this
-                playerCards[i].SetColor(drifter[i].myColor);
-                drifter[i].SetColor(drifter[i].myColor);
+                playerCards[i].SetColor(drifters[i].myColor);
+                drifters[i].SetColor(drifters[i].myColor);
 
                 //drifters[i].SetColor(playerCards[i].);
 
