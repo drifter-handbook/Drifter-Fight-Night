@@ -43,12 +43,40 @@ public class MythariusMasterHit : MasterHit
     {
         if(!isHost)return;
 
-        PROJECTILE_TYPE projectile = (PROJECTILE_TYPE)Random.Range(0,6);
+        facing = movement.Facing;
 
-        GameObject wildcard = host.CreateNetworkObject(projectile.ToString(), transform.position + new Vector3(0f, 4.5f, 0f), transform.rotation);
+        PROJECTILE_TYPE projectile = (PROJECTILE_TYPE)Random.Range(0,6);
+        Vector3 pos = new Vector3(facing *2, 4.5f, 0f);
+        Vector3 velocity = Vector3.zero;
+
+        switch(projectile){
+            case PROJECTILE_TYPE.beet:
+                velocity = new Vector3(facing * 5f,0,0);
+                break;
+            case PROJECTILE_TYPE.chilltouch:
+            case PROJECTILE_TYPE.rayoffrost:
+                velocity = new Vector3(facing * 25f,0,0);
+                break;
+            case PROJECTILE_TYPE.bird:
+                pos = new Vector3(facing, 7.5f, 0f);
+                velocity = new Vector3(facing * 15f,0,0);
+                break;
+            case PROJECTILE_TYPE.mail:
+            case PROJECTILE_TYPE.sugarbeet:
+                velocity = new Vector3(facing * 15f,0,0);
+                break;
+            default:
+                break;
+
+        }
+
+        GameObject wildcard = host.CreateNetworkObject(projectile.ToString(), transform.position + pos, transform.rotation);
+
+        wildcard.GetComponent<Rigidbody2D>().velocity = velocity;
+        wildcard.transform.localScale = new Vector3( wildcard.transform.localScale.x * facing,wildcard.transform.localScale.y);
         foreach (HitboxCollision hitbox in wildcard.GetComponentsInChildren<HitboxCollision>(true))
         {
-            hitbox.parent = drifter.gameObject;
+            if(projectile != PROJECTILE_TYPE.sugarbeet) hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID + 150;
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;

@@ -13,8 +13,6 @@ public class LucillePortal : MonoBehaviour
 	{
 		if(!GameController.Instance.IsHost)return;
 
-
-
 		HitboxCollision hitbox = collider.gameObject.GetComponent<HitboxCollision>();
 
 		try
