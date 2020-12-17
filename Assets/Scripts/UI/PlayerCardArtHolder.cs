@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PlayerCardArtHolder : MonoBehaviour
 {
-    public Sprite[] faces = new Sprite[8];
-    public Sprite[] stocks = new Sprite[8];
+    public Sprite[] faces;// = new Sprite[8];
+    public Sprite[] stocks;// = new Sprite[8];
     public GameObject summaryCardPrefab;
     public GameObject miniSummaryCardPrefab;
     public GameObject stockPrefab;
@@ -31,38 +31,24 @@ public class PlayerCardArtHolder : MonoBehaviour
             {
 
                 GameObject newCard;
-                if (drifters.Length > 4)
-                {
-                    newCard = Instantiate(miniSummaryCardPrefab, transform.position, transform.rotation);
-                }
-                else
-                {
-                     newCard = Instantiate(summaryCardPrefab, transform.position, transform.rotation);
+     
+                newCard = Instantiate(summaryCardPrefab, transform.position, transform.rotation);
                     
-                }
                 newCard.transform.SetParent(gameObject.transform, false);
-                newCard.transform.localScale = new Vector3(1, 1, 1);
+                newCard.transform.localScale = new Vector3(100, 100, 1);
                 playerCards[i] = newCard.GetComponent<PlayerCard>();
 
-                playerCards[i].SetColor(CharacterMenu.ColorFromEnum[(PlayerColor)drifter.myColor]);
-
+                
                 int imageIndex = getDrifterTypeIndex(drifter.GetComponent<NetworkSync>().NetworkType);
+
+                if(imageIndex == 5 || imageIndex == 1 || imageIndex == 9 || imageIndex == 6 || imageIndex == 10 || imageIndex == 3){
+                   playerCards[i].hasChargeCounter = true;
+                }
+
+                playerCards[i].SetColor(drifter.myColor);
                 
                 playerCards[i].drifterIndex = imageIndex;
-                if(imageIndex == 5 || imageIndex == 1 || imageIndex == 9){
-                   playerCards[i].charge.SetActive(true);
-                }
-                else if(imageIndex == 6){
-                    playerCards[i].MegurinElements.SetActive(true);
-                    playerCards[i].MegurinElements.GetComponent<MegurinGauges>().megurin = drifter.GetComponentInChildren<MegurinMasterHit>();
-                }
-                else
-                {
-                    playerCards[i].charge.SetActive(false);
-                    playerCards[i].MegurinElements.SetActive(false);
-                }
 
-                playerCards[i].setChargeDrifter(drifter);
                 playerCards[i].setImages(faces[imageIndex], stocks[imageIndex]);
                 playerCards[i].addStocks(stockPrefab, 3);
                 i++;
@@ -73,22 +59,25 @@ public class PlayerCardArtHolder : MonoBehaviour
         {
             playerCards[i].setPercent(drifters[i].DamageTaken);
             // update stocks
-            if((playerCards[i].drifterIndex == 5 || playerCards[i].drifterIndex == 1) && !playerCards[i].charge.activeSelf){
-                   playerCards[i].charge.SetActive(true);
-            }
-            else if(playerCards[i].drifterIndex == 6 && !playerCards[i].MegurinElements.activeSelf){
-                    playerCards[i].MegurinElements.SetActive(true);
-            }
+            // if((playerCards[i].drifterIndex == 5 || playerCards[i].drifterIndex == 1) && !playerCards[i].charge.activeSelf){
+            //        playerCards[i].charge.SetActive(true);
+            // }
+            // else if(playerCards[i].drifterIndex == 6 && !playerCards[i].MegurinElements.activeSelf){
+            //         playerCards[i].MegurinElements.SetActive(true);
+            // }
+
+
             
             if (drifters[i] != null)
             {
                 playerCards[i].removeToStock(drifters[i].Stocks);
+                playerCards[i].SetCharge(drifters[i].GetCharge());
             }
             else
             {
                 playerCards[i].removeToStock(0);
             }
-            playerCards[i].isMyColor(CharacterMenu.ColorFromEnum[(PlayerColor)drifters[i].myColor]);
+            //playerCards[i].isMyColor(CharacterMenu.ColorFromEnum[(PlayerColor)drifters[i].myColor]);
         }
     }
 

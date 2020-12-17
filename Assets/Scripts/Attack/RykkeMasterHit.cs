@@ -34,7 +34,7 @@ public class RykkeMasterHit : MasterHit
             rb.position =  Vector3.Lerp(rb.position,tetherTarget,.15f);
         }
 
-        if(drifter.Charge <=0)Empowered = false;
+        if(drifter.GetCharge() <=0)Empowered = false;
     }
 
 
@@ -246,9 +246,9 @@ public class RykkeMasterHit : MasterHit
         public void grantStack()
         {
             if(!isHost)return;
-            if(drifter.Charge < 3){
+            if(drifter.GetCharge() < 3){
                 audioSource.PlayOneShot(audioClips[0]);
-                drifter.Charge++;
+                drifter.IncrementCharge();
                 Empowered = true;
                 drifter.GuardStateName = "Guard_Strong";
                 drifter.BlockReduction = .75f;
@@ -259,9 +259,9 @@ public class RykkeMasterHit : MasterHit
         public void conmsumeStack()
         {
             if(!isHost)return;
-            if(drifter.Charge > 0){
-              drifter.Charge--;
-              if(drifter.Charge == 0){
+            if(drifter.GetCharge() > 0){
+              drifter.DecrementCharge();
+              if(drifter.GetCharge() == 0){
     			Empowered = false;
                 drifter.GuardStateName = "Guard";
                 drifter.BlockReduction = .25f;

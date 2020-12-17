@@ -11,6 +11,7 @@ public class MegurinMasterHit : MasterHit
     float terminalVelocity;
 
     int neutralWCharge = 0;
+    int Charge;
     public float lightningCharge = 0f;
     public float windCharge = 0f;
     public float iceCharge = 0f;
@@ -135,7 +136,7 @@ public class MegurinMasterHit : MasterHit
         GameObject MegurinOrb = host.CreateNetworkObject("ChromaticOrb", transform.position + pos, transform.rotation);
         MegurinOrb.transform.localScale = flip;
         MegurinOrb.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * 25, 0);
-        MegurinOrb.GetComponent<Animator>().SetInteger("Mode", drifter.Charge);
+        MegurinOrb.GetComponent<Animator>().SetInteger("Mode", Charge);
         foreach (HitboxCollision hitbox in MegurinOrb.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
@@ -188,13 +189,13 @@ public class MegurinMasterHit : MasterHit
     //Elemental Logic
 
     public void setLightning(){
-        drifter.Charge = -1;
+        Charge = -1;
     }
     public void setIce(){
-        drifter.Charge = 1;
+        Charge = 1;
     }
     public void setWind(){
-        drifter.Charge = 0;
+        Charge = 0;
     }
 
     public SingleAttackData handleElements(SingleAttackData attackData, int element){

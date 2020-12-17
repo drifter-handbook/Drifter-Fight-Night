@@ -117,6 +117,7 @@ public class MythariusMasterHit : MasterHit
 
         
         Empowered = true;
+        drifter.SetCharge(4);
 
         slowfield.GetComponent<MultihitZoneProjectile>().attacks = attacks;
     }
@@ -124,6 +125,7 @@ public class MythariusMasterHit : MasterHit
     public void fightOrFlight()
     {
     	if(!isHost || !Empowered)return;
+        drifter.SetCharge(0);
     	Empowered = false;
     	//Heal
     	if(drifter.DamageTaken >= 10f)drifter.DamageTaken -= 10f;

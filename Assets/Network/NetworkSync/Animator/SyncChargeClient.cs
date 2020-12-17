@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class SyncColorDataClient : MonoBehaviour, ISyncClient, INetworkMessageReceiver
+public class SyncChargeClient : MonoBehaviour, ISyncClient, INetworkMessageReceiver
 {
     NetworkSync sync;
 
@@ -20,9 +20,9 @@ public class SyncColorDataClient : MonoBehaviour, ISyncClient, INetworkMessageRe
     {
         try
         {
-            state = NetworkUtils.GetNetworkData<SyncInt>(sync["colorInfo"]);
+            state = NetworkUtils.GetNetworkData<SyncInt>(sync["chargeInfo"]);
 
-            if(drifter.GetColor() != state.integerValue) drifter.SetColor(state.integerValue);
+            drifter.SetCharge(state.integerValue);
 
         }
         catch (KeyNotFoundException)
@@ -34,9 +34,8 @@ public class SyncColorDataClient : MonoBehaviour, ISyncClient, INetworkMessageRe
 
     public void ReceiveNetworkMessage(NetworkMessage message)
     {
-        state = NetworkUtils.GetNetworkData<SyncInt>(sync["colorInfo"]);
+        state = NetworkUtils.GetNetworkData<SyncInt>(sync["chargeInfo"]);
 
-        if(drifter.GetColor() != state.integerValue)drifter.SetColor(state.integerValue);
-
+        drifter.SetCharge(state.integerValue);
     }
 }
