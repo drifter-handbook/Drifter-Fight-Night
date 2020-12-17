@@ -219,8 +219,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
         float angleT;
         float stepSize = duration / ((damage + 2 )/3);
 
-        GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.RING, position,angle, new Vector2(10f, 10f));
-
+        if(damage >= 2.5f)GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.RING, position,angle, new Vector2(10f, 10f));
 
         for (int i = 0; i < (damage + 2 )/3 ; i++)
         {
