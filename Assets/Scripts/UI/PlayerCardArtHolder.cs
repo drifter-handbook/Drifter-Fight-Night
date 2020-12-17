@@ -72,12 +72,12 @@ public class PlayerCardArtHolder : MonoBehaviour
             {
                 playerCards[i].removeToStock(drifters[i].Stocks);
                 playerCards[i].SetCharge(drifters[i].GetCharge());
+
             }
             else
             {
                 playerCards[i].removeToStock(0);
             }
-            //playerCards[i].isMyColor(CharacterMenu.ColorFromEnum[(PlayerColor)drifters[i].myColor]);
         }
     }
 
