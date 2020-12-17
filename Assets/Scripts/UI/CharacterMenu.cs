@@ -21,8 +21,8 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     public static Dictionary<PlayerColor, Color> ColorFromEnum = new Dictionary<PlayerColor, Color>()
     {
         { PlayerColor.RED, new Color(1.0f, 0f, 0f) },
-        { PlayerColor.BLUE, new Color(0.075f, 0.702f, 0.906f) },
         { PlayerColor.GOLD, new Color(0.8f, 0.6f, 0f) },
+        { PlayerColor.BLUE, new Color(0.075f, 0.702f, 0.906f) },
         { PlayerColor.GREEN, new Color(0.124f, 0.866f, 0.118f) },
         { PlayerColor.PURPLE, new Color(0.725f, 0.063f, 1.0f) },
         { PlayerColor.MAGENTA, new Color(1.0f, 0.063f, 0.565f) },

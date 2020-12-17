@@ -73,6 +73,12 @@ public class PlayerCardArtHolder : MonoBehaviour
                 playerCards[i].removeToStock(drifters[i].Stocks);
                 playerCards[i].SetCharge(drifters[i].GetCharge());
 
+                //Prolly remove this
+                playerCards[i].SetColor(drifter[i].myColor);
+                drifter[i].SetColor(drifter[i].myColor);
+
+                //drifters[i].SetColor(playerCards[i].);
+
             }
             else
             {
