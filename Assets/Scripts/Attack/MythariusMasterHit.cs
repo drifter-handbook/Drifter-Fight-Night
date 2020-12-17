@@ -51,9 +51,12 @@ public class MythariusMasterHit : MasterHit
 
         switch(projectile){
             case PROJECTILE_TYPE.beet:
-                velocity = new Vector3(facing * 5f,0,0);
+                velocity = new Vector3(facing * 55f,0,0);
                 break;
+            case PROJECTILE_TYPE.mail:
             case PROJECTILE_TYPE.chilltouch:
+                velocity = new Vector3(facing * 40f,0,0);
+                break;
             case PROJECTILE_TYPE.rayoffrost:
                 velocity = new Vector3(facing * 25f,0,0);
                 break;
@@ -61,7 +64,7 @@ public class MythariusMasterHit : MasterHit
                 pos = new Vector3(facing, 7.5f, 0f);
                 velocity = new Vector3(facing * 15f,0,0);
                 break;
-            case PROJECTILE_TYPE.mail:
+            
             case PROJECTILE_TYPE.sugarbeet:
                 velocity = new Vector3(facing * 15f,0,0);
                 break;

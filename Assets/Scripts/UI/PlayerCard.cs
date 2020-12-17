@@ -38,7 +38,7 @@ public class PlayerCard : MonoBehaviour
     public GameObject stockHolder;
 
 
-    void Start()
+    void Awake()
     {
 
         TopShake = TopObject.GetComponent<GameObjectShake>();
