@@ -14,7 +14,7 @@ public class ChargeCounter : MonoBehaviour
 
     void Update()
     {
-        anim.SetInteger("Charge",drifter.Charge);
+        //anim.SetInteger("Charge",drifter.Charge);
     }
 
 }

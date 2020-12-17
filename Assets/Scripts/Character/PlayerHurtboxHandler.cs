@@ -217,10 +217,12 @@ public class PlayerHurtboxHandler : MonoBehaviour
     {
         Vector3 hitSparkPos = position;
         float angleT;
-        float stepSize = duration / ((damage + 3) / 5);
+        float stepSize = duration / ((damage + 2 )/3);
+
+        GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.RING, position,angle, new Vector2(10f, 10f));
 
 
-        for (int i = 0; i < (damage + 2) / 4; i++)
+        for (int i = 0; i < (damage + 2 )/3 ; i++)
         {
             angleT = angle + Random.Range(-45, 45);
             hitSparkPos += Quaternion.Euler(0, 0, angleT) * new Vector3(-Random.Range(1, 4), 0, 0);
@@ -238,14 +240,24 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
     HitSpark randomSpark()
     {
-        int index = Random.Range(0, 11);
+        int index = Random.Range(0, 4);
 
         //Preferantially spawn oomph sparks
-        if(index <= 4 ) return HitSpark.OOMPHSPARK;
-        else if(index >= 6 ) return HitSpark.OOMPHDARK;
+        switch(index)
+        {
 
-        //1/11 are stars
-        return HitSpark.STAR_FAST;
+            case(0):
+                return HitSpark.OOMPHSPARK;
+            case(1):
+                return HitSpark.OOMPHDARK;
+            case(2):
+                return HitSpark.STAR1;
+            case(3):
+                return HitSpark.STAR2;
+            default:
+                return HitSpark.STAR1;
+        }
+
     }
 
     // Super-armor logic

@@ -1,8 +1,8 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SyncColorDataHost : MonoBehaviour, ISyncHost
+public class SyncChargeHost : MonoBehaviour, ISyncHost
 {
     NetworkSync sync;
 
@@ -19,24 +19,18 @@ public class SyncColorDataHost : MonoBehaviour, ISyncHost
     // Update is called once per frame
     void Update()
     {
-        sync["colorInfo"] = 
+        sync["chargeInfo"] = 
             new SyncInt
             {
-                integerValue = drifter.GetColor()
+                integerValue = drifter.GetCharge()
             };
     }
 
-    public void setColor(int colorCode)
+    public void setCharge(int charge)
     {
         if (GameController.Instance.IsHost)
         {
-            sync.SendNetworkMessage(new SyncInt() { integerValue = colorCode});
+            sync.SendNetworkMessage(new SyncInt() { integerValue = drifter.GetCharge()});
         }
     }
-}
-
-public class SyncInt : INetworkData
-{
-    public int integerValue;
-    public string Type { get; set; }
 }

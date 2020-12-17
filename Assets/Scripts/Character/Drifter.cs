@@ -45,7 +45,7 @@ public class Drifter : MonoBehaviour, INetworkInit
         set { sync["damageTaken"] = value; }
     }
 
-    public int Charge = 0;
+    int Charge = 0;
 
     public float BlockReduction = .5f;
     
@@ -100,6 +100,30 @@ public class Drifter : MonoBehaviour, INetworkInit
         return myColor;
     }
 
+    public void SetCharge(int newCharge)
+    { 
+        if(Charge != newCharge) Charge=newCharge;
+        if(isHost) gameObject.GetComponent<SyncChargeHost>().setCharge(Charge);
+    }
+
+    public void IncrementCharge()
+    { 
+        Charge++;
+        if(isHost) gameObject.GetComponent<SyncChargeHost>().setCharge(Charge);
+    }
+
+    public void DecrementCharge()
+    { 
+        Charge--;
+        if(isHost) gameObject.GetComponent<SyncChargeHost>().setCharge(Charge);
+    }
+
+    public int GetCharge()
+    { 
+        return this.Charge;
+    }
+
+
     public void SetPeerId(int id){
         peerID = id;
         //myColor = CharacterMenu.ColorFromEnum[(PlayerColor)(peerID>0?peerID:0)];
@@ -115,7 +139,7 @@ public class Drifter : MonoBehaviour, INetworkInit
         transform.GetChild(3).GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)myColor]);
         if(isHost){
             transform.GetChild(0).GetComponent<SyncAnimatorStateHost>().SetState("P" + (colorID + 1));
-            gameObject.GetComponent<SyncColorDataHost>().SetColor(myColor);
+            gameObject.GetComponent<SyncColorDataHost>().setColor(myColor);
         }
     }
 

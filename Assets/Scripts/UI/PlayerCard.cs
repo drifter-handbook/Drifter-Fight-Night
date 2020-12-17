@@ -8,24 +8,46 @@ public class PlayerCard : MonoBehaviour
 {
     public GameObject face;
     public Sprite stockImage;
-    public Text percent;
     public int currStocks = 0;
     public int drifterIndex;
-    public SpriteRenderer pips;
-    public GameObject charge;
-    public GameObject MegurinElements;
-    public GameObjectShake shake;
+    public bool hasChargeCounter = false;
+
+    public GameObject TopObject;
+    public GameObject BottomObject;
+
+    public Sprite[] portraits_no_Charge;
+    public Sprite[] portraits_with_Charge;
+    public Sprite[] Charge_Ticks;
+
+    public SpriteRenderer chargeBar;
+
+    Text TopText;
+    Text BottomText;
+
+    GameObjectShake TopShake;
+    GameObjectShake BottomShake;
+
+    int mycolor;
+
+    int charge = 0; 
 
     float previousPercent =0f;
 
-    public Image bannerBack;
-
     const int MAX_STOCKS = 4;
 
-    Color mycolor; 
-
-
     public GameObject stockHolder;
+
+
+    void Start()
+    {
+
+        TopShake = TopObject.GetComponent<GameObjectShake>();
+        TopText = TopObject.GetComponent<Text>();
+
+        BottomShake = BottomObject.GetComponent<GameObjectShake>();
+        BottomText = BottomObject.GetComponent<Text>();
+
+    }
 
     public void addStock(GameObject stock)
     {
@@ -48,22 +70,27 @@ public class PlayerCard : MonoBehaviour
         }
     }
 
-    public void SetColor(Color color)
+    public void SetColor(int color)
     {
         mycolor = color;
-        bannerBack.GetComponent<Image>().color = color;
-        pips.color = color;
+        gameObject.GetComponent<SpriteRenderer>().sprite = hasChargeCounter?portraits_with_Charge[color]:portraits_no_Charge[color];
 
     }
 
-    public void isMyColor(Color color){
-        if (color != mycolor) SetColor(color);
-    }
-
-    public void setChargeDrifter(Drifter drifter)
+    public void SetCharge(int charge)
     {
-        charge.GetComponent<ChargeCounter>().drifter = drifter;
+
+        if(!hasChargeCounter)return;
+
+        chargeBar.sprite = Charge_Ticks[charge];
+
     }
+
+
+    // public void setChargeDrifter(Drifter drifter)
+    // {
+    //     charge.GetComponent<ChargeCounter>().drifter = drifter;
+    // }
 
     public void removeStock()
     {
@@ -91,7 +118,7 @@ public class PlayerCard : MonoBehaviour
 
     public void setImages(Sprite face, Sprite stock)
     {
-        this.face.GetComponent<Image>().sprite = face;
+        this.face.GetComponent<SpriteRenderer>().sprite = face;
         this.stockImage = stock;
     }
 
@@ -107,11 +134,19 @@ public class PlayerCard : MonoBehaviour
     {
         if(previousPercent  < sentPercent)
         {
-            StartCoroutine(shake.Shake(.3f,(sentPercent - previousPercent)/7f));
+            StartCoroutine(TopShake.Shake(.3f,(sentPercent - previousPercent)/120f));
+            StartCoroutine(BottomShake.Shake(.3f,(sentPercent - previousPercent)/120f));
         }
         previousPercent = sentPercent;
 
-        this.percent.text = (int)sentPercent+"%";
+        float greenVal = Mathf.Max((120f - sentPercent)/120f,0);
+        float blueVal = Mathf.Max((50f - sentPercent)/50f,0);
+        float redVal = Mathf.Max((500f - sentPercent)/500f,.8f);
+
+        this.BottomText.text = sentPercent.ToString("0.0")+"%";
+
+        this.TopText.color = new Color(redVal,greenVal,blueVal,1);
+        this.TopText.text = sentPercent.ToString("0.0")+"%";
     }
 
 }

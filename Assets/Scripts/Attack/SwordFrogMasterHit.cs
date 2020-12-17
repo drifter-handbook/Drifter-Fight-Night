@@ -11,13 +11,13 @@ public class SwordFrogMasterHit : MasterHit
     {
         if(!isHost)return;
         //Generate a new arrow every 3 seconds
-        if(drifter.Charge < 3)
+        if(drifter.GetCharge() < 3)
         {
             chargeTime += Time.deltaTime;
             if(chargeTime >= 3f)
             {
                 Empowered = true;
-                drifter.Charge++;
+                drifter.IncrementCharge();
                 chargeTime = 0;
             }
         }
@@ -32,8 +32,8 @@ public class SwordFrogMasterHit : MasterHit
         facing = movement.Facing;
 
         //Fire an arrow if Swordfrog has a charge
-        if(drifter.Charge >0){
-            drifter.Charge--;
+        if(drifter.GetCharge() >0){
+            drifter.DecrementCharge();
             
             GameObject arrow = host.CreateNetworkObject("Arrow", transform.position + new Vector3(0, 3.8f, 0), transform.rotation);
             arrow.transform.localScale = new Vector3(7.5f * facing, 7.5f, 1f);
@@ -55,7 +55,7 @@ public class SwordFrogMasterHit : MasterHit
         
 
         //Update charge count
-        if(drifter.Charge ==0){
+        if(drifter.GetCharge() ==0){
             Empowered = false;
         }
 
