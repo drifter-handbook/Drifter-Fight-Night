@@ -18,6 +18,8 @@ public class PlayerStatusController : MonoBehaviour
     {
         anim.SetInteger("Status",mode);
         mode = status.GetStatusToRender();
+
+        UnityEngine.Debug.Log(status.GetStatusToRender());
                 
     }
 

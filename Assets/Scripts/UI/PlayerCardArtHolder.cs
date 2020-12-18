@@ -35,7 +35,7 @@ public class PlayerCardArtHolder : MonoBehaviour
                 newCard = Instantiate(summaryCardPrefab, transform.position, transform.rotation);
                     
                 newCard.transform.SetParent(gameObject.transform, false);
-                newCard.transform.localScale = new Vector3(100, 100, 1);
+                newCard.transform.localScale = new Vector3(-100, 100, 1);
                 playerCards[i] = newCard.GetComponent<PlayerCard>();
 
                 
@@ -45,29 +45,28 @@ public class PlayerCardArtHolder : MonoBehaviour
                    playerCards[i].hasChargeCounter = true;
                 }
 
+
+                //Colors
                 playerCards[i].SetColor(drifter.myColor);
+                drifters[i].SetColor(drifters[i].myColor);
+
+                drifters[i].status.card = playerCards[i];
                 
                 playerCards[i].drifterIndex = imageIndex;
 
                 playerCards[i].setImages(faces[imageIndex], stocks[imageIndex]);
                 playerCards[i].addStocks(stockPrefab, 3);
+
                 i++;
             }
 
         }
+
+        //For each drifer, update their card
         for (int i = 0; i < drifters.Length; i++)
         {
             playerCards[i].setPercent(drifters[i].DamageTaken);
-            // update stocks
-            // if((playerCards[i].drifterIndex == 5 || playerCards[i].drifterIndex == 1) && !playerCards[i].charge.activeSelf){
-            //        playerCards[i].charge.SetActive(true);
-            // }
-            // else if(playerCards[i].drifterIndex == 6 && !playerCards[i].MegurinElements.activeSelf){
-            //         playerCards[i].MegurinElements.SetActive(true);
-            // }
-
-
-            
+              
             if (drifters[i] != null)
             {
                 playerCards[i].removeToStock(drifters[i].Stocks);
@@ -77,13 +76,10 @@ public class PlayerCardArtHolder : MonoBehaviour
                 playerCards[i].SetColor(drifters[i].myColor);
                 drifters[i].SetColor(drifters[i].myColor);
 
-                //drifters[i].SetColor(playerCards[i].);
+                //drifters[i].status.
 
             }
-            else
-            {
-                playerCards[i].removeToStock(0);
-            }
+            else playerCards[i].removeToStock(0);
         }
     }
 

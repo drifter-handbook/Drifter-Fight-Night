@@ -49,12 +49,13 @@ public class PlayerHurtboxHandler : MonoBehaviour
             PlayerStatus status = drifter.status;
 
             //Ignore the collision if invulnerable
-            if(status.HasInulvernability())return;
+            if(status.HasStatusEffect(PlayerStatusEffect.INVULN))return;
             
             //Freezefame if hit a counter
             if(hurtbox.gameObject.name == "Counter" &&  attackData.AttackDamage >0f)
             {
-                hitbox.parent.GetComponent<PlayerStatus>().ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.4f);
+                GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.STAR, Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),0, new Vector2(10f, 10f));
+                hitbox.parent.GetComponent<PlayerStatus>().ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.7f);
                 status.ApplyStatusEffect(PlayerStatusEffect.HIT,.3f);
                 return;
             }
@@ -63,7 +64,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             // apply damage
             if (drifter != null && status != null)
             {
-                drifter.DamageTaken += (attackData.AttackDamage  + (status.HasStatusEffect(PlayerStatusEffect.HEXED) &&  attackData.AttackDamage >0 ? 1.7f : 0f) )* (drifter.guarding && !attackData.isGrab ? 1 - drifter.BlockReduction : 1f);
+                drifter.DamageTaken += (attackData.AttackDamage  + (status.HasStatusEffect(PlayerStatusEffect.DEFENSEDOWN) &&  attackData.AttackDamage >0 ? 1.7f : 0f) )* (drifter.guarding && !attackData.isGrab ? 1 - drifter.BlockReduction : 1f);
                 //ScreenShake
             }
             // apply knockback
@@ -90,7 +91,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             //Ignore knockback if invincible or armoured
             if (status != null && (attackData.isGrab || !drifter.guarding)){
 
-                if(!status.HasArmour() || attackData.isGrab){
+                if(!status.HasStatusEffect(PlayerStatusEffect.ARMOUR) || attackData.isGrab){
 
                     if(Shake != null && attackData.Knockback !=0){
                         Shake.CurrentShake = StartCoroutine(Shake.Shake((willCollideWithBlastZone(GetComponent<Rigidbody2D>(), HitstunDuration)?0.3f:0.1f),Mathf.Clamp((((attackData.Knockback - 10)/100f + (attackData.AttackDamage-10)/44f)) * attackData.KnockbackScale,.07f,.8f)));//StartCoroutine(Shake.Shake(drifter.DamageTaken/100f * Mathf.Max((attackData.AttackDamage + attackData.KnockbackScale *3f -3f),.1f)/10f * .1f,Mathf.Max((attackData.AttackDamage+ attackData.KnockbackScale*3f - 3f),.2f)/10f));

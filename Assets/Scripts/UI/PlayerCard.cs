@@ -21,6 +21,11 @@ public class PlayerCard : MonoBehaviour
 
     public SpriteRenderer chargeBar;
 
+    public GameObject bar;
+
+    public GameObject stockHolder;
+    public GameObject statusHolder;
+
     Text TopText;
     Text BottomText;
 
@@ -28,14 +33,11 @@ public class PlayerCard : MonoBehaviour
     GameObjectShake BottomShake;
 
     int mycolor;
-
     int charge = 0; 
-
-    float previousPercent =0f;
+    //int currentStatusCount = 0;
+    float previousPercent = 0f;
 
     const int MAX_STOCKS = 4;
-
-    public GameObject stockHolder;
 
 
     void Awake()
@@ -70,6 +72,39 @@ public class PlayerCard : MonoBehaviour
         }
     }
 
+    public void addStatusBar(PlayerStatusEffect statusEffect,int icon, float duration, PlayerStatus status)
+    {
+
+        GameObject newBar = Instantiate(bar, new Vector3(0,0), Quaternion.identity);
+        newBar.transform.SetParent(statusHolder.transform, false);
+        newBar.transform.localScale = new Vector3(100, 100, 1);
+        newBar.GetComponent<StatusBar>().status = status;
+        newBar.GetComponent<StatusBar>().initialize(statusEffect,icon,duration);
+        //currentStatusCount++;
+
+    }
+
+    // public void removeStatusBar(GameObject bar)
+    // {
+    //     if(currentStatusCount <= 0)
+    //     {
+    //         return;
+    //     }
+    //     currentStatusCount--;
+
+    //     if (statusHolder.transform.childCount < num)
+    //     {
+    //         num = statusHolder.transform.childCount;
+    //     }
+    //     for (int i = 0; i<num; i++)
+    //     {
+    //         Destroy(statusHolder.transform.GetChild(0).gameObject);
+    //     }
+
+    // }
+
+
+
     public void SetColor(int color)
     {
         mycolor = color;
@@ -85,12 +120,6 @@ public class PlayerCard : MonoBehaviour
         chargeBar.sprite = Charge_Ticks[charge];
 
     }
-
-
-    // public void setChargeDrifter(Drifter drifter)
-    // {
-    //     charge.GetComponent<ChargeCounter>().drifter = drifter;
-    // }
 
     public void removeStock()
     {
