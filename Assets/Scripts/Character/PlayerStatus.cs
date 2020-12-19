@@ -267,10 +267,6 @@ public class PlayerStatus : MonoBehaviour
     {
     	PlayerStatusData data = PlayerStatusData.statusDataMap[ef];
 
-    	UnityEngine.Debug.Log(ef.ToString() + " " + duration);
-
-    	UnityEngine.Debug.Log(HasStunEffect());
-
     	if(!HasStatusEffect(ef))addStatusBar(ef,duration);
     	//Ignores hitstun if in superarmour or invuln
         if(ef == PlayerStatusEffect.DEAD){

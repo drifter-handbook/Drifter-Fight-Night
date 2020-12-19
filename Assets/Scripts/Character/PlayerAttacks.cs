@@ -160,10 +160,11 @@ public class PlayerAttacks : MonoBehaviour
     void StartAttack(DrifterAttackType attackType)
     {
         SetHitboxesActive(false);
+        status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,8f);
         drifter.PlayAnimation(AnimatorStates[attackType]);
         SetupAttackID(attackType);
 
-        status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,8f);
+        
         
     }
 

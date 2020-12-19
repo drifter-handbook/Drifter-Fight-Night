@@ -17,10 +17,7 @@ public class PlayerStatusController : MonoBehaviour
     void Update()
     {
         anim.SetInteger("Status",mode);
-        mode = status.GetStatusToRender();
-
-        UnityEngine.Debug.Log(status.GetStatusToRender());
-                
+        mode = status.GetStatusToRender();                
     }
 
 }

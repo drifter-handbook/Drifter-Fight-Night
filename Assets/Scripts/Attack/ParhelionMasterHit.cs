@@ -66,6 +66,12 @@ public class ParhelionMasterHit : MasterHit
         movement.terminalVelocity = terminalVelocity;
     }
 
+    public void wallRide(float speed)
+    {
+		if(!isHost)return;
+		if(movement.wallSliding) rb.velocity = new Vector3(rb.velocity.x, Mathf.Lerp(rb.velocity.y,speed,.5f));    	
+    }
+
     //Inherited Roll Methods
 
     public override void roll()

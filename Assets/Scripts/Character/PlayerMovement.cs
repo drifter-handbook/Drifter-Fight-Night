@@ -45,6 +45,8 @@ public class PlayerMovement : MonoBehaviour
     public bool gravityPaused = false;
     [NonSerialized]
     public bool ledgeHanging = false;
+    [NonSerialized]
+    public bool wallSliding = false;
     bool strongLedgeGrab = true;
 
 
@@ -183,6 +185,8 @@ public class PlayerMovement : MonoBehaviour
         }
 
         grounded = IsGrounded();
+        wallSliding = IsWallSliding();
+        if(wallSliding)UnityEngine.Debug.Log("wallSliding");
 
         //Sets hitstun state when applicable
         if(status.HasEnemyStunEffect())
@@ -475,13 +479,19 @@ public class PlayerMovement : MonoBehaviour
     private bool IsGrounded()
     {
         int count = Physics2D.RaycastNonAlloc(frictionCollider.bounds.center + frictionCollider.bounds.extents.y * Vector3.down, Vector3.down, hits, 0.2f);
-        for (int i = 0; i < count; i++)
-        {
-            if (hits[i].collider.gameObject.tag == "Ground" || (hits[i].collider.gameObject.tag == "Platform" && status.HasGroundFriction()))
-            {
-                return true;
-            }
-        }
+
+        for (int i = 0; i < count; i++) if (hits[i].collider.gameObject.tag == "Ground" || (hits[i].collider.gameObject.tag == "Platform" && status.HasGroundFriction())) return true;
+
+        return false;
+    }
+
+    RaycastHit2D[] wallHits = new RaycastHit2D[10];
+    private bool IsWallSliding()
+    {
+        int count = Physics2D.RaycastNonAlloc(frictionCollider.bounds.center + frictionCollider.bounds.extents.x * (( drifter.input.MoveX > 0)?Vector3.right:Vector3.left), (( drifter.input.MoveX > 0)?Vector3.right:Vector3.left), wallHits, 0.35f);
+        
+        for (int i = 0; i < count; i++) if (wallHits[i].collider.gameObject.tag == "Ground" && status.HasGroundFriction())return true;
+        
         return false;
     }
 
