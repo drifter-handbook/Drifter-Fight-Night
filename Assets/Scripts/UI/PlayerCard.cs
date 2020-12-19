@@ -32,9 +32,7 @@ public class PlayerCard : MonoBehaviour
     GameObjectShake TopShake;
     GameObjectShake BottomShake;
 
-    int mycolor;
-    int charge = 0; 
-    //int currentStatusCount = 0;
+    int mycolor; 
     float previousPercent = 0f;
 
     const int MAX_STOCKS = 4;
@@ -83,27 +81,6 @@ public class PlayerCard : MonoBehaviour
         //currentStatusCount++;
 
     }
-
-    // public void removeStatusBar(GameObject bar)
-    // {
-    //     if(currentStatusCount <= 0)
-    //     {
-    //         return;
-    //     }
-    //     currentStatusCount--;
-
-    //     if (statusHolder.transform.childCount < num)
-    //     {
-    //         num = statusHolder.transform.childCount;
-    //     }
-    //     for (int i = 0; i<num; i++)
-    //     {
-    //         Destroy(statusHolder.transform.GetChild(0).gameObject);
-    //     }
-
-    // }
-
-
 
     public void SetColor(int color)
     {

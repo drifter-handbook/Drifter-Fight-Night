@@ -118,6 +118,7 @@ public class PlayerStatus : MonoBehaviour
                     if(HasStatusEffect(key) && statusEffects[key] > 0)
                     {
                         statusEffects[key]--;
+                        if(key == PlayerStatusData.statusDataMap[PlayerStatusEffect.CRINGE] && !HasStatusEffect(PlayerStatusEffect.CRINGE))rb.velocity = delayedVelocity;
                     }
                     else{
                         statusEffects[key] = 0;
@@ -302,7 +303,7 @@ public class PlayerStatus : MonoBehaviour
             statusEffects[data] = 0f;
         }
         
-        if(ef == PlayerStatusEffect.HITPAUSE){
+        if(ef == PlayerStatusEffect.HITPAUSE || ef == PlayerStatusEffect.CRINGE){
             //save delayed velocity
 
             delayedVelocity = rb.velocity;

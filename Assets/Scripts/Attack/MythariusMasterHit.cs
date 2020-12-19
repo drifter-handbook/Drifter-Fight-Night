@@ -7,6 +7,10 @@ public class MythariusMasterHit : MasterHit
  	GameObject slowfield;
  	float terminalVelocity;
 
+    PROJECTILE_TYPE prev_projectile = PROJECTILE_TYPE.sugarbeet;
+
+    public TetherRange sacredFlameDetector;
+
     enum PROJECTILE_TYPE
     {
         beet,
@@ -14,7 +18,9 @@ public class MythariusMasterHit : MasterHit
         bird,
         chilltouch,
         rayoffrost,
-        sugarbeet
+        sugarbeet,
+        pkmeteor,
+        sacredFlame
     }
 
  	void Start()
@@ -39,41 +45,72 @@ public class MythariusMasterHit : MasterHit
         }
     }
 
+
+    public void enableSacredFlameDetector()
+    {
+        if(!isHost)return;
+        sacredFlameDetector.gameObject.SetActive(true);
+    }
+
     public void W_Side_Projectile()
     {
         if(!isHost)return;
 
         facing = movement.Facing;
 
-        PROJECTILE_TYPE projectile = (PROJECTILE_TYPE)Random.Range(0,6);
-        Vector3 pos = new Vector3(facing *2, 4.5f, 0f);
+        PROJECTILE_TYPE projectile = (PROJECTILE_TYPE)Random.Range(0,8);
+
+        //Disallow the same projectile twice in a row
+        while(projectile == prev_projectile) projectile = (PROJECTILE_TYPE)Random.Range(0,8);
+
+        prev_projectile = projectile;
+
+        Vector3 pos = transform.position +  new Vector3(facing *2, 4.5f, 0f);
         Vector3 velocity = Vector3.zero;
 
         switch(projectile){
             case PROJECTILE_TYPE.beet:
-                velocity = new Vector3(facing * 55f,0,0);
+                velocity = new Vector3(facing * 20f,0,0);
                 break;
             case PROJECTILE_TYPE.mail:
             case PROJECTILE_TYPE.chilltouch:
-                velocity = new Vector3(facing * 40f,0,0);
+                velocity = new Vector3(facing * 35f,0,0);
                 break;
             case PROJECTILE_TYPE.rayoffrost:
                 velocity = new Vector3(facing * 25f,0,0);
                 break;
             case PROJECTILE_TYPE.bird:
-                pos = new Vector3(facing, 7.5f, 0f);
+                pos = transform.position + new Vector3(facing, 7.5f, 0f);
                 velocity = new Vector3(facing * 15f,0,0);
                 break;
             
             case PROJECTILE_TYPE.sugarbeet:
                 velocity = new Vector3(facing * 15f,0,0);
                 break;
+
+            case PROJECTILE_TYPE.pkmeteor:
+                velocity = new Vector3(facing * 15f,0,0);
+                break;
+            case PROJECTILE_TYPE.sacredFlame:
+                if(sacredFlameDetector.TetherPoint == Vector3.zero)
+                {
+                    sacredFlameDetector.gameObject.SetActive(false);
+                    GraphicalEffectManager.Instance.CreateMovementParticle(MovementParticleMode.SmokeTrail, pos, transform.rotation.eulerAngles.z,new Vector2(1, 1));
+                    return;
+                }
+                else pos = sacredFlameDetector.TetherPoint;
+                break;    
             default:
                 break;
 
         }
 
-        GameObject wildcard = host.CreateNetworkObject(projectile.ToString(), transform.position + pos, transform.rotation);
+        GameObject wildcard = host.CreateNetworkObject(projectile.ToString(), pos, transform.rotation);
+
+        sacredFlameDetector.gameObject.SetActive(false);
+
+        if(projectile == PROJECTILE_TYPE.pkmeteor) wildcard.GetComponent<MultihitZoneProjectile>().attacks = attacks;
+        else if(projectile == PROJECTILE_TYPE.bird && facing == -1) wildcard.GetComponent<SyncAnimatorStateHost>().SetState("birb_Reverse");
 
         wildcard.GetComponent<Rigidbody2D>().velocity = velocity;
         wildcard.transform.localScale = new Vector3( wildcard.transform.localScale.x * facing,wildcard.transform.localScale.y);
@@ -130,32 +167,26 @@ public class MythariusMasterHit : MasterHit
     	if(!isHost || !Empowered)return;
         drifter.SetCharge(0);
     	Empowered = false;
-    	//Heal
-    	if(drifter.DamageTaken >= 10f)drifter.DamageTaken -= 10f;
-       
-        else drifter.DamageTaken = 0f;
-
+   
         //GP orange
         status.clearAllStatus();
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,3f);
         drifter.PlayAnimation("W_Down_Boost");
 
-        movement.walkSpeed = 29.5f;
-    	movement.airSpeed = 29.5f;
-    	StartCoroutine(resetSpeed());
+        status.ApplyStatusEffect(PlayerStatusEffect.SPEEDUP,5f);
 
     }
 
-    IEnumerator resetSpeed()
-    {
-    	for(int i = 0; i < 40;i++)
-    	{
-    		GraphicalEffectManager.Instance.CreateMovementParticle(MovementParticleMode.Heal, transform.position + new Vector3(UnityEngine.Random.Range(-2f,2f), UnityEngine.Random.Range(1.5f,6f)), 0, new Vector2(1, 1));
-    		yield return new WaitForSeconds(.175f);
-    	}
-    	movement.walkSpeed = 23.5f;
-    	movement.airSpeed = 23.5f;
-    }
+    // IEnumerator resetSpeed()
+    // {
+    // 	for(int i = 0; i < 40;i++)
+    // 	{
+    // 		GraphicalEffectManager.Instance.CreateMovementParticle(MovementParticleMode.Heal, transform.position + new Vector3(UnityEngine.Random.Range(-2f,2f), UnityEngine.Random.Range(1.5f,6f)), 0, new Vector2(1, 1));
+    // 		yield return new WaitForSeconds(.175f);
+    // 	}
+    // 	movement.walkSpeed = 23.5f;
+    // 	movement.airSpeed = 23.5f;
+    // }
 
     //Up W
 

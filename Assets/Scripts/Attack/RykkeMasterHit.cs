@@ -42,8 +42,8 @@ public class RykkeMasterHit : MasterHit
 
     public void enableTetherBox()
     {
+        if(!isHost)return;
         playerRange.gameObject.transform.parent.gameObject.SetActive(true);
-        
     }
 
     public void selectTetherTarget()

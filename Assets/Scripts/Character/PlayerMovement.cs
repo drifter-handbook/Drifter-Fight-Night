@@ -74,6 +74,8 @@ public class PlayerMovement : MonoBehaviour
     float prevMoveY = 0;
     Vector2 prevVelocity;
 
+    float currentSpeed;
+
     void Awake()
     {
         //Aggregate componenents
@@ -226,12 +228,17 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //Pauses you in place if you have a corresponding status effect.
-        if(status.HasStatusEffect(PlayerStatusEffect.STUNNED) || status.HasStatusEffect(PlayerStatusEffect.PLANTED) || status.HasStatusEffect(PlayerStatusEffect.DEAD) || status.HasStatusEffect(PlayerStatusEffect.HITPAUSE) || status.HasStatusEffect(PlayerStatusEffect.GRABBED))
+        if(status.HasStatusEffect(PlayerStatusEffect.STUNNED)
+         || status.HasStatusEffect(PlayerStatusEffect.PLANTED)
+         || status.HasStatusEffect(PlayerStatusEffect.DEAD) 
+         || status.HasStatusEffect(PlayerStatusEffect.HITPAUSE) 
+         || status.HasStatusEffect(PlayerStatusEffect.GRABBED)
+         || status.HasStatusEffect(PlayerStatusEffect.CRINGE)
+        )
         {
             //cancelJump();
             rb.velocity = Vector2.zero;
-            rb.gravityScale = 0;
-                        
+            rb.gravityScale = 0;                       
         }
 
         //makes sure gavity is always reset after using a move
@@ -295,17 +302,19 @@ public class PlayerMovement : MonoBehaviour
                     drifter.PlayAnimation(drifter.WalkStateName);
                     status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0);
                 }
-            	rb.velocity = new Vector2(drifter.input.MoveX > 0 ? 
-                    Mathf.Lerp((!status.HasStatusEffect(PlayerStatusEffect.SLOWED)?walkSpeed:(.6f*walkSpeed)),rb.velocity.x,groundAccelerationTime) :
-                    Mathf.Lerp((!status.HasStatusEffect(PlayerStatusEffect.SLOWED)?-walkSpeed:(-.6f*walkSpeed)),rb.velocity.x,groundAccelerationTime), rb.velocity.y);
+
+                currentSpeed = walkSpeed * (status.HasStatusEffect(PlayerStatusEffect.SLOWED) ? .6f: 1f) * (status.HasStatusEffect(PlayerStatusEffect.SPEEDUP) ? 1.5f: 1f) * (drifter.input.MoveX > 0 ? 1 : -1);
+
+            	rb.velocity = new Vector2(Mathf.Lerp(currentSpeed,rb.velocity.x,groundAccelerationTime), rb.velocity.y);
             }
             else
             {
                 if(!jumping)drifter.PlayAnimation(drifter.AirIdleStateName);
                 status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0);
-            	rb.velocity = new Vector2(drifter.input.MoveX > 0 ? 
-                    Mathf.Lerp((!status.HasStatusEffect(PlayerStatusEffect.SLOWED)?airSpeed:(.6f*airSpeed)),rb.velocity.x,airAccelerationTime) : 
-                    Mathf.Lerp((!status.HasStatusEffect(PlayerStatusEffect.SLOWED)?-airSpeed:(-.6f*airSpeed)),rb.velocity.x,airAccelerationTime), rb.velocity.y);
+
+                currentSpeed = airSpeed * (status.HasStatusEffect(PlayerStatusEffect.SLOWED) ? .6f: 1f) * (status.HasStatusEffect(PlayerStatusEffect.SPEEDUP) ? 1.5f: 1f) * (drifter.input.MoveX > 0 ? 1 : -1);
+
+            	rb.velocity = new Vector2(Mathf.Lerp(currentSpeed,rb.velocity.x,groundAccelerationTime), rb.velocity.y);
             }
 
         }
