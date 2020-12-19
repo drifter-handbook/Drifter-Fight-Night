@@ -1,40 +1,67 @@
 fileFormatVersion: 2
-guid: 6a3c2764472bd7d458d6d76dc69f64a2
+guid: 7f7900a2c78fba245b290d469db6b8c7
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6948672925027435140
-    second: charge_0
+      213: -8051370155026430473
+    second: myth_dair_0
   - first:
-      213: 8044723202107836511
-    second: charge_1
+      213: -1487192440511802701
+    second: myth_dair_1
   - first:
-      213: 8979233852318062227
-    second: charge_2
+      213: -3638521663382750513
+    second: myth_dair_2
   - first:
-      213: 70618444694489238
-    second: charge_3
+      213: 8344634787907861316
+    second: myth_dair_3
   - first:
-      213: -6095562032181254527
-    second: charge_4
+      213: 7467153070222657789
+    second: myth_dair_4
   - first:
-      213: 200186737066174234
-    second: charge_5
+      213: -23623377138177068
+    second: myth_dair_5
   - first:
-      213: -2917460818455427619
-    second: charge_6
+      213: 342764851400616143
+    second: myth_dair_6
   - first:
-      213: -5590208732071955505
-    second: charge_7
+      213: 7642864345294741073
+    second: myth_dair_7
   - first:
-      213: -5687363968089771159
-    second: charge_0
+      213: -2224314186127093931
+    second: myth_dair_8
   - first:
-      213: -7889945769643488886
-    second: charge_1
+      213: 4436721498266588789
+    second: myth_dair_9
   - first:
-      213: -2074045646810833606
-    second: charge_2
+      213: 3014236870262917343
+    second: myth_dair_10
+  - first:
+      213: 8553961013266508090
+    second: myth_dair_0
+  - first:
+      213: -4855985241188095987
+    second: myth_dair_1
+  - first:
+      213: -1455431625711371848
+    second: myth_dair_2
+  - first:
+      213: 4499459762814659845
+    second: myth_dair_3
+  - first:
+      213: 388467812718184933
+    second: myth_dair_4
+  - first:
+      213: 1389112161608907187
+    second: myth_dair_5
+  - first:
+      213: -5344356685540017178
+    second: myth_dair_6
+  - first:
+      213: 1538145274048843157
+    second: myth_dair_7
+  - first:
+      213: 5371832783398711177
+    second: myth_dair_8
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -120,127 +147,190 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: charge_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 16
-        width: 61
-        height: 8
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 96337ad9a9c6211b0800000000000000
-      internalID: -5687363968089771159
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: charge_1
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 8
-        width: 61
-        height: 8
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a89cd4f0028418290800000000000000
-      internalID: -7889945769643488886
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: charge_2
+      name: myth_dair_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 61
-        height: 8
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        width: 80
+        height: 80
+      alignment: 9
+      pivot: {x: 0.5, y: 0.1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a3d15e519728733e0800000000000000
-      internalID: -2074045646810833606
+      spriteID: a396a428836c5b670800000000000000
+      internalID: 8553961013266508090
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: charge_3
+      name: myth_dair_1
       rect:
         serializedVersion: 2
-        x: 0
-        y: 24
-        width: 61
-        height: 8
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 80
+        y: 0
+        width: 80
+        height: 80
+      alignment: 9
+      pivot: {x: 0.5, y: 0.1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6980b9ee913eaf000800000000000000
-      internalID: 70618444694489238
+      spriteID: d08a178b6231c9cb0800000000000000
+      internalID: -4855985241188095987
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: charge_4
+      name: myth_dair_2
       rect:
         serializedVersion: 2
-        x: 0
-        y: 32
-        width: 61
-        height: 8
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 160
+        y: 0
+        width: 80
+        height: 80
+      alignment: 9
+      pivot: {x: 0.5, y: 0.1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1866a7d90a6386ba0800000000000000
-      internalID: -6095562032181254527
+      spriteID: 8b9ba9ac5a44dcbe0800000000000000
+      internalID: -1455431625711371848
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: charge_5
+      name: myth_dair_3
       rect:
         serializedVersion: 2
-        x: 0
-        y: 40
-        width: 61
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 240
+        y: 0
+        width: 80
+        height: 80
+      alignment: 9
+      pivot: {x: 0.5, y: 0.1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a17e297d6c437c200800000000000000
-      internalID: 200186737066174234
+      spriteID: 50d2bbba0da417e30800000000000000
+      internalID: 4499459762814659845
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: myth_dair_4
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 0
+        width: 80
+        height: 80
+      alignment: 9
+      pivot: {x: 0.5, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5e98dbfda6d146500800000000000000
+      internalID: 388467812718184933
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: myth_dair_5
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 0
+        width: 80
+        height: 80
+      alignment: 9
+      pivot: {x: 0.5, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3b9bfd1b62e174310800000000000000
+      internalID: 1389112161608907187
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: myth_dair_6
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 0
+        width: 80
+        height: 80
+      alignment: 9
+      pivot: {x: 0.5, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6eb376df8e705d5b0800000000000000
+      internalID: -5344356685540017178
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: myth_dair_7
+      rect:
+        serializedVersion: 2
+        x: 560
+        y: 0
+        width: 80
+        height: 80
+      alignment: 9
+      pivot: {x: 0.5, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 59d80a03af6985510800000000000000
+      internalID: 1538145274048843157
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: myth_dair_8
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 0
+        width: 80
+        height: 80
+      alignment: 9
+      pivot: {x: 0.5, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 98f274f84759c8a40800000000000000
+      internalID: 5371832783398711177
       vertices: []
       indices: 
       edges: []

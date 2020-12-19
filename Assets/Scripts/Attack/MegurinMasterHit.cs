@@ -21,6 +21,7 @@ public class MegurinMasterHit : MasterHit
     void Start()
     {
         terminalVelocity = movement.terminalVelocity;
+        drifter.SetCharge(5);
     }
 
 

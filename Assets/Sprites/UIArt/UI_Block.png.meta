@@ -110,6 +110,57 @@ TextureImporter:
   - first:
       213: 4152407532413300422
     second: UI_Block_17
+  - first:
+      213: 5536786128444815477
+    second: UI_Block_18
+  - first:
+      213: 3146993322516819328
+    second: UI_Block_19
+  - first:
+      213: 1169929050589964700
+    second: UI_Block_20
+  - first:
+      213: 6366989889659317093
+    second: UI_Block_21
+  - first:
+      213: 5918505124717138252
+    second: UI_Block_22
+  - first:
+      213: -6436508812079283270
+    second: UI_Block_23
+  - first:
+      213: 4593261131142781443
+    second: UI_Block_24
+  - first:
+      213: 5870516071974009236
+    second: UI_Block_25
+  - first:
+      213: -4977637826198786633
+    second: UI_Block_18
+  - first:
+      213: -5048882347884304140
+    second: UI_Block_19
+  - first:
+      213: 4916084989556939958
+    second: UI_Block_20
+  - first:
+      213: -2389857858674764514
+    second: UI_Block_21
+  - first:
+      213: -790084873149687196
+    second: UI_Block_22
+  - first:
+      213: 979374309004076390
+    second: UI_Block_23
+  - first:
+      213: -2344301323049231774
+    second: UI_Block_24
+  - first:
+      213: 8745251233651445932
+    second: UI_Block_25
+  - first:
+      213: 744785960212693751
+    second: UI_Block_26
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -155,7 +206,7 @@ TextureImporter:
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 1
+  spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -199,7 +250,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 512
+        y: 896
         width: 256
         height: 128
       alignment: 7
@@ -220,7 +271,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 256
-        y: 512
+        y: 896
         width: 256
         height: 128
       alignment: 7
@@ -241,7 +292,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 512
-        y: 512
+        y: 896
         width: 256
         height: 128
       alignment: 7
@@ -262,7 +313,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 768
-        y: 512
+        y: 896
         width: 256
         height: 128
       alignment: 7
@@ -283,7 +334,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 384
+        y: 768
         width: 256
         height: 128
       alignment: 7
@@ -304,7 +355,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 256
-        y: 384
+        y: 768
         width: 256
         height: 128
       alignment: 7
@@ -325,7 +376,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 512
-        y: 384
+        y: 768
         width: 256
         height: 128
       alignment: 7
@@ -346,7 +397,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 768
-        y: 384
+        y: 768
         width: 256
         height: 128
       alignment: 7
@@ -367,7 +418,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 256
+        y: 640
         width: 256
         height: 128
       alignment: 7
@@ -388,7 +439,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 256
-        y: 256
+        y: 640
         width: 256
         height: 128
       alignment: 7
@@ -409,7 +460,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 512
-        y: 256
+        y: 640
         width: 256
         height: 128
       alignment: 7
@@ -430,7 +481,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 768
-        y: 256
+        y: 640
         width: 256
         height: 128
       alignment: 7
@@ -451,7 +502,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 128
+        y: 512
         width: 256
         height: 128
       alignment: 7
@@ -472,7 +523,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 256
-        y: 128
+        y: 512
         width: 256
         height: 128
       alignment: 7
@@ -493,7 +544,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 512
-        y: 128
+        y: 512
         width: 256
         height: 128
       alignment: 7
@@ -514,7 +565,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 768
-        y: 128
+        y: 512
         width: 256
         height: 128
       alignment: 7
@@ -535,7 +586,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
+        y: 384
         width: 256
         height: 128
       alignment: 7
@@ -556,7 +607,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 256
-        y: 0
+        y: 384
         width: 256
         height: 128
       alignment: 7
@@ -568,6 +619,195 @@ TextureImporter:
       bones: []
       spriteID: 6cea62c76a050a930800000000000000
       internalID: 4152407532413300422
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_Block_18
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 384
+        width: 256
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7bdafdc05c0ebeab0800000000000000
+      internalID: -4977637826198786633
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_Block_19
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 384
+        width: 256
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4f8ad953144cee9b0800000000000000
+      internalID: -5048882347884304140
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_Block_20
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 256
+        width: 256
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6bcdb206041793440800000000000000
+      internalID: 4916084989556939958
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_Block_21
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 256
+        width: 256
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e15d30680f485ded0800000000000000
+      internalID: -2389857858674764514
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_Block_22
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 256
+        width: 256
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 46ad0817efd0905f0800000000000000
+      internalID: -790084873149687196
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_Block_23
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 256
+        width: 256
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 665e45ebebf679d00800000000000000
+      internalID: 979374309004076390
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_Block_24
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 128
+        width: 256
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 26a1c290e5e577fd0800000000000000
+      internalID: -2344301323049231774
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_Block_25
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 128
+        width: 256
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ca05755a9af5d5970800000000000000
+      internalID: 8745251233651445932
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_Block_26
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 128
+        width: 256
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7f20d2082e2065a00800000000000000
+      internalID: 744785960212693751
       vertices: []
       indices: 
       edges: []
