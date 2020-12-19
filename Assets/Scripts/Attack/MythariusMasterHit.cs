@@ -174,6 +174,7 @@ public class MythariusMasterHit : MasterHit
         drifter.PlayAnimation("W_Down_Boost");
 
         status.ApplyStatusEffect(PlayerStatusEffect.SPEEDUP,5f);
+        status.ApplyStatusEffect(PlayerStatusEffect.DAMAGEUP,3f);
 
     }
 

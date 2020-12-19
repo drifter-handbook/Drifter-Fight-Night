@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StatusBar : MonoBehaviour
+public class StatusBar : MonoBehaviour , INetworkInit
 {
 
     public Sprite[] statusIcons;
@@ -15,6 +15,11 @@ public class StatusBar : MonoBehaviour
 
     float duration;
     PlayerStatusEffect ef;
+
+    public void OnNetworkInit()
+    {
+        NetworkUtils.RegisterChildObject("StatusBarMask", mask.gameObject);
+    }
 
     void Update()
     {
@@ -33,6 +38,4 @@ public class StatusBar : MonoBehaviour
         this.duration = duration;
 
     }
-
-
 }

@@ -45,8 +45,12 @@ public class PlayerHurtboxHandler : MonoBehaviour
             oldAttacks[attackID] = Time.time;
             // apply hit effects
             hitbox.parent.GetComponent<PlayerAttacks>().Hit(attackType, attackID, hurtbox.parent);
+
             Drifter drifter = GetComponent<Drifter>();
             PlayerStatus status = drifter.status;
+            PlayerStatus attackerStatus = hitbox.parent.GetComponent<PlayerStatus>();
+
+            float damageDealt = 0f;
 
             //Ignore the collision if invulnerable
             if(status.HasStatusEffect(PlayerStatusEffect.INVULN))return;
@@ -55,20 +59,32 @@ public class PlayerHurtboxHandler : MonoBehaviour
             if(hurtbox.gameObject.name == "Counter" &&  attackData.AttackDamage >0f)
             {
                 GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.STAR, Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),0, new Vector2(10f, 10f));
-                hitbox.parent.GetComponent<PlayerStatus>().ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.7f);
+                attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.7f);
                 status.ApplyStatusEffect(PlayerStatusEffect.HIT,.3f);
                 return;
             }
-           
 
             // apply damage
             if (drifter != null && status != null)
             {
-                drifter.DamageTaken += (attackData.AttackDamage  + (status.HasStatusEffect(PlayerStatusEffect.DEFENSEDOWN) &&  attackData.AttackDamage >0 ? 1.7f : 0f) )* (drifter.guarding && !attackData.isGrab ? 1 - drifter.BlockReduction : 1f);
-                //ScreenShake
-            }
-            // apply knockback
+                damageDealt = 
+                    //Base Damage + flat damage increases
+                    (attackData.AttackDamage + (status.HasStatusEffect(PlayerStatusEffect.DEFENSEDOWN) &&  attackData.AttackDamage >0 ? 1.7f : 0f))
 
+                    //Blocking damage Reduction
+                      * (drifter.guarding && !attackData.isGrab ? 1 - drifter.BlockReduction : 1f)
+
+                    //Defense Buff damage reduction
+                      * (status.HasStatusEffect(PlayerStatusEffect.DEFENSEUP) ? 0.7f:1f)
+
+                    //Attacker damage buff)
+                      * (attackerStatus.HasStatusEffect(PlayerStatusEffect.DAMAGEUP)?1.5f:1f);
+
+                drifter.DamageTaken += damageDealt;
+            }
+
+
+            // apply knockback
             float facingDir = Mathf.Sign(hitbox.Facing) == 0 ? 1 : Mathf.Sign(hitbox.Facing) ;
 
             // rotate direction by angle of impact
@@ -79,7 +95,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                                     Quaternion.Euler(0, 0, attackData.AngleOfImpact * facingDir) * (facingDir * Vector2.right) :
                                     Quaternion.Euler(0, 0, angle) * Vector2.right;
 
-            float KB = (float)(((drifter.DamageTaken / 10 + drifter.DamageTaken * attackData.AttackDamage / 20)
+            float KB = (float)(((drifter.DamageTaken / 10 + drifter.DamageTaken * damageDealt / 20)
                         * 200 / (GetComponent<PlayerMovement>().Weight + 100) * 1.4 *
                          ((status.HasStatusEffect(PlayerStatusEffect.EXPOSED) || status.HasStatusEffect(PlayerStatusEffect.FEATHERWEIGHT))
                             ?1.5f:1)) * attackData.KnockbackScale + attackData.Knockback);
@@ -94,7 +110,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 if(!status.HasStatusEffect(PlayerStatusEffect.ARMOUR) || attackData.isGrab){
 
                     if(Shake != null && attackData.Knockback !=0){
-                        Shake.CurrentShake = StartCoroutine(Shake.Shake((willCollideWithBlastZone(GetComponent<Rigidbody2D>(), HitstunDuration)?0.3f:0.1f),Mathf.Clamp((((attackData.Knockback - 10)/100f + (attackData.AttackDamage-10)/44f)) * attackData.KnockbackScale,.07f,.8f)));//StartCoroutine(Shake.Shake(drifter.DamageTaken/100f * Mathf.Max((attackData.AttackDamage + attackData.KnockbackScale *3f -3f),.1f)/10f * .1f,Mathf.Max((attackData.AttackDamage+ attackData.KnockbackScale*3f - 3f),.2f)/10f));
+                        Shake.CurrentShake = StartCoroutine(Shake.Shake((willCollideWithBlastZone(GetComponent<Rigidbody2D>(), HitstunDuration)?0.3f:0.1f),Mathf.Clamp((((attackData.Knockback - 10)/100f + (damageDealt-10)/44f)) * attackData.KnockbackScale,.07f,.8f)));//StartCoroutine(Shake.Shake(drifter.DamageTaken/100f * Mathf.Max((attackData.AttackDamage + attackData.KnockbackScale *3f -3f),.1f)/10f * .1f,Mathf.Max((attackData.AttackDamage+ attackData.KnockbackScale*3f - 3f),.2f)/10f));
                     }            
                     if(attackData.Knockback > 0 && attackData.AngleOfImpact > -361){
                         GetComponent<Rigidbody2D>().velocity = new Vector2(forceDir.normalized.x * KB, GetComponent<PlayerMovement>().grounded?Mathf.Abs(forceDir.normalized.y * KB): forceDir.normalized.y * KB);
@@ -150,7 +166,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             }
 
             //apply attacker hitpause
-            if(hitbox.gameObject.tag != "Projectile" || attackData.HitVisual == HitSpark.CRIT)hitbox.parent.GetComponent<PlayerStatus>().ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,attackData.HitVisual == HitSpark.CRIT ? .6f : Mathf.Max(HitstunDuration*.22f,.1f));
+            if(hitbox.gameObject.tag != "Projectile" || attackData.HitVisual == HitSpark.CRIT)attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,attackData.HitVisual == HitSpark.CRIT ? .6f : Mathf.Max(HitstunDuration*.22f,.1f));
 
             // create hit sparks
             Vector3 hitSparkPos = Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f);
@@ -188,7 +204,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
 
             // Ancillary Hitsparks
-            if (drifter != null && attackData.AttackDamage >0f) StartCoroutine(delayHitsparks(Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),attackData.AngleOfImpact,attackData.AttackDamage,HitstunDuration *.25f));
+            if (drifter != null && damageDealt >0f) StartCoroutine(delayHitsparks(Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),attackData.AngleOfImpact,damageDealt,HitstunDuration *.25f));
         }
     }
 
