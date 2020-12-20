@@ -580,9 +580,9 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: 
-        m_Mode: 6
+      - m_Target: {fileID: 1714775443}
+        m_MethodName: toggleDynamicCamera
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -2597,7 +2597,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Hide IP
+  m_Text: Use Dynamic Camera?
 --- !u!222 &781362627
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2759,7 +2759,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1714775441}
         m_MethodName: 
         m_Mode: 6
         m_Arguments:
@@ -8395,9 +8395,9 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: 
-        m_Mode: 6
+      - m_Target: {fileID: 1714775443}
+        m_MethodName: togglePing
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -9004,7 +9004,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1714775443}
-        m_MethodName: 
+        m_MethodName: saveRoomCode
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

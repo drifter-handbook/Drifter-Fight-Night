@@ -110,7 +110,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 if(!status.HasStatusEffect(PlayerStatusEffect.ARMOUR) || attackData.isGrab){
 
                     if(Shake != null && attackData.Knockback !=0){
-                        Shake.CurrentShake = StartCoroutine(Shake.Shake((willCollideWithBlastZone(GetComponent<Rigidbody2D>(), HitstunDuration)?0.3f:0.1f),Mathf.Clamp((((attackData.Knockback - 10)/100f + (damageDealt-10)/44f)) * attackData.KnockbackScale,.07f,.8f)));//StartCoroutine(Shake.Shake(drifter.DamageTaken/100f * Mathf.Max((attackData.AttackDamage + attackData.KnockbackScale *3f -3f),.1f)/10f * .1f,Mathf.Max((attackData.AttackDamage+ attackData.KnockbackScale*3f - 3f),.2f)/10f));
+                        Shake.statShakeCoroutine((willCollideWithBlastZone(GetComponent<Rigidbody2D>(), HitstunDuration)?0.3f:0.1f),Mathf.Clamp((((attackData.Knockback - 10)/100f + (damageDealt-10)/44f)) * attackData.KnockbackScale,.07f,.8f));
                     }            
                     if(attackData.Knockback > 0 && attackData.AngleOfImpact > -361){
                         GetComponent<Rigidbody2D>().velocity = new Vector2(forceDir.normalized.x * KB, GetComponent<PlayerMovement>().grounded?Mathf.Abs(forceDir.normalized.y * KB): forceDir.normalized.y * KB);

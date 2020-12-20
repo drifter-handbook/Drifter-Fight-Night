@@ -82,7 +82,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
             {   
 
 
-                StartCoroutine(Shake.Shake(.3f, 1.5f));
+                Shake.statShakeCoroutine(.3f, 1.5f);
 
                 drifter.Stocks--;
                 drifter.DamageTaken = 0f;

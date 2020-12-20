@@ -55,7 +55,7 @@ public class ViewManager : MonoBehaviour
         toggle2.onValueChanged.RemoveAllListeners();
         toggle3.onValueChanged.RemoveAllListeners();
 
-        toggle1.isOn = PlayerPrefs.GetInt("HideRoomCode") > 0;
+        toggle1.isOn = PlayerPrefs.GetInt("dynamicCamera") > 0;
         toggle2.isOn = PlayerPrefs.GetInt("HidePing") > 0;
         toggle3.isOn = PlayerPrefs.GetInt("HideTextInput") > 0;
         //   ^ toggles the code too. Why? idk, unity makes interesting decisions sometimes
@@ -171,6 +171,20 @@ public class ViewManager : MonoBehaviour
         if (PlayerPrefs.GetInt("HidePing") == 0) { PlayerPrefs.SetInt("HidePing", 1); }
         else { PlayerPrefs.SetInt("HidePing", 0); }
         PlayerPrefs.Save();
+    }
+
+    public void saveRoomCode()
+    {
+
+        PlayerPrefs.SetString("savedIP",savedIPObject.GetComponent<InputField>().text);
+
+    }
+
+    public void toggleDynamicCamera()
+    {
+
+        PlayerPrefs.SetInt("dynamicCamera",toggle1.isOn?1:0);
+
     }
   
 }

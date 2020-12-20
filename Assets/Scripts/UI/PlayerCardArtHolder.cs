@@ -10,7 +10,7 @@ public class PlayerCardArtHolder : MonoBehaviour
     public GameObject miniSummaryCardPrefab;
     public GameObject stockPrefab;
 
-    private Drifter[] drifters;
+    public Drifter[] drifters;
     private PlayerCard[] playerCards;
 
     void Awake()
@@ -57,9 +57,12 @@ public class PlayerCardArtHolder : MonoBehaviour
                 playerCards[i].setImages(faces[imageIndex], stocks[imageIndex]);
                 playerCards[i].addStocks(stockPrefab, 3);
 
+
+
                 i++;
             }
 
+            GameObject.FindGameObjectWithTag("MainCamera").GetComponent<ScreenShake>().drifters = drifters;
         }
 
         //For each drifer, update their card

@@ -14,6 +14,8 @@ public class ScreenShake : MonoBehaviour , INetworkInit
 
    public Coroutine CurrentShake;
 
+   public Drifter[] drifters;
+
    void Awake()
    {
       isHost = GameController.Instance.IsHost;
@@ -27,7 +29,45 @@ public class ScreenShake : MonoBehaviour , INetworkInit
         NetworkUtils.RegisterChildObject("Dynamic_Background", transform.Find("Dynamic_Background").gameObject);
    }
 
-   public IEnumerator Shake(float duration, float magnitude)
+
+   void Update()
+   {
+      if(drifters == null || PlayerPrefs.GetInt("dynamicCamera") == 0)return;
+
+      Vector2 centerpoint = Vector2.zero;
+      float scaledZoom = 0;
+
+
+      foreach(Drifter drifter in drifters)
+      {
+         Vector2 currPos = drifter.gameObject.GetComponent<Rigidbody2D>().position;
+         centerpoint += new Vector2(Mathf.Clamp(currPos.x,-10f,10f),Mathf.Clamp(currPos.y,-10f,10f));
+      }
+
+      centerpoint = centerpoint/(drifters.Length +1);
+
+      foreach(Drifter drifter in drifters)
+      {
+         Vector2 currPos = drifter.gameObject.GetComponent<Rigidbody2D>().position;
+         scaledZoom =  Mathf.Max(Vector2.Distance(new Vector2(Mathf.Clamp(currPos.x,-20f,20f),Mathf.Clamp(currPos.y,-20f,30f)),centerpoint),scaledZoom);
+      }
+
+      if(CurrentShake == null) transform.localPosition = Vector3.Lerp(centerpoint,transform.localPosition,Time.deltaTime/1.5f);
+
+      if(!killing) self.orthographicSize = Mathf.Lerp(self.orthographicSize,Mathf.Clamp(scaledZoom *1.5f,20f,30f),Time.deltaTime * 3f);
+
+   }
+
+   public void statShakeCoroutine(float duration, float magnitude)
+   {
+      if(!isHost || killing)return;
+      if(CurrentShake != null) StopCoroutine(CurrentShake);
+      CurrentShake = StartCoroutine(Shake(duration,magnitude));
+
+   }
+
+
+   IEnumerator Shake(float duration, float magnitude)
    {
          if(!isHost)yield break;
    		Vector3 origPos = transform.localPosition;
@@ -47,7 +87,11 @@ public class ScreenShake : MonoBehaviour , INetworkInit
 
    		}
 
-   		transform.localPosition = basePos;
+   		//transform.localPosition = origPos;
+
+         CurrentShake = null;
+
+         yield break;
 
    }
 
