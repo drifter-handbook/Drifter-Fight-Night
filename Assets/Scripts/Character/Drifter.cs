@@ -19,7 +19,7 @@ public enum DrifterType
     Lucille,
     Mytharius,
     Maryam,
-    DrifterCannon,
+    Drifter_Cannon,
     Klatz
 }
 
