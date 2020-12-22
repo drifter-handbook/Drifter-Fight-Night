@@ -363,7 +363,7 @@ public class PlayerMovement : MonoBehaviour
         //Player is not trying to move, and is not in hitstun
         else if (!moving && status.HasGroundFriction())
         {
-            
+            //TODO Make sure this isnt eating inputs
             if(canAct && !jumping)drifter.returnToIdle();
             //standing ground friction (When button is not held)
             if(!grounded)rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 20f * Time.deltaTime), rb.velocity.y);

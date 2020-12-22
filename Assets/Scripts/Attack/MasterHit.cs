@@ -23,6 +23,10 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
     protected bool continueJabFlag = false;
 
+    protected Vector3 savedVelocity;
+
+    protected bool savingVelocity = false;
+
 
     // Start is called before the first frame update
     void Awake()
@@ -70,6 +74,18 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     public void pauseGravity()
     {
         if(!isHost)return;
+        savingVelocity = false;
+        movement.cancelJump();
+        movement.gravityPaused= true;
+        rb.gravityScale = 0f;
+        rb.velocity = Vector2.zero;
+    }
+
+    public void freezeGravity()
+    {
+        if(!isHost)return;
+        savedVelocity = rb.velocity;
+        savingVelocity = true;
         movement.cancelJump();
         movement.gravityPaused= true;
         rb.gravityScale = 0f;
@@ -79,6 +95,8 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     public void unpauseGravity()
     {
         if(!isHost)return;
+        if(savingVelocity)rb.velocity = savedVelocity;
+        savingVelocity = false;
         if(rb.gravityScale != gravityScale) rb.gravityScale=gravityScale;
         movement.gravityPaused= false;
     }

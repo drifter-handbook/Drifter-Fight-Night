@@ -332,51 +332,24 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         }
     }
 
-    public void SelectRandomDrifter()
-    {
 
-    	//Update sound clip in here
-    	switch(UnityEngine.Random.Range(0, 10)){
-    		case 0:
-    			SelectDrifter("Nero");
-    			break;
-    		case 1:
-    			SelectDrifter("Orro");
-    			break;
-    		case 2:
-    			SelectDrifter("Swordfrog");
-    			break;
-    		case 3:
-    			SelectDrifter("Megurin");
-    			break;
-    		case 4:
-    			SelectDrifter("Ryyke");
-    			break;
-    		case 5:
-    			SelectDrifter("Lady_Parhelion");
-    			break;
-    		case 6:
-    			SelectDrifter("Bojo");
-    			break;
-    		case 7:
-    			SelectDrifter("Spacejam");
-    			break;
-            case 8:
-                SelectDrifter("Lucille");
-                break;
-            case 9:
-                SelectDrifter("Mytharius");
-                break;      
-    		default:
-    			SelectDrifter("Spacejam");
-    			break;						
-    	}
-
-    }
-
+    int previousRandomSelection = 0;
     public void SelectDrifter(string drifterString)
     {
-        currentDrifter = Drifter.DrifterTypeFromString(drifterString);
+        //Randomly set players character
+        if(drifterString == "Random")
+        {
+
+            int randomSelected = UnityEngine.Random.Range(1, 1 + drifters.Count());
+
+            while(randomSelected == 9 || randomSelected == previousRandomSelection) randomSelected = UnityEngine.Random.Range(1, 1 + drifters.Count());
+
+            previousRandomSelection = randomSelected;
+
+            currentDrifter =  (DrifterType)randomSelected;
+        }
+        else currentDrifter = Drifter.DrifterTypeFromString(drifterString);
+
         if (GameController.Instance.IsHost)
         {
             List<CharacterSelectState> charSelStates = NetworkUtils.GetNetworkData<CharacterSelectSyncData>(sync["charSelState"]).charSelState;

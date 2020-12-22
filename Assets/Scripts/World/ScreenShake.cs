@@ -49,12 +49,12 @@ public class ScreenShake : MonoBehaviour , INetworkInit
       foreach(Drifter drifter in drifters)
       {
          Vector2 currPos = drifter.gameObject.GetComponent<Rigidbody2D>().position;
-         scaledZoom =  Mathf.Max(Vector2.Distance(new Vector2(Mathf.Clamp(currPos.x,-20f,20f),Mathf.Clamp(currPos.y,-20f,30f)),centerpoint),scaledZoom);
+         scaledZoom =  Mathf.Max(Vector2.Distance(new Vector2(Mathf.Clamp(currPos.x,-20f,20f),Mathf.Clamp(currPos.y,-10f,30f)),centerpoint),scaledZoom);
       }
 
       if(CurrentShake == null) transform.localPosition = Vector3.Lerp(centerpoint,transform.localPosition,Time.deltaTime/1.5f);
 
-      if(!killing) self.orthographicSize = Mathf.Lerp(self.orthographicSize,Mathf.Clamp(scaledZoom *1.5f,20f,30f),Time.deltaTime * 3f);
+      if(!killing) self.orthographicSize = Mathf.Lerp(self.orthographicSize,Mathf.Clamp(scaledZoom *1.7f,20f,30f),Time.deltaTime * 3f);
 
    }
 
@@ -75,11 +75,13 @@ public class ScreenShake : MonoBehaviour , INetworkInit
 
    		while(elapsed < duration)
    		{
-   			//transform.localPosition = origPos;
+   			transform.localPosition = origPos;
    			float x = origPos.x + Random.Range(-1f,1f) * magnitude;
    			float y = origPos.y + Random.Range(-.5f,.5f) * magnitude;
 
    			transform.localPosition = new Vector3(x,y,origPos.z);
+
+            // self.orthographicSize += Random.Range(-2f,2f) * magnitude;
 
    			elapsed += Time.deltaTime;
 
