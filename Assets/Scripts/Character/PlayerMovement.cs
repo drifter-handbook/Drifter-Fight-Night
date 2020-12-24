@@ -332,7 +332,7 @@ public class PlayerMovement : MonoBehaviour
             if(drifter.input.Guard)
             {
                 status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.2f);
-                drifter.PlayAnimation("Ledge_Roll");
+                drifter.PlayAnimation(drifter.LedgeRollStateName);
             }
 
             //Jump away from ledge
@@ -347,7 +347,7 @@ public class PlayerMovement : MonoBehaviour
             else if((drifter.input.MoveX * (flipSprite?-1:1) * Facing > 0)  || drifter.input.MoveY > 0){
                 DropLedge();
                 status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.2f);
-                drifter.PlayAnimation("Ledge_Climb");
+                drifter.PlayAnimation(drifter.LedgeClimbStateName);
 
                 rb.position = new Vector3(rb.position.x + (rb.position.x > 0 ? -1 :1) *2f, rb.position.y + 5f - ledgeClimbOffset);
             }
@@ -501,8 +501,8 @@ public class PlayerMovement : MonoBehaviour
         gravityPaused = false;
         attacks.ledgeHanging = true;
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.2f);
-        if(strongLedgeGrab)drifter.PlayAnimation("Ledge_Grab_Strong");
-        else drifter.PlayAnimation("Ledge_Grab_Weak");
+        if(strongLedgeGrab)drifter.PlayAnimation(drifter.StrongLedgeGrabStateName);
+        else drifter.PlayAnimation(drifter.WeakLedgeGrabStateName);
         Facing = flipSprite ^ rb.position.x > 0 ? -1 :1;
         transform.localScale = new Vector3(Facing * Mathf.Abs(transform.localScale.x),
                 transform.localScale.y, transform.localScale.z);

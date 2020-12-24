@@ -75,6 +75,14 @@ public class Drifter : MonoBehaviour, INetworkInit
     public string JumpStartStateName = "Jump_Start";
     [NonSerialized]
     public string JumpEndStateName = "Jump_End";
+    [NonSerialized]
+    public string WeakLedgeGrabStateName = "Ledge_Grab_Weak";
+    [NonSerialized]
+    public string StrongLedgeGrabStateName = "Ledge_Grab_Strong";
+    [NonSerialized]
+    public string LedgeClimbStateName = "Ledge_Climb";
+    [NonSerialized]
+    public string LedgeRollStateName = "Ledge_Roll";
     
     
     //public bool forceGuard = false;
