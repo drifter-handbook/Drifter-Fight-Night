@@ -34,6 +34,11 @@ public class MaryamMasterHit : MasterHit
 
     }
 
+    public void cancelSideQ()
+    {
+        movement.canLandingCancel = true;  
+    }
+
 
     //Roll Methods
 

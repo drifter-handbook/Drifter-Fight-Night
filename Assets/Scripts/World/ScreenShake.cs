@@ -76,8 +76,8 @@ public class ScreenShake : MonoBehaviour , INetworkInit
    		while(elapsed < duration)
    		{
    			transform.localPosition = origPos;
-   			float x = origPos.x + Random.Range(-1f,1f) * magnitude;
-   			float y = origPos.y + Random.Range(-.5f,.5f) * magnitude;
+   			float x = origPos.x + Random.Range(-1f,1f) * magnitude * (self.orthographicSize - 15f)/15f;
+   			float y = origPos.y + Random.Range(-.5f,.5f) * magnitude * (self.orthographicSize - 15f)/15f;
 
    			transform.localPosition = new Vector3(x,y,origPos.z);
 
