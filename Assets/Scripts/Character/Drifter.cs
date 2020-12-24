@@ -71,6 +71,11 @@ public class Drifter : MonoBehaviour, INetworkInit
     public string GuardStateName = "Guard";
     [NonSerialized]
     public string WalkStateName = "Walk";
+    [NonSerialized]
+    public string JumpStartStateName = "Jump_Start";
+    [NonSerialized]
+    public string JumpEndStateName = "Jump_End";
+    
     
     //public bool forceGuard = false;
 

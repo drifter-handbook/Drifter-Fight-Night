@@ -162,7 +162,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //Cancel aerials on landing + landing animation
-        if(!grounded && IsGrounded() && !status.HasEnemyStunEffect() && (!status.HasStatusEffect(PlayerStatusEffect.END_LAG) || canLandingCancel))drifter.PlayAnimation("Jump_End");
+        if(!grounded && IsGrounded() && !status.HasEnemyStunEffect() && (!status.HasStatusEffect(PlayerStatusEffect.END_LAG) || canLandingCancel))drifter.PlayAnimation(drifter.JumpEndStateName);
 
         //Handles jumps
         if(grounded)
@@ -537,8 +537,8 @@ public class PlayerMovement : MonoBehaviour
             {
                 gravityPaused = false;
                 currentJumps--;
-                if(!grounded && animator.HasState(0,Animator.StringToHash("Jump_Air_Start")))drifter.PlayAnimation("Jump_Air_Start");
-                else drifter.PlayAnimation("Jump_Start");
+                if(!grounded && animator.HasState(0,Animator.StringToHash("Jump_Air_Start")))drifter.PlayAnimation(drifter.JumpStartStateName);
+                else drifter.PlayAnimation(drifter.JumpStartStateName);
                 //Particles
                 if(IsGrounded()){
                     spawnJuiceParticle(transform.position + particleOffset + new Vector3(0,-1,0), MovementParticleMode.Jump);

@@ -12,6 +12,9 @@ public class MaryamMasterHit : MasterHit
 
         drifter.WalkStateName = Empowered?"Walk_SG":"Walk";
         drifter.GroundIdleStateName = Empowered?"Idle_SG":"Idle";
+        drifter.JumpStartStateName = Empowered?"Jump_Start_SG":"Jump_Start";
+        drifter.AirIdleStateName = Empowered?"Hang_SG":"Hang";
+        drifter.JumpEndStateName = Empowered?"Jump_End_SG":"Jump_End";
     }
 
 
