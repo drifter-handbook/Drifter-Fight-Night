@@ -9,17 +9,16 @@ public class DrifterCannonMasterHit : MasterHit
     {
         if(!isHost)return;
         facing = movement.Facing;
-        rb.velocity = new Vector2(-30f * facing, rb.velocity.y);
-
-        Vector3 pos = new Vector3(-4.5f * facing,2,0);
+        Vector3 pos = new Vector3(1.6f * facing,2f,0);
         
-        GameObject orroSplosion = host.CreateNetworkObject("UairExplosion", transform.position + pos, Quaternion.Euler(0,0,90f));
-        orroSplosion.transform.localScale = new Vector3(7.5f, -7.5f * facing, 1f);
+        GameObject orroSplosion = host.CreateNetworkObject("ExplosionSide", transform.position + pos, transform.rotation);
+        orroSplosion.transform.localScale = new Vector3(10f * facing, 10f , 1f);
         foreach (HitboxCollision hitbox in orroSplosion.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
+            hitbox.AttackData = attacks.Attacks[attacks.AttackType];
             hitbox.Active = true;
             hitbox.Facing = facing;
        }

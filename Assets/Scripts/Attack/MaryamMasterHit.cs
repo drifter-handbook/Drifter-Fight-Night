@@ -7,11 +7,33 @@ public class MaryamMasterHit : MasterHit
 
     bool hasSGRecovery = true;
     bool hasUmbrellaRecovery = true;
+    float terminalVelocity;
 
     public void StanceChange()
     {
         if(!isHost)return;
         SetStance(!Empowered);
+    }
+
+    void Start()
+    {
+        if(!isHost)return;
+        terminalVelocity = movement.terminalVelocity;
+    }
+
+    void Update()
+    {
+        if(!isHost)return;
+
+        if(movement.terminalVelocity != terminalVelocity  && (movement.ledgeHanging || status.HasEnemyStunEffect()))
+        {
+            resetTerminal();
+        }
+
+        if((!hasUmbrellaRecovery || !hasSGRecovery) &&( movement.grounded || status.HasEnemyStunEffect() || movement.ledgeHanging)){
+            hasSGRecovery = true;
+            hasUmbrellaRecovery = true;
+        }
     }
 
 
@@ -36,7 +58,48 @@ public class MaryamMasterHit : MasterHit
 
     public void cancelSideQ()
     {
-        movement.canLandingCancel = true;  
+        movement.canLandingCancel = true;
+    }
+
+    public void UmbrellaRecovery()
+    {
+        hasUmbrellaRecovery = false;
+    }
+
+    public void SGRecovery()
+    {
+        hasSGRecovery = false;
+    }
+
+
+    public void upWGlide()
+    {
+        if(!isHost)return;
+
+        if(TransitionFromChanneledAttack())
+        {
+            resetTerminal();
+        }
+
+        else if(drifter.input.MoveY <0 || movement.grounded)
+        {
+            resetTerminal();
+            returnToIdle();
+        }
+        else
+        {
+
+            movement.updateFacing();
+            rb.velocity = new Vector2(Mathf.Lerp((!status.HasStatusEffect(PlayerStatusEffect.SLOWED)? drifter.input.MoveX * 23f:(.6f*23f)),rb.velocity.x,.75f),rb.velocity.y);
+            movement.updateFacing();
+            movement.terminalVelocity = 8f;
+        }
+    }
+
+    public void resetTerminal()
+    {
+        if(!isHost)return;
+        movement.terminalVelocity = terminalVelocity;
     }
 
 

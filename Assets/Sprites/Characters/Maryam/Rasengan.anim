@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Jump_End_SG
+  m_Name: Rasengan
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -20,10 +20,16 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: -2959480418960862591, guid: 0a084b5443c6d2849884fea46cc525cb,
+      value: {fileID: 1224543749528565640, guid: 775669aa30ea32b4bae5534c5ec5a08f,
         type: 3}
     - time: 0.083333336
-      value: {fileID: -260658196132255902, guid: 0a084b5443c6d2849884fea46cc525cb,
+      value: {fileID: 3403598336304292066, guid: 775669aa30ea32b4bae5534c5ec5a08f,
+        type: 3}
+    - time: 0.16666667
+      value: {fileID: -3134462594148863430, guid: 775669aa30ea32b4bae5534c5ec5a08f,
+        type: 3}
+    - time: 0.25
+      value: {fileID: -7012768351747342824, guid: 775669aa30ea32b4bae5534c5ec5a08f,
         type: 3}
     attribute: m_Sprite
     path: 
@@ -44,14 +50,16 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: -2959480418960862591, guid: 0a084b5443c6d2849884fea46cc525cb, type: 3}
-    - {fileID: -260658196132255902, guid: 0a084b5443c6d2849884fea46cc525cb, type: 3}
+    - {fileID: 1224543749528565640, guid: 775669aa30ea32b4bae5534c5ec5a08f, type: 3}
+    - {fileID: 3403598336304292066, guid: 775669aa30ea32b4bae5534c5ec5a08f, type: 3}
+    - {fileID: -3134462594148863430, guid: 775669aa30ea32b4bae5534c5ec5a08f, type: 3}
+    - {fileID: -7012768351747342824, guid: 775669aa30ea32b4bae5534c5ec5a08f, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.16666667
+    m_StopTime: 0.33333334
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -70,18 +78,4 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events:
-  - time: 0
-    functionName: resetTerminal
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.16666667
-    functionName: returnToIdle
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
+  m_Events: []

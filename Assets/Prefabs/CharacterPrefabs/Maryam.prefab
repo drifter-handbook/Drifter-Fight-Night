@@ -64,6 +64,70 @@ MonoBehaviour:
   playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: 1ac555db9aad3d34496f3ae04f4e631e, type: 2}
   AttackData: {fileID: 0}
+--- !u!1 &1986077045186619262
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9137934078055983749}
+  - component: {fileID: 1834302494613129211}
+  - component: {fileID: 4951868674673288793}
+  m_Layer: 9
+  m_Name: Umbrella_Up_W_Launcher
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9137934078055983749
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1986077045186619262}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4708800389684013138}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1834302494613129211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1986077045186619262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parent: {fileID: 1405145404548730497}
+  playerType: {fileID: 0}
+  OverrideData: {fileID: 11400000, guid: 34f8b5fc5df68334ea74dcae47c88276, type: 2}
+  AttackData: {fileID: 0}
+--- !u!58 &4951868674673288793
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1986077045186619262}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.34678575}
+  serializedVersion: 2
+  m_Radius: 0.15321426
 --- !u!1 &2992635337946966263
 GameObject:
   m_ObjectHideFlags: 0
@@ -303,7 +367,7 @@ MonoBehaviour:
   playState: 0
   applyVelocity: 1
   xVelocity: 0
-  yVelocity: 9
+  yVelocity: 13
 --- !u!114 &5923414296343168378
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -704,6 +768,12 @@ PrefabInstance:
       propertyPath: AttackMap.Array.data[6].attackData
       value: 
       objectReference: {fileID: 11400000, guid: 74574a388cd269b46b126e665bc44ee6,
+        type: 2}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[3].attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: 2c54fef8219c02340a3a791fbe2818d0,
         type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 03006bf76a5e1274aaf3da8b9c69d8f9, type: 3}

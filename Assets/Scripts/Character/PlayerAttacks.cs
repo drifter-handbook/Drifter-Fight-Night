@@ -48,7 +48,7 @@ public class PlayerAttacks : MonoBehaviour
     public int AttackID { get; private set; }
     public DrifterAttackType AttackType { get; private set; }
     public List<SingleAttack> AttackMap = new List<SingleAttack>();
-    Dictionary<DrifterAttackType,SingleAttackData> Attacks = new Dictionary<DrifterAttackType,SingleAttackData>();
+    public Dictionary<DrifterAttackType,SingleAttackData> Attacks = new Dictionary<DrifterAttackType,SingleAttackData>();
     public int maxRecoveries = 1;
 
     [NonSerialized]
