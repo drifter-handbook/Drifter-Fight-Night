@@ -65,7 +65,7 @@ public class MythariusMasterHit : MasterHit
 
         prev_projectile = projectile;
 
-        Vector3 pos = transform.position +  new Vector3(facing *2, 4.5f, 0f);
+        Vector3 pos = transform.position +  new Vector3(facing *1.8f, 4.5f, 0f);
         Vector3 velocity = Vector3.zero;
 
         switch(projectile){

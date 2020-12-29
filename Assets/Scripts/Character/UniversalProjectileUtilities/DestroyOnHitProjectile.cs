@@ -12,7 +12,7 @@ public class DestroyOnHitProjectile : MonoBehaviour
     {
         if(col.gameObject.name == "Hurtboxes" && col.GetComponent<HurtboxCollision>() != this.gameObject.GetComponentInChildren<HitboxCollision>().parent.GetComponentInChildren<HurtboxCollision>())
         {
-            StartCoroutine(Fade(.05f));
+            StartCoroutine(Fade(.08f));
         }
 
     }

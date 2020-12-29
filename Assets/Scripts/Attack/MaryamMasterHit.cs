@@ -111,7 +111,7 @@ public class MaryamMasterHit : MasterHit
         facing = movement.Facing;
         applyEndLag(1);
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.2f);
-        rb.velocity = new Vector2(facing * 30f,0f);
+        rb.velocity = new Vector2(facing * 35f,0f);
     }
 
 
