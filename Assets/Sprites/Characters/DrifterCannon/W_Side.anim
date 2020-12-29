@@ -1683,6 +1683,13 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.33333334
+    functionName: pauseGravity
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.33333334
     functionName: setXVelocity
     data: 
     objectReferenceParameter: {fileID: 0}
@@ -1701,6 +1708,13 @@ AnimationClip:
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 50
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.5833333
+    functionName: unpauseGravity
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 1.3333334
