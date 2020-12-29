@@ -46,13 +46,14 @@ public class PlayerMovement : MonoBehaviour
     [NonSerialized]
     public bool ledgeHanging = false;
     [NonSerialized]
-    public bool wallSliding = false;
+    public Vector3 wallSliding = Vector3.zero;
     bool strongLedgeGrab = true;
 
 
     // public float activeFriction = .1f;
     // public float inactiveFriction = .4f;
     PolygonCollider2D frictionCollider;
+    BoxCollider2D BodyCollider; 
 
 
     //Component Fields
@@ -90,7 +91,7 @@ public class PlayerMovement : MonoBehaviour
         status = drifter.status;
         animator = drifter.animator;
 
-
+        BodyCollider = GetComponent<BoxCollider2D>();
         frictionCollider = GetComponent<PolygonCollider2D>();
         
     }
@@ -186,8 +187,7 @@ public class PlayerMovement : MonoBehaviour
 
         grounded = IsGrounded();
         wallSliding = IsWallSliding();
-        if(wallSliding)UnityEngine.Debug.Log("wallSliding");
-
+       
         //Sets hitstun state when applicable
         if(status.HasEnemyStunEffect())
         {
@@ -486,13 +486,13 @@ public class PlayerMovement : MonoBehaviour
     }
 
     RaycastHit2D[] wallHits = new RaycastHit2D[10];
-    private bool IsWallSliding()
+    private Vector3 IsWallSliding()
     {
-        int count = Physics2D.RaycastNonAlloc(frictionCollider.bounds.center + frictionCollider.bounds.extents.x * (( drifter.input.MoveX > 0)?Vector3.right:Vector3.left), (( drifter.input.MoveX > 0)?Vector3.right:Vector3.left), wallHits, 0.35f);
-        
-        for (int i = 0; i < count; i++) if (wallHits[i].collider.gameObject.tag == "Ground" && status.HasGroundFriction())return true;
-        
-        return false;
+        int count = Physics2D.RaycastNonAlloc(BodyCollider.bounds.center + new Vector3( BodyCollider.bounds.extents.x * (( Facing > 0)^flipSprite?1:-1),BodyCollider.bounds.extents.y,0), ((Facing > 0)^flipSprite?Vector3.right:Vector3.left),wallHits, 0.35f);
+
+        for (int i = 0; i < count; i++)if (wallHits[i].collider.gameObject.tag == "Ground" && status.HasGroundFriction())return wallHits[i].normal;
+
+        return Vector3.zero;
     }
 
     public void GrabLedge(Vector3 pos)

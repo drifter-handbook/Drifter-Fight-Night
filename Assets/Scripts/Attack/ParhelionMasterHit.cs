@@ -69,7 +69,8 @@ public class ParhelionMasterHit : MasterHit
     public void wallRide(float speed)
     {
 		if(!isHost)return;
-		if(movement.wallSliding) rb.velocity = new Vector3(rb.velocity.x, Mathf.Lerp(rb.velocity.y,speed,.5f));    	
+
+		if(movement.wallSliding != Vector3.zero) rb.velocity = new Vector2(movement.Facing * Mathf.Abs(movement.wallSliding.y),Mathf.Abs(movement.wallSliding.x)) * speed;    	
     }
 
     //Inherited Roll Methods

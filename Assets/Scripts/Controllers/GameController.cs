@@ -141,6 +141,7 @@ public class GameController : MonoBehaviour
         }
 
         CleanupNetwork();
+
     }
 
     void Update()
@@ -203,5 +204,6 @@ public class GameController : MonoBehaviour
         }
         Destroy(GetComponent<NetworkSync>());
         IsHost = false;
+        endingGame = null;
     }
 }
