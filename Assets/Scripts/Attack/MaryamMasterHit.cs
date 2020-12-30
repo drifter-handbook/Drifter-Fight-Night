@@ -119,7 +119,7 @@ public class MaryamMasterHit : MasterHit
     {
         if(!isHost)return;
         applyEndLag(1);
-        rb.velocity = new Vector3(0f,35f,0);
+        rb.position += new Vector2(facing * 1f,6f);
     }
 
     public override void rollGetupEnd()
@@ -128,7 +128,7 @@ public class MaryamMasterHit : MasterHit
         facing = movement.Facing;
         movement.gravityPaused = false;
         rb.gravityScale = gravityScale;
-        rb.velocity = new Vector2(facing * 30f,5f);
+        rb.velocity = new Vector2(facing * 30f,0f);
     }
 }
 
