@@ -91,6 +91,7 @@ public class PlayerStatus : MonoBehaviour
     float time = 0f;
     Dictionary<PlayerStatusData, float> statusEffects = new Dictionary<PlayerStatusData, float>();
     Rigidbody2D rb;
+    Drifter drifter;
     Vector2 delayedVelocity;
 
     public PlayerCard card;
@@ -98,6 +99,7 @@ public class PlayerStatus : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        drifter = GetComponent<Drifter>();
     }
  
     // Update is called once per frame
@@ -118,6 +120,7 @@ public class PlayerStatus : MonoBehaviour
                     if(HasStatusEffect(key) && statusEffects[key] > 0)
                     {
                         statusEffects[key]--;
+                        if(key == PlayerStatusData.statusDataMap[PlayerStatusEffect.BURNING]) drifter.DamageTaken += .2f;
                         if(key == PlayerStatusData.statusDataMap[PlayerStatusEffect.CRINGE] && !HasStatusEffect(PlayerStatusEffect.CRINGE))rb.velocity = delayedVelocity;
                     }
                     else{
