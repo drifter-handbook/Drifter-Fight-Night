@@ -5,6 +5,9 @@ using UnityEngine;
 public class AnimatedProjectileUtil : MonoBehaviour
 {
   SyncAnimatorStateHost anim;
+
+  public bool playStateWhenGrounded = false;
+
 	//Animator anim;
   // Start is called before the first frame update
   void Start()
@@ -24,6 +27,7 @@ public class AnimatedProjectileUtil : MonoBehaviour
 
     if(!GameController.Instance.IsHost)return;
     if(col.gameObject.name == "Hurtboxes" && col.GetComponent<HurtboxCollision>() != this.gameObject.GetComponentInChildren<HitboxCollision>().parent.GetComponentInChildren<HurtboxCollision>()) PlayAnimation("OnHitState");
-  }
 
+    if(playStateWhenGrounded && (col.gameObject.tag == "Ground" || col.gameObject.tag == "Platform")) PlayAnimation("OnGroundState");
+  }
 }

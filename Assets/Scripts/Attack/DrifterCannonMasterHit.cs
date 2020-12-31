@@ -48,6 +48,27 @@ public class DrifterCannonMasterHit : MasterHit
        }
     }
 
+    public void DownSpecialBomb()
+    {
+        if(!isHost)return;
+        facing = movement.Facing;
+        Vector3 pos = new Vector3(-.5f * facing,2.7f,0);
+        
+        GameObject grenade = host.CreateNetworkObject("DCGenade", transform.position + pos, transform.rotation);
+        grenade.transform.localScale = new Vector3(10f * facing, 10f , 1f);
+
+        grenade.GetComponent<Rigidbody2D>().velocity = new Vector2(20* facing,25);
+
+        foreach (HitboxCollision hitbox in grenade.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+            hitbox.Facing = facing;
+       }
+    }
+
     public void applyLandingLag()
     {
         movement.canLandingCancel = true;
