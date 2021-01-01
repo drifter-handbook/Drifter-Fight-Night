@@ -48,6 +48,25 @@ public class DrifterCannonMasterHit : MasterHit
        }
     }
 
+    public void UpAirExplosion()
+    {
+        if(!isHost)return;
+        facing = movement.Facing;
+        Vector3 pos = new Vector3(-.7f* facing,.7f,0);
+        
+        GameObject explosion = host.CreateNetworkObject("UairExplosion", transform.position + pos, transform.rotation);
+        explosion.transform.localScale = new Vector3(7.5f* facing, 7.5f, 1f);
+        foreach (HitboxCollision hitbox in explosion.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.AttackData = attacks.Attacks[attacks.AttackType];
+            hitbox.Active = true;
+            hitbox.Facing = facing;
+       }
+    }
+
     public void DownSpecialBomb()
     {
         if(!isHost)return;
