@@ -7,6 +7,7 @@ public class MaryamMasterHit : MasterHit
 
     bool hasSGRecovery = true;
     bool hasUmbrellaRecovery = true;
+    bool WSideFinisher = false;
     float terminalVelocity;
 
     public void StanceChange()
@@ -103,6 +104,33 @@ public class MaryamMasterHit : MasterHit
     }
 
 
+    //Side W state logic
+
+    public void checkForContinueWSide()
+    {
+        if(!isHost)return;
+        if(drifter.input.Special)continueJabFlag = true;
+    }
+
+    public void checkForWSideFinisher()
+    {
+        if(!isHost)return;
+        if(drifter.input.MoveY !=0 ) WSideFinisher = false;
+        else if(drifter.input.MoveX != 0) WSideFinisher = true;
+        else WSideFinisher = Empowered;
+    }
+
+    public void SideWFinisher()
+    {
+        if(!isHost)return;
+        
+        refreshHitboxID();
+        continueJabFlag = false;
+        playState(WSideFinisher?"W_Side_Finisher_Umbrella":"W_Side_Finisher_SG");
+
+    }
+
+
     //Roll Methods
 
     public override void roll()
@@ -121,6 +149,7 @@ public class MaryamMasterHit : MasterHit
         applyEndLag(1);
         rb.position += new Vector2(facing * 1f,6f);
     }
+
 
     public override void rollGetupEnd()
     {
