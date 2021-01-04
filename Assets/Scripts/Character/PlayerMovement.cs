@@ -267,7 +267,7 @@ public class PlayerMovement : MonoBehaviour
         bool jumpPressed = !drifter.prevInput.Jump && drifter.input.Jump;
         // TODO: spawn hitboxes
         bool canAct = !status.HasStunEffect() && !drifter.guarding;
-        bool canGuard = !status.HasStunEffect();
+        bool canGuard = !status.HasStunEffect() && !jumping;
         bool moving = drifter.input.MoveX != 0;
        
        //Platform dropthrough

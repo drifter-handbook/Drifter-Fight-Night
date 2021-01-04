@@ -119,6 +119,58 @@ public class DrifterCannonMasterHit : MasterHit
         }
     }
 
+    //W_Neutral
+
+    public void handleRanchStartup()
+    {
+    	if(!isHost)return;
+    	if(drifter.GetCharge() > 1) drifter.PlayAnimation("W_Neutral_" + drifter.GetCharge());
+    }
+
+    public void SetCharge(int charge)
+    {
+    	if(!isHost)return;
+    	drifter.SetCharge(charge);
+    	Empowered = (charge == 3);
+
+    	drifter.WalkStateName = Empowered?"Walk_Ranch":"Walk";
+        drifter.GroundIdleStateName = Empowered?"Idle_Ranch":"Idle";
+        drifter.JumpStartStateName = Empowered?"Jump_Start_Ranch":"Jump_Start";
+        drifter.AirIdleStateName = Empowered?"Hang_Ranch":"Hang";
+    }
+
+    public void neutralWCharge()
+     {
+        if(!isHost)return;
+        if(TransitionFromChanneledAttack()) return;
+        if(drifter.input.Special) drifter.PlayAnimation("W_Neutral_Fire");
+     }
+
+     public void FireRanchProjectile()
+    {
+        if(!isHost)return;
+        facing = movement.Facing;
+        Vector3 pos = new Vector3(1f * facing,2.7f,0);
+        
+        GameObject ranch = host.CreateNetworkObject("Ranch" + drifter.GetCharge(), transform.position + pos, transform.rotation);
+        ranch.transform.localScale = new Vector3(10f * facing, 10f , 1f);
+
+        rb.velocity = new Vector2((drifter.GetCharge() - 1) * -15f* facing,0);
+        
+        if(drifter.GetCharge() < 3)ranch.GetComponent<Rigidbody2D>().velocity = new Vector2((drifter.GetCharge() == 1?40f:20f)* facing,0);
+
+        SetCharge(1);
+
+        foreach (HitboxCollision hitbox in ranch.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+            hitbox.Facing = facing;
+       }
+    }
+
 
     //Roll Methods
 
@@ -136,7 +188,7 @@ public class DrifterCannonMasterHit : MasterHit
     {
         if(!isHost)return;
         applyEndLag(1);
-        rb.velocity = new Vector3(0f,35f,0);
+        rb.position += new Vector2(facing * 1f,4.5f);
     }
 
     public override void rollGetupEnd()
@@ -145,7 +197,7 @@ public class DrifterCannonMasterHit : MasterHit
         facing = movement.Facing;
         movement.gravityPaused = false;
         rb.gravityScale = gravityScale;
-        rb.velocity = new Vector2(facing * 30f,5f);
+        rb.velocity = new Vector2(facing * 35f,5f);
     }
 }
 

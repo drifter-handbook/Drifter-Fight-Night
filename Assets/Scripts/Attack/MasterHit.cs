@@ -117,6 +117,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
             status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
             playState(drifter.GuardStateName);
             drifter.guarding = true;
+            movement.jumping = false;
             unpauseGravity();
             return true;
         }
