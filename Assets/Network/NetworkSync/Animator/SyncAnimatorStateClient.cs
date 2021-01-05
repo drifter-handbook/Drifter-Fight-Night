@@ -4,7 +4,6 @@ using UnityEngine;
 public class SyncAnimatorStateClient : MonoBehaviour, ISyncClient, INetworkMessageReceiver
 {
     NetworkSync sync;
-
     Animator anim;
 
     SyncAnimatorState state = new SyncAnimatorState();
@@ -22,9 +21,10 @@ public class SyncAnimatorStateClient : MonoBehaviour, ISyncClient, INetworkMessa
         {
             state = NetworkUtils.GetNetworkData<SyncAnimatorState>(sync["animator_state"]);
 
-            if(anim.GetCurrentAnimatorStateInfo(0).fullPathHash != state.stateHash)
+            if(anim.GetCurrentAnimatorStateInfo(state.layer).fullPathHash != state.stateHash)
             {
-                anim.Play(state.stateHash);
+                UnityEngine.Debug.Log("PLAYING STATE");
+                anim.Play(state.stateHash,state.layer);
             }
             anim.enabled = state.active;
         }
@@ -39,9 +39,11 @@ public class SyncAnimatorStateClient : MonoBehaviour, ISyncClient, INetworkMessa
     {
         state = NetworkUtils.GetNetworkData<SyncAnimatorState>(sync["animator_state"]);
 
-        if(anim.GetCurrentAnimatorStateInfo(0).fullPathHash != state.stateHash)
+
+
+        if(anim.GetCurrentAnimatorStateInfo(state.layer).fullPathHash != state.stateHash)
             {
-                anim.Play(state.stateHash);
+                anim.Play(state.stateHash,state.layer);
             }
             anim.enabled = state.active;
     }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class SyncAnimatorStateHost : MonoBehaviour, ISyncHost
 {
     NetworkSync sync;
-
+    int animationLayer = 0;
     Animator anim;
 
     // Start is called before the first frame update
@@ -22,21 +22,22 @@ public class SyncAnimatorStateHost : MonoBehaviour, ISyncHost
         sync["animator_state"] = 
             new SyncAnimatorState
             {
-                stateHash = anim.GetCurrentAnimatorStateInfo(0).fullPathHash,
+                stateHash = anim.GetCurrentAnimatorStateInfo(animationLayer).fullPathHash,
                 active = anim.enabled
             };//new SyncAnimatorData() { parameters = parameters };
 
             //sync.SendNetworkMessage(new SyncAnimatorState() { stateHash = Animator.StringToHash(name), active = anim.enabled});
     }
 
-    public void SetState(string name)
+    public void SetState(string name, int Layer = 0)
     {
         //if(anim.)
-        anim.Play(Animator.StringToHash(name));
+        animationLayer = Layer;
+        anim.Play(Animator.StringToHash(name),animationLayer);        
         if (GameController.Instance.IsHost)
         {
             //UnityEngine.Debug.Log("MESSAGE SENT: " + Animator.StringToHash(name));
-            sync.SendNetworkMessage(new SyncAnimatorState() { stateHash = Animator.StringToHash(name), active = anim.enabled});
+            sync.SendNetworkMessage(new SyncAnimatorState() { stateHash = Animator.StringToHash(name), active = anim.enabled, layer = Layer});
         }
     }
 }
@@ -44,6 +45,7 @@ public class SyncAnimatorStateHost : MonoBehaviour, ISyncHost
 public class SyncAnimatorState : INetworkData
 {
     public int stateHash;
+    public int layer;
     public bool active;
     public string Type { get; set; }
 }

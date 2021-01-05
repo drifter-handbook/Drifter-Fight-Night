@@ -40,20 +40,23 @@ public class MaryamMasterHit : MasterHit
 
     public void SetStance(bool stance)
     {
-        if(!isHost)return;
+        //if(!isHost)return;
         Empowered = stance;
         attacks.currentRecoveries = (Empowered && hasSGRecovery) || (!Empowered && hasUmbrellaRecovery)? 1:0;
 
-        drifter.WalkStateName = Empowered?"Walk_SG":"Walk";
-        drifter.GroundIdleStateName = Empowered?"Idle_SG":"Idle";
-        drifter.JumpStartStateName = Empowered?"Jump_Start_SG":"Jump_Start";
-        drifter.AirIdleStateName = Empowered?"Hang_SG":"Hang";
-        drifter.JumpEndStateName = Empowered?"Jump_End_SG":"Jump_End";
-        drifter.WeakLedgeGrabStateName = Empowered?"Ledge_Grab_Weak_SG":"Ledge_Grab_Weak";
-        drifter.StrongLedgeGrabStateName = Empowered?"Ledge_Grab_Strong_SG":"Ledge_Grab_Strong";
+        drifter.SetAnimationLayer(Empowered?1:0);
 
-        drifter.LedgeRollStateName = Empowered?"Ledge_Roll_SG":"Ledge_Roll";
-        drifter.LedgeClimbStateName = Empowered?"Ledge_Climb_SG":"Ledge_Climb";
+
+        // drifter.WalkStateName = Empowered?"Walk_SG":"Walk";
+        // drifter.GroundIdleStateName = Empowered?"Idle_SG":"Idle";
+        // drifter.JumpStartStateName = Empowered?"Jump_Start_SG":"Jump_Start";
+        // drifter.AirIdleStateName = Empowered?"Hang_SG":"Hang";
+        // drifter.JumpEndStateName = Empowered?"Jump_End_SG":"Jump_End";
+        // drifter.WeakLedgeGrabStateName = Empowered?"Ledge_Grab_Weak_SG":"Ledge_Grab_Weak";
+        // drifter.StrongLedgeGrabStateName = Empowered?"Ledge_Grab_Strong_SG":"Ledge_Grab_Strong";
+
+        // drifter.LedgeRollStateName = Empowered?"Ledge_Roll_SG":"Ledge_Roll";
+        // drifter.LedgeClimbStateName = Empowered?"Ledge_Climb_SG":"Ledge_Climb";
 
     }
 

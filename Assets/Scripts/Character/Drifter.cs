@@ -83,6 +83,8 @@ public class Drifter : MonoBehaviour, INetworkInit
     public string LedgeClimbStateName = "Ledge_Climb";
     [NonSerialized]
     public string LedgeRollStateName = "Ledge_Roll";
+
+    int animationLayer = 0;
     
     
     //public bool forceGuard = false;
@@ -167,10 +169,16 @@ public class Drifter : MonoBehaviour, INetworkInit
     public void PlayAnimation(string state)
     {
         if(!isHost)return;
-        if(Animator.StringToHash(state) != animator.GetCurrentAnimatorStateInfo(0).fullPathHash)
+        if(Animator.StringToHash(state) != animator.GetCurrentAnimatorStateInfo(animationLayer).fullPathHash)
         {
-            animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState(state);
+            animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState(state,animationLayer);
         }
+    }
+
+    public void SetAnimationLayer(int layer)
+    {
+        animationLayer = layer;
+        animator.SetLayerWeight(1,layer);
     }
 
     //Return to idle is called anytime the player regains control
@@ -178,8 +186,8 @@ public class Drifter : MonoBehaviour, INetworkInit
     {
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
         movement.canLandingCancel = false;
-        if(movement.grounded)animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState(GroundIdleStateName);
-        else animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState(AirIdleStateName);
+        if(movement.grounded)animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState(GroundIdleStateName,animationLayer);
+        else animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState(AirIdleStateName,animationLayer);
         
     }
 
