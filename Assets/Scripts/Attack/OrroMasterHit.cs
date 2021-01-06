@@ -19,7 +19,7 @@ public class OrroMasterHit : MasterHit
     {
         if(!isHost)return;
 
-        if(Empowered)bean.addBeanState(rb.position - new Vector2(-2f * movement.Facing, 4f), movement.Facing);
+        if(Empowered)bean.addBeanState(rb.position - new Vector2(-2f * movement.Facing, 2.5f), movement.Facing);
     }
 
     //Projectiles

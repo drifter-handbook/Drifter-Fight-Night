@@ -56,7 +56,7 @@ public class BeanWrangler : MonoBehaviour
         timeSinceState += Time.deltaTime;
         if(beanUpdateTimer >= 0) beanUpdateTimer += Time.deltaTime;
 
-        if(beanUpdateTimer >= 1f && !(beanUpdateTimer < 0))
+        if(beanUpdateTimer >= .3f && !(beanUpdateTimer < 0))
         {
             if(states.Count >0){
                 targetPos = states.Dequeue();

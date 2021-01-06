@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Neutral_Q_Gun
+  m_Name: Ground_Neutral_Shoot_2
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -1043,7 +1043,7 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.41666666
-    functionName: continueJab
+    functionName: checkForContinueJab
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
@@ -1051,7 +1051,7 @@ AnimationClip:
     messageOptions: 0
   - time: 0.41666666
     functionName: continueJab
-    data: Ground_Neutral_Shoot_2
+    data: Ground_Neutral_Shoot
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
