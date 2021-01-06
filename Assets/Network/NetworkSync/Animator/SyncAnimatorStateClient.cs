@@ -24,10 +24,9 @@ public class SyncAnimatorStateClient : MonoBehaviour, ISyncClient, INetworkMessa
             if(anim.GetCurrentAnimatorStateInfo(state.layer).fullPathHash != state.stateHash)
             {
 
-                anim.SetLayerWeight(state.layer == 0?0:1,0);
-                anim.SetLayerWeight(state.layer == 1?0:1,1);
+                anim.SetLayerWeight(state.layer == 0?1:0,0);
+                anim.SetLayerWeight(state.layer == 0?0:1,1);
                 
-
                 UnityEngine.Debug.Log("PLAYING STATE");
                 anim.Play(state.stateHash,state.layer);
             }
