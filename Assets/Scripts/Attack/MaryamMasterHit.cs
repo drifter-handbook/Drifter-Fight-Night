@@ -40,7 +40,7 @@ public class MaryamMasterHit : MasterHit
 
     public void SetStance(bool stance)
     {
-        //if(!isHost)return;
+        if(!isHost)return;
         Empowered = stance;
         attacks.currentRecoveries = (Empowered && hasSGRecovery) || (!Empowered && hasUmbrellaRecovery)? 1:0;
 
