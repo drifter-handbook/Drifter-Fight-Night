@@ -23,6 +23,7 @@ public class SyncAnimatorStateClient : MonoBehaviour, ISyncClient, INetworkMessa
 
             if(anim.GetCurrentAnimatorStateInfo(state.layer).fullPathHash != state.stateHash)
             {
+                anim.SetLayerWeight(1,state.layer);
                 UnityEngine.Debug.Log("PLAYING STATE");
                 anim.Play(state.stateHash,state.layer);
             }
@@ -43,6 +44,7 @@ public class SyncAnimatorStateClient : MonoBehaviour, ISyncClient, INetworkMessa
 
         if(anim.GetCurrentAnimatorStateInfo(state.layer).fullPathHash != state.stateHash)
             {
+                anim.SetLayerWeight(1,state.layer);
                 anim.Play(state.stateHash,state.layer);
             }
             anim.enabled = state.active;

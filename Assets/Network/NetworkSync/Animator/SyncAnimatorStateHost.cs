@@ -32,13 +32,23 @@ public class SyncAnimatorStateHost : MonoBehaviour, ISyncHost
     public void SetState(string name, int Layer = 0)
     {
         //if(anim.)
-        animationLayer = Layer;
-        anim.Play(Animator.StringToHash(name),animationLayer);        
-        if (GameController.Instance.IsHost)
+        try
         {
+
+           animationLayer = Layer;
+           anim.SetLayerWeight(1,Layer);
+           anim.Play(Animator.StringToHash(name),animationLayer);        
+           if (GameController.Instance.IsHost)
+            {
             //UnityEngine.Debug.Log("MESSAGE SENT: " + Animator.StringToHash(name));
             sync.SendNetworkMessage(new SyncAnimatorState() { stateHash = Animator.StringToHash(name), active = anim.enabled, layer = Layer});
+            } 
         }
+        catch(KeyNotFoundException)
+        {
+            UnityEngine.Debug.Log("Failed to transition to state: " + name + " on layer: " + Layer);
+        }
+        
     }
 }
 

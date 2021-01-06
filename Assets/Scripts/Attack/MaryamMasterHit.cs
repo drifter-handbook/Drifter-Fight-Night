@@ -62,6 +62,7 @@ public class MaryamMasterHit : MasterHit
 
     public void cancelSideQ()
     {
+        if(!isHost)return;
         movement.canLandingCancel = true;
     }
 
