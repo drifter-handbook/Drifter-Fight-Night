@@ -40,6 +40,7 @@ public class ScreenShake : MonoBehaviour , INetworkInit
 
       foreach(Drifter drifter in drifters)
       {
+         if(drifter==null)continue;
          Vector2 currPos = drifter.gameObject.GetComponent<Rigidbody2D>().position;
          centerpoint += new Vector2(Mathf.Clamp(currPos.x,-10f,10f),Mathf.Clamp(currPos.y,-10f,10f));
       }
@@ -48,6 +49,7 @@ public class ScreenShake : MonoBehaviour , INetworkInit
 
       foreach(Drifter drifter in drifters)
       {
+         if(drifter==null)continue;
          Vector2 currPos = drifter.gameObject.GetComponent<Rigidbody2D>().position;
          scaledZoom =  Mathf.Max(Vector2.Distance(new Vector2(Mathf.Clamp(currPos.x,-20f,20f),Mathf.Clamp(currPos.y,-10f,30f)),centerpoint),scaledZoom);
       }

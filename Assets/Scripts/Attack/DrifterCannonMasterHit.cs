@@ -7,7 +7,15 @@ public class DrifterCannonMasterHit : MasterHit
 
     float boostTime = 1.3f;
 
-
+    void Update()
+    {
+    	if(!isHost)return;
+    	if(status.HasStatusEffect(PlayerStatusEffect.DEAD))
+    	{
+    		Empowered = false;
+    		SetCharge(1);
+    	} 
+    }
 
     public void SairExplosion()
     {
