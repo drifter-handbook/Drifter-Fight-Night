@@ -175,10 +175,19 @@ public class Drifter : MonoBehaviour, INetworkInit
         }
     }
 
+    public int GetAnimationLayer()
+    {
+        return animationLayer;
+    }
+
     public void SetAnimationLayer(int layer)
     {
         animationLayer = layer;
-        //animator.SetLayerWeight(1,layer);
+        animator.SetLayerWeight(layer == 0?1:0,0);
+        animator.SetLayerWeight(layer == 0?0:1,1);
+        if(!isHost)return;
+        animator.gameObject.GetComponent<SyncAnimatorLayerHost>().SetLayer(layer);
+
     }
 
     //Return to idle is called anytime the player regains control

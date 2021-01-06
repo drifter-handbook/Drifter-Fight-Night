@@ -34,9 +34,11 @@ public class SyncAnimatorStateHost : MonoBehaviour, ISyncHost
         //if(anim.)
         try
         {
-
            animationLayer = Layer;
-           anim.SetLayerWeight(1,Layer);
+
+           anim.SetLayerWeight(Layer == 0?1:0,0);
+           anim.SetLayerWeight(Layer == 0?0:1,1);
+
            anim.Play(Animator.StringToHash(name),animationLayer);        
            if (GameController.Instance.IsHost)
             {
