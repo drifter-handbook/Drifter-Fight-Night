@@ -444,6 +444,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         UpdateFightzone();
     }
 
+
     public void HeadToCharacterSelect()
     {
 
@@ -599,7 +600,13 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
             }
         }
     }
+    public void setStateWrapper(string state)
+    {
+        GetComponent<SyncAnimatorStateHost>().SetState(state);
+    }
 }
+
+
 
 public class CharacterSelectSyncData : INetworkData
 {

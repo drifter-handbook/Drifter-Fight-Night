@@ -48,6 +48,7 @@ public class SpaceJamMasterHit : MasterHit
         if(!Empowered)return;
 
         Empowered = false;
+        drifter.SetCharge(0);
 
         drifter.AirIdleStateName = "Hang";
         drifter.WalkStateName = "Walk";
@@ -100,6 +101,7 @@ public class SpaceJamMasterHit : MasterHit
                 audioSource.Stop();
                 audioSource.PlayOneShot(audioClips[2],1f);
                 Empowered = true;
+                drifter.SetCharge(4);
 
                 drifter.AirIdleStateName = "Amber_Hang";
                 drifter.WalkStateName = "Amber_Walk";

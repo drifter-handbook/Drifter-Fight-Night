@@ -117,7 +117,7 @@ public class LucilleMasterHit : MasterHit
             rifts.Dequeue().GetComponent<LucillePortal>().playState("SoftDelete");
         }
         else{
-            drifter.IncrementCharge();
+            drifter.SetCharge(4 + rifts.Count);
         }
        
         GameObject rift = GameController.Instance.host.CreateNetworkObject("Lucille_Rift", transform.position + new Vector3(0,3.5f,0), transform.rotation);
@@ -166,7 +166,7 @@ public class LucilleMasterHit : MasterHit
                 hitbox.AttackID -=3;
             }
 
-            drifter.DecrementCharge();
+            drifter.SetCharge(rifts.Count > 0? 4 + rifts.Count:0); 
 
             targetPortal.GetComponent<LucillePortal>().playState("HardDelete");
         }
@@ -182,8 +182,6 @@ public class LucilleMasterHit : MasterHit
 
         rifts.Clear(); 
 
-        drifter.DecrementCharge();
-
         status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, .2f);
 
         for(int i = riftarray.Length; i >=1; i--)
@@ -194,7 +192,9 @@ public class LucilleMasterHit : MasterHit
                 UnityEngine.Debug.Log("NOT MINE");
                 rifts.Enqueue(riftarray[i-1]);
             }
-        } 
+        }
+
+        drifter.SetCharge(rifts.Count > 0? 4 + rifts.Count:0); 
 
     }
 
