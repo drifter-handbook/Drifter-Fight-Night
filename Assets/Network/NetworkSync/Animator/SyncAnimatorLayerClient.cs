@@ -6,6 +6,7 @@ public class SyncAnimatorLayerClient : MonoBehaviour, ISyncClient, INetworkMessa
 {
     NetworkSync sync;
     Drifter drifter;
+    Animator anim;
 
     SyncAnimatorLayer animatorLayers = new SyncAnimatorLayer();
 
@@ -13,7 +14,8 @@ public class SyncAnimatorLayerClient : MonoBehaviour, ISyncClient, INetworkMessa
     void Start()
     {
         sync = GetComponent<NetworkSync>();
-        drifter = GetComponent<Drifter>();
+        drifter = gameObject.transform.parent.gameObject.GetComponent<Drifter>();
+        anim = GetComponent<Animator>();
     }
     // Update is called once per frame
     void Update()
@@ -22,6 +24,9 @@ public class SyncAnimatorLayerClient : MonoBehaviour, ISyncClient, INetworkMessa
 
         drifter.SetAnimationLayer(animatorLayers.layer);
 
+        anim.SetLayerWeight(animatorLayers.layer == 0?1:0,0);
+        anim.SetLayerWeight(animatorLayers.layer == 0?0:1,1);
+
     }
 
     public void ReceiveNetworkMessage(NetworkMessage message)
@@ -29,6 +34,9 @@ public class SyncAnimatorLayerClient : MonoBehaviour, ISyncClient, INetworkMessa
         animatorLayers = NetworkUtils.GetNetworkData<SyncAnimatorLayer>(sync["animator_layer"]);
         
         drifter.SetAnimationLayer(animatorLayers.layer);
+
+        anim.SetLayerWeight(animatorLayers.layer == 0?1:0,0);
+        anim.SetLayerWeight(animatorLayers.layer == 0?0:1,1);
 
 
     }

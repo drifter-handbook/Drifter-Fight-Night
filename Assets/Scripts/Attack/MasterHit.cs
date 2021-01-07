@@ -131,7 +131,6 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         return false;
     }
 
-
     public void returnToIdle()
 	{
         if(!isHost)return;

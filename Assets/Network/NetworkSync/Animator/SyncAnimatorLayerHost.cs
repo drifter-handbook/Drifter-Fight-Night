@@ -6,13 +6,15 @@ public class SyncAnimatorLayerHost : MonoBehaviour, ISyncHost
 {
     NetworkSync sync;
     Drifter drifter;
+    Animator anim;
 
 
     // Start is called before the first frame update
     void Awake()
     {
         sync = GetComponent<NetworkSync>();
-        drifter = GetComponent<Drifter>();
+        drifter = gameObject.transform.parent.gameObject.GetComponent<Drifter>();
+        anim = GetComponent<Animator>();
        
     }
 
@@ -31,8 +33,9 @@ public class SyncAnimatorLayerHost : MonoBehaviour, ISyncHost
         //if(anim.)
         try
         {
-            //UnityEngine.Debug.Log("MESSAGE SENT: " + Animator.StringToHash(name));
-            sync.SendNetworkMessage(new SyncAnimatorLayer() {layer = Layer});
+           anim.SetLayerWeight(Layer == 0?1:0,0);
+           anim.SetLayerWeight(Layer == 0?0:1,1);
+           sync.SendNetworkMessage(new SyncAnimatorLayer() {layer = Layer});
         }
         catch(KeyNotFoundException)
         {

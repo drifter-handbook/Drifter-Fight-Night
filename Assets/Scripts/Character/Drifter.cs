@@ -173,6 +173,10 @@ public class Drifter : MonoBehaviour, INetworkInit
         {
             animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState(state,animationLayer);
         }
+        else
+        {
+            UnityEngine.Debug.Log("FAILED TO PLAY STATE; STATE IS ALREADY PLAYING: " + state);
+        }
     }
 
     public int GetAnimationLayer()
@@ -193,10 +197,11 @@ public class Drifter : MonoBehaviour, INetworkInit
     //Return to idle is called anytime the player regains control
     public void returnToIdle()
     {
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
+        //UnityEngine.Debug.Log("DRIFTER: RETURNING TO IDLE: " + state);
         movement.canLandingCancel = false;
         if(movement.grounded)animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState(GroundIdleStateName,animationLayer);
         else animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState(AirIdleStateName,animationLayer);
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
         
     }
 

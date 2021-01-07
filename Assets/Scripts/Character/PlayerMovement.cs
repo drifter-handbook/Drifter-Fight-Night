@@ -327,7 +327,7 @@ public class PlayerMovement : MonoBehaviour
         //Ledgegrabs Stuff
         else if(canAct && ledgeHanging)
         {
-
+            rb.velocity = Vector2.zero;
             //Roll Onto Ledge
             if(drifter.input.Guard)
             {
@@ -497,10 +497,12 @@ public class PlayerMovement : MonoBehaviour
 
     public void GrabLedge(Vector3 pos)
     {
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.2f);
         cancelJump();
         gravityPaused = false;
         attacks.ledgeHanging = true;
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.2f);
+        ledgeHanging = true;
+        rb.gravityScale = 0f;
         if(strongLedgeGrab)drifter.PlayAnimation(drifter.StrongLedgeGrabStateName);
         else drifter.PlayAnimation(drifter.WeakLedgeGrabStateName);
         Facing = flipSprite ^ rb.position.x > 0 ? -1 :1;
@@ -509,11 +511,8 @@ public class PlayerMovement : MonoBehaviour
 
         rb.position = new Vector3(pos.x - (rb.position.x > 0 ? -1 :1) *1.5f, pos.y - 1.75f - ledgeOffset,pos.z);
  
-        attacks.resetRecovery();
-
+        attacks.resetRecovery();      
         
-        ledgeHanging = true;
-        rb.gravityScale = 0f;
         currentJumps = numberOfJumps;
 
         rb.velocity = Vector2.zero;

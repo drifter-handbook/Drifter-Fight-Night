@@ -7,6 +7,7 @@ public class SyncAnimatorStateHost : MonoBehaviour, ISyncHost
     NetworkSync sync;
     int animationLayer = 0;
     Animator anim;
+    string lastSentState = "";
 
     // Start is called before the first frame update
     void Awake()
@@ -19,6 +20,13 @@ public class SyncAnimatorStateHost : MonoBehaviour, ISyncHost
     // Update is called once per frame
     void Update()
     {
+        if(lastSentState != "" && anim.GetCurrentAnimatorStateInfo(animationLayer).shortNameHash != Animator.StringToHash(lastSentState)){
+            UnityEngine.Debug.Log("STATES DESYNCED! PLAYING STATE: " + lastSentState);
+            SetState(lastSentState,animationLayer);
+            lastSentState = "";
+        }
+
+        //UnityEngine.Debug.Log( anim.GetCurrentAnimatorStateInfo(animationLayer).shortNameHash + "   :  " + Animator.StringToHash(lastSentState));
         sync["animator_state"] = 
             new SyncAnimatorState
             {
@@ -35,11 +43,8 @@ public class SyncAnimatorStateHost : MonoBehaviour, ISyncHost
         try
         {
            animationLayer = Layer;
-
-           anim.SetLayerWeight(Layer == 0?1:0,0);
-           anim.SetLayerWeight(Layer == 0?0:1,1);
-
-           anim.Play(Animator.StringToHash(name),animationLayer);        
+           anim.Play(Animator.StringToHash(name),animationLayer);
+           lastSentState = name;        
            if (GameController.Instance.IsHost)
             {
             //UnityEngine.Debug.Log("MESSAGE SENT: " + Animator.StringToHash(name));
