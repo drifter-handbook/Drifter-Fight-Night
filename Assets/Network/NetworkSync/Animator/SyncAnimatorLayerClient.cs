@@ -23,10 +23,6 @@ public class SyncAnimatorLayerClient : MonoBehaviour, ISyncClient, INetworkMessa
         animatorLayers = NetworkUtils.GetNetworkData<SyncAnimatorLayer>(sync["animator_layer"]);
 
         drifter.SetAnimationLayer(animatorLayers.layer);
-
-        anim.SetLayerWeight(animatorLayers.layer == 0?1:0,0);
-        anim.SetLayerWeight(animatorLayers.layer == 0?0:1,1);
-
     }
 
     public void ReceiveNetworkMessage(NetworkMessage message)
@@ -34,10 +30,5 @@ public class SyncAnimatorLayerClient : MonoBehaviour, ISyncClient, INetworkMessa
         animatorLayers = NetworkUtils.GetNetworkData<SyncAnimatorLayer>(sync["animator_layer"]);
         
         drifter.SetAnimationLayer(animatorLayers.layer);
-
-        anim.SetLayerWeight(animatorLayers.layer == 0?1:0,0);
-        anim.SetLayerWeight(animatorLayers.layer == 0?0:1,1);
-
-
     }
 }
