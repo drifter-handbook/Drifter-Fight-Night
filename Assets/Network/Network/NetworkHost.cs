@@ -177,6 +177,11 @@ public class NetworkHost : MonoBehaviour, ISyncHost
         return obj;
     }
 
+    void OnDestroy()
+    {
+        netManager.Stop();
+    }
+
     void OnApplicationQuit()
     {
         netManager.Stop();

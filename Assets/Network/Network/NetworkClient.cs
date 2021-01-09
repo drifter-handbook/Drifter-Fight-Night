@@ -173,6 +173,11 @@ public class NetworkClient : MonoBehaviour, ISyncClient, INetworkMessageReceiver
         }
     }
 
+    void OnDestroy()
+    {
+        netManager.Stop();
+    }
+
     void OnApplicationQuit()
     {
         netManager.Stop();
