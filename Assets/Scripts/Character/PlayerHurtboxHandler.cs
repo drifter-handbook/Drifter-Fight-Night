@@ -107,6 +107,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
             //Ignore knockback if invincible or armoured
             if (status != null && (attackData.isGrab || !drifter.guarding)){
 
+                if(attackData.isGrab && drifter.guarding)status.ApplyStatusEffect(PlayerStatusEffect.GUARDBROKEN,5f);
+
                 if(!status.HasStatusEffect(PlayerStatusEffect.ARMOUR) || attackData.isGrab){
 
                     if(Shake != null && attackData.Knockback !=0){

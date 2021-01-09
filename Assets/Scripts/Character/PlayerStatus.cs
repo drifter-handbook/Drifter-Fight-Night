@@ -29,7 +29,8 @@ public enum PlayerStatusEffect
 	HIT,    
 	END_LAG,
 	KNOCKBACK,
-	HITPAUSE, 
+	HITPAUSE,
+    GUARDBROKEN, 
 }
 
 class PlayerStatusData
@@ -61,6 +62,7 @@ class PlayerStatusData
 		{PlayerStatusEffect.END_LAG,							new PlayerStatusData("END_LAG",stun: true, self: true)								},
 		{PlayerStatusEffect.KNOCKBACK,							new PlayerStatusData("KNOCKBACK",remove: false, stun: true)							},
 		{PlayerStatusEffect.HITPAUSE, 							new PlayerStatusData("HITPAUSE",stun: true, self:true)								},
+        {PlayerStatusEffect.GUARDBROKEN,                        new PlayerStatusData("GUARDBROKEN",icon: 8,remove: false)                           },
 	};
 
 

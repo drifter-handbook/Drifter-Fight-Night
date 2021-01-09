@@ -268,7 +268,7 @@ public class PlayerMovement : MonoBehaviour
         bool jumpPressed = !drifter.prevInput.Jump && drifter.input.Jump;
         // TODO: spawn hitboxes
         bool canAct = !status.HasStunEffect() && !drifter.guarding;
-        bool canGuard = !status.HasStunEffect() && !jumping;
+        bool canGuard = !status.HasStunEffect() && !jumping && !status.HasStatusEffect(PlayerStatusEffect.GUARDBROKEN);;
         bool moving = drifter.input.MoveX != 0;
        
        //Platform dropthrough
@@ -407,10 +407,10 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //Guard
-        else if (drifter.input.Guard && canGuard && !ledgeHanging)
+        else if(drifter.input.Guard && canGuard && !ledgeHanging)
         {
             //shift is guard
-            drifter.PlayAnimation(drifter.GuardStateName);
+            if(!drifter.guarding)drifter.PlayAnimation(drifter.GuardStateName);
             drifter.guarding = true;
         }
       
