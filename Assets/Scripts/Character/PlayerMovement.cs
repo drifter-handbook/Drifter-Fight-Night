@@ -72,6 +72,7 @@ public class PlayerMovement : MonoBehaviour
 
     //Situational Iteration variables
     float dropThroughTime;
+    float dropThroughDelayTime;
     int ringTime = 6;
     float prevMoveX = 0;
     float prevMoveY = 0;
@@ -379,10 +380,18 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //Drop throuhg platforms
-        if(canGuard && drifter.input.MoveY <-1){
-            gameObject.layer = 13;
-            dropThroughTime = Time.time;
-
+        if(drifter.input.MoveY <=-1){
+            
+            dropThroughDelayTime += Time.deltaTime;
+            if(dropThroughDelayTime > .3f)
+            {
+                gameObject.layer = 13;
+                dropThroughTime = Time.time;
+            }
+        }
+        else
+        {
+            dropThroughDelayTime = 0;
         }
 
         //Roll
@@ -414,7 +423,7 @@ public class PlayerMovement : MonoBehaviour
         //Terminal velocity
 
         if(rb.velocity.y < -terminalVelocity && !status.HasEnemyStunEffect()){
-            rb.velocity = new Vector2(rb.velocity.x,(drifter.input.MoveY < 0 && prevMoveY < 0 ?-fastFallTerminalVelocity:-terminalVelocity));
+            rb.velocity = new Vector2(rb.velocity.x,-terminalVelocity);
         }
 
         //Jump
