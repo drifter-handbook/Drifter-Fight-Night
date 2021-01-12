@@ -68,11 +68,23 @@ public class ScreenShake : MonoBehaviour , INetworkInit
 
    }
 
+   Vector3 calculateCenter()
+   {
+      Vector2 centerpoint = Vector2.zero;
+      foreach(Drifter drifter in drifters)
+      {
+         if(drifter==null)continue;
+         Vector2 currPos = drifter.gameObject.GetComponent<Rigidbody2D>().position;
+         centerpoint += new Vector2(Mathf.Clamp(currPos.x,-10f,10f),Mathf.Clamp(currPos.y,-10f,10f));
+      }
+      return centerpoint/(drifters.Length +1);;
+   }
+
 
    IEnumerator Shake(float duration, float magnitude)
    {
          if(!isHost)yield break;
-   		Vector3 origPos = transform.localPosition;
+   		Vector3 origPos = calculateCenter();
    		float elapsed = 0f;
 
    		while(elapsed < duration)

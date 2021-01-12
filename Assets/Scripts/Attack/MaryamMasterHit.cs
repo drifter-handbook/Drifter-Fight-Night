@@ -56,6 +56,15 @@ public class MaryamMasterHit : MasterHit
        }
     }
 
+    //Umbrella Dair
+
+    public void setTerminalVelocity()
+    {
+        if(!isHost)return;
+        movement.canLandingCancel = false;  
+        movement.terminalVelocity = 75;
+    }
+
 
 
     public void SetStance(bool stance)
