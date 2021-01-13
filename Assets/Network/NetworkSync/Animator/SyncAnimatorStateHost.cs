@@ -21,7 +21,7 @@ public class SyncAnimatorStateHost : MonoBehaviour, ISyncHost
     void Update()
     {
         if(lastSentState != "" && anim.GetCurrentAnimatorStateInfo(animationLayer).shortNameHash != Animator.StringToHash(lastSentState)){
-            UnityEngine.Debug.Log("STATES DESYNCED! PLAYING STATE: " + lastSentState);
+            //UnityEngine.Debug.Log("STATES DESYNCED! PLAYING STATE: " + lastSentState);
             SetState(lastSentState,animationLayer);
             lastSentState = "";
         }
