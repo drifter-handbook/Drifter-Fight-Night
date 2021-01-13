@@ -13,7 +13,7 @@ public class MaryamMasterHit : MasterHit
     public void StanceChange()
     {
         if(!isHost)return;
-        SetStance(!Empowered);
+        SetStance(Empowered?1:0);
     }
 
     void Start()
@@ -86,10 +86,10 @@ public class MaryamMasterHit : MasterHit
 
 
 
-    public void SetStance(bool stance)
+    public void SetStance(int stance)
     {
         if(!isHost)return;
-        Empowered = stance;
+        Empowered = (stance==0);
         attacks.currentRecoveries = (Empowered && hasSGRecovery) || (!Empowered && hasUmbrellaRecovery)? 1:0;
 
         drifter.SetAnimationLayer(Empowered?1:0);
