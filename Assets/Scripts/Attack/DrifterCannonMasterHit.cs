@@ -6,6 +6,7 @@ public class DrifterCannonMasterHit : MasterHit
 {
 
     float boostTime = 1.3f;
+    bool jumpGranted = false;
 
     void Update()
     {
@@ -13,15 +14,20 @@ public class DrifterCannonMasterHit : MasterHit
     	if(status.HasStatusEffect(PlayerStatusEffect.DEAD))
     	{
     		Empowered = false;
+            jumpGranted = false;
     		SetCharge(1);
-    	} 
+    	}
+
+        if(jumpGranted && movement.grounded)jumpGranted = false;
+
+
     }
 
     public void SairExplosion()
     {
         if(!isHost)return;
         facing = movement.Facing;
-        Vector3 pos = new Vector3(1.6f * facing,2f,0);
+        Vector3 pos = new Vector3(1.9f * facing,3.3f,0);
         
         GameObject explosion = host.CreateNetworkObject("ExplosionSide", transform.position + pos, transform.rotation);
         explosion.transform.localScale = new Vector3(10f * facing, 10f , 1f);
@@ -54,6 +60,21 @@ public class DrifterCannonMasterHit : MasterHit
             hitbox.Active = true;
             hitbox.Facing = facing;
        }
+    }
+
+    public void wallBounce()
+    {
+        if(!isHost)return;
+
+        if(movement.wallSliding != Vector3.zero)
+        {
+            rb.velocity = new Vector2(movement.Facing * -15f,30f);
+            drifter.PlayAnimation("W_Side_End_Early");
+            if(!jumpGranted && movement.currentJumps <= movement.numberOfJumps -1) movement.currentJumps++;
+            jumpGranted = true;
+            GraphicalEffectManager.Instance.CreateMovementParticle(MovementParticleMode.Restitution,rb.position + new Vector2(facing * .5f,0), (facing > 0)?90:-90,Vector3.one);
+            unpauseGravity();
+        }
     }
 
     public void UpAirExplosion()

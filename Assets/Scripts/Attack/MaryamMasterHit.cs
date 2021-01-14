@@ -41,7 +41,7 @@ public class MaryamMasterHit : MasterHit
     {
         if(!isHost)return;
         facing = movement.Facing;
-        Vector3 pos = new Vector3(1.6f * facing,2.5f,0);
+        Vector3 pos = new Vector3(1.8f * facing,2.5f,0);
         
         GameObject explosion = host.CreateNetworkObject("ExplosionSide", transform.position + pos, transform.rotation);
         explosion.transform.localScale = new Vector3(10f * facing, 10f , 1f);
@@ -60,7 +60,7 @@ public class MaryamMasterHit : MasterHit
     {
         if(!isHost)return;
         facing = movement.Facing;
-        Vector3 pos = new Vector3(1f * facing,5f,0);
+        Vector3 pos = new Vector3(2.5f * facing,4f,0);
         
         GameObject explosion = host.CreateNetworkObject("ExplosionSide", transform.position + pos, transform.rotation);
         explosion.transform.localScale = new Vector3(10f * facing, 10f , 1f);

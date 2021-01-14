@@ -223,7 +223,7 @@ public class LucilleMasterHit : MasterHit
     //Can gain 1 extra jump by bouncing on a portal. Only works once per airtime.
     public void grantJump()
     {
-        if(!isHost || movement.currentJumps == movement.numberOfJumps || jumpGranted)return;
+        if(!isHost || movement.currentJumps >= movement.numberOfJumps - 1 || jumpGranted)return;
         movement.currentJumps++;
         jumpGranted = true;
     }
