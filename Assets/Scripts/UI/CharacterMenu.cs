@@ -188,7 +188,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
             EventSystem.current.SetSelectedGameObject(everyoneReady() && GameController.Instance.IsHost ?(stageSelect?GameObject.Find("Training"):forwardButton):GameObject.Find("Random Figurine"));
         }
 
-        Cursor.visible = mouse;
+        Cursor.visible = true;
     }
 
     void Update(){
@@ -310,7 +310,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         UpdateFightzone();
 
         GameController.Instance.selectedStage = selectedFightzone.sceneName;
-        Cursor.visible = false;
+        //Cursor.visible = false;
         GameController.Instance.BeginMatch();
     }
 

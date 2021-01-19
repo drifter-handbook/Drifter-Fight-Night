@@ -60,7 +60,7 @@ public class ScreenShake : MonoBehaviour , INetworkInit
 
    }
 
-   public void statShakeCoroutine(float duration, float magnitude)
+   public void startShakeCoroutine(float duration, float magnitude)
    {
       if(!isHost || killing)return;
       if(CurrentShake != null) StopCoroutine(CurrentShake);
@@ -103,7 +103,7 @@ public class ScreenShake : MonoBehaviour , INetworkInit
 
    		}
 
-   		//transform.localPosition = origPos;
+   		if(PlayerPrefs.GetInt("dynamicCamera") == 0)transform.localPosition = origPos;
 
          CurrentShake = null;
 
@@ -144,11 +144,13 @@ public class ScreenShake : MonoBehaviour , INetworkInit
             self.orthographicSize = Mathf.Lerp(self.orthographicSize,baseZoom,i);
             yield return null;
          }
-      transform.localPosition = basePos;
-      self.orthographicSize = baseZoom;
-      killing = false;
 
-      transform.localPosition = origPos;
+      if(PlayerPrefs.GetInt("dynamicCamera") == 0)
+      {
+         transform.localPosition = origPos;
+         self.orthographicSize = baseZoom;
+      }
+      killing = false;
       
    }
 }

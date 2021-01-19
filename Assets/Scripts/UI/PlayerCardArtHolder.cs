@@ -13,9 +13,11 @@ public class PlayerCardArtHolder : MonoBehaviour
     public Drifter[] drifters;
     private PlayerCard[] playerCards;
 
+    private GameObject mainCamera;
+
     void Awake()
     {
-
+        mainCamera  = GameObject.FindGameObjectWithTag("MainCamera");
     }
 
     private void Update()
@@ -61,8 +63,8 @@ public class PlayerCardArtHolder : MonoBehaviour
 
                 i++;
             }
-
-            GameObject.FindGameObjectWithTag("MainCamera").GetComponent<ScreenShake>().drifters = drifters;
+            if(mainCamera == null) GameObject.FindGameObjectWithTag("MainCamera");
+            mainCamera.GetComponent<ScreenShake>().drifters = drifters;
         }
 
         //For each drifer, update their card

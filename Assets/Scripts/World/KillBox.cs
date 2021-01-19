@@ -77,12 +77,12 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
 
     	if (other.gameObject.tag == "Player" && GameController.Instance.IsHost && other.GetType() == typeof(BoxCollider2D))
         {
+            if(Shake!=null)Shake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<ScreenShake>();
             Drifter drifter = other.gameObject?.GetComponent<Drifter>();
             if (!drifter.status.HasStatusEffect(PlayerStatusEffect.DEAD))
             {   
 
-
-                Shake.statShakeCoroutine(.3f, 1.5f);
+                Shake?.startShakeCoroutine(.3f, 1.5f);
 
                 drifter.Stocks--;
                 drifter.DamageTaken = 0f;

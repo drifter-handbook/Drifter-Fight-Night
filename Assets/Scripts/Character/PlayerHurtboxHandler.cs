@@ -112,7 +112,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 if(!status.HasStatusEffect(PlayerStatusEffect.ARMOUR) || attackData.isGrab){
 
                     if(Shake != null && attackData.Knockback !=0){
-                        Shake.statShakeCoroutine((willCollideWithBlastZone(GetComponent<Rigidbody2D>(), HitstunDuration)?0.3f:0.1f),Mathf.Clamp((((attackData.Knockback - 10)/100f + (damageDealt-10)/44f)) * attackData.KnockbackScale,.07f,.8f));
+                        Shake.startShakeCoroutine((willCollideWithBlastZone(GetComponent<Rigidbody2D>(), HitstunDuration)?0.3f:0.1f),Mathf.Clamp((((attackData.Knockback - 10)/100f + (damageDealt-10)/44f)) * attackData.KnockbackScale,.07f,.8f));
                     }            
                     if(attackData.Knockback > 0 && attackData.AngleOfImpact > -361){
                         GetComponent<Rigidbody2D>().velocity = new Vector2(forceDir.normalized.x * KB, GetComponent<PlayerMovement>().grounded?Mathf.Abs(forceDir.normalized.y * KB): forceDir.normalized.y * KB);
