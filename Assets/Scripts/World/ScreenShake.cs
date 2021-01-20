@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class ScreenShake : MonoBehaviour , INetworkInit
 {
@@ -10,6 +11,7 @@ public class ScreenShake : MonoBehaviour , INetworkInit
    Vector3 basePos;
    bool killing = false;
    bool isHost;
+   bool DynamicCamera;
 
 
    public Coroutine CurrentShake;
@@ -22,6 +24,7 @@ public class ScreenShake : MonoBehaviour , INetworkInit
       self = GetComponent<Camera>();
       basePos = gameObject.transform.localPosition;
       baseZoom = self.orthographicSize;
+      DynamicCamera = PlayerPrefs.GetInt("dynamicCamera") != 0;
    }
 
    public void OnNetworkInit()
@@ -32,31 +35,35 @@ public class ScreenShake : MonoBehaviour , INetworkInit
 
    void Update()
    {
-      if(drifters == null || PlayerPrefs.GetInt("dynamicCamera") == 0)return;
+      if(drifters == null || !DynamicCamera || killing)return;
 
-      Vector2 centerpoint = Vector2.zero;
-      float scaledZoom = 0;
+      // Vector2 centerpoint = Vector2.zero;
+      // float scaledZoom = 0;
 
+      //Calculate the average location of all players on the screen.
+      //There is always a player treated as being at 0,0
+      // for(int i = 0; i < drifters.Length; i++)
+      // {
+      //    //If a player has died, remove them from the list for future iterations
+      //    if(drifters[i] == null)drifters = drifters.Where(val => val != null).ToArray();
 
-      foreach(Drifter drifter in drifters)
-      {
-         if(drifter==null)continue;
-         Vector2 currPos = drifter.gameObject.GetComponent<Rigidbody2D>().position;
-         centerpoint += new Vector2(Mathf.Clamp(currPos.x,-10f,10f),Mathf.Clamp(currPos.y,-10f,10f));
-      }
+      //    Vector2 currPos = drifters[i].gameObject.GetComponent<Rigidbody2D>().position;
+      //    centerpoint += new Vector2(Mathf.Clamp(currPos.x,-10f,10f),Mathf.Clamp(currPos.y,-10f,10f));
 
-      centerpoint = centerpoint/(drifters.Length +1);
+      // }
 
-      foreach(Drifter drifter in drifters)
-      {
-         if(drifter==null)continue;
-         Vector2 currPos = drifter.gameObject.GetComponent<Rigidbody2D>().position;
-         scaledZoom =  Mathf.Max(Vector2.Distance(new Vector2(Mathf.Clamp(currPos.x,-20f,20f),Mathf.Clamp(currPos.y,-10f,30f)),centerpoint),scaledZoom);
-      }
+      // centerpoint = centerpoint/(drifters.Length +1);
 
-      if(CurrentShake == null) transform.localPosition = Vector3.Lerp(centerpoint,transform.localPosition,Time.deltaTime/1.5f);
+      // //Finds the maximum zoom that can be used to still see all players.
+      // for(int i = 0; i < drifters.Length; i++)
+      // {
+      //    Vector2 currPos = drifters[i].gameObject.GetComponent<Rigidbody2D>().position;
+      //    scaledZoom = Mathf.Max(Vector2.Distance(new Vector2(Mathf.Clamp(currPos.x,-20f,20f),Mathf.Clamp(currPos.y,-10f,30f)),centerpoint),scaledZoom);
+      // }
 
-      if(!killing) self.orthographicSize = Mathf.Lerp(self.orthographicSize,Mathf.Clamp(scaledZoom *1.7f,20f,30f),Time.deltaTime * 3f);
+      if(CurrentShake == null) transform.localPosition = Vector3.Lerp(CalculateCenter(),transform.localPosition,Time.deltaTime/1.5f);
+
+      if(!killing) self.orthographicSize = CalculateZoom();
 
    }
 
@@ -68,23 +75,15 @@ public class ScreenShake : MonoBehaviour , INetworkInit
 
    }
 
-   Vector3 calculateCenter()
+   static bool isNotNull(Object n)
    {
-      Vector2 centerpoint = Vector2.zero;
-      foreach(Drifter drifter in drifters)
-      {
-         if(drifter==null)continue;
-         Vector2 currPos = drifter.gameObject.GetComponent<Rigidbody2D>().position;
-         centerpoint += new Vector2(Mathf.Clamp(currPos.x,-10f,10f),Mathf.Clamp(currPos.y,-10f,10f));
-      }
-      return centerpoint/(drifters.Length +1);;
+      return n != null;
    }
-
 
    IEnumerator Shake(float duration, float magnitude)
    {
          if(!isHost)yield break;
-   		Vector3 origPos = calculateCenter();
+   		Vector3 origPos = (killing||!DynamicCamera)?transform.localPosition:CalculateCenter();
    		float elapsed = 0f;
 
    		while(elapsed < duration)
@@ -103,7 +102,7 @@ public class ScreenShake : MonoBehaviour , INetworkInit
 
    		}
 
-   		if(PlayerPrefs.GetInt("dynamicCamera") == 0)transform.localPosition = origPos;
+   		if(!DynamicCamera) transform.localPosition = basePos;
 
          CurrentShake = null;
 
@@ -111,21 +110,61 @@ public class ScreenShake : MonoBehaviour , INetworkInit
 
    }
 
+   private Vector3 CalculateCenter()
+   {
+      Vector2 centerpoint = Vector2.zero;
+      for(int i = 0; i < drifters.Length; i++)
+      {
+         //If a player has died, remove them from the list for future iterations
+         if(drifters[i] == null)drifters = drifters.Where(val => val != null).ToArray();
+
+         Vector2 currPos = drifters[i].gameObject.GetComponent<Rigidbody2D>().position;
+         centerpoint += new Vector2(Mathf.Clamp(currPos.x,-10f,10f),Mathf.Clamp(currPos.y,-10f,10f));
+
+      }
+
+      return centerpoint/(drifters.Length +1);
+   }
+
+   private float CalculateZoom()
+   {
+      float scaledZoom = 0;
+      Vector2 centerpoint = transform.localPosition;
+      for(int i = 0; i < drifters.Length; i++)
+      {
+         //If a player has died, remove them from the list for future iterations
+         if(drifters[i] == null)drifters = drifters.Where(val => val != null).ToArray();
+
+         Vector2 currPos = drifters[i].gameObject.GetComponent<Rigidbody2D>().position;
+         scaledZoom = Mathf.Max(Vector2.Distance(new Vector2(Mathf.Clamp(currPos.x,-20f,20f),Mathf.Clamp(currPos.y,-10f,30f)),centerpoint),scaledZoom);
+
+      }
+
+      return Mathf.Lerp(self.orthographicSize,Mathf.Clamp(scaledZoom *1.7f,20f,30f),Time.deltaTime * 3f);
+   }
+
+
    public IEnumerator zoomEffect(float duration, Vector3 position, bool finalKill)
    {
+      //Killing is a flag that indicates if a zoom effect is happening
+      //This disallows many other screen effects from occuring that may cause zooms to jank out
       if(killing || !isHost){
          yield break;
       }
       else{
          killing = true;
       }
+
+      //Stops the current screenshake process, if one is active
       if(CurrentShake != null)StopCoroutine(CurrentShake);
 
-      Vector3 origPos = transform.localPosition;
+      //Saves Starting position
+      //Vector3 origPos = transform.localPosition;
 
-      //transform.localPosition = position;
-      
+      //Enables the zoom background
       GetComponentInChildren<SyncAnimatorStateHost>().SetState(finalKill?"Final_Kill":"Critical_Attack"); 
+
+      //Zoom in
       for(float i = 0f; i <= 1f;i+=.05f)
       {
             transform.localPosition = Vector3.Lerp(transform.localPosition,position,i);
@@ -133,23 +172,27 @@ public class ScreenShake : MonoBehaviour , INetworkInit
             yield return null;
       }
       
-      CurrentShake = StartCoroutine(Shake(duration,.2f));
+      CurrentShake = StartCoroutine(Shake(duration,.9f));
       yield return new WaitForSeconds(duration);
       GetComponentInChildren<SyncAnimatorStateHost>().SetState("Hidden"); 
        
-      transform.localPosition = origPos;
-      for(float i = 0f; i <= 1f;i+=.01f)
-         {
-            transform.localPosition = Vector3.Lerp(transform.localPosition,origPos,i);
-            self.orthographicSize = Mathf.Lerp(self.orthographicSize,baseZoom,i);
-            yield return null;
-         }
+      //transform.localPosition = origPos;
 
-      if(PlayerPrefs.GetInt("dynamicCamera") == 0)
+      //Zoom Out
+
+      for(float i = 0f; i <= 1f;i+=(DynamicCamera ? .5f : .01f))
       {
-         transform.localPosition = origPos;
+            transform.localPosition = Vector3.Lerp(transform.localPosition,DynamicCamera?CalculateCenter():basePos,i);
+            self.orthographicSize = Mathf.Lerp(self.orthographicSize,DynamicCamera?CalculateZoom():baseZoom,i);
+            yield return null;
+      }
+
+      if(!DynamicCamera)
+      {
+         transform.localPosition = basePos;
          self.orthographicSize = baseZoom;
       }
+
       killing = false;
       
    }

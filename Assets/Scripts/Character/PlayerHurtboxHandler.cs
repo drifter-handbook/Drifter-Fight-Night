@@ -103,11 +103,15 @@ public class PlayerHurtboxHandler : MonoBehaviour
             float HitstunDuration = (attackData.HitStun>=0)?attackData.HitStun:(KB*.006f + .1f);
             float hitstunOriginal = HitstunDuration;
 
-
+            bool guardbroken = false;
             //Ignore knockback if invincible or armoured
             if (status != null && (attackData.isGrab || !drifter.guarding)){
 
-                if(attackData.isGrab && drifter.guarding)status.ApplyStatusEffect(PlayerStatusEffect.GUARDBROKEN,5f);
+                if(attackData.isGrab && drifter.guarding)
+                {
+                    status.ApplyStatusEffect(PlayerStatusEffect.GUARDBROKEN,5f);
+                    guardbroken = true;
+                }
 
                 if(!status.HasStatusEffect(PlayerStatusEffect.ARMOUR) || attackData.isGrab){
 
@@ -173,20 +177,18 @@ public class PlayerHurtboxHandler : MonoBehaviour
             // create hit sparks
             Vector3 hitSparkPos = Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f);
             HitSpark hitSparkMode = HitSpark.POKE;
-            Vector2 hitSparkScale = Vector2.one;
-            if (drifter != null && drifter.guarding && !attackData.isGrab){
-                hitSparkMode = drifter.BlockReduction > 0.5f ? HitSpark.GUARD_WEAK : HitSpark.GUARD_STRONG;
-                hitSparkScale = new Vector2(facingDir * 10f, 10f);
-            }
-            else if(drifter != null && attackData.HitVisual != HitSpark.POKE && attackData.HitVisual != HitSpark.MAGICWEAK)
-            {
-                hitSparkMode = attackData.HitVisual;
-                hitSparkScale = new Vector2(facingDir *-6f, 6f);
-            }
-            else{
-                hitSparkMode = attackData.HitVisual;
-                hitSparkScale = new Vector2(facingDir *10f, 10f);
-            }
+            Vector2 hitSparkScale =  new Vector2(facingDir *10f, 10f);
+
+            //When Guardbroken, play the crit animation
+            if(guardbroken) hitSparkMode = HitSpark.CRIT;
+
+            //If a move is guarded successfully, play the relevant block hitspark
+            //TODO: update for parries
+            else if (drifter != null && drifter.guarding && !attackData.isGrab)hitSparkMode = drifter.BlockReduction > 0.5f ? HitSpark.GUARD_WEAK : HitSpark.GUARD_STRONG;
+
+            //Otherwise, use the attacks hitspark
+            else hitSparkMode = attackData.HitVisual;
+
             float hitSparkAngle = facingDir * ((Mathf.Abs(attackData.AngleOfImpact) > 65f && attackData.HitVisual != HitSpark.SPIKE) ? Mathf.Sign(attackData.AngleOfImpact) * 90f : 0f);
             GraphicalEffectManager.Instance.CreateHitSparks(hitSparkMode, hitSparkPos, hitSparkAngle, hitSparkScale);
         
@@ -199,11 +201,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                     StartCoroutine(Shake.zoomEffect(HitstunDuration*.25f,Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),true));
             }
 
-            if(attackData.HitVisual == HitSpark.CRIT && ! drifter.guarding)
-            {
-                StartCoroutine(Shake.zoomEffect(.6f,Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),false));
-            }
-
+            if(hitSparkMode == HitSpark.CRIT)StartCoroutine(Shake.zoomEffect(.6f,Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),false));
 
             // Ancillary Hitsparks
             if (drifter != null && damageDealt >0f) StartCoroutine(delayHitsparks(Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),attackData.AngleOfImpact,damageDealt,HitstunDuration *.25f));
