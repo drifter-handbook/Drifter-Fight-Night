@@ -150,6 +150,7 @@ GameObject:
   - component: {fileID: 6181708364987262694}
   - component: {fileID: 4736639959177309843}
   - component: {fileID: 608364487381099413}
+  - component: {fileID: 2612146544247336446}
   m_Layer: 10
   m_Name: Lucille_Rift
   m_TagString: Untagged
@@ -315,6 +316,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3733111730fd6144f88e05a0c9df77b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playStateWhenGrounded: 0
 --- !u!50 &7429582632382476629
 Rigidbody2D:
   serializedVersion: 4
@@ -378,6 +380,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   duration: -1
+--- !u!114 &2612146544247336446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5339743849390282850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38ff8a53b8571024bbe4a77e1906c435, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5470282772837983660
 GameObject:
   m_ObjectHideFlags: 0
@@ -389,7 +403,7 @@ GameObject:
   - component: {fileID: 7610028811267380012}
   - component: {fileID: 150639677367050737}
   - component: {fileID: 8371475470441415754}
-  m_Layer: 13
+  m_Layer: 14
   m_Name: Ground_Collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
