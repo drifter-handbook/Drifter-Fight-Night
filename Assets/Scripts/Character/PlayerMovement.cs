@@ -313,7 +313,7 @@ public class PlayerMovement : MonoBehaviour
                     status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0);
                     if(groundFrictionPosition)
                     {
-                        if(walkTime > .2f)
+                        if(walkTime > .2f + (30f -walkSpeed)/100f)
                         {
                             spawnJuiceParticle(new Vector2(-Facing * (flipSprite?-1:1)* 1.5f,0) + contacts[0].point, MovementParticleMode.WalkDust);
                             walkTime = 0;
