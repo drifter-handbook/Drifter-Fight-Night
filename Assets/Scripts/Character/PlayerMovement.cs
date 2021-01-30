@@ -74,6 +74,7 @@ public class PlayerMovement : MonoBehaviour
     float dropThroughTime;
     float dropThroughDelayTime;
     int ringTime = 6;
+    float walkTime = 0;
     float prevMoveX = 0;
     float prevMoveY = 0;
     Vector2 prevVelocity;
@@ -295,18 +296,33 @@ public class PlayerMovement : MonoBehaviour
         	//UnityEngine.Debug.Log("BEFORE velocity: " + rb.velocity.x);
         	updateFacing();
 
+            ContactPoint2D[] contacts = new ContactPoint2D[1];
+            bool groundFrictionPosition = frictionCollider.GetContacts(contacts) >0;
+
             //If just started moving or switched directions
             if((rb.velocity.x == 0 || rb.velocity.x * drifter.input.MoveX < 0) && IsGrounded()){
-                ContactPoint2D[] contacts = new ContactPoint2D[1];
-                if(frictionCollider.GetContacts(contacts) > 0) spawnJuiceParticle(new Vector2(-Facing * (flipSprite?-1:1)* 1.5f,0) + contacts[0].point, MovementParticleMode.KickOff);
+                if(groundFrictionPosition) spawnJuiceParticle(new Vector2(-Facing * (flipSprite?-1:1)* 1.5f,0) + contacts[0].point, MovementParticleMode.KickOff);
             }
 
             if(IsGrounded())
             {
+
                 if(!jumping)
                 {
                     drifter.PlayAnimation(drifter.WalkStateName);
                     status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0);
+                    if(groundFrictionPosition)
+                    {
+                        if(walkTime > .2f)
+                        {
+                            spawnJuiceParticle(new Vector2(-Facing * (flipSprite?-1:1)* 1.5f,0) + contacts[0].point, MovementParticleMode.WalkDust);
+                            walkTime = 0;
+                        }
+                        else walkTime += Time.deltaTime;
+                        
+
+                    }
+
                 }
 
                 currentSpeed = walkSpeed * (status.HasStatusEffect(PlayerStatusEffect.SLOWED) ? .6f: 1f) * (status.HasStatusEffect(PlayerStatusEffect.SPEEDUP) ? 1.5f: 1f) * (drifter.input.MoveX > 0 ? 1 : -1);
