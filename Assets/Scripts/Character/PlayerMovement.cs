@@ -297,7 +297,8 @@ public class PlayerMovement : MonoBehaviour
 
             //If just started moving or switched directions
             if((rb.velocity.x == 0 || rb.velocity.x * drifter.input.MoveX < 0) && IsGrounded()){
-                spawnJuiceParticle( transform.position + particleOffset + new Vector3(-Facing * (flipSprite?-1:1)* 1.5f,-1.3f,0), MovementParticleMode.KickOff);
+                ContactPoint2D[] contacts = new ContactPoint2D[1];
+                if(frictionCollider.GetContacts(contacts) > 0) spawnJuiceParticle(new Vector2(-Facing * (flipSprite?-1:1)* 1.5f,0) + contacts[0].point, MovementParticleMode.KickOff);
             }
 
             if(IsGrounded())
