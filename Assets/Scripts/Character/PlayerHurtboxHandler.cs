@@ -14,7 +14,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
     NetworkHost host;
     ScreenShake Shake;
 
-    static float frameRateScalar = .0833333333f;
+    static float framerateScalar =.0833333333f;
 
     // Start is called before the first frame update
     void Start()
@@ -102,14 +102,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                          ((status.HasStatusEffect(PlayerStatusEffect.EXPOSED) || status.HasStatusEffect(PlayerStatusEffect.FEATHERWEIGHT))
                             ?1.5f:1)) * attackData.KnockbackScale + attackData.Knockback);
 
-            float HitstunDuration = (KB*.006f + .1f);
-
-            //If the atack has a base value
-            //AND the calculated hitstun is lower than that base value
-            //OR if the move has static hitstun, 
-            //use the attacks hitstun value
-            //Otherwise, use the calculated value
-            HitstunDuration = ((attackData.HitStun>=0 && HitstunDuration < attackData.HitStun) || attackData.hasStaticHitstun)?attackData.HitStun * frameRateScalar:HitstunDuration;
+            float HitstunDuration = (attackData.HitStun>=0 || attackData.hasStaticHitstun)?attackData.HitStun * framerateScalar:(KB*.006f + .1f);
             float hitstunOriginal = HitstunDuration;
 
             bool guardbroken = false;
@@ -136,20 +129,20 @@ public class PlayerHurtboxHandler : MonoBehaviour
                     }
                                         
                     if(attackData.HitStun != 0){
-                        status?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, HitstunDuration * frameRateScalar);
+                        status?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, HitstunDuration);
                     }
                 }
                 if(attackData.StatusEffect != PlayerStatusEffect.PLANTED || GetComponent<PlayerMovement>().grounded){
 
                 	if(attackData.StatusEffect == PlayerStatusEffect.PLANTED && !status.HasStatusEffect(PlayerStatusEffect.PLANTED)) GetComponent<Rigidbody2D>().velocity = Vector3.down*5f;
                 	status.ApplyStatusEffect(attackData.StatusEffect, (attackData.StatusEffect == PlayerStatusEffect.PLANTED || attackData.StatusEffect == PlayerStatusEffect.AMBERED?
-                                                                    attackData.StatusDuration *2f* 4f/(1f+Mathf.Exp(-0.03f * (drifter.DamageTaken -80f)) * frameRateScalar):
-                                                                    attackData.StatusDuration * frameRateScalar));
+                                                                    attackData.StatusDuration *2f* 4f/(1f+Mathf.Exp(-0.03f * (drifter.DamageTaken -80f))):
+                                                                    attackData.StatusDuration));
 
                 	
                 }
                 else if(attackData.StatusEffect == PlayerStatusEffect.PLANTED && !GetComponent<PlayerMovement>().grounded){
-                	status.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, 8f * frameRateScalar);
+                	status.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,.4f);
                 }
 
                 //apply defender hitpause
@@ -159,7 +152,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 
                 
 
-                if(HitstunDuration>0 && attackData.StatusEffect != PlayerStatusEffect.HITPAUSE && damageDealt >=2.5f)status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,attackData.HitVisual == HitSpark.CRIT?.6f:Mathf.Max(HitstunDuration*.25f ,4f * frameRateScalar));
+                if(HitstunDuration>0 && attackData.StatusEffect != PlayerStatusEffect.HITPAUSE && damageDealt >=2.5f)status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,attackData.HitVisual == HitSpark.CRIT?.6f:Mathf.Max(HitstunDuration*.25f ,.25f));
                 StartCoroutine(drifter.GetComponentInChildren<GameObjectShake>().Shake(attackData.StatusEffect != PlayerStatusEffect.CRINGE?HitstunDuration*.2f:attackData.StatusDuration,attackData.StatusEffect != PlayerStatusEffect.CRINGE?1.5f:2f));
 
                 //Cape logic
@@ -181,7 +174,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             }
 
             //apply attacker hitpause
-            if((hitbox.gameObject.tag != "Projectile" || attackData.HitVisual == HitSpark.CRIT) && damageDealt >=2.5f) attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,attackData.HitVisual == HitSpark.CRIT ? .6f : Mathf.Max(HitstunDuration*.22f,3f * frameRateScalar));
+            if((hitbox.gameObject.tag != "Projectile" || attackData.HitVisual == HitSpark.CRIT) && damageDealt >=2.5f) attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,attackData.HitVisual == HitSpark.CRIT ? .6f : Mathf.Max(HitstunDuration*.22f,.19f));
 
             // create hit sparks
             Vector3 hitSparkPos = Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f);

@@ -208,7 +208,7 @@ public class MegurinMasterHit : MasterHit
             case -1:
             if(lightningCharge >= elementChargeMax){
                 attackData.StatusEffect = PlayerStatusEffect.PARALYZED;
-                attackData.StatusDuration = 3.3f;
+                attackData.StatusDuration = 36f;
                 StartCoroutine(resetGauges());
                 return attackData;
             }
@@ -220,7 +220,7 @@ public class MegurinMasterHit : MasterHit
             case 0:
             if(windCharge >= elementChargeMax){
                 attackData.StatusEffect = PlayerStatusEffect.FEATHERWEIGHT;
-                attackData.StatusDuration = 7f;
+                attackData.StatusDuration = 84f;
                 StartCoroutine(resetGauges());
                 return attackData;
             }
@@ -232,7 +232,7 @@ public class MegurinMasterHit : MasterHit
             case 1:
             if(iceCharge >= elementChargeMax){
                 attackData.StatusEffect = PlayerStatusEffect.SLOWED;
-                attackData.StatusDuration = 7f;
+                attackData.StatusDuration = 84f;
                 StartCoroutine(resetGauges());
                 return attackData;
             }
