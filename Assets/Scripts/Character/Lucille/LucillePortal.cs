@@ -17,12 +17,13 @@ public class LucillePortal : MonoBehaviour
 
 		try
 		{
-			if(hitbox != null && hitbox.parent == drifter && collider.gameObject.tag == "Lucille_Portal_Contact")
+			if(hitbox != null && hitbox.parent == drifter && collider.gameObject.tag == "Lucille_Portal_Contact" )
 			{
 				GetComponent<Rigidbody2D>().velocity = new Vector3(hitbox.Facing * ((hitbox.OverrideData.AngleOfImpact < 45f && hitbox.OverrideData.AngleOfImpact > -30f)?35f:0f),(hitbox.OverrideData.AngleOfImpact > 45f ?35f:(hitbox.OverrideData.AngleOfImpact > 20?0:-35f )),0);
 
+				float moveDirection = hitbox.OverrideData.AngleOfImpact;
 
-				if((hitbox.OverrideData.AngleOfImpact > 45f && hitbox.OverrideData.AngleOfImpact < 135f))GetComponent<SyncAnimatorStateHost>().SetState("Move_up");
+				if((moveDirection > 45f && moveDirection < 135f))GetComponent<SyncAnimatorStateHost>().SetState("Move_up");
 				else if(hitbox.Facing > 0)GetComponent<SyncAnimatorStateHost>().SetState("Move_Right");
 				else GetComponent<SyncAnimatorStateHost>().SetState("Move_Left");
 

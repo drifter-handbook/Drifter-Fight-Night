@@ -136,13 +136,13 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
                 	if(attackData.StatusEffect == PlayerStatusEffect.PLANTED && !status.HasStatusEffect(PlayerStatusEffect.PLANTED)) GetComponent<Rigidbody2D>().velocity = Vector3.down*5f;
                 	status.ApplyStatusEffect(attackData.StatusEffect, (attackData.StatusEffect == PlayerStatusEffect.PLANTED || attackData.StatusEffect == PlayerStatusEffect.AMBERED?
-                                                                    attackData.StatusDuration *2f* 4f/(1f+Mathf.Exp(-0.03f * (drifter.DamageTaken -80f))):
-                                                                    attackData.StatusDuration));
+                                                                    attackData.StatusDuration * framerateScalar *2f* 4f/(1f+Mathf.Exp(-0.03f * (drifter.DamageTaken -80f))):
+                                                                    attackData.StatusDuration * framerateScalar));
 
                 	
                 }
                 else if(attackData.StatusEffect == PlayerStatusEffect.PLANTED && !GetComponent<PlayerMovement>().grounded){
-                	status.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,.4f);
+                	status.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,6f * framerateScalar);
                 }
 
                 //apply defender hitpause
@@ -153,7 +153,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 
 
                 if(HitstunDuration>0 && attackData.StatusEffect != PlayerStatusEffect.HITPAUSE && damageDealt >=2.5f)status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,attackData.HitVisual == HitSpark.CRIT?.6f:Mathf.Max(HitstunDuration*.25f ,.25f));
-                StartCoroutine(drifter.GetComponentInChildren<GameObjectShake>().Shake(attackData.StatusEffect != PlayerStatusEffect.CRINGE?HitstunDuration*.2f:attackData.StatusDuration,attackData.StatusEffect != PlayerStatusEffect.CRINGE?1.5f:2f));
+                StartCoroutine(drifter.GetComponentInChildren<GameObjectShake>().Shake(attackData.StatusEffect != PlayerStatusEffect.CRINGE?HitstunDuration*.2f:attackData.StatusDuration* framerateScalar,attackData.StatusEffect != PlayerStatusEffect.CRINGE?1.5f:2f));
 
                 //Cape logic
                 if(attackData.StatusEffect == PlayerStatusEffect.REVERSED)
