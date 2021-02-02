@@ -122,6 +122,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                     drifter.clearGuardFlags();
                     HitstunDuration = 1f;
                     guardbroken = true;
+                    status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.6f);
                 }
 
                 //As long as the defender isnt in superarmour, or they are being grabbed, apply knockback velocity
@@ -215,7 +216,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 //TODO Shit out more paricles
                 attackerStatus.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,1f);
                 StartCoroutine(Shake.zoomEffect(.6f,Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),false));
-                attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,Mathf.Max(HitstunDuration*.22f,.3f));
+                attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.6f);
 
             }
 
