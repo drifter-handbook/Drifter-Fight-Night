@@ -198,6 +198,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
     public void endParry()
     {
+        if(!isHost)return;
         drifter.parrying = false;
     }
 

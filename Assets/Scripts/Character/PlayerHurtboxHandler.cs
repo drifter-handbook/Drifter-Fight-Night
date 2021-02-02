@@ -198,7 +198,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
             }
             //Parrying a guardbreaker
-            else if(drifter.guarding && drifter.parrying && attackData.isGrab)
+            else if(drifter.parrying && attackData.isGrab)
             {
 
                 //STODO Shit out lots of particles here
@@ -208,7 +208,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
             }
             //Parrying a normal attack
-            else if(drifter.guarding && drifter.parrying)
+            else if(drifter.parrying)
             {
 
                 UnityEngine.Debug.Log(":PARRY@");
