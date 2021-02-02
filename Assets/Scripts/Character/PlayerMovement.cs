@@ -208,11 +208,11 @@ public class PlayerMovement : MonoBehaviour
             drifter.PlayAnimation("BlockStun");
             hitstun = true;
         }  
-        // else if(status.HasEnemyStunEffect() && drifter.guarding && status.HasStatusEffect(PlayerStatusEffect.GUARDBROKEN))
-        // {
-        //     drifter.PlayAnimation("Guard_Break");
-        //     hitstun = true;
-        // }
+        else if(status.HasEnemyStunEffect() && status.HasStatusEffect(PlayerStatusEffect.GUARDBROKEN))
+        {
+            drifter.PlayAnimation("Guard_Break");
+            hitstun = true;
+        }
 
         if(hitstun && !status.HasEnemyStunEffect() && !drifter.guarding)
         {
