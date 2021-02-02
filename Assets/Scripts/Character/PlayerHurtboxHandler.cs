@@ -119,11 +119,11 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 if(attackData.isGrab && drifter.guarding)
                 {
                     status.ApplyStatusEffect(PlayerStatusEffect.GUARDBROKEN,5f);
-                    drifter.clearGuardFlags();
                     HitstunDuration = 1f;
                     guardbroken = true;
                     drifter.PlayAnimation("Guard_Break");
                     status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.6f);
+                    drifter.clearGuardFlags();
                 }
 
                 //As long as the defender isnt in superarmour, or they are being grabbed, apply knockback velocity
