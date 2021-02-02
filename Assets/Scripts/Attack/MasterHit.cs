@@ -182,6 +182,25 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         }
     }
 
+    public void beginGuard()
+    {
+        if(!isHost)return;
+        applyEndLag(.5f);
+        drifter.perfectGuarding = true;
+    }
+
+    public void endPerfectGuard()
+    {
+        if(!isHost)return;
+        drifter.perfectGuarding = false;
+        drifter.PlayAnimation("Guard");
+    }
+
+    public void endParry()
+    {
+        drifter.parrying = false;
+    }
+
 
     public abstract void roll();
 

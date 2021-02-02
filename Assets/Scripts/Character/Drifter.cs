@@ -92,6 +92,10 @@ public class Drifter : MonoBehaviour, INetworkInit
 
     [NonSerialized]
     public bool guarding = false;
+    [NonSerialized]
+    public bool perfectGuarding = false;
+    [NonSerialized]
+    public bool parrying = false;
 
     public void OnNetworkInit()
     {

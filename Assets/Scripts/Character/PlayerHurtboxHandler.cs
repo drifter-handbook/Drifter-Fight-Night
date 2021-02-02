@@ -74,7 +74,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
                     (attackData.AttackDamage + (status.HasStatusEffect(PlayerStatusEffect.DEFENSEDOWN) &&  attackData.AttackDamage >0 ? 1.7f : 0f))
 
                     //Blocking damage Reduction
-                      * (drifter.guarding && !attackData.isGrab ? 1 - drifter.BlockReduction : 1f)
+                    //0 chip damage on perfect guard
+                      * (drifter.guarding && !attackData.isGrab ? (drifter.perfectGuarding || drifter.parrying? 0 : 1 - drifter.BlockReduction): 1f)
 
                     //Defense Buff damage reduction
                       * (status.HasStatusEffect(PlayerStatusEffect.DEFENSEUP) ? 0.7f:1f)
@@ -107,7 +108,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
             bool guardbroken = false;
             //Ignore knockback if invincible or armoured
-            if (status != null && (attackData.isGrab || !drifter.guarding)){
+            if (status != null && (attackData.isGrab || !drifter.guarding) && !drifter.parrying){
 
                 if(attackData.isGrab && drifter.guarding)
                 {
@@ -163,13 +164,38 @@ public class PlayerHurtboxHandler : MonoBehaviour
                     GetComponent<PlayerMovement>().flipFacing();
                 }            
             }
-            else if(drifter.guarding)
+            //Normal guarding behavior
+            else if(drifter.guarding && !drifter.parrying)
             {
-                //push bloth players back on guarrd
+                //push both players back on guarrd
 
                 if(hitbox.gameObject.tag != "Projectile")hitbox.parent.GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(HitstunDuration,.2f,.8f) * hitbox.Facing *-45f, hitbox.parent.GetComponent<Rigidbody2D>().velocity.y);
                
-                GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(HitstunDuration,.2f,.8f) *40f  * hitbox.Facing , GetComponent<Rigidbody2D>().velocity.y);
+                //No pushback on perfect guard
+                if(!drifter.perfectGuarding)GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(HitstunDuration,.2f,.8f) *40f  * hitbox.Facing , GetComponent<Rigidbody2D>().velocity.y);
+
+                //put defender in blockstun
+                if(attackData.HitStun != 0){
+                        status?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, HitstunDuration);
+                }
+
+            }
+            //Parrying a guardbreaker
+            else if(drifter.guarding && drifter.parrying && attackData.isGrab)
+            {
+
+                //STODO Shit out lots of particles here
+                if(hitbox.gameObject.tag != "Projectile")hitbox.parent.GetComponent<Rigidbody2D>().velocity = new Vector2(hitbox.Facing *-35f, hitbox.parent.GetComponent<Rigidbody2D>().velocity.y);
+               
+                GetComponent<Rigidbody2D>().velocity = new Vector2(35f * hitbox.Facing , GetComponent<Rigidbody2D>().velocity.y);
+
+            }
+            //Parrying a normal attack
+            else if(drifter.guarding && drifter.parrying)
+            {
+
+                //TODO Shit out more paricles
+                attackerStatus.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,10f * framerateScalar);
 
             }
 

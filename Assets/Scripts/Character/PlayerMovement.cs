@@ -148,10 +148,15 @@ public class PlayerMovement : MonoBehaviour
         //pause attacker during hitpause, and apply hurt animation to defender
         if(status.HasStatusEffect(PlayerStatusEffect.HITPAUSE))
         {
-            if(status.HasEnemyStunEffect())
+            if(status.HasEnemyStunEffect() && !drifter.guarding)
             {
                 drifter.PlayAnimation("HitStun");
                 StartCoroutine(shake.Shake(.2f,.7f));
+            }
+            else if(status.HasEnemyStunEffect())
+            {
+                drifter.PlayAnimation("BlockStun");
+                StartCoroutine(shake.Shake(.1f,.7f));
             }
             else{
                 animator.enabled = false;
@@ -269,7 +274,7 @@ public class PlayerMovement : MonoBehaviour
         bool jumpPressed = !drifter.prevInput.Jump && drifter.input.Jump;
         // TODO: spawn hitboxes
         bool canAct = !status.HasStunEffect() && !drifter.guarding;
-        bool canGuard = !status.HasStunEffect() && !jumping && !status.HasStatusEffect(PlayerStatusEffect.GUARDBROKEN);;
+        bool canGuard = !status.HasStunEffect() && !jumping && !status.HasStatusEffect(PlayerStatusEffect.GUARDBROKEN);
         bool moving = drifter.input.MoveX != 0;
        
        //Platform dropthrough
@@ -427,14 +432,17 @@ public class PlayerMovement : MonoBehaviour
         else if(drifter.input.Guard && canGuard && !ledgeHanging)
         {
             //shift is guard
-            if(!drifter.guarding)drifter.PlayAnimation(drifter.GuardStateName);
+            if(!drifter.guarding)drifter.PlayAnimation("Guard_Start");
             drifter.guarding = true;
         }
       
         //Disable Guarding
-        else
+        else if(!drifter.input.Guard && !status.HasStunEffect() && drifter.guarding)
         {
+            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,1f);
             drifter.guarding = false;
+            drifter.parrying = true;
+            drifter.PlayAnimation("Guard_Drop");
         }
 
         //Terminal velocity
