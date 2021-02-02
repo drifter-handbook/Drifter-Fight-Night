@@ -196,18 +196,23 @@ public class PlayerMovement : MonoBehaviour
         wallSliding = IsWallSliding();
        
         //Sets hitstun state when applicable
-        if(status.HasEnemyStunEffect() && !drifter.guarding)
+        if(status.HasEnemyStunEffect() && !drifter.guarding && !status.HasStatusEffect(PlayerStatusEffect.GUARDBROKEN))
         {
             hitstun = true;
             drifter.PlayAnimation("HitStun");
             DropLedge();
         }
 
-        else if(status.HasEnemyStunEffect() && drifter.guarding)
+        else if(status.HasEnemyStunEffect() && drifter.guarding && !status.HasStatusEffect(PlayerStatusEffect.GUARDBROKEN))
         {
             drifter.PlayAnimation("BlockStun");
             hitstun = true;
-        } 
+        }  
+        else if(status.HasEnemyStunEffect() && drifter.guarding && status.HasStatusEffect(PlayerStatusEffect.GUARDBROKEN))
+        {
+            drifter.PlayAnimation("Guard_Break");
+            hitstun = true;
+        }
 
         if(hitstun && !status.HasEnemyStunEffect() && !drifter.guarding)
         {
