@@ -176,7 +176,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //Cancel aerials on landing + landing animation
-        if(!grounded && IsGrounded() && !status.HasEnemyStunEffect() && !drifter.guarding && (!status.HasStatusEffect(PlayerStatusEffect.END_LAG) || canLandingCancel))drifter.PlayAnimation(drifter.JumpEndStateName);
+        if(!grounded && IsGrounded() && !status.HasEnemyStunEffect() && !drifter.guarding && !drifter.guardBreaking && (!status.HasStatusEffect(PlayerStatusEffect.END_LAG) || canLandingCancel))drifter.PlayAnimation(drifter.JumpEndStateName);
 
         //Handles jumps
         if(grounded && !jumping)
