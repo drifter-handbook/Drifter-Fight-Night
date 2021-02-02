@@ -204,10 +204,18 @@ public class Drifter : MonoBehaviour, INetworkInit
     {
         //UnityEngine.Debug.Log("DRIFTER: RETURNING TO IDLE: " + state);
         movement.canLandingCancel = false;
+        clearGuardFlags();
         if(movement.grounded)animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState(GroundIdleStateName,animationLayer);
         else animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState(AirIdleStateName,animationLayer);
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
         
+    }
+
+    public void clearGuardFlags()
+    {
+        guarding = false;
+        parrying = false;
+        perfectGuarding = false;
     }
 
     public DrifterType GetDrifterType(){

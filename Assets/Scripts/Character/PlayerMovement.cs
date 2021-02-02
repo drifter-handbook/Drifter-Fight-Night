@@ -425,6 +425,7 @@ public class PlayerMovement : MonoBehaviour
         if(drifter.input.Guard && canGuard && moving && IsGrounded())
         {
             drifter.PlayAnimation("Roll");
+            drifter.clearGuardFlags();
             updateFacing();
         }
 
@@ -535,9 +536,7 @@ public class PlayerMovement : MonoBehaviour
         cancelJump();
         gravityPaused = false;
         attacks.ledgeHanging = true;
-        drifter.guarding = false;
-        drifter.parrying = false;
-        drifter.perfectGuarding = false;
+        drifter.clearGuardFlags();
         ledgeHanging = true;
         rb.gravityScale = 0f;
         if(strongLedgeGrab)drifter.PlayAnimation(drifter.StrongLedgeGrabStateName);
