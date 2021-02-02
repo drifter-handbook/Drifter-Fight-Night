@@ -96,6 +96,8 @@ public class Drifter : MonoBehaviour, INetworkInit
     public bool perfectGuarding = false;
     [NonSerialized]
     public bool parrying = false;
+    [NonSerialized]
+    public bool guardBreaking = false;
 
     public void OnNetworkInit()
     {
@@ -216,6 +218,7 @@ public class Drifter : MonoBehaviour, INetworkInit
         guarding = false;
         parrying = false;
         perfectGuarding = false;
+        guardBreaking = false;
     }
 
     public DrifterType GetDrifterType(){

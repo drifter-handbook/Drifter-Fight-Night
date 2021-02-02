@@ -148,7 +148,13 @@ public class PlayerMovement : MonoBehaviour
         //pause attacker during hitpause, and apply hurt animation to defender
         if(status.HasStatusEffect(PlayerStatusEffect.HITPAUSE))
         {
-            if(status.HasEnemyStunEffect() && !drifter.guarding)
+            
+            if(drifter.guardBreaking && status.HasEnemyStunEffect())
+            {
+                drifter.PlayAnimation("Guard_Break");
+                StartCoroutine(shake.Shake(.3f,.7f));
+            }
+            else if(status.HasEnemyStunEffect() && !drifter.guarding)
             {
                 drifter.PlayAnimation("HitStun");
                 StartCoroutine(shake.Shake(.2f,.7f));
@@ -173,7 +179,7 @@ public class PlayerMovement : MonoBehaviour
         if(!grounded && IsGrounded() && !status.HasEnemyStunEffect() && !drifter.guarding && (!status.HasStatusEffect(PlayerStatusEffect.END_LAG) || canLandingCancel))drifter.PlayAnimation(drifter.JumpEndStateName);
 
         //Handles jumps
-        if(grounded)
+        if(grounded && !jumping)
         {
             //Resets jumps if player is on the ground
             currentJumps = numberOfJumps;
@@ -186,7 +192,7 @@ public class PlayerMovement : MonoBehaviour
             }            
         }
         //TODO make sure this doesnt shit particles everywhere 
-        else if(IsGrounded() && !status.HasStunEffect())
+        else if(IsGrounded() && !status.HasStunEffect() && !jumping)
         {
             //drifter.PlayAnimation("Jump_End");
             spawnJuiceParticle(transform.position + particleOffset + new Vector3(0,-1,0), MovementParticleMode.Land);
@@ -196,27 +202,31 @@ public class PlayerMovement : MonoBehaviour
         wallSliding = IsWallSliding();
        
         //Sets hitstun state when applicable
-        if(status.HasEnemyStunEffect() && !drifter.guarding)
+
+        if(status.HasEnemyStunEffect() && drifter.guardBreaking)
+        {
+            drifter.PlayAnimation("Guard_Break");
+            hitstun = true;
+        }
+
+        else if(status.HasEnemyStunEffect() && !drifter.guarding)
         {
             hitstun = true;
             drifter.PlayAnimation("HitStun");
             DropLedge();
         }
 
-        else if(status.HasEnemyStunEffect() && drifter.guarding && !status.HasStatusEffect(PlayerStatusEffect.GUARDBROKEN))
+        else if(status.HasEnemyStunEffect() && drifter.guarding)
         {
             drifter.PlayAnimation("BlockStun");
             hitstun = true;
         }  
-        // else if(status.HasEnemyStunEffect() && status.HasStatusEffect(PlayerStatusEffect.GUARDBROKEN))
-        // {
-        //     drifter.PlayAnimation("Guard_Break");
-        //     hitstun = true;
-        // }
+        
 
         if(hitstun && !status.HasEnemyStunEffect() && !drifter.guarding)
         {
             hitstun = false;
+            drifter.guardBreaking = false;
             drifter.returnToIdle();
             ringTime = 6;
         }

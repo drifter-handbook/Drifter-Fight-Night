@@ -121,7 +121,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                     status.ApplyStatusEffect(PlayerStatusEffect.GUARDBROKEN,5f);
                     HitstunDuration = 1f;
                     guardbroken = true;
-                    drifter.PlayAnimation("Guard_Break");
+                    drifter.guardBreaking = true;
                     status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.6f);
                     drifter.clearGuardFlags();
                 }
