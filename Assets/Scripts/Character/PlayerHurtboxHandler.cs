@@ -140,7 +140,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                     if(attackData.Knockback > 0 && attackData.AngleOfImpact > -361){
                         GetComponent<Rigidbody2D>().velocity = new Vector2(forceDir.normalized.x * KB, GetComponent<PlayerMovement>().grounded?Mathf.Abs(forceDir.normalized.y * KB): forceDir.normalized.y * KB);
 
-                        //Use restitution particle if spiked on the ground
+                        //Use restitution particle if spiked on the grounde
                         if(GetComponent<PlayerMovement>().grounded && attackData.AngleOfImpact < -75 &&  attackData.AngleOfImpact > -105)GetComponent<PlayerMovement>().spawnJuiceParticle(transform.position + new Vector3(0,-2.5f,0), MovementParticleMode.Restitution);
                     }
 
@@ -203,7 +203,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
             }
             //Parrying a guardbreaker
-            else if(drifter.parrying && attackData.isGrab)
+            else if(drifter.parrying && attackData.isGrab && hitbox.gameObject.tag != "Projectile")
             {
 
                 //STODO Shit out lots of particles here
@@ -213,10 +213,11 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
             }
             //Parrying a normal attack
-            else if(drifter.parrying)
+            else if(drifter.parrying && hitbox.gameObject.tag != "Projectile")
             {
                 //TODO Shit out more paricles
                 attackerStatus.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,1f);
+                attackerStatus.ApplyStatusEffect(PlayerStatusEffect.CRINGE,1f);
                 StartCoroutine(Shake.zoomEffect(.6f,Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),false));
                 attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.6f);
 
