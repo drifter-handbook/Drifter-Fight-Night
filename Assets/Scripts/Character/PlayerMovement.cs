@@ -170,7 +170,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //Cancel aerials on landing + landing animation
-        if(!grounded && IsGrounded() && !status.HasEnemyStunEffect() && (!status.HasStatusEffect(PlayerStatusEffect.END_LAG) || canLandingCancel))drifter.PlayAnimation(drifter.JumpEndStateName);
+        if(!grounded && IsGrounded() && !status.HasEnemyStunEffect() && !drifter.guarding && (!status.HasStatusEffect(PlayerStatusEffect.END_LAG) || canLandingCancel))drifter.PlayAnimation(drifter.JumpEndStateName);
 
         //Handles jumps
         if(grounded)
@@ -274,7 +274,7 @@ public class PlayerMovement : MonoBehaviour
         bool jumpPressed = !drifter.prevInput.Jump && drifter.input.Jump;
         // TODO: spawn hitboxes
         bool canAct = !status.HasStunEffect() && !drifter.guarding;
-        bool canGuard = !status.HasStunEffect() && !jumping && !status.HasStatusEffect(PlayerStatusEffect.GUARDBROKEN);
+        bool canGuard = !status.HasStunEffect() && !jumping;
         bool moving = drifter.input.MoveX != 0;
        
        //Platform dropthrough
@@ -429,7 +429,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //Guard
-        else if(drifter.input.Guard && canGuard && !ledgeHanging)
+        else if(drifter.input.Guard && canGuard && !ledgeHanging && !status.HasStatusEffect(PlayerStatusEffect.GUARDBROKEN))
         {
             //shift is guard
             if(!drifter.guarding)drifter.PlayAnimation("Guard_Start");
@@ -437,7 +437,7 @@ public class PlayerMovement : MonoBehaviour
         }
       
         //Disable Guarding
-        else if(!drifter.input.Guard && !status.HasStunEffect() && drifter.guarding)
+        else if(!drifter.input.Guard && !status.HasStunEffect() && drifter.guarding && !status.HasStatusEffect(PlayerStatusEffect.GUARDBROKEN))
         {
             status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,1f);
             drifter.guarding = false;
@@ -535,6 +535,9 @@ public class PlayerMovement : MonoBehaviour
         cancelJump();
         gravityPaused = false;
         attacks.ledgeHanging = true;
+        drifter.guarding = false;
+        drifter.parrying = false;
+        drifter.perfectGuarding = false;
         ledgeHanging = true;
         rb.gravityScale = 0f;
         if(strongLedgeGrab)drifter.PlayAnimation(drifter.StrongLedgeGrabStateName);

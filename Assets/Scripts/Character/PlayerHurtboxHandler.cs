@@ -87,52 +87,69 @@ public class PlayerHurtboxHandler : MonoBehaviour
             }
 
 
-            // apply knockback
+            //Calculate the direction for knockback
             float facingDir = Mathf.Sign(hitbox.Facing) == 0 ? 1 : Mathf.Sign(hitbox.Facing) ;
 
             // rotate direction by angle of impact
             //Do we still need all this math?
             //calculated angle
             float angle = Mathf.Sign(attackData.AngleOfImpact) * Mathf.Atan2(hurtbox.parent.transform.position.y-hitbox.parent.transform.position.y, hurtbox.parent.transform.position.x-hitbox.parent.transform.position.x)*180 / Mathf.PI;
+
+            //Autolink angle (<361) sets the knockback angle to send towards the hitbox's centerpoint
             Vector2 forceDir = Mathf.Abs(attackData.AngleOfImpact) <= 360?
                                     Quaternion.Euler(0, 0, attackData.AngleOfImpact * facingDir) * (facingDir * Vector2.right) :
                                     Quaternion.Euler(0, 0, angle) * Vector2.right;
 
+            //Calculate knockback magnitude
             float KB = (float)(((drifter.DamageTaken / 10 + drifter.DamageTaken * damageDealt / 20)
                         * 200 / (GetComponent<PlayerMovement>().Weight + 100) * 1.4 *
                          ((status.HasStatusEffect(PlayerStatusEffect.EXPOSED) || status.HasStatusEffect(PlayerStatusEffect.FEATHERWEIGHT))
                             ?1.5f:1)) * attackData.KnockbackScale + attackData.Knockback);
 
+            //Calculate hitstun duration
             float HitstunDuration = (attackData.HitStun>=0 || attackData.hasStaticHitstun)?attackData.HitStun * framerateScalar:(KB*.006f + .1f);
-            float hitstunOriginal = HitstunDuration;
 
+            //Flags a guradbreak for BIGG HITSPARKS
             bool guardbroken = false;
+
             //Ignore knockback if invincible or armoured
             if (status != null && (attackData.isGrab || !drifter.guarding) && !drifter.parrying){
 
+                //If the player treid to guard a guardbreaker, they loose their shield for 5 seconds (60 frames)
                 if(attackData.isGrab && drifter.guarding)
                 {
                     status.ApplyStatusEffect(PlayerStatusEffect.GUARDBROKEN,5f);
                     guardbroken = true;
                 }
 
+                //As long as the defender isnt in superarmour, or they are being grabbed, apply knockback velocity
                 if(!status.HasStatusEffect(PlayerStatusEffect.ARMOUR) || attackData.isGrab){
 
+                    //Cause the screen to shake slightly on hit, as long as the move has knockback
                     if(Shake != null && attackData.Knockback !=0){
                         Shake.startShakeCoroutine((willCollideWithBlastZone(GetComponent<Rigidbody2D>(), HitstunDuration)?0.3f:0.1f),Mathf.Clamp((((attackData.Knockback - 10)/100f + (damageDealt-10)/44f)) * attackData.KnockbackScale,.07f,.8f));
-                    }            
+                    }
+
+                    //If the defender is grounded, use the absolute value of the y component of the velocity
+                    //This prevents grounded opponents from getting stuck when spiked on the ground
                     if(attackData.Knockback > 0 && attackData.AngleOfImpact > -361){
                         GetComponent<Rigidbody2D>().velocity = new Vector2(forceDir.normalized.x * KB, GetComponent<PlayerMovement>().grounded?Mathf.Abs(forceDir.normalized.y * KB): forceDir.normalized.y * KB);
+
+                        //Use restitution particle if spiked on the ground
                         if(GetComponent<PlayerMovement>().grounded && attackData.AngleOfImpact < -75 &&  attackData.AngleOfImpact > -105)GetComponent<PlayerMovement>().spawnJuiceParticle(transform.position + new Vector3(0,-2.5f,0), MovementParticleMode.Restitution);
                     }
+
+                    //Autolink angle (<361) scales its magnitude with distacne from said point, further scaled with the attacker's velocity
                     else if(attackData.Knockback > 0 && attackData.AngleOfImpact <= -361){
                         GetComponent<Rigidbody2D>().velocity = hitbox.parent.GetComponent<Rigidbody2D>().velocity * (1 + attackData.KnockbackScale);
                     }
                                         
+                    //IF there is hitstun to be applied, apply it
                     if(attackData.HitStun != 0){
                         status?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, HitstunDuration);
                     }
                 }
+                
                 if(attackData.StatusEffect != PlayerStatusEffect.PLANTED || GetComponent<PlayerMovement>().grounded){
 
                 	if(attackData.StatusEffect == PlayerStatusEffect.PLANTED && !status.HasStatusEffect(PlayerStatusEffect.PLANTED)) GetComponent<Rigidbody2D>().velocity = Vector3.down*5f;
@@ -142,21 +159,21 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
                 	
                 }
+                //Pop playewrs out of the ground when they are already grounded
                 else if(attackData.StatusEffect == PlayerStatusEffect.PLANTED && !GetComponent<PlayerMovement>().grounded){
                 	status.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,6f * framerateScalar);
                 }
 
+                //Extend hitpause on kill
+                if (willCollideWithBlastZoneAccurate(GetComponent<Rigidbody2D>(), HitstunDuration) && drifter.Stocks <= 1 && NetworkPlayers.Instance.players.Values.Where(x => x != null).ToList().Count <=2) HitstunDuration = 3f;
+                else if (willCollideWithBlastZone(GetComponent<Rigidbody2D>() , HitstunDuration) ) Mathf.Min(HitstunDuration*=2f,3f);
+                
+                
                 //apply defender hitpause
-                hitstunOriginal = HitstunDuration;
-                if (willCollideWithBlastZoneAccurate(GetComponent<Rigidbody2D>(), hitstunOriginal) && drifter.Stocks <= 1 && NetworkPlayers.Instance.players.Values.Where(x => x != null).ToList().Count <=2) HitstunDuration = 3f;
-                else if (willCollideWithBlastZone(GetComponent<Rigidbody2D>() , hitstunOriginal) ) Mathf.Min(HitstunDuration*=2f,3f);
-                
-                
-
                 if(HitstunDuration>0 && attackData.StatusEffect != PlayerStatusEffect.HITPAUSE && damageDealt >=2.5f)status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,attackData.HitVisual == HitSpark.CRIT?.6f:Mathf.Max(HitstunDuration*.25f ,.25f));
                 StartCoroutine(drifter.GetComponentInChildren<GameObjectShake>().Shake(attackData.StatusEffect != PlayerStatusEffect.CRINGE?HitstunDuration*.2f:attackData.StatusDuration* framerateScalar,attackData.StatusEffect != PlayerStatusEffect.CRINGE?1.5f:2f));
 
-                //Cape logic
+                //Revers players movement when hit by a reveral
                 if(attackData.StatusEffect == PlayerStatusEffect.REVERSED)
                 {
                     Vector2 velocity = GetComponent<Rigidbody2D>().velocity;
@@ -220,12 +237,12 @@ public class PlayerHurtboxHandler : MonoBehaviour
             float hitSparkAngle = facingDir * ((Mathf.Abs(attackData.AngleOfImpact) > 65f && attackData.HitVisual != HitSpark.SPIKE) ? Mathf.Sign(attackData.AngleOfImpact) * 90f : 0f);
             GraphicalEffectManager.Instance.CreateHitSparks(hitSparkMode, hitSparkPos, hitSparkAngle, hitSparkScale);
         
-            if (drifter != null && willCollideWithBlastZone(GetComponent<Rigidbody2D>(), hitstunOriginal))
+            if (drifter != null && willCollideWithBlastZone(GetComponent<Rigidbody2D>(), HitstunDuration))
             {
                 hitSparkPos = Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f);
                 GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.CRIT, hitSparkPos, 0, new Vector2(facingDir * 10f, 10f));
 
-                if(drifter.Stocks <= 1 && willCollideWithBlastZoneAccurate(GetComponent<Rigidbody2D>(), hitstunOriginal))
+                if(drifter.Stocks <= 1 && willCollideWithBlastZoneAccurate(GetComponent<Rigidbody2D>(), HitstunDuration))
                     StartCoroutine(Shake.zoomEffect(HitstunDuration*.25f,Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),true));
             }
 

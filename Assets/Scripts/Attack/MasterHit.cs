@@ -185,7 +185,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     public void beginGuard()
     {
         if(!isHost)return;
-        applyEndLag(.5f);
+        applyEndLag(2f * .0833333333f);
         drifter.perfectGuarding = true;
     }
 
@@ -193,7 +193,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     {
         if(!isHost)return;
         drifter.perfectGuarding = false;
-        drifter.PlayAnimation("Guard");
+        if(drifter.guarding)drifter.PlayAnimation("Guard");
     }
 
     public void endParry()
