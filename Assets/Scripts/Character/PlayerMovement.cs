@@ -196,12 +196,15 @@ public class PlayerMovement : MonoBehaviour
         wallSliding = IsWallSliding();
        
         //Sets hitstun state when applicable
-        if(status.HasEnemyStunEffect())
+        if(status.HasEnemyStunEffect() && !drifter.guarding)
         {
             hitstun = true;
             drifter.PlayAnimation("HitStun");
             DropLedge();
         }
+
+        else if(status.HasEnemyStunEffect() && drifter.guarding) drifter.PlayAnimation("BlockStun");
+
         if(hitstun && !status.HasEnemyStunEffect())
         {
             hitstun = false;
@@ -425,7 +428,8 @@ public class PlayerMovement : MonoBehaviour
         if(drifter.input.Guard && canGuard && moving && IsGrounded())
         {
             drifter.PlayAnimation("Roll");
-            drifter.clearGuardFlags();
+            drifter.parrying = true;
+            drifter.perfectGuarding = true;
             updateFacing();
         }
 
