@@ -119,6 +119,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 if(attackData.isGrab && drifter.guarding)
                 {
                     status.ApplyStatusEffect(PlayerStatusEffect.GUARDBROKEN,5f);
+                    drifter.clearGuardFlags();
+                    HitstunDuration = 1f;
                     guardbroken = true;
                 }
 
@@ -186,10 +188,10 @@ public class PlayerHurtboxHandler : MonoBehaviour
             {
                 //push both players back on guarrd
 
-                if(hitbox.gameObject.tag != "Projectile")hitbox.parent.GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(HitstunDuration,.2f,.8f) * hitbox.Facing *-45f, hitbox.parent.GetComponent<Rigidbody2D>().velocity.y);
+                if(hitbox.gameObject.tag != "Projectile")hitbox.parent.GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(HitstunDuration,.2f,.8f) * hitbox.Facing *-15f, hitbox.parent.GetComponent<Rigidbody2D>().velocity.y);
                
                 //No pushback on perfect guard
-                if(!drifter.perfectGuarding)GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(HitstunDuration,.2f,.8f) *40f  * hitbox.Facing , GetComponent<Rigidbody2D>().velocity.y);
+                if(!drifter.perfectGuarding)GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(HitstunDuration,.2f,.8f) *10f  * hitbox.Facing , GetComponent<Rigidbody2D>().velocity.y);
 
                 //put defender in blockstun
                 if(attackData.HitStun != 0){
@@ -210,11 +212,10 @@ public class PlayerHurtboxHandler : MonoBehaviour
             //Parrying a normal attack
             else if(drifter.parrying)
             {
-
-                UnityEngine.Debug.Log(":PARRY@");
-
                 //TODO Shit out more paricles
-                attackerStatus.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,10f);
+                attackerStatus.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,1f);
+                StartCoroutine(Shake.zoomEffect(.6f,Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),false));
+                attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,Mathf.Max(HitstunDuration*.22f,.3f));
 
             }
 
