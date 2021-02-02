@@ -149,7 +149,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                         status?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, HitstunDuration);
                     }
                 }
-                
+
                 if(attackData.StatusEffect != PlayerStatusEffect.PLANTED || GetComponent<PlayerMovement>().grounded){
 
                 	if(attackData.StatusEffect == PlayerStatusEffect.PLANTED && !status.HasStatusEffect(PlayerStatusEffect.PLANTED)) GetComponent<Rigidbody2D>().velocity = Vector3.down*5f;
@@ -211,8 +211,10 @@ public class PlayerHurtboxHandler : MonoBehaviour
             else if(drifter.guarding && drifter.parrying)
             {
 
+                UnityEngine.Debug.Log(":PARRY@");
+
                 //TODO Shit out more paricles
-                attackerStatus.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,10f * framerateScalar);
+                attackerStatus.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,10f);
 
             }
 

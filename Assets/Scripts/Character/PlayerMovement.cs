@@ -203,13 +203,23 @@ public class PlayerMovement : MonoBehaviour
             DropLedge();
         }
 
-        else if(status.HasEnemyStunEffect() && drifter.guarding) drifter.PlayAnimation("BlockStun");
+        else if(status.HasEnemyStunEffect() && drifter.guarding)
+        {
+            drifter.PlayAnimation("BlockStun");
+            hitstun = true;
+        } 
 
-        if(hitstun && !status.HasEnemyStunEffect())
+        if(hitstun && !status.HasEnemyStunEffect() && !drifter.guarding)
         {
             hitstun = false;
             drifter.returnToIdle();
             ringTime = 6;
+        }
+
+        else if(hitstun && !status.HasEnemyStunEffect() && drifter.guarding)
+        {
+            hitstun = false;
+            drifter.PlayAnimation("Guard");
         }
 
         //Smoke Trail
