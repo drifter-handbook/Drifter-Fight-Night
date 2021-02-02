@@ -20,7 +20,8 @@ public enum DrifterType
     Mytharius,
     Maryam,
     Drifter_Cannon,
-    Klatz
+    Klatz,
+    Orro_Classic
 }
 
 
