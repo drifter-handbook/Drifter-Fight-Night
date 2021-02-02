@@ -13,6 +13,9 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     protected PlayerAttacks attacks;
     protected Animator anim;
 
+    protected float framerateScalar =.0833333333f;
+
+
     public int facing;
 
     protected bool isHost = false;

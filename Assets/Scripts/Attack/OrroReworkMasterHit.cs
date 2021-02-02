@@ -11,9 +11,7 @@ public class OrroReworkMasterHit : MasterHit
     {
         if(!isHost)return;
         facing = movement.Facing;
-        applyEndLag(1);
-        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.35f);
-        rb.velocity = new Vector2(facing * 35f,0f);
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,4f * framerateScalar);
     }
 
 
@@ -21,12 +19,13 @@ public class OrroReworkMasterHit : MasterHit
     {
         if(!isHost)return;
         applyEndLag(1);
-        rb.position += new Vector2(facing * 1f,4.5f);
+        rb.position += new Vector2(facing * 1f,5.9f);
     }
 
     public override void rollGetupEnd()
     {
         if(!isHost)return;
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,4f * framerateScalar);
         facing = movement.Facing;
         movement.gravityPaused = false;
         rb.gravityScale = gravityScale;
