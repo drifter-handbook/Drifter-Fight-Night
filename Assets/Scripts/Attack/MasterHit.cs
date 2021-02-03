@@ -30,6 +30,8 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
     protected bool savingVelocity = false;
 
+    protected PolygonCollider2D frictionCollider;
+
 
     // Start is called before the first frame update
     void Awake()
@@ -46,6 +48,8 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         attacks = drifter.GetComponent<PlayerAttacks>();
         status = drifter.GetComponent<PlayerStatus>();
         anim = drifter.GetComponent<Animator>();
+
+        frictionCollider = drifter.GetComponent<PolygonCollider2D>();
 
         gravityScale = rb.gravityScale;
     }

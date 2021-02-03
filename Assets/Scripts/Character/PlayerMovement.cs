@@ -322,6 +322,9 @@ public class PlayerMovement : MonoBehaviour
         //     //UnityEngine.Debug.Log("inactiveFriction set");
         //     frictionCollider.sharedMaterial.friction = inactiveFriction;
         // }
+
+        ContactPoint2D[] contacts = new ContactPoint2D[1];
+        bool groundFrictionPosition = frictionCollider.GetContacts(contacts) >0;
         
         //Normal walking logic
         if (moving && canAct && ! ledgeHanging)
@@ -329,8 +332,7 @@ public class PlayerMovement : MonoBehaviour
         	//UnityEngine.Debug.Log("BEFORE velocity: " + rb.velocity.x);
         	updateFacing();
 
-            ContactPoint2D[] contacts = new ContactPoint2D[1];
-            bool groundFrictionPosition = frictionCollider.GetContacts(contacts) >0;
+            
 
             //If just started moving or switched directions
             if((rb.velocity.x == 0 || rb.velocity.x * drifter.input.MoveX < 0) && IsGrounded()){
@@ -453,6 +455,7 @@ public class PlayerMovement : MonoBehaviour
         if(drifter.input.Guard && canGuard && moving && IsGrounded())
         {
             drifter.PlayAnimation("Roll");
+            if(groundFrictionPosition) spawnJuiceParticle(new Vector2(-Facing * (flipSprite?-1:1)* 1.5f,0) + contacts[0].point, MovementParticleMode.KickOff);
             drifter.parrying = true;
             drifter.perfectGuarding = true;
             updateFacing();
@@ -601,7 +604,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 gravityPaused = false;
                 currentJumps--;
-                if(!grounded && animator.HasState(0,Animator.StringToHash("Jump_Air_Start")))drifter.PlayAnimation(drifter.JumpStartStateName);
+                if(!grounded)drifter.PlayAnimation("Air_Jump_Start");
                 else drifter.PlayAnimation(drifter.JumpStartStateName);
                 //Particles
                 if(IsGrounded()){
