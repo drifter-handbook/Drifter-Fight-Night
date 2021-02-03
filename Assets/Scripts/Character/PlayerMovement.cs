@@ -593,6 +593,14 @@ public class PlayerMovement : MonoBehaviour
         attacks.ledgeHanging = false;
     }
 
+    public void spawnKickoffDust()
+    {
+        ContactPoint2D[] contacts = new ContactPoint2D[1];
+        bool groundFrictionPosition = frictionCollider.GetContacts(contacts) >0;
+        
+        if(groundFrictionPosition) spawnJuiceParticle(new Vector2(-Facing * (flipSprite?-1:1)* 1.5f,0) + contacts[0].point, MovementParticleMode.KickOff);
+    }
+
 
     //Public jump method allows for forced jumps from attacks
     public void jump()
@@ -630,6 +638,8 @@ public class PlayerMovement : MonoBehaviour
         particleOffset = new Vector3(particleOffset.x * Facing * (flipSprite?-1:1),particleOffset.y,0);
     	GraphicalEffectManager.Instance.CreateMovementParticle(mode, pos, angle.eulerAngles.z, new Vector2(Facing * (flipSprite ? -1 : 1), 1));
     }
+
+
 
     private IEnumerator DelayedJump()
     {

@@ -63,6 +63,8 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     public void setXVelocity(float x)
     {
         if(!isHost)return;
+
+        if(movement.grounded && x >0) movement.spawnKickoffDust();
         rb.velocity = new Vector2(movement.Facing * x,rb.velocity.y);
     }
 
