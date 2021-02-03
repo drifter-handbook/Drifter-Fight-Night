@@ -223,9 +223,6 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
             }
 
-            //apply attacker hitpause
-            if((hitbox.gameObject.tag != "Projectile" || attackData.HitVisual == HitSpark.CRIT) && damageDealt >=2.5f) attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,attackData.HitVisual == HitSpark.CRIT ? .6f : Mathf.Max(HitstunDuration*.22f,.19f));
-
             // create hit sparks
             Vector3 hitSparkPos = Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f);
             HitSpark hitSparkMode = HitSpark.POKE;
@@ -240,6 +237,11 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
             //Otherwise, use the attacks hitspark
             else hitSparkMode = attackData.HitVisual;
+
+            //apply attacker hitpause
+            if((hitbox.gameObject.tag != "Projectile" || hitSparkMode == HitSpark.CRIT) && damageDealt >=2.5f) attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,hitSparkMode == HitSpark.CRIT ? .6f : Mathf.Max(HitstunDuration*.22f,.19f));
+
+            
 
             float hitSparkAngle = facingDir * ((Mathf.Abs(attackData.AngleOfImpact) > 65f && attackData.HitVisual != HitSpark.SPIKE) ? Mathf.Sign(attackData.AngleOfImpact) * 90f : 0f);
             GraphicalEffectManager.Instance.CreateHitSparks(hitSparkMode, hitSparkPos, hitSparkAngle, hitSparkScale);

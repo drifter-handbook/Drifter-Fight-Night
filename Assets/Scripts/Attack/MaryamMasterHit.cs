@@ -56,6 +56,25 @@ public class MaryamMasterHit : MasterHit
        }
     }
 
+    public void SGUTiltExplosion()
+    {
+        if(!isHost)return;
+        facing = movement.Facing;
+        Vector3 pos = new Vector3(0f * facing,3.3f,0);
+        
+        GameObject explosion = host.CreateNetworkObject("Explosion_Diagonal", transform.position + pos, transform.rotation);
+        explosion.transform.localScale = new Vector3(10f * facing, 10f , 1f);
+        foreach (HitboxCollision hitbox in explosion.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.AttackData = attacks.Attacks[attacks.AttackType];
+            hitbox.Active = true;
+            hitbox.Facing = facing;
+       }
+    }
+
     public void SGJSairExplosion()
     {
         if(!isHost)return;
@@ -123,7 +142,6 @@ public class MaryamMasterHit : MasterHit
     {
         hasSGRecovery = false;
     }
-
 
     public void upWGlide()
     {

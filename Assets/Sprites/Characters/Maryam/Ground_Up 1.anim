@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: W_Up
+  m_Name: Ground_Up 1
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -20,28 +20,25 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 4986924636610577920, guid: 4e57afc7833f75446a6220ffdd0995eb,
+      value: {fileID: -7662625314758280078, guid: d9b3fead7fce10b4a993586ac779393c,
         type: 3}
     - time: 0.083333336
-      value: {fileID: 7499230510771486079, guid: 4e57afc7833f75446a6220ffdd0995eb,
+      value: {fileID: -694964400320526643, guid: d9b3fead7fce10b4a993586ac779393c,
         type: 3}
     - time: 0.16666667
-      value: {fileID: -7429155839278286570, guid: 4e57afc7833f75446a6220ffdd0995eb,
+      value: {fileID: 5402034516110370033, guid: d9b3fead7fce10b4a993586ac779393c,
         type: 3}
     - time: 0.25
-      value: {fileID: 8950234176935324588, guid: 4e57afc7833f75446a6220ffdd0995eb,
+      value: {fileID: -7838304141497213345, guid: d9b3fead7fce10b4a993586ac779393c,
         type: 3}
     - time: 0.33333334
-      value: {fileID: -9168484929863618146, guid: 4e57afc7833f75446a6220ffdd0995eb,
+      value: {fileID: 169723876716727964, guid: d9b3fead7fce10b4a993586ac779393c,
         type: 3}
     - time: 0.41666666
-      value: {fileID: -7176454820899090101, guid: 4e57afc7833f75446a6220ffdd0995eb,
+      value: {fileID: -3985532946100102316, guid: d9b3fead7fce10b4a993586ac779393c,
         type: 3}
     - time: 0.5
-      value: {fileID: -2135738926804738592, guid: 4e57afc7833f75446a6220ffdd0995eb,
-        type: 3}
-    - time: 0.5833333
-      value: {fileID: -8058052231012482632, guid: 4e57afc7833f75446a6220ffdd0995eb,
+      value: {fileID: 7192595030944474645, guid: d9b3fead7fce10b4a993586ac779393c,
         type: 3}
     attribute: m_Sprite
     path: 
@@ -62,20 +59,19 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 4986924636610577920, guid: 4e57afc7833f75446a6220ffdd0995eb, type: 3}
-    - {fileID: 7499230510771486079, guid: 4e57afc7833f75446a6220ffdd0995eb, type: 3}
-    - {fileID: -7429155839278286570, guid: 4e57afc7833f75446a6220ffdd0995eb, type: 3}
-    - {fileID: 8950234176935324588, guid: 4e57afc7833f75446a6220ffdd0995eb, type: 3}
-    - {fileID: -9168484929863618146, guid: 4e57afc7833f75446a6220ffdd0995eb, type: 3}
-    - {fileID: -7176454820899090101, guid: 4e57afc7833f75446a6220ffdd0995eb, type: 3}
-    - {fileID: -2135738926804738592, guid: 4e57afc7833f75446a6220ffdd0995eb, type: 3}
-    - {fileID: -8058052231012482632, guid: 4e57afc7833f75446a6220ffdd0995eb, type: 3}
+    - {fileID: -7662625314758280078, guid: d9b3fead7fce10b4a993586ac779393c, type: 3}
+    - {fileID: -694964400320526643, guid: d9b3fead7fce10b4a993586ac779393c, type: 3}
+    - {fileID: 5402034516110370033, guid: d9b3fead7fce10b4a993586ac779393c, type: 3}
+    - {fileID: -7838304141497213345, guid: d9b3fead7fce10b4a993586ac779393c, type: 3}
+    - {fileID: 169723876716727964, guid: d9b3fead7fce10b4a993586ac779393c, type: 3}
+    - {fileID: -3985532946100102316, guid: d9b3fead7fce10b4a993586ac779393c, type: 3}
+    - {fileID: 7192595030944474645, guid: d9b3fead7fce10b4a993586ac779393c, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.6666667
+    m_StopTime: 0.5833333
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -95,21 +91,21 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.16666667
+  - time: 0.25
+    functionName: SGUTiltExplosion
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.33333334
     functionName: setXVelocity
     data: 
     objectReferenceParameter: {fileID: 0}
-    floatParameter: 15
+    floatParameter: -22
     intParameter: 0
     messageOptions: 0
-  - time: 0.16666667
-    functionName: setYVelocity
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 35
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.6666667
+  - time: 0.5833333
     functionName: returnToIdle
     data: 
     objectReferenceParameter: {fileID: 0}
