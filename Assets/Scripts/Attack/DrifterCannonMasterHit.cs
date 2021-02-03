@@ -208,7 +208,7 @@ public class DrifterCannonMasterHit : MasterHit
         if(!isHost)return;
         facing = movement.Facing;
         applyEndLag(1);
-        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.35f);
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,4f * framerateScalar);
         rb.velocity = new Vector2(facing * 35f,0f);
     }
 
@@ -226,6 +226,7 @@ public class DrifterCannonMasterHit : MasterHit
         facing = movement.Facing;
         movement.gravityPaused = false;
         rb.gravityScale = gravityScale;
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,4f * framerateScalar);
         rb.velocity = new Vector2(facing * 35f,5f);
     }
 }

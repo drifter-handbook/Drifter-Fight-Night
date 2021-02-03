@@ -235,7 +235,7 @@ public class LucilleMasterHit : MasterHit
         if(!isHost)return;
         facing = movement.Facing;
         applyEndLag(1);
-        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,4f * framerateScalar);
     }
 
     public override void rollGetupStart()

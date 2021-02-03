@@ -10,7 +10,7 @@ public enum DrifterAttackType
     Ground_Q_Side, Ground_Q_Down, Ground_Q_Up, Ground_Q_Neutral,
     Aerial_Q_Side, Aerial_Q_Down, Aerial_Q_Up, Aerial_Q_Neutral,
     W_Side, W_Down, W_Up, W_Neutral,
-    E_Side, Aerial_E_Down, E_Up, E_Neutral, Roll
+    E_Side, E_Air, Roll
 }
 
 [Serializable]
@@ -27,7 +27,8 @@ public class PlayerAttacks : MonoBehaviour
         { DrifterAttackType.Ground_Q_Neutral, "Ground_Neutral" },
         { DrifterAttackType.Aerial_Q_Neutral, "Aerial_Neutral" },
         { DrifterAttackType.W_Up, "W_Up" },
-        { DrifterAttackType.E_Side, "Grab" },
+        { DrifterAttackType.E_Side, "Grab_Ground"},
+        { DrifterAttackType.E_Air, "Grab_Air" },
         { DrifterAttackType.W_Neutral, "W_Neutral" },
         { DrifterAttackType.W_Side, "W_Side" },
         { DrifterAttackType.W_Down, "W_Down" },
@@ -108,7 +109,12 @@ public class PlayerAttacks : MonoBehaviour
 
         if (grabPressed && canAct)
         {
-            StartAttack(DrifterAttackType.E_Side);
+            if (movement.grounded)StartAttack(DrifterAttackType.E_Side);
+            else
+            {
+                movement.canLandingCancel = true;
+                StartAttack(DrifterAttackType.E_Air);  
+            } 
         }
         else if(specialPressed && canAct)
         {
