@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 193b57c47c6e0024ebee715bea3d6f17, type: 3}
-  m_Name: W_Side_Setup
+  m_Name: Sair_Weak
   m_EditorClassIdentifier: 
-  AttackDamage: 12
-  Knockback: 0
-  KnockbackScale: 0
-  hasStaticHitstun: 1
-  HitStun: 8
-  isGrab: 1
-  AngleOfImpact: 55
-  StatusEffect: 2
-  StatusDuration: 8
-  HitVisual: 2
+  AttackDamage: 4
+  Knockback: 10
+  KnockbackScale: 0.2
+  hasStaticHitstun: 0
+  HitStun: -1
+  isGrab: 0
+  AngleOfImpact: 65
+  StatusEffect: 20
+  StatusDuration: 0.1
+  HitVisual: 1
