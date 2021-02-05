@@ -170,8 +170,8 @@ public class PlayerMovement : MonoBehaviour
             
         }
         //Reactivate attacker when hitpause removed
-        else{
-
+        else
+        {
             animator.enabled = true;
         }
 

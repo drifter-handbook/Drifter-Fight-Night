@@ -77,7 +77,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     public void applyArmour(float statusDuration)
     {
         if(!isHost)return;
-        status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,statusDuration);
+        status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,statusDuration * framerateScalar);
     }
 
     public void pauseGravity()
@@ -123,14 +123,17 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
         if(drifter.input.Guard)
         {
+            status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0f);
             status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
-            playState(drifter.GuardStateName);
+            playState("Guard_Start");
             drifter.guarding = true;
             movement.jumping = false;
             unpauseGravity();
             return true;
         }
-        else if(drifter.input.Jump && movement.currentJumps>0){
+        else if(drifter.input.Jump && movement.currentJumps>0)
+        {
+            status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0f);
             status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
             movement.jump();
             unpauseGravity();

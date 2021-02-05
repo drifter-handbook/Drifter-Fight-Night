@@ -43,7 +43,7 @@ class PlayerStatusData
 		{PlayerStatusEffect.STUNNED, 							new PlayerStatusData("STUNNED",icon:  3,stun: true)									},
 		{PlayerStatusEffect.PARALYZED,							new PlayerStatusData("PARALYZED",icon:  3,stun: true)								},
 		{PlayerStatusEffect.GRABBED,  							new PlayerStatusData("GRABBED",icon:  3,stun: true)									},
-		{PlayerStatusEffect.CRINGE,  							new PlayerStatusData("CRINGE",icon:  3,stun: true)									},
+		{PlayerStatusEffect.CRINGE,  							new PlayerStatusData("CRINGE",icon: 3,stun: true)									},
 		{PlayerStatusEffect.DEAD ,    							new PlayerStatusData("DEAD",icon:  7,remove: false,stun: true)						},
 		{PlayerStatusEffect.POISONED, 							new PlayerStatusData("POISONED",icon:  0,remove: false)								},
 		{PlayerStatusEffect.BURNING, 							new PlayerStatusData("BURNING",icon: 1,remove: false)								},
@@ -62,7 +62,7 @@ class PlayerStatusData
 		{PlayerStatusEffect.END_LAG,							new PlayerStatusData("END_LAG",stun: true, self: true)								},
 		{PlayerStatusEffect.KNOCKBACK,							new PlayerStatusData("KNOCKBACK",remove: false, stun: true)							},
 		{PlayerStatusEffect.HITPAUSE, 							new PlayerStatusData("HITPAUSE",stun: true, self:true)								},
-        {PlayerStatusEffect.GUARDBROKEN,                        new PlayerStatusData("GUARDBROKEN",icon: 8,remove: false)                           },
+        {PlayerStatusEffect.GUARDBROKEN,                        new PlayerStatusData("GUARDBROKEN",icon: 14,remove: false)                           },
 	};
 
 
@@ -72,6 +72,7 @@ class PlayerStatusData
     public bool isStun = false;
     public bool isSelfInflicted = false;
     public int channel = 0;
+    public GameObject statusBar = null;
     //public bool isMashable = false;
 
     PlayerStatusData(string statusName, int icon = -1 ,bool remove = true,bool stun = false, bool self = false, int channel = 0) //, bool mashable = false)
@@ -259,11 +260,11 @@ public class PlayerStatus : MonoBehaviour
     }
 
     //initialize a status bar on the players summary card.
-    void addStatusBar(PlayerStatusEffect ef, float duration)
+    GameObject addStatusBar(PlayerStatusEffect ef, float duration)
     {
-    	if(card==null || PlayerStatusData.statusDataMap[ef].iconIndex < 0)return;
+    	if(card==null || PlayerStatusData.statusDataMap[ef].iconIndex < 0)return null;
 
-    	card.addStatusBar(ef,PlayerStatusData.statusDataMap[ef].iconIndex,duration,this);
+    	return card.addStatusBar(ef,PlayerStatusData.statusDataMap[ef].iconIndex,duration,this);
     }
 
 
@@ -272,7 +273,7 @@ public class PlayerStatus : MonoBehaviour
     {
     	PlayerStatusData data = PlayerStatusData.statusDataMap[ef];
 
-    	if(!HasStatusEffect(ef))addStatusBar(ef,duration);
+    	if(!HasStatusEffect(ef) && PlayerStatusData.statusDataMap[ef].statusBar == null) PlayerStatusData.statusDataMap[ef].statusBar = addStatusBar(ef,duration);
     	//Ignores hitstun if in superarmour or invuln
         if(ef == PlayerStatusEffect.DEAD){
             clearAllStatus();

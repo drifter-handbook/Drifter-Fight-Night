@@ -71,7 +71,7 @@ public class PlayerCard : MonoBehaviour
         }
     }
 
-    public void addStatusBar(PlayerStatusEffect statusEffect,int icon, float duration, PlayerStatus status)
+    public GameObject addStatusBar(PlayerStatusEffect statusEffect,int icon, float duration, PlayerStatus status)
     {
 
         GameObject newBar = Instantiate(bar, new Vector3(0,0), Quaternion.identity);
@@ -80,6 +80,7 @@ public class PlayerCard : MonoBehaviour
         newBar.GetComponent<StatusBar>().status = status;
         newBar.GetComponent<StatusBar>().initialize(statusEffect,icon,duration);
         //currentStatusCount++;
+        return newBar;
 
     }
 
