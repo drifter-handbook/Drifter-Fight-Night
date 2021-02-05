@@ -32,7 +32,7 @@ public class StatusBar : MonoBehaviour , INetworkInit
 
     public void initialize(PlayerStatusEffect statusEffect,int index, float duration)
     {
-
+        if(duration == 0) Destroy(gameObject);
         ef = statusEffect;
         Icon.sprite = statusIcons[index];
         this.duration = duration;
