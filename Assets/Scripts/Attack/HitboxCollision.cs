@@ -25,9 +25,41 @@ public class HitboxCollision : MonoBehaviour
     {
 
     }
+
     void OnTriggerEnter2D(Collider2D collider)
     {
-        //Debug.Log("hi45");
+
+    	if(collider.gameObject.tag == "Ground")
+    	{
+
+
+    		if(collider.ClosestPoint(gameObject.transform.position) != (Vector2)gameObject.transform.position)
+    		{
+
+    		 GraphicalEffectManager.Instance.CreateMovementParticle(MovementParticleMode.CollisionSpark,
+
+    		  collider.ClosestPoint(gameObject.GetComponent<Collider2D>().ClosestPoint(collider.transform.position))
+
+
+    		  , collider.gameObject.transform.rotation.eulerAngles.z, new Vector2(Facing * 1, 1));
+
+    		}
+
+
+
+    		// ContactPoint2D[] contacts = new ContactPoint2D[10];
+      //   	bool groundFrictionPosition = gameObject.GetComponent<Collider2D>().GetContacts(contacts) >0;
+
+
+      //   	if(groundFrictionPosition)
+      //   	{
+      //   		UnityEngine.Debug.Log("HELLO");
+      //   		foreach(ContactPoint2D point in contacts)
+      //   		{
+      //   			if(point.collider.gameObject.tag == "Ground") 
+      //   		}
+    		// }
+    	}
     }
 
     void OnTriggerStay2D(Collider2D collider)
