@@ -52,7 +52,7 @@ public class BojoMasterHit : MasterHit
     {
         if(!isHost)return;
         facing = movement.Facing;
-        if(TransitionFromChanneledAttack())
+        if(cancelAttack())
         {
 
             if(Centaur != null)Destroy(Centaur);
@@ -78,7 +78,7 @@ public class BojoMasterHit : MasterHit
     {
         if(!isHost)return;
 
-        if(TransitionFromChanneledAttack())
+        if(cancelAttack())
         {
         	resetTerminal();
         }

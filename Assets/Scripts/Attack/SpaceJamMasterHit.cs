@@ -77,14 +77,10 @@ public class SpaceJamMasterHit : MasterHit
 
     //Neutral W Charge
 
-    public void chargeOopsie(int cancelable)
+    public void chargeOopsie()
     {
         if(!isHost)return;
-        if(TransitionFromChanneledAttack() && cancelable != 0)
-        {
-            return;
-        }
-        else
+        if(!cancelAttack())
         {
             if(charges < maxCharge)
             {

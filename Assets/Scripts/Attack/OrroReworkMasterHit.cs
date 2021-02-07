@@ -5,7 +5,40 @@ using UnityEngine;
 public class OrroReworkMasterHit : MasterHit
 {
 
+    float neutralSpecialCharge = 0;
+
     //Roll Methods
+
+    public void WNeutralCharge()
+    {
+        if(!isHost)return;
+        applyEndLag(1);
+        if(neutralSpecialCharge > 8)
+        {
+            playState("W_Neutral_Fire");
+            neutralSpecialCharge = 0;
+        }
+        switch(chargeAttackSingleUse("W_Neutral_Fire"))
+        {
+            case 0:
+                neutralSpecialCharge += 1;
+                break;
+            case 1:
+                neutralSpecialCharge = 0;
+                break;
+            default:
+            // The attack was fired;
+                break;     
+        }
+    }
+
+    public new void clearMasterhitVars()
+    {
+        base.clearMasterhitVars();
+        neutralSpecialCharge = 0;
+
+    }
+
 
     public override void roll()
     {

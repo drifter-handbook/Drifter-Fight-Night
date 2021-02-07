@@ -32,10 +32,17 @@ public class MegurinMasterHit : MasterHit
             lightningCharge = 0;
             windCharge = 0;
             iceCharge = 0;
+            neutralWCharge = 0;
         }
     }
 
-    
+    public new void clearMasterhitVars()
+    {
+        base.clearMasterhitVars();
+        neutralWCharge = 0;
+
+    }
+
     //Recovery Logic  
 
     public void saveDirection(){
@@ -261,7 +268,7 @@ public class MegurinMasterHit : MasterHit
 
     //Neutral W Logic
 
-    public void chargeNeutralW(int canCancel = 1)
+    public void chargeNeutralW()
     {
         if(!isHost)return;
         if(Empowered)
@@ -269,18 +276,11 @@ public class MegurinMasterHit : MasterHit
             Empowered = false;
             neutralWCharge = 0;
             playState("W_Neutral_Recover_Slow");
-
-        }
-        if (canCancel != 0 &&TransitionFromChanneledAttack()){
-            return;
-        }
-        if(canCancel != 0 && drifter.input.Special)
-        {
-            neutralWCharge = 0;
-            playState("W_Neutral_Recover_Fast");
         }
 
-        if(neutralWCharge < 43){
+        else if(chargeAttackPesistent("W_Neutral_Recover_Fast") == 2) neutralWCharge = 0;
+
+        else if(neutralWCharge < 43){
             neutralWCharge +=1;
         }
         else{

@@ -20,8 +20,6 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
     protected bool isHost = false;
 
-    protected bool listeningForInput = false;
-
     protected bool Empowered = false;
 
     protected bool continueJabFlag = false;
@@ -31,6 +29,8 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     protected bool savingVelocity = false;
 
     protected PolygonCollider2D frictionCollider;
+
+    protected bool specialReleased = false;
 
 
     // Start is called before the first frame update
@@ -116,8 +116,58 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         attacks.SetMultiHitAttackID();
     }
 
+    public void beginChanneledAttack()
+    {
+        specialReleased = false;
+    }
+
+    public void clearMasterhitVars()
+    {
+        specialReleased = false;   
+    }
+
+    //For charged attacks that store their current charge when canceled.
+    //Press the button once to start charging. if the button is released and then pressed again, the state will play
+    //0: Nothing happened (Executed as client, or no state-changing action occured)
+    //1: The attack was canceled by a jump or shield input
+    //2: The provieded state was executed  
+    public int chargeAttackPesistent(string stateName)
+    {
+        if(!isHost)return 0;
+
+        else if(cancelAttack())return 1;
+     
+        else if(!drifter.input.Special && !specialReleased)specialReleased = true;
+
+        else if(drifter.input.Special && specialReleased)
+        {
+            specialReleased = false;
+            playState(stateName);
+            return 2;
+        }
+        return 0;
+    }
+
+    //For charged moves that cannot store charge. While the button is held, the charge will persist.
+    //When the button is released, the specified state will play.
+    //0: Nothing happened (Executed as client, or no state-changing action occured)
+    //1: The attack was canceled by a jump or shield input
+    //2: The provieded state was executed
+    public int chargeAttackSingleUse(string stateName)
+    {
+        if(!isHost)return 0;
+        else if(cancelAttack()) return 1;
+        if(!drifter.input.Special)
+        {
+            playState(stateName);
+            return 2;
+        }
+        return 0;    
+
+    }
+
     //Allows for jump and shield canceling of moves. Returns true if it's condition was met
-    public bool TransitionFromChanneledAttack()
+    public bool cancelAttack()
     {
         if(!isHost)return false;
 
@@ -147,8 +197,8 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 	{
         if(!isHost)return;
 		movement.jumping = false;
+        specialReleased = false;
 		unpauseGravity();
-		listeningForInput = false;
     	drifter.returnToIdle();
     }
 

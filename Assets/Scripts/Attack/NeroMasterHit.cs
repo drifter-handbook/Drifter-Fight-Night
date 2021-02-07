@@ -36,18 +36,14 @@ public class NeroMasterHit : MasterHit
         dashDistance = 25;
     }
 
-     public void neutralWCharge(int cancelable)
+     public void neutralWCharge()
      {
         if(!isHost)return;
         movement.gravityPaused= true;        
         rb.gravityScale = 5f;
-        if(cancelable != 0)
-        {
-            if(TransitionFromChanneledAttack()) return;
-            if(drifter.input.MoveX != 0 || drifter.input.Special || dashDistance>=55) drifter.PlayAnimation("W_Neutral_Dash");
-        }
-
-        dashDistance += 3;
+        if(chargeAttackSingleUse("W_Neutral_Dash") !=0) return;
+        else if(drifter.input.MoveX != 0 || dashDistance>=55) drifter.PlayAnimation("W_Neutral_Dash");
+        else dashDistance += 3;
      }
 
      public void neutralWDash()

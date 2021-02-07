@@ -195,7 +195,7 @@ public class MythariusMasterHit : MasterHit
     {
         if(!isHost)return;
 
-        if(TransitionFromChanneledAttack())
+        if(cancelAttack())
         {
         	resetTerminal();
         }

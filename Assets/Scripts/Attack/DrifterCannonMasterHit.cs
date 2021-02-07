@@ -127,7 +127,7 @@ public class DrifterCannonMasterHit : MasterHit
     {
         if(!isHost)return;
 
-        if(TransitionFromChanneledAttack())return;
+        if(cancelAttack())return;
      
 
         else if(drifter.input.MoveY <0 || movement.grounded)
@@ -171,8 +171,7 @@ public class DrifterCannonMasterHit : MasterHit
     public void neutralWCharge()
      {
         if(!isHost)return;
-        if(TransitionFromChanneledAttack()) return;
-        if(drifter.input.Special) drifter.PlayAnimation("W_Neutral_Fire");
+        chargeAttackPesistent("W_Neutral_Fire");
      }
 
      public void FireRanchProjectile()

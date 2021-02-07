@@ -147,7 +147,7 @@ public class MaryamMasterHit : MasterHit
     {
         if(!isHost)return;
 
-        if(TransitionFromChanneledAttack())
+        if(cancelAttack())
         {
             resetTerminal();
         }
