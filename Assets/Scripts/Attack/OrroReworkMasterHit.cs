@@ -39,6 +39,11 @@ public class OrroReworkMasterHit : MasterHit
 
     }
 
+    public void WNeutralFire()
+    {
+        neutralSpecialCharge = 0;
+    }
+
 
     public override void roll()
     {
