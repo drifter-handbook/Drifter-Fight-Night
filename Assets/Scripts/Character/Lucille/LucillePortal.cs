@@ -105,6 +105,7 @@ public class LucillePortal : MonoBehaviour
 			else if(hitbox != null && hitbox.parent == drifter && collider.gameObject.tag == "Lucille_Portal_Detonate")
 			{
 				drifter.GetComponentInChildren<LucilleMasterHit>().breakRift(this.gameObject);
+				detonate();
 				GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.LUCILLE,  Vector3.Lerp(transform.position, hitbox.parent.transform.position, 0.1f), 0, new Vector2(6f, 6f));
 			}
 

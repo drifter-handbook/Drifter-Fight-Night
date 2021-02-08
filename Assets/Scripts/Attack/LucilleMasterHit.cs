@@ -50,30 +50,6 @@ public class LucilleMasterHit : MasterHit
         movement.terminalVelocity = terminalVelocity;
     }
 
-
-    public void Side_Attack_Fireball()
-    {
-        // jump upwards and create spear projectile
-        if(!isHost)return;
-        facing = movement.Facing;
-        Vector3 pos = new Vector3(facing * 4.3f,3.7f,0);
-
-        GameObject bolt = GameController.Instance.host.CreateNetworkObject("Lucille_Side_Fireball", transform.position + pos, transform.rotation);
-
-         bolt.transform.localScale = new Vector3(facing * 10f,10f,0);
-
-        bolt.GetComponent<Rigidbody2D>().velocity = new Vector3(facing * 10f,0f,0);
-        foreach (HitboxCollision hitbox in bolt.GetComponentsInChildren<HitboxCollision>(true))
-        {
-            hitbox.parent = drifter.gameObject;
-            hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
-            hitbox.Active = true;
-            hitbox.Facing = facing;
-            
-        }
-    }
-
     public void setBombTarget()
     {
         if(!isHost)return;
@@ -106,8 +82,6 @@ public class LucilleMasterHit : MasterHit
         }
     }
 
-
-
     public void SpawnRift()
     {
         // jump upwards and create spear projectile
@@ -118,8 +92,6 @@ public class LucilleMasterHit : MasterHit
         //remove the oldest portal if size limit would be exceeded.
         if(getTotalPortalSize() >= 3) rifts.Dequeue().GetComponent<LucillePortal>().decay();
         
-        else drifter.SetCharge(4 + getTotalPortalSize());
-
 
         GameObject rift = GameController.Instance.host.CreateNetworkObject("Lucille_Rift", transform.position + new Vector3(0,3.5f,0), transform.rotation);
 
@@ -134,6 +106,8 @@ public class LucilleMasterHit : MasterHit
         }
         rift.GetComponent<LucillePortal>().drifter = drifter.gameObject;
         rifts.Enqueue(rift);
+
+        drifter.SetCharge(3 + getTotalPortalSize());
     }
 
     public void warpToNearestRift()
@@ -155,19 +129,12 @@ public class LucilleMasterHit : MasterHit
 
         if(targetPortal != null)
         {
+
+            foreach (HitboxCollision hitbox in targetPortal.GetComponentsInChildren<HitboxCollision>(true)) hitbox.AttackID -=3;
+
             rb.transform.position = targetPortal.transform.position;
-            rifts.Clear(); 
-            foreach(GameObject rift in riftarray)
-            {
-                if(rift != targetPortal)rifts.Enqueue(rift);
-            }
 
-            foreach (HitboxCollision hitbox in targetPortal.GetComponentsInChildren<HitboxCollision>(true))
-            {
-                hitbox.AttackID -=3;
-            }
-
-            drifter.SetCharge(rifts.Count > 0? 4 + rifts.Count:0); 
+            breakRift(targetPortal);
 
             targetPortal.GetComponent<LucillePortal>().detonate();
         }
@@ -180,12 +147,10 @@ public class LucilleMasterHit : MasterHit
 
     public void breakRift(GameObject self)
     {
-
         rifts = new Queue<GameObject>(rifts.Where<GameObject>(x => x != self));
 
-        self.GetComponent<LucillePortal>().decay();
-        
-        drifter.SetCharge(4 + getTotalPortalSize());
+        if(getTotalPortalSize() == 0) drifter.SetCharge(0);
+        else drifter.SetCharge(3 + getTotalPortalSize());
     }
 
 
@@ -216,7 +181,16 @@ public class LucilleMasterHit : MasterHit
 
         //Lucille can have up to 3 total portal size active
         //Calculates the current size before a new poeral is added
+
+        if(rifts.Count ==0)return 0;
+
         foreach(GameObject riftObj in rifts) totalPortalSize += riftObj.GetComponent<LucillePortal>().size;
+
+        if(totalPortalSize >3)
+        {
+            UnityEngine.Debug.Log("TOO MUCH GIRTH");
+            return 3;
+        }
 
         return totalPortalSize;
     }
