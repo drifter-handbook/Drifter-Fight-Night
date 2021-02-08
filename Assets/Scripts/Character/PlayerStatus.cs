@@ -96,7 +96,11 @@ public class PlayerStatus : MonoBehaviour
     Rigidbody2D rb;
     Drifter drifter;
     Vector2 delayedVelocity;
-
+    public GameObject fireStatus;
+    public GameObject slowStatus;
+    public GameObject stunStatus;
+    public GameObject plantStatus;
+    public GameObject flightStatus;
     public PlayerCard card;
     // Start is called before the first frame update
     void Start()
@@ -262,11 +266,50 @@ public class PlayerStatus : MonoBehaviour
     //initialize a status bar on the players summary card.
     GameObject addStatusBar(PlayerStatusEffect ef, float duration)
     {
+        ShowParticles(ef, duration);
     	if(card==null || PlayerStatusData.statusDataMap[ef].iconIndex < 0)return null;
 
     	return card.addStatusBar(ef,PlayerStatusData.statusDataMap[ef].iconIndex,duration,this);
     }
-
+    void ShowParticles(PlayerStatusEffect ef, float duration){
+        //string name = PlayerStatusData.statusDataMap[ef].name;
+        //Debug.Log(" a " + name);
+        if(ef == PlayerStatusEffect.SLOWED){
+            GameObject slowwork = Instantiate(slowStatus, transform.position, Quaternion.identity);
+            ParticleSystem ps = slowwork.GetComponent<ParticleSystem>();
+            ps.transform.parent = transform;
+            ps.Play();
+            Destroy(ps, duration);
+        }
+        if(ef == PlayerStatusEffect.PLANTED){
+            GameObject plantwork = Instantiate(plantStatus, transform.position, Quaternion.identity);
+            ParticleSystem ps = plantwork.GetComponent<ParticleSystem>();
+            ps.transform.parent = transform;
+            ps.Play();
+            Destroy(ps, duration);
+        }
+        if(ef == PlayerStatusEffect.STUNNED){
+            GameObject stunwork = Instantiate(stunStatus, transform.position, Quaternion.identity);
+            ParticleSystem ps = stunwork.GetComponent<ParticleSystem>();
+            ps.transform.parent = transform;
+            ps.Play();
+            Destroy(ps, duration);
+        }
+        if(ef == PlayerStatusEffect.FLIGHT){
+            GameObject flightwork = Instantiate(flightStatus, transform.position, Quaternion.identity);
+            ParticleSystem ps = flightwork.GetComponent<ParticleSystem>();
+            ps.transform.parent = transform;
+            ps.Play();
+            Destroy(ps, duration);
+        }
+        if(ef == PlayerStatusEffect.BURNING){
+            GameObject firework = Instantiate(fireStatus, transform.position, Quaternion.identity);
+            ParticleSystem ps = firework.GetComponent<ParticleSystem>();
+            ps.transform.parent = transform;
+            ps.Play();
+            Destroy(ps, duration);
+        }
+    }
 
     //God this bullshit...
     void ApplyStatusEffectFor(PlayerStatusEffect ef, float duration)
