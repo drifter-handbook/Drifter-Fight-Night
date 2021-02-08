@@ -47,7 +47,7 @@ public class DrifterCannonMasterHit : MasterHit
     {
         if(!isHost)return;
         facing = movement.Facing;
-        Vector3 pos = new Vector3(-.7f * facing,2.7f,0);
+        Vector3 pos = new Vector3(-1.5f * facing,2.7f,0);
         
         GameObject explosion = host.CreateNetworkObject("ExplosionSide", transform.position + pos, transform.rotation);
         explosion.transform.localScale = new Vector3(-10f * facing, 10f , 1f);

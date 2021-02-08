@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class LucilleMasterHit : MasterHit
 {
 
     Queue<GameObject> rifts = new Queue<GameObject>();
+
+    //Queue<GameObject> rifts = new Queue<GameObject>(new GameObject[3]);
+
     float terminalVelocity;
     bool jumpGranted = false;
 
@@ -111,15 +115,12 @@ public class LucilleMasterHit : MasterHit
 
         facing = movement.Facing;
 
-        if(rifts.Count == 3)
-        {
-            //Play animation here
-            rifts.Dequeue().GetComponent<LucillePortal>().playState("SoftDelete");
-        }
-        else{
-            drifter.SetCharge(4 + rifts.Count);
-        }
-       
+        //remove the oldest portal if size limit would be exceeded.
+        if(getTotalPortalSize() >= 3) rifts.Dequeue().GetComponent<LucillePortal>().decay();
+        
+        else drifter.SetCharge(4 + getTotalPortalSize());
+
+
         GameObject rift = GameController.Instance.host.CreateNetworkObject("Lucille_Rift", transform.position + new Vector3(0,3.5f,0), transform.rotation);
 
         foreach (HitboxCollision hitbox in rift.GetComponentsInChildren<HitboxCollision>(true))
@@ -168,7 +169,7 @@ public class LucilleMasterHit : MasterHit
 
             drifter.SetCharge(rifts.Count > 0? 4 + rifts.Count:0); 
 
-            targetPortal.GetComponent<LucillePortal>().playState("HardDelete");
+            targetPortal.GetComponent<LucillePortal>().detonate();
         }
         else
         {
@@ -176,27 +177,17 @@ public class LucilleMasterHit : MasterHit
         }
     }
 
+
     public void breakRift(GameObject self)
     {
-        GameObject[] riftarray = rifts.ToArray();   
 
-        rifts.Clear(); 
+        rifts = new Queue<GameObject>(rifts.Where<GameObject>(x => x != self));
 
-        status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, .2f);
-
-        for(int i = riftarray.Length; i >=1; i--)
-        {
-
-            if(riftarray[i-1] != self)
-            {
-                UnityEngine.Debug.Log("NOT MINE");
-                rifts.Enqueue(riftarray[i-1]);
-            }
-        }
-
-        drifter.SetCharge(rifts.Count > 0? 4 + rifts.Count:0); 
-
+        self.GetComponent<LucillePortal>().decay();
+        
+        drifter.SetCharge(4 + getTotalPortalSize());
     }
+
 
     public void collapseAllPortals()
     {
@@ -214,9 +205,20 @@ public class LucilleMasterHit : MasterHit
                 hitbox.AttackID -=3;
                 hitbox.Facing = facing;
             }
-            rift.GetComponent<LucillePortal>().playState("HardDelete");
+            rift.GetComponent<LucillePortal>().detonate();
         }
         drifter.SetCharge(0);
+    }
+
+    int getTotalPortalSize()
+    {
+        int totalPortalSize = 0;
+
+        //Lucille can have up to 3 total portal size active
+        //Calculates the current size before a new poeral is added
+        foreach(GameObject riftObj in rifts) totalPortalSize += riftObj.GetComponent<LucillePortal>().size;
+
+        return totalPortalSize;
     }
 
 

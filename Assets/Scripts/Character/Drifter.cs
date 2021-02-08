@@ -131,6 +131,11 @@ public class Drifter : MonoBehaviour, INetworkInit
         if(isHost) gameObject.GetComponent<SyncChargeHost>().setCharge(Charge);
     }
 
+    public void ModifyCharge(int newCharge)
+    { 
+        if(isHost) gameObject.GetComponent<SyncChargeHost>().setCharge(Charge + newCharge);
+    }
+
     public void IncrementCharge()
     { 
         Charge++;

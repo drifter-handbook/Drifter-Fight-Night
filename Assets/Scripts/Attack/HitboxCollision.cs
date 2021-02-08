@@ -26,6 +26,8 @@ public class HitboxCollision : MonoBehaviour
 
     }
 
+
+    //Ground Collision Sparks
     void OnTriggerEnter2D(Collider2D collider)
     {
 

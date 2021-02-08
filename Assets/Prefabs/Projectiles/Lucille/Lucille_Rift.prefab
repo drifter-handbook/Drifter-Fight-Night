@@ -152,7 +152,7 @@ GameObject:
   - component: {fileID: 608364487381099413}
   m_Layer: 10
   m_Name: Lucille_Rift
-  m_TagString: Untagged
+  m_TagString: Lucille_Portal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -212,7 +212,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -1
-  m_Sprite: {fileID: 559710162420682801, guid: 86771de532f11cb47942f1f131c116fb, type: 3}
+  m_Sprite: {fileID: -492678146245675785, guid: 736dfd6b457374a498caf45375dcff62,
+    type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -366,6 +367,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drifter: {fileID: 0}
+  size: 1
+  myPriority: 0
+  anim: {fileID: 0}
 --- !u!114 &608364487381099413
 MonoBehaviour:
   m_ObjectHideFlags: 0
