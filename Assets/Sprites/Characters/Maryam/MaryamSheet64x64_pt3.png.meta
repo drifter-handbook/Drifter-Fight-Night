@@ -125,6 +125,12 @@ TextureImporter:
   - first:
       213: 6777213264488113478
     second: MaryamSheet64x64_pt3_40
+  - first:
+      213: 2302458136490012189
+    second: MaryamSheet64x64_pt3_39
+  - first:
+      213: -888098780510353851
+    second: MaryamSheet64x64_pt3_41
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -823,7 +829,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 448
-        y: 577
+        y: 576
         width: 64
         height: 128
       alignment: 0
@@ -1012,11 +1018,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 384
-        y: 512
-        width: 64
-        height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        y: 448
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.25, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1032,7 +1038,7 @@ TextureImporter:
       name: MaryamSheet64x64_pt3_39
       rect:
         serializedVersion: 2
-        x: 448
+        x: 512
         y: 512
         width: 64
         height: 64
@@ -1043,8 +1049,50 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 21519180edaf94ab0800000000000000
-      internalID: -5023208077829532398
+      spriteID: d1ee1b7e979f3ff10800000000000000
+      internalID: 2302458136490012189
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MaryamSheet64x64_pt3_40
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 512
+        width: 64
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 64521ec8e8f7d0e50800000000000000
+      internalID: 6777213264488113478
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MaryamSheet64x64_pt3_41
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 512
+        width: 64
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 546093e4dd6dca3f0800000000000000
+      internalID: -888098780510353851
       vertices: []
       indices: 
       edges: []

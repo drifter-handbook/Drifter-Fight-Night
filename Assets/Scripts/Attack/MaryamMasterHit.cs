@@ -94,6 +94,31 @@ public class MaryamMasterHit : MasterHit
        }
     }
 
+    public void SGUWExplosion()
+    {
+        if(!isHost)return;
+        facing = movement.Facing;
+        Vector3 pos = new Vector3(.5f * facing,1f,0);
+        
+        GameObject explosion = host.CreateNetworkObject("ExplosionDiagonalDown", transform.position + pos, transform.rotation);
+        explosion.transform.localScale = new Vector3(10f * facing, 10f , 1f);
+        foreach (HitboxCollision hitbox in explosion.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.AttackData = attacks.Attacks[attacks.AttackType];
+            hitbox.Active = true;
+            hitbox.Facing = facing;
+       }
+    }
+
+    public void invertDirection()
+    {
+        if(!isHost)return;
+        movement.flipFacing();
+    }
+
     //Umbrella Dair
 
     public void setTerminalVelocity()

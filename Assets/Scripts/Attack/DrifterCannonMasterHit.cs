@@ -81,10 +81,10 @@ public class DrifterCannonMasterHit : MasterHit
     {
         if(!isHost)return;
         facing = movement.Facing;
-        Vector3 pos = new Vector3(-.7f* facing,.7f,0);
+        Vector3 pos = new Vector3(-.4f* facing,2f,0);
         
         GameObject explosion = host.CreateNetworkObject("UairExplosion", transform.position + pos, transform.rotation);
-        explosion.transform.localScale = new Vector3(7.5f* facing, 7.5f, 1f);
+        explosion.transform.localScale = new Vector3(10f* facing, 10f, 1f);
         foreach (HitboxCollision hitbox in explosion.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
