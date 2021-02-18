@@ -101,6 +101,17 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         rb.velocity = Vector2.zero;
     }
 
+    public void freezeGravity_Downward()
+    {
+        if(!isHost)return;
+        savedVelocity = new Vector2(rb.velocity.x,Mathf.Max(rb.velocity.y,0));
+        savingVelocity = true;
+        movement.cancelJump();
+        movement.gravityPaused= true;
+        rb.gravityScale = 0f;
+        rb.velocity = Vector2.zero;
+    }
+
     public void unpauseGravity()
     {
         if(!isHost)return;
