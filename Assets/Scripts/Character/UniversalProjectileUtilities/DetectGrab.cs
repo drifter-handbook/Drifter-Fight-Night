@@ -36,12 +36,19 @@ public class DetectGrab : MonoBehaviour
             }
             if(applyVelocity)
             {
-                Rigidbody2D rb = drifter.gameObject.GetComponent<Rigidbody2D>();
-                rb.velocity = new Vector3(xVelocity == 0?rb.velocity.x:xVelocity * gameObject.GetComponent<HitboxCollision>().Facing,
-                                        yVelocity == 0?rb.velocity.y:yVelocity);
-
+                StartCoroutine(delayVelocity());
             }
             
         }
+    }
+
+    IEnumerator delayVelocity()
+    {
+    	yield return new WaitForSeconds(.0833333333f / 10f );
+    	Rigidbody2D rb = drifter.gameObject.GetComponent<Rigidbody2D>();
+                rb.velocity = new Vector3(xVelocity == 0?rb.velocity.x:xVelocity * gameObject.GetComponent<HitboxCollision>().Facing,
+                                        yVelocity == 0?rb.velocity.y:yVelocity);
+        yield break;
+
     }
 }
