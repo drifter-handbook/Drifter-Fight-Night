@@ -24,6 +24,8 @@ public class PlayerMovement : MonoBehaviour
     public float varyJumpHeightDuration = 0.5f;
     public float varyJumpHeightForce = 10f;
 
+    protected float framerateScalar =.0833333333f;
+
     //Calculated character properties
     float jumpSpeed;
     float baseGravity;
@@ -75,6 +77,7 @@ public class PlayerMovement : MonoBehaviour
     float dropThroughDelayTime;
     int ringTime = 6;
     float walkTime = 0;
+    float techWindowElapsed = 0;
     float prevMoveX = 0;
     float prevMoveY = 0;
     Vector2 prevVelocity;
@@ -112,15 +115,18 @@ public class PlayerMovement : MonoBehaviour
     void OnCollisionEnter2D(Collision2D col)
     {
 
-        if(!status.HasGroundFriction()
-         && ((prevVelocity.y < 0 || col.gameObject.tag !=  "Platform" ) && prevVelocity.magnitude > 35f))
-         // && ((30f >= (Mathf.Atan2(prevVelocity.y, prevVelocity.x)*180f / Mathf.PI)
-         // &&  (Mathf.Atan2(prevVelocity.y, prevVelocity.x)*180f / Mathf.PI) <= 150f)
-         // || (-30f <= (Mathf.Atan2(prevVelocity.y, prevVelocity.x)*180f / Mathf.PI) 
-         // && (Mathf.Atan2(prevVelocity.y, prevVelocity.x)*180f / Mathf.PI) >= -150f)))
+        if(!status.HasGroundFriction() && ((prevVelocity.y < 0 || col.gameObject.tag !=  "Platform" ) && prevVelocity.magnitude > 35f))
         {
-            //if(prevVelocity.y < -5f ){
+            if(drifter.input.Guard && techWindowElapsed <= framerateScalar * 2)
+            {
+                rb.velocity = Vector3.zero;
+                status.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,0);
 
+                //PARTICLE EFFECT HERE
+
+            }
+            else
+            {
                 //status.bounce();
                 Vector3 normal = col.contacts[0].normal;
 
@@ -128,8 +134,8 @@ public class PlayerMovement : MonoBehaviour
                 rb.velocity = Vector2.Reflect(prevVelocity,normal) *.8f;
                 //status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, Mathf.Min(rb.velocity.magnitude * .005f,.3f));
                 spawnJuiceParticle(col.contacts[0].point, MovementParticleMode.Restitution, Quaternion.Euler(0f,0f, ( (rb.velocity.x < 0)?1:-1 ) * Vector3.Angle(Vector3.up,normal)));
-            //}
-
+                techWindowElapsed = 0;
+            }
         }
     }
 
@@ -139,6 +145,9 @@ public class PlayerMovement : MonoBehaviour
         // if(drifter.forceGuard){
         //     drifter.guarding = true;
         // }
+        if(drifter.input.Guard) techWindowElapsed += Time.deltaTime;
+        else if(status.HasGroundFriction()) techWindowElapsed = 0;
+
 
         bool moving = drifter.input.MoveX != 0;
 
@@ -384,7 +393,7 @@ public class PlayerMovement : MonoBehaviour
             //Roll Onto Ledge
             if(drifter.input.Guard)
             {
-                status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.2f);
+                status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,framerateScalar * 2);
                 drifter.PlayAnimation(drifter.LedgeRollStateName);
             }
 
@@ -399,7 +408,7 @@ public class PlayerMovement : MonoBehaviour
             //Neutral Getup
             else if((drifter.input.MoveX * (flipSprite?-1:1) * Facing > 0)  || drifter.input.MoveY > 0){
                 DropLedge();
-                status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.2f);
+                status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,framerateScalar * 2);
                 drifter.PlayAnimation(drifter.LedgeClimbStateName);
 
                 rb.position = new Vector3(rb.position.x + (rb.position.x > 0 ? -1 :1) *2f, rb.position.y + 5f - ledgeClimbOffset);
@@ -472,7 +481,7 @@ public class PlayerMovement : MonoBehaviour
         //Disable Guarding
         else if(!drifter.input.Guard && !status.HasStunEffect() && drifter.guarding && !status.HasStatusEffect(PlayerStatusEffect.GUARDBROKEN))
         {
-            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,1f);
+            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,framerateScalar * 3);
             drifter.guarding = false;
             drifter.parrying = true;
             drifter.PlayAnimation("Guard_Drop");
@@ -564,7 +573,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void GrabLedge(Vector3 pos)
     {
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.2f);
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,framerateScalar * 2);
         cancelJump();
         gravityPaused = false;
         attacks.ledgeHanging = true;

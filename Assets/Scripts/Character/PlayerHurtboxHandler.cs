@@ -95,16 +95,32 @@ public class PlayerHurtboxHandler : MonoBehaviour
             //calculated angle
             float angle = Mathf.Sign(attackData.AngleOfImpact) * Mathf.Atan2(hurtbox.parent.transform.position.y-hitbox.parent.transform.position.y, hurtbox.parent.transform.position.x-hitbox.parent.transform.position.x)*180 / Mathf.PI;
 
+
+            //KILL DI
+            float directionInfluenceAngle = drifter.input.MoveY < 0 ? 360f - Vector3.Angle(Vector3.right,new Vector2(drifter.input.MoveX,drifter.input.MoveY)): Vector3.Angle(Vector3.right,new Vector2(drifter.input.MoveX,drifter.input.MoveY));
+
+            int jqv16 = (int)Mathf.Abs((int)(angle/45) - (int) (directionInfluenceAngle /45));
+
+            angle = (angle *6f + directionInfluenceAngle)/7f;
+
+
             //Autolink angle (<361) sets the knockback angle to send towards the hitbox's centerpoint
             Vector2 forceDir = Mathf.Abs(attackData.AngleOfImpact) <= 360?
                                     Quaternion.Euler(0, 0, attackData.AngleOfImpact * facingDir) * (facingDir * Vector2.right) :
                                     Quaternion.Euler(0, 0, angle) * Vector2.right;
+
+
 
             //Calculate knockback magnitude
             float KB = (float)(((drifter.DamageTaken / 10 + drifter.DamageTaken * damageDealt / 20)
                         * 200 / (GetComponent<PlayerMovement>().Weight + 100) * 1.4 *
                          ((status.HasStatusEffect(PlayerStatusEffect.EXPOSED) || status.HasStatusEffect(PlayerStatusEffect.FEATHERWEIGHT))
                             ?1.5f:1)) * attackData.KnockbackScale + attackData.Knockback);
+
+
+            //COMBO DI
+            if(KB < 50 && (jqv16 ==0  || jqv16 == 4))KB *= jqv16 == 4 ? .5f:  1.5f;
+
 
             //Calculate hitstun duration
             float HitstunDuration = (attackData.HitStun>=0 || attackData.hasStaticHitstun)?attackData.HitStun * framerateScalar:(KB*.006f + .1f);
@@ -349,26 +365,6 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 SuperArmor = superArmor,
                 Damage = 0
             });
-        }
-    }
-
-    // call this when launched to damage a movement effect
-    public void DamageSuperArmor(float damage)
-    {
-        for (int i = 0; i < movementEffects.Count; i++)
-        {
-            AttackEffect ef = movementEffects[i];
-            ef.Damage += damage;
-            if (ef.Damage > ef.SuperArmor)
-            {
-                if (ef.Effect != null)
-                {
-                    StopCoroutine(ef.Effect);
-                }
-                // TODO: do something
-                movementEffects.RemoveAt(i);
-                i--;
-            }
         }
     }
 
