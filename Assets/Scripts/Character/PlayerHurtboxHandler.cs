@@ -119,7 +119,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
 
             //COMBO DI
-            if(KB < 50 && (jqv16 ==0  || jqv16 == 4))KB *= jqv16 == 4 ? .5f:  1.5f;
+            if(KB < 50 && (drifter.input.MoveX !=0 || drifter.input.MoveY !=0 ) &&  (jqv16 ==0  || jqv16 == 4))KB *= jqv16 == 4 ? .7f:  1.2f;
 
 
             //Calculate hitstun duration
