@@ -1568,8 +1568,8 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.2702785, y: 0.11804018}
-  m_Size: {x: 0.18911257, y: 0.22893116}
+  m_Offset: {x: 0.36602822, y: 0.12712888}
+  m_Size: {x: 0.17636476, y: 0.2603095}
   m_Direction: 0
 --- !u!114 &4021342393843954680
 MonoBehaviour:
@@ -2190,7 +2190,8 @@ PrefabInstance:
         type: 3}
       propertyPath: AttackMap.Array.data[1].attackData
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 11400000, guid: 55d7c25542406284aa1ec69ecf582b1a,
+        type: 2}
     - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: AttackMap.Array.data[9].attackData
@@ -2231,6 +2232,24 @@ PrefabInstance:
       propertyPath: AttackMap.Array.data[14].attack
       value: 14
       objectReference: {fileID: 0}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[14].attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: 5dbb7e8e054562d49b9284eeac220017,
+        type: 2}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[4].attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: f1c8c59b3bf3ea8488a69a7205dd0642,
+        type: 2}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[7].attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: 09955764df685b94fbecb4d113223a66,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 03006bf76a5e1274aaf3da8b9c69d8f9, type: 3}
 --- !u!1 &1405145404548730497 stripped

@@ -2528,10 +2528,10 @@ TextureImporter:
         serializedVersion: 2
         x: 320
         y: 128
-        width: 128
+        width: 96
         height: 64
       alignment: 9
-      pivot: {x: 0.25, y: 0}
+      pivot: {x: 0.333333, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2547,12 +2547,12 @@ TextureImporter:
       name: MaryamSheet64x64_78
       rect:
         serializedVersion: 2
-        x: 448
+        x: 416
         y: 128
-        width: 128
+        width: 96
         height: 64
       alignment: 9
-      pivot: {x: 0.25, y: 0}
+      pivot: {x: 0.33333, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2568,12 +2568,12 @@ TextureImporter:
       name: MaryamSheet64x64_79
       rect:
         serializedVersion: 2
-        x: 576
+        x: 512
         y: 128
-        width: 128
+        width: 96
         height: 64
       alignment: 9
-      pivot: {x: 0.25, y: 0}
+      pivot: {x: 0.3333333, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2589,12 +2589,12 @@ TextureImporter:
       name: MaryamSheet64x64_80
       rect:
         serializedVersion: 2
-        x: 704
+        x: 608
         y: 128
-        width: 128
+        width: 96
         height: 64
       alignment: 9
-      pivot: {x: 0.25, y: 0}
+      pivot: {x: 0.33333334, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2610,12 +2610,12 @@ TextureImporter:
       name: MaryamSheet64x64_81
       rect:
         serializedVersion: 2
-        x: 832
+        x: 704
         y: 128
-        width: 128
+        width: 96
         height: 64
       alignment: 9
-      pivot: {x: 0.25, y: 0}
+      pivot: {x: 0.33333, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2948,10 +2948,10 @@ TextureImporter:
         serializedVersion: 2
         x: 640
         y: 640
-        width: 128
+        width: 96
         height: 64
       alignment: 9
-      pivot: {x: 0.25, y: 0}
+      pivot: {x: 0.333333, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2967,8 +2967,50 @@ TextureImporter:
       name: MaryamSheet64x64_97
       rect:
         serializedVersion: 2
-        x: 768
+        x: 736
         y: 640
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d390767d20faceca0800000000000000
+      internalID: -5986217377943582403
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MaryamSheet64x64_99
+      rect:
+        serializedVersion: 2
+        x: 800
+        y: 128
+        width: 96
+        height: 64
+      alignment: 9
+      pivot: {x: 0.3333333, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 66c5feb863bc0d2d0800000000000000
+      internalID: -3255879095452476314
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MaryamSheet64x64_100
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 768
         width: 128
         height: 64
       alignment: 9
@@ -2978,8 +3020,71 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d390767d20faceca0800000000000000
-      internalID: -5986217377943582403
+      spriteID: 930f2dfdc1b0d84c0800000000000000
+      internalID: -4283755451917340615
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MaryamSheet64x64_101
+      rect:
+        serializedVersion: 2
+        x: 896
+        y: 768
+        width: 128
+        height: 64
+      alignment: 9
+      pivot: {x: 0.25, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a07455ca5ab799f70800000000000000
+      internalID: 9194516065744668426
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MaryamSheet64x64_102
+      rect:
+        serializedVersion: 2
+        x: 800
+        y: 640
+        width: 96
+        height: 64
+      alignment: 9
+      pivot: {x: 0.33333, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 43efba45057231140800000000000000
+      internalID: 4689134862994243124
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MaryamSheet64x64_103
+      rect:
+        serializedVersion: 2
+        x: 896
+        y: 640
+        width: 64
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3869ee760bc18e4c0800000000000000
+      internalID: -4258121903695292797
       vertices: []
       indices: 
       edges: []

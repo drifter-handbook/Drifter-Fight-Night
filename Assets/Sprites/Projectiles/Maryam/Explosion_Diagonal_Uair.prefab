@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: -2598895548082247448}
   - component: {fileID: 4947418999011417824}
   m_Layer: 0
-  m_Name: Explosion_Diagonal
+  m_Name: Explosion_Diagonal_Uair
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 2074046587061238147, guid: 93c58755bc7e2a84fae75981bda563eb,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -241,5 +241,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 2138259155255094168}
   playerType: {fileID: 0}
-  OverrideData: {fileID: 11400000, guid: 2ddf6b0595a273b438426451ed41f763, type: 2}
+  OverrideData: {fileID: 0}
   AttackData: {fileID: 0}
