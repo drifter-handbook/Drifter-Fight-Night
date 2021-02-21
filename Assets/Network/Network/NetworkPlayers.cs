@@ -88,16 +88,18 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
         PlayerInputData input = new PlayerInputData();
         // get player input
 
-        //controller movement input
-        if (Input.GetJoystickNames().Length > 0)
-        {
-            input.MoveX = Input.GetAxis("Horizontal");
-            input.MoveY = Input.GetAxis("Vertical");
-        }
 
-        //keyboard movement input
-        else
-        {
+        //TODO REIMPLEMENT GAMEPLAD CONTROLS
+        //controller movement input
+        // if (Input.GetJoystickNames().Length > 0)
+        // {
+        //     input.MoveX = Input.GetAxis("Horizontal");
+        //     input.MoveY = Input.GetAxis("Vertical");
+        // }
+
+        // //keyboard movement input
+        // else
+        // {
             input.MoveX = 0;
             if (Input.GetKey(keyBindings.leftKey))
             {
@@ -117,7 +119,7 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
             {
                 input.MoveY++;
             }
-        }
+        //}
 
         if (Input.GetKey(keyBindings.guard1Key) && Input.GetKey(keyBindings.downKey))
         {

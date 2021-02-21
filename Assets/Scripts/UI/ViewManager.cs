@@ -80,14 +80,14 @@ public class ViewManager : MonoBehaviour
             }
         }
 
-        if(Input.GetAxis("Mouse X")!=0 || Input.GetAxis("Mouse X")<0 && !mouse)
+        if((Input.GetMouseButton(0) || Input.GetMouseButton(1) || Input.GetMouseButton(2)) && !mouse)
         {
             mouse = true;
             Cursor.visible = true;
             EventSystem.current.SetSelectedGameObject(null);
 
         }
-        if(Input.anyKey && mouse && (!Input.GetMouseButton(0) || !Input.GetMouseButton(1) || !Input.GetMouseButton(2))){
+        else if(Input.anyKey && mouse && (!Input.GetMouseButton(0) || !Input.GetMouseButton(1) || !Input.GetMouseButton(2))){
             mouse = false;
             Cursor.visible = false;
             switch (currentView){
@@ -102,6 +102,8 @@ public class ViewManager : MonoBehaviour
                     break;
                 case "Settings Menu":
                     EventSystem.current.SetSelectedGameObject(GameObject.Find("Back"));
+                    break;
+                default:
                     break;
             }
         }
