@@ -199,8 +199,13 @@ public class Drifter : MonoBehaviour, INetworkInit
     public void SetAnimationLayer(int layer)
     {
         animationLayer = layer;
-        animator.SetLayerWeight(layer == 0?1:0,0);
-        animator.SetLayerWeight(layer == 0?0:1,1);
+
+        for(int i = 0; i < animator.layerCount; i++)
+        {
+            if(i == layer)animator.SetLayerWeight(i,1);
+            else animator.SetLayerWeight(i,0);
+        }
+        
         if(!isHost)return;
         animator.gameObject.GetComponent<SyncAnimatorLayerHost>().SetLayer(layer);
 

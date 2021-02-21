@@ -88,6 +88,11 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
         PlayerInputData input = new PlayerInputData();
         // get player input
 
+        input.Jump = Input.GetKey(keyBindings.jumpKey) || Input.GetKey(keyBindings.jumpKeyAlt);
+        input.Light = Input.GetKey(keyBindings.lightKey) ;
+        input.Special = Input.GetKey(keyBindings.specialKey);
+        input.Grab = Input.GetKey(keyBindings.grabKey);
+        input.Guard = Input.GetKey(keyBindings.guard1Key) || Input.GetKey(keyBindings.guard2Key);
 
         //TODO REIMPLEMENT GAMEPLAD CONTROLS
         //controller movement input
@@ -126,11 +131,7 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
             input.MoveY--;
         }
 
-        input.Jump = Input.GetKey(keyBindings.jumpKey) || Input.GetKey(keyBindings.jumpKeyAlt);
-        input.Light = Input.GetKey(keyBindings.lightKey) ;
-        input.Special = Input.GetKey(keyBindings.specialKey);
-        input.Grab = Input.GetKey(keyBindings.grabKey);
-        input.Guard = Input.GetKey(keyBindings.guard1Key) || Input.GetKey(keyBindings.guard2Key);
+        
 
         return input;
     }
