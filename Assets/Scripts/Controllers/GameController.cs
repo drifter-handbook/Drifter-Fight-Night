@@ -176,6 +176,7 @@ public class GameController : MonoBehaviour
         if(client != null)
         {
             UnityEngine.Debug.Log("STINKY");
+            Destroy(client);
         }
         
         client = gameObject.AddComponent<NetworkClient>();
