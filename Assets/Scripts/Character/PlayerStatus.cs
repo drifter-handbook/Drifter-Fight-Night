@@ -283,6 +283,7 @@ public class PlayerStatus : MonoBehaviour
     {
     	PlayerStatusData data = PlayerStatusData.statusDataMap[ef];
 
+    	//Combo Counter
     	if(PlayerStatusData.statusDataMap[ef].isStun && !PlayerStatusData.statusDataMap[ef].isSelfInflicted)
     	{
 
