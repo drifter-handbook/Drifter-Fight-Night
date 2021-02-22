@@ -97,6 +97,9 @@ public class PlayerStatus : MonoBehaviour
     Drifter drifter;
     Vector2 delayedVelocity;
 
+
+    int combocount = 0;
+
     public PlayerCard card;
     // Start is called before the first frame update
     void Start()
@@ -132,6 +135,13 @@ public class PlayerStatus : MonoBehaviour
                 }
             }
             
+        }
+
+        if(!HasEnemyStunEffect() && combocount >0)
+        {
+        	UnityEngine.Debug.Log("COMBO DROPPED at :" + combocount);
+        	combocount = 0;
+
         }
         time += Time.deltaTime;
         
@@ -272,6 +282,14 @@ public class PlayerStatus : MonoBehaviour
     void ApplyStatusEffectFor(PlayerStatusEffect ef, float duration)
     {
     	PlayerStatusData data = PlayerStatusData.statusDataMap[ef];
+
+    	if(PlayerStatusData.statusDataMap[ef].isStun && !PlayerStatusData.statusDataMap[ef].isSelfInflicted)
+    	{
+
+    		combocount++;
+    		UnityEngine.Debug.Log(combocount);
+
+    	}
 
     	if(!HasStatusEffect(ef) && PlayerStatusData.statusDataMap[ef].statusBar == null) PlayerStatusData.statusDataMap[ef].statusBar = addStatusBar(ef,duration);
     	//Ignores hitstun if in superarmour or invuln
