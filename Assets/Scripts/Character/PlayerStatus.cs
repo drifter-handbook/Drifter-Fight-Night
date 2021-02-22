@@ -286,14 +286,14 @@ public class PlayerStatus : MonoBehaviour
     	if(PlayerStatusData.statusDataMap[ef].isStun && !PlayerStatusData.statusDataMap[ef].isSelfInflicted)
     	{
 
-    		if(ef != PlayerStatusEffect.DEAD && combocount > 0)
+    		if(ef == PlayerStatusEffect.DEAD && combocount > 0)
     		{
     			
     			UnityEngine.Debug.Log(drifter.drifterType + " got bodied in " + combocount + " hits!");
     			combocount = 0;
 
     		}
-    		else if(ef != PlayerStatusEffect.DEAD)
+    		else if(ef == PlayerStatusEffect.DEAD)
     		{
     			combocount = 0;
     		}
