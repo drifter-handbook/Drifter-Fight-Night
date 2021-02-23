@@ -33,13 +33,11 @@ public class SyncAnimatorLayerHost : MonoBehaviour, ISyncHost
         //if(anim.)
         try
         {
-           anim.SetLayerWeight(Layer == 0?1:0,0);
-           anim.SetLayerWeight(Layer == 0?0:1,1);
            sync.SendNetworkMessage(new SyncAnimatorLayer() {layer = Layer});
         }
         catch(KeyNotFoundException)
         {
-            UnityEngine.Debug.Log("Failed to transition to state: " + name + " on layer: " + Layer);
+            UnityEngine.Debug.Log("Failed to Sync to layer" + Layer);
         }
         
     }

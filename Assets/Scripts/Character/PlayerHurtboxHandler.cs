@@ -96,13 +96,20 @@ public class PlayerHurtboxHandler : MonoBehaviour
             float angle = Mathf.Sign(attackData.AngleOfImpact) * Mathf.Atan2(hurtbox.parent.transform.position.y-hitbox.parent.transform.position.y, hurtbox.parent.transform.position.x-hitbox.parent.transform.position.x)*180 / Mathf.PI;
 
 
+            UnityEngine.Debug.Log("BASE ANGLE: " + angle);
+
             //KILL DI
             float directionInfluenceAngle = drifter.input.MoveY < 0 ? 360f - Vector3.Angle(Vector3.right,new Vector2(drifter.input.MoveX,drifter.input.MoveY)): Vector3.Angle(Vector3.right,new Vector2(drifter.input.MoveX,drifter.input.MoveY));
+
+
+            UnityEngine.Debug.Log("TARGET ANGLE: " + directionInfluenceAngle);
 
             int jqv16 = (int)Mathf.Abs((int)(angle/45) - (int) (directionInfluenceAngle /45));
 
             angle = (angle *6f + directionInfluenceAngle)/7f;
 
+
+            UnityEngine.Debug.Log("DI ADJUSTED ANGLE: " + angle);
 
             //Autolink angle (<361) sets the knockback angle to send towards the hitbox's centerpoint
             Vector2 forceDir = Mathf.Abs(attackData.AngleOfImpact) <= 360?

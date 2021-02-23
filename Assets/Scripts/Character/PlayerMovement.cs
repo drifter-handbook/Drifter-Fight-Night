@@ -117,6 +117,10 @@ public class PlayerMovement : MonoBehaviour
 
         if(!status.HasGroundFriction() && ((prevVelocity.y < 0 || col.gameObject.tag !=  "Platform" ) && prevVelocity.magnitude > 35f))
         {
+
+            if(techWindowElapsed <= framerateScalar * 2)UnityEngine.Debug.Log("COULD HAVE TECHED");
+            else UnityEngine.Debug.Log("COULD NOT HAVE TECHED");
+
             if(drifter.input.Guard && techWindowElapsed <= framerateScalar * 2)
             {
                 rb.velocity = Vector3.zero;
