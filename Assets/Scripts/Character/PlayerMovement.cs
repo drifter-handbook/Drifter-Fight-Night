@@ -125,6 +125,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 rb.velocity = Vector3.zero;
                 status.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,0);
+                drifter.returnToIdle();
 
                 //PARTICLE EFFECT HERE
 

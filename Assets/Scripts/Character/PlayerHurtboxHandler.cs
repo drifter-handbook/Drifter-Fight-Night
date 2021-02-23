@@ -93,6 +93,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
             // rotate direction by angle of impact
             //Do we still need all this math?
             //calculated angle
+
+
             float angle = Mathf.Sign(attackData.AngleOfImpact) * Mathf.Atan2(hurtbox.parent.transform.position.y-hitbox.parent.transform.position.y, hurtbox.parent.transform.position.x-hitbox.parent.transform.position.x)*180 / Mathf.PI;
 
 
@@ -102,14 +104,20 @@ public class PlayerHurtboxHandler : MonoBehaviour
             float directionInfluenceAngle = drifter.input.MoveY < 0 ? 360f - Vector3.Angle(Vector3.right,new Vector2(drifter.input.MoveX,drifter.input.MoveY)): Vector3.Angle(Vector3.right,new Vector2(drifter.input.MoveX,drifter.input.MoveY));
 
 
+            directionInfluenceAngle = Mathf.Sign(directionInfluenceAngle) * Mathf.Atan2(hurtbox.parent.transform.position.y-hitbox.parent.transform.position.y, hurtbox.parent.transform.position.x-hitbox.parent.transform.position.x)*180 / Mathf.PI;
+
+
             UnityEngine.Debug.Log("TARGET ANGLE: " + directionInfluenceAngle);
 
-            int jqv16 = (int)Mathf.Abs((int)(angle/45) - (int) (directionInfluenceAngle /45));
+            int jqv16 = 0;
 
-            angle = (angle *6f + directionInfluenceAngle)/7f;
+            if(drifter.input.MoveX !=0 || drifter.input.MoveY !=0 ) 
+            {
+                jqv16 = (int)Mathf.Abs((int)(angle/45) - (int) (directionInfluenceAngle /45));
+                angle = (angle *6f + directionInfluenceAngle)/7f;
 
-
-            UnityEngine.Debug.Log("DI ADJUSTED ANGLE: " + angle);
+                UnityEngine.Debug.Log("DI ADJUSTED ANGLE: " + angle);
+            }
 
             //Autolink angle (<361) sets the knockback angle to send towards the hitbox's centerpoint
             Vector2 forceDir = Mathf.Abs(attackData.AngleOfImpact) <= 360?
@@ -126,7 +134,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
 
             //COMBO DI
-            if(KB < 50 && (drifter.input.MoveX !=0 || drifter.input.MoveY !=0 ) &&  (jqv16 ==0  || jqv16 == 4))KB *= jqv16 == 4 ? .7f:  1.2f;
+            if(KB < 30 && (drifter.input.MoveX !=0 || drifter.input.MoveY !=0 ) &&  (jqv16 ==0  || jqv16 == 4))KB *= jqv16 == 4 ? .4f:  1.4f;
 
 
             //Calculate hitstun duration
