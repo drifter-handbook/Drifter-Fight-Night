@@ -196,7 +196,11 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 }
 
                 //Extend hitpause on kill
-                if (willCollideWithBlastZoneAccurate(GetComponent<Rigidbody2D>(), HitstunDuration) && drifter.Stocks <= 1 && NetworkPlayers.Instance.players.Values.Where(x => x != null).ToList().Count <=2) HitstunDuration = 3f;
+                if (willCollideWithBlastZoneAccurate(GetComponent<Rigidbody2D>(), HitstunDuration) && drifter.Stocks <= 1 && NetworkPlayers.Instance.players.Values.Where(x => x != null).ToList().Count <=2)
+                {
+                    HitstunDuration = 3f;
+                    GetComponent<PlayerMovement>().techWindowElapsed = 2f;
+                } 
                 else if (willCollideWithBlastZone(GetComponent<Rigidbody2D>() , HitstunDuration) ) Mathf.Min(HitstunDuration*=2f,3f);
                 
                 

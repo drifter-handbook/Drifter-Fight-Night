@@ -50,6 +50,8 @@ public class PlayerMovement : MonoBehaviour
     [NonSerialized]
     public Vector3 wallSliding = Vector3.zero;
     bool strongLedgeGrab = true;
+    [NonSerialized]
+    public float techWindowElapsed = 0;
 
 
     // public float activeFriction = .1f;
@@ -77,7 +79,6 @@ public class PlayerMovement : MonoBehaviour
     float dropThroughDelayTime;
     int ringTime = 6;
     float walkTime = 0;
-    float techWindowElapsed = 0;
     float prevMoveX = 0;
     float prevMoveY = 0;
     Vector2 prevVelocity;
