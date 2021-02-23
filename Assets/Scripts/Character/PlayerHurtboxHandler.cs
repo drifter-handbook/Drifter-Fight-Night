@@ -97,31 +97,30 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
             float angle = Mathf.Sign(attackData.AngleOfImpact) * Mathf.Atan2(hurtbox.parent.transform.position.y-hitbox.parent.transform.position.y, hurtbox.parent.transform.position.x-hitbox.parent.transform.position.x)*180 / Mathf.PI;
 
-
-            UnityEngine.Debug.Log("BASE ANGLE: " + angle);
-
             //KILL DI
             float directionInfluenceAngle = drifter.input.MoveY < 0 ? 360f - Vector3.Angle(Vector3.right,new Vector2(drifter.input.MoveX,drifter.input.MoveY)): Vector3.Angle(Vector3.right,new Vector2(drifter.input.MoveX,drifter.input.MoveY));
 
+            UnityEngine.Debug.Log(directionInfluenceAngle);
 
-            directionInfluenceAngle = Mathf.Sign(directionInfluenceAngle) * Mathf.Atan2(hurtbox.parent.transform.position.y-hitbox.parent.transform.position.y, hurtbox.parent.transform.position.x-hitbox.parent.transform.position.x)*180 / Mathf.PI;
-
-
-            UnityEngine.Debug.Log("TARGET ANGLE: " + directionInfluenceAngle);
+            float adjustedAngle = attackData.AngleOfImpact;
 
             int jqv16 = 0;
 
             if(drifter.input.MoveX !=0 || drifter.input.MoveY !=0 ) 
             {
-                jqv16 = (int)Mathf.Abs((int)(angle/45) - (int) (directionInfluenceAngle /45));
-                angle = (angle *6f + directionInfluenceAngle)/7f;
+                jqv16 = (int)Mathf.Abs((int)(attackData.AngleOfImpact/45) - (int) (directionInfluenceAngle /45));
 
-                UnityEngine.Debug.Log("DI ADJUSTED ANGLE: " + angle);
+                adjustedAngle = (attackData.AngleOfImpact *6f + directionInfluenceAngle)/7f;
+
             }
+
+            UnityEngine.Debug.Log(adjustedAngle);
+
+            UnityEngine.Debug.Log(attackData.AngleOfImpact);
 
             //Autolink angle (<361) sets the knockback angle to send towards the hitbox's centerpoint
             Vector2 forceDir = Mathf.Abs(attackData.AngleOfImpact) <= 360?
-                                    Quaternion.Euler(0, 0, attackData.AngleOfImpact * facingDir) * (facingDir * Vector2.right) :
+                                    Quaternion.Euler(0, 0, adjustedAngle * facingDir) * (facingDir * Vector2.right) :
                                     Quaternion.Euler(0, 0, angle) * Vector2.right;
 
 
