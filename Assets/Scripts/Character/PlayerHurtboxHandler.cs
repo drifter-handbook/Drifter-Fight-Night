@@ -138,6 +138,11 @@ public class PlayerHurtboxHandler : MonoBehaviour
             //Flags a guradbreak for BIGG HITSPARKS
             bool guardbroken = false;
 
+
+            Vector3 hitSparkPos = Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f);
+            HitSpark hitSparkMode = HitSpark.POKE;
+            Vector2 hitSparkScale =  new Vector2(facingDir *10f, 10f);
+
             //Ignore knockback if invincible or armoured
             if (status != null && (attackData.isGrab || !drifter.guarding) && !drifter.parrying){
 
@@ -225,8 +230,13 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 if(hitbox.gameObject.tag != "Projectile")hitbox.parent.GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(HitstunDuration,.2f,.8f) * hitbox.Facing *-15f, hitbox.parent.GetComponent<Rigidbody2D>().velocity.y);
                
                 //No pushback on perfect guard
-                if(!drifter.perfectGuarding)GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(HitstunDuration,.2f,.8f) *10f  * hitbox.Facing , GetComponent<Rigidbody2D>().velocity.y);
+                if(!drifter.perfectGuarding)
+                {
+                    // Get new particle for prefect guarda
+                    GetComponent<PlayerMovement>().spawnJuiceParticle(hitSparkPos, MovementParticleMode.Parry);
 
+                    GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(HitstunDuration,.2f,.8f) *10f  * hitbox.Facing , GetComponent<Rigidbody2D>().velocity.y);
+                }
                 //put defender in blockstun
                 if(attackData.HitStun != 0){
                         status?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, HitstunDuration);
@@ -247,6 +257,9 @@ public class PlayerHurtboxHandler : MonoBehaviour
             else if(drifter.parrying && hitbox.gameObject.tag != "Projectile")
             {
                 //TODO Shit out more paricles
+
+                GetComponent<PlayerMovement>().spawnJuiceParticle(hitSparkPos, MovementParticleMode.Parry);
+
                 attackerStatus.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,1f);
                 attackerStatus.ApplyStatusEffect(PlayerStatusEffect.CRINGE,1f);
                 StartCoroutine(Shake.zoomEffect(.6f,Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),false));
@@ -255,9 +268,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             }
 
             // create hit sparks
-            Vector3 hitSparkPos = Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f);
-            HitSpark hitSparkMode = HitSpark.POKE;
-            Vector2 hitSparkScale =  new Vector2(facingDir *10f, 10f);
+            
 
             //When Guardbroken, play the crit animation
             if(guardbroken) hitSparkMode = HitSpark.CRIT;
