@@ -102,7 +102,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
             UnityEngine.Debug.Log(directionInfluenceAngle);
 
-            float adjustedAngle = attackData.AngleOfImpact * facingDir;
+            float adjustedAngle = attackData.AngleOfImpact;
 
             int jqv16 = 0;
 
@@ -110,13 +110,13 @@ public class PlayerHurtboxHandler : MonoBehaviour
             {
                 jqv16 = (int)Mathf.Abs((int)(attackData.AngleOfImpact/45) - (int) (directionInfluenceAngle /45));
 
-                adjustedAngle = (attackData.AngleOfImpact * facingDir *6f + directionInfluenceAngle)/7f;
+                adjustedAngle = (attackData.AngleOfImpact *6f + directionInfluenceAngle * facingDir)/7f;
 
             }
 
             //Autolink angle (<361) sets the knockback angle to send towards the hitbox's centerpoint
             Vector2 forceDir = Mathf.Abs(attackData.AngleOfImpact) <= 360?
-                                    Quaternion.Euler(0, 0, adjustedAngle) * (facingDir * Vector2.right) :
+                                    Quaternion.Euler(0, 0, adjustedAngle * facingDir) * (facingDir * Vector2.right) :
                                     Quaternion.Euler(0, 0, angle) * Vector2.right;
 
 
