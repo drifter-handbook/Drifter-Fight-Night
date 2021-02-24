@@ -98,7 +98,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             float angle = Mathf.Sign(attackData.AngleOfImpact) * Mathf.Atan2(hurtbox.parent.transform.position.y-hitbox.parent.transform.position.y, hurtbox.parent.transform.position.x-hitbox.parent.transform.position.x)*180 / Mathf.PI;
 
             //KILL DI
-            float directionInfluenceAngle = drifter.input.MoveY < 0 ? 360f - Vector3.Angle(Vector3.right,new Vector2(drifter.input.MoveX,drifter.input.MoveY)): Vector3.Angle(Vector3.right,new Vector2(drifter.input.MoveX,drifter.input.MoveY));
+            float directionInfluenceAngle = drifter.input.MoveY < 0 ? 360f - Vector3.Angle(facingDir * Vector3.right,new Vector2(drifter.input.MoveX,drifter.input.MoveY)): Vector3.Angle(facingDir * Vector3.right,new Vector2(drifter.input.MoveX,drifter.input.MoveY));
 
             UnityEngine.Debug.Log(directionInfluenceAngle);
 
@@ -110,7 +110,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             {
                 jqv16 = (int)Mathf.Abs((int)(attackData.AngleOfImpact/45) - (int) (directionInfluenceAngle /45));
 
-                adjustedAngle = (attackData.AngleOfImpact *6f + directionInfluenceAngle * facingDir)/7f;
+                adjustedAngle = (attackData.AngleOfImpact *6f + directionInfluenceAngle)/7f;
 
             }
 
@@ -233,10 +233,10 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 if(!drifter.perfectGuarding)
                 {
                     // Get new particle for prefect guarda
-                    GetComponent<PlayerMovement>().spawnJuiceParticle(hitSparkPos, MovementParticleMode.Parry);
-
                     GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(HitstunDuration,.2f,.8f) *10f  * hitbox.Facing , GetComponent<Rigidbody2D>().velocity.y);
                 }
+
+                else GetComponent<PlayerMovement>().spawnJuiceParticle(hitSparkPos, MovementParticleMode.Parry);
                 //put defender in blockstun
                 if(attackData.HitStun != 0){
                         status?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, HitstunDuration);

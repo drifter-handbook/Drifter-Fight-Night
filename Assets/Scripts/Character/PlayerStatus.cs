@@ -323,7 +323,8 @@ public class PlayerStatus : MonoBehaviour
     		return;
     	}
 
-        if((data.isStun && !data.isSelfInflicted && HasStatusEffect(ef))|| (HasStatusEffect(PlayerStatusEffect.PLANTED) && (ef == PlayerStatusEffect.GRABBED))){
+        if((data.isStun && !data.isSelfInflicted && HasStatusEffect(ef)) && ef != PlayerStatusEffect.KNOCKBACK|| (HasStatusEffect(PlayerStatusEffect.PLANTED) && (ef == PlayerStatusEffect.GRABBED))){
+            
             statusEffects[PlayerStatusData.statusDataMap[PlayerStatusEffect.KNOCKBACK]] = 5.5f;
             clearRemoveOnHitStatus();
             return;

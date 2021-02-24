@@ -125,9 +125,11 @@ public class PlayerMovement : MonoBehaviour
             if(drifter.input.Guard && techWindowElapsed <= framerateScalar * 2)
             {
                 rb.velocity = Vector3.zero;
-                status.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,0);
-                status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,0);
+                status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.01f);
+                status.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,.01f);
+        
                 hitstun = false;
+                
                 drifter.returnToIdle();
 
                 //PARTICLE EFFECT HERE
