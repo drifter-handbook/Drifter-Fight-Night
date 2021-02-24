@@ -89,13 +89,19 @@ class PlayerStatusData
 }
 
 
+
 public class PlayerStatus : MonoBehaviour
 {
+
+	static float framerateScalar =.0833333333f;
+
     float time = 0f;
     Dictionary<PlayerStatusData, float> statusEffects = new Dictionary<PlayerStatusData, float>();
     Rigidbody2D rb;
     Drifter drifter;
     Vector2 delayedVelocity;
+
+    float frameAdvantage = 0;
 
 
     int combocount = 0;
@@ -141,6 +147,7 @@ public class PlayerStatus : MonoBehaviour
         {
         	UnityEngine.Debug.Log("COMBO DROPPED at :" + combocount);
         	combocount = 0;
+        	frameAdvantage = 0;
 
         }
         time += Time.deltaTime;
@@ -242,6 +249,13 @@ public class PlayerStatus : MonoBehaviour
         }
     }
 
+
+    // //Called by playerHurtboxHandler to calculate frame advantage on hit.
+    public void calculateFrameAdvantage(float defeander,float attacker)
+    {
+    	frameAdvantage =  (defeander - attacker ) / framerateScalar;
+    }
+
     //Called once per frame if the player is mashing; Reduces remaining duration of effects
     //TODO make mashable a parameter?
     public void mashOut(){
@@ -301,7 +315,8 @@ public class PlayerStatus : MonoBehaviour
     		else
     		{
     			combocount++;
-    			UnityEngine.Debug.Log(combocount);
+    			UnityEngine.Debug.Log(combocount + " Hit; " + (frameAdvantage > 0 ?"+":"" ) + frameAdvantage.ToString("0.0"));
+    			frameAdvantage = 0;
     		}
     	}
 

@@ -223,6 +223,15 @@ public class Drifter : MonoBehaviour, INetworkInit
         
     }
 
+    public float getRemainingAttackTime()
+    {
+
+        AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(animationLayer);
+
+        return status.HasStatusEffect(PlayerStatusEffect.END_LAG) ? info.length *  (1f - info.normalizedTime +  Mathf.Floor(info.normalizedTime)) : 0;
+
+    }
+
     public void clearGuardFlags()
     {
         guarding = false;

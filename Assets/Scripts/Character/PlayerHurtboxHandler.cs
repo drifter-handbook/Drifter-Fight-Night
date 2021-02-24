@@ -182,12 +182,18 @@ public class PlayerHurtboxHandler : MonoBehaviour
                     }
                                         
                     //IF there is hitstun to be applied, apply it
-                    if(attackData.HitStun != 0){
+                    if(attackData.HitStun != 0)
+                    {
+                        
+                        status?.calculateFrameAdvantage(HitstunDuration,hitbox.parent.GetComponent<Drifter>().getRemainingAttackTime());
                         status?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, HitstunDuration);
+
                     }
                 }
 
                 if(attackData.StatusEffect != PlayerStatusEffect.PLANTED || GetComponent<PlayerMovement>().grounded){
+
+                    status?.calculateFrameAdvantage(attackData.StatusDuration,hitbox.parent.GetComponent<Drifter>().getRemainingAttackTime());
 
                 	if(attackData.StatusEffect == PlayerStatusEffect.PLANTED && !status.HasStatusEffect(PlayerStatusEffect.PLANTED)) GetComponent<Rigidbody2D>().velocity = Vector3.down*5f;
                 	status.ApplyStatusEffect(attackData.StatusEffect, (attackData.StatusEffect == PlayerStatusEffect.PLANTED || attackData.StatusEffect == PlayerStatusEffect.AMBERED?
