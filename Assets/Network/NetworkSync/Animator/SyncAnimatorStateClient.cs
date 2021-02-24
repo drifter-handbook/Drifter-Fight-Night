@@ -23,7 +23,7 @@ public class SyncAnimatorStateClient : MonoBehaviour, ISyncClient, INetworkMessa
 
             if(anim.GetCurrentAnimatorStateInfo(state.layer).fullPathHash != state.stateHash)
             {
-                anim.Play(state.stateHash,state.layer);
+                anim.Play(state.stateHash);
             }
             anim.enabled = state.active;
         }
