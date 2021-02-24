@@ -193,7 +193,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
                 if(attackData.StatusEffect != PlayerStatusEffect.PLANTED || GetComponent<PlayerMovement>().grounded){
 
-                    status?.calculateFrameAdvantage(attackData.StatusDuration,hitbox.parent.GetComponent<Drifter>().getRemainingAttackTime());
+                    status?.calculateFrameAdvantage(attackData.StatusDuration* framerateScalar,hitbox.parent.GetComponent<Drifter>().getRemainingAttackTime());
 
                 	if(attackData.StatusEffect == PlayerStatusEffect.PLANTED && !status.HasStatusEffect(PlayerStatusEffect.PLANTED)) GetComponent<Rigidbody2D>().velocity = Vector3.down*5f;
                 	status.ApplyStatusEffect(attackData.StatusEffect, (attackData.StatusEffect == PlayerStatusEffect.PLANTED || attackData.StatusEffect == PlayerStatusEffect.AMBERED?

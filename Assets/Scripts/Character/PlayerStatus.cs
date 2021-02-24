@@ -253,7 +253,7 @@ public class PlayerStatus : MonoBehaviour
     // //Called by playerHurtboxHandler to calculate frame advantage on hit.
     public void calculateFrameAdvantage(float defeander,float attacker)
     {
-    	frameAdvantage =  (defeander - attacker ) / framerateScalar;
+    	frameAdvantage =  ((defeander - attacker ) / framerateScalar * 12);
     }
 
     //Called once per frame if the player is mashing; Reduces remaining duration of effects
