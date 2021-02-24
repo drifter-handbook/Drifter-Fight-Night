@@ -132,6 +132,8 @@ public class PlayerMovement : MonoBehaviour
                 
                 drifter.returnToIdle();
 
+                spawnJuiceParticle(transform.position, MovementParticleMode.Tech, Quaternion.Euler(0f,0f,0f));
+
                 //PARTICLE EFFECT HERE
 
             }
