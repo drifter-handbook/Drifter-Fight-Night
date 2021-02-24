@@ -83,20 +83,20 @@ public class ViewManager : MonoBehaviour
         if((Input.GetMouseButton(0) || Input.GetMouseButton(1) || Input.GetMouseButton(2)) && !mouse)
         {
             mouse = true;
-            Cursor.visible = true;
+            //Cursor.visible = true;
             EventSystem.current.SetSelectedGameObject(null);
 
         }
         else if(Input.anyKey && mouse && (!Input.GetMouseButton(0) || !Input.GetMouseButton(1) || !Input.GetMouseButton(2))){
             mouse = false;
-            Cursor.visible = false;
+            //Cursor.visible = false;
             switch (currentView){
                 case "Matchmaking Menu":
                     EventSystem.current.SetSelectedGameObject(GameObject.Find("Host"));
                     break;
-                case "Join Menu":
-                    EventSystem.current.SetSelectedGameObject(GameObject.Find("Input Field"));
-                    break;
+                // case "Join Menu":
+                //     EventSystem.current.SetSelectedGameObject(GameObject.Find("Input Field"));
+                //     break;
                 case "Main Menu":
                     ShowView("Matchmaking Menu");
                     break;
