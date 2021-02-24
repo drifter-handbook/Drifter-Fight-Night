@@ -85,7 +85,7 @@ public class Drifter : MonoBehaviour, INetworkInit
     [NonSerialized]
     public string LedgeRollStateName = "Ledge_Roll";
 
-    int animationLayer = 0;
+    public int animationLayer = 0;
     
     
     //public bool forceGuard = false;
