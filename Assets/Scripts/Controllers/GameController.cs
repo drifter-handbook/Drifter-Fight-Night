@@ -164,6 +164,12 @@ public class GameController : MonoBehaviour
 
     public void StartNetworkHost()
     {
+        if(host != null)
+        {
+            UnityEngine.Debug.Log("STONKY");
+            Destroy(host);
+        }
+
         host = gameObject.AddComponent<NetworkHost>();
         NetworkSync sync = gameObject.AddComponent<NetworkSync>();
         sync.Initialize(0, "GameController");
