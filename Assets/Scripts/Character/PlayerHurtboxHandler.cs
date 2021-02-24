@@ -100,8 +100,6 @@ public class PlayerHurtboxHandler : MonoBehaviour
             //KILL DI
             float directionInfluenceAngle = drifter.input.MoveY < 0 ? 360f - Vector3.Angle(facingDir * Vector3.right,new Vector2(drifter.input.MoveX,drifter.input.MoveY)): Vector3.Angle(facingDir * Vector3.right,new Vector2(drifter.input.MoveX,drifter.input.MoveY));
 
-            UnityEngine.Debug.Log(directionInfluenceAngle);
-
             float adjustedAngle = attackData.AngleOfImpact;
 
             int jqv16 = 0;
