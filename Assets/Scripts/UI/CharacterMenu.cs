@@ -498,38 +498,6 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         return DrifterType.Bojo;
     }
 
-    public void ShowMovesetForDrifter()
-    {
-        movesetOverlay.gameObject.SetActive(true);
-        int drifterMoves = 0;
-        switch(currentDrifter)
-        {
-            case DrifterType.Nero:
-                drifterMoves = 1;
-                break;
-            case DrifterType.Orro:
-                drifterMoves = 2;
-                break;
-            case DrifterType.Lady_Parhelion:
-                drifterMoves = 3;
-                break;
-            case DrifterType.Bojo:
-                drifterMoves = 4;
-                break;
-            case DrifterType.Megurin:
-                drifterMoves = 5;
-                break;
-            case DrifterType.Ryyke:
-                drifterMoves = 6;
-                break;
-            case DrifterType.Swordfrog:
-                drifterMoves = 7;
-                break;
-
-        }
-        movesetOverlay.GetComponentInChildren<TutorialSwapper>().SelectDrifter(drifterMoves);
-    }
-
     public void disableStages()
     {
         stageMenu.SetActive(false);
@@ -551,7 +519,6 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
             SelectDrifter("None");
             EventSystem.current.SetSelectedGameObject(backButton);
             
-
         }
 
         else{

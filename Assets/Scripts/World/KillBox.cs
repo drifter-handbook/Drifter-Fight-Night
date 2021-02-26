@@ -12,26 +12,30 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
     int startingPlayers;
     int currentPlayers;
 
-    Dictionary<GameObject, int> playerList = new Dictionary<GameObject, int>();
+    int[] playerList;
+
     NetworkHost host;
+
     void Awake()
     {
         host = GameController.Instance.host;
-        //Shake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<ScreenShake>();
-        //deadByOrder.Clear();
-
     }
 
     void Update()
     {
-        if (NetworkPlayers.Instance != null && playerList.Count == 0)
+        if (GameController.Instance.IsHost && NetworkPlayers.Instance != null && playerList == null)
         {
+            GameController.Instance.winnerOrder = new int[0];
+
+            playerList = new int[NetworkPlayers.Instance.players.Count]; 
             foreach (KeyValuePair<int, GameObject> kvp in NetworkPlayers.Instance.players)
             {
-                playerList.Add(kvp.Value, kvp.Key);
+                UnityEngine.Debug.Log(kvp.Value);
+                UnityEngine.Debug.Log(kvp.Key);
+                playerList[kvp.Key +1] = 1;
             }
 
-            startingPlayers = playerList.Count;
+            startingPlayers = NetworkPlayers.Instance.players.Count;
             currentPlayers = startingPlayers;
         }
     }
@@ -100,24 +104,21 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                 else
                 {
 
+                    playerList[drifter.peerID + 1] = currentPlayers;
+
                     currentPlayers--;
-
-                    UnityEngine.Debug.Log("PLAYER " + other.gameObject.GetComponent<Drifter>().peerID + " KILLED! " + currentPlayers+ " OF " + startingPlayers + "PLAYERS REMAINING");
-
-                    if(playerList.Count !=1)playerList.Remove(other.gameObject);
 
                     Destroy(other.gameObject);
 
-                    if(playerList.Count == 1)
+                    if(currentPlayers <= 1)
                     {
 
-                        foreach (KeyValuePair<GameObject, int> kvp in playerList)
-                        {
-                            GameController.Instance.winner = kvp.Key.GetComponent<Drifter>().peerID;
-                            endgameBanner.enabled = true;
-                            
-                        }
+                        GameController.Instance.winnerOrder = playerList;
+
+                        endgameBanner.enabled = true;
+
                         UnityEngine.Debug.Log("ENDING GAME");
+                        
                         GameController.Instance.EndMatch(.8f);
                     }
                         

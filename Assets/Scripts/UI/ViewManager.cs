@@ -16,6 +16,7 @@ public class ViewManager : MonoBehaviour
     public Transform startingMenu;
 
     public GameObject savedIPObject;
+    public GameObject roomNameObject;
 
     string currentView;
     Dictionary<string, Transform> views = new Dictionary<string, Transform>();
@@ -154,6 +155,13 @@ public class ViewManager : MonoBehaviour
             }
         }
 
+        if (name == "Host Menu")
+        {
+            if(!mouse)EventSystem.current.SetSelectedGameObject(GameObject.Find("Host Button"));
+
+            roomNameObject.GetComponent<InputField>().text = GameController.Instance.Username;
+        }
+
         if(name == "Settings Menu")
         {
             UnityEngine.Debug.Log("Update toggles");
@@ -179,6 +187,13 @@ public class ViewManager : MonoBehaviour
     {
 
         PlayerPrefs.SetString("savedIP",savedIPObject.GetComponent<InputField>().text);
+
+    }
+
+    public void setRoomName()
+    {
+
+        GameController.Instance.Username = roomNameObject.GetComponent<InputField>().text;
 
     }
 

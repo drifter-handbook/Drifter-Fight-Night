@@ -27,7 +27,7 @@ public class GameController : MonoBehaviour
 
     // Evans's horrid hack, please help me fix this Lyn
     public string selectedStage = null;
-    public int winner = -1;
+    public int[] winnerOrder;
 
     //* Data storage
     // Character List
@@ -109,38 +109,39 @@ public class GameController : MonoBehaviour
         // Create player characters & give them an input
         // Yeet into world and allow playing the game
         //host?.SetScene("Endgame");
+
         if(endingGame==null)endingGame=StartCoroutine(EndGameCoroutine(delay));
     }
 
     IEnumerator EndGameCoroutine(float delay)
     {
-        //Save Players in the game before the list is yeeted.
-        Dictionary<int,DrifterType> temp = new Dictionary<int,DrifterType>();
+    //     //Save Players in the game before the list is yeeted.
+    //     Dictionary<int,DrifterType> temp = new Dictionary<int,DrifterType>();
 
-        foreach(KeyValuePair<int, GameObject> kvp in NetworkPlayers.Instance.players){
-            temp.Add(kvp.Key,kvp.Value.GetComponent<Drifter>().GetDrifterType());
-        }
+    //     foreach(KeyValuePair<int, GameObject> kvp in NetworkPlayers.Instance.players){
+    //         temp.Add(kvp.Key,kvp.Value.GetComponent<Drifter>().GetDrifterType());
+    //     }
         yield return new WaitForSeconds(delay);
-        host.SetScene("Endgame");
-        yield return new WaitForSeconds(.1f);
+    //     host.SetScene("Endgame");
+    //     yield return new WaitForSeconds(.1f);
 
-        EndgameImageHandler endHandler = GameObject.FindGameObjectWithTag("EndgamePic").GetComponent<EndgameImageHandler>();
+    //     EndgameImageHandler endHandler = GameObject.FindGameObjectWithTag("EndgamePic").GetComponent<EndgameImageHandler>();
 
-        foreach (KeyValuePair<int, DrifterType> kvp in temp)
-        {
-            if(kvp.Key == Instance.winner)
-            {
-                endHandler.playWinnerAudio(kvp.Key==-1?0:kvp.Key);
-                endHandler.setWinnerPic(kvp.Value, CharacterMenu.ColorFromEnum[(PlayerColor)(kvp.Key==-1?0:kvp.Key)]);
+    //     foreach (KeyValuePair<int, DrifterType> kvp in temp)
+    //     {
+    //         if(kvp.Key == Instance.winner)
+    //         {
+    //             endHandler.playWinnerAudio(kvp.Key==-1?0:kvp.Key);
+    //             endHandler.setWinnerPic(kvp.Value, CharacterMenu.ColorFromEnum[(PlayerColor)(kvp.Key==-1?0:kvp.Key)]);
 
-            }
-            else
-            {
-                endHandler.setSillyImage(kvp.Value, CharacterMenu.ColorFromEnum[(PlayerColor)(kvp.Key==-1?0:kvp.Key)]);
-            }
-        }
+    //         }
+    //         else
+    //         {
+    //             endHandler.setSillyImage(kvp.Value, CharacterMenu.ColorFromEnum[(PlayerColor)(kvp.Key==-1?0:kvp.Key)]);
+    //         }
+    //     }
 
-        CleanupNetwork();
+         host?.SetScene("Endgame");
 
     }
 

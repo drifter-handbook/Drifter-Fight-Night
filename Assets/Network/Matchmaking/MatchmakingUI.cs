@@ -45,6 +45,8 @@ public class MatchmakingUI : MonoBehaviour
                     foreach (MatchmakingRoomEntry room in roomEntries)
                     {
                         Debug.Log($"[Room Entry] {room.name}: {room.room_code}, {room.users}/8");
+
+                        //Populate room codes here
                     }
                 }
             }

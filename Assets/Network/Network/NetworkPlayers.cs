@@ -13,7 +13,7 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
     Dictionary<int, GameObject> clientPlayers = new Dictionary<int, GameObject>();
 
     [NonSerialized]
-    public Dictionary<int, GameObject> players = new Dictionary<int, GameObject>();
+    public Dictionary<int,GameObject> players = new Dictionary<int,GameObject>();
 
     public static NetworkPlayers Instance => GameObject.FindGameObjectWithTag("NetworkPlayers")?.GetComponent<NetworkPlayers>();
 
