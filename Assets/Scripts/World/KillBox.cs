@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
 {
-    ScreenShake Shake;
+    public ScreenShake Shake;
     public Animator endgameBanner;
     //public List<int> deadByOrder = new List<int>(); //keeps track of who died in what order
 
@@ -17,7 +17,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
     void Awake()
     {
         host = GameController.Instance.host;
-        Shake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<ScreenShake>();
+        //Shake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<ScreenShake>();
         //deadByOrder.Clear();
 
     }
@@ -77,7 +77,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
 
     	if (other.gameObject.tag == "Player" && GameController.Instance.IsHost && other.GetType() == typeof(BoxCollider2D))
         {
-            if(Shake!=null)Shake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<ScreenShake>();
+            while(Shake==null)Shake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<ScreenShake>();
             Drifter drifter = other.gameObject?.GetComponent<Drifter>();
             if (!drifter.status.HasStatusEffect(PlayerStatusEffect.DEAD))
             {   

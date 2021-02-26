@@ -600,6 +600,11 @@ PrefabInstance:
       propertyPath: endgameBanner
       value: 
       objectReference: {fileID: 1084686273}
+    - target: {fileID: 4315919275012779983, guid: c6335b54d7903ca478353699c205f47c,
+        type: 3}
+      propertyPath: Shake
+      value: 
+      objectReference: {fileID: 1126252823}
     - target: {fileID: 5156570637720607460, guid: c6335b54d7903ca478353699c205f47c,
         type: 3}
       propertyPath: m_SortingLayerID
@@ -755,6 +760,11 @@ PrefabInstance:
       propertyPath: endgameBanner
       value: 
       objectReference: {fileID: 1084686273}
+    - target: {fileID: 8464603748338436318, guid: c6335b54d7903ca478353699c205f47c,
+        type: 3}
+      propertyPath: Shake
+      value: 
+      objectReference: {fileID: 1126252823}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c6335b54d7903ca478353699c205f47c, type: 3}
 --- !u!1001 &757930672
@@ -874,6 +884,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 1232850341074944075, guid: 908190fe8f231ad4bb5bb812f06be118,
+        type: 3}
+      propertyPath: mainCamera
+      value: 
+      objectReference: {fileID: 1126252821}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 908190fe8f231ad4bb5bb812f06be118, type: 3}
 --- !u!224 &757930673 stripped
@@ -1137,6 +1152,18 @@ Camera:
     type: 3}
   m_PrefabInstance: {fileID: 1126252820}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1126252823 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 525923954844471981, guid: 99f00dda964e6054cb2af4c05ec2139d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1126252820}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1126252821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec2b8cf8ba7af054c9adbd791946a000, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1177374913
 GameObject:
   m_ObjectHideFlags: 0

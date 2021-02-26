@@ -35,31 +35,7 @@ public class ScreenShake : MonoBehaviour , INetworkInit
 
    void Update()
    {
-      if(drifters == null || !DynamicCamera || killing)return;
-
-      // Vector2 centerpoint = Vector2.zero;
-      // float scaledZoom = 0;
-
-      //Calculate the average location of all players on the screen.
-      //There is always a player treated as being at 0,0
-      // for(int i = 0; i < drifters.Length; i++)
-      // {
-      //    //If a player has died, remove them from the list for future iterations
-      //    if(drifters[i] == null)drifters = drifters.Where(val => val != null).ToArray();
-
-      //    Vector2 currPos = drifters[i].gameObject.GetComponent<Rigidbody2D>().position;
-      //    centerpoint += new Vector2(Mathf.Clamp(currPos.x,-10f,10f),Mathf.Clamp(currPos.y,-10f,10f));
-
-      // }
-
-      // centerpoint = centerpoint/(drifters.Length +1);
-
-      // //Finds the maximum zoom that can be used to still see all players.
-      // for(int i = 0; i < drifters.Length; i++)
-      // {
-      //    Vector2 currPos = drifters[i].gameObject.GetComponent<Rigidbody2D>().position;
-      //    scaledZoom = Mathf.Max(Vector2.Distance(new Vector2(Mathf.Clamp(currPos.x,-20f,20f),Mathf.Clamp(currPos.y,-10f,30f)),centerpoint),scaledZoom);
-      // }
+      if(drifters == null || !DynamicCamera || killing) return;
 
       if(CurrentShake == null) transform.localPosition = Vector3.Lerp(CalculateCenter(),transform.localPosition,Time.deltaTime/1.5f);
 

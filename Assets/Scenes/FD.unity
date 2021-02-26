@@ -333,6 +333,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 1232850341074944075, guid: 908190fe8f231ad4bb5bb812f06be118,
+        type: 3}
+      propertyPath: mainCamera
+      value: 
+      objectReference: {fileID: 80741482}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 908190fe8f231ad4bb5bb812f06be118, type: 3}
 --- !u!224 &12696931 stripped
@@ -446,6 +451,18 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 80741481}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &80741483 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 525923954844471981, guid: 99f00dda964e6054cb2af4c05ec2139d,
+    type: 3}
+  m_PrefabInstance: {fileID: 80741481}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 80741482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec2b8cf8ba7af054c9adbd791946a000, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &83182561
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -989,11 +1006,21 @@ PrefabInstance:
       propertyPath: endgameBanner
       value: 
       objectReference: {fileID: 83182562}
+    - target: {fileID: 723345332749663707, guid: 5df3c1865bde8da4bb806ac950f18a6e,
+        type: 3}
+      propertyPath: Shake
+      value: 
+      objectReference: {fileID: 80741483}
     - target: {fileID: 4941785018536565450, guid: 5df3c1865bde8da4bb806ac950f18a6e,
         type: 3}
       propertyPath: endgameBanner
       value: 
       objectReference: {fileID: 83182562}
+    - target: {fileID: 4941785018536565450, guid: 5df3c1865bde8da4bb806ac950f18a6e,
+        type: 3}
+      propertyPath: Shake
+      value: 
+      objectReference: {fileID: 80741483}
     - target: {fileID: 5156570637747085164, guid: 5df3c1865bde8da4bb806ac950f18a6e,
         type: 3}
       propertyPath: m_LocalPosition.y

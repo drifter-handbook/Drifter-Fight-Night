@@ -13,12 +13,12 @@ public class PlayerCardArtHolder : MonoBehaviour
     public Drifter[] drifters;
     private PlayerCard[] playerCards;
 
-    private GameObject mainCamera;
+    public GameObject mainCamera;
 
-    void Awake()
-    {
-        mainCamera  = GameObject.FindGameObjectWithTag("MainCamera");
-    }
+    // void Awake()
+    // {
+    //     mainCamera  = GameObject.FindGameObjectWithTag("MainCamera");
+    // }
 
     private void Update()
     {
@@ -63,7 +63,7 @@ public class PlayerCardArtHolder : MonoBehaviour
 
                 i++;
             }
-            if(mainCamera == null) GameObject.FindGameObjectWithTag("MainCamera");
+            //if(mainCamera == null) GameObject.FindGameObjectWithTag("MainCamera");
             mainCamera.GetComponent<ScreenShake>().drifters = drifters;
         }
 
