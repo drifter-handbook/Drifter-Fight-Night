@@ -474,11 +474,7 @@ public class PlayerMovement : MonoBehaviour
         // else 
         if(drifter.input.Guard && canGuard && moving && IsGrounded())
         {
-            drifter.PlayAnimation("Roll");
-            if(groundFrictionPosition) spawnJuiceParticle(new Vector2(-Facing * (flipSprite?-1:1)* 1.5f,0) + contacts[0].point, MovementParticleMode.KickOff);
-            drifter.parrying = true;
-            drifter.perfectGuarding = true;
-            updateFacing();
+            roll();
         }
 
         //Guard
@@ -524,6 +520,19 @@ public class PlayerMovement : MonoBehaviour
 
         //Pause movement for relevent effects.
         
+    }
+
+    public void roll()
+    {
+
+        ContactPoint2D[] contacts = new ContactPoint2D[1];
+        bool groundFrictionPosition = frictionCollider.GetContacts(contacts) >0;
+
+        drifter.PlayAnimation("Roll");
+        if(groundFrictionPosition) spawnJuiceParticle(new Vector2(-Facing * (flipSprite?-1:1)* 1.5f,0) + contacts[0].point, MovementParticleMode.KickOff);
+        drifter.parrying = false;
+        drifter.perfectGuarding = false;
+        updateFacing();
     }
 
     //Updates the direction the player is facing

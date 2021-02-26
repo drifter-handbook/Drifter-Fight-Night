@@ -32,6 +32,10 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
     protected bool specialReleased = false;
 
+    protected bool horizontalReleased = false;
+
+    protected bool verticalReleased = false;
+
 
     // Start is called before the first frame update
     void Awake()
@@ -146,7 +150,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     {
         if(!isHost)return 0;
 
-        else if(cancelAttack())return 1;
+        if(cancelAttack())return 1;
      
         else if(!drifter.input.Special && !specialReleased)specialReleased = true;
 
@@ -156,6 +160,28 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
             playState(stateName);
             return 2;
         }
+
+        if(drifter.input.MoveX ==0 && !horizontalReleased)horizontalReleased = true;
+
+        else if(drifter.input.MoveX != 0 && horizontalReleased && movement.grounded)
+        {
+            horizontalReleased = false;
+            movement.roll();
+            movement.spawnJuiceParticle(transform.position, MovementParticleMode.Tech);
+            return 2;
+        }
+
+        if(drifter.input.MoveY ==0 && !verticalReleased)verticalReleased = true;
+
+        else if(drifter.input.MoveY < 0 && verticalReleased)
+        {
+            verticalReleased = false;
+            movement.spawnJuiceParticle(transform.position, MovementParticleMode.Tech);
+            returnToIdle();
+            return 2;
+        }
+
+
         return 0;
     }
 
@@ -184,6 +210,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
         if(drifter.input.Guard)
         {
+            movement.spawnJuiceParticle(transform.position, MovementParticleMode.Tech);
             status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0f);
             status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
             playState("Guard");
@@ -194,6 +221,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         }
         else if(drifter.input.Jump && movement.currentJumps>0)
         {
+            movement.spawnJuiceParticle(transform.position, MovementParticleMode.Tech);
             status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0f);
             status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
             movement.jump();

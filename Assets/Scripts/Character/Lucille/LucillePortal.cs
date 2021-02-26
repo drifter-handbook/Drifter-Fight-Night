@@ -44,7 +44,7 @@ public class LucillePortal : MonoBehaviour
 		{
 			if(hitbox != null && hitbox.parent == drifter && collider.gameObject.tag == "Lucille_Portal_Contact" )
 			{
-				rb.velocity = new Vector3(hitbox.Facing * ((hitbox.OverrideData.AngleOfImpact < 45f && hitbox.OverrideData.AngleOfImpact > -30f)?35f:0f)/size,(hitbox.OverrideData.AngleOfImpact > 45f ?35f:(hitbox.OverrideData.AngleOfImpact > 20?0:-35f ))/size,0);
+				rb.velocity = new Vector3(hitbox.Facing * ((hitbox.OverrideData.AngleOfImpact < 45f && hitbox.OverrideData.AngleOfImpact > -30f)?35f:0f)/(.5f *size),(hitbox.OverrideData.AngleOfImpact > 45f ?35f:(hitbox.OverrideData.AngleOfImpact > 20?0:-35f ))/(.5f * size),0);
 
 				float moveDirection = hitbox.OverrideData.AngleOfImpact;
 
@@ -105,7 +105,7 @@ public class LucillePortal : MonoBehaviour
 	{
 		UnityEngine.Debug.Log(size + " " +  growthIncrement);
 		size += growthIncrement;
-		rb.drag = 3.5f - size/2f;
+		//rb.drag = 3.5f - size/3f;
 		anim.SetState("Rift_" + size);
 	}
 
