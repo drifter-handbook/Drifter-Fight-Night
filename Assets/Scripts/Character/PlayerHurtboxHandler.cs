@@ -160,6 +160,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 //As long as the defender isnt in superarmour, or they are being grabbed, apply knockback velocity
                 if(!status.HasStatusEffect(PlayerStatusEffect.ARMOUR) || attackData.isGrab){
 
+                    status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0f);
+
                     //Cause the screen to shake slightly on hit, as long as the move has knockback
                     if(Shake != null && attackData.Knockback !=0){
                         Shake.startShakeCoroutine((willCollideWithBlastZone(GetComponent<Rigidbody2D>(), HitstunDuration)?0.3f:0.1f),Mathf.Clamp((((attackData.Knockback - 10)/100f + (damageDealt-10)/44f)) * attackData.KnockbackScale,.07f,.8f));
