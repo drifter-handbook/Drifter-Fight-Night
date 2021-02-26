@@ -132,7 +132,7 @@ public class PlayerMovement : MonoBehaviour
                 
                 drifter.returnToIdle();
 
-                spawnJuiceParticle(transform.position, MovementParticleMode.Tech, Quaternion.Euler(0f,0f,0f));
+                techParticle();
 
                 //PARTICLE EFFECT HERE
 
@@ -533,6 +533,11 @@ public class PlayerMovement : MonoBehaviour
         drifter.parrying = false;
         drifter.perfectGuarding = false;
         updateFacing();
+    }
+
+    public void techParticle()
+    {
+        spawnJuiceParticle(BodyCollider.bounds.center, MovementParticleMode.Tech, Quaternion.Euler(0f,0f,0f));
     }
 
     //Updates the direction the player is facing
