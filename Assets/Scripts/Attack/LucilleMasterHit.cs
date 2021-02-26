@@ -145,9 +145,11 @@ public class LucilleMasterHit : MasterHit
     }
 
 
-    public void breakRift(GameObject self)
+    public void breakRift(GameObject self,bool pauseOnHit = false)
     {
         rifts = new Queue<GameObject>(rifts.Where<GameObject>(x => x != self));
+
+        if(pauseOnHit)status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.1f * self.GetComponent<LucillePortal>().size + .1f);
 
         if(getTotalPortalSize() == 0) drifter.SetCharge(0);
         else drifter.SetCharge(3 + getTotalPortalSize());
