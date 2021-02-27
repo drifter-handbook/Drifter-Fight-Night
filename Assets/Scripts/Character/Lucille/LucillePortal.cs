@@ -31,9 +31,8 @@ public class LucillePortal : MonoBehaviour
 
 		HitboxCollision hitbox = collider.gameObject.GetComponent<HitboxCollision>();
 
-		if(collider.gameObject.tag == "Lucille_Portal" && collider.GetComponent<LucillePortal>().drifter == drifter)
+		if(collider.gameObject.tag == "Lucille_Portal" && canMerge && collider.GetComponent<LucillePortal>().drifter == drifter)
 		{
-			canMerge = true;
 			LucillePortal merging_Portal = collider.GetComponent<LucillePortal>();
 
 			myPriority += size;
@@ -130,6 +129,7 @@ public class LucillePortal : MonoBehaviour
 	public void detonate()
 	{
 		if(!GameController.Instance.IsHost)return;
+		canMerge = false;
 		rb.velocity = Vector2.zero;
 		anim.SetState("Rift_Detonate_" + size);
 	}
@@ -137,8 +137,8 @@ public class LucillePortal : MonoBehaviour
 	public void decay()
 	{
 		if(!GameController.Instance.IsHost)return;
+		canMerge = false;
 		rb.velocity = Vector2.zero;
-	
 		anim.SetState("Rift_Decay_" + size);
 	}
 }
