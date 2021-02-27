@@ -103,7 +103,6 @@ public class LucillePortal : MonoBehaviour
 			drifter.GetComponentInChildren<LucilleMasterHit>().breakRift(gameObject);
 		}
 
-		myPriority = size;
 		// else 
 		// {
 		// 	grow(other.size);
@@ -115,6 +114,7 @@ public class LucillePortal : MonoBehaviour
 
 	public void grow(int growthIncrement)
 	{
+
 		UnityEngine.Debug.Log(size + " " +  growthIncrement);
 		size += growthIncrement;
 		rb.drag = size -.5f ;
@@ -122,7 +122,7 @@ public class LucillePortal : MonoBehaviour
 
 		myPriority = size;
 
-		if(size < 4) anim.SetState("Rift_" + size);
+		if(size < 4 && growthIncrement <3) anim.SetState("Rift_" + size);
 		else anim.SetState("Rift_Detonate_3");
 		
 	}
