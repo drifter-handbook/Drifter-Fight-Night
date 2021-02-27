@@ -35,6 +35,8 @@ public class LucilleMasterHit : MasterHit
             jumpGranted = false;
         }
         if(jumpGranted && movement.grounded)jumpGranted = false;
+
+        if(status.HasStatusEffect(PlayerStatusEffect.DEAD) && rifts.Count >0) collapseAllPortals(0);
     }
 
     public void setTerminalVelocity()
@@ -90,7 +92,7 @@ public class LucilleMasterHit : MasterHit
         facing = movement.Facing;
 
         //remove the oldest portal if size limit would be exceeded.
-        if(getTotalPortalSize() >= 3) rifts.Dequeue().GetComponent<LucillePortal>().decay();
+        //if(getTotalPortalSize() >= 3) rifts.Dequeue().GetComponent<LucillePortal>().decay();
         
 
         GameObject rift = GameController.Instance.host.CreateNetworkObject("Lucille_Rift", transform.position + new Vector3(0,3.5f,0), transform.rotation);
@@ -107,7 +109,7 @@ public class LucilleMasterHit : MasterHit
         rift.GetComponent<LucillePortal>().drifter = drifter.gameObject;
         rifts.Enqueue(rift);
 
-        drifter.SetCharge(3 + getTotalPortalSize());
+        //drifter.SetCharge(3 + getTotalPortalSize());
     }
 
     public void warpToNearestRift()
@@ -156,7 +158,7 @@ public class LucilleMasterHit : MasterHit
     }
 
 
-    public void collapseAllPortals()
+    public void collapseAllPortals(int explosiveDelete = 1)
     {
         if(!isHost)return;
         GameObject rift;
@@ -172,7 +174,8 @@ public class LucilleMasterHit : MasterHit
                 hitbox.AttackID -=3;
                 hitbox.Facing = facing;
             }
-            rift.GetComponent<LucillePortal>().detonate();
+            if(explosiveDelete != 0)rift.GetComponent<LucillePortal>().detonate();
+            else rift.GetComponent<LucillePortal>().decay();
         }
         drifter.SetCharge(0);
     }
@@ -181,18 +184,18 @@ public class LucilleMasterHit : MasterHit
     {
         int totalPortalSize = 0;
 
-        //Lucille can have up to 3 total portal size active
-        //Calculates the current size before a new poeral is added
+        // //Lucille can have up to 3 total portal size active
+        // //Calculates the current size before a new poeral is added
 
-        if(rifts.Count ==0)return 0;
+        // if(rifts.Count ==0)return 0;
 
-        foreach(GameObject riftObj in rifts) totalPortalSize += riftObj.GetComponent<LucillePortal>().size;
+        // foreach(GameObject riftObj in rifts) totalPortalSize += riftObj.GetComponent<LucillePortal>().size;
 
-        if(totalPortalSize >3)
-        {
-            UnityEngine.Debug.Log("TOO MUCH GIRTH");
-            return 3;
-        }
+        // if(totalPortalSize >3)
+        // {
+        //     UnityEngine.Debug.Log("TOO MUCH GIRTH");
+        //     return 3;
+        // }
 
         return totalPortalSize;
     }

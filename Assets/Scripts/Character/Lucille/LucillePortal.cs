@@ -36,7 +36,7 @@ public class LucillePortal : MonoBehaviour
 			canMerge = true;
 			LucillePortal merging_Portal = collider.GetComponent<LucillePortal>();
 
-			myPriority +=size + UnityEngine.Random.Range(0f,.100f);
+			myPriority += size;
 
 			merging_Portal.contest(myPriority,this);
 
@@ -61,7 +61,7 @@ public class LucillePortal : MonoBehaviour
 
 				transform.localScale = new Vector2(Mathf.Abs(transform.localScale.x) * hitbox.Facing, Mathf.Abs(transform.localScale.y) * Mathf.Sign(verticalMag));
 
-				rb.velocity = speed * new Vector3(moveHorizontally?hitbox.Facing:0, moveVertically?Mathf.Sign(verticalMag):0,0);
+				rb.velocity = speed * new Vector3(moveHorizontally?hitbox.Facing * .707f:0, moveVertically?Mathf.Sign(verticalMag) * .707f:0,0);
 
 				if(moveHorizontally && moveVertically) anim.SetState("Diagonal_" + size);
 				else if(moveHorizontally)  anim.SetState("Horizontal_" + size);
@@ -96,24 +96,20 @@ public class LucillePortal : MonoBehaviour
 
 	public void contest(float enemyPriority, LucillePortal other)
 	{
-		if(!canMerge)return;
-		other.canMerge = false;
-
-		myPriority += size + UnityEngine.Random.Range(0f,.100f);
-
-
 		if(myPriority < enemyPriority)
 		{
 			other.grow(size);
 			decay();
 			drifter.GetComponentInChildren<LucilleMasterHit>().breakRift(gameObject);
 		}
-		else 
-		{
-			grow(other.size);
-			other.decay();
-			drifter.GetComponentInChildren<LucilleMasterHit>().breakRift(other.gameObject);
-		}
+
+		myPriority = size;
+		// else 
+		// {
+		// 	grow(other.size);
+		// 	other.decay();
+		// 	drifter.GetComponentInChildren<LucilleMasterHit>().breakRift(other.gameObject);
+		// }
 		
 	}
 
@@ -123,7 +119,12 @@ public class LucillePortal : MonoBehaviour
 		size += growthIncrement;
 		rb.drag = size -.5f ;
 		speed = 30f - 3*size; 
-		anim.SetState("Rift_" + size);
+
+		myPriority = size;
+
+		if(size < 4) anim.SetState("Rift_" + size);
+		else anim.SetState("Rift_Detonate_3");
+		
 	}
 
 	public void detonate()
@@ -137,6 +138,7 @@ public class LucillePortal : MonoBehaviour
 	{
 		if(!GameController.Instance.IsHost)return;
 		rb.velocity = Vector2.zero;
+	
 		anim.SetState("Rift_Decay_" + size);
 	}
 }
