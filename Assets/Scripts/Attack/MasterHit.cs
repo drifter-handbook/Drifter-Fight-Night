@@ -201,16 +201,6 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
             return true;
         }
 
-        if(drifter.input.MoveY ==0 && !verticalReleased)verticalReleased = true;
-
-        else if(drifter.input.MoveY < 0 && verticalReleased)
-        {
-            verticalReleased = false;
-            movement.techParticle();
-            returnToIdle();
-            return true;
-        }
-
         return false;
 
     }
@@ -238,6 +228,16 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
             status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
             movement.jump();
             unpauseGravity();
+            return true;
+        }
+
+        if(drifter.input.MoveY ==0 && !verticalReleased)verticalReleased = true;
+
+        else if(drifter.input.MoveY < 0 && verticalReleased)
+        {
+            verticalReleased = false;
+            movement.techParticle();
+            returnToIdle();
             return true;
         }
 

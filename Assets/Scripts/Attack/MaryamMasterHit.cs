@@ -92,7 +92,7 @@ public class MaryamMasterHit : MasterHit
             resetTerminal();
         }
 
-        else if(drifter.input.MoveY <0 || movement.grounded)
+        else if(movement.grounded)
         {
             resetTerminal();
             returnToIdle();

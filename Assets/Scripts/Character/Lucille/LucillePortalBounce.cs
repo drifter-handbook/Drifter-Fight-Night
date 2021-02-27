@@ -22,7 +22,13 @@ public class LucillePortalBounce : MonoBehaviour
 
         try
         {
-            if(collider.gameObject.tag == "Ground") GraphicalEffectManager.Instance.CreateMovementParticle(MovementParticleMode.DarkRestitution,collider.contacts[0].point,((rb.velocity.x < 0)?1:-1 ) * Vector3.Angle(Vector3.up,collider.contacts[0].normal),Vector3.one);
+            if(collider.gameObject.tag == "Ground")
+            {
+                GraphicalEffectManager.Instance.CreateMovementParticle(MovementParticleMode.DarkRestitution,collider.contacts[0].point,((rb.velocity.x < 0)?1:-1 ) * Vector3.Angle(Vector3.up,collider.contacts[0].normal),Vector3.one);
+                
+                gameObject.transform.parent.localScale =  new Vector3(gameObject.transform.parent.localScale.x, -1 * gameObject.transform.parent.localScale.y);
+
+            }  
         }
         catch(NullReferenceException)
         {

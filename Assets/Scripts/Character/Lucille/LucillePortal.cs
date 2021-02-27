@@ -16,7 +16,7 @@ public class LucillePortal : MonoBehaviour
 	bool canMerge  = true;
 	Rigidbody2D rb;
 
-	float speed = 30f;
+	float speed = 28f;
 
 	void Start()
 	{
@@ -46,15 +46,29 @@ public class LucillePortal : MonoBehaviour
 		{
 			if(hitbox != null && hitbox.parent == drifter && collider.gameObject.tag == "Lucille_Portal_Contact" )
 			{
-				rb.velocity = speed * new Vector3(hitbox.Facing * ((hitbox.OverrideData.AngleOfImpact < 45f && hitbox.OverrideData.AngleOfImpact > -30f)?1f:0f),(hitbox.OverrideData.AngleOfImpact > 45f ?1f:(hitbox.OverrideData.AngleOfImpact > 20?0:-1f )),0);
 
-				float moveDirection = hitbox.OverrideData.AngleOfImpact;
+				float verticalMag = Mathf.Sin(hitbox.OverrideData.AngleOfImpact * Mathf.PI/180f);
+				float horizontalMag = Mathf.Cos(hitbox.OverrideData.AngleOfImpact * Mathf.PI/180f);
+
+				UnityEngine.Debug.Log(hitbox.OverrideData.AngleOfImpact);
+
+				UnityEngine.Debug.Log("Y : " + verticalMag);
+				UnityEngine.Debug.Log("X : " + horizontalMag);
+
+				bool moveHorizontally = horizontalMag > .5f || horizontalMag <-.5f;
+				bool moveVertically = verticalMag > .5f || verticalMag < -.5f;
+
+
+				transform.localScale = new Vector2(Mathf.Abs(transform.localScale.x) * hitbox.Facing, Mathf.Abs(transform.localScale.y) * Mathf.Sign(verticalMag));
+
+				rb.velocity = speed * new Vector3(moveHorizontally?hitbox.Facing:0, moveVertically?Mathf.Sign(verticalMag):0,0);
+
+				if(moveHorizontally && moveVertically) anim.SetState("Diagonal_" + size);
+				else if(moveHorizontally)  anim.SetState("Horizontal_" + size);
+				else if(moveVertically)  anim.SetState("Vertical_" + size);
 
 				myPriority = -3;
 
-				// if((moveDirection > 45f && moveDirection < 135f))anim.SetState("Move_up");
-				// else if(hitbox.Facing > 0)anim.SetState("Move_Right");
-				// else anim.SetState("Move_Left");
 
 				foreach (HitboxCollision portalHitbox in GetComponentsInChildren<HitboxCollision>(true))
 				{
