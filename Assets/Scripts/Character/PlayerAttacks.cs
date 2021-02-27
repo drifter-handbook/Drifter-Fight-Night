@@ -102,6 +102,7 @@ public class PlayerAttacks : MonoBehaviour
         bool specialPressed = !drifter.prevInput.Special && drifter.input.Special;
         bool grabPressed = !drifter.prevInput.Grab && drifter.input.Grab;
         bool canAct = !status.HasStunEffect() && !drifter.guarding && !ledgeHanging;
+        bool canSpecial = !status.HasStunEffect() && !ledgeHanging;
 
         if((movement.grounded && !status.HasStatusEffect(PlayerStatusEffect.END_LAG)) || status.HasEnemyStunEffect()){
             resetRecovery();
@@ -116,7 +117,7 @@ public class PlayerAttacks : MonoBehaviour
                 StartAttack(DrifterAttackType.E_Air);  
             } 
         }
-        else if(specialPressed && canAct)
+        else if(specialPressed && canSpecial)
         {
             if(drifter.input.MoveY > 0 && currentRecoveries >0)
             {

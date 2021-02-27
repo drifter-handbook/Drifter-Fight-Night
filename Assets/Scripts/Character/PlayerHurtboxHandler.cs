@@ -245,7 +245,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 else GetComponent<PlayerMovement>().spawnJuiceParticle(hitSparkPos, MovementParticleMode.Parry);
                 //put defender in blockstun
                 if(attackData.HitStun != 0){
-                        status?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, HitstunDuration);
+                        status?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, HitstunDuration/2f);
                 }
 
             }
