@@ -36,6 +36,10 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
     protected bool verticalReleased = false;
 
+    protected bool canFoxTrot = true;
+
+    protected float baseWalkSpeed= 0;
+
 
     // Start is called before the first frame update
     void Awake()
@@ -52,6 +56,8 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         attacks = drifter.GetComponent<PlayerAttacks>();
         status = drifter.GetComponent<PlayerStatus>();
         anim = drifter.GetComponent<Animator>();
+
+        baseWalkSpeed=  movement.walkSpeed;
 
         frictionCollider = drifter.GetComponent<PolygonCollider2D>();
 
@@ -252,11 +258,33 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         movement.walkSpeed = speed;
     }
 
+    public void foxTrot(float speed)
+    {
+        if(!isHost || !canFoxTrot || !movement.grounded)return;
+        movement.walkSpeed = speed;
+        setXVelocity(speed);
+        canFoxTrot = false;
+        StartCoroutine(endFoxTrot());
+    }
+
+    IEnumerator endFoxTrot()
+    {
+        yield return new WaitForSeconds(framerateScalar);
+        movement.walkSpeed = baseWalkSpeed;
+    }
+
+    public void rechargeFoxtrot()
+    {
+        if(!isHost)return;
+        canFoxTrot = true;
+    }
+
     public void returnToIdle()
 	{
         if(!isHost)return;
 		movement.jumping = false;
         specialReleased = false;
+        canFoxTrot = true;
 		unpauseGravity();
     	drifter.returnToIdle();
     }
