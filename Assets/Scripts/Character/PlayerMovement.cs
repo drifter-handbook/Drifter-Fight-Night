@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
     public float groundAccelerationTime = .6f;
     public float airAccelerationTime = .8f;
     public float airSpeed = 15f;
+    public float dashSpeed = 30f;
     public float terminalVelocity = 25f;
     public float fastFallTerminalVelocity = 55f;
     public bool flipSprite = false;
@@ -24,7 +25,10 @@ public class PlayerMovement : MonoBehaviour
     public float varyJumpHeightDuration = 0.5f;
     public float varyJumpHeightForce = 10f;
 
-    protected float framerateScalar =.0833333333f;
+
+    protected static float framerateScalar =.0833333333f;
+
+    protected float baseWalkSpeed= 0;
 
     //Calculated character properties
     float jumpSpeed;
@@ -32,6 +36,8 @@ public class PlayerMovement : MonoBehaviour
 
     
     //Animator State Fields
+    [NonSerialized]
+    public bool canDash = true;
     public int Facing { get; set; } = 1;
     [NonSerialized]
     public int currentJumps;
@@ -99,6 +105,8 @@ public class PlayerMovement : MonoBehaviour
 
         BodyCollider = GetComponent<BoxCollider2D>();
         frictionCollider = GetComponent<PolygonCollider2D>();
+
+        baseWalkSpeed = walkSpeed;
         
     }
     void Start(){
@@ -350,12 +358,21 @@ public class PlayerMovement : MonoBehaviour
         if (moving && canAct && ! ledgeHanging)
         {
         	//UnityEngine.Debug.Log("BEFORE velocity: " + rb.velocity.x);
-        	updateFacing();
+        	updateFacing();            
 
-            
+
+            if(canDash && canAct && IsGrounded() && drifter.input.MoveX != 0)
+            {
+                walkSpeed = dashSpeed;
+                rb.velocity = new Vector2(Facing * dashSpeed,rb.velocity.y);
+                canDash = false;
+                StartCoroutine(endFoxTrot());
+                techParticle();
+            }
 
             //If just started moving or switched directions
-            if((rb.velocity.x == 0 || rb.velocity.x * drifter.input.MoveX < 0) && IsGrounded()){
+            else if((rb.velocity.x == 0 || rb.velocity.x * drifter.input.MoveX < 0) && IsGrounded()){
+
                 if(groundFrictionPosition) spawnJuiceParticle(new Vector2(-Facing * (flipSprite?-1:1)* 1.5f,0) + contacts[0].point, MovementParticleMode.KickOff);
             }
 
@@ -522,6 +539,7 @@ public class PlayerMovement : MonoBehaviour
         
     }
 
+    //Preforms a dodge roll, granitn temporary I-Frames
     public void roll()
     {
 
@@ -535,6 +553,7 @@ public class PlayerMovement : MonoBehaviour
         updateFacing();
     }
 
+    //Made it public for treamlining channeled attack cancels
     public void techParticle()
     {
         spawnJuiceParticle(BodyCollider.bounds.center, MovementParticleMode.Tech, Quaternion.Euler(0f,0f,0f));
@@ -596,6 +615,7 @@ public class PlayerMovement : MonoBehaviour
         return Vector3.zero;
     }
 
+    //Sets many movement flags to specific vlaues to allow for ledge hanging
     public void GrabLedge(Vector3 pos)
     {
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,framerateScalar * 2);
@@ -620,6 +640,7 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = Vector2.zero;
     }
 
+    //Manages all the things that need to happen when a ledge is released
     public void DropLedge(){
         ledgeHanging = false;
         rb.gravityScale = baseGravity;
@@ -627,6 +648,7 @@ public class PlayerMovement : MonoBehaviour
         attacks.ledgeHanging = false;
     }
 
+    //Wrapper for spawning particles at the character's feet
     public void spawnKickoffDust()
     {
         ContactPoint2D[] contacts = new ContactPoint2D[1];
@@ -661,12 +683,14 @@ public class PlayerMovement : MonoBehaviour
             }
     }
 
-
+    //Public wrapper for movement particle spawning
     public void spawnJuiceParticle(Vector3 pos, MovementParticleMode mode)
     {
         spawnJuiceParticle(pos, mode, transform.rotation);
     }
 
+
+    //Creates a movement particle at the designated location
     private void spawnJuiceParticle(Vector3 pos, MovementParticleMode mode, Quaternion angle){
 
         particleOffset = new Vector3(particleOffset.x * Facing * (flipSprite?-1:1),particleOffset.y,0);
@@ -674,7 +698,14 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
+    //Returns movement stats to normal after a dash
+    IEnumerator endFoxTrot()
+    {
+        yield return new WaitForSeconds(framerateScalar);
+        walkSpeed = baseWalkSpeed;
+    }
 
+    //delays jump to allow for jump squant and move queuing
     private IEnumerator DelayedJump()
     {
         if (varyJumpHeight != null)
@@ -692,6 +723,7 @@ public class PlayerMovement : MonoBehaviour
         varyJumpHeight = StartCoroutine(VaryJumpHeight());
     }
 
+    //Varries the jup heing based on how long the button is held
     private IEnumerator VaryJumpHeight()
     {
         float time = 0f;
