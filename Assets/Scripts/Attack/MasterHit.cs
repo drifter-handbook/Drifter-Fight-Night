@@ -244,6 +244,14 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         return false;
     }
 
+
+    //Dynamically adjust walk speed to match walk cycle animations
+    public void walkCycleSpeedSync(float speed)
+    {
+        if(!isHost)return;
+        movement.walkSpeed = speed;
+    }
+
     public void returnToIdle()
 	{
         if(!isHost)return;
