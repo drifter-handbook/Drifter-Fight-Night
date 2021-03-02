@@ -26,7 +26,7 @@ public class ViewManager : MonoBehaviour
     public Toggle toggle2;
     public Toggle toggle3;
 
-    public GameObject roomCodeBox;
+    //public GameObject roomCodeBox;
 
     void Awake()
     {
@@ -95,9 +95,9 @@ public class ViewManager : MonoBehaviour
                 case "Matchmaking Menu":
                     EventSystem.current.SetSelectedGameObject(GameObject.Find("Host"));
                     break;
-                // case "Join Menu":
-                //     EventSystem.current.SetSelectedGameObject(GameObject.Find("Input Field"));
-                //     break;
+                case "Join Menu":
+                    EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Join"));
+                    break;
                 case "Main Menu":
                     ShowView("Matchmaking Menu");
                     break;
@@ -118,18 +118,18 @@ public class ViewManager : MonoBehaviour
 
     public void ShowView(string name)
     {
-
+        
         views[currentView].gameObject.SetActive(false);
         currentView = name;
         views[name].gameObject.SetActive(true);
 
 
-        if(roomCodeBox.activeSelf && PlayerPrefs.GetInt("HideRoomCode") > 0)
-        {
-            roomCodeBox.GetComponent<InputField>().contentType = InputField.ContentType.Password;
-        } else if (roomCodeBox.activeSelf && PlayerPrefs.GetInt("HideRoomCode") == 0){
-            roomCodeBox.GetComponent<InputField>().contentType = InputField.ContentType.Standard;
-        }
+        // if(roomCodeBox.activeSelf && PlayerPrefs.GetInt("HideRoomCode") > 0)
+        // {
+        //     roomCodeBox.GetComponent<InputField>().contentType = InputField.ContentType.Password;
+        // } else if (roomCodeBox.activeSelf && PlayerPrefs.GetInt("HideRoomCode") == 0){
+        //     roomCodeBox.GetComponent<InputField>().contentType = InputField.ContentType.Standard;
+        // }
 
         if (name == "Matchmaking Menu" && !mouse)
         {
@@ -140,19 +140,19 @@ public class ViewManager : MonoBehaviour
 
         if (name == "Join Menu")
         {
-            if(!mouse)EventSystem.current.SetSelectedGameObject(GameObject.Find("Join Button"));
-            if (PlayerPrefs.GetInt("HideTextInput") > 0)
-            {
-                savedIPObject.GetComponent<InputField>().contentType = InputField.ContentType.Password;
-            } else
-            {
-                savedIPObject.GetComponent<InputField>().contentType = InputField.ContentType.Standard;
-            }
+            if(!mouse)EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Join"));
+            // if (PlayerPrefs.GetInt("HideTextInput") > 0)
+            // {
+            //     savedIPObject.GetComponent<InputField>().contentType = InputField.ContentType.Password;
+            // } else
+            // {
+            //     savedIPObject.GetComponent<InputField>().contentType = InputField.ContentType.Standard;
+            // }
 
-            if (PlayerPrefs.GetString("savedIP") != null)
-            {
-                savedIPObject.GetComponent<InputField>().text = PlayerPrefs.GetString("savedIP");
-            }
+            // if (PlayerPrefs.GetString("savedIP") != null)
+            // {
+            //     savedIPObject.GetComponent<InputField>().text = PlayerPrefs.GetString("savedIP");
+            // }
         }
 
         if (name == "Host Menu")

@@ -168,6 +168,8 @@ public class GameController : MonoBehaviour
         if(host != null)
         {
             UnityEngine.Debug.Log("STONKY");
+            Destroy(GetComponent<NetworkSync>());
+            Destroy(GetComponent<NetworkHost>());
             Destroy(host);
         }
 
@@ -183,6 +185,8 @@ public class GameController : MonoBehaviour
         if(client != null)
         {
             UnityEngine.Debug.Log("STINKY");
+            Destroy(GetComponent<NetworkSync>());
+            Destroy(GetComponent<NetworkClient>());
             Destroy(client);
         }
         

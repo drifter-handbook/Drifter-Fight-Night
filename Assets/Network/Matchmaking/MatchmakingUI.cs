@@ -7,8 +7,11 @@ using UnityEngine.UI;
 
 public class MatchmakingUI : MonoBehaviour
 {
-    string roomCode = "";
-    public InputField clientRoomCode;
+    //string roomCode = "";
+    public GameObject roomListHolder;
+    public GameObject roomHolder;
+
+    List<string> roomList = new List<string>();
 
     Coroutine getRoomsCoroutine;
 
@@ -46,6 +49,21 @@ public class MatchmakingUI : MonoBehaviour
                     {
                         Debug.Log($"[Room Entry] {room.name}: {room.room_code}, {room.users}/8");
 
+                        if(!roomList.Contains(room.room_code))
+                        {
+                            GameObject newRoom = Instantiate(roomHolder, new Vector3(0,0), Quaternion.identity);
+
+                            newRoom.GetComponent<Text>().text = room.room_code;
+                            newRoom.transform.SetParent(roomListHolder.transform, false); 
+
+                            roomList.Add(room.room_code);
+                        }
+                        else
+                        {
+                            //Update existing entry
+                        }
+
+                    
                         //Populate room codes here
                     }
                 }
@@ -55,10 +73,10 @@ public class MatchmakingUI : MonoBehaviour
         }
     }
 
-    public void SetRoomCode()
-    {
-        roomCode = clientRoomCode.text;
-    }
+    // public void SetRoomCode()
+    // {
+    //     roomCode = clientRoomCode.text;
+    // }
 
     public void StartHost()
     {
@@ -68,11 +86,11 @@ public class MatchmakingUI : MonoBehaviour
         GameController.Instance.host.SetScene("CharacterSelect");
     }
 
-    public void StartClient()
-    {
-        SetRoomCode();
-        GameController.Instance.StartNetworkClient(roomCode);
-    }
+    // public void StartClient()
+    // {
+    //     SetRoomCode();
+    //     GameController.Instance.StartNetworkClient(roomCode);
+    // }
 }
 
 public class MatchmakingRoomEntry

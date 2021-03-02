@@ -367,7 +367,8 @@ public class PlayerMovement : MonoBehaviour
                 rb.velocity = new Vector2(Facing * dashSpeed,rb.velocity.y);
                 canDash = false;
                 StartCoroutine(endFoxTrot());
-                techParticle();
+                spawnJuiceParticle(BodyCollider.bounds.center, MovementParticleMode.Dash_Ring, Quaternion.Euler(0f,0f,0f));
+                if(groundFrictionPosition) spawnJuiceParticle(new Vector2(-Facing * (flipSprite?-1:1)* 1.5f,0) + contacts[0].point, MovementParticleMode.Dash_Cloud);
             }
 
             //If just started moving or switched directions
