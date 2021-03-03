@@ -622,6 +622,7 @@ public class PlayerMovement : MonoBehaviour
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,framerateScalar * 2);
         cancelJump();
         gravityPaused = false;
+        jumping = false;
         attacks.ledgeHanging = true;
         drifter.clearGuardFlags();
         ledgeHanging = true;
@@ -662,6 +663,7 @@ public class PlayerMovement : MonoBehaviour
     //Public jump method allows for forced jumps from attacks
     public void jump()
     {
+        if(jumping)return;
         jumping = true;
         if(ledgeHanging)DropLedge();
             //jump
