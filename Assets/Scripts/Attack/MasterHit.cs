@@ -144,14 +144,14 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     //Press the button once to start charging. if the button is released and then pressed again, the state will play
     //0: Nothing happened (Executed as client, or no state-changing action occured)
     //1: The attack was canceled by a jump or shield input
-    //2: The provieded state was executed  
+    //2: The provided state was executed  
     public int chargeAttackPesistent(string stateName)
     {
         if(!isHost)return 0;
 
         if(cancelAttack())return 1;
 
-        else if(movementCancel())return 2;
+        else if(movementCancel())return 1;
      
         else if(!drifter.input.Special && !specialReleased)specialReleased = true;
 
@@ -169,14 +169,14 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     //When the button is released, the specified state will play.
     //0: Nothing happened (Executed as client, or no state-changing action occured)
     //1: The attack was canceled by a jump or shield input
-    //2: The provieded state was executed
+    //2: The provided state was executed
     public int chargeAttackSingleUse(string stateName)
     {
         if(!isHost)return 0;
 
         else if(cancelAttack()) return 1;
 
-        else if(movementCancel())return 2;
+        else if(movementCancel())return 1;
 
         if(!drifter.input.Special)
         {
@@ -222,6 +222,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         }
         else if(drifter.input.Jump && movement.currentJumps>0)
         {
+            movement.jumping = false;
             movement.techParticle();
             status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0f);
             status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);

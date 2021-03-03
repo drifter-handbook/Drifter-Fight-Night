@@ -663,7 +663,6 @@ public class PlayerMovement : MonoBehaviour
     //Public jump method allows for forced jumps from attacks
     public void jump()
     {
-        if(jumping)return;
         jumping = true;
         if(ledgeHanging)DropLedge();
             //jump
