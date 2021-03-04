@@ -7,19 +7,30 @@ public class NeoSwordFrogMasterHit : MasterHit
 
     float chargeTime = 0;
 
+    Coroutine kunaiShoot;
+
     void Update()
     {
-               
+        if(status.HasStatusEffect(PlayerStatusEffect.DEAD))
+        {
+            Empowered = false;
+            if(kunaiShoot != null)StopCoroutine(kunaiShoot);
+            if(drifter.GetCharge() > 0)drifter.SetCharge(0);
+        }
     }
 
     public void charge_W_Neutral(int grantCharge)
     {
          if(!isHost)return;
-         if(chargeAttackSingleUse("W_Neutral_Fire") == 1)drifter.SetCharge(0);
+         if(chargeAttackPesistent("W_Neutral_Fire") !=0)return;
          else if(grantCharge >=1)
          {
             drifter.IncrementCharge();
-            if(grantCharge ==2)playState("W_Neutral_Fire");
+            if(drifter.GetCharge()>=3)
+            {
+                Empowered = true;
+                returnToIdle();
+            }
         }
     }
 
@@ -28,20 +39,24 @@ public class NeoSwordFrogMasterHit : MasterHit
     {
         if(!isHost)return;
         facing = movement.Facing;
-
+        Empowered = false;
         //Fire an arrow if Swordfrog has a charge
-        StartCoroutine(fireKunai());
+        kunaiShoot = StartCoroutine(fireKunaiNeutral());
 
     }
 
-    IEnumerator fireKunai()
+    IEnumerator fireKunaiNeutral()
     {
-        while(drifter.GetCharge() >= 0)
+
+
+        int projnum = drifter.GetCharge() * 2;
+
+        while(projnum >= 0)
         {
-            yield return new WaitForSeconds(framerateScalar * .5f);
-            GameObject arrow = host.CreateNetworkObject("Arrow", transform.position + new Vector3(0, 3f + drifter.GetCharge() * .1f, 0), transform.rotation);
+            yield return new WaitForSeconds(framerateScalar * .3f);
+            GameObject arrow = host.CreateNetworkObject("Arrow", transform.position + new Vector3(0, 3f + projnum * .1f, 0), transform.rotation);
             arrow.transform.localScale = new Vector3(10f * facing, 10f, 1f);
-            arrow.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + facing *( 60f - drifter.GetCharge() * 3.5f), drifter.GetCharge() * 4f - 3f);
+            arrow.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + facing * (65f - 2 * projnum), (projnum *5 -5f));
             foreach (HitboxCollision hitbox in arrow.GetComponentsInChildren<HitboxCollision>(true))
             {
                 hitbox.parent = drifter.gameObject;
@@ -51,8 +66,10 @@ public class NeoSwordFrogMasterHit : MasterHit
                 hitbox.Facing = facing;
             }
 
+            projnum--;
+
             attacks.SetupAttackID(DrifterAttackType.W_Neutral);
-            drifter.DecrementCharge();
+            if(projnum%2 ==0)drifter.DecrementCharge();
         }
         if(drifter.GetCharge() < 0)drifter.SetCharge(0);
         yield break;
