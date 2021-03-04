@@ -48,15 +48,20 @@ public class NeoSwordFrogMasterHit : MasterHit
     IEnumerator fireKunaiNeutral()
     {
 
-
+        int baseCharge = drifter.GetCharge();
         int projnum = drifter.GetCharge() * 2;
+        float radians;
 
         while(projnum >= 0)
         {
             yield return new WaitForSeconds(framerateScalar * .3f);
-            GameObject arrow = host.CreateNetworkObject("Arrow", transform.position + new Vector3(0, 3f + projnum * .1f, 0), transform.rotation);
+            radians = (baseCharge - projnum) * Mathf.PI/180f * 35;
+            GameObject arrow = host.CreateNetworkObject("Arrow", transform.position + new Vector3(0, 4.5f - projnum * .7f, 0), Quaternion.Euler(0,0,movement.Facing * (baseCharge -projnum) *5f));
             arrow.transform.localScale = new Vector3(10f * facing, 10f, 1f);
-            arrow.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + facing * (65f - 2 * projnum), (projnum *5 -5f));
+
+           
+
+            arrow.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + facing * (70f +  Mathf.Cos(radians) * 15), Mathf.Sin(radians) * 15);
             foreach (HitboxCollision hitbox in arrow.GetComponentsInChildren<HitboxCollision>(true))
             {
                 hitbox.parent = drifter.gameObject;
