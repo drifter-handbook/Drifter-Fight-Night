@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class NeoSwordFrogMasterHit : MasterHit
 {
-
-    float chargeTime = 0;
-
     Coroutine kunaiShoot;
 
     void Update()
@@ -55,8 +52,8 @@ public class NeoSwordFrogMasterHit : MasterHit
         while(projnum >= 0)
         {
             yield return new WaitForSeconds(framerateScalar * .3f);
-            radians = (baseCharge - projnum) * Mathf.PI/180f * 35;
-            GameObject arrow = host.CreateNetworkObject("Arrow", transform.position + new Vector3(0, 4.5f - projnum * .7f, 0), Quaternion.Euler(0,0,movement.Facing * (baseCharge -projnum) *5f));
+            radians = (baseCharge* 25 - projnum * 15) * Mathf.PI/180f ;
+            GameObject arrow = host.CreateNetworkObject("Arrow", transform.position + new Vector3(0, 4.5f - projnum * .7f, 0), Quaternion.Euler(0,0,movement.Facing * (baseCharge - projnum) *5f));
             arrow.transform.localScale = new Vector3(10f * facing, 10f, 1f);
 
            
