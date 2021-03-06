@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: GroundNeutralLoop2
+  m_Name: GroundNeutralLoop3
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -273,13 +273,13 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 4216534334698705623, guid: 1926e1252981b21438198446404c0636,
+      value: {fileID: -8449215685536329953, guid: 1926e1252981b21438198446404c0636,
         type: 3}
     - time: 0.083333336
-      value: {fileID: 9180817061433240378, guid: 1926e1252981b21438198446404c0636,
+      value: {fileID: 4796776630198911252, guid: 1926e1252981b21438198446404c0636,
         type: 3}
     - time: 0.16666667
-      value: {fileID: -8449215685536329953, guid: 1926e1252981b21438198446404c0636,
+      value: {fileID: -4815568027279139893, guid: 1926e1252981b21438198446404c0636,
         type: 3}
     - time: 0.25
       value: {fileID: 2425266374339873758, guid: 1926e1252981b21438198446404c0636,
@@ -379,9 +379,9 @@ AnimationClip:
       customType: 0
       isPPtrCurve: 0
     pptrCurveMapping:
-    - {fileID: 4216534334698705623, guid: 1926e1252981b21438198446404c0636, type: 3}
-    - {fileID: 9180817061433240378, guid: 1926e1252981b21438198446404c0636, type: 3}
     - {fileID: -8449215685536329953, guid: 1926e1252981b21438198446404c0636, type: 3}
+    - {fileID: 4796776630198911252, guid: 1926e1252981b21438198446404c0636, type: 3}
+    - {fileID: -4815568027279139893, guid: 1926e1252981b21438198446404c0636, type: 3}
     - {fileID: 2425266374339873758, guid: 1926e1252981b21438198446404c0636, type: 3}
     - {fileID: -1012324615358737285, guid: 1926e1252981b21438198446404c0636, type: 3}
     - {fileID: -556572165486912848, guid: 1926e1252981b21438198446404c0636, type: 3}
@@ -671,14 +671,14 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.083333336
-    functionName: checkForContinueJab
+    functionName: refreshHitboxID
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.083333336
-    functionName: refreshHitboxID
+    functionName: checkForContinueJab
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
@@ -693,7 +693,7 @@ AnimationClip:
     messageOptions: 0
   - time: 0.16666667
     functionName: continueJab
-    data: GroundNeutralLoop3
+    data: GroundNeutralLoop1
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
