@@ -320,6 +320,12 @@ public class PlayerStatus : MonoBehaviour
     		}
     	}
 
+        if(HasStatusEffect(ef) && ef == PlayerStatusEffect.POISONED)
+        {
+            statusEffects[data] += duration * 10f;
+            return;
+        }
+
     	if(!HasStatusEffect(ef) && PlayerStatusData.statusDataMap[ef].statusBar == null) PlayerStatusData.statusDataMap[ef].statusBar = addStatusBar(ef,duration);
     	//Ignores hitstun if in superarmour or invuln
         if(ef == PlayerStatusEffect.DEAD){

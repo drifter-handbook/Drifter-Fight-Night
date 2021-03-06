@@ -23,6 +23,7 @@ public class StatusBar : MonoBehaviour , INetworkInit
 
     void Update()
     {
+        if((duration *10f) < status.remainingDuration(ef)) duration = (status.remainingDuration(ef)/10f);
         if(duration == 0) Destroy(gameObject);
         mask.transform.localPosition = new Vector2((.67f * status.remainingDuration(ef)/(duration * 10f)) + .05f,0);
 
