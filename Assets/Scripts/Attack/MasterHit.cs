@@ -304,6 +304,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         if(!isHost)return;
         if(continueJabFlag)
         {
+            applyEndLag(8);
             refreshHitboxID();
             continueJabFlag = false;
             playState(state);
