@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class RoomListButton : MonoBehaviour
 {
 
-	Text roomName;
+	public Text roomName;
 	string roomCode;
 	public float keepAlive = 0;
 

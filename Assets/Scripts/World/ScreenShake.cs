@@ -109,10 +109,20 @@ public class ScreenShake : MonoBehaviour , INetworkInit
       for(int i = 0; i < drifters.Length; i++)
       {
          //If a player has died, remove them from the list for future iterations
+      	try{
+
+
+      	
          if(drifters[i] == null)drifters = drifters.Where(val => val != null).ToArray();
 
          Vector2 currPos = drifters[i].gameObject.GetComponent<Rigidbody2D>().position;
          scaledZoom = Mathf.Max(Vector2.Distance(new Vector2(Mathf.Clamp(currPos.x,-20f,20f),Mathf.Clamp(currPos.y,-10f,30f)),centerpoint),scaledZoom);
+     	}
+     	catch(System.IndexOutOfRangeException e)
+     	{
+     		return 30;
+     	}
+
 
       }
 

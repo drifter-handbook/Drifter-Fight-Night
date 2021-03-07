@@ -64,7 +64,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 2
   m_Colors:
     m_NormalColor: {r: 0.5943396, g: 0.5915361, b: 0.5915361, a: 1}
     m_HighlightedColor: {r: 1, g: 1, b: 1, a: 1}
@@ -74,10 +74,14 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_HighlightedSprite: {fileID: 9191027474134415273, guid: 736dfd6b457374a498caf45375dcff62,
+      type: 3}
+    m_PressedSprite: {fileID: 6399168469645980077, guid: 736dfd6b457374a498caf45375dcff62,
+      type: 3}
+    m_SelectedSprite: {fileID: -816912653167817013, guid: 736dfd6b457374a498caf45375dcff62,
+      type: 3}
+    m_DisabledSprite: {fileID: 7614012431250595895, guid: 736dfd6b457374a498caf45375dcff62,
+      type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -119,7 +123,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 6331739087008548513, guid: 736dfd6b457374a498caf45375dcff62,
+    type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -191,7 +196,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -218,6 +223,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa370d54bbd139c4993ee038c1590fd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  roomName: {fileID: 3555518997976708582}
+  keepAlive: 0
 --- !u!1 &7908811953835320656
 GameObject:
   m_ObjectHideFlags: 0
@@ -230,7 +237,7 @@ GameObject:
   - component: {fileID: 726260297526646995}
   - component: {fileID: 3555518997976708582}
   m_Layer: 5
-  m_Name: RoomCode
+  m_Name: RoomName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -284,10 +291,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 24
+    m_FontSize: 16
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 2
+    m_MinSize: 1
     m_MaxSize: 40
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -295,4 +302,4 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: BOBAP-PUSEH
+  m_Text: Jimbo's Room
