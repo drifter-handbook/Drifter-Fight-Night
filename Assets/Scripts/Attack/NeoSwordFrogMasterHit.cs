@@ -8,6 +8,7 @@ public class NeoSwordFrogMasterHit : MasterHit
 
     void Update()
     {
+        if(!isHost)return;
         if(status.HasStatusEffect(PlayerStatusEffect.DEAD))
         {
             Empowered = false;

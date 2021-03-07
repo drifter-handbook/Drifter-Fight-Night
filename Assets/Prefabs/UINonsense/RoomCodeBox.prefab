@@ -114,7 +114,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -218,7 +218,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa370d54bbd139c4993ee038c1590fd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomCode: {fileID: 3555518997976708582}
 --- !u!1 &7908811953835320656
 GameObject:
   m_ObjectHideFlags: 0

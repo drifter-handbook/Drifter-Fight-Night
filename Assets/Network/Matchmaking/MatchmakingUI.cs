@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using System.Linq;
 
 public class MatchmakingUI : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class MatchmakingUI : MonoBehaviour
     public GameObject roomListHolder;
     public GameObject roomHolder;
 
-    List<string> roomList = new List<string>();
+    Dictionary<string,RoomListButton> roomList = new Dictionary<string,RoomListButton>();
 
     Coroutine getRoomsCoroutine;
 
@@ -45,24 +46,29 @@ public class MatchmakingUI : MonoBehaviour
                 roomEntries = JsonConvert.DeserializeObject<List<MatchmakingRoomEntry>>(www.downloadHandler.text);
                 if (roomEntries != null)
                 {
+
                     foreach (MatchmakingRoomEntry room in roomEntries)
                     {
                         Debug.Log($"[Room Entry] {room.name}: {room.room_code}, {room.users}/8");
 
-                        if(!roomList.Contains(room.room_code))
+                        if(!roomList.ContainsKey(room.room_code))
                         {
                             GameObject newRoom = Instantiate(roomHolder, new Vector3(0,0), Quaternion.identity);
 
-                            newRoom.GetComponent<Text>().text = room.room_code;
+                            newRoom.GetComponent<RoomListButton>().init(room.name,room.room_code);
+
                             newRoom.transform.SetParent(roomListHolder.transform, false); 
 
-                            roomList.Add(room.room_code);
+                            roomList[room.room_code] = newRoom.GetComponent<RoomListButton>();
                         }
                         else
                         {
-                            //Update existing entry
+                            roomList[room.room_code].keepAlive = 0;
                         }
 
+                        roomList = roomList
+                            .Where(f => f.Value != null)
+                            .ToDictionary(x => x.Key, x => x.Value);
                     
                         //Populate room codes here
                     }

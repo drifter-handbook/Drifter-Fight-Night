@@ -15,11 +15,10 @@ public class EndgameImageHandler : MonoBehaviour
 
     void Start()
     {
-
         //isHost = GameController.Instance.IsHost;
 
-        if(GameController.Instance.IsHost)
-        {
+        // if(GameController.Instance.IsHost)
+        // {
 
             if( GameController.Instance.winnerOrder.Length ==0) UnityEngine.Debug.Log("NO CONTEST");
             for(int i = 0; i< GameController.Instance.winnerOrder.Length; i++)
@@ -42,7 +41,7 @@ public class EndgameImageHandler : MonoBehaviour
 
                 }
             }
-        }
+       // }
 
     }
 
