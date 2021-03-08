@@ -118,8 +118,9 @@ public class ScreenShake : MonoBehaviour , INetworkInit
          Vector2 currPos = drifters[i].gameObject.GetComponent<Rigidbody2D>().position;
          scaledZoom = Mathf.Max(Vector2.Distance(new Vector2(Mathf.Clamp(currPos.x,-20f,20f),Mathf.Clamp(currPos.y,-10f,30f)),centerpoint),scaledZoom);
      	}
-     	catch(System.IndexOutOfRangeException e)
+     	catch(System.IndexOutOfRangeException)
      	{
+
      		return 30;
      	}
 

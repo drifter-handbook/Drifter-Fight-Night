@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class EndgameImageHandler : MonoBehaviour
@@ -72,11 +73,28 @@ public class EndgameImageHandler : MonoBehaviour
 
     void Update()
     {
-    	if (Input.anyKey)
-            {
-                GameController.Instance.CleanupNetwork();
-                SceneManager.LoadSceneAsync("MenuScene");
-            }
+        if(Input.GetKeyDown(KeyCode.Return))playAgain();
+    	if(Input.GetKeyDown(KeyCode.Escape))backToMain();
+    }
+
+    public void backToMain()
+    {
+
+        GameController.Instance.CleanupNetwork();
+        SceneManager.LoadSceneAsync("MenuScene");
+
+    }
+
+
+
+    public void playAgain()
+    {
+        if(GameController.Instance.IsHost)GameController.Instance.host.SetScene("CharacterSelect");
+        else 
+        {
+            GameController.Instance.CleanupNetwork();
+            GameController.Instance.StartNetworkClient();
+        }
     }
 
     // public void setSillyImage(DrifterType type, Color color)

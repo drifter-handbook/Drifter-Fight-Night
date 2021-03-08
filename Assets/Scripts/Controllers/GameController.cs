@@ -65,6 +65,7 @@ public class GameController : MonoBehaviour
     public float[] volume = { -1f, -1f, -1f };
 
     Coroutine endingGame = null;
+    string cachedRoomCode ="";
 
     void Awake()
     {
@@ -142,6 +143,8 @@ public class GameController : MonoBehaviour
     //     }
 
          host?.SetScene("Endgame");
+         endingGame = null;
+         yield break;
 
     }
 
@@ -189,7 +192,7 @@ public class GameController : MonoBehaviour
             Destroy(GetComponent<NetworkClient>());
             Destroy(client);
         }
-        
+        cachedRoomCode = roomCode;
         client = gameObject.AddComponent<NetworkClient>();
         NetworkSync sync = gameObject.AddComponent<NetworkSync>();
         sync.Initialize(0, "GameController");
@@ -197,6 +200,12 @@ public class GameController : MonoBehaviour
         matchmakingClient = GetComponent<MatchmakingClient>() ?? gameObject.AddComponent<MatchmakingClient>();
         matchmakingClient.JoinRoom = roomCode;
     }
+
+    public void StartNetworkClient()
+    {
+        StartNetworkClient(cachedRoomCode);
+    }
+
     public void CleanupNetwork()
     {
         PlayerID = -1;
