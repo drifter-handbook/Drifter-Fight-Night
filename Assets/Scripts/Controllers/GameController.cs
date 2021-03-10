@@ -8,6 +8,7 @@ using System.Net;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Assertions;
+using GameAnalyticsSDK;
 
 [DisallowMultipleComponent]
 public class GameController : MonoBehaviour
@@ -31,7 +32,7 @@ public class GameController : MonoBehaviour
 
     //* Data storage
     // Character List
-    
+
     public bool IsPaused { get; private set; } = false;
 
     //* Prefabs
@@ -84,6 +85,11 @@ public class GameController : MonoBehaviour
             Instance = this;
         }
         DontDestroyOnLoad(gameObject);
+    }
+
+    void Start() {
+        GameAnalytics.Initialize();
+        GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, "startGame");
     }
 
     public void Load(string sceneName)
