@@ -5,7 +5,6 @@ using UnityEngine;
 public class MythariusMasterHit : MasterHit
 {
  	GameObject slowfield;
- 	float terminalVelocity;
 
     PROJECTILE_TYPE prev_projectile = PROJECTILE_TYPE.sugarbeet;
 
@@ -21,12 +20,6 @@ public class MythariusMasterHit : MasterHit
         sugarbeet,
         pkmeteor,
         sacredFlame
-    }
-
- 	void Start()
-    {
-        if(!isHost)return;
-        terminalVelocity = movement.terminalVelocity;
     }
 
     void Update()

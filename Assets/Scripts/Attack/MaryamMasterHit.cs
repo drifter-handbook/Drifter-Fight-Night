@@ -7,18 +7,11 @@ public class MaryamMasterHit : MasterHit
 
     bool hasSGRecovery = true;
     bool hasUmbrellaRecovery = true;
-    float terminalVelocity;
 
     public void StanceChange()
     {
         if(!isHost)return;
         SetStance(Empowered?1:0);
-    }
-
-    void Start()
-    {
-        if(!isHost)return;
-        terminalVelocity = movement.terminalVelocity;
     }
 
     void Update()
@@ -50,7 +43,6 @@ public class MaryamMasterHit : MasterHit
         movement.canLandingCancel = false;  
         movement.terminalVelocity = 75;
     }
-
 
     // Swaps between two movesents by changing the animation layer being used
     public void SetStance(int stance)

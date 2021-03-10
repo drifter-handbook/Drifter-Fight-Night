@@ -36,6 +36,8 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
     protected bool verticalReleased = false;
 
+    protected float terminalVelocity;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -54,6 +56,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
         frictionCollider = drifter.GetComponent<PolygonCollider2D>();
 
+        terminalVelocity = movement.terminalVelocity;
         gravityScale = rb.gravityScale;
     }
 
@@ -265,6 +268,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         specialReleased = false;
         if(drifter.input.MoveX ==0)movement.canDash = true;
 		unpauseGravity();
+        movement.terminalVelocity = terminalVelocity;
     	drifter.returnToIdle();
     }
 

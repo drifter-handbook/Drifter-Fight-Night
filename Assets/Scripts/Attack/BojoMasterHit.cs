@@ -6,13 +6,6 @@ public class BojoMasterHit : MasterHit
 {
 
     GameObject Centaur = null;
-    float terminalVelocity;
-
-    void Start()
-    {
-        if(!isHost)return;
-        terminalVelocity = movement.terminalVelocity;
-    }
 
     void Update()
     {

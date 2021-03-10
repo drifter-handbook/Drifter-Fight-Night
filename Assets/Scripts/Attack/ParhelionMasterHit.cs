@@ -4,14 +4,7 @@ using UnityEngine;
 
 public class ParhelionMasterHit : MasterHit
 {
-    float terminalVelocity;
     bool listeningForGround;
-
-    void Start()
-    {
-        if(!isHost)return;
-        terminalVelocity = movement.terminalVelocity;
-    }
 
     void Update()
     {

@@ -10,7 +10,6 @@ public class LucilleMasterHit : MasterHit
 
     //Queue<GameObject> rifts = new Queue<GameObject>(new GameObject[3]);
 
-    float terminalVelocity;
     bool jumpGranted = false;
 
     GameObject bomb;
@@ -22,7 +21,6 @@ public class LucilleMasterHit : MasterHit
     void Start()
     {
         if(!isHost)return;
-        terminalVelocity = movement.terminalVelocity;
         grab = GetComponentInChildren<DetectGrab>();
     }
 

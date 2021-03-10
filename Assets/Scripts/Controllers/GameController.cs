@@ -55,9 +55,15 @@ public class GameController : MonoBehaviour
     public MatchmakingHost matchmakingHost;
 
     [NonSerialized]
-    public IPEndPoint NatPunchServer = new IPEndPoint(IPAddress.Parse("75.134.27.221"), 6996);
+    public IPEndPoint NatPunchServer = new IPEndPoint(IPAddress.Parse(twoHundredTwentyOne + seventyFive + oneHundredThirtyFour + twentySeven), 6996);
     [NonSerialized]
-    public IPEndPoint MatchmakingServer = new IPEndPoint(IPAddress.Parse("75.134.27.221"), 6997);
+    public IPEndPoint MatchmakingServer = new IPEndPoint(IPAddress.Parse(twoHundredTwentyOne + seventyFive + oneHundredThirtyFour + twentySeven), 6997);
+
+    private static string twoHundredTwentyOne = "75.";
+    private static string seventyFive = "134.";
+    private static string oneHundredThirtyFour = "27.";
+    private static string twentySeven = "221";
+
 
     public CustomControls controls;
 

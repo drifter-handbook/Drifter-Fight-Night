@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7656571022056485639}
   - component: {fileID: 3256157745910482342}
   - component: {fileID: 4314339117327377872}
+  - component: {fileID: 2302577760122799804}
   m_Layer: 9
   m_Name: Nair_Backward
   m_TagString: Untagged
@@ -64,6 +65,22 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0.32233736}
   serializedVersion: 2
   m_Radius: 0.17766266
+--- !u!70 &2302577760122799804
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 128759212346341847}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 0.5, y: 1}
+  m_Direction: 0
 --- !u!1 &198073712606413029
 GameObject:
   m_ObjectHideFlags: 0

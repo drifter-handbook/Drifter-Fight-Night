@@ -26,13 +26,16 @@ AnimationClip:
       value: {fileID: -2989458319798831312, guid: e66d4fb02bdbecf47956f87c8cd653ac,
         type: 3}
     - time: 0.16666667
-      value: {fileID: -1418622355530712833, guid: e66d4fb02bdbecf47956f87c8cd653ac,
-        type: 3}
-    - time: 0.25
       value: {fileID: 6844748196802918729, guid: e66d4fb02bdbecf47956f87c8cd653ac,
         type: 3}
-    - time: 0.33333334
+    - time: 0.25
       value: {fileID: 1158400643514245206, guid: e66d4fb02bdbecf47956f87c8cd653ac,
+        type: 3}
+    - time: 0.33333334
+      value: {fileID: -1418622355530712833, guid: e66d4fb02bdbecf47956f87c8cd653ac,
+        type: 3}
+    - time: 0.41666666
+      value: {fileID: -8605328684838091792, guid: e66d4fb02bdbecf47956f87c8cd653ac,
         type: 3}
     attribute: m_Sprite
     path: 
@@ -55,15 +58,16 @@ AnimationClip:
     pptrCurveMapping:
     - {fileID: 1075933677556462852, guid: e66d4fb02bdbecf47956f87c8cd653ac, type: 3}
     - {fileID: -2989458319798831312, guid: e66d4fb02bdbecf47956f87c8cd653ac, type: 3}
-    - {fileID: -1418622355530712833, guid: e66d4fb02bdbecf47956f87c8cd653ac, type: 3}
     - {fileID: 6844748196802918729, guid: e66d4fb02bdbecf47956f87c8cd653ac, type: 3}
     - {fileID: 1158400643514245206, guid: e66d4fb02bdbecf47956f87c8cd653ac, type: 3}
+    - {fileID: -1418622355530712833, guid: e66d4fb02bdbecf47956f87c8cd653ac, type: 3}
+    - {fileID: -8605328684838091792, guid: e66d4fb02bdbecf47956f87c8cd653ac, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.4166667
+    m_StopTime: 0.5
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -87,24 +91,17 @@ AnimationClip:
     functionName: setYVelocity
     data: 
     objectReferenceParameter: {fileID: 0}
-    floatParameter: 30
+    floatParameter: 22
     intParameter: 0
     messageOptions: 0
   - time: 0.083333336
     functionName: setXVelocity
     data: 
     objectReferenceParameter: {fileID: 0}
-    floatParameter: -25
+    floatParameter: -10
     intParameter: 0
     messageOptions: 0
-  - time: 0.25
-    functionName: neutralSpecialProjectile
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.4166667
+  - time: 0.5
     functionName: returnToIdle
     data: 
     objectReferenceParameter: {fileID: 0}
