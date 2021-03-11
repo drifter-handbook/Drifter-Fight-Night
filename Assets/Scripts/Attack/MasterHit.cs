@@ -4,6 +4,9 @@ using UnityEngine;
 
 public abstract class MasterHit : MonoBehaviour, IMasterHit
 {
+
+    public string assetPathName;
+
     protected Drifter drifter;
     protected NetworkHost host;
     protected Rigidbody2D rb;
@@ -44,9 +47,12 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         //Is Host
         isHost = GameController.Instance.IsHost;
 
+        Resources.LoadAll("/Characters/" + assetPathName);
+        Resources.LoadAll("/Projectiles/" + assetPathName);
+
         if(!isHost)return;
         host = GameController.Instance.host;
-        //Paretn Components
+        //Parent Components
         drifter = transform.parent.gameObject.GetComponent<Drifter>();
         rb = drifter.GetComponent<Rigidbody2D>();
         movement = drifter.GetComponent<PlayerMovement>();
@@ -59,6 +65,12 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         terminalVelocity = movement.terminalVelocity;
         gravityScale = rb.gravityScale;
     }
+
+    // void Start()
+    // {
+    //     Resources.LoadAll("/Characters/" + assetPathName);
+    //     Resources.LoadAll("/Projectiles/" + assetPathName);
+    // }
 
     public void setYVelocity(float y)
     {

@@ -7,9 +7,7 @@ public class MegurinMasterHit : MasterHit
     public SpriteRenderer sprite;
     GameObject activeStorm;
     Vector2 HeldDirection;
-
-    float terminalVelocity;
-
+    
     int neutralWCharge = 0;
     int Charge;
     public float lightningCharge = 0f;
