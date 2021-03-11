@@ -121,7 +121,7 @@ public class LucillePortal : MonoBehaviour
 
 		myPriority = size;
 
-		if(size < 4 && growthIncrement <3) anim.SetState("Rift_" + size);
+		if(size < 4 && growthIncrement <3) anim.SetState("Grow_" + size);
 		else anim.SetState("Rift_Detonate_3");
 		
 	}
