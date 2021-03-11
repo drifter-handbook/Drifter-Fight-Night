@@ -117,7 +117,7 @@ public class LucillePortal : MonoBehaviour
 		UnityEngine.Debug.Log(size + " " +  growthIncrement);
 		size += growthIncrement;
 		rb.drag = size -.5f ;
-		speed = 30f - 3*size; 
+		speed = 30f - 2*size; 
 
 		myPriority = size;
 
