@@ -129,6 +129,9 @@ public class LucillePortal : MonoBehaviour
 	public void detonate()
 	{
 		if(!GameController.Instance.IsHost)return;
+
+		foreach (HitboxCollision portalHitbox in GetComponentsInChildren<HitboxCollision>(true))portalHitbox.AttackID -= 9;
+		
 		canMerge = false;
 		rb.velocity = Vector2.zero;
 		anim.SetState("Rift_Detonate_" + size);
