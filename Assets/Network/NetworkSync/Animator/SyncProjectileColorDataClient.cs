@@ -9,28 +9,31 @@ public class SyncProjectileColorDataClient : MonoBehaviour, ISyncClient, INetwor
 
     SyncInt state = new SyncInt();
 
+    int color = 0;
+
     // Start is called before the first frame update
     void Start()
     {
         sync = GetComponent<NetworkSync>();
         sprite = GetComponent<SpriteRenderer>();
     }
-    // Update is called once per frame
-    // void Update()
-    // {
-    //     try
-    //     {
-    //         state = NetworkUtils.GetNetworkData<SyncInt>(sync["colorInfo"]);
 
-    //         if(sprite.GetColor() != state.integerValue) drifter.SetColor(state.integerValue);
+    //Update is called once per frame
+    void Update()
+    {
+        try
+        {
+            state = NetworkUtils.GetNetworkData<SyncInt>(sync["colorInfo"]);
 
-    //     }
-    //     catch (KeyNotFoundException)
-    //     {
-    //         UnityEngine.Debug.Log("COLOR MACHINE BROKE");
-    //         // host hasn't sent anything yet
-    //     }
-    // }
+            if(color != state.integerValue) sprite.material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)state.integerValue]);
+
+        }
+        catch (KeyNotFoundException)
+        {
+            UnityEngine.Debug.Log("COLOR MACHINE BROKE");
+            // host hasn't sent anything yet
+        }
+    }
 
     public void ReceiveNetworkMessage(NetworkMessage message)
     {

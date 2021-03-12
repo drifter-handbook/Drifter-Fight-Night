@@ -8,6 +8,8 @@ public class SyncProjectileColorDataHost : MonoBehaviour, ISyncHost
 
     SpriteRenderer sprite;
 
+    int color = 0;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -17,19 +19,20 @@ public class SyncProjectileColorDataHost : MonoBehaviour, ISyncHost
     }
 
     // Update is called once per frame
-    // void Update()
-    // {
-    //     sync["colorInfo"] = 
-    //         new SyncInt
-    //         {
-    //             integerValue = drifter.GetColor()
-    //         };
-    // }
+    void Update()
+    {
+        sync["colorInfo"] = 
+            new SyncInt
+            {
+                integerValue = color
+            };
+    }
 
     public void setColor(int colorCode)
     {
         if (GameController.Instance.IsHost)
         {
+            color = colorCode;
             sprite.material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)colorCode]);
             sync.SendNetworkMessage(new SyncInt() { integerValue = colorCode});
         }
