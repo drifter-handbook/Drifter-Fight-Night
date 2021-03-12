@@ -56,15 +56,9 @@ public class GameController : MonoBehaviour
     public MatchmakingHost matchmakingHost;
 
     [NonSerialized]
-    public IPEndPoint NatPunchServer = new IPEndPoint(IPAddress.Parse(twoHundredTwentyOne + seventyFive + oneHundredThirtyFour + twentySeven), 6996);
+    public IPEndPoint NatPunchServer = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 6996);
     [NonSerialized]
-    public IPEndPoint MatchmakingServer = new IPEndPoint(IPAddress.Parse(twoHundredTwentyOne + seventyFive + oneHundredThirtyFour + twentySeven), 6997);
-
-    private static string twoHundredTwentyOne = "75.";
-    private static string seventyFive = "134.";
-    private static string oneHundredThirtyFour = "27.";
-    private static string twentySeven = "221";
-
+    public IPEndPoint MatchmakingServer = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 6997);
 
     public CustomControls controls;
 
@@ -90,6 +84,18 @@ public class GameController : MonoBehaviour
     void Start() {
         GameAnalytics.Initialize();
         GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, "startGame");
+        // this is horrid practice please dont do this but
+        string server = Resources.Load<TextAsset>("Config/server_ip").text;
+        if (IPAddress.TryParse(server, out IPAddress address))
+        {
+        }
+        else
+        {
+            IPHostEntry host = Dns.GetHostEntry(server);
+            address = host.AddressList[0];
+        }
+        NatPunchServer = new IPEndPoint(address, NatPunchServer.Port);
+        MatchmakingServer = new IPEndPoint(address, MatchmakingServer.Port);
     }
 
     public void Load(string sceneName)
