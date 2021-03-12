@@ -104,6 +104,7 @@ public class LucilleMasterHit : MasterHit
             hitbox.Facing = facing;
             
         }
+        rift.GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)drifter.GetColor()]);
         rift.GetComponent<LucillePortal>().drifter = drifter.gameObject;
         rifts.Enqueue(rift);
 
