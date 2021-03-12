@@ -130,7 +130,7 @@ public class LucillePortal : MonoBehaviour
 	{
 		if(!GameController.Instance.IsHost)return;
 
-		foreach (HitboxCollision portalHitbox in GetComponentsInChildren<HitboxCollision>(true))portalHitbox.AttackID -= 9;
+		foreach (HitboxCollision portalHitbox in GetComponentsInChildren<HitboxCollision>(true))portalHitbox.AttackID -= UnityEngine.Random.Range(5,10);
 		
 		canMerge = false;
 		rb.velocity = Vector2.zero;

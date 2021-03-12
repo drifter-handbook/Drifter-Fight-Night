@@ -87,7 +87,7 @@ public class EndgameImageHandler : MonoBehaviour
 
     public void playAgain()
     {
-        if(GameController.Instance.IsHost)SceneManager.LoadSceneAsync("CharacterSelect");//GameController.Instance.host.SetScene("CharacterSelect");
+        if(GameController.Instance.IsHost)GameController.Instance.host.SetScene("CharacterSelect");
         else 
         {
             GameController.Instance.CleanupNetwork();

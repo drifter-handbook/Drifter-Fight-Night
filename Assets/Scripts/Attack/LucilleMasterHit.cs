@@ -151,8 +151,8 @@ public class LucilleMasterHit : MasterHit
 
         if(pauseOnHit)status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.1f * self.GetComponent<LucillePortal>().size + .1f);
 
-        if(getTotalPortalSize() == 0) drifter.SetCharge(0);
-        else drifter.SetCharge(3 + getTotalPortalSize());
+        // if(getTotalPortalSize() == 0) drifter.SetCharge(0);
+        // else drifter.SetCharge(3 + getTotalPortalSize());
     }
 
 
@@ -186,6 +186,8 @@ public class LucilleMasterHit : MasterHit
         //Calculates the current size before a new poeral is added
 
         if(rifts.Count ==0)return 0;
+
+         rifts = new Queue<GameObject>(rifts.Where<GameObject>(x => x != null));
 
         foreach(GameObject riftObj in rifts) totalPortalSize += riftObj.GetComponent<LucillePortal>().size;
 
