@@ -108,6 +108,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
             {
                 jqv16 = (int)Mathf.Abs((int)(attackData.AngleOfImpact/45) - (int) (directionInfluenceAngle /45));
 
+                //Make this trig
+
                 adjustedAngle = (attackData.AngleOfImpact *9f + directionInfluenceAngle)/10f;
 
             }

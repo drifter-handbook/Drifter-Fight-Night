@@ -188,7 +188,7 @@ public class LucilleMasterHit : MasterHit
 
         if(rifts.Count ==0)return 0;
 
-         rifts = new Queue<GameObject>(rifts.Where<GameObject>(x => x != null));
+        rifts = new Queue<GameObject>(rifts.Where<GameObject>(x => x != null));
 
         foreach(GameObject riftObj in rifts) totalPortalSize += riftObj.GetComponent<LucillePortal>().size;
 

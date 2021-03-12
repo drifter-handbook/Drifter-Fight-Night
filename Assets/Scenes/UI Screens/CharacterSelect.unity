@@ -1835,7 +1835,7 @@ MonoBehaviour:
       type: 3}
   - drifter: 12
     figurine: {fileID: 1765779285}
-    image: {fileID: 4630240836639510199, guid: 0a084b5443c6d2849884fea46cc525cb, type: 3}
+    image: {fileID: 21300000, guid: 864ad6bdb8d928d4fae41b776806b46e, type: 3}
   - drifter: 13
     figurine: {fileID: 776112603}
     image: {fileID: 21300000, guid: 228409c79dd92194d91d3728c6213cd0, type: 3}
@@ -11613,6 +11613,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Mytharius Figurine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8918532560033638642, guid: 12214e08ed8e2574d92ceb7c79203f3c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8918532560033638643, guid: 12214e08ed8e2574d92ceb7c79203f3c,
         type: 3}

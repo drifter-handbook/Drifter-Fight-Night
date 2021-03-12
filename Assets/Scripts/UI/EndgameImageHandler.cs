@@ -14,6 +14,8 @@ public class EndgameImageHandler : MonoBehaviour
     public GameObject rightPanel;
     public GameObject sillyImagePrefab;
 
+    NetworkSync sync;
+
     void Start()
     {
         //isHost = GameController.Instance.IsHost;
@@ -21,33 +23,32 @@ public class EndgameImageHandler : MonoBehaviour
         if(GameController.Instance.IsHost)
         {
 
-            
+        	sync = GetComponent<NetworkSync>();
+        	sync["charSelState"] = CharacterMenu.CharSelData.charSelState;
 
         }
 
-            if( GameController.Instance.winnerOrder.Length ==0) UnityEngine.Debug.Log("NO CONTEST");
-            for(int i = 0; i< GameController.Instance.winnerOrder.Length; i++)
+        if( GameController.Instance.winnerOrder.Length ==0) UnityEngine.Debug.Log("NO CONTEST");
+        for(int i = 0; i< GameController.Instance.winnerOrder.Length; i++)
+        {
+
+            UnityEngine.Debug.Log("Player " +  GameController.Instance.winnerOrder[i] + " came in " + (i + 1) + "th place!");
+
+
+            //Todo Cleanup
+            if(i == 0)
             {
-
-                UnityEngine.Debug.Log("Player " +  GameController.Instance.winnerOrder[i] + " came in " + (i + 1) + "th place!");
-
-
-                //Todo Cleanup
-                if(i == 0)
+                foreach (CharacterSelectState state in (List<CharacterSelectState>)sync["charSelState"])
                 {
-                    foreach (CharacterSelectState state in CharacterMenu.CharSelData.charSelState)
+                    if (state.PeerID == (i - 1))
                     {
-                        if (state.PeerID == (i - 1))
-                        {
-                            UnityEngine.Debug.Log(state.PlayerType);
-                            setWinnerPic(state.PlayerType,CharacterMenu.ColorFromEnum[(PlayerColor)state.PlayerIndex]);
-                        }
+                        UnityEngine.Debug.Log(state.PlayerType);
+                        setWinnerPic(state.PlayerType,CharacterMenu.ColorFromEnum[(PlayerColor)state.PlayerIndex]);
                     }
-
                 }
-            }
-       // }
 
+            }
+        }
     }
 
     // public void playWinnerAudio(int winnerIndex)
