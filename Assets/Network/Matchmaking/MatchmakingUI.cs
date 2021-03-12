@@ -48,19 +48,25 @@ public class MatchmakingUI : MonoBehaviour
                 {
                     foreach (MatchmakingRoomEntry room in roomEntries)
                     {
-                        Debug.Log($"[Room Entry] {room.name}: {room.room_code}, {room.users}/8");
-                        if(!roomList.ContainsKey(room.room_code))
+                        if(room.users <=0)
                         {
-                            GameObject newRoom = Instantiate(roomHolder, new Vector3(0,0), Quaternion.identity);
-
-                            newRoom.GetComponent<RoomListButton>().init(room.name,room.room_code);
-                            newRoom.transform.SetParent(roomListHolder.transform, false); 
-
-                            roomList[room.room_code] = newRoom.GetComponent<RoomListButton>();
+                            Destroy(roomList[room.room_code].gameObject);
                         }
                         else
                         {
-                            roomList[room.room_code].keepAlive = 0;
+                            Debug.Log($"[Room Entry] {room.name}: {room.room_code}, {room.users}/8");
+                            if(!roomList.ContainsKey(room.room_code))
+                            {
+                                GameObject newRoom = Instantiate(roomHolder, new Vector3(0,0), Quaternion.identity);
+
+                                newRoom.GetComponent<RoomListButton>().init(room.name,room.room_code);
+                                newRoom.transform.SetParent(roomListHolder.transform, false); 
+                                roomList[room.room_code] = newRoom.GetComponent<RoomListButton>();
+                            }
+                            else
+                            {
+                                roomList[room.room_code].keepAlive = 0;
+                            }
                         }
 
                         roomList = roomList
@@ -95,7 +101,7 @@ public class MatchmakingUI : MonoBehaviour
         List<RoomListButton> keyList = roomList.Values.ToList();
         foreach(RoomListButton button in keyList)
         {
-            Destroy(button);
+            Destroy(button.gameObject);
         }
         roomList = new Dictionary<string,RoomListButton>();
 
