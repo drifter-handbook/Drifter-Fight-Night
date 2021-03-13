@@ -19,6 +19,7 @@ public class EndgameImageHandler : MonoBehaviour
     void Start()
     {
         //isHost = GameController.Instance.IsHost;
+        Resources.UnloadUnusedAssets();
 
         if(GameController.Instance.IsHost)
         {
