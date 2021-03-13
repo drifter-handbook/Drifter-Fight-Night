@@ -24,7 +24,8 @@ public class EndgameImageHandler : MonoBehaviour
         {
 
         	sync = GetComponent<NetworkSync>();
-        	sync["charSelState"] = CharacterMenu.CharSelData.charSelState;
+
+        	sync.SendNetworkMessage(new CharacterSelectSyncData() {charSelState = CharacterMenu.CharSelData.charSelState});
 
         }
 
@@ -38,7 +39,7 @@ public class EndgameImageHandler : MonoBehaviour
             //Todo Cleanup
             if(i == 0)
             {
-                foreach (CharacterSelectState state in (List<CharacterSelectState>)sync["charSelState"])
+                foreach (CharacterSelectState state in CharacterMenu.CharSelData.charSelState)
                 {
                     if (state.PeerID == (i - 1))
                     {

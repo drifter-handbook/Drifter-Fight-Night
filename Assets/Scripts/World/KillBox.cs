@@ -120,8 +120,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                         UnityEngine.Debug.Log("ENDING GAME");
                         
                         GameController.Instance.EndMatch(.8f);
-                    }
-                        
+                    }     
                 }
             }
         }

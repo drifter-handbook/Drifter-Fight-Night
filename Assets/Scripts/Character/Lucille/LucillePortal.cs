@@ -101,13 +101,6 @@ public class LucillePortal : MonoBehaviour
 			decay();
 			drifter.GetComponentInChildren<LucilleMasterHit>().breakRift(gameObject);
 		}
-
-		// else 
-		// {
-		// 	grow(other.size);
-		// 	other.decay();
-		// 	drifter.GetComponentInChildren<LucilleMasterHit>().breakRift(other.gameObject);
-		// }
 		
 	}
 
