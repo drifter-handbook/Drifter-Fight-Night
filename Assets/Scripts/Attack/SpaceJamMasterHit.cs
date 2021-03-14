@@ -80,7 +80,7 @@ public class SpaceJamMasterHit : MasterHit
     public void chargeOopsie()
     {
         if(!isHost)return;
-        if(!cancelAttack())
+        if(chargeAttackPesistent("W_Neutral_Finish") == 0)
         {
             if(charges < maxCharge)
             {
