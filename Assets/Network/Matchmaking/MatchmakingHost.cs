@@ -14,6 +14,9 @@ public class MatchmakingHost : MonoBehaviour
     [NonSerialized]
     public bool roomIsPublic = true;
 
+    [NonSerialized]
+    public string userID = "";
+
     void Start()
     {
         StartCoroutine(PollMatchmakingServer());
@@ -42,11 +45,12 @@ public class MatchmakingHost : MonoBehaviour
             host.ConnectionKey = createResponse.connection_key;
             host.RoomKey = createResponse.room_code;
             Debug.Log($"Room code: {createResponse.room_code}");
+            userID = createResponse.user_id;
         }
         // continuously refresh room until start
         while (!host.GameStarted)
         {
-            www = UnityWebRequest.Post($"{server}/refresh/{createResponse.user_id}", "");
+            www = UnityWebRequest.Post($"{server}/refresh/{userID}", "");
             yield return www.SendWebRequest();
             MatchmakingRefreshResponse refreshResponse = null;
             if (www.isNetworkError || www.isHttpError)
@@ -76,7 +80,7 @@ public class MatchmakingHost : MonoBehaviour
         // keep room open for next play
         while (host.GameStarted)
         {
-            www = UnityWebRequest.Post($"{server}/refresh/{createResponse.user_id}", "");
+            www = UnityWebRequest.Post($"{server}/refresh/{userID}", "");
             yield return www.SendWebRequest();
             MatchmakingRefreshResponse refreshResponse = null;
             if (www.isNetworkError || www.isHttpError)
@@ -95,6 +99,34 @@ public class MatchmakingHost : MonoBehaviour
             yield return new WaitForSeconds(8f);
         }
     }
+
+    void OnDestroy()
+    {
+        if (!string.IsNullOrWhiteSpace(userID))
+        {
+            GameController.Instance.StartCoroutine(CloseRoom(userID));
+        }
+    }
+
+    IEnumerator CloseRoom(string userID)
+    {
+        string server = $"http://{GameController.Instance.MatchmakingServer.Address.ToString()}:{GameController.Instance.MatchmakingServer.Port}";
+        UnityWebRequest www = UnityWebRequest.Post($"{server}/close/{userID}", "");
+        yield return www.SendWebRequest();
+        MatchmakingCloseResponse closeResponse = null;
+        if (www.isNetworkError || www.isHttpError)
+        {
+            throw new UnityException(www.error);
+        }
+        else
+        {
+            closeResponse = JsonConvert.DeserializeObject<MatchmakingCloseResponse>(www.downloadHandler.text);
+            if (!closeResponse.closed)
+            {
+                throw new UnityException("Failed to close room. May already be closed.");
+            }
+        }
+    }
 }
 
 public class MatchmakingCreateResponse
@@ -108,4 +140,9 @@ public class MatchmakingRefreshResponse
 {
     public List<string> connect;
     public bool expired;
+}
+
+public class MatchmakingCloseResponse
+{
+    public bool closed;
 }
