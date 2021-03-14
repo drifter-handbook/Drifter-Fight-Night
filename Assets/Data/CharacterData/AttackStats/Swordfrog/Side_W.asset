@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 193b57c47c6e0024ebee715bea3d6f17, type: 3}
-  m_Name: Neutral_W
+  m_Name: Side_W
   m_EditorClassIdentifier: 
-  AttackDamage: 10
-  Knockback: 20
-  KnockbackScale: 0.5
+  AttackDamage: 5
+  Knockback: 0
+  KnockbackScale: 0
   hasStaticHitstun: 0
   HitStun: 0
-  isGrab: 0
+  isGrab: 1
   AngleOfImpact: 25
-  StatusEffect: 9
-  StatusDuration: 6
-  HitVisual: 2
+  StatusEffect: 2
+  StatusDuration: 8
+  HitVisual: 4

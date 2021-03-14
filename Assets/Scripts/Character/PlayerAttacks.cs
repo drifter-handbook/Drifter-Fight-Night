@@ -50,7 +50,15 @@ public class PlayerAttacks : MonoBehaviour
     public DrifterAttackType AttackType { get; private set; }
     public List<SingleAttack> AttackMap = new List<SingleAttack>();
     public Dictionary<DrifterAttackType,SingleAttackData> Attacks = new Dictionary<DrifterAttackType,SingleAttackData>();
+
+    [Help("Declares if any specials other than Up-W consume and require a recovery charge", UnityEditor.MessageType.Info)]
+
+    public bool W_Neutral_Is_Recovery = false;
+    public bool W_Down_Is_Recovery = false;
+    public bool W_Side_Is_Recovery = false;
+
     public int maxRecoveries = 1;
+
 
     [NonSerialized]
     public int currentRecoveries;
@@ -124,17 +132,20 @@ public class PlayerAttacks : MonoBehaviour
                 StartAttack(DrifterAttackType.W_Up);
                 currentRecoveries--;
             }
-            else if(drifter.input.MoveY < 0)
+            else if((!W_Down_Is_Recovery || currentRecoveries >0) && drifter.input.MoveY < 0)
             {
                 StartAttack(DrifterAttackType.W_Down);
+                if(W_Down_Is_Recovery)currentRecoveries--;
             }
-            else if(drifter.input.MoveX!=0)
+            else if((!W_Side_Is_Recovery || currentRecoveries >0) &&drifter.input.MoveX!=0)
             {
                 StartAttack(DrifterAttackType.W_Side);
+                if(W_Side_Is_Recovery)currentRecoveries--;
             }
-            else if(drifter.input.MoveY==0 && drifter.input.MoveX==0)
+            else if((!W_Neutral_Is_Recovery || currentRecoveries >0) &&drifter.input.MoveY==0 && drifter.input.MoveX==0)
             {
                 StartAttack(DrifterAttackType.W_Neutral);
+                if(W_Neutral_Is_Recovery)currentRecoveries--;
                 
             }
         }

@@ -314,11 +314,8 @@ public class PlayerStatus : MonoBehaviour
             return;
         }
 
-    	if(!HasStatusEffect(ef) && data.statusBar == null && !(data.iconIndex < 0))
-        {
-            UnityEngine.Debug.Log("Added Bar for " +  ef);
-            data.statusBar = addStatusBar(ef,duration);
-        }
+    	if(!HasStatusEffect(ef) && data.statusBar == null && !(data.iconIndex < 0))data.statusBar = addStatusBar(ef,duration);
+
     	//Ignores hitstun if in superarmour or invuln
         if(ef == PlayerStatusEffect.DEAD){
             clearAllStatus();
@@ -328,13 +325,11 @@ public class PlayerStatus : MonoBehaviour
 
         if(data.channel != 0)clearStatusChannel(data.channel);
 
-        if(ef == PlayerStatusEffect.PARALYZED){
-            rb.velocity = new Vector2(0,15f);
-        }
+        if(ef == PlayerStatusEffect.PARALYZED)rb.velocity = new Vector2(0,15f);
 
-    	if((HasStatusEffect(PlayerStatusEffect.INVULN) || HasStatusEffect(PlayerStatusEffect.ARMOUR)) && data.isStun && !data.isSelfInflicted){
-    		return;
-    	}
+
+    	if((HasStatusEffect(PlayerStatusEffect.INVULN) || HasStatusEffect(PlayerStatusEffect.ARMOUR)) && data.isStun && !data.isSelfInflicted) return;
+    
 
         if((data.isStun && !data.isSelfInflicted && HasStatusEffect(ef)) && ef != PlayerStatusEffect.KNOCKBACK|| (HasStatusEffect(PlayerStatusEffect.PLANTED) && (ef == PlayerStatusEffect.GRABBED))){
             
@@ -346,12 +341,8 @@ public class PlayerStatus : MonoBehaviour
 
         if((ef == PlayerStatusEffect.KNOCKBACK || data.isStun && !data.isSelfInflicted))clearRemoveOnHitStatus();        
         
-        if(ef == PlayerStatusEffect.HITPAUSE || ef == PlayerStatusEffect.CRINGE){
-            //save delayed velocity
-
-            delayedVelocity = rb.velocity;
-        }
-
+        //save delayed velocity
+        if(ef == PlayerStatusEffect.HITPAUSE || ef == PlayerStatusEffect.CRINGE) delayedVelocity = rb.velocity;
 
     	data.duration = duration * 10f;
 

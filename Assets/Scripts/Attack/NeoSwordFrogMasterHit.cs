@@ -32,7 +32,6 @@ public class NeoSwordFrogMasterHit : MasterHit
         }
     }
 
-
     public void neutralSpecialProjectile()
     {
         if(!isHost)return;
