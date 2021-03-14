@@ -25,7 +25,7 @@ public class MatchmakingUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     IEnumerator GetRoomsCoroutine()
@@ -46,30 +46,33 @@ public class MatchmakingUI : MonoBehaviour
                 roomEntries = JsonConvert.DeserializeObject<List<MatchmakingRoomEntry>>(www.downloadHandler.text);
                 if (roomEntries != null)
                 {
-
                     foreach (MatchmakingRoomEntry room in roomEntries)
                     {
-                        Debug.Log($"[Room Entry] {room.name}: {room.room_code}, {room.users}/8");
-
-                        if(!roomList.ContainsKey(room.room_code))
+                        if(room.users <=0)
                         {
-                            GameObject newRoom = Instantiate(roomHolder, new Vector3(0,0), Quaternion.identity);
-
-                            newRoom.GetComponent<RoomListButton>().init(room.name,room.room_code);
-
-                            newRoom.transform.SetParent(roomListHolder.transform, false); 
-
-                            roomList[room.room_code] = newRoom.GetComponent<RoomListButton>();
+                            Destroy(roomList[room.room_code].gameObject);
                         }
                         else
                         {
-                            roomList[room.room_code].keepAlive = 0;
+                            Debug.Log($"[Room Entry] {room.name}: {room.room_code}, {room.users}/8");
+                            if(!roomList.ContainsKey(room.room_code))
+                            {
+                                GameObject newRoom = Instantiate(roomHolder, new Vector3(0,0), Quaternion.identity);
+
+                                newRoom.GetComponent<RoomListButton>().init(room.name,room.room_code);
+                                newRoom.transform.SetParent(roomListHolder.transform, false); 
+                                roomList[room.room_code] = newRoom.GetComponent<RoomListButton>();
+                            }
+                            else
+                            {
+                                roomList[room.room_code].keepAlive = 0;
+                            }
                         }
 
                         roomList = roomList
-                            .Where(f => f.Value != null)
-                            .ToDictionary(x => x.Key, x => x.Value);
-                    
+                        .Where(f => f.Value != null)
+                        .ToDictionary(x => x.Key, x => x.Value);
+
                         //Populate room codes here
                     }
                 }
@@ -90,6 +93,20 @@ public class MatchmakingUI : MonoBehaviour
         GameController.Instance.StartNetworkHost();
         StopCoroutine(getRoomsCoroutine);
         GameController.Instance.host.SetScene("CharacterSelect");
+    }
+
+    public void refresh()
+    {
+        StopCoroutine(getRoomsCoroutine);
+        List<RoomListButton> keyList = roomList.Values.ToList();
+        foreach(RoomListButton button in keyList)
+        {
+            Destroy(button.gameObject);
+        }
+        roomList = new Dictionary<string,RoomListButton>();
+
+        getRoomsCoroutine = StartCoroutine(GetRoomsCoroutine());
+
     }
 
     // public void StartClient()

@@ -35,37 +35,6 @@ public enum PlayerStatusEffect
 
 class PlayerStatusData
 {
-	public static Dictionary<PlayerStatusEffect,PlayerStatusData> statusDataMap = new Dictionary<PlayerStatusEffect,PlayerStatusData>()
-	{
-		
-		{PlayerStatusEffect.AMBERED,  							new PlayerStatusData("AMBERED",icon: 3,stun: true)									},
-		{PlayerStatusEffect.PLANTED,  							new PlayerStatusData("PLANTED",icon: 3,stun:true)									},
-		{PlayerStatusEffect.STUNNED, 							new PlayerStatusData("STUNNED",icon:  3,stun: true)									},
-		{PlayerStatusEffect.PARALYZED,							new PlayerStatusData("PARALYZED",icon:  3,stun: true)								},
-		{PlayerStatusEffect.GRABBED,  							new PlayerStatusData("GRABBED",icon:  3,stun: true)									},
-		{PlayerStatusEffect.CRINGE,  							new PlayerStatusData("CRINGE",icon: 3,stun: true)									},
-		{PlayerStatusEffect.DEAD ,    							new PlayerStatusData("DEAD",icon:  7,remove: false,stun: true)						},
-		{PlayerStatusEffect.POISONED, 							new PlayerStatusData("POISONED",icon:  0,remove: false)								},
-		{PlayerStatusEffect.BURNING, 							new PlayerStatusData("BURNING",icon: 1,remove: false)								},
-		{PlayerStatusEffect.REVERSED,							new PlayerStatusData("REVERSED",icon: 4)											},
-		{PlayerStatusEffect.FLIGHT,   							new PlayerStatusData("FLIGHT",icon: 12, self: true)									},
-		{PlayerStatusEffect.INVULN,   							new PlayerStatusData("INVULN",icon: 9, remove: false, self: true)					},
-		{PlayerStatusEffect.ARMOUR,  							new PlayerStatusData("ARMOUR",icon: 10, remove: false, self: true)					},
-		{PlayerStatusEffect.EXPOSED,							new PlayerStatusData("EXPOSED",icon: 2,channel: 1)									},
-		{PlayerStatusEffect.FEATHERWEIGHT,						new PlayerStatusData("FEATHERWEIGHT",icon: 2,remove: false, channel: 1)				},
-		{PlayerStatusEffect.SLOWED,  							new PlayerStatusData("SLOWED",icon: 11,remove: false,channel: 3)					},
-		{PlayerStatusEffect.SPEEDUP, 							new PlayerStatusData("SPEEDUP",icon: 5,remove: false,self: true, channel: 3)		},
-		{PlayerStatusEffect.DAMAGEUP,							new PlayerStatusData("DAMAGEUP",icon: 6,remove: false,self: true, channel: 4)		},
-		{PlayerStatusEffect.DEFENSEUP,							new PlayerStatusData("DEFENSEUP",icon: 13,remove: false,self :true, channel: 5)		},
-		{PlayerStatusEffect.DEFENSEDOWN,						new PlayerStatusData("DEFENSEDOWN",icon: 8,remove: false, channel: 5)				},
-		{PlayerStatusEffect.HIT,    							new PlayerStatusData("HIT")															},
-		{PlayerStatusEffect.END_LAG,							new PlayerStatusData("END_LAG",stun: true, self: true)								},
-		{PlayerStatusEffect.KNOCKBACK,							new PlayerStatusData("KNOCKBACK",remove: false, stun: true)							},
-		{PlayerStatusEffect.HITPAUSE, 							new PlayerStatusData("HITPAUSE",stun: true, self:true)								},
-        {PlayerStatusEffect.GUARDBROKEN,                        new PlayerStatusData("GUARDBROKEN",icon: 14,remove: false)                           },
-	};
-
-
     public string name = "HIT";
     public int iconIndex = -1;
     public bool removeOnHit = true;
@@ -73,9 +42,11 @@ class PlayerStatusData
     public bool isSelfInflicted = false;
     public int channel = 0;
     public GameObject statusBar = null;
+    public float duration = 0;
+    public bool stacking = false;
     //public bool isMashable = false;
 
-    PlayerStatusData(string statusName, int icon = -1 ,bool remove = true,bool stun = false, bool self = false, int channel = 0) //, bool mashable = false)
+    public PlayerStatusData(string statusName, int icon = -1 ,bool remove = true,bool stun = false, bool self = false, int channel = 0, bool stacking = false) //, bool mashable = false)
     { 
         name = statusName;
         iconIndex = icon;
@@ -83,20 +54,48 @@ class PlayerStatusData
         isStun = stun;
         isSelfInflicted = self;
         this.channel = channel;
+        this.stacking = stacking;
+
         //isMashable = mashable;
     }
-
 }
-
-
 
 public class PlayerStatus : MonoBehaviour
 {
 
 	static float framerateScalar =.0833333333f;
 
+    Dictionary<PlayerStatusEffect,PlayerStatusData> statusDataMap = new Dictionary<PlayerStatusEffect,PlayerStatusData>()
+    {
+        
+        {PlayerStatusEffect.AMBERED,                            new PlayerStatusData("AMBERED",icon: 3,stun: true)                                  },
+        {PlayerStatusEffect.PLANTED,                            new PlayerStatusData("PLANTED",icon: 3,stun:true)                                   },
+        {PlayerStatusEffect.STUNNED,                            new PlayerStatusData("STUNNED",icon:  3,stun: true)                                 },
+        {PlayerStatusEffect.PARALYZED,                          new PlayerStatusData("PARALYZED",icon:  3,stun: true)                               },
+        {PlayerStatusEffect.GRABBED,                            new PlayerStatusData("GRABBED",icon:  3,stun: true)                                 },
+        {PlayerStatusEffect.CRINGE,                             new PlayerStatusData("CRINGE",icon: 3,stun: true)                                   },
+        {PlayerStatusEffect.DEAD ,                              new PlayerStatusData("DEAD",icon:  7,remove: false,stun: true)                      },
+        {PlayerStatusEffect.POISONED,                           new PlayerStatusData("POISONED",icon:  0,remove: false,stacking:true)               },
+        {PlayerStatusEffect.BURNING,                            new PlayerStatusData("BURNING",icon: 1,remove: false)                               },
+        {PlayerStatusEffect.REVERSED,                           new PlayerStatusData("REVERSED",icon: 4)                                            },
+        {PlayerStatusEffect.FLIGHT,                             new PlayerStatusData("FLIGHT",icon: 12, self: true)                                 },
+        {PlayerStatusEffect.INVULN,                             new PlayerStatusData("INVULN",icon: 9, remove: false, self: true)                   },
+        {PlayerStatusEffect.ARMOUR,                             new PlayerStatusData("ARMOUR",icon: 10, remove: false, self: true)                  },
+        {PlayerStatusEffect.EXPOSED,                            new PlayerStatusData("EXPOSED",icon: 2,channel: 1)                                  },
+        {PlayerStatusEffect.FEATHERWEIGHT,                      new PlayerStatusData("FEATHERWEIGHT",icon: 2,remove: false, channel: 1)             },
+        {PlayerStatusEffect.SLOWED,                             new PlayerStatusData("SLOWED",icon: 11,remove: false,channel: 3)                    },
+        {PlayerStatusEffect.SPEEDUP,                            new PlayerStatusData("SPEEDUP",icon: 5,remove: false,self: true, channel: 3)        },
+        {PlayerStatusEffect.DAMAGEUP,                           new PlayerStatusData("DAMAGEUP",icon: 6,remove: false,self: true, channel: 4)       },
+        {PlayerStatusEffect.DEFENSEUP,                          new PlayerStatusData("DEFENSEUP",icon: 13,remove: false,self :true, channel: 5)     },
+        {PlayerStatusEffect.DEFENSEDOWN,                        new PlayerStatusData("DEFENSEDOWN",icon: 8,remove: false, channel: 5)               },
+        {PlayerStatusEffect.HIT,                                new PlayerStatusData("HIT")                                                         },
+        {PlayerStatusEffect.END_LAG,                            new PlayerStatusData("END_LAG",stun: true, self: true)                              },
+        {PlayerStatusEffect.KNOCKBACK,                          new PlayerStatusData("KNOCKBACK",remove: false, stun: true)                         },
+        {PlayerStatusEffect.HITPAUSE,                           new PlayerStatusData("HITPAUSE",stun: true, self:true)                              },
+        {PlayerStatusEffect.GUARDBROKEN,                        new PlayerStatusData("GUARDBROKEN",icon: 14,remove: false)                           },
+    };
+
     float time = 0f;
-    Dictionary<PlayerStatusData, float> statusEffects = new Dictionary<PlayerStatusData, float>();
     Rigidbody2D rb;
     Drifter drifter;
     Vector2 delayedVelocity;
@@ -117,32 +116,36 @@ public class PlayerStatus : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(time > .1f){
+        if(time >= .1f)
+        {
             time = 0f;
             //Hitpause pauses all other statuses for its duration
             if(HasStatusEffect(PlayerStatusEffect.HITPAUSE))
             {
-                 statusEffects[PlayerStatusData.statusDataMap[PlayerStatusEffect.HITPAUSE]]--;
+                 statusDataMap[PlayerStatusEffect.HITPAUSE].duration--;
                  if(!HasStatusEffect(PlayerStatusEffect.HITPAUSE))rb.velocity = delayedVelocity;
             }
+            //Otherwise, tick down all active statuses
             else{
-                List<PlayerStatusData> keys = new List<PlayerStatusData>(statusEffects.Keys);
-				foreach(PlayerStatusData key in keys)
-        		{
-                    if(HasStatusEffect(key) && statusEffects[key] > 0)
+
+                foreach(KeyValuePair<PlayerStatusEffect,PlayerStatusData> ef in statusDataMap)
+                {
+                    if(HasStatusEffect(ef.Key))
                     {
-                        statusEffects[key]--;
-                        if(key == PlayerStatusData.statusDataMap[PlayerStatusEffect.BURNING]) drifter.DamageTaken += .2f;
-                        if(key == PlayerStatusData.statusDataMap[PlayerStatusEffect.CRINGE] && !HasStatusEffect(PlayerStatusEffect.CRINGE))rb.velocity = delayedVelocity;
-                    }
-                    else{
-                        statusEffects[key] = 0;
+                        ef.Value.duration--;
+
+                        //Damage player if they are on fire
+                        if(ef.Key == PlayerStatusEffect.BURNING) drifter.DamageTaken += .2f;
+                        //Re-apply the saved velocity if the player just lost cringe
+                        if(ef.Key == PlayerStatusEffect.CRINGE && !HasStatusEffect(PlayerStatusEffect.CRINGE))rb.velocity = delayedVelocity;
+
                     }
                 }
             }
             
         }
 
+        //If you are actionable, end combo
         if(!HasEnemyStunEffect() && combocount >0)
         {
         	UnityEngine.Debug.Log("COMBO DROPPED at :" + combocount);
@@ -157,20 +160,16 @@ public class PlayerStatus : MonoBehaviour
     //Returns true if the player has the specified status and its duration is not zero
     public bool HasStatusEffect(PlayerStatusEffect ef)
     {
-        return HasStatusEffect(PlayerStatusData.statusDataMap[ef]);
-    }
-
-    bool HasStatusEffect(PlayerStatusData ef)
-    {
-    	return statusEffects.ContainsKey(ef) && statusEffects[ef] > 0;
+        return statusDataMap[ef].duration > 0;
     }
 
     //Returns true if player is not actionable
     public bool HasStunEffect()
     {
-    	foreach(KeyValuePair<PlayerStatusData,float> ef in statusEffects)
+
+    	foreach(KeyValuePair<PlayerStatusEffect,PlayerStatusData> ef in statusDataMap)
     	{
-    		if(HasStatusEffect(ef.Key) && ef.Key.isStun) return true;
+    		if(HasStatusEffect(ef.Key) && ef.Value.isStun) return true;
     	}
     	return false;
     }
@@ -178,13 +177,11 @@ public class PlayerStatus : MonoBehaviour
     //Returns true if player is not actionable by an enemy's hand
     public bool HasEnemyStunEffect()
     {
-    	foreach(KeyValuePair<PlayerStatusData,float> ef in statusEffects)
-    	{
-    		if(HasStatusEffect(ef.Key) && ef.Key.isStun && !ef.Key.isSelfInflicted) return true;
-    	}
-    	return false;
-
-        
+        foreach(KeyValuePair<PlayerStatusEffect,PlayerStatusData> ef in statusDataMap)
+        {
+            if(HasStatusEffect(ef.Key) && ef.Value.isStun && !ef.Value.isSelfInflicted) return true;
+        }
+        return false;        
     }
 
     //Player is not in hitstun
@@ -201,51 +198,41 @@ public class PlayerStatus : MonoBehaviour
     //Clears all removable Status effects
     public void clearRemoveOnHitStatus()
     {
-
-    	List<PlayerStatusData> keys = new List<PlayerStatusData>(statusEffects.Keys);
-		foreach(PlayerStatusData key in keys)
-		{
-    		if(statusEffects.ContainsKey(key) && key.removeOnHit ) statusEffects[key] = 0f;
-    	}
+		foreach(KeyValuePair<PlayerStatusEffect,PlayerStatusData> ef in statusDataMap)
+        {
+            if(ef.Value.removeOnHit) ef.Value.duration = 0;
+        }
     }
 
 	//Clears ALL status effects    
     public void clearAllStatus()
     {
-        List<PlayerStatusData> keys = new List<PlayerStatusData>(statusEffects.Keys);
-		foreach(PlayerStatusData key in keys)
+        foreach(KeyValuePair<PlayerStatusEffect,PlayerStatusData> ef in statusDataMap)
         {
-        	if(statusEffects.ContainsKey(key))statusEffects[key] = 0f;
+            ef.Value.duration = 0;
         }
     }
 
     //Clears ALL status effects on a given status channel    
     public void clearStatusChannel(int channel)
     {
-        List<PlayerStatusData> keys = new List<PlayerStatusData>(statusEffects.Keys);
-		foreach(PlayerStatusData key in keys)
+        foreach(KeyValuePair<PlayerStatusEffect,PlayerStatusData> ef in statusDataMap)
         {
-        	if(statusEffects.ContainsKey(key) && key.channel == channel)statusEffects[key] = 0f;
+            if(ef.Value.channel == channel) ef.Value.duration = 0;
         }
     }
 
     //Gets the remaining duration for a given stats effect
     public float remainingDuration(PlayerStatusEffect ef)
     {
-    	return remainingDuration(PlayerStatusData.statusDataMap[ef]);
-    }
-
-    float remainingDuration(PlayerStatusData ef)
-    {
-    	if(statusEffects.ContainsKey(ef)) return statusEffects[ef];
-    	else return 0;
+    	return statusDataMap[ef].duration;
     }
 
     //Reduces hitstun duration when restituted
     public void bounce()
     {
         if(HasStatusEffect(PlayerStatusEffect.KNOCKBACK)){
-            statusEffects[PlayerStatusData.statusDataMap[PlayerStatusEffect.KNOCKBACK]] *= .8f;
+            statusDataMap[PlayerStatusEffect.KNOCKBACK].duration *= .8f;
         }
     }
 
@@ -260,10 +247,10 @@ public class PlayerStatus : MonoBehaviour
     //TODO make mashable a parameter?
     public void mashOut(){
         //Adjust these numbers to make it easier or harder to mash out
-        if(HasStatusEffect(PlayerStatusEffect.AMBERED))statusEffects[PlayerStatusData.statusDataMap[PlayerStatusEffect.AMBERED]]-=.4f;
-        if(HasStatusEffect(PlayerStatusEffect.PLANTED))statusEffects[PlayerStatusData.statusDataMap[PlayerStatusEffect.PLANTED]]-=.4f;
-        if(HasStatusEffect(PlayerStatusEffect.PARALYZED))statusEffects[PlayerStatusData.statusDataMap[PlayerStatusEffect.PARALYZED]]-=.4f;
-        if(HasStatusEffect(PlayerStatusEffect.GRABBED))statusEffects[PlayerStatusData.statusDataMap[PlayerStatusEffect.GRABBED]]-=.4f;
+        if(HasStatusEffect(PlayerStatusEffect.AMBERED))statusDataMap[PlayerStatusEffect.AMBERED].duration-=.4f;
+        if(HasStatusEffect(PlayerStatusEffect.PLANTED))statusDataMap[PlayerStatusEffect.PLANTED].duration-=.4f;
+        if(HasStatusEffect(PlayerStatusEffect.PARALYZED))statusDataMap[PlayerStatusEffect.PARALYZED].duration-=.4f;
+        if(HasStatusEffect(PlayerStatusEffect.GRABBED))statusDataMap[PlayerStatusEffect.GRABBED].duration-=.4f;
     }
 
 	//IDK fam. do we want to keep this?
@@ -286,19 +273,19 @@ public class PlayerStatus : MonoBehaviour
     //initialize a status bar on the players summary card.
     GameObject addStatusBar(PlayerStatusEffect ef, float duration)
     {
-    	if(card==null || PlayerStatusData.statusDataMap[ef].iconIndex < 0)return null;
+    	if(card==null)return null;
 
-    	return card.addStatusBar(ef,PlayerStatusData.statusDataMap[ef].iconIndex,duration,this);
+    	return card.addStatusBar(ef,statusDataMap[ef].iconIndex,duration,this);
     }
 
 
     //God this bullshit...
     void ApplyStatusEffectFor(PlayerStatusEffect ef, float duration)
     {
-    	PlayerStatusData data = PlayerStatusData.statusDataMap[ef];
+    	PlayerStatusData data = statusDataMap[ef];
 
     	//Combo Counter
-    	if(PlayerStatusData.statusDataMap[ef].isStun && !PlayerStatusData.statusDataMap[ef].isSelfInflicted)
+    	if(data.isStun && !data.isSelfInflicted)
     	{
 
     		if(ef == PlayerStatusEffect.DEAD && combocount > 0)
@@ -320,17 +307,22 @@ public class PlayerStatus : MonoBehaviour
     		}
     	}
 
-        if(HasStatusEffect(ef) && ef == PlayerStatusEffect.POISONED)
+        //If status effect stacks, add new duration to current duration and return.
+        if(data.stacking && HasStatusEffect(ef))
         {
-            statusEffects[data] += duration * 10f;
+            data.duration += duration * 10f;
             return;
         }
 
-    	if(!HasStatusEffect(ef) && PlayerStatusData.statusDataMap[ef].statusBar == null) PlayerStatusData.statusDataMap[ef].statusBar = addStatusBar(ef,duration);
+    	if(!HasStatusEffect(ef) && data.statusBar == null && !(data.iconIndex < 0))
+        {
+            UnityEngine.Debug.Log("Added Bar for " +  ef);
+            data.statusBar = addStatusBar(ef,duration);
+        }
     	//Ignores hitstun if in superarmour or invuln
         if(ef == PlayerStatusEffect.DEAD){
             clearAllStatus();
-            statusEffects[data] = duration * 10f;
+            data.duration = duration * 10f;
             return;
         }
 
@@ -346,18 +338,13 @@ public class PlayerStatus : MonoBehaviour
 
         if((data.isStun && !data.isSelfInflicted && HasStatusEffect(ef)) && ef != PlayerStatusEffect.KNOCKBACK|| (HasStatusEffect(PlayerStatusEffect.PLANTED) && (ef == PlayerStatusEffect.GRABBED))){
             
-            statusEffects[PlayerStatusData.statusDataMap[PlayerStatusEffect.KNOCKBACK]] = 5.5f;
+            statusDataMap[PlayerStatusEffect.KNOCKBACK].duration = 5.5f;
             clearRemoveOnHitStatus();
             return;
         }
         //If youre planted or stunned, you get unplanted by a hit
 
         if((ef == PlayerStatusEffect.KNOCKBACK || data.isStun && !data.isSelfInflicted))clearRemoveOnHitStatus();        
-
-        if (!statusEffects.ContainsKey(data))
-        {
-            statusEffects[data] = 0f;
-        }
         
         if(ef == PlayerStatusEffect.HITPAUSE || ef == PlayerStatusEffect.CRINGE){
             //save delayed velocity
@@ -366,7 +353,7 @@ public class PlayerStatus : MonoBehaviour
         }
 
 
-    	statusEffects[data] = duration * 10f;
+    	data.duration = duration * 10f;
 
     }
 }

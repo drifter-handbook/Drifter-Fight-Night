@@ -90,7 +90,7 @@ public class Drifter : MonoBehaviour, INetworkInit
     
     //public bool forceGuard = false;
 
-    [NonSerialized]
+    //[NonSerialized]
     public bool guarding = false;
     [NonSerialized]
     public bool perfectGuarding = false;

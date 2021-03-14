@@ -90,7 +90,7 @@ public class LucilleMasterHit : MasterHit
         facing = movement.Facing;
 
         //remove the oldest portal if size limit would be exceeded.
-        //if(getTotalPortalSize() >= 3) rifts.Dequeue().GetComponent<LucillePortal>().decay();
+        if(getTotalPortalSize() >= 9) rifts.Dequeue().GetComponent<LucillePortal>().decay();
         
 
         GameObject rift = GameController.Instance.host.CreateNetworkObject("Lucille_Rift", transform.position + new Vector3(0,3.5f,0), transform.rotation);
@@ -104,6 +104,7 @@ public class LucilleMasterHit : MasterHit
             hitbox.Facing = facing;
             
         }
+        rift.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
         rift.GetComponent<LucillePortal>().drifter = drifter.gameObject;
         rifts.Enqueue(rift);
 
@@ -151,8 +152,8 @@ public class LucilleMasterHit : MasterHit
 
         if(pauseOnHit)status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.1f * self.GetComponent<LucillePortal>().size + .1f);
 
-        if(getTotalPortalSize() == 0) drifter.SetCharge(0);
-        else drifter.SetCharge(3 + getTotalPortalSize());
+        // if(getTotalPortalSize() == 0) drifter.SetCharge(0);
+        // else drifter.SetCharge(3 + getTotalPortalSize());
     }
 
 
@@ -182,18 +183,20 @@ public class LucilleMasterHit : MasterHit
     {
         int totalPortalSize = 0;
 
-        // //Lucille can have up to 3 total portal size active
-        // //Calculates the current size before a new poeral is added
+        //Lucille can have up to 3 total portal size active
+        //Calculates the current size before a new poeral is added
 
-        // if(rifts.Count ==0)return 0;
+        if(rifts.Count ==0)return 0;
 
-        // foreach(GameObject riftObj in rifts) totalPortalSize += riftObj.GetComponent<LucillePortal>().size;
+        rifts = new Queue<GameObject>(rifts.Where<GameObject>(x => x != null));
 
-        // if(totalPortalSize >3)
-        // {
-        //     UnityEngine.Debug.Log("TOO MUCH GIRTH");
-        //     return 3;
-        // }
+        foreach(GameObject riftObj in rifts) totalPortalSize += riftObj.GetComponent<LucillePortal>().size;
+
+        if(totalPortalSize >9)
+        {
+            UnityEngine.Debug.Log("TOO MUCH GIRTH");
+            return 9;
+        }
 
         return totalPortalSize;
     }

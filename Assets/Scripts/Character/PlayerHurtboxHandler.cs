@@ -88,7 +88,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
 
             //Calculate the direction for knockback
-            float facingDir = Mathf.Sign(hitbox.Facing) == 0 ? 1 : Mathf.Sign(hitbox.Facing) ;
+            float facingDir = Mathf.Sign(hitbox.Facing) == 0 ? 1 : Mathf.Sign(hitbox.Facing);
 
             // rotate direction by angle of impact
             //Do we still need all this math?
@@ -100,23 +100,39 @@ public class PlayerHurtboxHandler : MonoBehaviour
             //KILL DI
             float directionInfluenceAngle = drifter.input.MoveY < 0 ? 360f - Vector3.Angle(facingDir * Vector3.right,new Vector2(drifter.input.MoveX,drifter.input.MoveY)): Vector3.Angle(facingDir * Vector3.right,new Vector2(drifter.input.MoveX,drifter.input.MoveY));
 
-            float adjustedAngle = attackData.AngleOfImpact;
+            Vector3 adjustedAngle = Quaternion.Euler(0, 0, attackData.AngleOfImpact * facingDir)  * Vector2.right * facingDir;
 
-            int jqv16 = 0;
+            float horizontalComponent = facingDir * Mathf.Cos(attackData.AngleOfImpact *Mathf.Deg2Rad);
+            float verticalComponent = Mathf.Sin(attackData.AngleOfImpact *Mathf.Deg2Rad);
+
+            //float adjustedAngle = attackData.AngleOfImpact * facingDir;
+            //int jqv16 = 0;
 
             if(drifter.input.MoveX !=0 || drifter.input.MoveY !=0 ) 
             {
-                jqv16 = (int)Mathf.Abs((int)(attackData.AngleOfImpact/45) - (int) (directionInfluenceAngle /45));
 
-                adjustedAngle = (attackData.AngleOfImpact *6f + directionInfluenceAngle)/7f;
+                //jqv16 = (int)Mathf.Abs((int)(attackData.AngleOfImpact/45) - (int) (directionInfluenceAngle /45));
+
+                //Make this trig
+
+                //adjustedAngle = Mathf.MoveTowards(attackData.AngleOfImpact,directionInfluenceAngle,21f/360f );
+
+                //adjustedAngle = Quaternion.RotateTowards(Quaternion.Euler(0, 0, attackData.AngleOfImpact),Quaternion.Euler(0, 0,directionInfluenceAngle), 21f);
+                
+                // float x = facingDir * Mathf.Cos(attackData.AngleOfImpact *Mathf.Deg2Rad) * 1 + .2f * drifter.input.MoveX;
+                // float y = Mathf.Sin(attackData.AngleOfImpact *Mathf.Deg2Rad) * 1 + .2f * drifter.input.MoveY;
+
+                adjustedAngle = Quaternion.Euler(0, 0, Mathf.Atan((verticalComponent * 1 + .2f * drifter.input.MoveY)/(horizontalComponent* 1 + .2f * drifter.input.MoveX)) * Mathf.Rad2Deg)  * Vector2.right * facingDir;
+
+
+                //adjustedAngle = radAngle + Mathf.Clamp((radAngle - directionInfluenceAngle * Mathf.Deg2Rad) ,-21f,21f);
 
             }
 
-            //Autolink angle (<361) sets the knockback angle to send towards the hitbox's centerpoint
+            //Autolink angle (<-361) sets the knockback angle to send towards the hitbox's centerpoint
             Vector2 forceDir = Mathf.Abs(attackData.AngleOfImpact) <= 360?
-                                    Quaternion.Euler(0, 0, adjustedAngle * facingDir) * (facingDir * Vector2.right) :
+                                    adjustedAngle:
                                     Quaternion.Euler(0, 0, angle) * Vector2.right;
-
 
 
             //Calculate knockback magnitude
@@ -127,8 +143,13 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
 
             //COMBO DI
-            if(KB < 30 && (drifter.input.MoveX !=0 || drifter.input.MoveY !=0 ) &&  (jqv16 ==0  || jqv16 == 4))KB *= jqv16 == 4 ? .4f:  1.4f;
+            if(KB < 25 && (drifter.input.MoveX !=0 || drifter.input.MoveY !=0 ))
+            {
+                    
+                if(Mathf.Abs(horizontalComponent) >= Mathf.Abs(verticalComponent)) KB *= horizontalComponent * drifter.input.MoveX < 0 ? .4f:  1.4f;
+                else KB *= verticalComponent * drifter.input.MoveY < 0 ? .4f:  1.4f;
 
+            }
 
             //Calculate hitstun duration
             float HitstunDuration = (attackData.HitStun>=0 || attackData.hasStaticHitstun)?attackData.HitStun * framerateScalar:(KB*.006f + .1f);
