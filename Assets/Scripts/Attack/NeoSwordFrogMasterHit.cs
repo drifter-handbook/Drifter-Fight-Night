@@ -6,6 +6,8 @@ public class NeoSwordFrogMasterHit : MasterHit
 {
     Coroutine kunaiShoot;
 
+    Vector2 HeldDirection;
+
     void Update()
     {
         if(!isHost)return;
@@ -38,9 +40,16 @@ public class NeoSwordFrogMasterHit : MasterHit
         facing = movement.Facing;
         if(movement.grounded)
         {
-            rb.velocity = new Vector2(-20 * facing,30);
+            rb.velocity = new Vector2(20 * facing,30);
         }
 
+    }
+
+    //Causes a non-aerial move to cancle on htiing the ground
+    public void landingCancel()
+    {
+        if(!isHost)return;
+        movement.canLandingCancel = true;
     }
 
     public void downSpecialProjectile()
@@ -51,6 +60,13 @@ public class NeoSwordFrogMasterHit : MasterHit
         //Fire an arrow if Swordfrog has a charge
         kunaiShoot = StartCoroutine(fireKunaiDown());
 
+    }
+
+     //Flips the direction the charactr is facing mid move)
+    public void invertDirection()
+    {
+        if(!isHost)return;
+        movement.flipFacing();
     }
 
     IEnumerator fireKunaiDown()
@@ -87,6 +103,24 @@ public class NeoSwordFrogMasterHit : MasterHit
         if(drifter.GetCharge() < 0)drifter.SetCharge(0);
         yield break;
 
+    }
+
+    public void dance(int speed)
+    {
+
+        if(!isHost)return;
+        movement.gravityPaused = true;
+        rb.gravityScale = 5;
+        rb.velocity = speed * Vector3.Normalize(HeldDirection);
+
+    }
+
+    public void saveDirection()
+    {
+        if(!isHost)return;
+        movement.updateFacing();
+        Vector2 TestDirection = new Vector2(drifter.input.MoveX,drifter.input.MoveY);
+        HeldDirection = TestDirection == Vector2.zero? HeldDirection: TestDirection;
     }
 
 
