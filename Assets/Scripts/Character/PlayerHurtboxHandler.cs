@@ -221,7 +221,12 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
 
                     //Attatch Defender to attacker's hitbox for grab moves.
-                    if(attackData.StatusEffect == PlayerStatusEffect.GRABBED) status.grabPoint = hitbox.gameObject.GetComponent<Collider2D>();
+                    if(attackData.StatusEffect == PlayerStatusEffect.GRABBED)
+                    {
+                        status.grabPoint = hitbox.gameObject.GetComponent<Collider2D>();
+                        attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,framerateScalar);
+
+                    } 
 
                 	
                 }
