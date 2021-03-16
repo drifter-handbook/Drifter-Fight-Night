@@ -31,30 +31,34 @@ public class DetectGrab : MonoBehaviour
 
             if(playState)
             {
-                StartCoroutine(delayState());
+                StartCoroutine(delayState(col));
             }
             if(applyVelocity)
             {
-                StartCoroutine(delayVelocity());
+                StartCoroutine(delayVelocity(col));
             }
             
         }
     }
 
-    IEnumerator delayState()
+    IEnumerator delayState(Collider2D col)
     {
         yield return new WaitForSeconds(.0833333333f / 5f );
-        if(GrabState != "")drifter.PlayAnimation(GrabState);
+        //If a state is provided, and the hitbox ACUALLY hit, play the success state
+        if(GrabState != "" && !col.gameObject.GetComponent<HurtboxCollision>().parent.GetComponent<PlayerHurtboxHandler>().CanHit(gameObject.GetComponent<HitboxCollision>().AttackID))drifter.PlayAnimation(GrabState);
         yield break;
 
     }
 
-    IEnumerator delayVelocity()
+    IEnumerator delayVelocity(Collider2D col)
     {
     	yield return new WaitForSeconds(.0833333333f / 5f );
     	Rigidbody2D rb = drifter.gameObject.GetComponent<Rigidbody2D>();
-                rb.velocity = new Vector3(xVelocity == 0?rb.velocity.x:xVelocity * gameObject.GetComponent<HitboxCollision>().Facing,
+                if(!col.gameObject.GetComponent<HurtboxCollision>().parent.GetComponent<PlayerHurtboxHandler>().CanHit(gameObject.GetComponent<HitboxCollision>().AttackID))
+                {
+                    rb.velocity = new Vector3(xVelocity == 0?rb.velocity.x:xVelocity * gameObject.GetComponent<HitboxCollision>().Facing,
                                         yVelocity == 0?rb.velocity.y:yVelocity);
+                }
         yield break;
 
     }
