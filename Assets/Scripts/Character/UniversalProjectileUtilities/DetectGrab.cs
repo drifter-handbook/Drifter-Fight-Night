@@ -31,8 +31,7 @@ public class DetectGrab : MonoBehaviour
 
             if(playState)
             {
-                if(GrabState != "")drifter.PlayAnimation(GrabState);
-                else drifter.returnToIdle();
+                StartCoroutine(delayState());
             }
             if(applyVelocity)
             {
@@ -42,9 +41,17 @@ public class DetectGrab : MonoBehaviour
         }
     }
 
+    IEnumerator delayState()
+    {
+        yield return new WaitForSeconds(.0833333333f / 5f );
+        if(GrabState != "")drifter.PlayAnimation(GrabState);
+        yield break;
+
+    }
+
     IEnumerator delayVelocity()
     {
-    	yield return new WaitForSeconds(.0833333333f / 10f );
+    	yield return new WaitForSeconds(.0833333333f / 5f );
     	Rigidbody2D rb = drifter.gameObject.GetComponent<Rigidbody2D>();
                 rb.velocity = new Vector3(xVelocity == 0?rb.velocity.x:xVelocity * gameObject.GetComponent<HitboxCollision>().Facing,
                                         yVelocity == 0?rb.velocity.y:yVelocity);

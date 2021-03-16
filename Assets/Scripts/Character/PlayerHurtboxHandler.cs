@@ -205,10 +205,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
                     //IF there is hitstun to be applied, apply it
                     if(attackData.HitStun != 0)
                     {
-                        
                         status?.calculateFrameAdvantage(HitstunDuration,hitbox.parent.GetComponent<Drifter>().getRemainingAttackTime());
                         status?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, HitstunDuration);
-
                     }
                 }
 
@@ -220,6 +218,10 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 	status.ApplyStatusEffect(attackData.StatusEffect, (attackData.StatusEffect == PlayerStatusEffect.PLANTED || attackData.StatusEffect == PlayerStatusEffect.AMBERED?
                                                                     attackData.StatusDuration * framerateScalar *2f* 4f/(1f+Mathf.Exp(-0.03f * (drifter.DamageTaken -80f))):
                                                                     attackData.StatusDuration * framerateScalar));
+
+
+                    //Attatch Defender to attacker's hitbox for grab moves.
+                    if(attackData.StatusEffect == PlayerStatusEffect.GRABBED) status.grabPoint = hitbox.gameObject.GetComponent<Collider2D>();
 
                 	
                 }

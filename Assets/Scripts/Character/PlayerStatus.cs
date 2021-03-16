@@ -106,6 +106,8 @@ public class PlayerStatus : MonoBehaviour
     int combocount = 0;
 
     public PlayerCard card;
+
+    public Collider2D grabPoint = null;
     // Start is called before the first frame update
     void Start()
     {
@@ -116,11 +118,21 @@ public class PlayerStatus : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        if(grabPoint!=null && HasStatusEffect(PlayerStatusEffect.GRABBED) && grabPoint.enabled)rb.position = grabPoint.bounds.center;
+
+        else if(HasStatusEffect(PlayerStatusEffect.GRABBED) && (grabPoint== null || !grabPoint.enabled))
+        {
+            grabPoint=null;
+            statusDataMap[PlayerStatusEffect.GRABBED].duration = 0;
+            rb.velocity = delayedVelocity;
+        }
+        
         if(time >= .1f)
         {
             time = 0f;
             //Hitpause pauses all other statuses for its duration
-            if(HasStatusEffect(PlayerStatusEffect.HITPAUSE))
+            if(HasStatusEffect(PlayerStatusEffect.HITPAUSE) || HasStatusEffect(PlayerStatusEffect.GRABBED))
             {
                  statusDataMap[PlayerStatusEffect.HITPAUSE].duration--;
                  if(!HasStatusEffect(PlayerStatusEffect.HITPAUSE))rb.velocity = delayedVelocity;
@@ -133,7 +145,6 @@ public class PlayerStatus : MonoBehaviour
                     if(HasStatusEffect(ef.Key))
                     {
                         ef.Value.duration--;
-
                         //Damage player if they are on fire
                         if(ef.Key == PlayerStatusEffect.BURNING) drifter.DamageTaken += .2f;
                         //Re-apply the saved velocity if the player just lost cringe
@@ -202,6 +213,7 @@ public class PlayerStatus : MonoBehaviour
         {
             if(ef.Value.removeOnHit) ef.Value.duration = 0;
         }
+        grabPoint = null;
     }
 
 	//Clears ALL status effects    
@@ -211,6 +223,7 @@ public class PlayerStatus : MonoBehaviour
         {
             ef.Value.duration = 0;
         }
+        grabPoint = null;
     }
 
     //Clears ALL status effects on a given status channel    
@@ -327,7 +340,6 @@ public class PlayerStatus : MonoBehaviour
 
         if(ef == PlayerStatusEffect.PARALYZED)rb.velocity = new Vector2(0,15f);
 
-
     	if((HasStatusEffect(PlayerStatusEffect.INVULN) || HasStatusEffect(PlayerStatusEffect.ARMOUR)) && data.isStun && !data.isSelfInflicted) return;
     
 
@@ -342,7 +354,7 @@ public class PlayerStatus : MonoBehaviour
         if((ef == PlayerStatusEffect.KNOCKBACK || data.isStun && !data.isSelfInflicted))clearRemoveOnHitStatus();        
         
         //save delayed velocity
-        if(ef == PlayerStatusEffect.HITPAUSE || ef == PlayerStatusEffect.CRINGE) delayedVelocity = rb.velocity;
+        if(ef == PlayerStatusEffect.HITPAUSE || ef == PlayerStatusEffect.CRINGE || ef == PlayerStatusEffect.GRABBED) delayedVelocity = rb.velocity;
 
     	data.duration = duration * 10f;
 
