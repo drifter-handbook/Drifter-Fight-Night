@@ -80,6 +80,9 @@ TextureImporter:
   - first:
       213: 8836003279188020153
     second: SF_Sheet_2_25
+  - first:
+      213: 8388681928458781222
+    second: SF_Sheet_2_26
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -546,12 +549,12 @@ TextureImporter:
       name: SF_Sheet_2_18
       rect:
         serializedVersion: 2
-        x: 64
-        y: 640
+        x: 0
+        y: 448
         width: 128
-        height: 64
+        height: 128
       alignment: 9
-      pivot: {x: 0.25, y: 0}
+      pivot: {x: 0.25, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -706,6 +709,27 @@ TextureImporter:
       bones: []
       spriteID: 51edba9ed6ea583b0800000000000000
       internalID: -5510806781922910699
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SF_Sheet_2_26
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 512
+        width: 64
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 622468fc4c59a6470800000000000000
+      internalID: 8388681928458781222
       vertices: []
       indices: 
       edges: []

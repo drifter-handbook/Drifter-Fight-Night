@@ -115,6 +115,13 @@ public class NeoSwordFrogMasterHit : MasterHit
 
     }
 
+    public void dendrobate()
+    {
+        if(!isHost)return;
+        if(HeldDirection.x == 0 && HeldDirection.y  < 0)drifter.PlayAnimation("Dendro_Down");
+        else if(HeldDirection.x == 0 && HeldDirection.y > 0)drifter.PlayAnimation("Dendro_Up");
+    }
+
     public void saveDirection()
     {
         if(!isHost)return;
