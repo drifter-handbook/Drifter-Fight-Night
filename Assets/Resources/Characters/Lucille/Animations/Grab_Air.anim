@@ -389,7 +389,7 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: -2849412138235531537, guid: 86771de532f11cb47942f1f131c116fb,
+      value: {fileID: 6384183244220876519, guid: 86771de532f11cb47942f1f131c116fb,
         type: 3}
     - time: 0.083333336
       value: {fileID: -1240392826090523598, guid: 86771de532f11cb47942f1f131c116fb,
@@ -408,6 +408,9 @@ AnimationClip:
         type: 3}
     - time: 0.5
       value: {fileID: -7452357341555015926, guid: 86771de532f11cb47942f1f131c116fb,
+        type: 3}
+    - time: 0.5833333
+      value: {fileID: 8091635134933286816, guid: 86771de532f11cb47942f1f131c116fb,
         type: 3}
     attribute: m_Sprite
     path: 
@@ -491,19 +494,20 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: -2849412138235531537, guid: 86771de532f11cb47942f1f131c116fb, type: 3}
+    - {fileID: 6384183244220876519, guid: 86771de532f11cb47942f1f131c116fb, type: 3}
     - {fileID: -1240392826090523598, guid: 86771de532f11cb47942f1f131c116fb, type: 3}
     - {fileID: 145578369832323555, guid: 86771de532f11cb47942f1f131c116fb, type: 3}
     - {fileID: 1456089081460370500, guid: 86771de532f11cb47942f1f131c116fb, type: 3}
     - {fileID: -5240752036112015784, guid: 86771de532f11cb47942f1f131c116fb, type: 3}
     - {fileID: 2243229795873756286, guid: 86771de532f11cb47942f1f131c116fb, type: 3}
     - {fileID: -7452357341555015926, guid: 86771de532f11cb47942f1f131c116fb, type: 3}
+    - {fileID: 8091635134933286816, guid: 86771de532f11cb47942f1f131c116fb, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.5833333
+    m_StopTime: 0.6666667
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -892,7 +896,7 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.5833333
+  - time: 0.6666667
     functionName: returnToIdle
     data: 
     objectReferenceParameter: {fileID: 0}
