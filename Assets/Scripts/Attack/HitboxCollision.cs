@@ -7,6 +7,8 @@ public class HitboxCollision : MonoBehaviour
     public GameObject parent;
     public NetworkSync playerType;
 
+    public bool isActive = true;
+
     public int AttackID { get; set; }
     public DrifterAttackType AttackType { get; set; }
     public bool Active { get; set; } = true;
@@ -47,20 +49,6 @@ public class HitboxCollision : MonoBehaviour
 
     		}
 
-
-
-    		// ContactPoint2D[] contacts = new ContactPoint2D[10];
-      //   	bool groundFrictionPosition = gameObject.GetComponent<Collider2D>().GetContacts(contacts) >0;
-
-
-      //   	if(groundFrictionPosition)
-      //   	{
-      //   		UnityEngine.Debug.Log("HELLO");
-      //   		foreach(ContactPoint2D point in contacts)
-      //   		{
-      //   			if(point.collider.gameObject.tag == "Ground") 
-      //   		}
-    		// }
     	}
     }
 
@@ -69,7 +57,7 @@ public class HitboxCollision : MonoBehaviour
         //Debug.Log("name " + name + " " + (gameObject.activeSelf || gameObject.activeInHierarchy));
         HurtboxCollision hurtbox = collider.GetComponent<HurtboxCollision>();
     
-        if (hurtbox != null && AttackType != DrifterAttackType.Null)
+        if (hurtbox != null && AttackType != DrifterAttackType.Null && isActive)
         {
             //string player = playerType.NetworkType;
             if(OverrideData != null){

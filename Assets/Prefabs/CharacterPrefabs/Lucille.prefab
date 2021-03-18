@@ -110,6 +110,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1016780505216394531}
   playerType: {fileID: 0}
+  isActive: 1
   OverrideData: {fileID: 11400000, guid: bde3c9b8d765a6d43aba3688f402b104, type: 2}
   AttackData: {fileID: 0}
 --- !u!58 &2495309577752849972
@@ -191,6 +192,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1016780505216394531}
   playerType: {fileID: 0}
+  isActive: 1
   OverrideData: {fileID: 11400000, guid: 19185f65a6c374e42adea4d178e1451f, type: 2}
   AttackData: {fileID: 0}
 --- !u!114 &1757599156396431096
@@ -269,6 +271,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1016780505216394531}
   playerType: {fileID: 0}
+  isActive: 1
   OverrideData: {fileID: 11400000, guid: 7397b9f5b26c5824ba3e1752de60bf74, type: 2}
   AttackData: {fileID: 0}
 --- !u!1 &2599480874147558807
@@ -318,6 +321,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1016780505216394531}
   playerType: {fileID: 0}
+  isActive: 1
   OverrideData: {fileID: 11400000, guid: 64c2879e5dec779428f50275e9add7f8, type: 2}
   AttackData: {fileID: 0}
 --- !u!70 &5262819790322619266
@@ -414,6 +418,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1016780505216394531}
   playerType: {fileID: 0}
+  isActive: 1
   OverrideData: {fileID: 0}
   AttackData: {fileID: 0}
 --- !u!114 &6659673585390523811
@@ -509,6 +514,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1016780505216394531}
   playerType: {fileID: 0}
+  isActive: 1
   OverrideData: {fileID: 11400000, guid: 842a61b846b959c4f86fb71f5b259fb6, type: 2}
   AttackData: {fileID: 0}
 --- !u!1 &4293394734762300295
@@ -557,6 +563,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1016780505216394531}
   playerType: {fileID: 0}
+  isActive: 1
   OverrideData: {fileID: 11400000, guid: 5c0b2f7b1ffb2d8439d37356a4933dee, type: 2}
   AttackData: {fileID: 0}
 --- !u!70 &8636112319358836473
@@ -603,7 +610,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0.38268343, w: 0.92387956}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 8745430946876042620}
   m_Father: {fileID: 6684825320623129584}
   m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 45}
@@ -637,6 +645,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1016780505216394531}
   playerType: {fileID: 0}
+  isActive: 1
   OverrideData: {fileID: 11400000, guid: 6e6bf865ac6482c418a56876ad7e4522, type: 2}
   AttackData: {fileID: 0}
   SuccessState: Air_Grab_Success
@@ -703,10 +712,91 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1016780505216394531}
   playerType: {fileID: 0}
+  isActive: 1
   OverrideData: {fileID: 11400000, guid: fe696afe4fa18c24b8210cd207f7c456, type: 2}
   AttackData: {fileID: 0}
   SuccessState: Grab_Success
   victim: {fileID: 0}
+--- !u!1 &6552541301775502913
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8745430946876042620}
+  - component: {fileID: 4174189481177796682}
+  - component: {fileID: 4554743194611063503}
+  - component: {fileID: 1995964523054667879}
+  m_Layer: 9
+  m_Name: Air_Grab_Portal_Slam
+  m_TagString: Lucille_Portal_Detonate
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8745430946876042620
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6552541301775502913}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 873225741377281816}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4174189481177796682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6552541301775502913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parent: {fileID: 1016780505216394531}
+  playerType: {fileID: 0}
+  isActive: 0
+  OverrideData: {fileID: 0}
+  AttackData: {fileID: 0}
+--- !u!114 &4554743194611063503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6552541301775502913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70581a5454af9484da58e3ebfffb5dca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  drifter: {fileID: 1016780505216394531}
+  StateToPlay: Aerial_Down_Flip
+--- !u!58 &1995964523054667879
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6552541301775502913}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!1 &6626816085118012924
 GameObject:
   m_ObjectHideFlags: 0
@@ -769,6 +859,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1016780505216394531}
   playerType: {fileID: 0}
+  isActive: 1
   OverrideData: {fileID: 11400000, guid: c41638e5b681888469dd2a34a29d341b, type: 2}
   AttackData: {fileID: 0}
 --- !u!1 &7356855737826804681
@@ -833,6 +924,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1016780505216394531}
   playerType: {fileID: 0}
+  isActive: 1
   OverrideData: {fileID: 11400000, guid: 5db84aea2e8c1094dbcd134edcc86dad, type: 2}
   AttackData: {fileID: 0}
 --- !u!1 &7644345229185873005
@@ -882,6 +974,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1016780505216394531}
   playerType: {fileID: 0}
+  isActive: 1
   OverrideData: {fileID: 11400000, guid: 9236cb711f11e3a439e01f22b2ceac3f, type: 2}
   AttackData: {fileID: 0}
 --- !u!70 &5551978776291050127
@@ -946,6 +1039,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1016780505216394531}
   playerType: {fileID: 0}
+  isActive: 1
   OverrideData: {fileID: 11400000, guid: 842a61b846b959c4f86fb71f5b259fb6, type: 2}
   AttackData: {fileID: 0}
 --- !u!70 &5570561986298529847
@@ -1010,6 +1104,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1016780505216394531}
   playerType: {fileID: 0}
+  isActive: 1
   OverrideData: {fileID: 11400000, guid: 5b1591ce11926334c9e306337754ccb3, type: 2}
   AttackData: {fileID: 0}
 --- !u!70 &5225571035154125188
