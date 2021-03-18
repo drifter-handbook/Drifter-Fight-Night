@@ -62,6 +62,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 6949512207643572198}
   playerType: {fileID: 0}
+  isActive: 1
   OverrideData: {fileID: 11400000, guid: 3693c1036dfe1854694feacdf60dc261, type: 2}
   AttackData: {fileID: 0}
 --- !u!1 &2319162438002447649
@@ -126,6 +127,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 6949512207643572198}
   playerType: {fileID: 0}
+  isActive: 1
   OverrideData: {fileID: 11400000, guid: 659a6d6fef49b214790c615aa4c267ce, type: 2}
   AttackData: {fileID: 0}
 --- !u!1 &3534580512135710466
@@ -300,6 +302,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 6949512207643572198}
   playerType: {fileID: 0}
+  isActive: 1
   OverrideData: {fileID: 11400000, guid: 7d81cc8d3d125f44fa3499895fae0ee3, type: 2}
   AttackData: {fileID: 0}
 --- !u!1 &6479482746489521717
@@ -348,6 +351,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 6949512207643572198}
   playerType: {fileID: 0}
+  isActive: 1
   OverrideData: {fileID: 11400000, guid: 028b12b44a0846c41af8f0ff4c8a047e, type: 2}
   AttackData: {fileID: 0}
 --- !u!70 &3575878091756114642
@@ -412,6 +416,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 6949512207643572198}
   playerType: {fileID: 0}
+  isActive: 1
   OverrideData: {fileID: 11400000, guid: 791389b70a960994e91399c95fecd89b, type: 2}
   AttackData: {fileID: 0}
 --- !u!58 &8770615239595660839
@@ -677,7 +682,7 @@ PrefabInstance:
     - target: {fileID: 3106753082241659641, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: walkSpeed
-      value: 10
+      value: 27.5
       objectReference: {fileID: 0}
     - target: {fileID: 3106753082241659641, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
