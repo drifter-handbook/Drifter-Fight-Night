@@ -36,13 +36,22 @@ public class PlayerHurtboxHandler : MonoBehaviour
         return !oldAttacks.ContainsKey(attackID);
     }
 
-    public void RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, DrifterAttackType attackType, SingleAttackData attackData)
+
+    //Registers an attack hit. Returns an integer based on what happened.
+    // -4: Hit was a registered as a counter
+    // -3: Hit did not register at all; ID was already present in dict, or target was invulnerable.
+    // -2: Hit was registerted, but Parried, dealing no damage
+    // -1: Hit was registered, but blocked
+    // 0: Hit was registered normally
+
+    public int RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, DrifterAttackType attackType, SingleAttackData attackData)
     {
         //UnityEngine.Debug.Log(attackID);
         // only host processes hits, don't hit ourself, and ignore previously registered attacks
+        int returnCode = -3;
         if (GameController.Instance.IsHost && hitbox.parent != hurtbox.parent && !oldAttacks.ContainsKey(attackID))
         {
-
+            
             // register new attack
             oldAttacks[attackID] = Time.time;
             // apply hit effects
@@ -55,15 +64,15 @@ public class PlayerHurtboxHandler : MonoBehaviour
             float damageDealt = 0f;
 
             //Ignore the collision if invulnerable
-            if(status.HasStatusEffect(PlayerStatusEffect.INVULN))return;
+            if(status.HasStatusEffect(PlayerStatusEffect.INVULN))return -3;
             
             //Freezefame if hit a counter
-            if(hurtbox.gameObject.name == "Counter" &&  attackData.AttackDamage >0f)
+            if(hurtbox.gameObject.name == "Counter" &&  attackData.AttackDamage >0f && !attackData.isGrab)
             {
                 GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.STAR, Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),0, new Vector2(10f, 10f));
                 attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.7f);
                 status.ApplyStatusEffect(PlayerStatusEffect.HIT,.3f);
-                return;
+                return -4;
             }
 
             // apply damage
@@ -226,9 +235,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                         status.grabPoint = hitbox.gameObject.GetComponent<Collider2D>();
                         attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,framerateScalar);
 
-                    } 
-
-                	
+                    }              	
                 }
                 //Pop playewrs out of the ground when they are already grounded
                 else if(attackData.StatusEffect == PlayerStatusEffect.PLANTED && !GetComponent<PlayerMovement>().grounded){
@@ -248,13 +255,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 if(HitstunDuration>0 && attackData.StatusEffect != PlayerStatusEffect.HITPAUSE && damageDealt >=2.5f)status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(attackData.HitVisual == HitSpark.CRIT || status.HasStatusEffect(PlayerStatusEffect.ARMOUR)) ?.6f:Mathf.Max(HitstunDuration*.25f ,.25f));
                 StartCoroutine(drifter.GetComponentInChildren<GameObjectShake>().Shake(attackData.StatusEffect != PlayerStatusEffect.CRINGE?HitstunDuration*.2f:attackData.StatusDuration* framerateScalar,attackData.StatusEffect != PlayerStatusEffect.CRINGE?1.5f:2f));
 
-                // //Revers players movement when hit by a reveral
-                // if(attackData.StatusEffect == PlayerStatusEffect.REVERSED)
-                // {
-                //     Vector2 velocity = GetComponent<Rigidbody2D>().velocity;
-                //     velocity = new Vector2(-1 * velocity.x,velocity.y);
-                //     GetComponent<PlayerMovement>().flipFacing();
-                // }            
+                returnCode = 0;             
             }
             //Normal guarding behavior
             else if(drifter.guarding && !drifter.parrying)
@@ -277,6 +278,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
                         status?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, HitstunDuration/2f);
                 }
 
+                returnCode = -1; 
+
             }
             //Parrying a guardbreaker
             else if(drifter.parrying && attackData.isGrab && hitbox.gameObject.tag != "Projectile")
@@ -286,6 +289,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 if(hitbox.gameObject.tag != "Projectile")hitbox.parent.GetComponent<Rigidbody2D>().velocity = new Vector2(hitbox.Facing *-35f, hitbox.parent.GetComponent<Rigidbody2D>().velocity.y);
                
                 GetComponent<Rigidbody2D>().velocity = new Vector2(35f * hitbox.Facing , GetComponent<Rigidbody2D>().velocity.y);
+                returnCode = -2;
 
             }
             //Parrying a normal attack
@@ -299,6 +303,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 attackerStatus.ApplyStatusEffect(PlayerStatusEffect.CRINGE,1f);
                 StartCoroutine(Shake.zoomEffect(.6f,Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),false));
                 attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.6f);
+                returnCode = -2;
 
             }
 
@@ -337,6 +342,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             // Ancillary Hitsparks
             if (drifter != null && damageDealt >0f) StartCoroutine(delayHitsparks(Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),attackData.AngleOfImpact,damageDealt,HitstunDuration *.25f));
         }
+        return returnCode;
     }
 
     IEnumerator CleanupOldAttacks()

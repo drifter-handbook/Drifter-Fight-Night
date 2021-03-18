@@ -14,15 +14,9 @@ public class LucilleMasterHit : MasterHit
 
     GameObject bomb;
 
-    DetectGrab grab;
+    public GrabHitboxCollision bombGrab;
 
     //Coroutine riftDetonation;
-
-    void Start()
-    {
-        if(!isHost)return;
-        grab = GetComponentInChildren<DetectGrab>();
-    }
 
     void Update()
     {
@@ -55,8 +49,8 @@ public class LucilleMasterHit : MasterHit
         if(!isHost)return;
         if(bomb != null)
         {
-            bomb.GetComponent<StickToTarget>().victim = grab.victim;
-            grab.victim = null;
+            bomb.GetComponent<StickToTarget>().victim = bombGrab.victim;
+            bombGrab.victim = null;
             bomb = null;
         } 
     }
