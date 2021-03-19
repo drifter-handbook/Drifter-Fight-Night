@@ -587,6 +587,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 525923954844471981, guid: 99f00dda964e6054cb2af4c05ec2139d,
+        type: 3}
+      propertyPath: Background
+      value: 
+      objectReference: {fileID: 1765972633}
     - target: {fileID: 8308863690101463977, guid: 99f00dda964e6054cb2af4c05ec2139d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -803,6 +808,12 @@ GameObject:
 --- !u!1 &1765972632 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2945509486460407052, guid: a0381e10168aec24a80f4d4b38b5fda6,
+    type: 3}
+  m_PrefabInstance: {fileID: 1765972628}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1765972633 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3166303848962291290, guid: a0381e10168aec24a80f4d4b38b5fda6,
     type: 3}
   m_PrefabInstance: {fileID: 1765972628}
   m_PrefabAsset: {fileID: 0}

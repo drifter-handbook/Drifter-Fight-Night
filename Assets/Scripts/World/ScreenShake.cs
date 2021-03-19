@@ -17,6 +17,7 @@ public class ScreenShake : MonoBehaviour , INetworkInit
    public Coroutine CurrentShake;
 
    public Drifter[] drifters;
+   public GameObject Background;
 
    void Awake()
    {
@@ -37,7 +38,11 @@ public class ScreenShake : MonoBehaviour , INetworkInit
    {
       if(drifters == null || !DynamicCamera || killing) return;
 
-      if(CurrentShake == null) transform.localPosition = Vector3.Lerp(CalculateCenter(),transform.localPosition,Time.deltaTime/1.5f);
+      if(CurrentShake == null) 
+      {
+         transform.localPosition = Vector3.Lerp(CalculateCenter(),transform.localPosition,Time.deltaTime/1.5f);
+         if(Background != null)Background.transform.localPosition = Vector3.Lerp(CalculateCenter()/2f,transform.localPosition,Time.deltaTime/1.5f);
+      }
 
       if(!killing) self.orthographicSize = CalculateZoom();
 
@@ -69,7 +74,7 @@ public class ScreenShake : MonoBehaviour , INetworkInit
    			float y = origPos.y + Random.Range(-.5f,.5f) * magnitude * (self.orthographicSize - 15f)/15f;
 
    			transform.localPosition = new Vector3(x,y,origPos.z);
-
+            if(Background != null)Background.transform.localPosition = new Vector3(x/2f,y/2f,origPos.z);
             // self.orthographicSize += Random.Range(-2f,2f) * magnitude;
 
    			elapsed += Time.deltaTime;
