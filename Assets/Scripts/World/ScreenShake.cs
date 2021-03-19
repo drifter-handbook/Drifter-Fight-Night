@@ -74,7 +74,7 @@ public class ScreenShake : MonoBehaviour , INetworkInit
    			float y = origPos.y + Random.Range(-.5f,.5f) * magnitude * (self.orthographicSize - 15f)/15f;
 
    			transform.localPosition = new Vector3(x,y,origPos.z);
-            if(Background != null)Background.transform.localPosition = new Vector3(x/2f,y/2f,origPos.z);
+            if(Background != null && DynamicCamera)Background.transform.localPosition = new Vector3(x/2f,y/2f,origPos.z);
             // self.orthographicSize += Random.Range(-2f,2f) * magnitude;
 
    			elapsed += Time.deltaTime;
