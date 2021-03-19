@@ -78,8 +78,8 @@ public class EndgameImageHandler : MonoBehaviour
 
     void Update()
     {
-        // if(Input.GetKeyDown(KeyCode.Return))playAgain();
-        // if(Input.GetKeyDown(KeyCode.Escape))backToMain();
+        if(Input.GetKeyDown(KeyCode.Return))playAgain();
+        if(Input.GetKeyDown(KeyCode.Escape))backToMain();
         
         if((Input.GetMouseButton(0) || Input.GetMouseButton(1) || Input.GetMouseButton(2)) && !mouse)
         {
