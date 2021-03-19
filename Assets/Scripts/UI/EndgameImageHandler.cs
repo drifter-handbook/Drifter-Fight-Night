@@ -16,6 +16,8 @@ public class EndgameImageHandler : MonoBehaviour
 
     NetworkSync sync;
 
+    bool mouse = false;
+
     void Start()
     {
         //isHost = GameController.Instance.IsHost;
@@ -76,8 +78,24 @@ public class EndgameImageHandler : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Return))playAgain();
-    	if(Input.GetKeyDown(KeyCode.Escape))backToMain();
+        // if(Input.GetKeyDown(KeyCode.Return))playAgain();
+        // if(Input.GetKeyDown(KeyCode.Escape))backToMain();
+        
+        if((Input.GetMouseButton(0) || Input.GetMouseButton(1) || Input.GetMouseButton(2)) && !mouse)
+        {
+            mouse = true;
+            //Cursor.visible = true;
+            EventSystem.current.SetSelectedGameObject(null);
+
+        }
+        else if(Input.anyKey && mouse && (!Input.GetMouseButton(0) || !Input.GetMouseButton(1) || !Input.GetMouseButton(2))){
+            EventSystem.current.SetSelectedGameObject(GameObject.Find("MainMenu"));
+            mouse = false;
+        }
+
+
+
+        
     }
 
     public void backToMain()
