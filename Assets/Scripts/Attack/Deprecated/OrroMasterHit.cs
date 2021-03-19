@@ -52,7 +52,7 @@ public class OrroMasterHit : MasterHit
         facing = movement.Facing;
         rb.velocity = new Vector2(rb.velocity.x, 35f);
         
-        GameObject orroSplosion = host.CreateNetworkObject("DairExplosion", transform.position, transform.rotation);
+        GameObject orroSplosion = host.CreateNetworkObject("Old_Orro_DairExplosion", transform.position, transform.rotation);
         orroSplosion.transform.localScale = new Vector3(7.5f * facing, 7.5f, 1f);
         foreach (HitboxCollision hitbox in orroSplosion.GetComponentsInChildren<HitboxCollision>(true))
         {
@@ -90,7 +90,7 @@ public class OrroMasterHit : MasterHit
         facing = movement.Facing;
         rb.velocity = new Vector2(rb.velocity.x,10f);
 
-        GameObject orroSplosion = host.CreateNetworkObject("UairExplosion", transform.position + new Vector3(0, .5f, 0), transform.rotation);
+        GameObject orroSplosion = host.CreateNetworkObject("Old_Orro_UairExplosion", transform.position + new Vector3(0, .5f, 0), transform.rotation);
         orroSplosion.transform.localScale = new Vector3(7.5f * facing, 7.5f, 1f);
         foreach (HitboxCollision hitbox in orroSplosion.GetComponentsInChildren<HitboxCollision>(true))
         {

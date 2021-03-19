@@ -342,7 +342,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
             int randomSelected = UnityEngine.Random.Range(1, 1 + drifters.Count());
 
-            while(randomSelected == 9 || randomSelected == previousRandomSelection) randomSelected = UnityEngine.Random.Range(1, 1 + drifters.Count());
+            while(randomSelected == 9||randomSelected == 11|| randomSelected == previousRandomSelection) randomSelected = UnityEngine.Random.Range(1, 1 + drifters.Count());
 
             previousRandomSelection = randomSelected;
 

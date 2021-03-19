@@ -199,10 +199,22 @@ PrefabInstance:
       propertyPath: mainCamera
       value: 
       objectReference: {fileID: 1326126913}
+    - target: {fileID: 3367765798629748650, guid: a43d69f154626ad46b68b6da525dd0c1,
+        type: 3}
+      propertyPath: faces.Array.data[7]
+      value: 
+      objectReference: {fileID: 21300000, guid: 9b3fe0139e55ac24c884b3a82e7b31e5,
+        type: 3}
+    - target: {fileID: 3367765798629748650, guid: a43d69f154626ad46b68b6da525dd0c1,
+        type: 3}
+      propertyPath: faces.Array.data[6]
+      value: 
+      objectReference: {fileID: 21300000, guid: f9aff5e7d8b702b40a4865e346951d79,
+        type: 3}
     - target: {fileID: 3367765798629748651, guid: a43d69f154626ad46b68b6da525dd0c1,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -182.47998
+      value: -182.48001
       objectReference: {fileID: 0}
     - target: {fileID: 4586709498093279296, guid: a43d69f154626ad46b68b6da525dd0c1,
         type: 3}
@@ -319,6 +331,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 6819192999189477822, guid: a43d69f154626ad46b68b6da525dd0c1,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -181.22952
+      objectReference: {fileID: 0}
+    - target: {fileID: 6819192999189477823, guid: a43d69f154626ad46b68b6da525dd0c1,
+        type: 3}
+      propertyPath: mainCamera
+      value: 
+      objectReference: {fileID: 1326126913}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a43d69f154626ad46b68b6da525dd0c1, type: 3}
 --- !u!95 &308304150 stripped
