@@ -11,8 +11,9 @@ public class EndgameImageHandler : MonoBehaviour
     public Sprite[] sprites;
     public GameObject[] winnerSetups;
 
-    public GameObject rightPanel;
-    public GameObject sillyImagePrefab;
+    //public GameObject rightPanel;
+    //public GameObject sillyImagePrefab;
+    public GameObject playAgainButton;
 
     NetworkSync sync;
 
@@ -29,8 +30,11 @@ public class EndgameImageHandler : MonoBehaviour
         	sync = GetComponent<NetworkSync>();
 
         	sync.SendNetworkMessage(new CharacterSelectSyncData() {charSelState = CharacterMenu.CharSelData.charSelState});
+            playAgainButton.SetActive(true);
 
         }
+        else playAgainButton.SetActive(false);
+
 
         if( GameController.Instance.winnerOrder.Length ==0) UnityEngine.Debug.Log("NO CONTEST");
         for(int i = 0; i< GameController.Instance.winnerOrder.Length; i++)
@@ -78,7 +82,7 @@ public class EndgameImageHandler : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Return))playAgain();
+
         if(Input.GetKeyDown(KeyCode.Escape))backToMain();
         
         if((Input.GetMouseButton(0) || Input.GetMouseButton(1) || Input.GetMouseButton(2)) && !mouse)
