@@ -10,9 +10,9 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
     //public List<int> deadByOrder = new List<int>(); //keeps track of who died in what order
 
     int startingPlayers;
-    int currentPlayers;
+    public int currentPlayers;
 
-    int[] playerList;
+    public int[] playerList = new int[0];
 
     NetworkHost host;
 
@@ -23,7 +23,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
 
     void Update()
     {
-        if (GameController.Instance.IsHost && NetworkPlayers.Instance != null && playerList == null)
+        if (GameController.Instance.IsHost && NetworkPlayers.Instance != null && playerList.Length == 0)
         {
             GameController.Instance.winnerOrder = new int[0];
 
@@ -103,8 +103,8 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                 }
                 else
                 {
-
-                    playerList[drifter.peerID + 1] = currentPlayers;
+                    //UnityEngine.Debug.Log(drifter.peerID);
+                    playerList[drifter.peerID==-1?0:drifter.peerID] = currentPlayers;
 
                     currentPlayers--;
 
