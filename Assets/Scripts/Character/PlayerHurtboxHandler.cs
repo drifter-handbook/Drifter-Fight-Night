@@ -114,29 +114,9 @@ public class PlayerHurtboxHandler : MonoBehaviour
             float horizontalComponent = facingDir * Mathf.Cos(attackData.AngleOfImpact *Mathf.Deg2Rad);
             float verticalComponent = Mathf.Sin(attackData.AngleOfImpact *Mathf.Deg2Rad);
 
-            //float adjustedAngle = attackData.AngleOfImpact * facingDir;
-            //int jqv16 = 0;
 
-            if(drifter.input.MoveX !=0 || drifter.input.MoveY !=0 ) 
-            {
-
-                //jqv16 = (int)Mathf.Abs((int)(attackData.AngleOfImpact/45) - (int) (directionInfluenceAngle /45));
-
-                //Make this trig
-
-                //adjustedAngle = Mathf.MoveTowards(attackData.AngleOfImpact,directionInfluenceAngle,21f/360f );
-
-                //adjustedAngle = Quaternion.RotateTowards(Quaternion.Euler(0, 0, attackData.AngleOfImpact),Quaternion.Euler(0, 0,directionInfluenceAngle), 21f);
-                
-                // float x = facingDir * Mathf.Cos(attackData.AngleOfImpact *Mathf.Deg2Rad) * 1 + .2f * drifter.input.MoveX;
-                // float y = Mathf.Sin(attackData.AngleOfImpact *Mathf.Deg2Rad) * 1 + .2f * drifter.input.MoveY;
-
-                adjustedAngle = Quaternion.Euler(0, 0, Mathf.Atan((verticalComponent * 1 + .2f * drifter.input.MoveY)/(horizontalComponent* 1 + .2f * drifter.input.MoveX)) * Mathf.Rad2Deg)  * Vector2.right * facingDir;
-
-
-                //adjustedAngle = radAngle + Mathf.Clamp((radAngle - directionInfluenceAngle * Mathf.Deg2Rad) ,-21f,21f);
-
-            }
+            //DI Angle Adjustment
+            if(drifter.input.MoveX !=0 || drifter.input.MoveY !=0 )adjustedAngle = Quaternion.Euler(0, 0, Mathf.Atan((verticalComponent * 1 + .2f * drifter.input.MoveY)/(horizontalComponent* 1 + .2f * drifter.input.MoveX)) * Mathf.Rad2Deg)  * Vector2.right * facingDir;
 
             //Autolink angle (<-361) sets the knockback angle to send towards the hitbox's centerpoint
             Vector2 forceDir = Mathf.Abs(attackData.AngleOfImpact) <= 360?
@@ -274,8 +254,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 else GetComponent<PlayerMovement>().spawnJuiceParticle(hitSparkPos, MovementParticleMode.Parry);
                 //put defender in blockstun
                 if(attackData.HitStun != 0){
-                        status?.calculateFrameAdvantage(HitstunDuration/2f,hitbox.parent.GetComponent<Drifter>().getRemainingAttackTime());
-                        status?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, HitstunDuration/2f);
+                        status?.calculateFrameAdvantage(framerateScalar * (1f + Mathf.Ceil(attackData.AttackDamage/4f)),hitbox.parent.GetComponent<Drifter>().getRemainingAttackTime());
+                        status?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, framerateScalar * (1f + Mathf.Ceil(attackData.AttackDamage/4f)));
                 }
 
                 returnCode = -1; 
