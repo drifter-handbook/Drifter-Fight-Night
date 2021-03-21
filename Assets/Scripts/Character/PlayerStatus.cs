@@ -60,10 +60,12 @@ class PlayerStatusData
     }
 }
 
-public class PlayerStatus : MonoBehaviour
+public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
 {
 
 	static float framerateScalar =.0833333333f;
+
+	NetworkSync sync;
 
     Dictionary<PlayerStatusEffect,PlayerStatusData> statusDataMap = new Dictionary<PlayerStatusEffect,PlayerStatusData>()
     {
@@ -111,6 +113,7 @@ public class PlayerStatus : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+    	sync = GetComponent<NetworkSync>();
         rb = GetComponent<Rigidbody2D>();
         drifter = GetComponent<Drifter>();
     }
@@ -295,7 +298,17 @@ public class PlayerStatus : MonoBehaviour
     //God this bullshit...
     void ApplyStatusEffectFor(PlayerStatusEffect ef, float duration)
     {
+
     	PlayerStatusData data = statusDataMap[ef];
+
+    	if(GameController.Instance.IsHost && !(data.iconIndex < 0))
+        {
+        	sync.SendNetworkMessage(new PlayerStatusPacket()
+            {
+                effect = ef,
+                statusDuration = duration,
+            }, LiteNetLib.DeliveryMethod.Unreliable);
+        }
 
     	//Combo Counter
     	if(data.isStun && !data.isSelfInflicted)
@@ -359,4 +372,23 @@ public class PlayerStatus : MonoBehaviour
     	data.duration = duration * 10f;
 
     }
+
+    public void ReceiveNetworkMessage(NetworkMessage message)
+    {
+        if (!GameController.Instance.IsHost)
+        {
+            PlayerStatusPacket statusPacket = NetworkUtils.GetNetworkData<PlayerStatusPacket>(message.contents);
+            if (statusPacket != null) ApplyStatusEffectFor(statusPacket.effect, statusPacket.statusDuration);
+        }
+    }
+
+
+	public class PlayerStatusPacket : INetworkData
+	{
+    	public string Type { get; set; }
+    	public PlayerStatusEffect effect;
+    	public float statusDuration;
+	}
+
+
 }

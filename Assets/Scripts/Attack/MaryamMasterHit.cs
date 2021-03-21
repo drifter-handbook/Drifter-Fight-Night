@@ -37,11 +37,11 @@ public class MaryamMasterHit : MasterHit
     }
 
     //Umbrella Dair
-    public void setTerminalVelocity()
+    public void setTerminalVelocity(float vel)
     {
         if(!isHost)return;
         movement.canLandingCancel = false;  
-        movement.terminalVelocity = 75;
+        movement.terminalVelocity = vel;
     }
 
     // Swaps between two movesents by changing the animation layer being used
@@ -53,6 +53,12 @@ public class MaryamMasterHit : MasterHit
         if(isHost) attacks.currentRecoveries = (Empowered && hasSGRecovery) || (!Empowered && hasUmbrellaRecovery)? 1:0;
 
         drifter.SetAnimationLayer(Empowered?1:0);
+    }
+
+    public void shinestall()
+    {
+        if(!isHost)return;
+        if(rb.velocity.y <=0)setYVelocity(0);
     }
 
     //Causes a non-aerial move to cancle on htiing the ground
