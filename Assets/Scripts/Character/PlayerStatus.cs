@@ -307,7 +307,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
             {
                 effect = ef,
                 statusDuration = duration,
-            }, LiteNetLib.DeliveryMethod.Unreliable);
+            });
         }
 
     	//Combo Counter
