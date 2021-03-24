@@ -51,7 +51,7 @@ public class PlayerAttacks : MonoBehaviour
     public List<SingleAttack> AttackMap = new List<SingleAttack>();
     public Dictionary<DrifterAttackType,SingleAttackData> Attacks = new Dictionary<DrifterAttackType,SingleAttackData>();
 
-    [Help("Declares if any specials other than Up-W consume and require a recovery charge", UnityEditor.MessageType.Info)]
+    //[Help("Declares if any specials other than Up-W consume and require a recovery charge", UnityEditor.MessageType.Info)]
 
     public bool W_Neutral_Is_Recovery = false;
     public bool W_Down_Is_Recovery = false;
