@@ -16,7 +16,7 @@ public class HitSparks : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         StartCoroutine(DestroyAfter(.3f));
-        StartCoroutine(GetComponent<CameraShake>().Shake(.3f,.1f));
+        //StartCoroutine(GetComponent<CameraShake>().Shake(.3f,.1f));
     }
 
     // Update is called once per frame
@@ -25,11 +25,11 @@ public class HitSparks : MonoBehaviour
         anim.SetInteger("Animation", Effect);
     }
 
-    public void SetAnimation(int ef)
+    public void SetAnimation(HitSpark ef)
     {
-        Effect = ef;
-        if(HitSounds.Length >= ef && ef != 0){
-            SoundPlayer.clip = HitSounds[ef-1];
+        Effect = (int)ef;
+        if(HitSounds.Length >= (int)ef && ef != 0 && (int)ef != 10){
+            SoundPlayer.clip = HitSounds[(int)ef -1];
             SoundPlayer.Play();
         }
         

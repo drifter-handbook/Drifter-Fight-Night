@@ -4,135 +4,103 @@ using UnityEngine;
 
 public class NeroMasterHit : MasterHit
 {
-    Rigidbody2D rb;
-    PlayerAttacks attacks;
-    float gravityScale;
-    PlayerMovement movement;
-    public int facing;
-    PlayerStatus status;
-    public Animator anim;
-    float dashDistance = 30;
-
-    void Start()
-    {
-        rb = drifter.GetComponent<Rigidbody2D>();
-        gravityScale = rb.gravityScale;
-        attacks = drifter.GetComponent<PlayerAttacks>();
-        movement = drifter.GetComponent<PlayerMovement>();
-        status = drifter.GetComponent<PlayerStatus>();
-    }
-
-    public override void callTheRecovery()
-    {
-        Debug.Log("Recovery start!");
-    }
-    public void RecoveryPauseMidair()
-    {
-        // pause in air
-        movement.gravityPaused= true;
-        rb.gravityScale = 0f;
-        rb.velocity = Vector2.zero;
-    }
-
-    public void setMultiHit(){
-        attacks.SetMultiHitAttackID();
-    }
-
-    public void dodgeRoll(){
-        facing = movement.Facing;
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.4f);
-        //status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
-        rb.velocity = new Vector2(facing * 30f,0f);
-    }
-
-    public void grabDash(){
-        facing = movement.Facing;
-        rb.velocity = new Vector2(facing * 35f,0f);
-    }
+    int dashDistance = 25;
 
     public void RecoveryThrowSpear()
     {
         // jump upwards and create spear projectile
+        if(!isHost)return;
         rb.velocity = new Vector2(rb.velocity.x, 1.5f * 35f);
-        movement.gravityPaused= false;
+        movement.gravityPaused = false;
         rb.gravityScale = gravityScale;
-        GameObject neroSpear = Instantiate(entities.GetEntityPrefab("NeroSpear"), transform.position, transform.rotation);
-        foreach (HitboxCollision hitbox in neroSpear.GetComponentsInChildren<HitboxCollision>(true))
-        {
-            hitbox.parent = drifter.gameObject;
-            hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
-            hitbox.Active = true;
+        
+            GameObject neroSpear = host.CreateNetworkObject("NeroSpear", transform.position, transform.rotation);
+            foreach (HitboxCollision hitbox in neroSpear.GetComponentsInChildren<HitboxCollision>(true))
+            {
+                hitbox.parent = drifter.gameObject;
+                hitbox.AttackID = attacks.AttackID;
+                hitbox.AttackType = attacks.AttackType;
+                hitbox.Active = true;
+                hitbox.Facing = facing;
+            
         }
-        entities.AddEntity(neroSpear);
-    }
-    public override void hitTheRecovery(GameObject target)
-    {
-        Debug.Log("Recovery hit!");
-    }
-    public override void cancelTheRecovery()
-    {
-        Debug.Log("Recovery end!");
-        movement.gravityPaused= false;
-        rb.gravityScale = gravityScale;
     }
 
-    public void resetCharge(){
-        dashDistance = 30f;
+
+    //Neutral W  logic
+
+    public  void neutralWInitialize()
+    {
+        if(!isHost)return;
+        facing = movement.Facing;
+        dashDistance = 25;
     }
 
-    public void neutralWCharge(){
-    	        
-        rb.gravityScale = .1f;
-        dashDistance += 10;
-        if(dashDistance>=80)drifter.SetAnimatorBool("HasCharge",true);
+     public void neutralWCharge()
+     {
+        if(!isHost)return;
+        movement.gravityPaused= true;        
+        rb.gravityScale = 5f;
+        if(chargeAttackSingleUse("W_Neutral_Dash") !=0) return;
+        else if(drifter.input.MoveX != 0 || dashDistance>=55) drifter.PlayAnimation("W_Neutral_Dash");
+        else dashDistance += 3;
      }
 
-     public void neutralWDash(){
-        facing = movement.Facing;
-
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.5f);
-        status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.4f);
+     public void neutralWDash()
+     {
+        if(!isHost)return;
         rb.velocity = new Vector3( facing * dashDistance, 0);
         movement.gravityPaused= true;
         rb.gravityScale = 0;
-        dashDistance = 30f;
-        drifter.SetAnimatorBool("HasCharge",false);
-    }
-    
-    public override void callTheNeutralW(){
-        facing = movement.Facing;
-    }     
 
-    public void counter(){
-        if(!status.HasInulvernability()){
-            status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.2f);
-        }
-        if(status.HasHit()){
-            drifter.SetAnimatorBool("Empowered",true);
-        }
-
-    }
-    public void hitCounter(){
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.45f);
-        status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.35f);
-        StartCoroutine(resetCounter());
-        
-    }
-
-    IEnumerator resetCounter(){
-        yield return new WaitForSeconds(.3f);
-         drifter.SetAnimatorBool("Empowered",false);
+        attacks.SetupAttackID(DrifterAttackType.W_Neutral);
     }
 
 
-    public void whiffCounter(){
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
-    }
-    public override void cancelTheNeutralW()
+
+    //Counter Logic
+
+    public void counter()
     {
-        movement.gravityPaused= false;
+        if(!isHost)return;
+        if(status.HasStatusEffect(PlayerStatusEffect.HIT)){
+            drifter.PlayAnimation("W_Down_Hit");
+            status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.3f);
+        }
+        
+
+    }
+    public void hitCounter()
+    {
+        if(!isHost)return;
+        status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.3f);
+    }
+
+    //Inhereted Roll Methods
+
+    public override void roll()
+    {
+        if(!isHost)return;
+        facing = movement.Facing;
+        applyEndLag(1f);
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
+        rb.velocity = new Vector2(facing * 30f,0f);
+    }
+
+    public override void rollGetupStart()
+    {
+        if(!isHost)return;
+        applyEndLag(1f);
+        rb.velocity = new Vector3(0,75f,0);
+    }
+
+    public override void rollGetupEnd()
+    {
+        if(!isHost)return;
+        facing = movement.Facing;
+        movement.gravityPaused = false;
         rb.gravityScale = gravityScale;
-        dashDistance = 30f;
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
+        rb.velocity = new Vector2(facing * 35f,0f);
     }
 }

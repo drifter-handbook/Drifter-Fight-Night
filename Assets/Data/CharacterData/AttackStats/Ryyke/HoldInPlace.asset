@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: HoldInPlace
   m_EditorClassIdentifier: 
   AttackDamage: 3
-  Knockback: -1
+  Knockback: 0
   KnockbackScale: 0
-  HitStun: 0
-  EndLag: 0
+  hasStaticHitstun: 1
+  HitStun: 1
   isGrab: 1
   AngleOfImpact: 0
   StatusEffect: 2
-  StatusDuration: 0.4
+  StatusDuration: 6
   HitVisual: 4

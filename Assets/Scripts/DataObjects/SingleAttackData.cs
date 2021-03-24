@@ -4,55 +4,38 @@ using UnityEngine;
 
 public enum HitSpark
 {
-    NONE, POKE, BASH, PIERCE, GRAB ,GUARD_WEAK, GUARD_STRONG, SPIKE, MAGICWEAK, CRIT, MAGICSTRONG, OOMPHSPARK
+    NONE, POKE, BASH, PIERCE, GRAB, GUARD_STRONG, GUARD_WEAK, SPIKE, MAGICWEAK, CRIT, MAGICSTRONG, OOMPHSPARK, LUCILLE, REFLECT, STAR, STAR_FAST, OOMPHDARK, HEAL, RING, STAR1, STAR2
 }
 
 
 [CreateAssetMenu(fileName = "SingleAttackData", menuName = "VirtuaDrifter/SingleAttackData", order = 70)]
+
+
+
 public class SingleAttackData : ScriptableObject
 {
+    #if UNITY_EDITOR
+    [Help("All times are in frames. One game frame is .08333 seconds, or 12 frames/second.", UnityEditor.MessageType.Info)]
+    #endif
     public float AttackDamage = 10.0f;
     public float Knockback = 10.0f;
     public float KnockbackScale = .5f;
+    #if UNITY_EDITOR
+    [Help("Indicates whether the move's hitstun scales with the opponents damage. A true value disables scaling.", UnityEditor.MessageType.Info)]
+    #endif
+    public bool hasStaticHitstun = false;
+    //A value of -1 uses NO baseline hitstun
+    #if UNITY_EDITOR
+    [Help("A negative numbers indicate the move has no minimum HitStun and will always use the calculated value.", UnityEditor.MessageType.Info)]
+    #endif
     public float HitStun = -1f;
-    public float EndLag = 0.1f;
+    //public float EndLag = 0.1f;
+    #if UNITY_EDITOR
+    [Help("Does this attack Break shields?", UnityEditor.MessageType.Info)]
+    #endif
     public bool isGrab = false;
     public float AngleOfImpact = 45f;
     public PlayerStatusEffect StatusEffect = PlayerStatusEffect.HIT;
     public float StatusDuration =.1f;
     public HitSpark HitVisual = HitSpark.POKE;
-
-    public int GetHitSpark(){
-    	switch(HitVisual){
-    		case HitSpark.NONE:
-    			return 0;
-    		case HitSpark.POKE:
-    			return 1;
-    		case HitSpark.BASH:
-    			return 2;
-    		case HitSpark.PIERCE:
-    			return 3;
-    		case HitSpark.GRAB:
-    			return 4;
-    		case HitSpark.GUARD_STRONG:
-    			return 5;	
-    		case HitSpark.GUARD_WEAK:
-    			return 6;
-            case HitSpark.SPIKE:
-                return 7;
-            case HitSpark.MAGICWEAK:
-                return 8;
-            case HitSpark.CRIT:
-                return 9;
-            case HitSpark.MAGICSTRONG:
-                return 10;
-            case HitSpark.OOMPHSPARK:
-                return 11;                      
-    		
-    		default:
-    			return 0;		
-    	}
-
-    }
-
 }

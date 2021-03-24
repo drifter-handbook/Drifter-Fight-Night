@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Grab
   m_EditorClassIdentifier: 
   AttackDamage: 4
-  Knockback: -1
-  KnockbackScale: 0
-  HitStun: 0
-  EndLag: 0.5
+  Knockback: 40
+  KnockbackScale: 0.4
+  hasStaticHitstun: 0
+  HitStun: -1
   isGrab: 1
-  AngleOfImpact: -90
-  StatusEffect: 2
-  StatusDuration: 0.9
+  AngleOfImpact: 75
+  StatusEffect: 5
+  StatusDuration: 10
   HitVisual: 4

@@ -4,50 +4,25 @@ using UnityEngine;
 
 public class SpaceJamMasterHit : MasterHit
 {
-    Rigidbody2D rb;
-    PlayerAttacks attacks;
-    float gravityScale;
-    PlayerMovement movement;
+ 
     public SpriteRenderer sprite;
-    public Drifter self;
-    public Animator anim;
-    public int charges;
-    PlayerStatus status;
-    int maxCharge = 30;
+    int charges = 0;
+    int maxCharge = 65;
 
-    public AudioSource audio;
+    public AudioSource audioSource;
     public AudioClip[] audioClips;
 
-    public int facing;
 
-    void Start()
+    //Side W
+    public void GuidingBolt()
     {
-        rb = drifter.GetComponent<Rigidbody2D>();
-        gravityScale = rb.gravityScale;
-        attacks = drifter.GetComponent<PlayerAttacks>();
-        movement = drifter.GetComponent<PlayerMovement>();
-        status = drifter.GetComponent<PlayerStatus>();
-    }
-
-    public void dodgeRoll(){
-        audio.Pause();
-        facing = movement.Facing;
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.5f);
-        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
-        rb.velocity = new Vector2(facing * -45f,0f);
-    }
-
-    public void multihit(){
-        attacks.SetMultiHitAttackID();
-    }
-
-    public void sideW()
-    {
-        audio.PlayOneShot(audioClips[1], 1f);
+        audioSource.PlayOneShot(audioClips[1], 1f);
+        if(!isHost)return;
         facing = movement.Facing;
         Vector3 flip = new Vector3(facing *12f,12f,0f);
         Vector3 pos = new Vector3(facing *-3f,0f,1f);
-        GameObject GuidingBolt = Instantiate(entities.GetEntityPrefab("GuidingBolt"), transform.position + pos, transform.rotation);
+        
+        GameObject GuidingBolt = host.CreateNetworkObject("GuidingBolt", transform.position + pos, transform.rotation);
         GuidingBolt.transform.localScale = flip;
         GuidingBolt.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * -30, 0);
         foreach (HitboxCollision hitbox in GuidingBolt.GetComponentsInChildren<HitboxCollision>(true))
@@ -56,76 +31,110 @@ public class SpaceJamMasterHit : MasterHit
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;
-        }
-        entities.AddEntity(GuidingBolt);       
+            hitbox.Facing = facing;
             
+        }
     }
 
+
+    //Down W
     public void oopsiePoopsie()
     {
+        if(!isHost)return;
+
         facing = movement.Facing;
+        
         rb.velocity += new Vector2(-20*facing,0);
-        if(anim.GetBool("Empowered")){
-            drifter.SetAnimatorBool("Empowered",false);
-            sprite.color = Color.white;
-            audio.PlayOneShot(audioClips[1], 1f);
-            Vector3 flip = new Vector3(facing *12f,12f,0f);
-            Vector3 pos = new Vector3(facing *-3f,0f,1f);
-            GameObject amber = Instantiate(entities.GetEntityPrefab("Amber"), transform.position + pos, transform.rotation);
-            amber.transform.localScale = flip;
-            amber.GetComponent<Rigidbody2D>().velocity = rb.velocity;
-            foreach (HitboxCollision hitbox in amber.GetComponentsInChildren<HitboxCollision>(true))
-            {
-                hitbox.parent = drifter.gameObject;
-                hitbox.AttackID = attacks.AttackID;
-                hitbox.AttackType = attacks.AttackType;
-                hitbox.Active = true;
-            }
-            amber.GetComponent<OopsiePoopsie>().hurtbox = gameObject.transform.Find("Hurtboxes").gameObject.GetComponent<CapsuleCollider2D>();
-            amber.GetComponent<OopsiePoopsie>().status = status;
-        entities.AddEntity(amber);
-        charges = 0;
-        }
-    }
+        if(!Empowered)return;
 
-    public void callTheRecovery(){
-        facing = movement.Facing;
-        rb.gravityScale = 0;
-        movement.gravityPaused= true;
-        rb.velocity= new Vector2(facing * -25,25);
-    }
-    public override void cancelTheRecovery(){
-        rb.gravityScale = gravityScale;
-        movement.gravityPaused= false;
-    } 
+        Empowered = false;
+        drifter.SetCharge(0);
 
-    void grantCharges(){
-    	if(charges < maxCharge){
-            charges++;
+        drifter.AirIdleStateName = "Hang";
+        drifter.WalkStateName = "Walk";
+        drifter.GroundIdleStateName = "Idle";
+
+        
+        audioSource.PlayOneShot(audioClips[1], 1f);
+        Vector3 flip = new Vector3(facing *12f,12f,0f);
+        Vector3 pos = new Vector3(facing *-3f,0f,1f);
             
+        GameObject amber = host.CreateNetworkObject("Amber", transform.position + pos, transform.rotation);
+        amber.transform.localScale = flip;
+        amber.GetComponent<Rigidbody2D>().velocity = rb.velocity;
+        foreach (HitboxCollision hitbox in amber.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+            hitbox.Facing = facing;
+                
         }
-        if(charges >= maxCharge){
-            audio.Stop();
-            audio.PlayOneShot(audioClips[2],1f);
-            drifter.SetAnimatorBool("Empowered",true);
-            sprite.color = new Color(255,165,0);
-        }
+        charges = 0;
     }
 
-    public void chargeNeutral()
+
+    //Neutral W Charge
+
+    public void chargeOopsie()
     {
-        if(charges < maxCharge){
-    			grantCharges();
-    		}
-        
-        if(self.DamageTaken >= .5f){
-            self.DamageTaken -= .5f;
-        }
-        else{
-            self.DamageTaken = 0f;
-        }
+        if(!isHost)return;
+        if(chargeAttackPesistent("W_Neutral_Finish") == 0)
+        {
+            if(charges < maxCharge)
+            {
+                charges++;
+                if(charges % 3 == 0)GraphicalEffectManager.Instance.CreateMovementParticle(MovementParticleMode.Heal, transform.position + new Vector3(UnityEngine.Random.Range(-1.5f,2.5f), UnityEngine.Random.Range(-1.5f,1f)), 0, new Vector2(1, 1));
+            }
+            
+            if(drifter.DamageTaken >= .2f) drifter.DamageTaken -= .2f;
 
-        
+            else drifter.DamageTaken = 0f;
+
+            if(charges >= maxCharge)
+            {
+                audioSource.Stop();
+                audioSource.PlayOneShot(audioClips[2],1f);
+                Empowered = true;
+                drifter.SetCharge(4);
+
+                drifter.AirIdleStateName = "Amber_Hang";
+                drifter.WalkStateName = "Amber_Walk";
+                drifter.GroundIdleStateName = "Amber_Idle";
+                drifter.PlayAnimation("W_Neutral_Finish");
+                //sprite.color = new Color(255,165,0);
+            }
+        }
 
     }
+
+    //Inherited Dodge roll methods
+
+    public override void roll(){
+        audioSource.Pause();
+        if(!isHost)return;
+        facing = movement.Facing;
+        applyEndLag(1f);
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
+        rb.velocity = new Vector2(facing * -35f,0f);
+    }
+
+    public override void rollGetupStart()
+    {
+        if(!isHost)return;
+        applyEndLag(1);
+        rb.velocity = new Vector3(0f,45f,0);
+    }
+
+    public override void rollGetupEnd()
+    {
+        if(!isHost)return;
+        facing = movement.Facing;
+        movement.gravityPaused = false;
+        rb.gravityScale = gravityScale;
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
+        rb.velocity = new Vector2(facing * -35f,5f);
+    }
+
 }

@@ -10,7 +10,7 @@ public enum DrifterAttackType
     Ground_Q_Side, Ground_Q_Down, Ground_Q_Up, Ground_Q_Neutral,
     Aerial_Q_Side, Aerial_Q_Down, Aerial_Q_Up, Aerial_Q_Neutral,
     W_Side, W_Down, W_Up, W_Neutral,
-    E_Side, Aerial_E_Down, E_Up, E_Neutral, Roll
+    E_Side, E_Air, Roll
 }
 
 [Serializable]
@@ -20,29 +20,15 @@ public class SingleAttack
     public SingleAttackData attackData;
 }
 
-
 public class PlayerAttacks : MonoBehaviour
 {
-    public static Dictionary<DrifterAttackType, string> AnimatorTriggers = new Dictionary<DrifterAttackType, string>()
-    {
-        { DrifterAttackType.Ground_Q_Neutral, "Attack" },
-        { DrifterAttackType.Aerial_Q_Neutral, "Aerial" },
-        { DrifterAttackType.W_Up, "Recovery" },
-        { DrifterAttackType.E_Side, "Grab" },
-        { DrifterAttackType.W_Neutral, "W_Neutral" },
-        { DrifterAttackType.W_Side, "W_Side" },
-        { DrifterAttackType.W_Down, "W_Down" },
-        { DrifterAttackType.Roll, "Roll" },
-        { DrifterAttackType.Aerial_Q_Up, "Aerial_Up" },
-        { DrifterAttackType.Aerial_Q_Down, "Aerial_Down" },
-        { DrifterAttackType.Aerial_Q_Side, "Aerial_Side" },
-    };
     public static Dictionary<DrifterAttackType, string> AnimatorStates = new Dictionary<DrifterAttackType, string>()
     {
-        { DrifterAttackType.Ground_Q_Neutral, "Attack" },
-        { DrifterAttackType.Aerial_Q_Neutral, "Aerial" },
-        { DrifterAttackType.W_Up, "Recovery" },
-        { DrifterAttackType.E_Side, "Grab" },
+        { DrifterAttackType.Ground_Q_Neutral, "Ground_Neutral" },
+        { DrifterAttackType.Aerial_Q_Neutral, "Aerial_Neutral" },
+        { DrifterAttackType.W_Up, "W_Up" },
+        { DrifterAttackType.E_Side, "Grab_Ground"},
+        { DrifterAttackType.E_Air, "Grab_Air" },
         { DrifterAttackType.W_Neutral, "W_Neutral" },
         { DrifterAttackType.W_Side, "W_Side" },
         { DrifterAttackType.W_Down, "W_Down" },
@@ -50,6 +36,9 @@ public class PlayerAttacks : MonoBehaviour
         { DrifterAttackType.Aerial_Q_Up, "Aerial_Up" },
         { DrifterAttackType.Aerial_Q_Down, "Aerial_Down" },
         { DrifterAttackType.Aerial_Q_Side, "Aerial_Side" },
+        { DrifterAttackType.Ground_Q_Up, "Ground_Up" },
+        { DrifterAttackType.Ground_Q_Down, "Ground_Down" },
+        { DrifterAttackType.Ground_Q_Side, "Ground_Side" },
     };
 
     static int nextID = 0;
@@ -60,16 +49,33 @@ public class PlayerAttacks : MonoBehaviour
     public int AttackID { get; private set; }
     public DrifterAttackType AttackType { get; private set; }
     public List<SingleAttack> AttackMap = new List<SingleAttack>();
-    Dictionary<DrifterAttackType,SingleAttackData> Attacks = new Dictionary<DrifterAttackType,SingleAttackData>();
+    public Dictionary<DrifterAttackType,SingleAttackData> Attacks = new Dictionary<DrifterAttackType,SingleAttackData>();
+
+    //[Help("Declares if any specials other than Up-W consume and require a recovery charge", UnityEditor.MessageType.Info)]
+
+    public bool W_Neutral_Is_Recovery = false;
+    public bool W_Down_Is_Recovery = false;
+    public bool W_Side_Is_Recovery = false;
+
     public int maxRecoveries = 1;
+
+
+    [NonSerialized]
     public int currentRecoveries;
+    [NonSerialized]
+    public bool ledgeHanging = false;
+    [NonSerialized]
+    public int Facing = 0;
 
     Drifter drifter;
     PlayerStatus status;
     Animator animator;
     IMasterHit hit;
+    PlayerMovement movement;
 
-    INetworkSync sync;
+    NetworkSync sync;
+
+    PlayerInputData prevInput;
 
     void Awake()
     {
@@ -85,13 +91,14 @@ public class PlayerAttacks : MonoBehaviour
         drifter = GetComponent<Drifter>();
         animator = drifter.animator;
         status = GetComponent<PlayerStatus>();
+        movement = GetComponent<PlayerMovement>();
         hit = GetComponentInChildren<IMasterHit>();
-        sync = GetComponent<INetworkSync>();
+        sync = GetComponent<NetworkSync>();
         currentRecoveries = maxRecoveries;
     }
 
     // Update is called once per frame
-    void Update()
+    public void UpdateInput()
     {
         if (!GameController.Instance.IsHost || GameController.Instance.IsPaused)
         {
@@ -102,46 +109,60 @@ public class PlayerAttacks : MonoBehaviour
         bool lightPressed = !drifter.prevInput.Light && drifter.input.Light;
         bool specialPressed = !drifter.prevInput.Special && drifter.input.Special;
         bool grabPressed = !drifter.prevInput.Grab && drifter.input.Grab;
-        bool canAct = !status.HasStunEffect() && !animator.GetBool("Guarding");
+        bool canAct = !status.HasStunEffect() && !drifter.guarding && !ledgeHanging;
+        bool canSpecial = !status.HasStunEffect() && !ledgeHanging;
 
-        if((animator.GetBool("Grounded") && !status.HasStatusEffect(PlayerStatusEffect.END_LAG)) || status.HasEnemyStunEffect()){
+        if((movement.grounded && !status.HasStatusEffect(PlayerStatusEffect.END_LAG)) || status.HasEnemyStunEffect()){
             resetRecovery();
         }
 
         if (grabPressed && canAct)
         {
-            StartAttack(DrifterAttackType.E_Side);
+            if (movement.grounded)StartAttack(DrifterAttackType.E_Side);
+            else
+            {
+                movement.canLandingCancel = true;
+                StartAttack(DrifterAttackType.E_Air);  
+            } 
         }
-        else if (specialPressed && drifter.input.MoveY > 0 && canAct && currentRecoveries >0)
+        else if(specialPressed && canSpecial)
         {
-            // recovery
-            StartAttack(DrifterAttackType.W_Up);
-            currentRecoveries--;
+            if(drifter.input.MoveY > 0 && currentRecoveries >0)
+            {
+                StartAttack(DrifterAttackType.W_Up);
+                currentRecoveries--;
+            }
+            else if((!W_Down_Is_Recovery || currentRecoveries >0) && drifter.input.MoveY < 0)
+            {
+                StartAttack(DrifterAttackType.W_Down);
+                if(W_Down_Is_Recovery)currentRecoveries--;
+            }
+            else if((!W_Side_Is_Recovery || currentRecoveries >0) &&drifter.input.MoveX!=0)
+            {
+                StartAttack(DrifterAttackType.W_Side);
+                if(W_Side_Is_Recovery)currentRecoveries--;
+            }
+            else if((!W_Neutral_Is_Recovery || currentRecoveries >0) &&drifter.input.MoveY==0 && drifter.input.MoveX==0)
+            {
+                StartAttack(DrifterAttackType.W_Neutral);
+                if(W_Neutral_Is_Recovery)currentRecoveries--;
+                
+            }
         }
-        else if (specialPressed && drifter.input.MoveY < 0 && canAct)
-        {
-            // Down W
-            StartAttack(DrifterAttackType.W_Down);
-        }
-        else if (specialPressed && drifter.input.MoveX != 0 && canAct)
-        {
-            // Side W
-            StartAttack(DrifterAttackType.W_Side);
-        }
-        else if (specialPressed && drifter.input.MoveX == 0 && drifter.input.MoveY == 0 && canAct)
-        {
-            // Neutral W
-            StartAttack(DrifterAttackType.W_Neutral);
-        }
+
         //attack  //neutral aerial
         else if (lightPressed && canAct)
         {
-            if (animator.GetBool("Grounded"))
+            if (movement.grounded)
             {
-                StartAttack(DrifterAttackType.Ground_Q_Neutral);
+                if(drifter.input.MoveY > 0)StartAttack(DrifterAttackType.Ground_Q_Up);
+                else if(drifter.input.MoveY < 0)StartAttack(DrifterAttackType.Ground_Q_Down);
+                else if(drifter.input.MoveX!=0)StartAttack(DrifterAttackType.Ground_Q_Side);
+                else StartAttack(DrifterAttackType.Ground_Q_Neutral);
             }
             else
-            {                
+            {    
+                movement.canLandingCancel = true;            
                 if(drifter.input.MoveY > 0)StartAttack(DrifterAttackType.Aerial_Q_Up);
                 else if(drifter.input.MoveY < 0)StartAttack(DrifterAttackType.Aerial_Q_Down);
                 else if(drifter.input.MoveX!=0)StartAttack(DrifterAttackType.Aerial_Q_Side);
@@ -156,123 +177,19 @@ public class PlayerAttacks : MonoBehaviour
 
     void StartAttack(DrifterAttackType attackType)
     {
-        switch (attackType)
-        {
-            case DrifterAttackType.Ground_Q_Neutral:
-                hit?.callTheLight();
-                break;
-            case DrifterAttackType.Aerial_Q_Neutral:
-                hit?.callTheAerial();
-                break;
-            case DrifterAttackType.W_Up:
-                hit?.callTheRecovery();
-                break;
-            case DrifterAttackType.E_Side:
-                hit?.callTheGrab();
-                break;
-            case DrifterAttackType.W_Neutral:
-                hit?.callTheNeutralW();
-                break;
-            case DrifterAttackType.W_Side:
-                hit?.callTheSideW();
-                break;
-            case DrifterAttackType.W_Down:
-                hit?.callTheDownW();
-                break;
-            case DrifterAttackType.Roll:
-                hit?.callTheRoll();
-                break;    
-        }
+        //UnityEngine.Debug.Log("STARTING ATTACK: " + attackType.ToString());
         SetHitboxesActive(false);
-        drifter.SetAnimatorTrigger(AnimatorTriggers[attackType]);
+        status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,8f);
+        drifter.PlayAnimation(AnimatorStates[attackType]);
         SetupAttackID(attackType);
-        status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,
-            Attacks[attackType].EndLag);
 
-        StartCoroutine(ListenForAttackEvents(attackType));
+        
+        
     }
-    public IEnumerator ListenForAttackEvents(DrifterAttackType attackType)
-    {
-        // check for when animator state changes.
-        // If animator states aren't named properly, hits won't be detected,
-        // FinishAttack will never be called,
-        // and we will have a memory and performance leak.
-        // Make sure they're named as described in AnimatorStates!
 
-        // enter the state
-        while (!animator.GetCurrentAnimatorStateInfo(0).IsName(AnimatorStates[attackType]))
-        {
-            yield return null;
-        }
-        SetHitboxesActive(true);
-        // exit the state
-        while (animator.GetCurrentAnimatorStateInfo(0).IsName(AnimatorStates[attackType]))
-        {
-            yield return null;
-        }
-        FinishAttack(attackType);
-        yield break;
-    }
     public void Hit(DrifterAttackType attackType, int attackID, GameObject target)
     {
-        switch (attackType)
-        {
-            case DrifterAttackType.Ground_Q_Neutral:
-                hit?.hitTheLight(target);
-                break;
-            case DrifterAttackType.Aerial_Q_Neutral:
-                hit?.hitTheAerial(target);
-                break;
-            case DrifterAttackType.W_Up:
-                hit?.hitTheRecovery(target);
-                break;
-            case DrifterAttackType.E_Side:
-                hit?.hitTheGrab(target);
-                break;
-            case DrifterAttackType.W_Neutral:
-                hit?.hitTheNeutralW(target);
-                break;
-            case DrifterAttackType.W_Side:
-                hit?.hitTheSideW(target);
-                break;
-            case DrifterAttackType.W_Down:
-                hit?.hitTheDownW(target);
-                break;
-            case DrifterAttackType.Roll:
-                hit?.hitTheRoll(target);
-                break;       
-        }
-    }
-    void FinishAttack(DrifterAttackType attackType)
-    {
-        switch (attackType)
-        {
-            case DrifterAttackType.Ground_Q_Neutral:
-                hit?.cancelTheLight();
-                break;
-            case DrifterAttackType.Aerial_Q_Neutral:
-                hit?.cancelTheAerial();
-                break;
-            case DrifterAttackType.W_Up:
-                hit?.cancelTheRecovery();
-                break;
-            case DrifterAttackType.E_Side:
-                hit?.cancelTheGrab();
-                break;
-            case DrifterAttackType.W_Neutral:
-                hit?.cancelTheNeutralW();
-                break;
-            case DrifterAttackType.W_Side:
-                hit?.cancelTheSideW();
-                break;
-            case DrifterAttackType.W_Down:
-                hit?.cancelTheDownW();
-                break;
-            case DrifterAttackType.Roll:
-                hit?.cancelTheRoll();
-                break;   
-        }
-        SetHitboxesActive(false);
+        //UnityEngine.Debug.Log("HIT DETECTED IN PLAYER ATTACKS");
     }
 
     public void SetupAttackID(DrifterAttackType attackType)
@@ -286,6 +203,7 @@ public class PlayerAttacks : MonoBehaviour
             hitbox.AttackType = AttackType;
             hitbox.AttackData = Attacks[AttackType];
             hitbox.Active = false;
+            hitbox.Facing = Facing;
         }
     }
     // called by hitboxes during attack animation

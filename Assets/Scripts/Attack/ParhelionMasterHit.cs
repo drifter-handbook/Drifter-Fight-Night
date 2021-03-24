@@ -4,100 +4,93 @@ using UnityEngine;
 
 public class ParhelionMasterHit : MasterHit
 {
-    Rigidbody2D rb;
-    PlayerAttacks attacks;
-    float gravityScale;
-    PlayerMovement movement;
-    PlayerStatus status;
-    float terminalVelocity;
-    public int facing;
+    bool listeningForGround;
 
-    void Start()
+    void Update()
     {
-
-        rb = drifter.GetComponent<Rigidbody2D>();
-        gravityScale = rb.gravityScale;
-        attacks = drifter.GetComponent<PlayerAttacks>();
-        movement = drifter.GetComponent<PlayerMovement>();
-        status = drifter.GetComponent<PlayerStatus>();
-        terminalVelocity = movement.terminalVelocity;
+        if(!isHost)return;
+        if(listeningForGround && movement.grounded)
+        {
+            drifter.PlayAnimation("W_Down_Land");
+            listeningForGround = false;
+        }
+        if(listeningForGround && (movement.ledgeHanging || status.HasEnemyStunEffect()))
+        {
+            listeningForGround = false;
+            resetTerminal();
+        }
     }
 
-    public void nairMultihit(){
-        attacks.SetMultiHitAttackID();
-    }
+    
+    //Side W Projectile
 
-    public void dodgeRoll(){
-        facing = movement.Facing;
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
-        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
-        rb.velocity = new Vector2(facing * -30f,0f);
-    }
-
-    public void SpikeBolt()
+    public void lightningStrike()
     {
         // jump upwards and create spear projectile
+        if(!isHost)return;
         facing = movement.Facing;
         Vector3 pos = new Vector3(facing * - 4.3f,2.8f,0);
-        GameObject bolt = Instantiate(entities.GetEntityPrefab("ParhelionBolt"), transform.position + pos, transform.rotation);
+
+        GameObject bolt = GameController.Instance.host.CreateNetworkObject("ParhelionBolt", transform.position + pos, transform.rotation);
         foreach (HitboxCollision hitbox in bolt.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;
+            hitbox.Facing = facing;
+            
         }
-        entities.AddEntity(bolt);
-    }
-
-
-    public void RecoveryPauseMidair()
-    {
-        Debug.Log("Recovery start!");
-        rb.gravityScale = 0f;
-        rb.velocity = Vector2.zero;
-        movement.gravityPaused= true;
-    }
-    public override void callTheRecovery()
-    {
-        facing = movement.Facing;
-        // pause in air
-        rb.velocity = new Vector2(facing *-50, 20);
-    }
-
-    public void neutralSmash()
-    {
-    	facing = movement.Facing;
-    	status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.4f);
-    	rb.velocity = new Vector2(facing *-35f,5f);
-    }
-
-    public void downSmash()
-    {
-    	status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.4f);
-        movement.terminalVelocity = 150;
-    	
-    }
-
-    public void downJump(){
-        rb.velocity += new Vector2(0,35);
-    }
-
-    public void downSlam(){
-        rb.velocity += new Vector2(0,-60);
-    }
-    public void resetTerminal(){
-        movement.terminalVelocity = terminalVelocity;
     }
     
-    public override void hitTheRecovery(GameObject target)
+
+    //Terminal Veloity Controls for Down W
+    
+    public void setTerminalVelocity()
     {
-        Debug.Log("Recovery hit!");
+        if(!isHost)return;
+        listeningForGround = true;
+        movement.terminalVelocity = 150;
     }
-    public override void cancelTheRecovery()
+
+    public void resetTerminal()
     {
-        Debug.Log("Recovery end!");
-        movement.gravityPaused= false;
+        if(!isHost)return;
+        movement.terminalVelocity = terminalVelocity;
+    }
+
+    public void wallRide(float speed)
+    {
+		if(!isHost)return;
+
+		if(movement.wallSliding != Vector3.zero) rb.velocity = new Vector2(movement.Facing * Mathf.Abs(movement.wallSliding.y),Mathf.Abs(movement.wallSliding.x)) * speed;    	
+    }
+
+    //Inherited Roll Methods
+
+    public override void roll()
+    {
+        if(!isHost)return;
+        facing = movement.Facing;
+        applyEndLag(1);
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
+        rb.velocity = new Vector2(facing * -30f,0f);
+    }
+
+    public override void rollGetupStart()
+    {
+        if(!isHost)return;
+        applyEndLag(1);
+        rb.velocity = new Vector3(0,70f,0);
+    }
+
+    public override void rollGetupEnd()
+    {
+        if(!isHost)return;
+        facing = movement.Facing;
+        movement.gravityPaused = false;
         rb.gravityScale = gravityScale;
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
+        rb.velocity = new Vector2(facing * -35f,0f);
     }
 }

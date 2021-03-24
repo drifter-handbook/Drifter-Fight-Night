@@ -4,21 +4,21 @@ using UnityEngine;
 
 public class PlayerCardArtHolder : MonoBehaviour
 {
-    public Sprite[] faces = new Sprite[8];
-    public Sprite[] stocks = new Sprite[8];
+    public Sprite[] faces;// = new Sprite[8];
+    public Sprite[] stocks;// = new Sprite[8];
     public GameObject summaryCardPrefab;
     public GameObject miniSummaryCardPrefab;
     public GameObject stockPrefab;
 
-    private Drifter[] drifters;
+    public Drifter[] drifters;
     private PlayerCard[] playerCards;
 
-    NetworkEntityList Entities;
+    public GameObject mainCamera;
 
-    void Awake()
-    {
-        Entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
-    }
+    // void Awake()
+    // {
+    //     mainCamera  = GameObject.FindGameObjectWithTag("MainCamera");
+    // }
 
     private void Update()
     {
@@ -33,63 +33,58 @@ public class PlayerCardArtHolder : MonoBehaviour
             {
 
                 GameObject newCard;
-                if (drifters.Length > 4)
-                {
-                    newCard = Instantiate(miniSummaryCardPrefab, transform.position, transform.rotation);
-                }
-                else
-                {
-                     newCard = Instantiate(summaryCardPrefab, transform.position, transform.rotation);
+     
+                newCard = Instantiate(summaryCardPrefab, transform.position, transform.rotation);
                     
-                }
                 newCard.transform.SetParent(gameObject.transform, false);
-                newCard.transform.localScale = new Vector3(1, 1, 1);
+                newCard.transform.localScale = new Vector3(-100, 100, 1);
                 playerCards[i] = newCard.GetComponent<PlayerCard>();
 
-                playerCards[i].SetColor(drifter.myColor);
+                
+                int imageIndex = getDrifterTypeIndex(drifter.GetComponent<NetworkSync>().NetworkType);
 
-                int imageIndex = getDrifterTypeIndex(drifter.GetComponent<INetworkSync>().Type);
+                if(imageIndex == 5 || imageIndex == 1) playerCards[i].hasChargeCounter = 3;
+          
+                else if(imageIndex == 10 || imageIndex == 3) playerCards[i].hasChargeCounter = 1;
+
+
+                //Colors
+                playerCards[i].SetColor(drifter.myColor);
+                drifters[i].SetColor(drifters[i].myColor);
+
+                drifters[i].status.card = playerCards[i];
                 
                 playerCards[i].drifterIndex = imageIndex;
-                if(imageIndex == 5 || imageIndex == 1){
-                   playerCards[i].charge.active = true;
-                }
-                else if(imageIndex == 6){
-                    playerCards[i].MegurinElements.active = true;
-                    playerCards[i].MegurinElements.GetComponent<MegurinGauges>().megurin = drifter.GetComponentInChildren<MegurinMasterHit>();
-                }
-                else
-                {
-                    playerCards[i].charge.active = false;
-                    playerCards[i].MegurinElements.active = false;
-                }
 
-                playerCards[i].setChargeDrifter(drifter);
                 playerCards[i].setImages(faces[imageIndex], stocks[imageIndex]);
                 playerCards[i].addStocks(stockPrefab, 3);
+
+
+
                 i++;
             }
-
+            //if(mainCamera == null) GameObject.FindGameObjectWithTag("MainCamera");
+            mainCamera.GetComponent<ScreenShake>().drifters = drifters;
         }
+
+        //For each drifer, update their card
         for (int i = 0; i < drifters.Length; i++)
         {
             playerCards[i].setPercent(drifters[i].DamageTaken);
-            // update stocks
-            if((playerCards[i].drifterIndex == 5 || playerCards[i].drifterIndex == 1) && !playerCards[i].charge.active){
-                   playerCards[i].charge.active = true;
-            }
-            else if(playerCards[i].drifterIndex == 6 && !playerCards[i].MegurinElements.active){
-                    playerCards[i].MegurinElements.active = true;
-            }
-            
+              
             if (drifters[i] != null)
             {
                 playerCards[i].removeToStock(drifters[i].Stocks);
+                playerCards[i].SetCharge(drifters[i].GetCharge());
+
+                //Prolly remove this
+                playerCards[i].SetColor(drifters[i].myColor);
+                drifters[i].SetColor(drifters[i].myColor);
+
+                //drifters[i].status.
+
             }
-            else
-            {
-                playerCards[i].removeToStock(0);
-            }
+            else playerCards[i].removeToStock(0);
         }
     }
 
@@ -114,7 +109,11 @@ public class PlayerCardArtHolder : MonoBehaviour
             case ("Ryyke"): return 5;
             case ("Megurin"): return 6;
             case ("Nero"): return 7;
-            default: return 7;
+            case ("Lucille"): return 9;
+            case ("Mytharius"): return 10;
+            case ("Maryam"): return 11;
+            case ("Drifter Cannon"): return 12;
+            default: return 8;
         }
     }
 

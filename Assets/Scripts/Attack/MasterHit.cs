@@ -4,126 +4,344 @@ using UnityEngine;
 
 public abstract class MasterHit : MonoBehaviour, IMasterHit
 {
+
+    public string assetPathName;
+
     protected Drifter drifter;
-    protected NetworkEntityList entities;
+    protected NetworkHost host;
+    protected Rigidbody2D rb;
+    protected PlayerMovement movement;
+    protected PlayerStatus status;
+    protected float gravityScale;
+    protected PlayerAttacks attacks;
+    protected Animator anim;
+
+    protected float framerateScalar =.0833333333f;
+
+
+    public int facing;
+
+    protected bool isHost = false;
+
+    protected bool Empowered = false;
+
+    protected bool continueJabFlag = false;
+
+    protected Vector3 savedVelocity;
+
+    protected bool savingVelocity = false;
+
+    protected PolygonCollider2D frictionCollider;
+
+    protected bool specialReleased = false;
+
+    protected bool horizontalReleased = false;
+
+    protected bool verticalReleased = false;
+
+    protected float terminalVelocity;
+
     // Start is called before the first frame update
     void Awake()
     {
+        //Is Host
+        isHost = GameController.Instance.IsHost;
+
+        Resources.LoadAll("/Characters/" + assetPathName);
+        Resources.LoadAll("/Projectiles/" + assetPathName);
+
+        if(!isHost)return;
+        host = GameController.Instance.host;
+        //Parent Components
         drifter = transform.parent.gameObject.GetComponent<Drifter>();
-        entities = GameObject.FindGameObjectWithTag("NetworkEntityList").GetComponent<NetworkEntityList>();
+        rb = drifter.GetComponent<Rigidbody2D>();
+        movement = drifter.GetComponent<PlayerMovement>();
+        attacks = drifter.GetComponent<PlayerAttacks>();
+        status = drifter.GetComponent<PlayerStatus>();
+        anim = drifter.GetComponent<Animator>();
+
+        frictionCollider = drifter.GetComponent<PolygonCollider2D>();
+
+        terminalVelocity = movement.terminalVelocity;
+        gravityScale = rb.gravityScale;
     }
 
-    // Update is called once per frame
-    void Update()
+    // void Start()
+    // {
+    //     Resources.LoadAll("/Characters/" + assetPathName);
+    //     Resources.LoadAll("/Projectiles/" + assetPathName);
+    // }
+
+    public void setYVelocity(float y)
+    {
+        if(!isHost)return;
+        rb.velocity = new Vector2(rb.velocity.x,y);
+    }
+
+    public void setXVelocity(float x)
+    {
+        if(!isHost)return;
+
+        if(movement.grounded && x >0) movement.spawnKickoffDust();
+        rb.velocity = new Vector2(movement.Facing * x,rb.velocity.y);
+    }
+
+    public void applyEndLag(float statusDuration)
+    {
+        if(!isHost)return;
+        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,statusDuration);
+    }
+
+    public void applyArmour(float statusDuration)
+    {
+        if(!isHost)return;
+        status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,statusDuration * framerateScalar);
+    }
+
+    public void pauseGravity()
+    {
+        if(!isHost)return;
+        savingVelocity = false;
+        movement.cancelJump();
+        movement.gravityPaused= true;
+        rb.gravityScale = 0f;
+        rb.velocity = Vector2.zero;
+    }
+
+    public void freezeGravity()
+    {
+        if(!isHost)return;
+        savedVelocity = rb.velocity;
+        savingVelocity = true;
+        movement.cancelJump();
+        movement.gravityPaused= true;
+        rb.gravityScale = 0f;
+        rb.velocity = Vector2.zero;
+    }
+
+    public void unpauseGravity()
+    {
+        if(!isHost)return;
+        if(savingVelocity)rb.velocity = savedVelocity;
+        savingVelocity = false;
+        if(rb.gravityScale != gravityScale) rb.gravityScale=gravityScale;
+        movement.gravityPaused= false;
+    }
+
+    public void refreshHitboxID()
+    {
+        if(!isHost)return;
+        attacks.SetMultiHitAttackID();
+    }
+
+    public void beginChanneledAttack()
+    {
+        specialReleased = false;
+    }
+
+    public void clearMasterhitVars()
+    {
+        specialReleased = false;   
+    }
+
+    //For charged attacks that store their current charge when canceled.
+    //Press the button once to start charging. if the button is released and then pressed again, the state will play
+    //0: Nothing happened (Executed as client, or no state-changing action occured)
+    //1: The attack was canceled by a jump or shield input
+    //2: The provided state was executed  
+    public int chargeAttackPesistent(string stateName)
+    {
+        if(!isHost)return 0;
+
+        if(cancelAttack())return 1;
+
+        else if(movementCancel())return 1;
+     
+        else if(!drifter.input.Special && !specialReleased)specialReleased = true;
+
+        else if(drifter.input.Special && specialReleased)
+        {
+            specialReleased = false;
+            playState(stateName);
+            return 2;
+        }
+
+        return 0;
+    }
+
+    //For charged moves that cannot store charge. While the button is held, the charge will persist.
+    //When the button is released, the specified state will play.
+    //0: Nothing happened (Executed as client, or no state-changing action occured)
+    //1: The attack was canceled by a jump or shield input
+    //2: The provided state was executed
+    public int chargeAttackSingleUse(string stateName)
+    {
+        if(!isHost)return 0;
+
+        else if(cancelAttack()) return 1;
+
+        else if(movementCancel())return 1;
+
+        if(!drifter.input.Special)
+        {
+            playState(stateName);
+            return 2;
+        }
+        return 0;    
+
+    }
+
+    public bool movementCancel()
     {
 
+        if(drifter.input.MoveX ==0 && !horizontalReleased)horizontalReleased = true;
+
+        else if(drifter.input.MoveX != 0 && horizontalReleased && movement.grounded)
+        {
+            horizontalReleased = false;
+            movement.roll();
+            movement.techParticle();
+            return true;
+        }
+
+        return false;
+
     }
 
-    public virtual void callTheAerial()
+    //Allows for jump and shield canceling of moves. Returns true if it's condition was met
+    public bool cancelAttack()
     {
+        if(!isHost)return false;
 
+        if(drifter.input.Guard)
+        {
+            movement.techParticle();
+            status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0f);
+            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
+            playState("Guard");
+            drifter.guarding = true;
+            movement.jumping = false;
+            unpauseGravity();
+            return true;
+        }
+        else if(drifter.input.Jump && movement.currentJumps>0)
+        {
+            movement.jumping = false;
+            movement.techParticle();
+            status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0f);
+            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
+            movement.jump();
+            unpauseGravity();
+            return true;
+        }
+
+        if(drifter.input.MoveY ==0 && !verticalReleased)verticalReleased = true;
+
+        else if(drifter.input.MoveY < 0 && verticalReleased)
+        {
+            verticalReleased = false;
+            movement.techParticle();
+            returnToIdle();
+            return true;
+        }
+
+        return false;
     }
-    public virtual void hitTheAerial(GameObject target)
+
+
+    //Dynamically adjust walk speed to match walk cycle animations
+    public void walkCycleSpeedSync(float speed)
     {
-
+        if(!isHost)return;
+        movement.walkSpeed = speed;
     }
-    public virtual void cancelTheAerial()
+
+    public void rechargeFoxtrot()
     {
-
+        if(!isHost)return;
+        movement.canDash = true;
     }
 
-    public virtual void callTheLight()
+    public void returnToIdle()
+	{
+        if(!isHost)return;
+		movement.jumping = false;
+        specialReleased = false;
+        if(drifter.input.MoveX ==0)movement.canDash = true;
+		unpauseGravity();
+        movement.terminalVelocity = terminalVelocity;
+    	drifter.returnToIdle();
+    }
+
+    public void playState(string state)
     {
-
+        if(!isHost)return;
+    	drifter.PlayAnimation(state);
     }
-    public virtual void hitTheLight(GameObject target)
+
+    public void playStateIfEmpowered(string state)
     {
-
+        if(!isHost)return;
+        if(Empowered)drifter.PlayAnimation(state);
     }
-    public virtual void cancelTheLight()
+
+    public void playStateIfGrounded(string state)
     {
-
+        if(!isHost)return;
+        if(movement.grounded)drifter.PlayAnimation(state);
     }
 
-    public virtual void callTheGrab()
+    public void playStateIfEmpoweredOrRetunToIdle(string state)
     {
-
+        if(!isHost)return;
+        if(Empowered)drifter.PlayAnimation(state);
+        else returnToIdle();
     }
-    public virtual void hitTheGrab(GameObject target)
+
+    public void checkForContinueJab()
     {
-
+        if(!isHost)return;
+        if(drifter.input.Light)continueJabFlag = true;
     }
-    public virtual void cancelTheGrab()
+
+    public void continueJab(string state)
     {
-
+        if(!isHost)return;
+        if(continueJabFlag)
+        {
+            applyEndLag(8);
+            refreshHitboxID();
+            continueJabFlag = false;
+            playState(state);
+        }
     }
 
-    public virtual void callTheRecovery()
+    public void beginGuard()
     {
-
+        if(!isHost)return;
+        applyEndLag(2f * .0833333333f);
+        drifter.perfectGuarding = true;
     }
-    public virtual void hitTheRecovery(GameObject target)
+
+    public void endPerfectGuard()
     {
-
+        if(!isHost)return;
+        drifter.perfectGuarding = false;
+        if(drifter.guarding)drifter.PlayAnimation("Guard");
     }
-    public virtual void cancelTheRecovery()
+
+    public void endParry()
     {
-
+        if(!isHost)return;
+        drifter.parrying = false;
     }
 
-    //Side W
-    public virtual void callTheSideW()
-    {
 
-    }
-    public virtual void hitTheSideW(GameObject target)
-    {
+    public abstract void roll();
 
-    }
-    public virtual void cancelTheSideW()
-    {
+    public abstract void rollGetupStart();
+    
 
-    }
-
-    //Down W
-    public virtual void callTheDownW()
-    {
-
-    }
-    public virtual void hitTheDownW(GameObject target)
-    {
-
-    }
-    public virtual void cancelTheDownW()
-    {
-
-    }
-
-     //Neutral W
-    public virtual void callTheNeutralW()
-    {
-
-    }
-    public virtual void hitTheNeutralW(GameObject target)
-    {
-
-    }
-    public virtual void cancelTheNeutralW()
-    {
-
-    }
-
-     //Roll
-    public virtual void callTheRoll()
-    {
-
-    }
-    public virtual void hitTheRoll(GameObject target)
-    {
-
-    }
-    public virtual void cancelTheRoll()
-    {
-
-    }
+    public abstract void rollGetupEnd();
+   
 }

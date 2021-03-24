@@ -8,19 +8,47 @@ public class PlayerCard : MonoBehaviour
 {
     public GameObject face;
     public Sprite stockImage;
-    public Text percent;
     public int currStocks = 0;
     public int drifterIndex;
-    public SpriteRenderer pips;
-    public GameObject charge;
-    public GameObject MegurinElements;
+    public int hasChargeCounter = 0;
 
-    public Image bannerBack;
+    public GameObject TopObject;
+    public GameObject BottomObject;
+
+    public Sprite[] portraits_no_Charge;
+    public Sprite[] portraits_with_Charge;
+    public Sprite[] portraits_one_Charge;
+    public Sprite[] Charge_Ticks;
+
+    public SpriteRenderer chargeBar;
+
+    public GameObject bar;
+
+    public GameObject stockHolder;
+    public GameObject statusHolder;
+
+    Text TopText;
+    Text BottomText;
+
+    GameObjectShake TopShake;
+    GameObjectShake BottomShake;
+
+    int mycolor; 
+    float previousPercent = 0f;
 
     const int MAX_STOCKS = 4;
 
 
-    public GameObject stockHolder;
+    void Awake()
+    {
+
+        TopShake = TopObject.GetComponent<GameObjectShake>();
+        TopText = TopObject.GetComponent<Text>();
+
+        BottomShake = BottomObject.GetComponent<GameObjectShake>();
+        BottomText = BottomObject.GetComponent<Text>();
+
+    }
 
     public void addStock(GameObject stock)
     {
@@ -43,16 +71,46 @@ public class PlayerCard : MonoBehaviour
         }
     }
 
-     public void SetColor(Color color)
+    public GameObject addStatusBar(PlayerStatusEffect statusEffect,int icon, float duration, PlayerStatus status)
     {
-        bannerBack.GetComponent<Image>().color = color;
-        pips.color = color;
+
+        GameObject newBar = Instantiate(bar, new Vector3(0,0), Quaternion.identity);
+        newBar.transform.SetParent(statusHolder.transform, false);
+        newBar.transform.localScale = new Vector3(100, 100, 1);
+        newBar.GetComponent<StatusBar>().status = status;
+        newBar.GetComponent<StatusBar>().initialize(statusEffect,icon,duration);
+        //currentStatusCount++;
+        return newBar;
 
     }
 
-    public void setChargeDrifter(Drifter drifter)
+    public void SetColor(int color)
     {
-        charge.GetComponent<ChargeCounter>().drifter = drifter;
+        mycolor = color;
+
+        switch(hasChargeCounter)
+        {
+            case(1):
+                gameObject.GetComponent<SpriteRenderer>().sprite = portraits_one_Charge[color];
+                break;
+            case(3):
+                gameObject.GetComponent<SpriteRenderer>().sprite = portraits_with_Charge[color];
+                break;
+            case 0:
+            default:
+                gameObject.GetComponent<SpriteRenderer>().sprite = portraits_no_Charge[color];
+                break;
+        }
+
+    }
+
+    public void SetCharge(int charge)
+    {
+
+        if(hasChargeCounter <=0)return;
+
+        chargeBar.sprite = Charge_Ticks[charge];
+
     }
 
     public void removeStock()
@@ -81,7 +139,7 @@ public class PlayerCard : MonoBehaviour
 
     public void setImages(Sprite face, Sprite stock)
     {
-        this.face.GetComponent<Image>().sprite = face;
+        this.face.GetComponent<SpriteRenderer>().sprite = face;
         this.stockImage = stock;
     }
 
@@ -95,7 +153,21 @@ public class PlayerCard : MonoBehaviour
 
     public void setPercent(float sentPercent)
     {
-        this.percent.text = (int)sentPercent+"%";
+        if(previousPercent  < sentPercent)
+        {
+            StartCoroutine(TopShake.Shake(.3f,(sentPercent - previousPercent)/120f));
+            StartCoroutine(BottomShake.Shake(.3f,(sentPercent - previousPercent)/120f));
+        }
+        previousPercent = sentPercent;
+
+        float greenVal = Mathf.Max((120f - sentPercent)/120f,0);
+        float blueVal = Mathf.Max((50f - sentPercent)/50f,0);
+        float redVal = Mathf.Max((500f - sentPercent)/500f,.8f);
+
+        this.BottomText.text = sentPercent.ToString("0.0")+"%";
+
+        this.TopText.color = new Color(redVal,greenVal,blueVal,1);
+        this.TopText.text = sentPercent.ToString("0.0")+"%";
     }
 
 }

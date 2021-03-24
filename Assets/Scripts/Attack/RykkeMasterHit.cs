@@ -4,274 +4,298 @@ using UnityEngine;
 
 public class RykkeMasterHit : MasterHit
 {
-    Rigidbody2D rb;
-    PlayerAttacks attacks;
-    float gravityScale;
-    PlayerMovement movement;
-    public Animator anim;
-    public int facing;
     public TetherRange playerRange;
     public TetherRange ledgeRange;
     GameObject activeStone;
-    PlayerStatus status;
-    public AudioSource audio;
+    public AudioSource audioSource;
     public AudioClip[] audioClips;
 
+    bool tethering = false;
     bool tetheredPlayer = false;
     Vector2 tetherTarget = Vector3.zero;
 
-    
-
-    void Start()
-    {
-        rb = drifter.GetComponent<Rigidbody2D>();
-        gravityScale = rb.gravityScale;
-        attacks = drifter.GetComponent<PlayerAttacks>();
-        movement = drifter.GetComponent<PlayerMovement>();
-        status = drifter.GetComponent<PlayerStatus>();
-
-    }
+    int recoveryReset =2;
 
     void Update()
     {
-        if(drifter.Charge == 0){
-                drifter.SetAnimatorBool("Empowered",false);
-                drifter.BlockReduction = .25f;
-            }
+
+        if(!isHost)return;
+        if(status.HasEnemyStunEffect() && tethering)tethering = false;
+
+        if(((Vector2.Distance(tetherTarget,rb.position) < 4.5f && tetheredPlayer) || movement.ledgeHanging)){
+            cancelTethering();
+        }
+
+        if(movement.grounded){
+            recoveryReset = 2;
+        }
+
+        if(tethering){
+            rb.position =  Vector3.Lerp(rb.position,tetherTarget,.15f);
+        }
+
+        if(drifter.GetCharge() <=0)Empowered = false;
     }
 
-    public override void callTheRecovery()
+
+    //Tether Recovery Logic
+
+    public void enableTetherBox()
     {
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.8f);
-        Debug.Log("Recovery start!");
-    }
-    public void RecoveryPauseMidair()
-    {
-        // pause in air
-        movement.gravityPaused= true;
-        rb.gravityScale = 0f;
-        rb.velocity = Vector2.zero;
+        if(!isHost)return;
         playerRange.gameObject.transform.parent.gameObject.SetActive(true);
-        
     }
 
-    public void throwHands()
+    public void selectTetherTarget()
     {
+        if(!isHost)return;
         facing = movement.Facing;
-        GameObject arms = Instantiate(entities.GetEntityPrefab("LongArmOfTheLaw"), transform.position + new Vector3(facing * 2,5,0), transform.rotation);
-                foreach (HitboxCollision hitbox in arms.GetComponentsInChildren<HitboxCollision>(true))
-                {
-                    hitbox.parent = drifter.gameObject;
-                    hitbox.AttackID = attacks.AttackID;
-                    hitbox.AttackType = attacks.AttackType;
-                    hitbox.Active = true;
-        }
-        float length = 15f;
-
-        if(ledgeRange.TetherPoint != Vector3.zero)
-        {
-            arms.transform.rotation = Quaternion.Euler(0,0, (Mathf.Atan2(arms.transform.position.x -ledgeRange.TetherPoint.x,-arms.transform.position.y+ledgeRange.TetherPoint.y)*180 / Mathf.PI));
-            length = Vector2.Distance(ledgeRange.TetherPoint,arms.transform.position);
-            tetherTarget = ledgeRange.TetherPoint;
-            tetheredPlayer = false;
-        }
-        else if(playerRange.TetherPoint != Vector3.zero)
-        {
-            arms.transform.rotation = Quaternion.Euler(0,0, (Mathf.Atan2(arms.transform.position.x -(playerRange.TetherPoint.x + playerRange.enemyVelocity.x *.15f),-arms.transform.position.y+(playerRange.TetherPoint.y+ playerRange.enemyVelocity.y *.15f))*180 / Mathf.PI));
-            length = Vector2.Distance(playerRange.TetherPoint +  playerRange.enemyVelocity * .15f,arms.transform.position);
-            tetherTarget = playerRange.TetherPoint + (playerRange.enemyVelocity *.15f);
-            tetheredPlayer = true;
-
-        }
-        
-        else
-        {
-            arms.transform.rotation = Quaternion.Euler(0,0,45 * -facing);
-            tetherTarget = Vector2.zero;
-            tetheredPlayer = false;
-        }
-        arms.transform.localScale = new Vector3(13,length/1.3f,1);
-
-        entities.AddEntity(arms);
-    }
-
-    public void daisyChain()
-    {
-        facing = movement.Facing;
-        
-        if(tetherTarget != Vector2.zero && !tetheredPlayer)
-        {
-            rb.velocity = new Vector2((-rb.position.x + tetherTarget.x) *3f, Mathf.Min((-rb.position.y + tetherTarget.y) *3f,50f) + 30);
-            if(movement.currentJumps < movement.numberOfJumps-1){
-                movement.currentJumps++;
-            }
-        }
-
-        else if(tetherTarget != Vector2.zero && tetheredPlayer)
-        {
-            rb.position = new Vector3(tetherTarget.x -.7f *facing,tetherTarget.y +.5f,0);
-            rb.velocity = new Vector3(facing*35,30,0);
-            if(movement.currentJumps < movement.numberOfJumps-1){
-                movement.currentJumps++;
-            }
-
-        }
-        else{
-            attacks.currentRecoveries = 1;
-        }
-        playerRange.gameObject.transform.parent.gameObject.SetActive(false);
-        rb.gravityScale = gravityScale;
-        tetheredPlayer = false;
-    }
-
-
-    public void AmrourUp(){
-        status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,.7f);
-    }
-
-    public void resetGravity(){
-        movement.gravityPaused = false;
-        rb.gravityScale = gravityScale;
-    }
-
-    public void pauseGravity(){
-        movement.gravityPaused= true;
-        rb.gravityScale = 0f;
-        rb.velocity = Vector2.zero;
-    }
-
-
-    public void sideWslide()
-    {
-        facing = movement.Facing;
-        if(!anim.GetBool("Empowered")){
-            rb.velocity = new Vector3(facing * 25,0);
-        }
-        else{
-            rb.velocity = new Vector3(facing * 35,0);
-        }
-        
-    }
-    
-    public void notify()
-    {
-      Debug.Log("hit something!");
-    }
-    public void updatePosition(Vector3 position){
-        //movement.updatePosition(position);
-    }
-    public override void hitTheRecovery(GameObject target)
-    {
-        Debug.Log("Recovery hit!");
-    }
-    public override void cancelTheRecovery()
-    {
-        resetGravity();
-    }
-
-    public void sideGrab()
-    {
-        facing = movement.Facing;
-        Vector3 flip = new Vector3(facing *8f,8f,1f);
-        Vector3 loc = new Vector3(facing *5f,0f,0f);
-        GameObject HoldPerson = Instantiate(entities.GetEntityPrefab("HoldPerson"), transform.position + loc, transform.rotation);
-        HoldPerson.transform.localScale = flip;
-        foreach (HitboxCollision hitbox in HoldPerson.GetComponentsInChildren<HitboxCollision>(true))
+        GameObject arms = host.CreateNetworkObject("LongArmOfTheLaw", transform.position + new Vector3(facing * 2, 5, 0), transform.rotation);
+        foreach (HitboxCollision hitbox in arms.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             hitbox.Active = true;
+            hitbox.Facing = facing;
         }
-        HoldPerson.GetComponentInChildren<RyykeGrab>().drifter = drifter;
-        entities.AddEntity(HoldPerson);
+        float length = 15f;
+
+        if (ledgeRange.TetherPoint != Vector3.zero)
+        {
+            arms.transform.rotation = Quaternion.Euler(0, 0, (Mathf.Atan2(arms.transform.position.x - ledgeRange.TetherPoint.x, -arms.transform.position.y + ledgeRange.TetherPoint.y) * 180 / Mathf.PI));
+            length = Vector2.Distance(ledgeRange.TetherPoint, arms.transform.position);
+            tetherTarget = ledgeRange.TetherPoint;
+            tetheredPlayer = false;
+        }
+        else if (playerRange.TetherPoint != Vector3.zero)
+        {
+            arms.transform.rotation = Quaternion.Euler(0, 0, (Mathf.Atan2(arms.transform.position.x - (playerRange.TetherPoint.x + playerRange.enemyVelocity.x * .15f), -arms.transform.position.y + (playerRange.TetherPoint.y + playerRange.enemyVelocity.y * .15f)) * 180 / Mathf.PI));
+            length = Vector2.Distance(playerRange.TetherPoint + playerRange.enemyVelocity * .1f, arms.transform.position);
+                tetherTarget = playerRange.TetherPoint + (playerRange.enemyVelocity *.1f);
+                tetheredPlayer = true;
+            }
+
+            else
+            {
+                arms.transform.rotation = Quaternion.Euler(0, 0, 45 * -facing);
+                tetherTarget = Vector2.zero;
+                tetheredPlayer = false;
+            }
+            arms.transform.localScale = new Vector3(13, length / 1.3f, 1);
+        }
+
+        public void moveToTetherTarget()
+        {
+            if(!isHost)return;
+            facing = movement.Facing;
+            
+            if(tetherTarget != Vector2.zero)
+            {
+                tethering = true;
+            }
+
+            else if (recoveryReset > 0){
+                attacks.currentRecoveries = 1;
+                recoveryReset--;
+            }
+            playerRange.gameObject.transform.parent.gameObject.SetActive(false);
+            rb.gravityScale = gravityScale;
+            movement.gravityPaused = false;
+        //tetheredPlayer = false;
+        }
+
+        public void cancelTethering()
+        {
+            if(!isHost)return;
+            if(tethering){
+                tethering = false;
+                if(tetheredPlayer){
+                    tetherTarget = Vector2.zero;
+                    drifter.PlayAnimation("W_Up_Attack");
+                    rb.velocity = new Vector3(facing*35,30,0);
+                }
+                else if (!movement.ledgeHanging){
+                    rb.position =  Vector3.Lerp(rb.position,tetherTarget,.55f);
+                    tetherTarget = Vector2.zero;
+                }
+                
+            }
+            
+        }
+
+    //Side Grab "Projectile"
+
+        public void sideGrab()
+        {
+            if(!isHost)return;
+            facing = movement.Facing;
+            Vector3 flip = new Vector3(facing *8f,8f,1f);
+            Vector3 loc = new Vector3(facing *4f,0f,0f);
+            
+            GameObject HoldPerson = host.CreateNetworkObject("HoldPerson", transform.position + loc, transform.rotation);
+            HoldPerson.transform.localScale = flip;
+            foreach (HitboxCollision hitbox in HoldPerson.GetComponentsInChildren<HitboxCollision>(true))
+            {
+                hitbox.parent = drifter.gameObject;
+                hitbox.AttackID = attacks.AttackID;
+                hitbox.AttackType = attacks.AttackType;
+                hitbox.Active = true;
+                hitbox.Facing = facing;
+            }
+            HoldPerson.GetComponentInChildren<DetectGrab>().drifter = drifter;
+            HoldPerson.GetComponentInChildren<DetectGrab>().GrabState = Empowered?"Grab_Empowered":"";
+        }
+
+
+    public void sideWEmpowered()
+        {
+            if(!isHost)return;
+            conmsumeStack();
+            facing = movement.Facing;
+            Vector3 flip = new Vector3(facing *10f,10f,1f);
+            Vector3 loc = new Vector3(facing *-1f,0f,0f);
+            
+            GameObject ChadPunch = host.CreateNetworkObject("ChadwickPunch", transform.position + loc, transform.rotation);
+            ChadPunch.transform.localScale = flip;
+            foreach (HitboxCollision hitbox in ChadPunch.GetComponentsInChildren<HitboxCollision>(true))
+            {
+                hitbox.parent = drifter.gameObject;
+                hitbox.AttackID = attacks.AttackID;
+                hitbox.AttackType = attacks.AttackType;
+                hitbox.Active = true;
+                hitbox.Facing = facing;
+            }
+            ChadPunch.GetComponentInChildren<Chadwick_Basic>().speed = new Vector2(facing * 65f,0);
+            ChadPunch.GetComponentInChildren<Chadwick_Basic>().drifter = drifter;
+        }
+
+    public void Buster_Wolf()
+        {
+            if(!isHost || !Empowered)return;
+            conmsumeStack();
+            facing = movement.Facing;
+            Vector3 flip = new Vector3(facing *10f,10f,1f);
+            Vector3 loc = new Vector3(facing *-1f,0f,0f);
+            
+            GameObject ChadPunch = host.CreateNetworkObject("Chadwick_Buster", transform.position + loc, transform.rotation);
+            ChadPunch.transform.localScale = flip;
+            foreach (HitboxCollision hitbox in ChadPunch.GetComponentsInChildren<HitboxCollision>(true))
+            {
+                hitbox.parent = drifter.gameObject;
+                hitbox.AttackID = attacks.AttackID;
+                hitbox.AttackType = attacks.AttackType;
+                hitbox.Active = true;
+                hitbox.Facing = facing;
+            }
+            ChadPunch.GetComponentInChildren<Chadwick_Buster>().speed = new Vector2(facing * 65f,0);
+            ChadPunch.GetComponentInChildren<Chadwick_Buster>().drifter = drifter;
+        }
+
+    //Down W
+        public void plantGravestone()
+        {
+            if(!isHost)return;
+            if(activeStone){
+                activeStone.GetComponent<RyykeTombstone>().Break();
+            }  
+            facing = movement.Facing;
+            if(!movement.grounded)rb.velocity = new Vector2(rb.velocity.x *.5f,10);
+            Vector3 flip = new Vector3(facing *8f,8f,1f);
+            Vector3 loc = new Vector3(facing *1f,.8f,0f);
+
+            GameObject tombstone = host.CreateNetworkObject("RyykeTombstone", transform.position + loc, transform.rotation);
+            tombstone.transform.localScale = flip;
+            foreach (HitboxCollision hitbox in tombstone.GetComponentsInChildren<HitboxCollision>(true))
+            {
+                hitbox.parent = drifter.gameObject;
+                hitbox.AttackID = attacks.AttackID;
+                hitbox.AttackType = attacks.AttackType;
+                hitbox.Active = true;
+                hitbox.Facing = facing;
+            }
+
+            tombstone.GetComponent<RyykeTombstone>().facing = facing;
+            activeStone = tombstone;
+        }
+
+    //Neutral W
+        public void awaken(){
+            if(!isHost)return;
+            facing = movement.Facing;
+            Vector3 flip = new Vector3(facing *8f,8f,1f);
+            Vector3 loc = new Vector3(facing *3.5f,0f,0f);
+            
+            GameObject tombstone = host.CreateNetworkObject("RyykeTombstone", transform.position + loc, transform.rotation);
+            tombstone.transform.localScale = flip;
+            foreach (HitboxCollision hitbox in tombstone.GetComponentsInChildren<HitboxCollision>(true))
+            {
+                hitbox.parent = drifter.gameObject;
+                hitbox.AttackID = attacks.AttackID;
+                hitbox.AttackType = attacks.AttackType;
+                hitbox.Active = true;
+                hitbox.Facing = facing;
+            }
+
+            tombstone.GetComponent<RyykeTombstone>().facing = facing;
+            tombstone.GetComponent<RyykeTombstone>().awakenActivate();
+            
+
+        }
+
+        public void grantStack()
+        {
+            if(!isHost)return;
+            if(drifter.GetCharge() < 3){
+                audioSource.PlayOneShot(audioClips[0]);
+                drifter.IncrementCharge();
+                Empowered = true;
+                drifter.GuardStateName = "Guard_Strong";
+                drifter.BlockReduction = .75f;
+            }
+
+        }
+
+        public void conmsumeStack()
+        {
+            if(!isHost)return;
+            if(drifter.GetCharge() > 0){
+              drifter.DecrementCharge();
+              if(drifter.GetCharge() == 0){
+    			Empowered = false;
+                drifter.GuardStateName = "Guard";
+                drifter.BlockReduction = .25f;
+            }
+        }
     }
 
-    public void grabWhiff()
-    {
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.8f);
-    }
 
-    public void dodgeRoll()
+
+    //Inhereted Roll Methods
+
+    public override void roll()
     {
+        if(!isHost)return;
         facing = movement.Facing;
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.6f);
+        applyEndLag(1);
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
         rb.velocity = new Vector2(facing * 40f,0f);
     }
 
-    public void grabEmpowered(){
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.9f);
-        pauseGravity();
+    public override void rollGetupStart()
+    {
+        if(!isHost)return;
+        applyEndLag(1);
+        rb.velocity = new Vector3(0,78f,0);
     }
 
-    //Down W
-    public void dropStone()
+    public override void rollGetupEnd()
     {
-
-        if(activeStone){
-            activeStone.GetComponent<RyykeTombstone>().Break();
-        }  
+        if(!isHost)return;
         facing = movement.Facing;
-        if(!movement.grounded)rb.velocity = new Vector2(0,10);
-        Vector3 flip = new Vector3(facing *8f,8f,1f);
-        Vector3 loc = new Vector3(facing *1f,.8f,0f);
-        GameObject tombstone = Instantiate(entities.GetEntityPrefab("RyykeTombstone"), transform.position + loc, transform.rotation);
-        tombstone.transform.localScale = flip;
-        foreach (HitboxCollision hitbox in tombstone.GetComponentsInChildren<HitboxCollision>(true))
-        {
-            hitbox.parent = drifter.gameObject;
-            hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
-            hitbox.Active = true;
-        }
-        
-        tombstone.GetComponent<RyykeTombstone>().facing=facing;
-        activeStone = tombstone;
-        entities.AddEntity(tombstone);
-    }
-
-    public void awaken(){
-        facing = movement.Facing;
-        status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,.2f);
-        Vector3 flip = new Vector3(facing *8f,8f,1f);
-        Vector3 loc = new Vector3(facing *3.5f,0f,0f);
-        GameObject tombstone = Instantiate(entities.GetEntityPrefab("RyykeTombstone"), transform.position + loc, transform.rotation);
-        tombstone.transform.localScale = flip;
-        foreach (HitboxCollision hitbox in tombstone.GetComponentsInChildren<HitboxCollision>(true))
-        {
-            hitbox.parent = drifter.gameObject;
-            hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
-            hitbox.Active = true;
-        }
-        
-        tombstone.GetComponent<RyykeTombstone>().facing=facing;
-        tombstone.GetComponent<RyykeTombstone>().grounded = true;
-        tombstone.GetComponent<RyykeTombstone>().activate = true;
-        entities.AddEntity(tombstone);
-    }
-
-    public void grantStack()
-    {
-    	if(drifter.Charge < 3){
-            audio.PlayOneShot(audioClips[0]);
-    		drifter.Charge++;
-            drifter.SetAnimatorBool("Empowered",true);
-            drifter.BlockReduction = .75f;
-    	}
-
-    }
-
-    public void conmsumeStack()
-    {
-    	if(drifter.Charge > 0){
-    		drifter.Charge--;
-    		if(drifter.Charge == 0){
-    			//anim.SetBool("Empowered",false);
-                drifter.SetAnimatorBool("Empowered",false);
-                drifter.BlockReduction = .25f;
-    		}
-    	}
+        movement.gravityPaused = false;
+        rb.gravityScale = gravityScale;
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.3f);
+        rb.velocity = new Vector2(facing * 45f,5f);
     }
 }

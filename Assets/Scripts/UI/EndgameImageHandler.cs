@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class EndgameImageHandler : MonoBehaviour
@@ -9,15 +11,60 @@ public class EndgameImageHandler : MonoBehaviour
     public Sprite[] sprites;
     public GameObject[] winnerSetups;
 
-    public GameObject rightPanel;
-    public GameObject sillyImagePrefab;
+    //public GameObject rightPanel;
+    //public GameObject sillyImagePrefab;
+    public GameObject playAgainButton;
 
-    public void playWinnerAudio(int winnerIndex)
+    NetworkSync sync;
+
+    bool mouse = false;
+
+    void Start()
     {
-        gameObject.GetComponent<MultiSound>().PlayAudio(winnerIndex);
+        //isHost = GameController.Instance.IsHost;
+        Resources.UnloadUnusedAssets();
+
+        if(GameController.Instance.IsHost)
+        {
+
+        	sync = GetComponent<NetworkSync>();
+
+        	sync.SendNetworkMessage(new CharacterSelectSyncData() {charSelState = CharacterMenu.CharSelData.charSelState});
+            playAgainButton.SetActive(true);
+
+        }
+        else playAgainButton.SetActive(false);
+
+
+        if( GameController.Instance.winnerOrder.Length ==0) UnityEngine.Debug.Log("NO CONTEST");
+        for(int i = 0; i< GameController.Instance.winnerOrder.Length; i++)
+        {
+
+            UnityEngine.Debug.Log("Player " +  GameController.Instance.winnerOrder[i] + " came in " + (i + 1) + "th place!");
+
+
+            //Todo Cleanup
+            if(i == 0)
+            {
+                foreach (CharacterSelectState state in CharacterMenu.CharSelData.charSelState)
+                {
+                    if (state.PeerID == (i - 1))
+                    {
+                        UnityEngine.Debug.Log(state.PlayerType);
+                        setWinnerPic(state.PlayerType,CharacterMenu.ColorFromEnum[(PlayerColor)state.PlayerIndex]);
+                    }
+                }
+
+            }
+        }
     }
 
-    public void setWinnerPic(DrifterType type, Color color)
+    // public void playWinnerAudio(int winnerIndex)
+    // {
+    //     gameObject.GetComponent<MultiSound>().PlayAudio(winnerIndex);
+    // }
+
+    public void setWinnerPic(DrifterType type,Color color)
     {
 
         foreach(GameObject setup in winnerSetups)
@@ -33,52 +80,80 @@ public class EndgameImageHandler : MonoBehaviour
         }
     }
 
-    public void setSillyImage(DrifterType type, Color color)
+    void Update()
     {
-        GameObject miniIcon = Instantiate(sillyImagePrefab);
-        Transform parent = rightPanel.transform;
-        miniIcon.transform.SetParent(parent, false);
-        miniIcon.transform.GetChild(0).GetComponent<Image>().color = color; //sets player Color on circle
-        switch (type)
+
+        if(Input.GetKeyDown(KeyCode.Escape))backToMain();
+        
+        if((Input.GetMouseButton(0) || Input.GetMouseButton(1) || Input.GetMouseButton(2)) && !mouse)
         {
-            case DrifterType.Nero: miniIcon.GetComponent<Image>().sprite = sprites[0]; break;
-            case DrifterType.Orro: miniIcon.GetComponent<Image>().sprite = sprites[1]; break;
-            case DrifterType.Bojo: miniIcon.GetComponent<Image>().sprite = sprites[2]; break;
-            case DrifterType.Ryyke: miniIcon.GetComponent<Image>().sprite = sprites[3]; break;
-            case DrifterType.Swordfrog: miniIcon.GetComponent<Image>().sprite = sprites[4]; break;
-            case DrifterType.Megurin: miniIcon.GetComponent<Image>().sprite = sprites[5]; break;
-            case DrifterType.Spacejam: miniIcon.GetComponent<Image>().sprite = sprites[6]; break;
-            case DrifterType.Lady_Parhelion:
-            default: miniIcon.GetComponent<Image>().sprite = sprites[7]; break;                        
+            mouse = true;
+            //Cursor.visible = true;
+            EventSystem.current.SetSelectedGameObject(null);
+
+        }
+        else if(Input.anyKey && mouse && (!Input.GetMouseButton(0) || !Input.GetMouseButton(1) || !Input.GetMouseButton(2))){
+            EventSystem.current.SetSelectedGameObject(GameObject.Find("MainMenu"));
+            mouse = false;
+        }
+
+
+
+        
+    }
+
+    public void backToMain()
+    {
+
+        GameController.Instance.CleanupNetwork();
+        SceneManager.LoadSceneAsync("MenuScene");
+
+    }
+
+    public void playAgain()
+    {
+        if(GameController.Instance.IsHost)GameController.Instance.host.SetScene("CharacterSelect");
+        else 
+        {
+            GameController.Instance.CleanupNetwork();
+            GameController.Instance.StartNetworkClient();
         }
     }
+
+    // public void setSillyImage(DrifterType type, Color color)
+    // {
+    //     GameObject miniIcon = Instantiate(sillyImagePrefab);
+    //     Transform parent = rightPanel.transform;
+    //     miniIcon.transform.SetParent(parent, false);
+    //     miniIcon.transform.GetChild(0).GetComponent<Image>().color = color; //sets player Color on circle
+    //     switch (type)
+    //     {
+    //         case DrifterType.Nero: miniIcon.GetComponent<Image>().sprite = sprites[0]; break;
+    //         case DrifterType.Orro: miniIcon.GetComponent<Image>().sprite = sprites[1]; break;
+    //         case DrifterType.Bojo: miniIcon.GetComponent<Image>().sprite = sprites[2]; break;
+    //         case DrifterType.Ryyke: miniIcon.GetComponent<Image>().sprite = sprites[3]; break;
+    //         case DrifterType.Swordfrog: miniIcon.GetComponent<Image>().sprite = sprites[4]; break;
+    //         case DrifterType.Megurin: miniIcon.GetComponent<Image>().sprite = sprites[5]; break;
+    //         case DrifterType.Spacejam: miniIcon.GetComponent<Image>().sprite = sprites[6]; break;
+    //         case DrifterType.Lucille: miniIcon.GetComponent<Image>().sprite = sprites[8]; break;
+    //         case DrifterType.Mytharius: miniIcon.GetComponent<Image>().sprite = sprites[9]; break;
+    //         case DrifterType.Drifter_Cannon: miniIcon.GetComponent<Image>().sprite = sprites[10]; break;
+    //         case DrifterType.Maryam: miniIcon.GetComponent<Image>().sprite = sprites[11]; break;
+    //         case DrifterType.Lady_Parhelion:
+    //         default: miniIcon.GetComponent<Image>().sprite = sprites[7]; break;                        
+    //     }
+    // }
 
     public void Exit()
     {
         if (GameController.Instance.GetComponent<NetworkClient>() != null)
         {
-            GameController.Instance.GetComponent<NetworkClient>().ExitToMain();
+            SceneManager.LoadScene("MenuScene");
         }
 
         if (GameController.Instance.GetComponent<NetworkHost>() != null)
         {
-            GameController.Instance.GetComponent<NetworkHost>().ExitToMain();
+            SceneManager.LoadScene("MenuScene");
         }
-
     }
-
-    public void Restart()
-    {
-        if (GameController.Instance.GetComponent<NetworkClient>() != null)
-        {
-            GameController.Instance.GetComponent<NetworkClient>().ExitToChar();
-        }
-
-        if (GameController.Instance.GetComponent<NetworkHost>() != null)
-        {
-            GameController.Instance.GetComponent<NetworkHost>().ExitToChar();
-        }
-
-    }
-
 }

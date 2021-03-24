@@ -15,10 +15,10 @@ MonoBehaviour:
   AttackDamage: 2
   Knockback: 37
   KnockbackScale: 0
-  HitStun: 0.3
-  EndLag: 0.1
+  hasStaticHitstun: 1
+  HitStun: 4
   isGrab: 0
-  AngleOfImpact: 105
-  StatusEffect: 4
+  AngleOfImpact: 80
+  StatusEffect: 20
   StatusDuration: 0.1
   HitVisual: 8

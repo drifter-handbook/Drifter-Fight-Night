@@ -13,6 +13,7 @@ public class CustomControls : ScriptableObject
     [SerializeField] public KeyCode guard1Key;
     [SerializeField] public KeyCode guard2Key;
     [SerializeField] public KeyCode jumpKey;
+    [SerializeField] public KeyCode jumpKeyAlt;
 
     [SerializeField] public KeyCode lightKey;
     [SerializeField] public KeyCode specialKey;

@@ -2,6 +2,7 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/master/Unity.gitignore
 #
+
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
@@ -59,3 +60,8 @@ sysinfo.txt
 crashlytics-build.properties
 
 Packages/packages-lock.json
+
+# Begin Drifters Studios
+/[Aa]ssets/[Rr]esources/[Cc]onfig/server_ip.txt
+/[Aa]ssets/[Rr]esources/[Cc]onfig/server_ip.txt.meta
+# End Drifters Studios

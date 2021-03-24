@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 193b57c47c6e0024ebee715bea3d6f17, type: 3}
   m_Name: Uair
   m_EditorClassIdentifier: 
-  AttackDamage: 3.5
+  AttackDamage: 2
   Knockback: 8
   KnockbackScale: 0.3
+  hasStaticHitstun: 0
   HitStun: -1
-  EndLag: 0.5
   isGrab: 0
-  AngleOfImpact: 65
-  StatusEffect: 4
+  AngleOfImpact: -361
+  StatusEffect: 20
   StatusDuration: 0.1
   HitVisual: 1
