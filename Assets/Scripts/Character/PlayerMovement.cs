@@ -167,7 +167,6 @@ public class PlayerMovement : MonoBehaviour
         if(drifter.input.Guard) techWindowElapsed += Time.deltaTime;
         else if(status.HasGroundFriction()) techWindowElapsed = 0;
 
-
         bool moving = drifter.input.MoveX != 0;
 
         //Unpause gravity when hit
@@ -176,22 +175,23 @@ public class PlayerMovement : MonoBehaviour
         //pause attacker during hitpause, and apply hurt animation to defender
         if(status.HasStatusEffect(PlayerStatusEffect.HITPAUSE))
         {
-            
-            if(drifter.guardBreaking && status.HasEnemyStunEffect())
-            {
-                drifter.PlayAnimation("Guard_Break");
-                StartCoroutine(shake.Shake(.3f,.7f));
-            }
-            else if(status.HasEnemyStunEffect() && !drifter.guarding)
+            //TODO
+            // if(drifter.guardBreaking && status.HasEnemyStunEffect())
+            // {
+            //     drifter.PlayAnimation("Guard_Break");
+            //     StartCoroutine(shake.Shake(.3f,.7f));
+            // }
+            // else 
+            if(status.HasEnemyStunEffect() && !drifter.guarding)
             {
                 drifter.PlayAnimation("HitStun");
                 StartCoroutine(shake.Shake(.2f,.7f));
             }
-            else if(status.HasEnemyStunEffect())
-            {
-                drifter.PlayAnimation("BlockStun");
-                StartCoroutine(shake.Shake(.1f,.7f));
-            }
+            // else if(status.HasEnemyStunEffect())
+            // {
+            //     drifter.PlayAnimation("BlockStun");
+            //     StartCoroutine(shake.Shake(.1f,.7f));
+            // }
             else{
                 animator.enabled = false;
             }
@@ -231,18 +231,23 @@ public class PlayerMovement : MonoBehaviour
        
         //Sets hitstun state when applicable
 
-        if(status.HasEnemyStunEffect() && drifter.guardBreaking)
-        {
-            drifter.PlayAnimation("Guard_Break");
-            hitstun = true;
-        }
+        if(status.HasEnemyStunEffect() && !drifter.guarding)drifter.PlayAnimation("HitStun");
 
-        else if(status.HasEnemyStunEffect() && !drifter.guarding)
-        {
-            hitstun = true;
-            drifter.PlayAnimation("HitStun");
-            DropLedge();
-        }
+
+        //TODO 
+
+        // if(status.HasEnemyStunEffect() && drifter.guardBreaking)
+        // {
+        //     drifter.PlayAnimation("Guard_Break");
+        //     hitstun = true;
+        // }
+
+        // else if(status.HasEnemyStunEffect() && !drifter.guarding)
+        // {
+        //     hitstun = true;
+        //     drifter.PlayAnimation("HitStun");
+        //     DropLedge();
+        // }
 
         else if(status.HasEnemyStunEffect() && drifter.guarding)
         {
@@ -499,17 +504,25 @@ public class PlayerMovement : MonoBehaviour
         else if(drifter.input.Guard && canGuard && !ledgeHanging && !status.HasStatusEffect(PlayerStatusEffect.GUARDBROKEN))
         {
             //shift is guard
-            if(!drifter.guarding)drifter.PlayAnimation("Guard_Start");
+            //if(!drifter.guarding)drifter.PlayAnimation("Guard_Start");
+
+
+            //REMOVE THIS AFTER RELEASE
+            if(!drifter.guarding)drifter.PlayAnimation("Guard");
+            
             drifter.guarding = true;
         }
       
         //Disable Guarding
         else if(!drifter.input.Guard && !status.HasStunEffect() && drifter.guarding && !status.HasStatusEffect(PlayerStatusEffect.GUARDBROKEN))
         {
-            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,framerateScalar * 3);
-            drifter.guarding = false;
-            drifter.parrying = true;
-            drifter.PlayAnimation("Guard_Drop");
+        //     status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,framerateScalar * 3);
+        //     drifter.guarding = false;
+        //     drifter.parrying = true;
+        //     drifter.PlayAnimation("Guard_Drop");
+
+            drifter.returnToIdle();
+
         }
 
         //Terminal velocity
