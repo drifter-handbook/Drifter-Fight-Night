@@ -32,7 +32,11 @@ public class NeoParhelionMasterHit : MasterHit
 
     		UnityEngine.Debug.Log("FORWARD");
     		drifter.PlayAnimation("W_Up_Forward");
-    		if(HeldDirection.x * movement.Facing < 0)movement.flipFacing();
+    		if(HeldDirection.x * movement.Facing < 0)
+    		{
+    			movement.flipFacing();
+    			foreach (HitboxCollision hitbox in GetComponentsInChildren<HitboxCollision>(true))hitbox.Facing = movement.Facing;
+    		}
     	}
     	HeldDirection = Vector2.zero;
     	Up_W_Grab.victim = null;
