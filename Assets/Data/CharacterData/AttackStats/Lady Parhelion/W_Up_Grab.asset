@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 193b57c47c6e0024ebee715bea3d6f17, type: 3}
-  m_Name: RecoveryLauncher
+  m_Name: W_Up_Grab
   m_EditorClassIdentifier: 
-  AttackDamage: 5
+  AttackDamage: 4
   Knockback: 45
-  KnockbackScale: 0.1
+  KnockbackScale: 0.3
   hasStaticHitstun: 0
-  HitStun: -1
-  isGrab: 0
-  AngleOfImpact: 35
-  StatusEffect: 20
-  StatusDuration: 0.1
-  HitVisual: 10
+  HitStun: 2
+  isGrab: 1
+  AngleOfImpact: 75
+  StatusEffect: 4
+  StatusDuration: 1
+  HitVisual: 4

@@ -32,11 +32,13 @@ public class GrabHitboxCollision : HitboxCollision
             //string player = playerType.NetworkType;
             if(OverrideData != null){
                 int hitResult = hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, OverrideData);
-                if(SuccessState != "" && hitResult >=0)
+                if(hitResult >=0)
                 {
                 	victim = hurtbox.parent;
-                	parent.GetComponent<Drifter>().movement.canLandingCancel = false;
-                	parent.GetComponent<Drifter>().PlayAnimation(SuccessState);
+                    if(SuccessState != ""){
+                        parent.GetComponent<Drifter>().movement.canLandingCancel = false;
+                        parent.GetComponent<Drifter>().PlayAnimation(SuccessState);
+                    }
                 }
             }
             else{

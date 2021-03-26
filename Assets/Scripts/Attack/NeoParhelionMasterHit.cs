@@ -7,6 +7,45 @@ public class NeoParhelionMasterHit : MasterHit
 
     //Inhereted Roll Methods
 
+	Vector2 HeldDirection;
+	public GrabHitboxCollision Up_W_Grab;
+
+
+	public void saveDirection()
+    {
+        if(!isHost)return;
+        Vector2 TestDirection = new Vector2(drifter.input.MoveX,drifter.input.MoveY);
+        HeldDirection = TestDirection == Vector2.zero? HeldDirection: TestDirection;
+
+        UnityEngine.Debug.Log(HeldDirection);
+    }
+
+    public void UpWThrow()
+    {
+    	if(!isHost)return;
+    	saveDirection();
+    	if(Up_W_Grab.victim != null)attacks.resetRecovery();
+    	else return;
+    	if(HeldDirection.y < 0)drifter.PlayAnimation("W_Up_Down");
+    	else if(HeldDirection.x != 0)
+    	{
+
+    		UnityEngine.Debug.Log("FORWARD");
+    		drifter.PlayAnimation("W_Up_Forward");
+    		if(HeldDirection.x * movement.Facing < 0)movement.flipFacing();
+    	}
+    	HeldDirection = Vector2.zero;
+    	Up_W_Grab.victim = null;
+    	
+    }
+
+    public void setTerminalVelocity(float vel)
+    {
+        if(!isHost)return;
+        movement.canLandingCancel = false;  
+        movement.terminalVelocity = vel;
+    }
+
     public override void roll()
     {
         if(!isHost)return;
