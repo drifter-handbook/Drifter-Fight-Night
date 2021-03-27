@@ -38,6 +38,7 @@ public class NeoParhelionMasterHit : MasterHit
     			foreach (HitboxCollision hitbox in GetComponentsInChildren<HitboxCollision>(true))hitbox.Facing = movement.Facing;
     		}
     	}
+    	else drifter.PlayAnimation("W_Up_Up");
     	HeldDirection = Vector2.zero;
     	Up_W_Grab.victim = null;
     	
@@ -48,7 +49,7 @@ public class NeoParhelionMasterHit : MasterHit
     	if(!isHost)return;
     	saveDirection();
     	facing = movement.Facing;
-    	if(HeldDirection.y != 0) rb.velocity =  new Vector2(facing * 150,HeldDirection.y * 25f);
+    	if(HeldDirection.y != 0) rb.velocity =  new Vector2(facing * 140,HeldDirection.y * 30f);
     	else setXVelocity(155f);
     	HeldDirection = Vector2.zero;
 
