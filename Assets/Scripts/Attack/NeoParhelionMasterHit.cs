@@ -43,6 +43,17 @@ public class NeoParhelionMasterHit : MasterHit
     	
     }
 
+    public void SideWDash()
+    {
+    	if(!isHost)return;
+    	saveDirection();
+    	facing = movement.Facing;
+    	if(HeldDirection.y != 0) rb.velocity =  new Vector2(facing * 150,HeldDirection.y * 25f);
+    	else setXVelocity(155f);
+    	HeldDirection = Vector2.zero;
+
+    }
+
     public void setTerminalVelocity(float vel)
     {
         if(!isHost)return;
