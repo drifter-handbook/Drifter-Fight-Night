@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class NeoNeroMasterHit : MasterHit
 {
-
     //Inhereted Roll Methods
 
     public override void roll()
