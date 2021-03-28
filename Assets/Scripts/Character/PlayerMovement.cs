@@ -228,6 +228,8 @@ public class PlayerMovement : MonoBehaviour
 
         grounded = IsGrounded();
         wallSliding = IsWallSliding();
+
+        //if(status.HasStatusEffect(PlayerStatusEffect.PLANTED) && !grounded)status.ApplyStatusEffect(PlayerStatusEffect.PLANTED,0f);
        
         //Sets hitstun state when applicable
 
