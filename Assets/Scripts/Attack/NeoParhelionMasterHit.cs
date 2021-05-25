@@ -44,6 +44,13 @@ public class NeoParhelionMasterHit : MasterHit
     	
     }
 
+    //Causes a non-aerial move to cancle on htiing the ground
+    public void cancelSideQ()
+    {
+        if(!isHost)return;
+        movement.canLandingCancel = true;
+    }
+
     public void setTerminalVelocity(float vel)
     {
         if(!isHost)return;
