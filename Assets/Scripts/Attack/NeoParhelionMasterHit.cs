@@ -50,6 +50,13 @@ public class NeoParhelionMasterHit : MasterHit
         movement.canLandingCancel = true;
     }
 
+    //Flips the direction the charactr is facing mid move)
+    public void invertDirection()
+    {
+        if(!isHost)return;
+        movement.flipFacing();
+    }
+
     public void slamRestitute()
     {
     	if(!isHost || !movement.grounded)return;
