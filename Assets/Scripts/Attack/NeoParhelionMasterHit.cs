@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -41,7 +41,6 @@ public class NeoParhelionMasterHit : MasterHit
     	else drifter.PlayAnimation("W_Up_Up");
     	HeldDirection = Vector2.zero;
     	Up_W_Grab.victim = null;
-    	
     }
 
     //Causes a non-aerial move to cancle on htiing the ground
@@ -49,6 +48,11 @@ public class NeoParhelionMasterHit : MasterHit
     {
         if(!isHost)return;
         movement.canLandingCancel = true;
+    }
+
+    public void slamRestitute()
+    {
+    	movement.spawnJuiceParticle(transform.position, MovementParticleMode.Restitution);
     }
 
     public void setTerminalVelocity(float vel)
