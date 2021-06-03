@@ -10,14 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 193b57c47c6e0024ebee715bea3d6f17, type: 3}
-  m_Name: DownWDragdown
+  m_Name: DownWReverse
   m_EditorClassIdentifier: 
-  AttackDamage: 1
-  Knockback: 33
-  KnockbackScale: 0.3
-  HitStun: -1
+  AttackDamage: 9
+  Knockback: 29
+  KnockbackScale: 0.45
+  hasStaticHitstun: 0
+  HitStun: 8
   isGrab: 0
-  AngleOfImpact: -361
+  AngleOfImpact: 135
   StatusEffect: 20
   StatusDuration: 0.1
-  HitVisual: 8
+  HitVisual: 10
