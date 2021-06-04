@@ -37,9 +37,12 @@ public class HitboxCollision : MonoBehaviour
     	{
 
 
-    		if(collider.ClosestPoint(gameObject.transform.position) != (Vector2)gameObject.transform.position)
-    		{
 
+
+    		// if(collider.ClosestPoint(gameObject.transform.position) != (Vector2)gameObject.transform.position)
+    		// {
+
+    		// 	UnityEngine.Debug.Log("Sparks");
     		 GraphicalEffectManager.Instance.CreateMovementParticle(MovementParticleMode.CollisionSpark,
 
     		  collider.ClosestPoint(gameObject.GetComponent<Collider2D>().ClosestPoint(collider.transform.position))
@@ -47,7 +50,7 @@ public class HitboxCollision : MonoBehaviour
 
     		  , collider.gameObject.transform.rotation.eulerAngles.z, new Vector2(Facing * 1, 1));
 
-    		}
+    		// }
 
     	}
     }
