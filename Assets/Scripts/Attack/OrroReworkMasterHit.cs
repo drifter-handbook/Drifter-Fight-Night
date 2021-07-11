@@ -62,7 +62,7 @@ public class OrroReworkMasterHit : MasterHit
     {
         if(!isHost)return;
 
-        movement.spawnJuiceParticle(transform.position,MovementParticleMode.Orro_Page);
+        movement.spawnJuiceParticle(transform.position + new Vector3(0,1,0),MovementParticleMode.Orro_Page);
     }
 
     //Bean!

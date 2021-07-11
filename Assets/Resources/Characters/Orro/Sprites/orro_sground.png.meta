@@ -44,6 +44,9 @@ TextureImporter:
   - first:
       213: 8629596291811741128
     second: orro_sground_13
+  - first:
+      213: -9086374946736892100
+    second: orro_sground_0
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -129,33 +132,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: orro_sground_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 320
-        height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d4356b7f6ed4cad30800000000000000
-      internalID: 4444012586701574989
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: orro_sground_1
       rect:
         serializedVersion: 2
-        x: 320
+        x: 64
         y: 0
-        width: 320
+        width: 64
         height: 64
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -174,9 +156,9 @@ TextureImporter:
       name: orro_sground_2
       rect:
         serializedVersion: 2
-        x: 640
+        x: 128
         y: 0
-        width: 320
+        width: 64
         height: 64
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -195,9 +177,9 @@ TextureImporter:
       name: orro_sground_3
       rect:
         serializedVersion: 2
-        x: 960
+        x: 192
         y: 0
-        width: 320
+        width: 64
         height: 64
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -216,9 +198,9 @@ TextureImporter:
       name: orro_sground_4
       rect:
         serializedVersion: 2
-        x: 1280
+        x: 256
         y: 0
-        width: 320
+        width: 64
         height: 64
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -234,12 +216,12 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: orro_sground_5
+      name: orro_sground_0
       rect:
         serializedVersion: 2
-        x: 1600
+        x: 0
         y: 0
-        width: 320
+        width: 64
         height: 64
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -248,176 +230,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0cf7cdd19a02b1890800000000000000
-      internalID: -7486354044850765888
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: orro_sground_6
-      rect:
-        serializedVersion: 2
-        x: 1920
-        y: 0
-        width: 320
-        height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 1ea06e3f3b85fdd10800000000000000
-      internalID: 2152536676820716257
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: orro_sground_7
-      rect:
-        serializedVersion: 2
-        x: 2240
-        y: 0
-        width: 320
-        height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 079f2a1c25049cea0800000000000000
-      internalID: -5852075516611069584
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: orro_sground_8
-      rect:
-        serializedVersion: 2
-        x: 2560
-        y: 0
-        width: 320
-        height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c6cfb3c1200e21ed0800000000000000
-      internalID: -2444645348040508308
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: orro_sground_9
-      rect:
-        serializedVersion: 2
-        x: 2880
-        y: 0
-        width: 320
-        height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7d50b10ebeab19770800000000000000
-      internalID: 8615873084376417751
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: orro_sground_10
-      rect:
-        serializedVersion: 2
-        x: 3200
-        y: 0
-        width: 320
-        height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e0eff7d9c5bfedf10800000000000000
-      internalID: 2296549235203505678
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: orro_sground_11
-      rect:
-        serializedVersion: 2
-        x: 3520
-        y: 0
-        width: 320
-        height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b8cbdc537267a9fd0800000000000000
-      internalID: -2334423546059703157
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: orro_sground_12
-      rect:
-        serializedVersion: 2
-        x: 3840
-        y: 0
-        width: 320
-        height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 5f3d56c7fa8e98f10800000000000000
-      internalID: 2272603327389094901
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: orro_sground_13
-      rect:
-        serializedVersion: 2
-        x: 4160
-        y: 0
-        width: 320
-        height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8cd87781b1c72c770800000000000000
-      internalID: 8629596291811741128
+      spriteID: c371dbba026b6e180800000000000000
+      internalID: -9086374946736892100
       vertices: []
       indices: 
       edges: []
