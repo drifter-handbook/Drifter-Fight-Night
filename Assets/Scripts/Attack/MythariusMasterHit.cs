@@ -102,8 +102,7 @@ public class MythariusMasterHit : MasterHit
 
         sacredFlameDetector.gameObject.SetActive(false);
 
-        if(projectile == PROJECTILE_TYPE.pkmeteor) wildcard.GetComponent<MultihitZoneProjectile>().attacks = attacks;
-        else if(projectile == PROJECTILE_TYPE.bird && facing == -1) wildcard.GetComponent<SyncAnimatorStateHost>().SetState("birb_Reverse");
+        if(projectile == PROJECTILE_TYPE.bird && facing == -1) wildcard.GetComponent<SyncAnimatorStateHost>().SetState("birb_Reverse");
 
         wildcard.GetComponent<Rigidbody2D>().velocity = velocity;
         wildcard.transform.localScale = new Vector3( wildcard.transform.localScale.x * facing,wildcard.transform.localScale.y);
@@ -151,8 +150,6 @@ public class MythariusMasterHit : MasterHit
         
         Empowered = true;
         drifter.SetCharge(4);
-
-        slowfield.GetComponent<MultihitZoneProjectile>().attacks = attacks;
     }
 
     public void fightOrFlight()

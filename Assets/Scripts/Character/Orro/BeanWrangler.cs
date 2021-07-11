@@ -15,8 +15,9 @@ public class BeanWrangler : MonoBehaviour
     GameObject Orro;
     BeanState targetPos;
     Rigidbody2D rb;
-    float beanUpdateTimer = 0f;
-    float timeSinceState = 0f;
+    bool following = true;
+    float beancountdown = 1f;
+    bool canAct = true;
 
     Queue<BeanState> states = new Queue<BeanState>();
 
@@ -51,80 +52,95 @@ public class BeanWrangler : MonoBehaviour
 
         if(!GameController.Instance.IsHost)return;
 
-        if(states.Count == 0 && timeSinceState >= 5f && beanUpdateTimer >=0) Destroy(this.gameObject);
-
-        timeSinceState += Time.deltaTime;
-        if(beanUpdateTimer >= 0) beanUpdateTimer += Time.deltaTime;
-
-        if(beanUpdateTimer >= .3f && !(beanUpdateTimer < 0))
+        if(states.Count > 0)
         {
-            if(states.Count >0){
-                targetPos = states.Dequeue();
+
+            targetPos = states.Dequeue();
+
+            if(canAct)
+                facing = targetPos.Facing;
+
+            if(following && canAct)
+            {
+                
+                rb.position =  Vector3.Lerp(rb.position,targetPos.Pos,beancountdown *.15f);
+
+                if(beancountdown < 1f)
+                {
+                    beancountdown += Time.deltaTime;
+                    transform.localScale = new Vector3((targetPos.Pos.x > rb.position.x ? 1f : -1f) * Mathf.Abs(transform.localScale.x),
+                        transform.localScale.y, transform.localScale.z); 
+                }
+                else
+                {
+                    transform.localScale = new Vector3(targetPos.Facing * Mathf.Abs(transform.localScale.x),
+                        transform.localScale.y, transform.localScale.z); 
+                }
             }
-            beanUpdateTimer = 1f;
+        
         }
-
-        rb.position =  Vector3.Lerp(rb.position,targetPos.Pos,.1f);
-
-        facing = targetPos.Facing;
-
-        transform.localScale = new Vector3(targetPos.Facing * Mathf.Abs(transform.localScale.x),
-            transform.localScale.y, transform.localScale.z);
     }
 
 
-    public void addBeanState(Vector3 pos,int facing)
+    public void addBeanState(Vector3 pos,int facingDir)
     {
         if(!GameController.Instance.IsHost)return;
-        timeSinceState =  0;
-        states.Enqueue(new BeanState(pos,facing));
+        states.Enqueue(new BeanState(pos,facingDir));
     }
 
 
-    public void recallBean(Vector3 pos,int facing)
+    public void recallBean(Vector3 pos,int facingDir)
     {
         if(!GameController.Instance.IsHost)return;
         states.Clear();
-        targetPos = new BeanState(pos, facing);
-
-        beanUpdateTimer = 0f;
+        beancountdown = 0f;
+        targetPos = new BeanState(pos, facingDir);
+        following = true;
     }
 
-    public void setBean()
+    public void setBean(float speed)
     {
         if(!GameController.Instance.IsHost)return;
         states.Clear();
-        beanUpdateTimer = -1f;
+        following = false;
+        if(speed >0)
+            rb.velocity = new Vector3(facing * speed,0,0);
     }
 
-    public void beanSpit()
+    public void bean_ground_Neutral()
     {
         if(!GameController.Instance.IsHost)return;
-        Vector3 flip = new Vector3(facing *8,8,0f);
-        Vector3 pos = new Vector3(facing *.7f,3.5f,1f);
-        GameObject spit = GameController.Instance.host.CreateNetworkObject("BeanSpit", transform.position + pos, transform.rotation);
+        Vector3 flip = new Vector3(facing *10,10,0f);
+        GameObject spit = GameController.Instance.host.CreateNetworkObject("SpaceRazor", transform.position , transform.rotation);
         spit.transform.localScale = flip;
         attacks.SetMultiHitAttackID();
-        spit.GetComponent<Rigidbody2D>().velocity = new Vector2(facing * 30 - rb.velocity.x, 0);
         foreach (HitboxCollision hitbox in spit.GetComponentsInChildren<HitboxCollision>(true))
         {
                 hitbox.parent = Orro;
                 hitbox.AttackID = attacks.AttackID;
                 hitbox.AttackType = attacks.AttackType;
                 hitbox.Active = true;
-                 hitbox.Facing = facing;
+                hitbox.Facing = facing;
         }
     }
 
     public void returnToNeutral()
     {
         if(!GameController.Instance.IsHost)return;
-        anim.SetState("BEAN_IDLE");
+        states.Clear();
+        canAct = true;
+        beancountdown = 0f;
+        anim.SetState("Bean_Idle");
     }
 
-    public void playeState(String stateName)
+    public void playState(String stateName)
     {
-        if(!GameController.Instance.IsHost)return;
+        if(!GameController.Instance.IsHost || !canAct)return;
+
+        canAct = false;
+
+        transform.localScale = new Vector3(targetPos.Facing * Mathf.Abs(transform.localScale.x),
+                    transform.localScale.y, transform.localScale.z); 
         anim.SetState(stateName);
     }
  

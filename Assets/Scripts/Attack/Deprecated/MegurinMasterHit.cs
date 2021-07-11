@@ -128,7 +128,6 @@ public class MegurinMasterHit : MasterHit
         }
 
         if (activeStorm)Destroy(activeStorm);
-        MegurinStorm.GetComponent<MultihitZoneProjectile>().attacks = attacks;
         activeStorm = MegurinStorm;
         
     }

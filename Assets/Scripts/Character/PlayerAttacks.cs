@@ -108,7 +108,17 @@ public class PlayerAttacks : MonoBehaviour
         // get input
         bool lightPressed = !drifter.prevInput.Light && drifter.input.Light;
         bool specialPressed = !drifter.prevInput.Special && drifter.input.Special;
-        bool grabPressed = !drifter.prevInput.Grab && drifter.input.Grab;
+
+
+        bool grabPressed = 
+
+        !drifter.prevInput.Light && drifter.input.Light && drifter.prevInput.Special ||
+        !drifter.prevInput.Special && drifter.input.Special && drifter.prevInput.Light ||
+        !drifter.prevInput.Light && drifter.input.Light && !drifter.prevInput.Special && drifter.input.Special ||
+        !drifter.prevInput.Grab && drifter.input.Grab;;
+
+
+
         bool canAct = !status.HasStunEffect() && !drifter.guarding && !ledgeHanging;
         bool canSpecial = !status.HasStunEffect() && !ledgeHanging;
 

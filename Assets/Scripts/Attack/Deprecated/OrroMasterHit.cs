@@ -12,12 +12,21 @@ public class OrroMasterHit : MasterHit
     void Start()
     {
         spawnBean();
-        Empowered = true;
     }
 
     void Update()
     {
         if(!isHost)return;
+        if(status.HasStatusEffect(PlayerStatusEffect.DEAD))
+        {
+            Destroy(beanObject);
+            beanObject = null;
+            Empowered = true;
+        }
+        else if(beanObject == null)
+        {
+            spawnBean();
+        }
 
         if(Empowered)bean.addBeanState(rb.position - new Vector2(-2f * movement.Facing, 2.5f), movement.Facing);
     }
@@ -109,31 +118,32 @@ public class OrroMasterHit : MasterHit
     {
         if(!isHost)return;
         refreshBeanHitboxes();
-        bean.playeState("BEAN_SIDE");
+        bean.playState("BEAN_SIDE");
     }
     public void BeanDown()
     {
         if(!isHost)return;
         refreshBeanHitboxes();
-        bean.playeState("BEAN_DOWN");
+        bean.playState("BEAN_DOWN");
     }
     public void BeanUp()
     {
         if(!isHost)return;
         refreshBeanHitboxes();
-        bean.playeState("BEAN_UP");
+        bean.playState("BEAN_UP");
     }
     public void BeanNeutral()
     {
         if(!isHost)return;
         refreshBeanHitboxes();
-        bean.playeState("BEAN_NEUTRAL");
+        bean.playState("BEAN_NEUTRAL");
     }
 
     public void spawnBean()
     {
         if(!isHost)return;
         facing = movement.Facing;
+        Empowered = true;
 
         beanObject = host.CreateNetworkObject("Bean", rb.position - new Vector2(-2f * movement.Facing, 4f), transform.rotation);
         foreach (HitboxCollision hitbox in beanObject.GetComponentsInChildren<HitboxCollision>(true))
@@ -162,15 +172,15 @@ public class OrroMasterHit : MasterHit
         }
     }
 
-    public void BeanRecall()
-    {
-        if(!isHost)return;
+    // public void BeanRecall()
+    // {
+    //     if(!isHost)return;
 
-        if(Empowered)bean.setBean();
-        else bean.recallBean(rb.position - new Vector2(-2f * movement.Facing,4f),movement.Facing);
-        Empowered =!Empowered;
+    //     if(Empowered)bean.setBean();
+    //     else bean.recallBean(rb.position - new Vector2(-2f * movement.Facing,4f),movement.Facing);
+    //     Empowered =!Empowered;
 
-    }
+    // }
 
     //Inhereted Roll Methods
     public override void roll()

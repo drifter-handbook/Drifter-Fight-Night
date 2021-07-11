@@ -5,7 +5,34 @@ using UnityEngine;
 public class OrroReworkMasterHit : MasterHit
 {
 
+
+    BeanWrangler bean;
+    GameObject beanObject;
     float neutralSpecialCharge = 0;
+
+
+    void Start()
+    {
+        spawnBean();
+        Empowered = false;
+    }
+
+    void Update()
+    {
+        if(!isHost)return;
+        if(status.HasStatusEffect(PlayerStatusEffect.DEAD))
+        {
+            Destroy(beanObject);
+            beanObject = null;
+            Empowered = false;
+        }
+        else if(beanObject == null)
+        {
+            spawnBean();
+        }
+        else bean.addBeanState(rb.position - new Vector2(-1f * movement.Facing, 3f), movement.Facing);
+    }
+
 
     //Roll Methods
 
@@ -16,7 +43,6 @@ public class OrroReworkMasterHit : MasterHit
         if(neutralSpecialCharge > 8)
         {
             playState("W_Neutral_Fire");
-            neutralSpecialCharge = 0;
         }
         switch(chargeAttackSingleUse("W_Neutral_Fire"))
         {
@@ -32,6 +58,72 @@ public class OrroReworkMasterHit : MasterHit
         }
     }
 
+
+
+    //Bean!
+
+    public void BeanSide()
+    {
+        if(!isHost)return;
+        refreshBeanHitboxes();
+        bean.playState("Bean_Side");
+    }
+    public void BeanDown()
+    {
+        if(!isHost)return;
+        refreshBeanHitboxes();
+        bean.playState("Bean_Down");
+    }
+    public void BeanUp()
+    {
+        if(!isHost)return;
+        refreshBeanHitboxes();
+        bean.playState("Bean_Up");
+    }
+    public void BeanNeutral()
+    {
+        if(!isHost)return;
+        refreshBeanHitboxes();
+        bean.playState("Bean_Neutral");
+    }
+
+    public void spawnBean()
+    {
+        if(!isHost)return;
+        facing = movement.Facing;
+        Empowered = false;
+
+        beanObject = host.CreateNetworkObject("Bean", transform.position - new Vector3(-1f * movement.Facing, 1f), transform.rotation);
+        foreach (HitboxCollision hitbox in beanObject.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+            hitbox.Facing = facing;
+        }
+
+        bean = beanObject.GetComponent<BeanWrangler>();
+        bean.facing = facing;
+
+    }
+
+    private void refreshBeanHitboxes(){
+        if(!isHost)return;
+
+        facing = movement.Facing;
+        bean.facing = facing;
+
+        foreach (HitboxCollision hitbox in beanObject.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = DrifterAttackType.W_Neutral;
+            hitbox.Active = true;
+            hitbox.Facing = bean.facing;
+        }
+    }
+
     public new void clearMasterhitVars()
     {
         base.clearMasterhitVars();
@@ -41,7 +133,13 @@ public class OrroReworkMasterHit : MasterHit
 
     public void WNeutralFire()
     {
+        if(!isHost)return;
+
+        if(!Empowered)bean.setBean(neutralSpecialCharge * 4f  + 8f);
+        else bean.recallBean(rb.position - new Vector2(-2f * movement.Facing,4f),movement.Facing);
+        Empowered =!Empowered;
         neutralSpecialCharge = 0;
+
     }
 
 

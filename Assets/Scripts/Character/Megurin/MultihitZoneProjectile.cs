@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class MultihitZoneProjectile : MonoBehaviour
 {
-    public PlayerAttacks attacks;
     // Start is called before the first frame update
 
     public void multihit(){
