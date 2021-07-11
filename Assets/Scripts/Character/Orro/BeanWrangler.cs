@@ -9,6 +9,7 @@ public class BeanWrangler : MonoBehaviour
     
 
     public int facing = 1;
+    public int color = 0;
 
     SyncAnimatorStateHost anim;
     PlayerAttacks attacks;
@@ -67,7 +68,7 @@ public class BeanWrangler : MonoBehaviour
 
                 if(beancountdown < 1f)
                 {
-                    beancountdown += Time.deltaTime;
+                    beancountdown += Time.deltaTime/2f;
                     transform.localScale = new Vector3((targetPos.Pos.x > rb.position.x ? 1f : -1f) * Mathf.Abs(transform.localScale.x),
                         transform.localScale.y, transform.localScale.z); 
                 }
@@ -111,10 +112,10 @@ public class BeanWrangler : MonoBehaviour
     {
         if(!GameController.Instance.IsHost)return;
         Vector3 flip = new Vector3(facing *10,10,0f);
-        GameObject spit = GameController.Instance.host.CreateNetworkObject("SpaceRazor", transform.position , transform.rotation);
-        spit.transform.localScale = flip;
+        GameObject razor = GameController.Instance.host.CreateNetworkObject("SpaceRazor", transform.position , transform.rotation);
+        razor.transform.localScale = flip;
         attacks.SetMultiHitAttackID();
-        foreach (HitboxCollision hitbox in spit.GetComponentsInChildren<HitboxCollision>(true))
+        foreach (HitboxCollision hitbox in razor.GetComponentsInChildren<HitboxCollision>(true))
         {
                 hitbox.parent = Orro;
                 hitbox.AttackID = attacks.AttackID;
@@ -122,6 +123,8 @@ public class BeanWrangler : MonoBehaviour
                 hitbox.Active = true;
                 hitbox.Facing = facing;
         }
+
+        razor.GetComponent<SyncProjectileColorDataHost>().setColor(color);
     }
 
     public void returnToNeutral()

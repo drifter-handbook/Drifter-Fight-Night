@@ -105,6 +105,8 @@ public class OrroReworkMasterHit : MasterHit
 
         bean = beanObject.GetComponent<BeanWrangler>();
         bean.facing = facing;
+        bean.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
+        bean.color = drifter.GetColor();
 
     }
 
