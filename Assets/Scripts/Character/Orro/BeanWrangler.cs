@@ -11,6 +11,8 @@ public class BeanWrangler : MonoBehaviour
     public int facing = 1;
     public int color = 0;
 
+    public float returnSpeed = 15f;
+
     SyncAnimatorStateHost anim;
     PlayerAttacks attacks;
     GameObject Orro;
@@ -64,18 +66,20 @@ public class BeanWrangler : MonoBehaviour
             if(following && canAct)
             {
                 
-                rb.position =  Vector3.Lerp(rb.position,targetPos.Pos,beancountdown *.15f);
-
-                if(beancountdown < 1f)
+                
+                if(Vector3.Distance(rb.position,targetPos.Pos) > 2.8f)
                 {
-                    beancountdown += Time.deltaTime/2f;
+                    rb.position =  Vector3.MoveTowards(rb.position,targetPos.Pos,returnSpeed * Time.deltaTime);
                     transform.localScale = new Vector3((targetPos.Pos.x > rb.position.x ? 1f : -1f) * Mathf.Abs(transform.localScale.x),
                         transform.localScale.y, transform.localScale.z); 
+                        beancountdown = .5f;
                 }
                 else
                 {
+                    rb.position =  Vector3.Lerp(rb.position,targetPos.Pos,.25f * beancountdown);
                     transform.localScale = new Vector3(targetPos.Facing * Mathf.Abs(transform.localScale.x),
                         transform.localScale.y, transform.localScale.z); 
+                    beancountdown += 5f * Time.deltaTime;
                 }
             }
         
@@ -94,7 +98,6 @@ public class BeanWrangler : MonoBehaviour
     {
         if(!GameController.Instance.IsHost)return;
         states.Clear();
-        beancountdown = 0f;
         targetPos = new BeanState(pos, facingDir);
         following = true;
     }
@@ -132,7 +135,6 @@ public class BeanWrangler : MonoBehaviour
         if(!GameController.Instance.IsHost)return;
         states.Clear();
         canAct = true;
-        beancountdown = 0f;
         anim.SetState("Bean_Idle");
     }
 
