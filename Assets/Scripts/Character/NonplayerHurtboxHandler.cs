@@ -84,7 +84,7 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
             GraphicalEffectManager.Instance.CreateHitSparks(hitSparkMode, hitSparkPos, hitSparkAngle, hitSparkScale);
 
 
-            if((hitbox.gameObject.tag != "Projectile" || hitSparkMode == HitSpark.CRIT)) attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(hitSparkMode == HitSpark.CRIT)? .6f : (attackData.AttackDamage  >=2.5f ? .14f : Mathf.Max(HitstunDuration*.22f,.19f)));
+            if((hitbox.gameObject.tag != "Projectile" || hitSparkMode == HitSpark.CRIT)) attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(hitSparkMode == HitSpark.CRIT)? .6f : (attackData.AttackDamage  <=2.5f ? .14f : Mathf.Max(HitstunDuration*.22f,.19f)));
 
             
             if(hitSparkMode == HitSpark.CRIT)StartCoroutine(Shake.zoomEffect(.6f,Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),false));

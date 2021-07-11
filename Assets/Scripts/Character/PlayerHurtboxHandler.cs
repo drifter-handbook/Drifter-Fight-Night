@@ -229,7 +229,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 
                 
                 //apply defender hitpause
-                if(HitstunDuration>0 && attackData.StatusEffect != PlayerStatusEffect.HITPAUSE )status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(attackData.HitVisual == HitSpark.CRIT || status.HasStatusEffect(PlayerStatusEffect.ARMOUR)) ? .6f:(damageDealt >=2.5f ? .15f :Mathf.Max(HitstunDuration*.25f ,.25f)));
+                if(HitstunDuration>0 && attackData.StatusEffect != PlayerStatusEffect.HITPAUSE )status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(attackData.HitVisual == HitSpark.CRIT || status.HasStatusEffect(PlayerStatusEffect.ARMOUR)) ? .6f:(damageDealt <=2.5f ? .15f :Mathf.Max(HitstunDuration*.25f ,.25f)));
                 StartCoroutine(drifter.GetComponentInChildren<GameObjectShake>().Shake(attackData.StatusEffect != PlayerStatusEffect.CRINGE?HitstunDuration*.2f:attackData.StatusDuration* framerateScalar,attackData.StatusEffect != PlayerStatusEffect.CRINGE?1.5f:2f));
 
                 returnCode = 0;             
@@ -298,7 +298,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             else hitSparkMode = attackData.HitVisual;
 
             //apply attacker hitpause
-            if((hitbox.gameObject.tag != "Projectile" || hitSparkMode == HitSpark.CRIT)) attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(hitSparkMode == HitSpark.CRIT || status.HasStatusEffect(PlayerStatusEffect.ARMOUR))? .6f : (damageDealt >=2.5f ? .14f : Mathf.Max(HitstunDuration*.22f,.19f)));
+            if((hitbox.gameObject.tag != "Projectile" || hitSparkMode == HitSpark.CRIT)) attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(hitSparkMode == HitSpark.CRIT || status.HasStatusEffect(PlayerStatusEffect.ARMOUR))? .6f : (damageDealt <=2.5f ? .14f : Mathf.Max(HitstunDuration*.22f,.19f)));
 
             
 
