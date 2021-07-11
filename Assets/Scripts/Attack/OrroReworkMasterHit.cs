@@ -10,7 +10,6 @@ public class OrroReworkMasterHit : MasterHit
     GameObject beanObject;
     float neutralSpecialCharge = 0;
 
-
     void Start()
     {
         spawnBean();
@@ -28,6 +27,7 @@ public class OrroReworkMasterHit : MasterHit
         }
         else if(beanObject == null)
         {
+            
             spawnBean();
         }
         else bean.addBeanState(rb.position - new Vector2(-1f * movement.Facing, 3f), movement.Facing);
@@ -104,6 +104,7 @@ public class OrroReworkMasterHit : MasterHit
         }
 
         bean = beanObject.GetComponent<BeanWrangler>();
+        beanObject.GetComponentInChildren<HurtboxCollision>().owner = drifter.gameObject;
         bean.facing = facing;
         bean.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
         bean.color = drifter.GetColor();

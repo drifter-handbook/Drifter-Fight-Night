@@ -11,24 +11,18 @@ public class PlayerHurtboxHandler : MonoBehaviour
     const float MAX_ATTACK_DURATION = 7f;
 
     // for creating hitsparks
-    NetworkHost host;
-    ScreenShake Shake;
+    protected NetworkHost host;
+    protected ScreenShake Shake;
 
-    static float framerateScalar =.0833333333f;
+    static protected float framerateScalar =.0833333333f;
 
     // Start is called before the first frame update
-    void Start()
+    protected void Start()
     {
         host = GameController.Instance.host;
         Shake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<ScreenShake>();
 
         StartCoroutine(CleanupOldAttacks());
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     public bool CanHit(int attackID)
@@ -44,7 +38,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
     // -1: Hit was registered, but blocked
     // 0: Hit was registered normally
 
-    public int RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, DrifterAttackType attackType, SingleAttackData attackData)
+    public virtual int RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, DrifterAttackType attackType, SingleAttackData attackData)
     {
         //UnityEngine.Debug.Log(attackID);
         // only host processes hits, don't hit ourself, and ignore previously registered attacks
@@ -57,7 +51,10 @@ public class PlayerHurtboxHandler : MonoBehaviour
             // apply hit effects
             hitbox.parent.GetComponent<PlayerAttacks>().Hit(attackType, attackID, hurtbox.parent);
 
+            UnityEngine.Debug.Log("HURTBOX");
+
             Drifter drifter = GetComponent<Drifter>();
+
             PlayerStatus status = drifter.status;
             PlayerStatus attackerStatus = hitbox.parent.GetComponent<PlayerStatus>();
 
@@ -125,7 +122,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
 
             //Calculate knockback magnitude
-            float KB = (float)(((drifter.DamageTaken / 10 + drifter.DamageTaken * damageDealt / 20)
+            float KB = (float)(((drifter.DamageTaken / 10f + drifter.DamageTaken * damageDealt / 20f)
                         * 200 / (GetComponent<PlayerMovement>().Weight + 100) * 1.4 *
                          ((status.HasStatusEffect(PlayerStatusEffect.EXPOSED) || status.HasStatusEffect(PlayerStatusEffect.FEATHERWEIGHT))
                             ?1.5f:1)) * attackData.KnockbackScale + attackData.Knockback);
@@ -347,7 +344,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
         }
     }
 
-    IEnumerator delayHitsparks(Vector3 position, float angle,float damage, float duration)
+    protected IEnumerator delayHitsparks(Vector3 position, float angle,float damage, float duration)
     {
         Vector3 hitSparkPos = position;
         float angleT;
@@ -394,7 +391,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
     }
 
     // Super-armor logic
-    private class AttackEffect
+    protected class AttackEffect
     {
         public Coroutine Effect;
         public float SuperArmor;
@@ -402,7 +399,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
     }
 
     List<AttackEffect> movementEffects = new List<AttackEffect>();
-    private void StartMovementEffect(IEnumerator ef, float superArmor)
+    protected void StartMovementEffect(IEnumerator ef, float superArmor)
     {
         if (ef != null)
         {
@@ -415,7 +412,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
         }
     }
 
-    private bool willCollideWithBlastZone(Rigidbody2D rigidbody, float hitstun)
+    protected bool willCollideWithBlastZone(Rigidbody2D rigidbody, float hitstun)
     {
         float xDel, yDel;
         float xVel, yVel;
@@ -445,7 +442,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
         return false;
     }
 
-    private bool willCollideWithBlastZoneAccurate(Rigidbody2D rigidbody, float hitstun)
+    protected bool willCollideWithBlastZoneAccurate(Rigidbody2D rigidbody, float hitstun)
     {
         float xDel, yDel;
         float xVel, yVel;

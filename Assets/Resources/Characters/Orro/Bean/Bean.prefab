@@ -315,7 +315,8 @@ GameObject:
   - component: {fileID: 6932556643919112318}
   - component: {fileID: 181010217445044660}
   - component: {fileID: 7840110583754241379}
-  m_Layer: 0
+  - component: {fileID: 2631632801527225278}
+  m_Layer: 13
   m_Name: Bean
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -482,6 +483,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   facing: 1
+  color: 0
+  returnSpeed: 15
 --- !u!50 &6932556643919112318
 Rigidbody2D:
   serializedVersion: 4
@@ -527,6 +530,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8275c87f3a6a3b448e6cf19f65e07d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!70 &2631632801527225278
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6901350577488074765}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 6200000, guid: fb13e85e8cd5db74c934ea1d0908ec67, type: 2}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.011980708, y: 0.35194874}
+  m_Size: {x: 0.33915383, y: 0.22999442}
+  m_Direction: 1
 --- !u!1 &8004971842492975437
 GameObject:
   m_ObjectHideFlags: 0
@@ -536,6 +555,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4723959224163194182}
+  - component: {fileID: 5046230654118286962}
+  - component: {fileID: 7228886280565824533}
   m_Layer: 10
   m_Name: Hurtbox
   m_TagString: Untagged
@@ -557,6 +578,35 @@ Transform:
   m_Father: {fileID: 4404541368214913002}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5046230654118286962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8004971842492975437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c303c2a3e41d8ad428934a942403f36f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parent: {fileID: 6901350577488074765}
+--- !u!70 &7228886280565824533
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8004971842492975437}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.01996916, y: 0.3647479}
+  m_Size: {x: 0.31577197, y: 0.19063877}
+  m_Direction: 1
 --- !u!1 &9119273952162545176
 GameObject:
   m_ObjectHideFlags: 0

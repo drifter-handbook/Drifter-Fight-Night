@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class BeanWrangler : MonoBehaviour
+public class BeanWrangler : NonplayerHurtboxHandler
 {
     // Start is called before the first frame update
     
@@ -21,6 +21,7 @@ public class BeanWrangler : MonoBehaviour
     bool following = true;
     float beancountdown = 1f;
     bool canAct = true;
+    bool alive = false;
 
     Queue<BeanState> states = new Queue<BeanState>();
 
@@ -36,10 +37,12 @@ public class BeanWrangler : MonoBehaviour
         public int Facing { get; set;}
     }
 
-    void Start()
+    new void Start()
     {
 
         if(!GameController.Instance.IsHost)return;
+
+        base.Start();
 
         anim = GetComponent<SyncAnimatorStateHost>();
         //Movement Stuff
@@ -55,7 +58,9 @@ public class BeanWrangler : MonoBehaviour
 
         if(!GameController.Instance.IsHost)return;
 
-        if(states.Count > 0)
+        //if(states.Count == 0)Destroy(gameObject);
+
+        if(states.Count > 0 && HitstunDuration <=0)
         {
 
             targetPos = states.Dequeue();
@@ -65,8 +70,27 @@ public class BeanWrangler : MonoBehaviour
 
             if(following && canAct)
             {
-                
-                
+
+                if(!alive)
+                {
+                    percentage -= Time.deltaTime;
+                    if(percentage <= 0)
+                    {
+                        percentage = 0;
+                        alive = true;
+
+                        //play spawn animation
+                    }
+                }
+
+                //Return to orro
+                if(Vector3.Distance(rb.position,targetPos.Pos) > 100f)
+                {
+                    rb.position = targetPos.Pos;
+                    transform.localScale = new Vector3(targetPos.Facing * Mathf.Abs(transform.localScale.x),
+                        transform.localScale.y, transform.localScale.z);
+                }
+
                 if(Vector3.Distance(rb.position,targetPos.Pos) > 2.8f)
                 {
                     rb.position =  Vector3.MoveTowards(rb.position,targetPos.Pos,returnSpeed * Time.deltaTime);
@@ -74,15 +98,24 @@ public class BeanWrangler : MonoBehaviour
                         transform.localScale.y, transform.localScale.z); 
                         beancountdown = .5f;
                 }
+                //Follow orro while attatched
                 else
                 {
+                    //Tick down beans damage when he is attatched to orro
+                    percentage -= Time.deltaTime;
+                    //Follow Logic
                     rb.position =  Vector3.Lerp(rb.position,targetPos.Pos,.25f * beancountdown);
                     transform.localScale = new Vector3(targetPos.Facing * Mathf.Abs(transform.localScale.x),
                         transform.localScale.y, transform.localScale.z); 
-                    beancountdown += 5f * Time.deltaTime;
+                    if(beancountdown < 1f)beancountdown += 2.5f * Time.deltaTime;
                 }
             }
-        
+
+        }
+        else if(HitstunDuration >0)
+        {
+            states.Clear();
+            HitstunDuration -= Time.deltaTime;
         }
     }
 
@@ -138,9 +171,18 @@ public class BeanWrangler : MonoBehaviour
         anim.SetState("Bean_Idle");
     }
 
+
+    //Use this at the end of beans death animation
+    public void setCanAct()
+    {
+        if(!GameController.Instance.IsHost)return;
+        states.Clear();
+        canAct = true;
+    }
+
     public void playState(String stateName)
     {
-        if(!GameController.Instance.IsHost || !canAct)return;
+        if(!GameController.Instance.IsHost || !canAct || !alive)return;
 
         canAct = false;
 
@@ -153,5 +195,21 @@ public class BeanWrangler : MonoBehaviour
     {
         if(!GameController.Instance.IsHost)return;
         attacks.SetMultiHitAttackID();    
+    }
+
+    public override int RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, DrifterAttackType attackType, SingleAttackData attackData)
+    {
+
+        int returnCode =  base.RegisterAttackHit(hitbox,hurtbox,attackID,attackType,attackData);
+
+        if(percentage > 40f)
+        {
+            alive = false;
+            canAct = false;
+            //Play bean death animation
+        }
+
+        return returnCode;
+
     }
 }

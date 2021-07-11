@@ -36,9 +36,6 @@ public class HitboxCollision : MonoBehaviour
     	if(collider.gameObject.tag == "Ground")
     	{
 
-
-
-
     		// if(collider.ClosestPoint(gameObject.transform.position) != (Vector2)gameObject.transform.position)
     		// {
 
