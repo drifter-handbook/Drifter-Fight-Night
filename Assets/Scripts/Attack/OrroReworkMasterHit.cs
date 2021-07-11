@@ -58,10 +58,14 @@ public class OrroReworkMasterHit : MasterHit
         }
     }
 
+    public void page()
+    {
+        if(!isHost)return;
 
+        movement.spawnJuiceParticle(transform.position,MovementParticleMode.Orro_Page);
+    }
 
     //Bean!
-
     public void BeanSide()
     {
         if(!isHost)return;

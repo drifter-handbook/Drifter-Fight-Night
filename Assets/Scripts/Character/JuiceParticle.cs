@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum MovementParticleMode
 {
-    Hidden, SmokeTrail, Land, Jump, DoubleJump, KickOff, Mash, Restitution, DarkRestitution, Heal, WalkDust, CollisionSpark, Parry, Tech, Dash_Ring, Dash_Cloud
+    Hidden, SmokeTrail, Land, Jump, DoubleJump, KickOff, Mash, Restitution, DarkRestitution, Heal, WalkDust, CollisionSpark, Parry, Tech, Dash_Ring, Dash_Cloud, Orro_Page
 }
 
 public class JuiceParticle : MonoBehaviour
