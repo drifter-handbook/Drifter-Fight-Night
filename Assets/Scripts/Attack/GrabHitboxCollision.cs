@@ -32,7 +32,7 @@ public class GrabHitboxCollision : HitboxCollision
             //string player = playerType.NetworkType;
             if(OverrideData != null){
                 int hitResult = hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, OverrideData);
-                if(hitResult >=0)
+                if(hitResult == 0)
                 {
                 	victim = hurtbox.parent;
                     if(SuccessState != ""){

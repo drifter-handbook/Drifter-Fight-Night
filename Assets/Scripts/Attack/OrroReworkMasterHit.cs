@@ -21,7 +21,7 @@ public class OrroReworkMasterHit : MasterHit
         if(!isHost)return;
         if(status.HasStatusEffect(PlayerStatusEffect.DEAD))
         {
-            Destroy(beanObject);
+            bean.die();
             beanObject = null;
             Empowered = false;
         }

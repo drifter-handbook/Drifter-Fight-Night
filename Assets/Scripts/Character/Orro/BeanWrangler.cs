@@ -20,8 +20,8 @@ public class BeanWrangler : NonplayerHurtboxHandler
     Rigidbody2D rb;
     bool following = true;
     float beancountdown = 1f;
-    bool canAct = true;
-    bool alive = false;
+    public bool canAct = false;
+    public bool alive = false;
 
     Queue<BeanState> states = new Queue<BeanState>();
 
@@ -73,7 +73,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
 
                 if(!alive)
                 {
-                    percentage -= Time.deltaTime;
+                    percentage -= 4f * Time.deltaTime;
                     if(percentage <= 0)
                     {
                         percentage = 0;
@@ -102,7 +102,17 @@ public class BeanWrangler : NonplayerHurtboxHandler
                 else
                 {
                     //Tick down beans damage when he is attatched to orro
-                    percentage -= Time.deltaTime;
+                    if(percentage > 0)percentage -= 2f * Time.deltaTime;
+                    if(!alive && percentage <= 0)
+                    {
+                        anim.SetState("Bean_Spawn");
+                        canAct = false;
+                        percentage = 0;
+                        alive = true;
+                        
+
+                    }
+
                     //Follow Logic
                     rb.position =  Vector3.Lerp(rb.position,targetPos.Pos,.25f * beancountdown);
                     transform.localScale = new Vector3(targetPos.Facing * Mathf.Abs(transform.localScale.x),
@@ -135,11 +145,22 @@ public class BeanWrangler : NonplayerHurtboxHandler
         following = true;
     }
 
+    public void die()
+    {
+        if(!GameController.Instance.IsHost)return;
+        canAct = false;
+        alive = false;
+        rb.velocity = Vector3.zero;
+        anim.SetState("Bean_True_Death");
+    }
+
     public void setBean(float speed)
     {
         if(!GameController.Instance.IsHost)return;
         states.Clear();
         following = false;
+        transform.localScale = new Vector3(facing * Mathf.Abs(transform.localScale.x),
+                        transform.localScale.y, transform.localScale.z); 
         if(speed >0)
             rb.velocity = new Vector3(facing * speed,0,0);
     }
@@ -177,6 +198,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
     {
         if(!GameController.Instance.IsHost)return;
         states.Clear();
+        rb.position = targetPos.Pos;
         canAct = true;
     }
 
@@ -206,6 +228,9 @@ public class BeanWrangler : NonplayerHurtboxHandler
         {
             alive = false;
             canAct = false;
+            anim.SetState("Bean_Death");
+            HitstunDuration = 0f;
+            rb.velocity = Vector3.zero;
             //Play bean death animation
         }
 

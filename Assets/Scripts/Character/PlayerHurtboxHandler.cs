@@ -37,6 +37,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
     // -2: Hit was registerted, but Parried, dealing no damage
     // -1: Hit was registered, but blocked
     // 0: Hit was registered normally
+    // 1: hit was against a non-player object
 
     public virtual int RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, DrifterAttackType attackType, SingleAttackData attackData)
     {
@@ -50,8 +51,6 @@ public class PlayerHurtboxHandler : MonoBehaviour
             oldAttacks[attackID] = Time.time;
             // apply hit effects
             hitbox.parent.GetComponent<PlayerAttacks>().Hit(attackType, attackID, hurtbox.parent);
-
-            UnityEngine.Debug.Log("HURTBOX");
 
             Drifter drifter = GetComponent<Drifter>();
 
@@ -144,7 +143,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
             bool guardbroken = false;
 
 
-            Vector3 hitSparkPos = Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f);
+            Vector3 hitSparkPos = hurtbox.capsule.ClosestPoint(hitbox.parent.transform.position);
+            //Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f);
             HitSpark hitSparkMode = HitSpark.POKE;
             Vector2 hitSparkScale =  new Vector2(facingDir *10f, 10f);
 
@@ -307,7 +307,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
         
             if (drifter != null && willCollideWithBlastZone(GetComponent<Rigidbody2D>(), HitstunDuration))
             {
-                hitSparkPos = Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f);
+                //hitSparkPos = Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f);
                 GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.CRIT, hitSparkPos, 0, new Vector2(facingDir * 10f, 10f));
 
                 if(drifter.Stocks <= 1 && willCollideWithBlastZoneAccurate(GetComponent<Rigidbody2D>(), HitstunDuration))
@@ -317,7 +317,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             if(hitSparkMode == HitSpark.CRIT)StartCoroutine(Shake.zoomEffect(.6f,Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),false));
 
             // Ancillary Hitsparks
-            if (drifter != null && damageDealt >0f) StartCoroutine(delayHitsparks(Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),attackData.AngleOfImpact,damageDealt,HitstunDuration *.25f));
+            if (drifter != null && damageDealt >0f) StartCoroutine(delayHitsparks(hitSparkPos,attackData.AngleOfImpact,damageDealt,HitstunDuration *.25f));
         }
         return returnCode;
     }

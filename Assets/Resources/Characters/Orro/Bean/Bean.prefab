@@ -316,6 +316,7 @@ GameObject:
   - component: {fileID: 181010217445044660}
   - component: {fileID: 7840110583754241379}
   - component: {fileID: 2631632801527225278}
+  - component: {fileID: 3018915534738271191}
   m_Layer: 13
   m_Name: Bean
   m_TagString: Untagged
@@ -482,9 +483,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10de8fac05ab59a479e63e3fc8691404, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  percentage: 0
   facing: 1
   color: 0
   returnSpeed: 15
+  canAct: 1
+  alive: 0
 --- !u!50 &6932556643919112318
 Rigidbody2D:
   serializedVersion: 4
@@ -546,6 +550,19 @@ CapsuleCollider2D:
   m_Offset: {x: -0.011980708, y: 0.35194874}
   m_Size: {x: 0.33915383, y: 0.22999442}
   m_Direction: 1
+--- !u!114 &3018915534738271191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6901350577488074765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1ef945a1776594438c7a9223e2d7bb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: -1
 --- !u!1 &8004971842492975437
 GameObject:
   m_ObjectHideFlags: 0
@@ -591,6 +608,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 6901350577488074765}
+  owner: {fileID: 0}
 --- !u!70 &7228886280565824533
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

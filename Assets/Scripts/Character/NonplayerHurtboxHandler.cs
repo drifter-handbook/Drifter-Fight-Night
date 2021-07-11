@@ -22,9 +22,6 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
 
     	    PlayerStatus attackerStatus = hitbox.parent.GetComponent<PlayerStatus>();
 
-
-            UnityEngine.Debug.Log("BEAN!");
-
     	   //Calculate the direction for knockback
             float facingDir = Mathf.Sign(hitbox.Facing) == 0 ? 1 : Mathf.Sign(hitbox.Facing);
 
@@ -59,7 +56,9 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
             HitstunDuration = (attackData.HitStun>=0 || attackData.hasStaticHitstun)?attackData.HitStun * framerateScalar:(KB*.006f + .1f);
 
 
-            Vector3 hitSparkPos = Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f);
+            Vector3 hitSparkPos = hurtbox.capsule.ClosestPoint(hitbox.parent.transform.position);
+
+            //Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f);
             HitSpark hitSparkMode = attackData.HitVisual;
             Vector2 hitSparkScale =  new Vector2(facingDir *10f, 10f);
 
@@ -81,6 +80,9 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
                 GetComponent<Rigidbody2D>().velocity = hitbox.parent.GetComponent<Rigidbody2D>().velocity * (1 + attackData.KnockbackScale);
             }
 
+            float hitSparkAngle = facingDir * ((Mathf.Abs(attackData.AngleOfImpact) > 65f && attackData.HitVisual != HitSpark.SPIKE) ? Mathf.Sign(attackData.AngleOfImpact) * 90f : 0f);
+            GraphicalEffectManager.Instance.CreateHitSparks(hitSparkMode, hitSparkPos, hitSparkAngle, hitSparkScale);
+
 
             if((hitbox.gameObject.tag != "Projectile" || hitSparkMode == HitSpark.CRIT)) attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(hitSparkMode == HitSpark.CRIT)? .6f : (attackData.AttackDamage  >=2.5f ? .14f : Mathf.Max(HitstunDuration*.22f,.19f)));
 
@@ -88,11 +90,11 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
             if(hitSparkMode == HitSpark.CRIT)StartCoroutine(Shake.zoomEffect(.6f,Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),false));
 
             // Ancillary Hitsparks
-            if (attackData.AttackDamage >0f) StartCoroutine(delayHitsparks(Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),attackData.AngleOfImpact,attackData.AttackDamage ,HitstunDuration *.25f));
+            if (attackData.AttackDamage >0f) StartCoroutine(delayHitsparks(hitSparkPos,attackData.AngleOfImpact,attackData.AttackDamage ,HitstunDuration *.25f));
         
         }
 
-    	return 0;
+    	return 2;
 
     }
 
