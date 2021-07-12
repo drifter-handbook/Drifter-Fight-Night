@@ -222,6 +222,8 @@ public class BeanWrangler : NonplayerHurtboxHandler
     public override int RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, DrifterAttackType attackType, SingleAttackData attackData)
     {
 
+        if(following && Vector3.Distance(rb.position,targetPos.Pos) <= 2.8f) return -3;
+
         int returnCode =  base.RegisterAttackHit(hitbox,hurtbox,attackID,attackType,attackData);
 
         if(percentage > 40f)
