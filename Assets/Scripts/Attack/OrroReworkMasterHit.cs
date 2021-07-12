@@ -72,6 +72,19 @@ public class OrroReworkMasterHit : MasterHit
         movement.spawnJuiceParticle(transform.position + new Vector3(facing * 1.5f,1,0),MovementParticleMode.Orro_Page, true);
     }
 
+    public void setTerminalVelocity(float vel)
+    {
+        if(!isHost)return;
+        movement.canLandingCancel = false;  
+        movement.terminalVelocity = vel;
+    }
+
+    public void resetTerminalVelocity()
+    {
+        if(!isHost)return; 
+        movement.terminalVelocity = terminalVelocity;
+    }
+
     //Bean!
     public void BeanSide()
     {
