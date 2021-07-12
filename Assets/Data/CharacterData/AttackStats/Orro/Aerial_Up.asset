@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Aerial_Up
   m_EditorClassIdentifier: 
   AttackDamage: 11
-  Knockback: 20
-  KnockbackScale: 0.3
+  Knockback: 18
+  KnockbackScale: 0.5
   hasStaticHitstun: 0
-  HitStun: -1
+  HitStun: 9
   isGrab: 0
   AngleOfImpact: 90
-  StatusEffect: 20
-  StatusDuration: 0.1
-  HitVisual: 10
+  StatusEffect: 5
+  StatusDuration: 1
+  HitVisual: 12
