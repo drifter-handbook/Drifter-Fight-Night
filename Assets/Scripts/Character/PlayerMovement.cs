@@ -152,7 +152,7 @@ public class PlayerMovement : MonoBehaviour
                 
                 rb.velocity = Vector2.Reflect(prevVelocity,normal) *.8f;
                 //status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, Mathf.Min(rb.velocity.magnitude * .005f,.3f));
-                spawnJuiceParticle(col.contacts[0].point, MovementParticleMode.Restitution, Quaternion.Euler(0f,0f, ( (rb.velocity.x < 0)?1:-1 ) * Vector3.Angle(Vector3.up,normal)));
+                spawnJuiceParticle(col.contacts[0].point, MovementParticleMode.Restitution, Quaternion.Euler(0f,0f, ( (rb.velocity.x < 0)?1:-1 ) * Vector3.Angle(Vector3.up,normal)),false);
                 techWindowElapsed = 0;
             }
         }
@@ -269,7 +269,7 @@ public class PlayerMovement : MonoBehaviour
 
         //Smoke Trail
         if(status.HasStatusEffect(PlayerStatusEffect.KNOCKBACK) && rb.velocity.magnitude > 45f){
-            spawnJuiceParticle(transform.position, MovementParticleMode.SmokeTrail, Quaternion.Euler(0,0,UnityEngine.Random.Range(0,180)));
+            spawnJuiceParticle(transform.position, MovementParticleMode.SmokeTrail, Quaternion.Euler(0,0,UnityEngine.Random.Range(0,180)),false);
         }
 
         //Sonic Boom Trail
@@ -369,7 +369,7 @@ public class PlayerMovement : MonoBehaviour
                 rb.velocity = new Vector2(Facing * dashSpeed,rb.velocity.y);
                 canDash = false;
                 StartCoroutine(endFoxTrot());
-                spawnJuiceParticle(BodyCollider.bounds.center + new Vector3(Facing * (flipSprite?-1:1)* 1.5f,0), MovementParticleMode.Dash_Ring, Quaternion.Euler(0f,0f,0f));
+                spawnJuiceParticle(BodyCollider.bounds.center + new Vector3(Facing * (flipSprite?-1:1)* 1.5f,0), MovementParticleMode.Dash_Ring, Quaternion.Euler(0f,0f,0f), false);
                 if(groundFrictionPosition) spawnJuiceParticle(new Vector2(-Facing * (flipSprite?-1:1)* 1.5f,0) + contacts[0].point, MovementParticleMode.Dash_Cloud);
             }
 
@@ -559,7 +559,7 @@ public class PlayerMovement : MonoBehaviour
     //Made it public for treamlining channeled attack cancels
     public void techParticle()
     {
-        spawnJuiceParticle(BodyCollider.bounds.center, MovementParticleMode.Tech, Quaternion.Euler(0f,0f,0f));
+        spawnJuiceParticle(BodyCollider.bounds.center, MovementParticleMode.Tech, Quaternion.Euler(0f,0f,0f),false);
     }
 
     //Updates the direction the player is facing
@@ -690,15 +690,19 @@ public class PlayerMovement : MonoBehaviour
     //Public wrapper for movement particle spawning
     public void spawnJuiceParticle(Vector3 pos, MovementParticleMode mode)
     {
-        spawnJuiceParticle(pos, mode, transform.rotation);
+        spawnJuiceParticle(pos, mode, transform.rotation, false);
     }
 
+    public void spawnJuiceParticle(Vector3 pos, MovementParticleMode mode, bool flip)
+    {
+         spawnJuiceParticle(pos, mode, transform.rotation, flip);
+    }
 
     //Creates a movement particle at the designated location
-    private void spawnJuiceParticle(Vector3 pos, MovementParticleMode mode, Quaternion angle){
+    private void spawnJuiceParticle(Vector3 pos, MovementParticleMode mode, Quaternion angle, bool flip){
 
         particleOffset = new Vector3(particleOffset.x * Facing * (flipSprite?-1:1),particleOffset.y,0);
-    	GraphicalEffectManager.Instance.CreateMovementParticle(mode, pos, angle.eulerAngles.z, new Vector2(Facing * (flipSprite ? -1 : 1), 1));
+    	GraphicalEffectManager.Instance.CreateMovementParticle(mode, pos, angle.eulerAngles.z, new Vector2(Facing * (flipSprite ? -1 : 1) * (flip ? -1 : 1), 1));
     }
 
 
