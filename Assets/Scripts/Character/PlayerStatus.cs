@@ -108,6 +108,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
     int combocount = 0;
 
     public PlayerCard card;
+    public TrainingUIManager trainingUI;
 
     public Collider2D grabPoint = null;
     // Start is called before the first frame update
@@ -329,6 +330,8 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
     		{
     			combocount++;
     			UnityEngine.Debug.Log(combocount + " Hit; " + (frameAdvantage > 0 ?"+":"" ) + frameAdvantage.ToString("0.0"));
+                trainingUI.WriteCombo(combocount);
+                trainingUI.WriteFrame((int)frameAdvantage);
     			frameAdvantage = 0;
     		}
     	}
