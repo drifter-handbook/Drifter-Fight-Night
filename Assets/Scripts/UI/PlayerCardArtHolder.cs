@@ -44,17 +44,12 @@ public class PlayerCardArtHolder : MonoBehaviour
      
                 newCard = Instantiate(summaryCardPrefab, transform.position, transform.rotation);
                     
-                newCard.transform.SetParent(gameObject.transform, false);
+                newCard.transform.SetParent(gameObject.transform , false);
                 newCard.transform.localScale = new Vector3(100, 100, 1);
                 playerCards[i] = newCard.GetComponent<PlayerCard>();
 
                 
                 int imageIndex = getDrifterTypeIndex(drifters[i].GetComponent<NetworkSync>().NetworkType);
-
-                if(imageIndex == 5 || imageIndex == 1) playerCards[i].hasChargeCounter = 3;
-          
-                else if(imageIndex == 10 || imageIndex == 3) playerCards[i].hasChargeCounter = 1;
-
 
                 //Colors
                 playerCards[i].SetColor(drifters[i].myColor);

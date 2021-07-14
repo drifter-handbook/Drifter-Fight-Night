@@ -10,17 +10,18 @@ public class PlayerCard : MonoBehaviour
     public Sprite stockImage;
     public int currStocks = 0;
     public int drifterIndex;
-    public int hasChargeCounter = 0;
 
     public GameObject TopObject;
     public GameObject BottomObject;
 
-    public Sprite[] portraits_no_Charge;
-    public Sprite[] portraits_with_Charge;
-    public Sprite[] portraits_one_Charge;
-    public Sprite[] Charge_Ticks;
+    // public Sprite[] portraits_no_Charge;
+    // public Sprite[] portraits_with_Charge;
+    // public Sprite[] portraits_one_Charge;
+    public Sprite[] components;
 
     public SpriteRenderer chargeBar;
+
+    public SpriteRenderer ribbons;
 
     public GameObject bar;
 
@@ -88,28 +89,16 @@ public class PlayerCard : MonoBehaviour
     {
         mycolor = color;
 
-        switch(hasChargeCounter)
-        {
-            case(1):
-                gameObject.GetComponent<SpriteRenderer>().sprite = portraits_one_Charge[color];
-                break;
-            case(3):
-                gameObject.GetComponent<SpriteRenderer>().sprite = portraits_with_Charge[color];
-                break;
-            case 0:
-            default:
-                gameObject.GetComponent<SpriteRenderer>().sprite = portraits_no_Charge[color];
-                break;
-        }
+        ribbons.color = CharacterMenu.ColorFromEnum[(PlayerColor)color];
 
     }
 
     public void SetCharge(int charge)
     {
 
-        if(hasChargeCounter <=0)return;
+        //if(hasChargeCounter <=0)return;
 
-        chargeBar.sprite = Charge_Ticks[charge];
+        chargeBar.sprite = components[charge + 2];
 
     }
 
