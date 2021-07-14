@@ -21,7 +21,7 @@ public enum DrifterType
     Maryam,
     Drifter_Cannon,
     Klatz,
-    Orro_Classic
+    Sandbag,
 }
 
 

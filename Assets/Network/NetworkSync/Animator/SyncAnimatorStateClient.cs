@@ -17,6 +17,7 @@ public class SyncAnimatorStateClient : MonoBehaviour, ISyncClient, INetworkMessa
     // Update is called once per frame
     void Update()
     {
+        if(!GameController.Instance.IsOnline) return;
         try
         {
             state = NetworkUtils.GetNetworkData<SyncAnimatorState>(sync["animator_state"]);
@@ -36,9 +37,8 @@ public class SyncAnimatorStateClient : MonoBehaviour, ISyncClient, INetworkMessa
 
     public void ReceiveNetworkMessage(NetworkMessage message)
     {
+        if(!GameController.Instance.IsOnline) return;
         state = NetworkUtils.GetNetworkData<SyncAnimatorState>(sync["animator_state"]);
-
-
 
         if(anim.GetCurrentAnimatorStateInfo(state.layer).fullPathHash != state.stateHash)
             {

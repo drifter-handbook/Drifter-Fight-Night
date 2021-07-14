@@ -42,7 +42,7 @@ public class ViewManager : MonoBehaviour
                     Debug.LogWarning("Views already contains key " + child.gameObject.name + "!");
                     continue;
                 }
-
+                Debug.Log(child.gameObject.name);
                 views.Add(child.gameObject.name, child.transform);
             }
         }
@@ -70,14 +70,14 @@ public class ViewManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (currentView == "Main Menu")
+            if (currentView == "Mode Menu")
             {
                 Application.Quit();
             }
             else
             {
                 mouse = false;
-                ShowView("Main Menu");
+                ShowView("Mode Menu");
             }
         }
 
@@ -92,17 +92,23 @@ public class ViewManager : MonoBehaviour
             mouse = false;
             //Cursor.visible = false;
             switch (currentView){
-                case "Matchmaking Menu":
-                    EventSystem.current.SetSelectedGameObject(GameObject.Find("Host"));
+            	case "Host Menu":
+                    EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Host"));
                     break;
                 case "Join Menu":
                     EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Join"));
                     break;
-                case "Main Menu":
-                    ShowView("Matchmaking Menu");
+                case "Online Menu":
+                    EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Online"));
+                    break;
+                case "Local Menu":
+                    EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Local"));
+                    break;
+                case "Mode Menu":
+                    ShowView("Mode Menu");
                     break;
                 case "Settings Menu":
-                    EventSystem.current.SetSelectedGameObject(GameObject.Find("Back"));
+                    EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Settings"));
                     break;
                 default:
                     break;
@@ -131,12 +137,17 @@ public class ViewManager : MonoBehaviour
         //     roomCodeBox.GetComponent<InputField>().contentType = InputField.ContentType.Standard;
         // }
 
-        if (name == "Matchmaking Menu" && !mouse)
+         if (name == "Local Menu" && !mouse)
+        {
+            EventSystem.current.SetSelectedGameObject(GameObject.Find("Training"));
+        }
+
+        if (name == "Online Menu" && !mouse)
         {
             EventSystem.current.SetSelectedGameObject(GameObject.Find("Host"));
         }
-        if(name == "Main Menu" && !mouse)
-            EventSystem.current.SetSelectedGameObject(GameObject.Find("Play"));
+        if(name == "Mode Menu" && !mouse)
+            EventSystem.current.SetSelectedGameObject(GameObject.Find("Local"));
 
         if (name == "Join Menu")
         {

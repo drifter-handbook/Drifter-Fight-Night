@@ -24,6 +24,8 @@ public class NetworkSync : MonoBehaviour
 
     public void Initialize(int objectID, string networkType)
     {
+
+        //if(!GameController.Instance.IsOnline) return;
         ObjectID = objectID;
         NetworkType = networkType;
         syncData = NetworkUtils.GetNetworkObjectData(ObjectID);
@@ -36,6 +38,7 @@ public class NetworkSync : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if(!GameController.Instance.IsOnline) return;
         if (syncData == null)
         {
             throw new InvalidOperationException($"Initialize(objectID, networkType) on GameObject {name} was not called before Start(). Was this object registered with NetworkStartingEntities?");
@@ -46,6 +49,7 @@ public class NetworkSync : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(!GameController.Instance.IsOnline) return;
         foreach (NetworkMessage message in NetworkUtils.PopNetworkMessages(ObjectID))
         {
             foreach (INetworkMessageReceiver component in GetComponents<INetworkMessageReceiver>())
@@ -57,12 +61,13 @@ public class NetworkSync : MonoBehaviour
 
     public void SendNetworkMessage(object obj, DeliveryMethod deliveryMethod = DeliveryMethod.ReliableSequenced)
     {
+        if(!GameController.Instance.IsOnline) return;
         NetworkUtils.SendNetworkMessage(ObjectID, obj, deliveryMethod);
     }
 
     void OnDestroy()
     {
-        NetworkUtils.DestroyNetworkObject(ObjectID);
+        if(GameController.Instance.IsOnline)NetworkUtils.DestroyNetworkObject(ObjectID);
     }
 }
 

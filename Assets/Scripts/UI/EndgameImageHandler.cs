@@ -29,7 +29,7 @@ public class EndgameImageHandler : MonoBehaviour
 
         	sync = GetComponent<NetworkSync>();
 
-        	sync.SendNetworkMessage(new CharacterSelectSyncData() {charSelState = CharacterMenu.CharSelData.charSelState});
+        	sync.SendNetworkMessage(new CharacterSelectSyncData() {charSelState = CharacterMenu.charSelStates});
             playAgainButton.SetActive(true);
 
         }
@@ -42,11 +42,10 @@ public class EndgameImageHandler : MonoBehaviour
 
             UnityEngine.Debug.Log("Player " +  GameController.Instance.winnerOrder[i] + " came in " + (i + 1) + "th place!");
 
-
             //Todo Cleanup
             if(i == 0)
             {
-                foreach (CharacterSelectState state in CharacterMenu.CharSelData.charSelState)
+                foreach (CharacterSelectState state in CharacterMenu.charSelStates)
                 {
                     if (state.PeerID == (i - 1))
                     {

@@ -25,12 +25,19 @@ public class PlayerCardArtHolder : MonoBehaviour
     {
         if (drifters == null || drifters.Length == 0)
         {
+
+            if(!GameController.Instance.IsTraining)
+                trainingUI.gameObject.SetActive(false);
+            // else
+            //     trainingUI.gameObject.SetActive(true);
+
+
             drifters = FindObjectsOfType<Drifter>();
 
             playerCards = new PlayerCard[drifters.Length];
 
-            int i = 0; //i know i know i just like foreach ok
-            foreach (Drifter drifter in drifters)
+             //i know i know i just like foreach ok
+            for(int i = drifters.Length -1; i >=0; i--)
             {
 
                 GameObject newCard;
@@ -42,7 +49,7 @@ public class PlayerCardArtHolder : MonoBehaviour
                 playerCards[i] = newCard.GetComponent<PlayerCard>();
 
                 
-                int imageIndex = getDrifterTypeIndex(drifter.GetComponent<NetworkSync>().NetworkType);
+                int imageIndex = getDrifterTypeIndex(drifters[i].GetComponent<NetworkSync>().NetworkType);
 
                 if(imageIndex == 5 || imageIndex == 1) playerCards[i].hasChargeCounter = 3;
           
@@ -50,7 +57,7 @@ public class PlayerCardArtHolder : MonoBehaviour
 
 
                 //Colors
-                playerCards[i].SetColor(drifter.myColor);
+                playerCards[i].SetColor(drifters[i].myColor);
                 drifters[i].SetColor(drifters[i].myColor);
 
                 drifters[i].status.card = playerCards[i];
@@ -61,9 +68,6 @@ public class PlayerCardArtHolder : MonoBehaviour
                 playerCards[i].setImages(faces[imageIndex], stocks[imageIndex]);
                 playerCards[i].addStocks(stockPrefab, 3);
 
-
-
-                i++;
             }
             //if(mainCamera == null) GameObject.FindGameObjectWithTag("MainCamera");
             mainCamera.GetComponent<ScreenShake>().drifters = drifters;
@@ -115,6 +119,7 @@ public class PlayerCardArtHolder : MonoBehaviour
             case ("Mytharius"): return 10;
             case ("Maryam"): return 11;
             case ("Drifter Cannon"): return 12;
+            case ("Sandbag"): return 8;
             default: return 8;
         }
     }

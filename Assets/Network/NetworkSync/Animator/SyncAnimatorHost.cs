@@ -50,13 +50,15 @@ public class SyncAnimatorHost : MonoBehaviour, ISyncHost
         {
             parameter.value = GetAnimatorParameterValue(parameter.type, parameter.name);
         }
+        if(!GameController.Instance.IsOnline) return; 
         sync["animator_parameters"] = new SyncAnimatorData() { parameters = parameters };
     }
 
     public void SetTrigger(string name)
     {
         anim.SetTrigger(name);
-        if (GameController.Instance.IsHost)
+        
+        if (GameController.Instance.IsHost && GameController.Instance.IsOnline)
         {
             sync.SendNetworkMessage(new SyncAnimatorTriggerMessage() { name = name });
         }

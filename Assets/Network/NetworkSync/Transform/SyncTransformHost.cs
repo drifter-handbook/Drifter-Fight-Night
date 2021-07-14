@@ -16,6 +16,7 @@ public class SyncTransformHost : MonoBehaviour, ISyncHost
     // Update is called once per frame
     void Update()
     {
+        if(!GameController.Instance.IsOnline)return;
         sync["transform"] = new SyncableTransform2D()
         {
             position = new SyncableVector3(transform.position),

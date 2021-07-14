@@ -27,6 +27,7 @@ public class SyncAnimatorStateHost : MonoBehaviour, ISyncHost
         }
 
         //UnityEngine.Debug.Log( anim.GetCurrentAnimatorStateInfo(animationLayer).shortNameHash + "   :  " + Animator.StringToHash(lastSentState));
+        if(!GameController.Instance.IsOnline) return;
         sync["animator_state"] = 
             new SyncAnimatorState
             {
@@ -45,7 +46,7 @@ public class SyncAnimatorStateHost : MonoBehaviour, ISyncHost
            animationLayer = Layer;
            anim.Play(Animator.StringToHash(name),animationLayer);
            lastSentState = name;        
-           if (GameController.Instance.IsHost)
+           if (GameController.Instance.IsHost && GameController.Instance.IsOnline)
             {
             //UnityEngine.Debug.Log("MESSAGE SENT: " + Animator.StringToHash(name));
             sync.SendNetworkMessage(new SyncAnimatorState() { stateHash = Animator.StringToHash(name), active = anim.enabled, layer = Layer});

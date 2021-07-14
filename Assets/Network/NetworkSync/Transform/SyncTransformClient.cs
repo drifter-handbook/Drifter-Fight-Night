@@ -9,6 +9,7 @@ public class SyncTransformClient : MonoBehaviour, ISyncClient
     // Start is called before the first frame update
     void Start()
     {
+        if(!GameController.Instance.IsOnline)return;
         sync = GetComponent<NetworkSync>();
         Update();
     }
@@ -16,6 +17,7 @@ public class SyncTransformClient : MonoBehaviour, ISyncClient
     // Update is called once per frame
     void Update()
     {
+        if(!GameController.Instance.IsOnline)return;
         SyncableTransform2D netTransform = NetworkUtils.GetNetworkData<SyncableTransform2D>(sync["transform"]);
         if (netTransform != null)
         {

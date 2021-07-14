@@ -10,6 +10,8 @@ public class SyncCameraHost : MonoBehaviour, ISyncHost
     // Start is called before the first frame update
     void Start()
     {
+        if(!GameController.Instance.IsOnline)
+            GetComponent<SyncCameraHost>().enabled = false;
         sync = GetComponent<NetworkSync>();
         cam = GetComponent<Camera>();
         Update();
@@ -18,6 +20,7 @@ public class SyncCameraHost : MonoBehaviour, ISyncHost
     // Update is called once per frame
     void Update()
     {
+
         sync["camera_zoom"] = new SyncableCameraZoom()
         {
             zoom = cam.orthographicSize

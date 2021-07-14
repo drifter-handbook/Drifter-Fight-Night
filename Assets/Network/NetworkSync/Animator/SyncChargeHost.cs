@@ -19,6 +19,7 @@ public class SyncChargeHost : MonoBehaviour, ISyncHost
     // Update is called once per frame
     void Update()
     {
+        if(!GameController.Instance.IsOnline)return;
         sync["chargeInfo"] = 
             new SyncInt
             {
@@ -28,7 +29,7 @@ public class SyncChargeHost : MonoBehaviour, ISyncHost
 
     public void setCharge(int charge)
     {
-        if (GameController.Instance.IsHost)
+        if (GameController.Instance.IsHost && GameController.Instance.IsOnline)
         {
             sync.SendNetworkMessage(new SyncInt() { integerValue = drifter.GetCharge()});
         }

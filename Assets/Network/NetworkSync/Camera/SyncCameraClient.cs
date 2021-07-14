@@ -10,6 +10,7 @@ public class SyncCameraClient : MonoBehaviour, ISyncClient
     // Start is called before the first frame update
     void Start()
     {
+        if(!GameController.Instance.IsOnline)return;
         sync = GetComponent<NetworkSync>();
         cam = GetComponent<Camera>();
         Update();
@@ -18,6 +19,7 @@ public class SyncCameraClient : MonoBehaviour, ISyncClient
     // Update is called once per frame
     void Update()
     {
+        if(!GameController.Instance.IsOnline)return;
         SyncableCameraZoom cameraZoom = NetworkUtils.GetNetworkData<SyncableCameraZoom>(sync["camera_zoom"]);
         if (cameraZoom != null)
         {

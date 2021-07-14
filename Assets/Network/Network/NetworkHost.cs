@@ -43,6 +43,8 @@ public class NetworkHost : MonoBehaviour, ISyncHost
     {
         currentObjectID = 1;
         networkObjects = GetComponent<NetworkObjects>();
+
+        if(!GameController.Instance.IsOnline)return;
         // network handlers
         natPunchEvent.NatIntroductionSuccess += (point, addrType, token) =>
         {
@@ -106,6 +108,7 @@ public class NetworkHost : MonoBehaviour, ISyncHost
     // update from network
     void FixedUpdate()
     {
+        if(netManager == null) return;
         netManager.PollEvents();
         netManager.NatPunchModule.PollEvents();
         // send data packets
@@ -125,11 +128,12 @@ public class NetworkHost : MonoBehaviour, ISyncHost
     IEnumerator SetSceneCoroutine(string scene)
     {
         // send scene change event to clients
-        sync.SendNetworkMessage(new SceneChangePacket()
-        {
-            scene = scene,
-            startingObjectID = currentObjectID
-        }, DeliveryMethod.ReliableOrdered);
+        if(GameController.Instance.IsOnline)
+            sync.SendNetworkMessage(new SceneChangePacket()
+            {
+                scene = scene,
+                startingObjectID = currentObjectID
+            }, DeliveryMethod.ReliableOrdered);
         // load scene
         SceneManager.LoadScene(scene);
         yield return null;
@@ -179,12 +183,12 @@ public class NetworkHost : MonoBehaviour, ISyncHost
 
     void OnDestroy()
     {
-        netManager.Stop();
+        netManager?.Stop();
     }
 
     void OnApplicationQuit()
     {
-        netManager.Stop();
+        netManager?.Stop();
     }
 }
 

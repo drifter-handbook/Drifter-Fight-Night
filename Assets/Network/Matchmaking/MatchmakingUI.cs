@@ -87,10 +87,19 @@ public class MatchmakingUI : MonoBehaviour
     //     roomCode = clientRoomCode.text;
     // }
 
-    public void StartHost()
+    //0 = online
+    //1 = Local
+    //2 = Training
+    //3 = story?
+
+    public void StartHost(int mode = 0)
     {
         GameController.Instance.IsHost = true;
-        GameController.Instance.StartNetworkHost();
+        GameController.Instance.IsOnline = (mode ==0);
+        GameController.Instance.IsTraining = (mode == 2);
+        if(GameController.Instance.IsOnline)GameController.Instance.StartNetworkHost();
+        else
+            GameController.Instance.StartOfflineGame();
         StopCoroutine(getRoomsCoroutine);
         GameController.Instance.host.SetScene("CharacterSelect");
     }

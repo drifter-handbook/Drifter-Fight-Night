@@ -19,6 +19,7 @@ public class SyncColorDataHost : MonoBehaviour, ISyncHost
     // Update is called once per frame
     void Update()
     {
+        if(!GameController.Instance.IsOnline)return;
         sync["colorInfo"] = 
             new SyncInt
             {
@@ -28,7 +29,7 @@ public class SyncColorDataHost : MonoBehaviour, ISyncHost
 
     public void setColor(int colorCode)
     {
-        if (GameController.Instance.IsHost)
+        if (GameController.Instance.IsHost && GameController.Instance.IsOnline)
         {
             sync.SendNetworkMessage(new SyncInt() { integerValue = colorCode});
         }

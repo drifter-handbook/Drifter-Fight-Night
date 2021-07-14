@@ -112,6 +112,8 @@ public static class NetworkUtils
     public static void SendNetworkMessageToPeer(int peerID, int objectID, object obj, DeliveryMethod deliveryMethod = DeliveryMethod.ReliableSequenced)
     {
         // send message host -> specific client
+
+        if(!GameController.Instance.IsOnline) return;
         if (!GameController.Instance.IsHost)
         {
             throw new InvalidOperationException("Can only use this method as host.");
@@ -132,7 +134,7 @@ public static class NetworkUtils
         if (GameController.Instance.IsHost)
         {
             NetworkHost host = GameController.Instance.host;
-            host.netManager.SendToAll(host.netPacketProcessor.Write(NetworkMessages.ToPacket(objectID, obj)), deliveryMethod);
+            if(GameController.Instance.IsOnline)host.netManager.SendToAll(host.netPacketProcessor.Write(NetworkMessages.ToPacket(objectID, obj)), deliveryMethod);
         }
         // send message client -> host
         else
@@ -168,7 +170,9 @@ public static class NetworkUtils
 
     public static void RegisterChildObject(string networkType, GameObject obj)
     {
-        if (GameController.Instance.IsHost)
+        if(!GameController.Instance.IsOnline) return;
+
+        else if (GameController.Instance.IsHost )
         {
             GameController.Instance.host.networkObjects.RegisterNetworkObject(NetworkHost.NextObjectID, networkType, obj);
         }

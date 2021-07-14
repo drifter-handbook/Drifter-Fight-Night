@@ -33,6 +33,7 @@ public class SyncAnimatorClient : MonoBehaviour, ISyncClient, INetworkMessageRec
     // Update is called once per frame
     void Update()
     {
+        if(!GameController.Instance.IsOnline) return;
         try
         {
             SyncAnimatorData syncAnim = NetworkUtils.GetNetworkData<SyncAnimatorData>(sync["animator_parameters"]);
@@ -49,6 +50,7 @@ public class SyncAnimatorClient : MonoBehaviour, ISyncClient, INetworkMessageRec
 
     public void ReceiveNetworkMessage(NetworkMessage message)
     {
+        if(!GameController.Instance.IsOnline) return;
         SyncAnimatorTriggerMessage trigger = NetworkUtils.GetNetworkData<SyncAnimatorTriggerMessage>(message.contents);
         if (trigger != null)
         {

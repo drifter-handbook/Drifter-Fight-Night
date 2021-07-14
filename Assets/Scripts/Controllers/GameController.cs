@@ -23,6 +23,8 @@ public class GameController : MonoBehaviour
     //* Serialized members
     [Header("Check box if hosting")]
     public bool IsHost;
+    public bool IsOnline;
+    public bool IsTraining;
 
     public const int MAX_PLAYERS = 8;
 
@@ -85,17 +87,21 @@ public class GameController : MonoBehaviour
         GameAnalytics.Initialize();
         GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, "startGame");
         // this is horrid practice please dont do this but
-        string server = Resources.Load<TextAsset>("Config/server_ip").text;
-        if (IPAddress.TryParse(server, out IPAddress address))
+        if(IsOnline)
         {
+            string server = Resources.Load<TextAsset>("Config/server_ip").text;
+            if (IPAddress.TryParse(server, out IPAddress address))
+            {
+            }
+            else
+            {
+                IPHostEntry host = Dns.GetHostEntry(server);
+                address = host.AddressList[0];
+            }
+            NatPunchServer = new IPEndPoint(address, NatPunchServer.Port);
+            MatchmakingServer = new IPEndPoint(address, MatchmakingServer.Port);
         }
-        else
-        {
-            IPHostEntry host = Dns.GetHostEntry(server);
-            address = host.AddressList[0];
-        }
-        NatPunchServer = new IPEndPoint(address, NatPunchServer.Port);
-        MatchmakingServer = new IPEndPoint(address, MatchmakingServer.Port);
+        
     }
 
     public void Load(string sceneName)
@@ -201,6 +207,24 @@ public class GameController : MonoBehaviour
         matchmakingHost = GetComponent<MatchmakingHost>() ?? gameObject.AddComponent<MatchmakingHost>();
         PlayerID = 0;
     }
+
+    public void StartOfflineGame()
+    {
+        if(host != null)
+        {
+            UnityEngine.Debug.Log("STONKY");
+            Destroy(GetComponent<NetworkSync>());
+            Destroy(GetComponent<NetworkHost>());
+            Destroy(host);
+        }
+
+        host = gameObject.AddComponent<NetworkHost>();
+        NetworkSync sync = gameObject.AddComponent<NetworkSync>();
+        sync.Initialize(0, "GameController");
+        host.Initialize();
+        //matchmakingHost = GetComponent<MatchmakingHost>() ?? gameObject.AddComponent<MatchmakingHost>();
+        PlayerID = 0;
+    }
     public void StartNetworkClient(string roomCode)
     {
         if(client != null)
@@ -227,6 +251,7 @@ public class GameController : MonoBehaviour
     public void CleanupNetwork()
     {
         PlayerID = -1;
+        
         if (IsHost)
         {
             Destroy(host);
@@ -242,7 +267,9 @@ public class GameController : MonoBehaviour
             matchmakingClient = null;
         }
         Destroy(GetComponent<NetworkSync>());
+       
         IsHost = false;
+        IsOnline = false;
         endingGame = null;
     }
 }

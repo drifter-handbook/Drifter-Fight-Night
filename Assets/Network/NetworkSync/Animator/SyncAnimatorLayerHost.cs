@@ -21,6 +21,7 @@ public class SyncAnimatorLayerHost : MonoBehaviour, ISyncHost
     // Update is called once per frame
     void Update()
     {
+        if(!GameController.Instance.IsOnline) return;
         sync["animator_layer"] = 
         new SyncAnimatorLayer
         {
@@ -30,7 +31,7 @@ public class SyncAnimatorLayerHost : MonoBehaviour, ISyncHost
 
     public void SetLayer(int Layer = 0)
     {
-        //if(anim.)
+        if(!GameController.Instance.IsOnline) return;
         try
         {
            sync.SendNetworkMessage(new SyncAnimatorLayer() {layer = Layer});

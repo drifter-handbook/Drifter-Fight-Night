@@ -50,7 +50,7 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
     {
         DrifterType drifter = DrifterType.None;
         int playerIndex = 0;
-        foreach (CharacterSelectState state in CharacterMenu.CharSelData.charSelState)
+        foreach (CharacterSelectState state in CharacterMenu.charSelStates)
         {
             if (state.PeerID == peerID)
             {

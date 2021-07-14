@@ -21,6 +21,7 @@ public class SyncProjectileColorDataHost : MonoBehaviour, ISyncHost
     // Update is called once per frame
     void Update()
     {
+        if(!GameController.Instance.IsOnline)return;
         sync["colorInfo"] = 
             new SyncInt
             {
@@ -30,7 +31,7 @@ public class SyncProjectileColorDataHost : MonoBehaviour, ISyncHost
 
     public void setColor(int colorCode)
     {
-        if (GameController.Instance.IsHost)
+        if (GameController.Instance.IsHost && GameController.Instance.IsOnline)
         {
             color = colorCode;
             sprite.material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)colorCode]);
