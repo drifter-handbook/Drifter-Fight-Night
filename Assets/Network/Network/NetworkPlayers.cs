@@ -74,13 +74,19 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
             return;
         }
         player.GetComponent<Drifter>().input = input;
-        if (player.GetComponent<Drifter>().prevInput == null)
-        {
-            player.GetComponent<Drifter>().prevInput = input;
-        }
         player.GetComponent<PlayerMovement>().UpdateInput();
         player.GetComponent<PlayerAttacks>().UpdateInput();
-        player.GetComponent<Drifter>().prevInput = input;
+
+        //Input Buffering Stores the last 16 input states
+        //Newest state is at index 0
+        //Remove the oldest state each frame 
+        for(int i = player.GetComponent<Drifter>().prevInput.Length - 2; i >=0; i--)
+        {
+            player.GetComponent<Drifter>().prevInput[i + 1] = (PlayerInputData)player.GetComponent<Drifter>().prevInput[i].Clone();
+        }
+        // add the newest state
+
+        player.GetComponent<Drifter>().prevInput[0] = (PlayerInputData)input.Clone();
     }
 
     public static PlayerInputData GetInput(CustomControls keyBindings)
@@ -91,7 +97,7 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
         input.Jump = Input.GetKey(keyBindings.jumpKey) || Input.GetKey(keyBindings.jumpKeyAlt);
         input.Light = Input.GetKey(keyBindings.lightKey) ;
         input.Special = Input.GetKey(keyBindings.specialKey);
-        input.Grab = Input.GetKey(keyBindings.grabKey);
+        input.Super = Input.GetKey(keyBindings.superKey);
         input.Guard = Input.GetKey(keyBindings.guard1Key) || Input.GetKey(keyBindings.guard2Key);
 
         //TODO REIMPLEMENT GAMEPLAD CONTROLS
@@ -147,7 +153,7 @@ public class PlayerInputData : INetworkData, ICloneable
     public bool Jump;
     public bool Light;
     public bool Special;
-    public bool Grab;
+    public bool Super;
     public bool Guard;
 
     public object Clone()
@@ -160,7 +166,7 @@ public class PlayerInputData : INetworkData, ICloneable
             Jump = Jump,
             Light = Light,
             Special = Special,
-            Grab = Grab,
+            Super = Super,
             Guard = Guard
         };
     }
@@ -173,7 +179,7 @@ public class PlayerInputData : INetworkData, ICloneable
         Jump = data.Jump;
         Light = data.Light;
         Special = data.Special;
-        Grab = data.Grab;
+        Super = data.Super;
         Guard = data.Guard;
     }
 }

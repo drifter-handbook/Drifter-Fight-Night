@@ -336,7 +336,6 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         drifter.parrying = false;
     }
 
-
     public abstract void roll();
 
     public abstract void rollGetupStart();

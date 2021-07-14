@@ -220,6 +220,17 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         grabPoint = null;
     }
 
+
+    //Clears all removable Status effects
+    public void clearStunStatus()
+    {
+        foreach(KeyValuePair<PlayerStatusEffect,PlayerStatusData> ef in statusDataMap)
+        {
+            if(ef.Value.isStun) ef.Value.duration = 0;
+        }
+        grabPoint = null;
+    }
+
 	//Clears ALL status effects    
     public void clearAllStatus()
     {

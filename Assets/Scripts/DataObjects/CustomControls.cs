@@ -17,5 +17,5 @@ public class CustomControls : ScriptableObject
 
     [SerializeField] public KeyCode lightKey;
     [SerializeField] public KeyCode specialKey;
-    [SerializeField] public KeyCode grabKey;
+    [SerializeField] public KeyCode superKey;
 }

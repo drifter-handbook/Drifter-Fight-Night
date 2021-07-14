@@ -9,17 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 922b365bfb7cfde4b9716ff9e96c89ef, type: 3}
-  m_Name: DefaultControls
+  m_Script: {fileID: 11500000, guid: 193b57c47c6e0024ebee715bea3d6f17, type: 3}
+  m_Name: Hyper_Guard
   m_EditorClassIdentifier: 
-  upKey: 273
-  downKey: 274
-  leftKey: 276
-  rightKey: 275
-  guard1Key: 304
-  guard2Key: 303
-  jumpKey: 32
-  jumpKeyAlt: 32
-  lightKey: 113
-  specialKey: 119
-  superKey: 101
+  AttackDamage: 0
+  Knockback: 10
+  KnockbackScale: 0.01
+  hasStaticHitstun: 0
+  HitStun: -1
+  isGrab: 0
+  AngleOfImpact: 45
+  StatusEffect: 23
+  StatusDuration: 12
+  HitVisual: 1

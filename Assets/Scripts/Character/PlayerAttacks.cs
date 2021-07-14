@@ -10,7 +10,7 @@ public enum DrifterAttackType
     Ground_Q_Side, Ground_Q_Down, Ground_Q_Up, Ground_Q_Neutral,
     Aerial_Q_Side, Aerial_Q_Down, Aerial_Q_Up, Aerial_Q_Neutral,
     W_Side, W_Down, W_Up, W_Neutral,
-    E_Side, E_Air, Roll
+    E_Side, E_Air, Roll, Super_Cancel
 }
 
 [Serializable]
@@ -39,6 +39,7 @@ public class PlayerAttacks : MonoBehaviour
         { DrifterAttackType.Ground_Q_Up, "Ground_Up" },
         { DrifterAttackType.Ground_Q_Down, "Ground_Down" },
         { DrifterAttackType.Ground_Q_Side, "Ground_Side" },
+        { DrifterAttackType.Super_Cancel, "Super_Cancel" },
     };
 
     static int nextID = 0;
@@ -75,8 +76,6 @@ public class PlayerAttacks : MonoBehaviour
 
     NetworkSync sync;
 
-    PlayerInputData prevInput;
-
     void Awake()
     {
         foreach (SingleAttack attack in AttackMap)
@@ -106,16 +105,17 @@ public class PlayerAttacks : MonoBehaviour
         }
 
         // get input
-        bool lightPressed = !drifter.prevInput.Light && drifter.input.Light;
-        bool specialPressed = !drifter.prevInput.Special && drifter.input.Special;
 
+        bool lightPressed = !drifter.prevInput[1].Light && drifter.prevInput[0].Light && drifter.input.Light;
+        bool specialPressed = !drifter.prevInput[1].Special &&  drifter.prevInput[0].Special && drifter.input.Special;
+
+        bool superPressed = !drifter.prevInput[0].Super  && drifter.input.Super;
 
         bool grabPressed = 
 
-        !drifter.prevInput.Light && drifter.input.Light && drifter.prevInput.Special ||
-        !drifter.prevInput.Special && drifter.input.Special && drifter.prevInput.Light ||
-        !drifter.prevInput.Light && drifter.input.Light && !drifter.prevInput.Special && drifter.input.Special ||
-        !drifter.prevInput.Grab && drifter.input.Grab;;
+        !drifter.prevInput[0].Light && drifter.input.Light && drifter.prevInput[0].Special ||
+        !drifter.prevInput[0].Special && drifter.input.Special && drifter.prevInput[0].Light ||
+        !drifter.prevInput[0].Light && drifter.input.Light && !drifter.prevInput[0].Special && drifter.input.Special;
 
 
 
@@ -126,7 +126,13 @@ public class PlayerAttacks : MonoBehaviour
             resetRecovery();
         }
 
-        if (grabPressed && canAct)
+        if(superPressed)
+        {
+            SetupAttackID(DrifterAttackType.Super_Cancel);
+            movement.superCancel();
+        }
+
+        else if (grabPressed && canAct)
         {
             if (movement.grounded)StartAttack(DrifterAttackType.E_Side);
             else

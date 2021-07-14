@@ -98,7 +98,7 @@ public class PlayerCard : MonoBehaviour
 
         //if(hasChargeCounter <=0)return;
 
-        chargeBar.sprite = components[charge + 2];
+        //chargeBar.sprite = components[charge + 2];
 
     }
 

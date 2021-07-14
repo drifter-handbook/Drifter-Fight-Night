@@ -35,7 +35,10 @@ public class Drifter : MonoBehaviour, INetworkInit
     public PlayerMovement movement;
 
     public PlayerInputData input;
-    public PlayerInputData prevInput;
+
+    //Input Buffer
+    public PlayerInputData[] prevInput;// = new PlayerInputData[32];
+    //public PlayerInputData prevInput;
 
     public Animator animator;
 
@@ -50,6 +53,7 @@ public class Drifter : MonoBehaviour, INetworkInit
     }
 
     int Charge = 0;
+    public float superCharge = 0f;
 
     public float BlockReduction = .5f;
     

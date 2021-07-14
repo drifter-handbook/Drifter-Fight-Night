@@ -62,6 +62,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 3106753082241659636}
   playerType: {fileID: 0}
+  isActive: 1
   OverrideData: {fileID: 0}
   AttackData: {fileID: 0}
 --- !u!1 &1853559347
@@ -126,6 +127,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 3106753082241659636}
   playerType: {fileID: 0}
+  isActive: 1
   OverrideData: {fileID: 0}
   AttackData: {fileID: 0}
 --- !u!1 &428734560881909087
@@ -190,6 +192,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 3106753082241659636}
   playerType: {fileID: 0}
+  isActive: 1
   OverrideData: {fileID: 0}
   AttackData: {fileID: 0}
 --- !u!1 &1709800075325733094
@@ -475,15 +478,120 @@ MonoBehaviour:
     Jump: 0
     Light: 0
     Special: 0
-    Grab: 0
+    Super: 0
     Guard: 0
   prevInput:
-    MoveX: 0
+  - MoveX: 0
     MoveY: 0
     Jump: 0
     Light: 0
     Special: 0
-    Grab: 0
+    Super: 0
+    Guard: 0
+  - MoveX: 0
+    MoveY: 0
+    Jump: 0
+    Light: 0
+    Special: 0
+    Super: 0
+    Guard: 0
+  - MoveX: 0
+    MoveY: 0
+    Jump: 0
+    Light: 0
+    Special: 0
+    Super: 0
+    Guard: 0
+  - MoveX: 0
+    MoveY: 0
+    Jump: 0
+    Light: 0
+    Special: 0
+    Super: 0
+    Guard: 0
+  - MoveX: 0
+    MoveY: 0
+    Jump: 0
+    Light: 0
+    Special: 0
+    Super: 0
+    Guard: 0
+  - MoveX: 0
+    MoveY: 0
+    Jump: 0
+    Light: 0
+    Special: 0
+    Super: 0
+    Guard: 0
+  - MoveX: 0
+    MoveY: 0
+    Jump: 0
+    Light: 0
+    Special: 0
+    Super: 0
+    Guard: 0
+  - MoveX: 0
+    MoveY: 0
+    Jump: 0
+    Light: 0
+    Special: 0
+    Super: 0
+    Guard: 0
+  - MoveX: 0
+    MoveY: 0
+    Jump: 0
+    Light: 0
+    Special: 0
+    Super: 0
+    Guard: 0
+  - MoveX: 0
+    MoveY: 0
+    Jump: 0
+    Light: 0
+    Special: 0
+    Super: 0
+    Guard: 0
+  - MoveX: 0
+    MoveY: 0
+    Jump: 0
+    Light: 0
+    Special: 0
+    Super: 0
+    Guard: 0
+  - MoveX: 0
+    MoveY: 0
+    Jump: 0
+    Light: 0
+    Special: 0
+    Super: 0
+    Guard: 0
+  - MoveX: 0
+    MoveY: 0
+    Jump: 0
+    Light: 0
+    Special: 0
+    Super: 0
+    Guard: 0
+  - MoveX: 0
+    MoveY: 0
+    Jump: 0
+    Light: 0
+    Special: 0
+    Super: 0
+    Guard: 0
+  - MoveX: 0
+    MoveY: 0
+    Jump: 0
+    Light: 0
+    Special: 0
+    Super: 0
+    Guard: 0
+  - MoveX: 0
+    MoveY: 0
+    Jump: 0
+    Light: 0
+    Special: 0
+    Super: 0
     Guard: 0
   animator: {fileID: 2000386183588008255}
   BlockReduction: 0.5
@@ -491,6 +599,8 @@ MonoBehaviour:
   drifterType: 
   peerID: 0
   status: {fileID: 8182132679057442092}
+  animationLayer: 0
+  guarding: 0
 --- !u!114 &3106753082241659641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -509,6 +619,7 @@ MonoBehaviour:
   groundAccelerationTime: 0.6
   airAccelerationTime: 0.8
   airSpeed: 15
+  dashSpeed: 30
   terminalVelocity: 80
   fastFallTerminalVelocity: 55
   flipSprite: 0
@@ -547,8 +658,8 @@ MonoBehaviour:
     attackData: {fileID: 0}
   - attack: 12
     attackData: {fileID: 0}
-  - attack: 17
-    attackData: {fileID: 0}
+  - attack: 16
+    attackData: {fileID: 11400000, guid: be94e269e9183e840a9536a046b0df0c, type: 2}
   - attack: 5
     attackData: {fileID: 11400000, guid: be94e269e9183e840a9536a046b0df0c, type: 2}
   - attack: 7
@@ -563,6 +674,9 @@ MonoBehaviour:
     attackData: {fileID: 11400000, guid: be94e269e9183e840a9536a046b0df0c, type: 2}
   - attack: 14
     attackData: {fileID: 11400000, guid: be94e269e9183e840a9536a046b0df0c, type: 2}
+  W_Neutral_Is_Recovery: 0
+  W_Down_Is_Recovery: 0
+  W_Side_Is_Recovery: 0
   maxRecoveries: 1
 --- !u!50 &3106753082241659639
 Rigidbody2D:
@@ -664,6 +778,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   card: {fileID: 0}
+  trainingUI: {fileID: 0}
+  grabPoint: {fileID: 0}
 --- !u!114 &6950276592306512683
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -843,6 +959,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 3106753082241659636}
+  owner: {fileID: 0}
+  capsule: {fileID: 0}
 --- !u!1 &7136038149365406979
 GameObject:
   m_ObjectHideFlags: 0
@@ -961,6 +1079,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 3106753082241659636}
   playerType: {fileID: 0}
+  isActive: 1
   OverrideData: {fileID: 0}
   AttackData: {fileID: 0}
 --- !u!70 &1801323591959772194

@@ -329,7 +329,7 @@ public class PlayerMovement : MonoBehaviour
             //return;
         }
 
-        bool jumpPressed = !drifter.prevInput.Jump && drifter.input.Jump;
+        bool jumpPressed = !drifter.prevInput[0].Jump && drifter.input.Jump;
         // TODO: spawn hitboxes
         bool canAct = !status.HasStunEffect() && !drifter.guarding;
         bool canGuard = !status.HasStunEffect() && !jumping;
@@ -703,6 +703,65 @@ public class PlayerMovement : MonoBehaviour
 
         particleOffset = new Vector3(particleOffset.x * Facing * (flipSprite?-1:1),particleOffset.y,0);
     	GraphicalEffectManager.Instance.CreateMovementParticle(mode, pos, angle.eulerAngles.z, new Vector2(Facing * (flipSprite ? -1 : 1) * (flip ? -1 : 1), 1));
+    }
+
+
+    public void superCancel()
+    {
+
+        if(!GameController.Instance.IsHost)return;
+        UnityEngine.Debug.Log("SUPER PRESSED");
+
+        //Hyperguard
+        if(status.HasStatusEffect(PlayerStatusEffect.HITPAUSE) && drifter.guarding && !drifter.guardBreaking)
+        {
+            animator.enabled = true;
+            hitstun = false;
+            status.clearStunStatus();
+            spawnSuperParticle("Hyper_Guard_Burst");
+
+        }
+        //Offensive Cancel
+        else if(status.HasStatusEffect(PlayerStatusEffect.END_LAG))
+        {
+            spawnSuperParticle("Offensive_Cancel");
+            drifter.returnToIdle();
+        }
+        //Super Move
+
+        // else if()
+        // {
+
+        // }
+
+        //Burst/Defensive Cancel
+        else if(!drifter.guarding)
+        {
+            animator.enabled = true;
+            hitstun = false;
+            status.clearStunStatus();
+            spawnSuperParticle("Defensive_Cancel");
+            drifter.returnToIdle();
+        }
+
+    }
+
+    private void spawnSuperParticle(string mode)
+    {
+
+        Vector3 flip = new Vector3(Facing * 10f, 10f, 0f);
+        //Vector3 pos = new Vector3(Facing * 3f, 3.5f, 1f);
+        
+        GameObject cancel = GameController.Instance.host.CreateNetworkObject("SuperEffect", transform.position , transform.rotation);
+        foreach (HitboxCollision hitbox in cancel.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+            hitbox.Facing = Facing;
+        }
+        cancel.GetComponent<SyncAnimatorStateHost>().SetState(mode);
     }
 
 
