@@ -19,9 +19,9 @@ public class PlayerCard : MonoBehaviour
     // public Sprite[] portraits_one_Charge;
     public Sprite[] components;
 
-    public SpriteRenderer chargeBar;
+    public Image chargeBar;
 
-    public SpriteRenderer ribbons;
+    public Image ribbons;
 
     public GameObject bar;
 
@@ -128,7 +128,7 @@ public class PlayerCard : MonoBehaviour
 
     public void setImages(Sprite face, Sprite stock)
     {
-        this.face.GetComponent<SpriteRenderer>().sprite = face;
+        this.face.GetComponent<Image>().sprite = face;
         this.stockImage = stock;
     }
 

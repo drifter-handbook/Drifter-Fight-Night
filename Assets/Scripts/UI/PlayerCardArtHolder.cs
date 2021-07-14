@@ -45,7 +45,7 @@ public class PlayerCardArtHolder : MonoBehaviour
                 newCard = Instantiate(summaryCardPrefab, transform.position, transform.rotation);
                     
                 newCard.transform.SetParent(gameObject.transform , false);
-                newCard.transform.localScale = new Vector3(100, 100, 1);
+                newCard.transform.localScale = new Vector3(1, 1, 1);
                 playerCards[i] = newCard.GetComponent<PlayerCard>();
 
                 
