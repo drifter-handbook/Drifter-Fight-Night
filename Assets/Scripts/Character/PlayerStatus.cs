@@ -103,12 +103,13 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
     Vector2 delayedVelocity;
 
     float frameAdvantage = 0;
-
+    public bool isInCombo;
 
     int combocount = 0;
 
     public PlayerCard card;
     public TrainingUIManager trainingUI;
+    [SerializeField] private PlayerDamageNumbers damageDisplay;
 
     public Collider2D grabPoint = null;
     // Start is called before the first frame update
@@ -166,6 +167,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         	UnityEngine.Debug.Log("COMBO DROPPED at :" + combocount);
         	combocount = 0;
         	frameAdvantage = 0;
+            isInCombo = false;
 
         }
         time += Time.deltaTime;
@@ -208,6 +210,10 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
     public void ApplyStatusEffect(PlayerStatusEffect ef, float duration)
     {
         ApplyStatusEffectFor(ef, duration);
+    }
+
+    public void ApplyDamage(float damage, bool isCombo, float hitstun) {
+        damageDisplay.Increment(damage, isCombo, hitstun);
     }
 
     //Clears all removable Status effects
@@ -331,11 +337,14 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
     			
     			UnityEngine.Debug.Log(drifter.drifterType + " got bodied in " + combocount + " hits!");
     			combocount = 0;
-
+                isInCombo = false;
+                damageDisplay.Reset();
     		}
     		else if(ef == PlayerStatusEffect.DEAD)
     		{
     			combocount = 0;
+                isInCombo = false;
+                damageDisplay.Reset();
     		}
     		else
     		{
@@ -344,6 +353,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
                 trainingUI.WriteCombo(combocount);
                 trainingUI.WriteFrame((int)frameAdvantage);
     			frameAdvantage = 0;
+                isInCombo = true;
     		}
     	}
 

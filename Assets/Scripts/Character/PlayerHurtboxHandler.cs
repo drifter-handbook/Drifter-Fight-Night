@@ -89,6 +89,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                       * (attackerStatus.HasStatusEffect(PlayerStatusEffect.DAMAGEUP)?1.5f:1f);
 
                 drifter.DamageTaken += damageDealt;
+
             }
 
 
@@ -138,6 +139,10 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
             //Calculate hitstun duration
             float HitstunDuration = (attackData.HitStun>=0 || attackData.hasStaticHitstun)?attackData.HitStun * framerateScalar:(KB*.006f + .1f);
+
+            //damage numbers managment
+                if (status != null)
+                    status.ApplyDamage(damageDealt, status.isInCombo, HitstunDuration);
 
             //Flags a guradbreak for BIGG HITSPARKS
             bool guardbroken = false;
@@ -283,7 +288,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 returnCode = -2;
 
             }
-
+            
             // create hit sparks
             
 
