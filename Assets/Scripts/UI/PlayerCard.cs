@@ -17,9 +17,10 @@ public class PlayerCard : MonoBehaviour
     // public Sprite[] portraits_no_Charge;
     // public Sprite[] portraits_with_Charge;
     // public Sprite[] portraits_one_Charge;
-    public Sprite[] components;
+    public Sprite[] levels;
 
     public Image chargeBar;
+    public Image chargeLevels;
 
     public Image ribbons;
 
@@ -62,7 +63,7 @@ public class PlayerCard : MonoBehaviour
             num = MAX_STOCKS - currStocks;
         }
 
-        for(int i = 1; i< MAX_STOCKS; i++)
+        for(int i = 0; i< MAX_STOCKS; i++)
         {
             GameObject newStock = Instantiate(stock, new Vector3(0,0), Quaternion.identity);
             newStock.transform.SetParent(stockHolder.transform, false);
@@ -93,13 +94,9 @@ public class PlayerCard : MonoBehaviour
 
     }
 
-    public void SetCharge(int charge)
+    public void SetCharge(float charge)
     {
-
-        //if(hasChargeCounter <=0)return;
-
-        //chargeBar.sprite = components[charge + 2];
-
+        chargeLevels.sprite = levels[(int)charge];
     }
 
     public void removeStock()
@@ -144,8 +141,8 @@ public class PlayerCard : MonoBehaviour
     {
         if(previousPercent  < sentPercent)
         {
-            StartCoroutine(TopShake.Shake(.3f,(sentPercent - previousPercent)/120f));
-            StartCoroutine(BottomShake.Shake(.3f,(sentPercent - previousPercent)/120f));
+            StartCoroutine(TopShake.Shake(.3f,(sentPercent - previousPercent)/2f));
+            StartCoroutine(BottomShake.Shake(.3f,(sentPercent - previousPercent)/2f));
         }
         previousPercent = sentPercent;
 

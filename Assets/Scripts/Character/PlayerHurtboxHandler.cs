@@ -318,7 +318,42 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
             // Ancillary Hitsparks
             if (drifter != null && damageDealt >0f) StartCoroutine(delayHitsparks(hitSparkPos,attackData.AngleOfImpact,damageDealt,HitstunDuration *.25f));
+        
+
+            //METER BUILD
+                // -4: Hit was a registered as a counter
+                // -3: Hit did not register at all; ID was already present in dict, or target was invulnerable.
+                // -2: Hit was registerted, but Parried, dealing no damage
+                // -1: Hit was registered, but blocked
+                // 0: Hit was registered normally
+                // 1: hit was against a non-player object
+            Drifter attacker = hitbox.parent.GetComponent<Drifter>(); 
+            switch(returnCode)
+            {
+                case 1:
+                    attacker.gainSuperMeter(.04f);
+                    break;
+                case 0:
+                    attacker.gainSuperMeter(.15f);
+                    drifter.gainSuperMeter(.05f);
+                    break;
+                case -1:
+                    attacker.gainSuperMeter(.06f);
+                    drifter.gainSuperMeter(.06f);
+                    break;
+                case -2:
+                    drifter.gainSuperMeter(.5f);
+                    break;
+                case -4:
+                    drifter.gainSuperMeter(.33f);
+                    break;
+                default:
+                    break;
+            }
+
+
         }
+
         return returnCode;
     }
 

@@ -193,6 +193,7 @@ public class PlayerAttacks : MonoBehaviour
 
     void StartAttack(DrifterAttackType attackType)
     {
+        drifter.gainSuperMeter(.05f);
         //UnityEngine.Debug.Log("STARTING ATTACK: " + attackType.ToString());
         SetHitboxesActive(false);
         status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,8f);
