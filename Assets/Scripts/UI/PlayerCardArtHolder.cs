@@ -61,7 +61,7 @@ public class PlayerCardArtHolder : MonoBehaviour
                 playerCards[i].drifterIndex = imageIndex;
 
                 playerCards[i].setImages(faces[imageIndex], stocks[imageIndex]);
-                playerCards[i].addStocks(stockPrefab, 3);
+                playerCards[i].addStocks(stockPrefab, 4);
 
             }
             //if(mainCamera == null) GameObject.FindGameObjectWithTag("MainCamera");
@@ -76,7 +76,7 @@ public class PlayerCardArtHolder : MonoBehaviour
             if (drifters[i] != null)
             {
                 playerCards[i].removeToStock(drifters[i].Stocks);
-                playerCards[i].SetCharge(drifters[i].GetCharge());
+                playerCards[i].SetCharge(drifters[i].superCharge);
 
                 //Prolly remove this
                 playerCards[i].SetColor(drifters[i].myColor);

@@ -53,7 +53,7 @@ public class Drifter : MonoBehaviour, INetworkInit
     }
 
     int Charge = 0;
-    public float superCharge = 0f;
+    public float superCharge = 3f;
 
     public float BlockReduction = .5f;
     
@@ -119,7 +119,7 @@ public class Drifter : MonoBehaviour, INetworkInit
 
     public void Start()
     {
-        Stocks = drifterType!="Sandbag"?3:999;
+        Stocks = drifterType!="Sandbag"?4:999;
         if(drifterType=="Sandbag")SetColor(8);
         DamageTaken = 0f;
     }
@@ -133,6 +133,12 @@ public class Drifter : MonoBehaviour, INetworkInit
     { 
         if(Charge != newCharge) Charge=newCharge;
         if(isHost) gameObject.GetComponent<SyncChargeHost>().setCharge(Charge);
+    }
+
+    public void gainSuperMeter(float charge)
+    {
+        if(isHost)
+            superCharge = Mathf.Min(charge + superCharge,5f);
     }
 
     public void ModifyCharge(int newCharge)

@@ -709,23 +709,25 @@ public class PlayerMovement : MonoBehaviour
     public void superCancel()
     {
 
-        if(!GameController.Instance.IsHost)return;
-        UnityEngine.Debug.Log("SUPER PRESSED");
-
+        if(!GameController.Instance.IsHost || drifter.superCharge < 1f)return;
         //Hyperguard
-        if(status.HasStatusEffect(PlayerStatusEffect.HITPAUSE) && drifter.guarding && !drifter.guardBreaking)
+        if(status.HasStatusEffect(PlayerStatusEffect.HITPAUSE) && drifter.guarding && !drifter.guardBreaking  && drifter.superCharge > 1f)
         {
             animator.enabled = true;
             hitstun = false;
             status.clearStunStatus();
+            drifter.superCharge -= 1f;
             spawnSuperParticle("Hyper_Guard_Burst");
-
+            status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,3f * framerateScalar);
         }
         //Offensive Cancel
-        else if(status.HasStatusEffect(PlayerStatusEffect.END_LAG))
+        else if(status.HasStatusEffect(PlayerStatusEffect.END_LAG) && drifter.superCharge > 2f)
         {
             spawnSuperParticle("Offensive_Cancel");
+            drifter.superCharge -= 2f;
             drifter.returnToIdle();
+            if(currentJumps+1 < numberOfJumps) currentJumps++;
+            status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,3f * framerateScalar);
         }
         //Super Move
 
@@ -735,13 +737,16 @@ public class PlayerMovement : MonoBehaviour
         // }
 
         //Burst/Defensive Cancel
-        else if(!drifter.guarding)
+        else if(!drifter.guarding && drifter.superCharge > 2f)
         {
             animator.enabled = true;
             hitstun = false;
             status.clearStunStatus();
+            drifter.superCharge -= 2f;
             spawnSuperParticle("Defensive_Cancel");
+            if(currentJumps+1 < numberOfJumps) currentJumps++;
             drifter.returnToIdle();
+            status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,3f * framerateScalar);
         }
 
     }

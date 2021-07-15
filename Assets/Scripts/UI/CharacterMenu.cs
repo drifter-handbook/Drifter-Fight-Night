@@ -143,8 +143,8 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         AddCharSelState(-1);
         if(GameController.Instance.IsTraining)
         {
-            AddCharSelState(1);
-            SelectDrifter("Sandbag",1);
+            AddCharSelState(0);
+            SelectDrifter("Sandbag",0);
         }
             
     }
