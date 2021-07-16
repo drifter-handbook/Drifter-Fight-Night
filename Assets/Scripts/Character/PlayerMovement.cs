@@ -710,9 +710,11 @@ public class PlayerMovement : MonoBehaviour
     {
 
         if(!GameController.Instance.IsHost || drifter.superCharge < 1f || status.HasStatusEffect(PlayerStatusEffect.DEAD))return;
+
         //Hyperguard
         if(status.HasStatusEffect(PlayerStatusEffect.HITPAUSE) && drifter.guarding && !drifter.guardBreaking  && drifter.superCharge > 1f)
         {
+            attacks.SetupAttackID(DrifterAttackType.Super_Cancel);
             animator.enabled = true;
             hitstun = false;
             status.clearStunStatus();
@@ -723,6 +725,7 @@ public class PlayerMovement : MonoBehaviour
         //Offensive Cancel
         else if(status.HasStatusEffect(PlayerStatusEffect.END_LAG) && drifter.superCharge > 2f)
         {
+            attacks.SetupAttackID(DrifterAttackType.Super_Cancel);
             spawnSuperParticle("Offensive_Cancel");
             drifter.superCharge -= 2f;
             drifter.returnToIdle();
@@ -737,8 +740,9 @@ public class PlayerMovement : MonoBehaviour
         // }
 
         //Burst/Defensive Cancel
-        else if(!drifter.guarding && drifter.superCharge > 2f)
+        else if(!drifter.guarding && drifter.superCharge > 2f && status.HasEnemyStunEffect())
         {
+            attacks.SetupAttackID(DrifterAttackType.Super_Cancel);
             animator.enabled = true;
             hitstun = false;
             status.clearStunStatus();

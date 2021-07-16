@@ -128,7 +128,6 @@ public class PlayerAttacks : MonoBehaviour
 
         if(superPressed)
         {
-            SetupAttackID(DrifterAttackType.Super_Cancel);
             movement.superCancel();
         }
 

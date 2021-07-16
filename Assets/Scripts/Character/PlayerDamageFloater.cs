@@ -10,7 +10,9 @@ public class PlayerDamageFloater : MonoBehaviour
     private int persistTick = 0;
     private float displayValue = 0;
     private readonly int tickDelta = 10;
+    public int tickDelay = 16;
     // Start is called before the first frame update
+    int totalDelay = 0;
     void Start()
     {
 
@@ -22,10 +24,10 @@ public class PlayerDamageFloater : MonoBehaviour
         Vector3 pos = gameObject.transform.position + new Vector3(0 , 0.01f, 0);
         gameObject.transform.position = pos;
         Color32 alpha = DamageDisplayText.faceColor;
-        if (persistTick > 255)
+        if (persistTick > totalDelay)
             alpha.a = 255;
         else
-            alpha.a = (byte)persistTick;
+            alpha.a = (byte)(255 * persistTick/totalDelay);
         DamageDisplayText.faceColor = alpha;
 
         persistTick--;
@@ -43,7 +45,8 @@ public class PlayerDamageFloater : MonoBehaviour
         DamageDisplayText.text = damage.ToString();
         displayValue = damage;
         gameObject.transform.localScale = Vector3.one * (1 + displayValue / 128);
-        persistTick = (int)(255 + displayValue * tickDelta);
+        persistTick = (int)(tickDelay + displayValue * tickDelta);
+        totalDelay= persistTick;
         if (isTrue) 
             DamageDisplayText.faceColor = Color.red;
         else

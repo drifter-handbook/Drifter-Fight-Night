@@ -87,7 +87,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
 
                 drifter.Stocks--;
                 drifter.DamageTaken = 0f;
-                drifter.superCharge = 3f;
+                drifter.superCharge = 2f;
                 drifter.status.ApplyStatusEffect(PlayerStatusEffect.DEAD, 1.9f);
                 drifter.status.ApplyStatusEffect(PlayerStatusEffect.INVULN, 7f);
 

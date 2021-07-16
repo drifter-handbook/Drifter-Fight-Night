@@ -339,7 +339,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                     attacker.gainSuperMeter(.04f);
                     break;
                 case 0:
-                    attacker.gainSuperMeter(.15f);
+                    attacker.gainSuperMeter(damageDealt *.02f);
                     drifter.gainSuperMeter(.05f);
                     break;
                 case -1:

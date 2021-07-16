@@ -56,7 +56,7 @@ public class Drifter : MonoBehaviour, INetworkInit
     //int Charge = 0;
 
 
-    public float superCharge = 3f;
+    public float superCharge = 2f;
 
     public float BlockReduction = .5f;
     
