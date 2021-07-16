@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.InputSystem;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -15,7 +16,9 @@ public class EscapeMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown("joystick button 7"))
+        //TODO: Add back joystick support
+        //Input.GetKeyDown("joystick button 7")
+        if (Keyboard.current.escapeKey.wasPressedThisFrame)
         {
             ToggleMenu();
         }

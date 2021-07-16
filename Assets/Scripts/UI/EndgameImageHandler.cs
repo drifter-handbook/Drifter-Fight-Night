@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class EndgameImageHandler : MonoBehaviour
@@ -82,16 +83,16 @@ public class EndgameImageHandler : MonoBehaviour
     void Update()
     {
 
-        if(Input.GetKeyDown(KeyCode.Escape))backToMain();
+        if(Keyboard.current.escapeKey.wasPressedThisFrame) backToMain();
         
-        if((Input.GetMouseButton(0) || Input.GetMouseButton(1) || Input.GetMouseButton(2)) && !mouse)
+        if((Mouse.current.leftButton.isPressed || Mouse.current.rightButton.isPressed || Mouse.current.middleButton.isPressed) && !mouse)
         {
             mouse = true;
             //Cursor.visible = true;
             EventSystem.current.SetSelectedGameObject(null);
 
         }
-        else if(Input.anyKey && mouse && (!Input.GetMouseButton(0) || !Input.GetMouseButton(1) || !Input.GetMouseButton(2))){
+        else if(Keyboard.current.anyKey.isPressed && mouse && (!Mouse.current.leftButton.isPressed || !Mouse.current.rightButton.isPressed || !Mouse.current.middleButton.isPressed)){
             EventSystem.current.SetSelectedGameObject(GameObject.Find("MainMenu"));
             mouse = false;
         }

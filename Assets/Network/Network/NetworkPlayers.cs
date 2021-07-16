@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class NetworkPlayers : MonoBehaviour, ISyncHost
 {
@@ -90,16 +91,17 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
         player.GetComponent<Drifter>().prevInput[0] = (PlayerInputData)input.Clone();
     }
 
-    public static PlayerInputData GetInput(CustomControls keyBindings)
+    public static PlayerInputData GetInput(InputActionAsset keyBindings)
     {
+        InputActionMap playerInputAction = keyBindings.FindActionMap("Player");
         PlayerInputData input = new PlayerInputData();
         // get player input
 
-        input.Jump = Input.GetKey(keyBindings.jumpKey) || Input.GetKey(keyBindings.jumpKeyAlt);
-        input.Light = Input.GetKey(keyBindings.lightKey) ;
-        input.Special = Input.GetKey(keyBindings.specialKey);
-        input.Super = Input.GetKey(keyBindings.superKey);
-        input.Guard = Input.GetKey(keyBindings.guard1Key) || Input.GetKey(keyBindings.guard2Key);
+        input.Jump = playerInputAction.FindAction("Jump").ReadValue<float>() > 0 || playerInputAction.FindAction("Jump Alt").ReadValue<float>() > 0;
+        input.Light = playerInputAction.FindAction("Light").ReadValue<float>() > 0;
+        input.Special = playerInputAction.FindAction("Special").ReadValue<float>() > 0;
+        input.Super = playerInputAction.FindAction("Grab").ReadValue<float>() > 0;
+        input.Guard = playerInputAction.FindAction("Guard 1").ReadValue<float>() > 0 || playerInputAction.FindAction("Guard 2").ReadValue<float>() > 0;
 
         //TODO REIMPLEMENT GAMEPLAD CONTROLS
         //controller movement input
@@ -112,33 +114,33 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
         // //keyboard movement input
         // else
         // {
-            input.MoveX = 0;
-            if (Input.GetKey(keyBindings.leftKey))
+        input.MoveX = 0;
+            if (playerInputAction.FindAction("Left").ReadValue<float>() > 0)
             {
                 input.MoveX--;
             }
-            if (Input.GetKey(keyBindings.rightKey)) //|| Input.GetButtonDown("Horizontal"))
+            if (playerInputAction.FindAction("Right").ReadValue<float>() > 0) //|| Input.GetButtonDown("Horizontal"))
             {
                 input.MoveX++;
             }
             input.MoveY = 0;
-            if (Input.GetKey(keyBindings.downKey))
+            if (playerInputAction.FindAction("Down").ReadValue<float>() > 0)
             {
                 // down key does nothing
                 input.MoveY--;
             }
-            if (Input.GetKey(keyBindings.upKey))
+            if (playerInputAction.FindAction("Up").ReadValue<float>() > 0)
             {
                 input.MoveY++;
             }
         //}
 
-        if (Input.GetKey(keyBindings.guard1Key) && Input.GetKey(keyBindings.downKey))
+        if (playerInputAction.FindAction("Guard 1").triggered && playerInputAction.FindAction("Down").ReadValue<float>() > 0)
         {
             input.MoveY--;
         }
 
-        
+
 
         return input;
     }

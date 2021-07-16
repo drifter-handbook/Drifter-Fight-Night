@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -208,13 +209,15 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         SyncToCharSelectState();
         transform.Find("ReadyButton").gameObject.SetActive(GameController.Instance.IsHost);
 
-         if(Input.GetAxis("Mouse X")!=0 || Input.GetAxis("Mouse X")<0 && !mouse)
+        //Removed || Input.GetAxis("Mouse X")<0
+        if (Mouse.current.delta.ReadValue().x != 0 && !mouse)
         {
             mouse = true;
             EventSystem.current.SetSelectedGameObject(null);
 
         }
-        if((Input.anyKey || Input.GetAxis ("Horizontal") !=0 || Input.GetAxis ("Vertical") != 0) && mouse && (!Input.GetMouseButton(0) || Input.GetMouseButton(1) || Input.GetMouseButton(2))){
+
+        if ((Keyboard.current.anyKey.isPressed || GameController.Instance.controls.FindActionMap("Player").FindAction("Horizontal").ReadValue<float>() != 0 || GameController.Instance.controls.FindActionMap("Player").FindAction("Vertical").ReadValue<float>() != 0) && mouse && (!Mouse.current.leftButton.isPressed || Mouse.current.rightButton.isPressed || Mouse.current.middleButton.isPressed)){
             mouse = false;
             EventSystem.current.SetSelectedGameObject(everyoneReady() && GameController.Instance.IsHost ?(stageSelect?GameObject.Find("Training"):forwardButton):GameObject.Find("Random Figurine"));
         }
@@ -227,8 +230,10 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         else forwardButton.GetComponent<Button>().interactable = false;
 
         //Press B or esc to bo back a screen
-
-        if((Input.GetKeyDown("joystick button 1") || Input.GetKeyDown(KeyCode.Escape))){
+        //TODO: Add joystick support here.
+        //Input.GetKeyDown("joystick button 1") ||
+        if (Keyboard.current.escapeKey.wasPressedThisFrame)
+        {
             UnityEngine.Debug.Log("BACK DETECTED");
             BackButton();
         }

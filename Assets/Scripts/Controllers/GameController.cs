@@ -8,6 +8,7 @@ using System.Net;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Assertions;
+using UnityEngine.InputSystem;
 using GameAnalyticsSDK;
 
 [DisallowMultipleComponent]
@@ -62,7 +63,7 @@ public class GameController : MonoBehaviour
     [NonSerialized]
     public IPEndPoint MatchmakingServer = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 6997);
 
-    public CustomControls controls;
+    public InputActionAsset controls;
 
     public int PlayerID = -1;
     public float[] volume = { -1f, -1f, -1f };
@@ -151,7 +152,7 @@ public class GameController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
+        if (Keyboard.current.pKey.wasPressedThisFrame)
         {
             IsPaused = !IsPaused;
         }

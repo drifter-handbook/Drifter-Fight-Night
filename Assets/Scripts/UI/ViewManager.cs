@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 // TODO: Rename to Menu Manager
 // Handles the menu logic flow and sends important stuff back to the game controller to disseminate
@@ -68,7 +69,7 @@ public class ViewManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Keyboard.current.escapeKey.wasPressedThisFrame)
         {
             if (currentView == "Mode Menu")
             {
@@ -81,14 +82,14 @@ public class ViewManager : MonoBehaviour
             }
         }
 
-        if((Input.GetMouseButton(0) || Input.GetMouseButton(1) || Input.GetMouseButton(2)) && !mouse)
+        if(Mouse.current.leftButton.isPressed || Mouse.current.rightButton.isPressed || Mouse.current.middleButton.isPressed && !mouse)
         {
             mouse = true;
             //Cursor.visible = true;
             EventSystem.current.SetSelectedGameObject(null);
 
         }
-        else if(Input.anyKey && mouse && (!Input.GetMouseButton(0) || !Input.GetMouseButton(1) || !Input.GetMouseButton(2))){
+        else if(Keyboard.current.anyKey.isPressed && mouse && (!Mouse.current.leftButton.isPressed || !Mouse.current.rightButton.isPressed || !Mouse.current.middleButton.isPressed)){
             mouse = false;
             //Cursor.visible = false;
             switch (currentView){
