@@ -39,9 +39,14 @@ public class PlayerDamageFloater : MonoBehaviour
             Destroy(gameObject);
     }
 
-    public void InitializeValues(float damage) {
+    public void InitializeValues(float damage, bool isTrue) {
         DamageDisplayText.text = damage.ToString();
         displayValue = damage;
+        gameObject.transform.localScale = Vector3.one * (1 + displayValue / 128);
         persistTick = (int)(255 + displayValue * tickDelta);
+        if (isTrue) 
+            DamageDisplayText.faceColor = Color.red;
+        else
+            DamageDisplayText.faceColor = Color.yellow;
     }
 }

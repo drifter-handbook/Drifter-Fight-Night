@@ -10,6 +10,7 @@ public class PlayerDamageNumbers : MonoBehaviour
     [SerializeField] private GameObject floater;
     private float accumilatedDamage;
     private float persistTick;
+    private bool isTrue;
 
     // Start is called before the first frame update
     void Start()
@@ -24,7 +25,7 @@ public class PlayerDamageNumbers : MonoBehaviour
             persistTick -= Time.deltaTime;
             if (persistTick <= 0) {
                 GameObject floaterClone = Instantiate(floater, gameObject.transform.position, gameObject.transform.rotation);
-                floaterClone.GetComponent<PlayerDamageFloater>().InitializeValues(accumilatedDamage);
+                floaterClone.GetComponent<PlayerDamageFloater>().InitializeValues(accumilatedDamage, isTrue);
                 gameObject.SetActive(false);
             }
         }
@@ -32,9 +33,18 @@ public class PlayerDamageNumbers : MonoBehaviour
 
     public void Increment(float damage, bool isCombo, float hitstun) {
         gameObject.SetActive(true);
-        if (isCombo) {
+        if (persistTick > 0) {
+            if (isTrue && !isCombo)
+            {
+                DamageDisplayText.faceColor = Color.yellow;
+                isTrue = false;
+            }
             accumilatedDamage += damage;
+            gameObject.transform.localScale = Vector3.one * (1 + accumilatedDamage / 128);
         } else {
+            gameObject.transform.localScale = Vector3.one;
+            isTrue = true;
+            DamageDisplayText.faceColor = Color.red;
             accumilatedDamage = damage;
         }
         persistTick = 1 + hitstun;
@@ -43,6 +53,7 @@ public class PlayerDamageNumbers : MonoBehaviour
 
     public void Reset() {
         gameObject.SetActive(false);
+        persistTick = 0;
         accumilatedDamage = 0;
     }
 }
