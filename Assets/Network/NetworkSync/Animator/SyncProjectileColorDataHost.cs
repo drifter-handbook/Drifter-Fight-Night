@@ -31,11 +31,11 @@ public class SyncProjectileColorDataHost : MonoBehaviour, ISyncHost
 
     public void setColor(int colorCode)
     {
-        if (GameController.Instance.IsHost && GameController.Instance.IsOnline)
+        if (GameController.Instance.IsHost)
         {
             color = colorCode;
             sprite.material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)colorCode]);
-            sync.SendNetworkMessage(new SyncInt() { integerValue = colorCode});
+            if(GameController.Instance.IsOnline)sync.SendNetworkMessage(new SyncInt() { integerValue = colorCode});
         }
     }
 }

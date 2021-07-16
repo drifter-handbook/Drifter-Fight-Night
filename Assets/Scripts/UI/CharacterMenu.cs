@@ -94,6 +94,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
     void Awake()
     {
+
         foreach (PlayerSelectFigurine drifter in drifters)
         {
             figurines[drifter.drifter] = drifter;
@@ -138,7 +139,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
             charSelStates = NetworkUtils.GetNetworkData<CharacterSelectSyncData>(sync["charSelState"]).charSelState;
         }
-        
+        GameController.Instance.host.Peers =  new List<int>();
         // add host
         AddCharSelState(-1);
         if(GameController.Instance.IsTraining)
@@ -161,13 +162,14 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
     public void AddCharSelState(int peerID)
     {
+        UnityEngine.Debug.Log("PEER ADDED");
         charSelStates.Add(new CharacterSelectState()
         {
             PeerID = peerID
         });
 
         //Fix this for multiple input devices
-        if(!GameController.Instance.IsOnline && peerID != -1)
+        if(peerID != -1)
             GameController.Instance.host.Peers.Add(peerID);
         
         SortCharSelState(charSelStates);
@@ -175,6 +177,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
     public void RemoveCharSelState(int peerID)
     {
+        UnityEngine.Debug.Log("PEER REMOVED");
         for (int i = 0; i < charSelStates.Count; i++)
         {
             if (charSelStates[i].PeerID == peerID)
@@ -184,7 +187,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
             }
         }
 
-        if(!GameController.Instance.IsOnline && peerID != -1)
+        if(peerID != -1)
             GameController.Instance.host.Peers.Remove(peerID);
 
         SortCharSelState(charSelStates);
@@ -601,14 +604,12 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     {
         //TODO: C
         if (GameController.Instance.GetComponent<NetworkClient>() != null)
-        {
             GameController.Instance.CleanupNetwork();
-        }
+
 
         if (GameController.Instance.GetComponent<NetworkHost>() != null)
-        {
             GameController.Instance.CleanupNetwork();
-        }
+            
         GameController.Instance.Load("MenuScene");
     }
 

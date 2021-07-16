@@ -140,35 +140,12 @@ public class GameController : MonoBehaviour
 
     IEnumerator EndGameCoroutine(float delay)
     {
-    //     //Save Players in the game before the list is yeeted.
-    //     Dictionary<int,DrifterType> temp = new Dictionary<int,DrifterType>();
-
-    //     foreach(KeyValuePair<int, GameObject> kvp in NetworkPlayers.Instance.players){
-    //         temp.Add(kvp.Key,kvp.Value.GetComponent<Drifter>().GetDrifterType());
-    //     }
+   
         yield return new WaitForSeconds(delay);
-    //     host.SetScene("Endgame");
-    //     yield return new WaitForSeconds(.1f);
 
-    //     EndgameImageHandler endHandler = GameObject.FindGameObjectWithTag("EndgamePic").GetComponent<EndgameImageHandler>();
-
-    //     foreach (KeyValuePair<int, DrifterType> kvp in temp)
-    //     {
-    //         if(kvp.Key == Instance.winner)
-    //         {
-    //             endHandler.playWinnerAudio(kvp.Key==-1?0:kvp.Key);
-    //             endHandler.setWinnerPic(kvp.Value, CharacterMenu.ColorFromEnum[(PlayerColor)(kvp.Key==-1?0:kvp.Key)]);
-
-    //         }
-    //         else
-    //         {
-    //             endHandler.setSillyImage(kvp.Value, CharacterMenu.ColorFromEnum[(PlayerColor)(kvp.Key==-1?0:kvp.Key)]);
-    //         }
-    //     }
-
-         host?.SetScene("Endgame");
-         endingGame = null;
-         yield break;
+        host?.SetScene("Endgame");
+        endingGame = null;
+        yield break;
 
     }
 
@@ -208,23 +185,6 @@ public class GameController : MonoBehaviour
         PlayerID = 0;
     }
 
-    public void StartOfflineGame()
-    {
-        if(host != null)
-        {
-            UnityEngine.Debug.Log("STONKY");
-            Destroy(GetComponent<NetworkSync>());
-            Destroy(GetComponent<NetworkHost>());
-            Destroy(host);
-        }
-
-        host = gameObject.AddComponent<NetworkHost>();
-        NetworkSync sync = gameObject.AddComponent<NetworkSync>();
-        sync.Initialize(0, "GameController");
-        host.Initialize();
-        //matchmakingHost = GetComponent<MatchmakingHost>() ?? gameObject.AddComponent<MatchmakingHost>();
-        PlayerID = 0;
-    }
     public void StartNetworkClient(string roomCode)
     {
         if(client != null)
@@ -254,6 +214,7 @@ public class GameController : MonoBehaviour
         
         if (IsHost)
         {
+
             Destroy(host);
             host = null;
             Destroy(matchmakingHost);

@@ -29,11 +29,8 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
 
             playerList = new int[NetworkPlayers.Instance.players.Count]; 
             foreach (KeyValuePair<int, GameObject> kvp in NetworkPlayers.Instance.players)
-            {
-                UnityEngine.Debug.Log(kvp.Value);
-                UnityEngine.Debug.Log(kvp.Key);
                 playerList[kvp.Key +1] = 1;
-            }
+    
 
             startingPlayers = NetworkPlayers.Instance.players.Count;
             currentPlayers = startingPlayers;

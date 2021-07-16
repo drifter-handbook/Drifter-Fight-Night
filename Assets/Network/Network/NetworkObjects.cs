@@ -95,6 +95,8 @@ public class NetworkObjects : MonoBehaviour
             objectID = NetworkClient.NextObjectID;
         }
         GameObject networkObj = Instantiate(GetNetworkTypePrefab(networkType));
+
+        //UnityEngine.Debug.Log(networkObjects)
         RegisterNetworkObject(objectID, networkType, networkObj);
         if (GameController.Instance.IsHost)
         {
@@ -110,7 +112,10 @@ public class NetworkObjects : MonoBehaviour
     {
         if (networkObjects.ContainsKey(objectID))
         {
-            throw new InvalidOperationException($"Object ID {objectID} already exists. GameObjects: {networkObjects[objectID].name}, {networkObj.name}");
+            if(networkObjects[objectID] == null)
+                networkObjects.Remove(objectID);
+            else
+                throw new InvalidOperationException($"Object ID {objectID} already exists. GameObjects: {networkObjects[objectID].name}, {networkObj.name}");
         }
         RemoveIncorrectComponents(networkObj);
         // initialize

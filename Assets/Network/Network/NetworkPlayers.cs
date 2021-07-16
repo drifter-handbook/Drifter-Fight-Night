@@ -20,6 +20,7 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
     // Start is called before the first frame update
     void Start()
     {
+        //UnityEngine.Debug.Log(GameController.Instance.host.Peers.Count);
         syncFromClients = GetComponent<NetworkSyncToHost>();
         // create host
         int playerNum = 0;

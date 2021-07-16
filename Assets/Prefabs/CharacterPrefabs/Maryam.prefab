@@ -1401,6 +1401,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 1405145404548730497}
+  owner: {fileID: 0}
+  capsule: {fileID: 0}
 --- !u!1 &6596258482071592109
 GameObject:
   m_ObjectHideFlags: 0
@@ -2291,7 +2293,7 @@ PrefabInstance:
     - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: AttackMap.Array.data[7].attack
-      value: 15
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
@@ -2314,7 +2316,7 @@ PrefabInstance:
         type: 3}
       propertyPath: AttackMap.Array.data[7].attackData
       value: 
-      objectReference: {fileID: 11400000, guid: 09955764df685b94fbecb4d113223a66,
+      objectReference: {fileID: 11400000, guid: be94e269e9183e840a9536a046b0df0c,
         type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 03006bf76a5e1274aaf3da8b9c69d8f9, type: 3}
