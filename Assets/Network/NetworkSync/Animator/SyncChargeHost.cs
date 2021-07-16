@@ -21,17 +21,24 @@ public class SyncChargeHost : MonoBehaviour, ISyncHost
     {
         if(!GameController.Instance.IsOnline)return;
         sync["chargeInfo"] = 
-            new SyncInt
+            new SyncFloat
             {
-                integerValue = drifter.GetCharge()
+                floatValue = drifter.superCharge
             };
     }
 
-    public void setCharge(int charge)
+    public void setCharge(float charge)
     {
         if (GameController.Instance.IsHost && GameController.Instance.IsOnline)
         {
-            sync.SendNetworkMessage(new SyncInt() { integerValue = drifter.GetCharge()});
+            sync.SendNetworkMessage(new SyncFloat() { floatValue = drifter.superCharge});
         }
+    }
+
+
+    public class SyncFloat : INetworkData
+    {
+        public float floatValue;
+        public string Type { get; set; }
     }
 }

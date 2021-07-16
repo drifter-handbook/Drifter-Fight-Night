@@ -5,22 +5,22 @@ using UnityEngine;
 public class SwordFrogMasterHit : MasterHit
 {
 
-    float chargeTime = 0;
+    //float chargeTime = 0;
 
     void Update()
     {
         if(!isHost)return;
-        //Generate a new arrow every 3 seconds
-        if(drifter.GetCharge() < 3)
-        {
-            chargeTime += Time.deltaTime;
-            if(chargeTime >= 3f)
-            {
-                Empowered = true;
-                drifter.IncrementCharge();
-                chargeTime = 0;
-            }
-        }
+        // //Generate a new arrow every 3 seconds
+        // if(drifter.GetCharge() < 3)
+        // {
+        //     chargeTime += Time.deltaTime;
+        //     if(chargeTime >= 3f)
+        //     {
+        //         Empowered = true;
+        //         drifter.IncrementCharge();
+        //         chargeTime = 0;
+        //     }
+        // }
         
     }
 
@@ -29,35 +29,35 @@ public class SwordFrogMasterHit : MasterHit
     public void fireCrossbow()
     {
         if(!isHost)return;
-        facing = movement.Facing;
+        // facing = movement.Facing;
 
-        //Fire an arrow if Swordfrog has a charge
-        if(drifter.GetCharge() >0){
-            drifter.DecrementCharge();
+        // //Fire an arrow if Swordfrog has a charge
+        // if(drifter.GetCharge() >0){
+        //     drifter.DecrementCharge();
             
-            GameObject arrow = host.CreateNetworkObject("Arrow", transform.position + new Vector3(0, 3.8f, 0), transform.rotation);
-            arrow.transform.localScale = new Vector3(7.5f * facing, 7.5f, 1f);
-            arrow.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + facing * 60f, 5f);
-            foreach (HitboxCollision hitbox in arrow.GetComponentsInChildren<HitboxCollision>(true))
-            {
-                hitbox.parent = drifter.gameObject;
-                hitbox.AttackID = attacks.AttackID;
-                hitbox.AttackType = attacks.AttackType;
-                hitbox.Active = true;
-                hitbox.Facing = facing;
-            }
+        //     GameObject arrow = host.CreateNetworkObject("Arrow", transform.position + new Vector3(0, 3.8f, 0), transform.rotation);
+        //     arrow.transform.localScale = new Vector3(7.5f * facing, 7.5f, 1f);
+        //     arrow.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + facing * 60f, 5f);
+        //     foreach (HitboxCollision hitbox in arrow.GetComponentsInChildren<HitboxCollision>(true))
+        //     {
+        //         hitbox.parent = drifter.gameObject;
+        //         hitbox.AttackID = attacks.AttackID;
+        //         hitbox.AttackType = attacks.AttackType;
+        //         hitbox.Active = true;
+        //         hitbox.Facing = facing;
+        //     }
             
-        }
+        // }
 
-        //Spawn a smoke puff for juice
+        // //Spawn a smoke puff for juice
 
-        GraphicalEffectManager.Instance.CreateMovementParticle(MovementParticleMode.SmokeTrail, transform.position + new Vector3(facing * 4f, 3.8f, 0), transform.rotation.eulerAngles.z,new Vector2(1, 1));
+        // GraphicalEffectManager.Instance.CreateMovementParticle(MovementParticleMode.SmokeTrail, transform.position + new Vector3(facing * 4f, 3.8f, 0), transform.rotation.eulerAngles.z,new Vector2(1, 1));
         
 
-        //Update charge count
-        if(drifter.GetCharge() ==0){
-            Empowered = false;
-        }
+        // //Update charge count
+        // if(drifter.GetCharge() ==0){
+        //     Empowered = false;
+        // }
 
     }
 

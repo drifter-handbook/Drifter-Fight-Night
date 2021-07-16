@@ -7,6 +7,7 @@ public class DrifterCannonMasterHit : MasterHit
 
     float boostTime = 1.3f;
     bool jumpGranted = false;
+    int charge = 1;
 
     void Update()
     {
@@ -19,7 +20,6 @@ public class DrifterCannonMasterHit : MasterHit
     	}
 
         if(jumpGranted && movement.grounded)jumpGranted = false;
-
 
     }
 
@@ -153,13 +153,13 @@ public class DrifterCannonMasterHit : MasterHit
     public void handleRanchStartup()
     {
     	if(!isHost)return;
-    	if(drifter.GetCharge() > 1) drifter.PlayAnimation("W_Neutral_" + drifter.GetCharge());
+    	if(charge > 1) drifter.PlayAnimation("W_Neutral_" + charge);
     }
 
     public void SetCharge(int charge)
     {
     	if(!isHost)return;
-    	drifter.SetCharge(charge);
+    	this.charge = charge;
     	Empowered = (charge == 3);
 
     	drifter.WalkStateName = Empowered?"Walk_Ranch":"Walk";
@@ -180,12 +180,12 @@ public class DrifterCannonMasterHit : MasterHit
         facing = movement.Facing;
         Vector3 pos = new Vector3(1f * facing,2.7f,0);
         
-        GameObject ranch = host.CreateNetworkObject("Ranch" + drifter.GetCharge(), transform.position + pos, transform.rotation);
+        GameObject ranch = host.CreateNetworkObject("Ranch" + charge, transform.position + pos, transform.rotation);
         ranch.transform.localScale = new Vector3(10f * facing, 10f , 1f);
 
-        rb.velocity = new Vector2((drifter.GetCharge() - 1) * -15f* facing,0);
+        rb.velocity = new Vector2((charge - 1) * -15f* facing,0);
         
-        if(drifter.GetCharge() < 3)ranch.GetComponent<Rigidbody2D>().velocity = new Vector2((drifter.GetCharge() == 1?40f:20f)* facing,0);
+        if(charge < 3)ranch.GetComponent<Rigidbody2D>().velocity = new Vector2((charge == 1?40f:20f)* facing,0);
 
         SetCharge(1);
 

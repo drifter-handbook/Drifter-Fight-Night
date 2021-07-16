@@ -8,6 +8,8 @@ public class NeoSwordFrogMasterHit : MasterHit
 
     Vector2 HeldDirection;
 
+    int charge = 0;
+
     void Update()
     {
         if(!isHost)return;
@@ -15,7 +17,7 @@ public class NeoSwordFrogMasterHit : MasterHit
         {
             Empowered = false;
             if(kunaiShoot != null)StopCoroutine(kunaiShoot);
-            if(drifter.GetCharge() > 0)drifter.SetCharge(0);
+            if(charge > 0)charge = 0;
         }
     }
 
@@ -25,8 +27,8 @@ public class NeoSwordFrogMasterHit : MasterHit
          if(chargeAttackPesistent("W_Neutral_Fire") !=0)return;
          else if(grantCharge >=1)
          {
-            drifter.IncrementCharge();
-            if(drifter.GetCharge()>=3)
+            charge++;
+            if(charge>=3)
             {
                 Empowered = true;
                 returnToIdle();
@@ -72,8 +74,8 @@ public class NeoSwordFrogMasterHit : MasterHit
     IEnumerator fireKunaiDown()
     {
 
-        int baseCharge = drifter.GetCharge();
-        int projnum = drifter.GetCharge() * 2;
+        int baseCharge = charge;
+        int projnum = charge * 2;
         float radians;
 
         while(projnum >= 0)
@@ -98,9 +100,9 @@ public class NeoSwordFrogMasterHit : MasterHit
             projnum--;
 
             refreshHitboxID();
-            if(projnum%2 ==0)drifter.DecrementCharge();
+            if(projnum%2 ==0)charge--;
         }
-        if(drifter.GetCharge() < 0)drifter.SetCharge(0);
+        if(charge < 0)charge = 0;
         yield break;
 
     }
@@ -145,8 +147,8 @@ public class NeoSwordFrogMasterHit : MasterHit
     IEnumerator fireKunaiNeutral()
     {
 
-        int baseCharge = drifter.GetCharge();
-        int projnum = drifter.GetCharge() * 2;
+        int baseCharge = charge;
+        int projnum = charge * 2;
         float radians;
 
         while(projnum >= 0)
@@ -171,9 +173,9 @@ public class NeoSwordFrogMasterHit : MasterHit
             projnum--;
 
             refreshHitboxID();
-            if(projnum%2 ==0)drifter.DecrementCharge();
+            if(projnum%2 ==0)charge--;
         }
-        if(drifter.GetCharge() < 0)drifter.SetCharge(0);
+        if(charge < 0)charge = 0;
         yield break;
 
     }

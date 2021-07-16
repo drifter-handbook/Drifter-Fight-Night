@@ -709,7 +709,7 @@ public class PlayerMovement : MonoBehaviour
     public void superCancel()
     {
 
-        if(!GameController.Instance.IsHost || drifter.superCharge < 1f)return;
+        if(!GameController.Instance.IsHost || drifter.superCharge < 1f || status.HasStatusEffect(PlayerStatusEffect.DEAD))return;
         //Hyperguard
         if(status.HasStatusEffect(PlayerStatusEffect.HITPAUSE) && drifter.guarding && !drifter.guardBreaking  && drifter.superCharge > 1f)
         {

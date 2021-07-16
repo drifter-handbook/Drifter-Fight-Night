@@ -52,7 +52,10 @@ public class Drifter : MonoBehaviour, INetworkInit
         set { sync["damageTaken"] = value; }
     }
 
-    int Charge = 0;
+    //REMOVE THIS
+    //int Charge = 0;
+
+
     public float superCharge = 3f;
 
     public float BlockReduction = .5f;
@@ -119,7 +122,7 @@ public class Drifter : MonoBehaviour, INetworkInit
 
     public void Start()
     {
-        Stocks = drifterType!="Sandbag"?4:999;
+        Stocks = !GameController.Instance.IsTraining ? 4:999;
         if(drifterType=="Sandbag")SetColor(8);
         DamageTaken = 0f;
     }
@@ -129,10 +132,10 @@ public class Drifter : MonoBehaviour, INetworkInit
         return myColor;
     }
 
-    public void SetCharge(int newCharge)
+    public void SetCharge(float newCharge)
     { 
-        if(Charge != newCharge) Charge=newCharge;
-        if(isHost) gameObject.GetComponent<SyncChargeHost>().setCharge(Charge);
+        if(superCharge != newCharge) superCharge=newCharge;
+        if(isHost) gameObject.GetComponent<SyncChargeHost>().setCharge(superCharge);
     }
 
     public void gainSuperMeter(float charge)
@@ -141,27 +144,27 @@ public class Drifter : MonoBehaviour, INetworkInit
             superCharge = Mathf.Min(charge + superCharge,5f);
     }
 
-    public void ModifyCharge(int newCharge)
-    { 
-        if(isHost) gameObject.GetComponent<SyncChargeHost>().setCharge(Charge + newCharge);
-    }
+    // public void ModifyCharge(int newCharge)
+    // { 
+    //     if(isHost) gameObject.GetComponent<SyncChargeHost>().setCharge(Charge + newCharge);
+    // }
 
-    public void IncrementCharge()
-    { 
-        Charge++;
-        if(isHost) gameObject.GetComponent<SyncChargeHost>().setCharge(Charge);
-    }
+    // public void IncrementCharge()
+    // { 
+    //     Charge++;
+    //     if(isHost) gameObject.GetComponent<SyncChargeHost>().setCharge(Charge);
+    // }
 
-    public void DecrementCharge()
-    { 
-        Charge--;
-        if(isHost) gameObject.GetComponent<SyncChargeHost>().setCharge(Charge);
-    }
+    // public void DecrementCharge()
+    // { 
+    //     Charge--;
+    //     if(isHost) gameObject.GetComponent<SyncChargeHost>().setCharge(Charge);
+    // }
 
-    public int GetCharge()
-    { 
-        return this.Charge;
-    }
+    // public int GetCharge()
+    // { 
+    //     return this.Charge;
+    // }
 
 
     public void SetPeerId(int id){
