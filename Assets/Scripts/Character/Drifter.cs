@@ -187,7 +187,11 @@ public class Drifter : MonoBehaviour, INetworkInit
 
     public void SetIndicatorDirection(float facing)
     {
-        if(isHost)transform.GetChild(0).localScale = new Vector2(Mathf.Abs(transform.GetChild(0).localScale.x) * facing,transform.GetChild(0).localScale.y);
+        if(isHost)
+            {
+                transform.GetChild(0).localScale = new Vector2(Mathf.Abs(transform.GetChild(0).localScale.x) * facing,transform.GetChild(0).localScale.y);
+                transform.GetChild(4).localScale = new Vector2(Mathf.Abs(transform.GetChild(4).localScale.x) * facing,transform.GetChild(4).localScale.y);
+            }
     }
 
     //Replaces the animator state transition function

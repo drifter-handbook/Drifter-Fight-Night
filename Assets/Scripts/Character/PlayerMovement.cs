@@ -722,6 +722,7 @@ public class PlayerMovement : MonoBehaviour
             spawnSuperParticle("Hyper_Guard_Burst");
             status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,3f * framerateScalar);
         }
+        
         //Offensive Cancel
         else if(status.HasStatusEffect(PlayerStatusEffect.END_LAG) && drifter.superCharge > 2f)
         {
@@ -731,13 +732,8 @@ public class PlayerMovement : MonoBehaviour
             drifter.returnToIdle();
             if(currentJumps+1 < numberOfJumps) currentJumps++;
             status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,3f * framerateScalar);
+            
         }
-        //Super Move
-
-        // else if()
-        // {
-
-        // }
 
         //Burst/Defensive Cancel
         else if(!drifter.guarding && drifter.superCharge > 2f && status.HasEnemyStunEffect())
@@ -751,6 +747,7 @@ public class PlayerMovement : MonoBehaviour
             if(currentJumps+1 < numberOfJumps) currentJumps++;
             drifter.returnToIdle();
             status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,3f * framerateScalar);
+            
         }
 
     }
