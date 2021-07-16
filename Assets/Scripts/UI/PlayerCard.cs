@@ -19,7 +19,9 @@ public class PlayerCard : MonoBehaviour
     // public Sprite[] portraits_one_Charge;
     public Sprite[] levels;
 
-    public Image chargeBar;
+    public RectTransform chargeBar;
+    public RectTransform chargeMask;
+
     public Image chargeLevels;
 
     public Image ribbons;
@@ -97,6 +99,12 @@ public class PlayerCard : MonoBehaviour
     public void SetCharge(float charge)
     {
         chargeLevels.sprite = levels[(int)charge];
+
+        float loc = -(charge/5f) * 68f + 12f;
+
+        chargeBar.anchoredPosition  =  new Vector2(-1 *loc,0);
+        chargeMask.anchoredPosition  = new Vector2(loc,0);
+
     }
 
     public void removeStock()
