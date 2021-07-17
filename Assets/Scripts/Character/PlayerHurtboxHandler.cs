@@ -94,7 +94,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
 
             //Calculate the direction for knockback
-            float facingDir = Mathf.Sign(hitbox.Facing) == 0 ? 1 : Mathf.Sign(hitbox.Facing);
+            float facingDir = attackData.mirrorKnockback? (hurtbox.capsule.bounds.center.x > hitbox.gameObject.GetComponent<Collider2D>().bounds.center.x ? 1: -1) : Mathf.Sign(hitbox.Facing) == 0 ? 1 : Mathf.Sign(hitbox.Facing);
 
             // rotate direction by angle of impact
             //Do we still need all this math?

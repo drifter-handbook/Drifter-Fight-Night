@@ -34,6 +34,10 @@ public class SingleAttackData : ScriptableObject
     [Help("Does this attack Break shields?", UnityEditor.MessageType.Info)]
     #endif
     public bool isGrab = false;
+    #if UNITY_EDITOR
+    [Help("Does this attack mirror its knockback based on the opponents relative position to the user?", UnityEditor.MessageType.Info)]
+    #endif
+    public bool mirrorKnockback = false;
     public float AngleOfImpact = 45f;
     public PlayerStatusEffect StatusEffect = PlayerStatusEffect.HIT;
     public float StatusDuration =.1f;
