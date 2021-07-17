@@ -61,6 +61,9 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
             //Ignore the collision if invulnerable
             if(status.HasStatusEffect(PlayerStatusEffect.INVULN))return -3;
+
+            Drifter attacker = hitbox.parent.GetComponent<Drifter>();
+            attacker.canFeint = false;
             
             //Freezefame if hit a counter
             if(hurtbox.gameObject.name == "Counter" &&  attackData.AttackDamage >0f && !attackData.isGrab)
@@ -203,7 +206,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
                 if(attackData.StatusEffect != PlayerStatusEffect.PLANTED || GetComponent<PlayerMovement>().grounded){
 
-                    status?.calculateFrameAdvantage(attackData.StatusDuration* framerateScalar,hitbox.parent.GetComponent<Drifter>().getRemainingAttackTime());
+                    status?.calculateFrameAdvantage(attackData.StatusDuration* framerateScalar,attacker.getRemainingAttackTime());
 
                 	if(attackData.StatusEffect == PlayerStatusEffect.PLANTED && !status.HasStatusEffect(PlayerStatusEffect.PLANTED)) GetComponent<Rigidbody2D>().velocity = Vector3.down*5f;
                 	status.ApplyStatusEffect(attackData.StatusEffect, (attackData.StatusEffect == PlayerStatusEffect.PLANTED || attackData.StatusEffect == PlayerStatusEffect.AMBERED?
@@ -256,7 +259,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 else GetComponent<PlayerMovement>().spawnJuiceParticle(hitSparkPos, MovementParticleMode.Parry);
                 //put defender in blockstun
                 if(attackData.HitStun != 0){
-                        status?.calculateFrameAdvantage(framerateScalar * (1f + Mathf.Ceil(attackData.AttackDamage/4f)),hitbox.parent.GetComponent<Drifter>().getRemainingAttackTime());
+                        status?.calculateFrameAdvantage(framerateScalar * (1f + Mathf.Ceil(attackData.AttackDamage/4f)),attacker.getRemainingAttackTime());
                         status?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, framerateScalar * (1f + Mathf.Ceil(attackData.AttackDamage/4f)));
                 }
 
@@ -332,7 +335,6 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 // -1: Hit was registered, but blocked
                 // 0: Hit was registered normally
                 // 1: hit was against a non-player object
-            Drifter attacker = hitbox.parent.GetComponent<Drifter>(); 
             switch(returnCode)
             {
                 case 1:

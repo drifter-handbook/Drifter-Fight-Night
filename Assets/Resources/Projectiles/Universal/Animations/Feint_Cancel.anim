@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Offensive_Cancel
+  m_Name: Feint_Cancel
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -42,25 +42,25 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Enabled
-    path: Hitboxes/Offensive_Cancel
+    path: Hitboxes/Feint_Cancel
     classID: 58
     script: {fileID: 0}
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: -2974727444057543491, guid: 21893b4f1d1c329488ad3c563b360a3b,
+      value: {fileID: 7494416856389118059, guid: cc530f130efaefb4c808a7827f278bb8,
         type: 3}
     - time: 0.083333336
-      value: {fileID: 2494238278668783810, guid: 21893b4f1d1c329488ad3c563b360a3b,
+      value: {fileID: 5283440523871655281, guid: cc530f130efaefb4c808a7827f278bb8,
         type: 3}
     - time: 0.16666667
-      value: {fileID: 5871266089692582450, guid: 21893b4f1d1c329488ad3c563b360a3b,
+      value: {fileID: 2770985884503893210, guid: cc530f130efaefb4c808a7827f278bb8,
         type: 3}
     - time: 0.25
-      value: {fileID: -6338169722115170804, guid: 21893b4f1d1c329488ad3c563b360a3b,
+      value: {fileID: -782479260994460686, guid: cc530f130efaefb4c808a7827f278bb8,
         type: 3}
     - time: 0.33333334
-      value: {fileID: 983714172464347322, guid: 21893b4f1d1c329488ad3c563b360a3b,
+      value: {fileID: 8357140129028517645, guid: cc530f130efaefb4c808a7827f278bb8,
         type: 3}
     attribute: m_Sprite
     path: 
@@ -74,7 +74,7 @@ AnimationClip:
   m_ClipBindingConstant:
     genericBindings:
     - serializedVersion: 2
-      path: 2117255438
+      path: 80482924
       attribute: 3305885265
       script: {fileID: 0}
       typeID: 58
@@ -88,11 +88,11 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: -2974727444057543491, guid: 21893b4f1d1c329488ad3c563b360a3b, type: 3}
-    - {fileID: 2494238278668783810, guid: 21893b4f1d1c329488ad3c563b360a3b, type: 3}
-    - {fileID: 5871266089692582450, guid: 21893b4f1d1c329488ad3c563b360a3b, type: 3}
-    - {fileID: -6338169722115170804, guid: 21893b4f1d1c329488ad3c563b360a3b, type: 3}
-    - {fileID: 983714172464347322, guid: 21893b4f1d1c329488ad3c563b360a3b, type: 3}
+    - {fileID: 7494416856389118059, guid: cc530f130efaefb4c808a7827f278bb8, type: 3}
+    - {fileID: 5283440523871655281, guid: cc530f130efaefb4c808a7827f278bb8, type: 3}
+    - {fileID: 2770985884503893210, guid: cc530f130efaefb4c808a7827f278bb8, type: 3}
+    - {fileID: -782479260994460686, guid: cc530f130efaefb4c808a7827f278bb8, type: 3}
+    - {fileID: 8357140129028517645, guid: cc530f130efaefb4c808a7827f278bb8, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
@@ -139,7 +139,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Enabled
-    path: Hitboxes/Offensive_Cancel
+    path: Hitboxes/Feint_Cancel
     classID: 58
     script: {fileID: 0}
   m_EulerEditorCurves: []

@@ -105,6 +105,8 @@ public class Drifter : MonoBehaviour, INetworkInit
     public bool parrying = false;
     [NonSerialized]
     public bool guardBreaking = false;
+    [NonSerialized]
+    public bool canFeint = true;
 
     public void OnNetworkInit()
     {
@@ -233,6 +235,7 @@ public class Drifter : MonoBehaviour, INetworkInit
     {
         //UnityEngine.Debug.Log("DRIFTER: RETURNING TO IDLE: " + state);
         movement.canLandingCancel = false;
+        canFeint = true;
         clearGuardFlags();
         if(movement.grounded)animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState(GroundIdleStateName,animationLayer);
         else animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState(AirIdleStateName,animationLayer);

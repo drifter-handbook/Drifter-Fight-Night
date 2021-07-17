@@ -714,50 +714,55 @@ public class PlayerMovement : MonoBehaviour
         //Hyperguard
         if(status.HasStatusEffect(PlayerStatusEffect.HITPAUSE) && drifter.guarding && !drifter.guardBreaking  && drifter.superCharge > 1f)
         {
-            attacks.SetupAttackID(DrifterAttackType.Super_Cancel);
             animator.enabled = true;
             hitstun = false;
             status.clearStunStatus();
-            drifter.superCharge -= 1f;
-            spawnSuperParticle("Hyper_Guard_Burst");
-            status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,3f * framerateScalar);
+
+             spawnSuperParticle("Hyper_Guard_Burst",1f);
+             drifter.returnToIdle();
+             status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,3f * framerateScalar);
         }
         
         //Offensive Cancel
-        else if(status.HasStatusEffect(PlayerStatusEffect.END_LAG) && drifter.superCharge > 2f)
+        else if(status.HasStatusEffect(PlayerStatusEffect.END_LAG) && drifter.superCharge > 1f)
         {
-            attacks.SetupAttackID(DrifterAttackType.Super_Cancel);
-            spawnSuperParticle("Offensive_Cancel");
-            drifter.superCharge -= 2f;
-            drifter.returnToIdle();
+            if(drifter.superCharge > 2f && !drifter.canFeint)
+            {
+                spawnSuperParticle("Offensive_Cancel",2f);
+                drifter.returnToIdle();
+            }
+            else if(drifter.canFeint)
+            {
+                spawnSuperParticle("Feint_Cancel",1f);
+                drifter.returnToIdle();
+            }
             if(currentJumps+1 < numberOfJumps) currentJumps++;
-            status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,3f * framerateScalar);
-            
         }
 
         //Burst/Defensive Cancel
         else if(!drifter.guarding && drifter.superCharge > 2f && status.HasEnemyStunEffect())
         {
-            attacks.SetupAttackID(DrifterAttackType.Super_Cancel);
             animator.enabled = true;
             hitstun = false;
             status.clearStunStatus();
-            drifter.superCharge -= 2f;
-            spawnSuperParticle("Defensive_Cancel");
+
+            spawnSuperParticle("Defensive_Cancel",2f);
             if(currentJumps+1 < numberOfJumps) currentJumps++;
             drifter.returnToIdle();
             status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,3f * framerateScalar);
-            
         }
 
     }
 
-    private void spawnSuperParticle(string mode)
+    private void spawnSuperParticle(string mode,float cost)
     {
 
+        attacks.SetupAttackID(DrifterAttackType.Super_Cancel);
         Vector3 flip = new Vector3(Facing * 10f, 10f, 0f);
         //Vector3 pos = new Vector3(Facing * 3f, 3.5f, 1f);
         
+        drifter.superCharge -= cost;
+
         GameObject cancel = GameController.Instance.host.CreateNetworkObject("SuperEffect", transform.position , transform.rotation);
         foreach (HitboxCollision hitbox in cancel.GetComponentsInChildren<HitboxCollision>(true))
         {
@@ -768,6 +773,7 @@ public class PlayerMovement : MonoBehaviour
             hitbox.Facing = Facing;
         }
         cancel.GetComponent<SyncAnimatorStateHost>().SetState(mode);
+        
     }
 
 
