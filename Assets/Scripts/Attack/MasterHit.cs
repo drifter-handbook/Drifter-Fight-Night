@@ -111,7 +111,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     public void freezeGravity()
     {
         if(!isHost)return;
-        savedVelocity = rb.velocity;
+        savedVelocity = new Vector3(Mathf.Clamp(rb.velocity.x,-45f,45f), Mathf.Clamp(rb.velocity.y,-45f,45f));
         savingVelocity = true;
         movement.cancelJump();
         movement.gravityPaused= true;

@@ -718,9 +718,10 @@ public class PlayerMovement : MonoBehaviour
             hitstun = false;
             status.clearStunStatus();
 
-             spawnSuperParticle("Hyper_Guard_Burst",1f);
-             drifter.returnToIdle();
-             status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,3f * framerateScalar);
+            spawnSuperParticle("Hyper_Guard_Burst",1f);
+            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,5f * framerateScalar);
+            drifter.PlayAnimation("Burst");
+             //status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,3f * framerateScalar);
         }
         
         //Offensive Cancel
@@ -729,14 +730,17 @@ public class PlayerMovement : MonoBehaviour
             if(drifter.superCharge > 2f && !drifter.canFeint)
             {
                 spawnSuperParticle("Offensive_Cancel",2f);
-                drifter.returnToIdle();
+                drifter.PlayAnimation("Burst");
+                status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,5f * framerateScalar);
+                //drifter.returnToIdle();
             }
             else if(drifter.canFeint)
             {
                 spawnSuperParticle("Feint_Cancel",1f);
-                drifter.returnToIdle();
+                drifter.PlayAnimation("Burst");
+                status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,5f * framerateScalar);
             }
-            if(currentJumps+1 < numberOfJumps) currentJumps++;
+            
         }
 
         //Burst/Defensive Cancel
@@ -745,11 +749,12 @@ public class PlayerMovement : MonoBehaviour
             animator.enabled = true;
             hitstun = false;
             status.clearStunStatus();
+            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,5f * framerateScalar);
 
             spawnSuperParticle("Defensive_Cancel",2f);
             if(currentJumps+1 < numberOfJumps) currentJumps++;
-            drifter.returnToIdle();
-            status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,3f * framerateScalar);
+            drifter.PlayAnimation("Burst");
+            //status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,3f * framerateScalar);
         }
 
     }
