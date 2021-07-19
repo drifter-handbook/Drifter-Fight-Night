@@ -79,14 +79,13 @@ public class LucilleMasterHit : MasterHit
     public void SpawnRift()
     {
         // jump upwards and create spear projectile
-        if(!isHost)return;
+        if(!isHost || drifter.superCharge < 1)return;
 
         facing = movement.Facing;
 
         //remove the oldest portal if size limit would be exceeded.
-        if(getTotalPortalSize() >= 9) rifts.Dequeue().GetComponent<LucillePortal>().decay();
-        
-
+        //if(getTotalPortalSize() >= 9) rifts.Dequeue().GetComponent<LucillePortal>().decay();
+       
         GameObject rift = GameController.Instance.host.CreateNetworkObject("Lucille_Rift", transform.position + new Vector3(0,3.5f,0), transform.rotation);
 
         foreach (HitboxCollision hitbox in rift.GetComponentsInChildren<HitboxCollision>(true))
@@ -100,8 +99,10 @@ public class LucilleMasterHit : MasterHit
         }
         rift.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
         rift.GetComponent<LucillePortal>().drifter = drifter.gameObject;
+       
+        drifter.superCharge -= 1f;
         rifts.Enqueue(rift);
-
+        
         //drifter.SetCharge(3 + getTotalPortalSize());
     }
 
@@ -170,7 +171,7 @@ public class LucilleMasterHit : MasterHit
             if(explosiveDelete != 0)rift.GetComponent<LucillePortal>().detonate();
             else rift.GetComponent<LucillePortal>().decay();
         }
-        drifter.SetCharge(0);
+        rifts = new Queue<GameObject>();
     }
 
     int getTotalPortalSize()
