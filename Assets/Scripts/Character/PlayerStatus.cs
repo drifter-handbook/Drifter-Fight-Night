@@ -45,6 +45,7 @@ class PlayerStatusData
     public GameObject statusBar = null;
     public float duration = 0;
     public bool stacking = false;
+    public float stacks = 1f;
     //public bool isMashable = false;
 
     public PlayerStatusData(string statusName, int icon = -1 ,bool remove = true,bool stun = false, bool self = false, int channel = 0, bool stacking = false) //, bool mashable = false)
@@ -133,6 +134,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
             grabPoint=null;
             statusDataMap[PlayerStatusEffect.GRABBED].duration = 0;
             rb.velocity = delayedVelocity;
+            delayedVelocity = Vector2.zero;
         }
         
         if(time >= .1f)
@@ -142,7 +144,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
             if(HasStatusEffect(PlayerStatusEffect.HITPAUSE) || HasStatusEffect(PlayerStatusEffect.GRABBED))
             {
                  statusDataMap[PlayerStatusEffect.HITPAUSE].duration--;
-                 if(!HasStatusEffect(PlayerStatusEffect.HITPAUSE))rb.velocity = delayedVelocity;
+                 if(!HasStatusEffect(PlayerStatusEffect.HITPAUSE) && delayedVelocity != Vector2.zero)rb.velocity = delayedVelocity;
             }
             //Otherwise, tick down all active statuses
             else{
@@ -151,11 +153,17 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
                 {
                     if(HasStatusEffect(ef.Key))
                     {
-                        ef.Value.duration--;
+                        if(ef.Key == PlayerStatusEffect.POISONED)
+                            drifter.DamageTaken += Mathf.Min(statusDataMap[PlayerStatusEffect.POISONED].stacks *.035f,.5f);
+
+                        else ef.Value.duration--;
                         //Damage player if they are on fire
                         if(ef.Key == PlayerStatusEffect.BURNING) drifter.DamageTaken += .2f;
+                        
                         //Re-apply the saved velocity if the player just lost cringe
                         if(ef.Key == PlayerStatusEffect.CRINGE && !HasStatusEffect(PlayerStatusEffect.CRINGE))rb.velocity = delayedVelocity;
+
+                        if(!HasStatusEffect(ef.Key))ef.Value.stacks=0f;
 
                     }
                 }
@@ -223,7 +231,11 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
     {
 		foreach(KeyValuePair<PlayerStatusEffect,PlayerStatusData> ef in statusDataMap)
         {
-            if(ef.Value.removeOnHit) ef.Value.duration = 0;
+            if(ef.Value.removeOnHit) 
+            {
+                ef.Value.duration = 0;
+                ef.Value.stacks = 0;
+            }
         }
         grabPoint = null;
     }
@@ -234,7 +246,11 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
     {
         foreach(KeyValuePair<PlayerStatusEffect,PlayerStatusData> ef in statusDataMap)
         {
-            if(ef.Value.isStun) ef.Value.duration = 0;
+            if(ef.Value.isStun)
+            {
+                ef.Value.duration = 0;
+                ef.Value.stacks = 0;
+            }
         }
         grabPoint = null;
     }
@@ -244,7 +260,10 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
     {
         foreach(KeyValuePair<PlayerStatusEffect,PlayerStatusData> ef in statusDataMap)
         {
+            
             ef.Value.duration = 0;
+            ef.Value.stacks = 0;
+            
         }
         grabPoint = null;
     }
@@ -254,7 +273,11 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
     {
         foreach(KeyValuePair<PlayerStatusEffect,PlayerStatusData> ef in statusDataMap)
         {
-            if(ef.Value.channel == channel) ef.Value.duration = 0;
+            if(ef.Value.channel == channel)
+            {
+                ef.Value.duration = 0;
+                ef.Value.stacks = 0;
+            }
         }
     }
 
@@ -362,7 +385,8 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         //If status effect stacks, add new duration to current duration and return.
         if(data.stacking && HasStatusEffect(ef))
         {
-            data.duration += duration * 10f;
+            data.stacks++;
+            data.duration = duration * 10f;
             return;
         }
 

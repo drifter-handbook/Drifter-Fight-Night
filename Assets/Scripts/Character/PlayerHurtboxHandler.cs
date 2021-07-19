@@ -348,6 +348,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 case 0:
                     attacker.gainSuperMeter(damageDealt *.02f);
                     drifter.gainSuperMeter(.05f);
+                    attackerStatus.ApplyStatusEffect(PlayerStatusEffect.POISONED,0f);
                     break;
                 case -1:
                     attacker.gainSuperMeter(.06f);

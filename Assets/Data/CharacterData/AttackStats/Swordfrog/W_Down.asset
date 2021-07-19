@@ -13,12 +13,15 @@ MonoBehaviour:
   m_Name: W_Down
   m_EditorClassIdentifier: 
   AttackDamage: 2
-  Knockback: 20
+  Knockback: 22
   KnockbackScale: 0.1
   hasStaticHitstun: 1
   HitStun: 4
   isGrab: 0
-  AngleOfImpact: 305
+  isSweetSpot: 0
+  mirrorKnockback: 0
+  AngleOfImpact: 290
   StatusEffect: 20
   StatusDuration: 0.1
   HitVisual: 7
+  SweetVisual: 0

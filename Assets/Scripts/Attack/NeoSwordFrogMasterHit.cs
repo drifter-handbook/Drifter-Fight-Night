@@ -40,10 +40,10 @@ public class NeoSwordFrogMasterHit : MasterHit
     {
         if(!isHost)return;
         facing = movement.Facing;
-        if(movement.grounded)
-        {
-            rb.velocity = new Vector2(20 * facing,30);
-        }
+
+        if(drifter.input.MoveX == facing) rb.velocity = new Vector2(30 * facing,movement.grounded?22:rb.velocity.y+10f);
+        else rb.velocity = new Vector2(15 * facing,movement.grounded?30:rb.velocity.y+10f);
+        
 
     }
 

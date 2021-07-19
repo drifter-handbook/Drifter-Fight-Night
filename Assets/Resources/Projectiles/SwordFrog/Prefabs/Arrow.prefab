@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7976103684887440196}
   m_Layer: 9
   m_Name: Hitboxes
-  m_TagString: Untagged
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -46,6 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1110211681013022850}
   playerType: {fileID: 0}
+  isActive: 1
   OverrideData: {fileID: 11400000, guid: 632b9e6a8b55cd14da79d387e150e43f, type: 2}
   AttackData: {fileID: 0}
 --- !u!70 &7976103684887440196
