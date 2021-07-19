@@ -270,6 +270,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         if(drifter.input.MoveX ==0)movement.canDash = true;
 		unpauseGravity();
         movement.terminalVelocity = terminalVelocity;
+        horizontalReleased = false;
     	drifter.returnToIdle();
     }
 

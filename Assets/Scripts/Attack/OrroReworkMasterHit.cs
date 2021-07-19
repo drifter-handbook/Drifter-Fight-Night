@@ -10,6 +10,7 @@ public class OrroReworkMasterHit : MasterHit
     GameObject beanObject;
     float neutralSpecialCharge = 0;
 
+
     void Start()
     {
         spawnBean();
@@ -45,6 +46,28 @@ public class OrroReworkMasterHit : MasterHit
             playState("W_Neutral_Fire");
         }
         switch(chargeAttackSingleUse("W_Neutral_Fire"))
+        {
+            case 0:
+                neutralSpecialCharge += 1;
+                break;
+            case 1:
+                neutralSpecialCharge = 0;
+                break;
+            default:
+            // The attack was fired;
+                break;     
+        }
+    }
+
+    public void WSideCharge()
+    {
+        if(!isHost)return;
+        applyEndLag(1);
+        if(neutralSpecialCharge > 9)
+        {
+            playState("W_Side_Fire");
+        }
+        switch(chargeAttackSingleUse("W_Side_Fire"))
         {
             case 0:
                 neutralSpecialCharge += 1;
@@ -119,6 +142,13 @@ public class OrroReworkMasterHit : MasterHit
         bean.playState("Bean_Neutral");
     }
 
+    public void BeanSideSpecial()
+    {
+        if(!isHost)return;
+        refreshBeanHitboxes();
+        bean.playState("Bean_Side_Special");
+    }
+
     public void spawnBean()
     {
         if(!isHost)return;
@@ -142,6 +172,28 @@ public class OrroReworkMasterHit : MasterHit
         bean.color = drifter.GetColor();
 
     }
+
+    public void SpawnSideW()
+    {
+        if(!isHost)return;
+        facing = movement.Facing;
+        Vector3 pos = new Vector3(2f * facing,2.7f,0);
+        
+        GameObject rip = host.CreateNetworkObject("OrroWSide", transform.position + pos, transform.rotation);
+        rip.transform.localScale = new Vector3(10f * facing, 10f , 1f);
+        foreach (HitboxCollision hitbox in rip.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.AttackData = attacks.Attacks[attacks.AttackType];
+            hitbox.Active = true;
+            hitbox.Facing = facing;
+       }
+       rip.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
+       neutralSpecialCharge = 0;
+    }
+
 
     private void refreshBeanHitboxes(){
         if(!isHost)return;
@@ -176,7 +228,6 @@ public class OrroReworkMasterHit : MasterHit
         neutralSpecialCharge = 0;
 
     }
-
 
     public override void roll()
     {

@@ -30,7 +30,8 @@ public enum PlayerStatusEffect
 	END_LAG,
 	KNOCKBACK,
 	HITPAUSE,
-    GUARDBROKEN, 
+    GUARDBROKEN,
+    ORBO 
 }
 
 class PlayerStatusData
@@ -94,7 +95,8 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         {PlayerStatusEffect.END_LAG,                            new PlayerStatusData("END_LAG",stun: true, self: true)                              },
         {PlayerStatusEffect.KNOCKBACK,                          new PlayerStatusData("KNOCKBACK",remove: false, stun: true)                         },
         {PlayerStatusEffect.HITPAUSE,                           new PlayerStatusData("HITPAUSE",stun: true, self:true)                              },
-        {PlayerStatusEffect.GUARDBROKEN,                        new PlayerStatusData("GUARDBROKEN",icon: 14,remove: false)                           },
+        {PlayerStatusEffect.GUARDBROKEN,                        new PlayerStatusData("GUARDBROKEN",icon: 14,remove: false)                          },
+        {PlayerStatusEffect.ORBO,                               new PlayerStatusData("ORBO",icon: 15,remove: false)                                 },
     };
 
     float time = 0f;
