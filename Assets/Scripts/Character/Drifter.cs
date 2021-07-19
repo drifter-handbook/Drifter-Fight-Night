@@ -55,6 +55,8 @@ public class Drifter : MonoBehaviour, INetworkInit
     //REMOVE THIS
     //int Charge = 0;
 
+    float terminalVelocity;
+
 
     public float superCharge = 2f;
 
@@ -127,6 +129,8 @@ public class Drifter : MonoBehaviour, INetworkInit
         Stocks = !GameController.Instance.IsTraining ? 4:999;
         if(drifterType=="Sandbag")SetColor(8);
         DamageTaken = 0f;
+
+        terminalVelocity = movement.terminalVelocity;
     }
 
     public int GetColor()
@@ -240,6 +244,7 @@ public class Drifter : MonoBehaviour, INetworkInit
         if(movement.grounded)animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState(GroundIdleStateName,animationLayer);
         else animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState(AirIdleStateName,animationLayer);
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
+        movement.terminalVelocity = terminalVelocity;
         
     }
 

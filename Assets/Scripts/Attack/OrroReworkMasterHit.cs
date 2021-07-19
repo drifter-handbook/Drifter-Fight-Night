@@ -65,6 +65,14 @@ public class OrroReworkMasterHit : MasterHit
         movement.spawnJuiceParticle(transform.position + new Vector3(0,1,0),MovementParticleMode.Orro_Page, false);
     }
 
+
+    public void boost()
+    {
+        if(!isHost)return;
+
+        movement.spawnJuiceParticle(transform.position + new Vector3(0,2,0),MovementParticleMode.Orro_Boost, false);
+    }
+
     public void pageFlip()
     {
         if(!isHost)return;

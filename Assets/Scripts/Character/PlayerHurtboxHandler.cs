@@ -312,6 +312,11 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
             float hitSparkAngle = facingDir * ((Mathf.Abs(attackData.AngleOfImpact) > 65f && attackData.HitVisual != HitSpark.SPIKE) ? Mathf.Sign(attackData.AngleOfImpact) * 90f : 0f);
             GraphicalEffectManager.Instance.CreateHitSparks(hitSparkMode, hitSparkPos, hitSparkAngle, hitSparkScale);
+
+
+            if(attackData.SweetVisual != HitSpark.NONE)
+                GraphicalEffectManager.Instance.CreateHitSparks(attackData.SweetVisual, hitSparkPos, angle, hitSparkScale);
+            
         
             if (drifter != null && willCollideWithBlastZone(GetComponent<Rigidbody2D>(), HitstunDuration))
             {
