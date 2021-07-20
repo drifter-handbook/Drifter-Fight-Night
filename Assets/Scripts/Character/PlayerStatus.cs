@@ -154,7 +154,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
                     if(HasStatusEffect(ef.Key))
                     {
                         if(ef.Key == PlayerStatusEffect.POISONED)
-                            drifter.DamageTaken += Mathf.Min(statusDataMap[PlayerStatusEffect.POISONED].stacks *.035f,.5f);
+                            drifter.DamageTaken += Mathf.Min(statusDataMap[PlayerStatusEffect.POISONED].duration *.035f,.5f);
 
                         else ef.Value.duration--;
                         //Damage player if they are on fire
@@ -162,6 +162,9 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
                         
                         //Re-apply the saved velocity if the player just lost cringe
                         if(ef.Key == PlayerStatusEffect.CRINGE && !HasStatusEffect(PlayerStatusEffect.CRINGE))rb.velocity = delayedVelocity;
+
+
+                        //if(ef.Key == PlayerStatusEffect.ORBO && !HasStatusEffect(ef.Key)) 
 
                         if(!HasStatusEffect(ef.Key))ef.Value.stacks=0f;
 
@@ -232,10 +235,8 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
 		foreach(KeyValuePair<PlayerStatusEffect,PlayerStatusData> ef in statusDataMap)
         {
             if(ef.Value.removeOnHit) 
-            {
                 ef.Value.duration = 0;
-                ef.Value.stacks = 0;
-            }
+        
         }
         grabPoint = null;
     }
@@ -247,10 +248,8 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         foreach(KeyValuePair<PlayerStatusEffect,PlayerStatusData> ef in statusDataMap)
         {
             if(ef.Value.isStun)
-            {
                 ef.Value.duration = 0;
-                ef.Value.stacks = 0;
-            }
+
         }
         grabPoint = null;
     }
@@ -259,12 +258,8 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
     public void clearAllStatus()
     {
         foreach(KeyValuePair<PlayerStatusEffect,PlayerStatusData> ef in statusDataMap)
-        {
-            
             ef.Value.duration = 0;
-            ef.Value.stacks = 0;
-            
-        }
+
         grabPoint = null;
     }
 
@@ -274,10 +269,9 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         foreach(KeyValuePair<PlayerStatusEffect,PlayerStatusData> ef in statusDataMap)
         {
             if(ef.Value.channel == channel)
-            {
                 ef.Value.duration = 0;
-                ef.Value.stacks = 0;
-            }
+
+
         }
     }
 
@@ -385,8 +379,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         //If status effect stacks, add new duration to current duration and return.
         if(data.stacking && HasStatusEffect(ef))
         {
-            data.stacks++;
-            data.duration = duration * 10f;
+            data.stacks += duration * 10f;
             return;
         }
 
@@ -419,7 +412,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         //save delayed velocity
         if(ef == PlayerStatusEffect.HITPAUSE || ef == PlayerStatusEffect.CRINGE || ef == PlayerStatusEffect.GRABBED) delayedVelocity = rb.velocity;
 
-    	data.duration = duration * 10f;
+    	data.duration = (ef == PlayerStatusEffect.ORBO) ? 240f * framerateScalar : duration * 10f;
 
     }
 

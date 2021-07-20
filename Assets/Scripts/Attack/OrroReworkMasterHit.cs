@@ -178,6 +178,9 @@ public class OrroReworkMasterHit : MasterHit
         if(!isHost)return;
         facing = movement.Facing;
         Vector3 pos = new Vector3(2f * facing,2.7f,0);
+
+        SingleAttackData data = attacks.AttackMap[5].attackData;
+        data.StatusDuration = Mathf.Max(neutralSpecialCharge/3,1);
         
         GameObject rip = host.CreateNetworkObject("OrroWSide", transform.position + pos, transform.rotation);
         rip.transform.localScale = new Vector3(10f * facing, 10f , 1f);
@@ -186,13 +189,41 @@ public class OrroReworkMasterHit : MasterHit
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
-            hitbox.AttackData = attacks.Attacks[attacks.AttackType];
+            hitbox.AttackData = data;
             hitbox.Active = true;
             hitbox.Facing = facing;
        }
+
        rip.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
        neutralSpecialCharge = 0;
     }
+
+
+
+    // public void SpawnBeanSideW()
+    // {
+    //     if(!isHost && neutralSpecialCharge >=3)return;
+    //     facing = movement.Facing;
+    //     Vector3 pos = new Vector3(2f * facing,2.7f,0);
+
+    //     SingleAttackData data = attacks.AttackMap[5].attackData;
+    //     data.StatusDuration = Mathf.Max(neutralSpecialCharge/3,1);
+        
+    //     GameObject rip = host.CreateNetworkObject("OrroWSide", transform.position + pos, transform.rotation);
+    //     rip.transform.localScale = new Vector3(10f * facing, 10f , 1f);
+    //     foreach (HitboxCollision hitbox in rip.GetComponentsInChildren<HitboxCollision>(true))
+    //     {
+    //         hitbox.parent = drifter.gameObject;
+    //         hitbox.AttackID = attacks.AttackID;
+    //         hitbox.AttackType = attacks.AttackType;
+    //         hitbox.AttackData = data;
+    //         hitbox.Active = true;
+    //         hitbox.Facing = facing;
+    //    }
+
+    //    rip.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
+    //    neutralSpecialCharge = 0;
+    // }
 
 
     private void refreshBeanHitboxes(){

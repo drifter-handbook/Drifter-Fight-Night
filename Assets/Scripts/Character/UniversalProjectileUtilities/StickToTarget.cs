@@ -6,7 +6,7 @@ public class StickToTarget : MonoBehaviour
 {
     public GameObject victim;
 
-    void Update()
+    protected virtual void Update()
     {
         if(!GameController.Instance.IsHost)return;
         if(victim != null) transform.position  = victim.transform.position;
