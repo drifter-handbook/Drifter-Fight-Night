@@ -42,9 +42,7 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
         {
             input = NetworkUtils.GetNetworkData<PlayerInputData>(syncFromClients["input", peerID]);
             if (input != null)
-            {
                 UpdateInput(clientPlayers[peerID], input);
-            }
         }
     }
 
@@ -72,9 +70,11 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
     public static void UpdateInput(GameObject player, PlayerInputData input)
     {
         if (player == null)
-        {
             return;
-        }
+        
+        // if(input == null)
+        //     input = player.GetComponent<Drifter>().prevInput[0];
+
         player.GetComponent<Drifter>().input = input;
         player.GetComponent<PlayerMovement>().UpdateInput();
         player.GetComponent<PlayerAttacks>().UpdateInput();
@@ -101,7 +101,9 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
         input.Light = playerInputAction.FindAction("Light").ReadValue<float>() > 0;
         input.Special = playerInputAction.FindAction("Special").ReadValue<float>() > 0;
         input.Super = playerInputAction.FindAction("Grab").ReadValue<float>() > 0;
-        input.Guard = playerInputAction.FindAction("Guard 1").ReadValue<float>() > 0 || playerInputAction.FindAction("Guard 2").ReadValue<float>() > 0;
+        input.Guard = playerInputAction.FindAction("Guard 1").ReadValue<float>() > 0;
+
+        //input.Dash = playerInputAction.FindAction("Guard 2").ReadValue<float>() > 0;
 
         //TODO REIMPLEMENT GAMEPLAD CONTROLS
         //controller movement input

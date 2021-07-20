@@ -256,18 +256,11 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         movement.walkSpeed = speed;
     }
 
-    public void rechargeFoxtrot()
-    {
-        if(!isHost)return;
-        movement.canDash = true;
-    }
-
     public void returnToIdle()
 	{
         if(!isHost)return;
 		movement.jumping = false;
         specialReleased = false;
-        if(drifter.input.MoveX ==0)movement.canDash = true;
 		unpauseGravity();
         movement.terminalVelocity = terminalVelocity;
         horizontalReleased = false;

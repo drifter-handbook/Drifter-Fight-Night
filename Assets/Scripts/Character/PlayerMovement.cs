@@ -35,9 +35,9 @@ public class PlayerMovement : MonoBehaviour
     float baseGravity;
 
     
+    int dashState = 0;
+
     //Animator State Fields
-    [NonSerialized]
-    public bool canDash = true;
     public int Facing { get; set; } = 1;
     [NonSerialized]
     public int currentJumps;
@@ -58,6 +58,8 @@ public class PlayerMovement : MonoBehaviour
     bool strongLedgeGrab = true;
     [NonSerialized]
     public float techWindowElapsed = 0;
+
+    public float accelerationPercent = .9f;
 
 
     // public float activeFriction = .1f;
@@ -355,6 +357,13 @@ public class PlayerMovement : MonoBehaviour
 
         ContactPoint2D[] contacts = new ContactPoint2D[1];
         bool groundFrictionPosition = frictionCollider.GetContacts(contacts) >0;
+
+
+        if(dashState!=0 && drifter.prevInput[7].MoveX !=0 && drifter.prevInput[8].MoveX !=0)dashState = 0;
+        else if(dashState == 0 && drifter.input.MoveX !=0)dashState = 1;
+        else if(dashState == 1 && drifter.input.MoveX ==0) dashState = 2;
+
+        if(!moving)accelerationPercent = .9f;
         
         //Normal walking logic
         if (moving && canAct && ! ledgeHanging)
@@ -362,12 +371,16 @@ public class PlayerMovement : MonoBehaviour
         	//UnityEngine.Debug.Log("BEFORE velocity: " + rb.velocity.x);
         	updateFacing();            
 
+            // bool canDash = drifter.input.MoveX == 0;
 
-            if(canDash && canAct && IsGrounded() && drifter.input.MoveX != 0)
+            // bool moveReleased = drifter.input.MoveX
+
+            if(canAct && IsGrounded() && dashState == 2 && drifter.input.MoveX !=0)
             {
                 walkSpeed = dashSpeed;
                 rb.velocity = new Vector2(Facing * dashSpeed,rb.velocity.y);
-                canDash = false;
+                dashState = 0;
+                accelerationPercent = 0;
                 StartCoroutine(endFoxTrot());
                 spawnJuiceParticle(BodyCollider.bounds.center + new Vector3(Facing * (flipSprite?-1:1)* 1.5f,0), MovementParticleMode.Dash_Ring, Quaternion.Euler(0f,0f,0f), false);
                 if(groundFrictionPosition) spawnJuiceParticle(new Vector2(-Facing * (flipSprite?-1:1)* 1.5f,0) + contacts[0].point, MovementParticleMode.Dash_Cloud);
@@ -379,6 +392,7 @@ public class PlayerMovement : MonoBehaviour
                 if(groundFrictionPosition) spawnJuiceParticle(new Vector2(-Facing * (flipSprite?-1:1)* 1.5f,0) + contacts[0].point, MovementParticleMode.KickOff);
             }
 
+            
             if(IsGrounded())
             {
 
@@ -399,20 +413,25 @@ public class PlayerMovement : MonoBehaviour
                     }
 
                 }
+                if(accelerationPercent > 0) accelerationPercent -= Time.deltaTime/groundAccelerationTime;
+                else accelerationPercent = 0;
 
                 currentSpeed = walkSpeed * (status.HasStatusEffect(PlayerStatusEffect.SLOWED) ? .6f: 1f) * (status.HasStatusEffect(PlayerStatusEffect.SPEEDUP) ? 1.5f: 1f) * (drifter.input.MoveX > 0 ? 1 : -1);
 
-            	rb.velocity = new Vector2(Mathf.Lerp(currentSpeed,rb.velocity.x,groundAccelerationTime), rb.velocity.y);
             }
             else
             {
                 if(!jumping)drifter.PlayAnimation(drifter.AirIdleStateName);
                 status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0);
 
+                if(accelerationPercent >0) accelerationPercent -= Time.deltaTime/airAccelerationTime;
+                else accelerationPercent = 0;
+
                 currentSpeed = airSpeed * (status.HasStatusEffect(PlayerStatusEffect.SLOWED) ? .6f: 1f) * (status.HasStatusEffect(PlayerStatusEffect.SPEEDUP) ? 1.5f: 1f) * (drifter.input.MoveX > 0 ? 1 : -1);
 
-            	rb.velocity = new Vector2(Mathf.Lerp(currentSpeed,rb.velocity.x,groundAccelerationTime), rb.velocity.y);
+            	
             }
+            rb.velocity = new Vector2(Mathf.Lerp(currentSpeed,rb.velocity.x,accelerationPercent), rb.velocity.y);
 
         }
 
@@ -565,17 +584,19 @@ public class PlayerMovement : MonoBehaviour
     //Updates the direction the player is facing
     public void updateFacing()
     {
-        if(flipSprite ^ drifter.input.MoveX > 0){
-                Facing = 1;
-            }
-            else if(flipSprite ^ drifter.input.MoveX < 0){
-                Facing = -1;
-            }
 
-            attacks.Facing = Facing * (flipSprite?-1:1);
-            drifter.SetIndicatorDirection(Facing);
-            transform.localScale = new Vector3(Facing * Mathf.Abs(transform.localScale.x),
-                transform.localScale.y, transform.localScale.z);
+        if(Facing != drifter.input.MoveX)accelerationPercent =.9f;
+        if(flipSprite ^ drifter.input.MoveX > 0)
+            Facing = 1;
+        
+        else if(flipSprite ^ drifter.input.MoveX < 0)
+            Facing = -1;
+
+
+        attacks.Facing = Facing * (flipSprite?-1:1);
+        drifter.SetIndicatorDirection(Facing);
+        transform.localScale = new Vector3(Facing * Mathf.Abs(transform.localScale.x),
+        transform.localScale.y, transform.localScale.z);
     }
 
     //Used to forcibly invert the players direction
@@ -785,8 +806,9 @@ public class PlayerMovement : MonoBehaviour
     //Returns movement stats to normal after a dash
     IEnumerator endFoxTrot()
     {
-        yield return new WaitForSeconds(framerateScalar);
+        yield return new WaitForSeconds(3* framerateScalar);
         walkSpeed = baseWalkSpeed;
+        dashState = 0;
     }
 
     //delays jump to allow for jump squant and move queuing
