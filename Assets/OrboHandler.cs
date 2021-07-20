@@ -65,7 +65,7 @@ public class OrboHandler : StickToTarget
 
 
     	if(!status.HasStatusEffect(PlayerStatusEffect.ORBO) && radius > 0)
-    		radius -= 1.5f *Time.deltaTime;
+    		radius -= 2.5f *Time.deltaTime;
 
     	if(radius <= 0)
     		ClearOrbos();
