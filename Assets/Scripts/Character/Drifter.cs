@@ -314,30 +314,7 @@ public class Drifter : MonoBehaviour, INetworkInit
         return false;
     }
 
-    // public bool dp()
-    // {
-        
-    //     if(input[0].MoveX ==0 || input[0].MoveY >=0 )return false;
-
-    //     int state = 1;
-    //     for(int i = 1; i < input.Length; i++)
-    //     {
-    //         if(state == 0 && input[i].MoveY == 0 && input[i].MoveX == input[0].MoveX)
-    //             state++;
-    //         else if(state ==1 && input[i].MoveY == -1 && input[i].MoveX == 0)
-    //             state++;
-    //         else if(state == 2 && input[i].MoveY == 0 && input[i].MoveX == input[0].MoveX) 
-    //             state=0;
-
-    //         else if(state == 2 && input[i].MoveY < 0 && input[i].MoveX == input[0].MoveX)
-    //             return true;
-
-
-    //     }
-    //     return false;
-    // }
-
-
+  
     public DrifterType GetDrifterType(){
         return DrifterTypeFromString(drifterType);
     }
