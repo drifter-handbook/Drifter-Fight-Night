@@ -166,7 +166,6 @@ public class PlayerMovement : MonoBehaviour
         if(drifter.input.Guard) techWindowElapsed += Time.deltaTime;
         else if(status.HasGroundFriction()) techWindowElapsed = 0;
 
-
         bool moving = drifter.input.MoveX != 0;
 
         //Unpause gravity when hit
@@ -338,7 +337,7 @@ public class PlayerMovement : MonoBehaviour
         if(gameObject.layer != 8 && Time.time - dropThroughTime > framerateScalar *3)
             gameObject.layer = 8;
         
-        
+
         ContactPoint2D[] contacts = new ContactPoint2D[1];
         bool groundFrictionPosition = frictionCollider.GetContacts(contacts) >0;
 

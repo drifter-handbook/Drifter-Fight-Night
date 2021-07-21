@@ -16,8 +16,6 @@ public class NeoParhelionMasterHit : MasterHit
         if(!isHost)return;
         Vector2 TestDirection = new Vector2(drifter.input.MoveX,drifter.input.MoveY);
         HeldDirection = TestDirection == Vector2.zero? HeldDirection: TestDirection;
-
-        UnityEngine.Debug.Log(HeldDirection);
     }
 
     public void UpWThrow()

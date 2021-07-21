@@ -298,14 +298,24 @@ public class Drifter : MonoBehaviour, INetworkInit
     //Detects if the character executed a Quater Circle motion
     //Sign indicates direction, number indicated the number of times executed
     //in the case of ties, such as 1 QCF and one QCB, the most recent command will be returned
-    public int quarterCircle()
+    public bool qcf()
     {
-        int QCS = 0;
-        for(int i = 0; i < prevInput.Length; i++)
+        if(input.MoveX ==0 || input.MoveY !=0 )return false;
+
+        int state = 0;
+        for(int i = 0; i < prevInput.Length-5; i++)
         {
+            if(state ==0 && prevInput[i].MoveY == -1 && prevInput[i].MoveX == input.MoveX)
+                state++;
+            else if(state == 1 && prevInput[i].MoveY == 0 && prevInput[i].MoveX == input.MoveX) 
+                state--;
+
+            else if(state == 1 && prevInput[i].MoveY == -1 && prevInput[i].MoveX ==0)
+                return true;
+
 
         }
-        return QCS;
+        return false;
     }
 
 

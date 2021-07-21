@@ -126,6 +126,7 @@ public class PlayerAttacks : MonoBehaviour
             resetRecovery();
         }
 
+
         if(superPressed)
         {
             movement.superCancel();
