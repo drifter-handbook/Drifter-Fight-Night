@@ -137,10 +137,10 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
             }
         //}
 
-        if (playerInputAction.FindAction("Guard 1").triggered && playerInputAction.FindAction("Down").ReadValue<float>() > 0)
-        {
-            input.MoveY--;
-        }
+        // if (playerInputAction.FindAction("Guard 1").triggered && playerInputAction.FindAction("Down").ReadValue<float>() > 0)
+        // {
+        //     input.MoveY--;
+        // }
 
 
 

@@ -35,7 +35,7 @@ public class PlayerMovement : MonoBehaviour
     float baseGravity;
 
     
-    int dashState = 0;
+    bool dashState = true;
 
     //Animator State Fields
     public int Facing { get; set; } = 1;
@@ -84,11 +84,8 @@ public class PlayerMovement : MonoBehaviour
 
     //Situational Iteration variables
     float dropThroughTime;
-    float dropThroughDelayTime;
     int ringTime = 6;
     float walkTime = 0;
-    float prevMoveX = 0;
-    float prevMoveY = 0;
     Vector2 prevVelocity;
 
     float currentSpeed;
@@ -338,30 +335,17 @@ public class PlayerMovement : MonoBehaviour
         bool moving = drifter.input.MoveX != 0;
        
        //Platform dropthrough
-        if(gameObject.layer != 8 && Time.time - dropThroughTime > .55f){
+        if(gameObject.layer != 8 && Time.time - dropThroughTime > framerateScalar *3)
             gameObject.layer = 8;
-        }
-
-         //Friciton Active Input
-       
-        // if(moving && grounded && !status.HasEnemyStunEffect())
-        // {
-        //     //UnityEngine.Debug.Log("activeFriction set");
-        //     frictionCollider.sharedMaterial.friction = activeFriction;
-        // }
-        // else
-        // {
-        //     //UnityEngine.Debug.Log("inactiveFriction set");
-        //     frictionCollider.sharedMaterial.friction = inactiveFriction;
-        // }
-
+        
+        
         ContactPoint2D[] contacts = new ContactPoint2D[1];
         bool groundFrictionPosition = frictionCollider.GetContacts(contacts) >0;
 
 
-        if(dashState!=0 && drifter.prevInput[7].MoveX !=0 && drifter.prevInput[8].MoveX !=0)dashState = 0;
-        else if(dashState == 0 && drifter.input.MoveX !=0)dashState = 1;
-        else if(dashState == 1 && drifter.input.MoveX ==0) dashState = 2;
+        // if(dashState!=0 && ((drifter.prevInput[7].MoveX != 0 && drifter.prevInput[8].MoveX != 0) || (drifter.prevInput[8].MoveX != 0 && drifter.prevInput[9].MoveX != 0)))dashState = 0;
+        // else if(dashState == 0 && drifter.input.MoveX !=0)dashState = 1;
+        // else if(dashState == 1 && drifter.input.MoveX ==0) dashState = 2;
 
         if(!moving)accelerationPercent = .9f;
         
@@ -375,11 +359,11 @@ public class PlayerMovement : MonoBehaviour
 
             // bool moveReleased = drifter.input.MoveX
 
-            if(canAct && IsGrounded() && dashState == 2 && drifter.input.MoveX !=0)
+            if(canAct && IsGrounded() && dashState && drifter.doubleTappedX())
             {
                 walkSpeed = dashSpeed;
                 rb.velocity = new Vector2(Facing * dashSpeed,rb.velocity.y);
-                dashState = 0;
+                dashState = false;
                 accelerationPercent = 0;
                 StartCoroutine(endFoxTrot());
                 spawnJuiceParticle(BodyCollider.bounds.center + new Vector3(Facing * (flipSprite?-1:1)* 1.5f,0), MovementParticleMode.Dash_Ring, Quaternion.Euler(0f,0f,0f), false);
@@ -465,7 +449,7 @@ public class PlayerMovement : MonoBehaviour
             }
 
             //Drop down from ledge
-            else if(drifter.input.MoveY < 0 && prevMoveY < 0 && ledgeHanging){
+            else if(drifter.input.MoveY < 0 && drifter.prevInput[0].MoveY < 0 && ledgeHanging){
                 DropLedge();
                 drifter.returnToIdle();
             }
@@ -490,27 +474,16 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 40f * Time.deltaTime), rb.velocity.y);
         }
 
-        //Drop throuhg platforms
-        if(drifter.input.MoveY <=-1){
-            
-            dropThroughDelayTime += Time.deltaTime;
-            if(dropThroughDelayTime > .3f)
-            {
-                gameObject.layer = 13;
-                dropThroughTime = Time.time;
-            }
-        }
-        else
+        //Drop through platforms
+        if(drifter.doubleTappedY() && drifter.input.MoveY < 0)
         {
-            dropThroughDelayTime = 0;
+            gameObject.layer = 13;
+            rb.velocity = new Vector2(rb.velocity.x,-terminalVelocity /2f);
+            dropThroughTime = Time.time;
         }
+
 
         //Roll
-        // if(drifter.forceGuard){
-        //     drifter.guarding = true;
-        // }
-
-        // else 
         if(drifter.input.Guard && canGuard && moving && IsGrounded())
         {
             roll();
@@ -546,16 +519,13 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //mashout effects
-        if((status.HasStatusEffect(PlayerStatusEffect.PLANTED) || status.HasStatusEffect(PlayerStatusEffect.AMBERED) || status.HasStatusEffect(PlayerStatusEffect.PARALYZED) || status.HasStatusEffect(PlayerStatusEffect.GRABBED))&& prevMoveX != drifter.input.MoveX){
+        if((status.HasStatusEffect(PlayerStatusEffect.PLANTED) || status.HasStatusEffect(PlayerStatusEffect.AMBERED) || status.HasStatusEffect(PlayerStatusEffect.PARALYZED) || status.HasStatusEffect(PlayerStatusEffect.GRABBED))&& drifter.prevInput[0].MoveX != drifter.input.MoveX){
             status.mashOut();
 
             StartCoroutine(shake.Shake(.2f,.7f));
 
             spawnJuiceParticle( transform.position + particleOffset + new Vector3(.5f,UnityEngine.Random.Range(1f,3f),0), MovementParticleMode.Mash);
         }
-        //Save previous inputs for mashout. Move to Player input?
-        prevMoveX = drifter.input.MoveX;
-        prevMoveY = drifter.input.MoveY;
 
         //Pause movement for relevent effects.
         
@@ -808,7 +778,7 @@ public class PlayerMovement : MonoBehaviour
     {
         yield return new WaitForSeconds(3* framerateScalar);
         walkSpeed = baseWalkSpeed;
-        dashState = 0;
+        dashState = true;
     }
 
     //delays jump to allow for jump squant and move queuing

@@ -133,53 +133,33 @@ public class Drifter : MonoBehaviour, INetworkInit
         terminalVelocity = movement.terminalVelocity;
     }
 
+    //Returns the character's outline color as an int
     public int GetColor()
     { 
         return myColor;
     }
 
+    //Sets the character's super charge to a given value
     public void SetCharge(float newCharge)
     { 
         if(superCharge != newCharge) superCharge=newCharge;
         if(isHost) gameObject.GetComponent<SyncChargeHost>().setCharge(superCharge);
     }
 
+    //Grants the character additonal charge for their super meter, up to the cap of 5 bars
     public void gainSuperMeter(float charge)
     {
         if(isHost)
             superCharge = Mathf.Min(charge + superCharge,5f);
     }
 
-    // public void ModifyCharge(int newCharge)
-    // { 
-    //     if(isHost) gameObject.GetComponent<SyncChargeHost>().setCharge(Charge + newCharge);
-    // }
 
-    // public void IncrementCharge()
-    // { 
-    //     Charge++;
-    //     if(isHost) gameObject.GetComponent<SyncChargeHost>().setCharge(Charge);
-    // }
-
-    // public void DecrementCharge()
-    // { 
-    //     Charge--;
-    //     if(isHost) gameObject.GetComponent<SyncChargeHost>().setCharge(Charge);
-    // }
-
-    // public int GetCharge()
-    // { 
-    //     return this.Charge;
-    // }
-
-
+    //Stes Peerid for networking
     public void SetPeerId(int id){
         peerID = id;
-        //myColor = CharacterMenu.ColorFromEnum[(PlayerColor)(peerID>0?peerID:0)];
-        //transform.GetChild(0).GetComponent<SpriteRenderer>().color = myColor;
-        //transform.GetChild(3).GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),myColor);
     }
 
+    //Sets the character's outline color
     public void SetColor(int colorID)
     {
         myColor = (colorID>=0?colorID:0);
@@ -191,6 +171,7 @@ public class Drifter : MonoBehaviour, INetworkInit
         }
     }
 
+    //Flips text-based objects attacked to characters to keep them readable as the character turns
     public void SetIndicatorDirection(float facing)
     {
         if(isHost)
@@ -214,11 +195,13 @@ public class Drifter : MonoBehaviour, INetworkInit
         }
     }
 
+    //Returns whihc animation layer is currently being used
     public int GetAnimationLayer()
     {
         return animationLayer;
     }
 
+    //Switches animation layer for use in stance charactrs
     public void SetAnimationLayer(int layer)
     {
         animationLayer = layer;
@@ -248,15 +231,17 @@ public class Drifter : MonoBehaviour, INetworkInit
         
     }
 
+
+
+    //Returns the remaining time in the current animation in seconds for use in frame data calculations
     public float getRemainingAttackTime()
     {
-
         AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(animationLayer);
 
         return status.HasStatusEffect(PlayerStatusEffect.END_LAG) ? info.length *  (1f - info.normalizedTime +  Mathf.Floor(info.normalizedTime)) : 0;
-
     }
 
+    //Clears all flags associated with guard state
     public void clearGuardFlags()
     {
         guarding = false;
@@ -264,6 +249,67 @@ public class Drifter : MonoBehaviour, INetworkInit
         perfectGuarding = false;
         guardBreaking = false;
     }
+
+
+    //Command Input Detection
+
+    //Detects if the character dobule tapped the X directional key
+    public bool doubleTappedX()
+    {
+        if(input.MoveX ==0)return false;
+
+        int state = 0;
+
+
+        for(int i = 0; i < prevInput.Length-5; i++)
+        {
+
+            if(state ==0 && prevInput[i].MoveX == 0)
+                state++;
+            else if(state == 1 && prevInput[i].MoveX == -1 * input.MoveX) return false;
+
+            else if(state == 1 && prevInput[i].MoveX == input.MoveX)
+                return true;
+        }
+
+        return false;
+    }
+
+    //Detects if the character dobule tapped the Y directional key
+    public bool doubleTappedY()
+    {
+        if(input.MoveY ==0)return false;
+
+        int state = 0;
+
+
+        for(int i = 0; i < prevInput.Length-5; i++)
+        {
+
+            if(state ==0 && prevInput[i].MoveY == 0)
+                state++;
+            else if(state == 1 && prevInput[i].MoveY == -1 * input.MoveY) return false;
+
+            else if(state == 1 && prevInput[i].MoveY == input.MoveY)
+                return true;
+        }
+
+        return false;
+    }
+
+    //Detects if the character executed a Quater Circle motion
+    //Sign indicates direction, number indicated the number of times executed
+    //in the case of ties, such as 1 QCF and one QCB, the most recent command will be returned
+    public int quarterCircle()
+    {
+        int QCS = 0;
+        for(int i = 0; i < prevInput.Length; i++)
+        {
+
+        }
+        return QCS;
+    }
+
 
     public DrifterType GetDrifterType(){
         return DrifterTypeFromString(drifterType);
