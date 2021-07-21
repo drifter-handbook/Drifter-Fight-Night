@@ -44,24 +44,23 @@ public class OrboHandler : StickToTarget
         	AddOrbo();
 
 
-        //
+        rotation += Time.deltaTime * 180f;
 
-        //rotate;
+        gameObject.transform.rotation =  Quaternion.Euler(0f,0f,rotation);
+
+        if(rotation >= 360) rotation = 0;
 
         for(int orboIndex = 0; orboIndex < Orbos.Count; orboIndex++ )
     	{
     		if(Orbos[orboIndex] == null)
     			Orbos.RemoveAt(orboIndex);
     		else
+            {
     			((GameObject)Orbos[orboIndex]).transform.localPosition = new Vector3(radius * Mathf.Cos(2f * Mathf.PI * (float)orboIndex / Orbos.Count),radius * Mathf.Sin(2f * Mathf.PI * (float)orboIndex / Orbos.Count),0);
+                ((GameObject)Orbos[orboIndex]).transform.localRotation = Quaternion.Euler(0f,0f,-1 * rotation);
+            }
     			
     	}
-
-    	rotation += Time.deltaTime * 180f;
-
-    	gameObject.transform.rotation =  Quaternion.Euler(0f,0f,rotation);
-
-    	if(rotation >= 360) rotation = 0;
 
 
     	if(!status.HasStatusEffect(PlayerStatusEffect.ORBO) && radius > 0)
