@@ -128,6 +128,9 @@ public class PlayerAttacks : MonoBehaviour
 
         if(superPressed)
         {
+            // if(drifter.qcf)
+            //     StartAttack(DrifterAttackType.Super_Attack);
+            // else
             movement.superCancel();
         }
 
@@ -142,6 +145,11 @@ public class PlayerAttacks : MonoBehaviour
         }
         else if(specialPressed && canSpecial)
         {
+
+            // if(drifter.qcf)
+            //     StartAttack(DrifterAttackType.QCF_W);
+            // else
+
             if(drifter.input[0].MoveY > 0 && currentRecoveries >0)
             {
                 StartAttack(DrifterAttackType.W_Up);
@@ -170,14 +178,22 @@ public class PlayerAttacks : MonoBehaviour
         {
             if (movement.grounded)
             {
+                // if(drifter.qcf)
+                //     StartAttack(DrifterAttackType.QCF_Ground);
+                // else
                 if(drifter.input[0].MoveY > 0)StartAttack(DrifterAttackType.Ground_Q_Up);
                 else if(drifter.input[0].MoveY < 0)StartAttack(DrifterAttackType.Ground_Q_Down);
                 else if(drifter.input[0].MoveX!=0)StartAttack(DrifterAttackType.Ground_Q_Side);
                 else StartAttack(DrifterAttackType.Ground_Q_Neutral);
             }
             else
-            {    
-                movement.canLandingCancel = true;            
+            {   
+
+                movement.canLandingCancel = true;    
+
+                // if(drifter.qcf)
+                //     StartAttack(DrifterAttackType.QCF_Air);
+                // else
                 if(drifter.input[0].MoveY > 0)StartAttack(DrifterAttackType.Aerial_Q_Up);
                 else if(drifter.input[0].MoveY < 0)StartAttack(DrifterAttackType.Aerial_Q_Down);
                 else if(drifter.input[0].MoveX!=0)StartAttack(DrifterAttackType.Aerial_Q_Side);

@@ -293,33 +293,49 @@ public class Drifter : MonoBehaviour, INetworkInit
     }
 
     //Detects if the character executed a Quater Circle motion
-    //Sign indicates direction, number indicated the number of times executed
-    //in the case of ties, such as 1 QCF and one QCB, the most recent command will be returned
-    public bool qcf(bool normal = true)
+    public bool qcf()
     {
         
         if(input[0].MoveX ==0 || input[0].MoveY !=0 )return false;
 
-        bool attacked = normal? input[0].Light:input[0].Special;
-
         int state = 0;
         for(int i = 1; i < input.Length; i++)
         {
-
-            if(input[i].MoveX == input[0].MoveX && state ==0 && (normal? input[0].Light:input[0].Special))attacked = true;
-
             if(state ==0 && input[i].MoveY == -1 && input[i].MoveX == input[0].MoveX)
                 state++;
             else if(state == 1 && input[i].MoveY == 0 && input[i].MoveX == input[0].MoveX) 
                 state--;
 
             else if(state == 1 && input[i].MoveY == -1 && input[i].MoveX ==0)
-                return attacked;
+                return true;
 
 
         }
         return false;
     }
+
+    // public bool dp()
+    // {
+        
+    //     if(input[0].MoveX ==0 || input[0].MoveY >=0 )return false;
+
+    //     int state = 1;
+    //     for(int i = 1; i < input.Length; i++)
+    //     {
+    //         if(state == 0 && input[i].MoveY == 0 && input[i].MoveX == input[0].MoveX)
+    //             state++;
+    //         else if(state ==1 && input[i].MoveY == -1 && input[i].MoveX == 0)
+    //             state++;
+    //         else if(state == 2 && input[i].MoveY == 0 && input[i].MoveX == input[0].MoveX) 
+    //             state=0;
+
+    //         else if(state == 2 && input[i].MoveY < 0 && input[i].MoveX == input[0].MoveX)
+    //             return true;
+
+
+    //     }
+    //     return false;
+    // }
 
 
     public DrifterType GetDrifterType(){
