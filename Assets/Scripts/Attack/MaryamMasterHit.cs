@@ -99,7 +99,7 @@ public class MaryamMasterHit : MasterHit
         {
 
             movement.updateFacing();
-            rb.velocity = new Vector2(Mathf.Lerp((!status.HasStatusEffect(PlayerStatusEffect.SLOWED)? drifter.input.MoveX * 23f:(.6f*23f)),rb.velocity.x,.75f),rb.velocity.y);
+            rb.velocity = new Vector2(Mathf.Lerp((!status.HasStatusEffect(PlayerStatusEffect.SLOWED)? drifter.input[0].MoveX * 23f:(.6f*23f)),rb.velocity.x,.75f),rb.velocity.y);
             movement.updateFacing();
             movement.terminalVelocity = 8f;
         }

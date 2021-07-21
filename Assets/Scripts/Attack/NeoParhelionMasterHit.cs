@@ -14,7 +14,7 @@ public class NeoParhelionMasterHit : MasterHit
 	public void saveDirection()
     {
         if(!isHost)return;
-        Vector2 TestDirection = new Vector2(drifter.input.MoveX,drifter.input.MoveY);
+        Vector2 TestDirection = new Vector2(drifter.input[0].MoveX,drifter.input[0].MoveY);
         HeldDirection = TestDirection == Vector2.zero? HeldDirection: TestDirection;
     }
 

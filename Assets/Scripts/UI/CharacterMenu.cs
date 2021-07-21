@@ -163,7 +163,6 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
     public void AddCharSelState(int peerID)
     {
-        UnityEngine.Debug.Log("PEER ADDED");
         charSelStates.Add(new CharacterSelectState()
         {
             PeerID = peerID
@@ -293,8 +292,6 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     //try to add player, return false if over max
     public void AddPlayerCard()
     {
-
-        UnityEngine.Debug.Log("CARD ADDED");
         if (menuEntries.Count >= GameController.MAX_PLAYERS)
         {
             return;
@@ -335,9 +332,6 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
     public void RemovePlayerCard()
     {
-
-        UnityEngine.Debug.Log("CARD REMOVED");
-
         int index = menuEntries.Count - 1;
         Transform parent = index < PANEL_MAX_PLAYERS ? leftPanel.transform : rightPanel.transform;
         Destroy(menuEntries[index].characterCard);

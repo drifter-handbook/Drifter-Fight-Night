@@ -109,7 +109,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             float angle = Mathf.Sign(attackData.AngleOfImpact) * Mathf.Atan2(hurtbox.parent.transform.position.y-hitbox.parent.transform.position.y, hurtbox.parent.transform.position.x-hitbox.parent.transform.position.x)*180 / Mathf.PI;
 
             //KILL DI
-            float directionInfluenceAngle = drifter.input.MoveY < 0 ? 360f - Vector3.Angle(facingDir * Vector3.right,new Vector2(drifter.input.MoveX,drifter.input.MoveY)): Vector3.Angle(facingDir * Vector3.right,new Vector2(drifter.input.MoveX,drifter.input.MoveY));
+            float directionInfluenceAngle = drifter.input[0].MoveY < 0 ? 360f - Vector3.Angle(facingDir * Vector3.right,new Vector2(drifter.input[0].MoveX,drifter.input[0].MoveY)): Vector3.Angle(facingDir * Vector3.right,new Vector2(drifter.input[0].MoveX,drifter.input[0].MoveY));
 
             Vector3 adjustedAngle = Quaternion.Euler(0, 0, attackData.AngleOfImpact * facingDir)  * Vector2.right * facingDir;
 
@@ -118,7 +118,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
 
             //DI Angle Adjustment
-            if(drifter.input.MoveX !=0 || drifter.input.MoveY !=0 )adjustedAngle = Quaternion.Euler(0, 0, Mathf.Atan((verticalComponent * 1 + .2f * drifter.input.MoveY)/(horizontalComponent* 1 + .2f * drifter.input.MoveX)) * Mathf.Rad2Deg)  * Vector2.right * facingDir;
+            if(drifter.input[0].MoveX !=0 || drifter.input[0].MoveY !=0 )adjustedAngle = Quaternion.Euler(0, 0, Mathf.Atan((verticalComponent * 1 + .2f * drifter.input[0].MoveY)/(horizontalComponent* 1 + .2f * drifter.input[0].MoveX)) * Mathf.Rad2Deg)  * Vector2.right * facingDir;
 
             //Autolink angle (<-361) sets the knockback angle to send towards the hitbox's centerpoint
             Vector2 forceDir = Mathf.Abs(attackData.AngleOfImpact) <= 360?
@@ -134,11 +134,11 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
 
             //COMBO DI
-            if(KB < 25 && (drifter.input.MoveX !=0 || drifter.input.MoveY !=0 ))
+            if(KB < 25 && (drifter.input[0].MoveX !=0 || drifter.input[0].MoveY !=0 ))
             {
                     
-                if(Mathf.Abs(horizontalComponent) >= Mathf.Abs(verticalComponent)) KB *= horizontalComponent * drifter.input.MoveX < 0 ? .4f:  1.4f;
-                else KB *= verticalComponent * drifter.input.MoveY < 0 ? .4f:  1.4f;
+                if(Mathf.Abs(horizontalComponent) >= Mathf.Abs(verticalComponent)) KB *= horizontalComponent * drifter.input[0].MoveX < 0 ? .4f:  1.4f;
+                else KB *= verticalComponent * drifter.input[0].MoveY < 0 ? .4f:  1.4f;
 
             }
 

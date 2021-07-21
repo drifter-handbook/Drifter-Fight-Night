@@ -42,7 +42,7 @@ public class NeroMasterHit : MasterHit
         movement.gravityPaused= true;        
         rb.gravityScale = 5f;
         if(chargeAttackSingleUse("W_Neutral_Dash") !=0) return;
-        else if(drifter.input.MoveX != 0 || dashDistance>=55) drifter.PlayAnimation("W_Neutral_Dash");
+        else if(drifter.input[0].MoveX != 0 || dashDistance>=55) drifter.PlayAnimation("W_Neutral_Dash");
         else dashDistance += 3;
      }
 

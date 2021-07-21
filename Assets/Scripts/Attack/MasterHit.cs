@@ -147,7 +147,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     //For charged attacks that store their current charge when canceled.
     //Press the button once to start charging. if the button is released and then pressed again, the state will play
     //0: Nothing happened (Executed as client, or no state-changing action occured)
-    //1: The attack was canceled by a jump or shield input
+    //1: The attack was canceled by a jump or shield input[0]
     //2: The provided state was executed  
     public int chargeAttackPesistent(string stateName)
     {
@@ -157,9 +157,9 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
         else if(movementCancel())return 1;
      
-        else if(!drifter.input.Special && !specialReleased)specialReleased = true;
+        else if(!drifter.input[0].Special && !specialReleased)specialReleased = true;
 
-        else if(drifter.input.Special && specialReleased)
+        else if(drifter.input[0].Special && specialReleased)
         {
             specialReleased = false;
             playState(stateName);
@@ -172,7 +172,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     //For charged moves that cannot store charge. While the button is held, the charge will persist.
     //When the button is released, the specified state will play.
     //0: Nothing happened (Executed as client, or no state-changing action occured)
-    //1: The attack was canceled by a jump or shield input
+    //1: The attack was canceled by a jump or shield input[0]
     //2: The provided state was executed
     public int chargeAttackSingleUse(string stateName)
     {
@@ -182,7 +182,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
         else if(movementCancel())return 1;
 
-        if(!drifter.input.Special)
+        if(!drifter.input[0].Special)
         {
             playState(stateName);
             return 2;
@@ -194,9 +194,9 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     public bool movementCancel()
     {
 
-        if(drifter.input.MoveX ==0 && !horizontalReleased)horizontalReleased = true;
+        if(drifter.input[0].MoveX ==0 && !horizontalReleased)horizontalReleased = true;
 
-        else if(drifter.input.MoveX != 0 && horizontalReleased && movement.grounded)
+        else if(drifter.input[0].MoveX != 0 && horizontalReleased && movement.grounded)
         {
             horizontalReleased = false;
             movement.roll();
@@ -213,7 +213,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     {
         if(!isHost)return false;
 
-        if(drifter.input.Guard)
+        if(drifter.input[0].Guard)
         {
             movement.techParticle();
             status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0f);
@@ -224,7 +224,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
             unpauseGravity();
             return true;
         }
-        else if(drifter.input.Jump && movement.currentJumps>0)
+        else if(drifter.input[0].Jump && movement.currentJumps>0)
         {
             movement.jumping = false;
             movement.techParticle();
@@ -235,9 +235,9 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
             return true;
         }
 
-        if(drifter.input.MoveY ==0 && !verticalReleased)verticalReleased = true;
+        if(drifter.input[0].MoveY ==0 && !verticalReleased)verticalReleased = true;
 
-        else if(drifter.input.MoveY < 0 && verticalReleased)
+        else if(drifter.input[0].MoveY < 0 && verticalReleased)
         {
             verticalReleased = false;
             movement.techParticle();
@@ -295,7 +295,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     public void checkForContinueJab()
     {
         if(!isHost)return;
-        if(drifter.input.Light)continueJabFlag = true;
+        if(drifter.input[0].Light)continueJabFlag = true;
     }
 
     public void continueJab(string state)

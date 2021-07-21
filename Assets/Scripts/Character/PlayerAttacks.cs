@@ -104,18 +104,18 @@ public class PlayerAttacks : MonoBehaviour
             return;
         }
 
-        // get input
+        // get input[0]
 
-        bool lightPressed = !drifter.prevInput[1].Light && drifter.prevInput[0].Light && drifter.input.Light;
-        bool specialPressed = !drifter.prevInput[1].Special &&  drifter.prevInput[0].Special && drifter.input.Special;
+        bool lightPressed = !drifter.input[2].Light && drifter.input[1].Light && drifter.input[0].Light;
+        bool specialPressed = !drifter.input[2].Special &&  drifter.input[1].Special && drifter.input[0].Special;
 
-        bool superPressed = !drifter.prevInput[0].Super  && drifter.input.Super;
+        bool superPressed = !drifter.input[1].Super  && drifter.input[0].Super;
 
         bool grabPressed = 
 
-        !drifter.prevInput[0].Light && drifter.input.Light && drifter.prevInput[0].Special ||
-        !drifter.prevInput[0].Special && drifter.input.Special && drifter.prevInput[0].Light ||
-        !drifter.prevInput[0].Light && drifter.input.Light && !drifter.prevInput[0].Special && drifter.input.Special;
+        !drifter.input[1].Light && drifter.input[0].Light && drifter.input[1].Special ||
+        !drifter.input[1].Special && drifter.input[0].Special && drifter.input[1].Light ||
+        !drifter.input[1].Light && drifter.input[0].Light && !drifter.input[1].Special && drifter.input[0].Special;
 
 
 
@@ -125,7 +125,6 @@ public class PlayerAttacks : MonoBehaviour
         if((movement.grounded && !status.HasStatusEffect(PlayerStatusEffect.END_LAG)) || status.HasEnemyStunEffect()){
             resetRecovery();
         }
-
 
         if(superPressed)
         {
@@ -143,22 +142,22 @@ public class PlayerAttacks : MonoBehaviour
         }
         else if(specialPressed && canSpecial)
         {
-            if(drifter.input.MoveY > 0 && currentRecoveries >0)
+            if(drifter.input[0].MoveY > 0 && currentRecoveries >0)
             {
                 StartAttack(DrifterAttackType.W_Up);
                 currentRecoveries--;
             }
-            else if((!W_Down_Is_Recovery || currentRecoveries >0) && drifter.input.MoveY < 0)
+            else if((!W_Down_Is_Recovery || currentRecoveries >0) && drifter.input[0].MoveY < 0)
             {
                 StartAttack(DrifterAttackType.W_Down);
                 if(W_Down_Is_Recovery)currentRecoveries--;
             }
-            else if((!W_Side_Is_Recovery || currentRecoveries >0) &&drifter.input.MoveX!=0)
+            else if((!W_Side_Is_Recovery || currentRecoveries >0) &&drifter.input[0].MoveX!=0)
             {
                 StartAttack(DrifterAttackType.W_Side);
                 if(W_Side_Is_Recovery)currentRecoveries--;
             }
-            else if((!W_Neutral_Is_Recovery || currentRecoveries >0) &&drifter.input.MoveY==0 && drifter.input.MoveX==0)
+            else if((!W_Neutral_Is_Recovery || currentRecoveries >0) &&drifter.input[0].MoveY==0 && drifter.input[0].MoveX==0)
             {
                 StartAttack(DrifterAttackType.W_Neutral);
                 if(W_Neutral_Is_Recovery)currentRecoveries--;
@@ -171,17 +170,17 @@ public class PlayerAttacks : MonoBehaviour
         {
             if (movement.grounded)
             {
-                if(drifter.input.MoveY > 0)StartAttack(DrifterAttackType.Ground_Q_Up);
-                else if(drifter.input.MoveY < 0)StartAttack(DrifterAttackType.Ground_Q_Down);
-                else if(drifter.input.MoveX!=0)StartAttack(DrifterAttackType.Ground_Q_Side);
+                if(drifter.input[0].MoveY > 0)StartAttack(DrifterAttackType.Ground_Q_Up);
+                else if(drifter.input[0].MoveY < 0)StartAttack(DrifterAttackType.Ground_Q_Down);
+                else if(drifter.input[0].MoveX!=0)StartAttack(DrifterAttackType.Ground_Q_Side);
                 else StartAttack(DrifterAttackType.Ground_Q_Neutral);
             }
             else
             {    
                 movement.canLandingCancel = true;            
-                if(drifter.input.MoveY > 0)StartAttack(DrifterAttackType.Aerial_Q_Up);
-                else if(drifter.input.MoveY < 0)StartAttack(DrifterAttackType.Aerial_Q_Down);
-                else if(drifter.input.MoveX!=0)StartAttack(DrifterAttackType.Aerial_Q_Side);
+                if(drifter.input[0].MoveY > 0)StartAttack(DrifterAttackType.Aerial_Q_Up);
+                else if(drifter.input[0].MoveY < 0)StartAttack(DrifterAttackType.Aerial_Q_Down);
+                else if(drifter.input[0].MoveX!=0)StartAttack(DrifterAttackType.Aerial_Q_Side);
                 else StartAttack(DrifterAttackType.Aerial_Q_Neutral);
             }
         }

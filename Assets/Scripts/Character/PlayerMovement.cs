@@ -129,7 +129,7 @@ public class PlayerMovement : MonoBehaviour
             if(techWindowElapsed <= framerateScalar * 2)UnityEngine.Debug.Log("COULD HAVE TECHED");
             else UnityEngine.Debug.Log("COULD NOT HAVE TECHED");
 
-            if(drifter.input.Guard && techWindowElapsed <= framerateScalar * 2)
+            if(drifter.input[0].Guard && techWindowElapsed <= framerateScalar * 2)
             {
                 rb.velocity = Vector3.zero;
                 status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.01f);
@@ -163,10 +163,10 @@ public class PlayerMovement : MonoBehaviour
         // if(drifter.forceGuard){
         //     drifter.guarding = true;
         // }
-        if(drifter.input.Guard) techWindowElapsed += Time.deltaTime;
+        if(drifter.input[0].Guard) techWindowElapsed += Time.deltaTime;
         else if(status.HasGroundFriction()) techWindowElapsed = 0;
 
-        bool moving = drifter.input.MoveX != 0;
+        bool moving = drifter.input[0].MoveX != 0;
 
         //Unpause gravity when hit
         if(!status.HasGroundFriction())gravityPaused=false;
@@ -291,7 +291,7 @@ public class PlayerMovement : MonoBehaviour
 
         //Inverts controls if revered
         if(status.HasStatusEffect(PlayerStatusEffect.REVERSED)){
-            drifter.input.MoveX *= -1;
+            drifter.input[0].MoveX *= -1;
         }
 
         //Pauses you in place if you have a corresponding status effect.
@@ -327,11 +327,11 @@ public class PlayerMovement : MonoBehaviour
             //return;
         }
 
-        bool jumpPressed = !drifter.prevInput[0].Jump && drifter.input.Jump;
+        bool jumpPressed = !drifter.input[1].Jump && drifter.input[0].Jump;
         // TODO: spawn hitboxes
         bool canAct = !status.HasStunEffect() && !drifter.guarding;
         bool canGuard = !status.HasStunEffect() && !jumping;
-        bool moving = drifter.input.MoveX != 0;
+        bool moving = drifter.input[0].MoveX != 0;
        
        //Platform dropthrough
         if(gameObject.layer != 8 && Time.time - dropThroughTime > framerateScalar *3)
@@ -342,9 +342,9 @@ public class PlayerMovement : MonoBehaviour
         bool groundFrictionPosition = frictionCollider.GetContacts(contacts) >0;
 
 
-        // if(dashState!=0 && ((drifter.prevInput[7].MoveX != 0 && drifter.prevInput[8].MoveX != 0) || (drifter.prevInput[8].MoveX != 0 && drifter.prevInput[9].MoveX != 0)))dashState = 0;
-        // else if(dashState == 0 && drifter.input.MoveX !=0)dashState = 1;
-        // else if(dashState == 1 && drifter.input.MoveX ==0) dashState = 2;
+        // if(dashState!=0 && ((drifter.input[7].MoveX != 0 && drifter.input[8].MoveX != 0) || (drifter.input[8].MoveX != 0 && drifter.input[9].MoveX != 0)))dashState = 0;
+        // else if(dashState == 0 && drifter.input[0].MoveX !=0)dashState = 1;
+        // else if(dashState == 1 && drifter.input[0].MoveX ==0) dashState = 2;
 
         if(!moving)accelerationPercent = .9f;
         
@@ -354,9 +354,9 @@ public class PlayerMovement : MonoBehaviour
         	//UnityEngine.Debug.Log("BEFORE velocity: " + rb.velocity.x);
         	updateFacing();            
 
-            // bool canDash = drifter.input.MoveX == 0;
+            // bool canDash = drifter.input[0].MoveX == 0;
 
-            // bool moveReleased = drifter.input.MoveX
+            // bool moveReleased = drifter.input[0].MoveX
 
             if(canAct && IsGrounded() && dashState && drifter.doubleTappedX())
             {
@@ -370,7 +370,7 @@ public class PlayerMovement : MonoBehaviour
             }
 
             //If just started moving or switched directions
-            else if((rb.velocity.x == 0 || rb.velocity.x * drifter.input.MoveX < 0) && IsGrounded()){
+            else if((rb.velocity.x == 0 || rb.velocity.x * drifter.input[0].MoveX < 0) && IsGrounded()){
 
                 if(groundFrictionPosition) spawnJuiceParticle(new Vector2(-Facing * (flipSprite?-1:1)* 1.5f,0) + contacts[0].point, MovementParticleMode.KickOff);
             }
@@ -399,7 +399,7 @@ public class PlayerMovement : MonoBehaviour
                 if(accelerationPercent > 0) accelerationPercent -= Time.deltaTime/groundAccelerationTime;
                 else accelerationPercent = 0;
 
-                currentSpeed = walkSpeed * (status.HasStatusEffect(PlayerStatusEffect.SLOWED) ? .6f: 1f) * (status.HasStatusEffect(PlayerStatusEffect.SPEEDUP) ? 1.5f: 1f) * (drifter.input.MoveX > 0 ? 1 : -1);
+                currentSpeed = walkSpeed * (status.HasStatusEffect(PlayerStatusEffect.SLOWED) ? .6f: 1f) * (status.HasStatusEffect(PlayerStatusEffect.SPEEDUP) ? 1.5f: 1f) * (drifter.input[0].MoveX > 0 ? 1 : -1);
 
             }
             else
@@ -410,7 +410,7 @@ public class PlayerMovement : MonoBehaviour
                 if(accelerationPercent >0) accelerationPercent -= Time.deltaTime/airAccelerationTime;
                 else accelerationPercent = 0;
 
-                currentSpeed = airSpeed * (status.HasStatusEffect(PlayerStatusEffect.SLOWED) ? .6f: 1f) * (status.HasStatusEffect(PlayerStatusEffect.SPEEDUP) ? 1.5f: 1f) * (drifter.input.MoveX > 0 ? 1 : -1);
+                currentSpeed = airSpeed * (status.HasStatusEffect(PlayerStatusEffect.SLOWED) ? .6f: 1f) * (status.HasStatusEffect(PlayerStatusEffect.SPEEDUP) ? 1.5f: 1f) * (drifter.input[0].MoveX > 0 ? 1 : -1);
 
             	
             }
@@ -424,14 +424,14 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.velocity = Vector2.zero;
             //Roll Onto Ledge
-            if(drifter.input.Guard)
+            if(drifter.input[0].Guard)
             {
                 status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,framerateScalar * 2);
                 drifter.PlayAnimation(drifter.LedgeRollStateName);
             }
 
             //Jump away from ledge
-            else if((drifter.input.MoveX * (flipSprite?-1:1) * Facing < 0)){
+            else if((drifter.input[0].MoveX * (flipSprite?-1:1) * Facing < 0)){
                 DropLedge();
                 drifter.returnToIdle();
 
@@ -439,7 +439,7 @@ public class PlayerMovement : MonoBehaviour
             }
             
             //Neutral Getup
-            else if((drifter.input.MoveX * (flipSprite?-1:1) * Facing > 0)  || drifter.input.MoveY > 0){
+            else if((drifter.input[0].MoveX * (flipSprite?-1:1) * Facing > 0)  || drifter.input[0].MoveY > 0){
                 DropLedge();
                 status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,framerateScalar * 2);
                 drifter.PlayAnimation(drifter.LedgeClimbStateName);
@@ -448,7 +448,7 @@ public class PlayerMovement : MonoBehaviour
             }
 
             //Drop down from ledge
-            else if(drifter.input.MoveY < 0 && drifter.prevInput[0].MoveY < 0 && ledgeHanging){
+            else if(drifter.input[0].MoveY < 0 && drifter.input[1].MoveY < 0 && ledgeHanging){
                 DropLedge();
                 drifter.returnToIdle();
             }
@@ -474,7 +474,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //Drop through platforms
-        if(drifter.doubleTappedY() && drifter.input.MoveY < 0)
+        if(drifter.doubleTappedY() && drifter.input[0].MoveY < 0)
         {
             gameObject.layer = 13;
             rb.velocity = new Vector2(rb.velocity.x,-terminalVelocity /2f);
@@ -483,13 +483,13 @@ public class PlayerMovement : MonoBehaviour
 
 
         //Roll
-        if(drifter.input.Guard && canGuard && moving && IsGrounded())
+        if(drifter.input[0].Guard && canGuard && moving && IsGrounded())
         {
             roll();
         }
 
         //Guard
-        else if(drifter.input.Guard && canGuard && !ledgeHanging && !status.HasStatusEffect(PlayerStatusEffect.GUARDBROKEN))
+        else if(drifter.input[0].Guard && canGuard && !ledgeHanging && !status.HasStatusEffect(PlayerStatusEffect.GUARDBROKEN))
         {
             //shift is guard
             if(!drifter.guarding)drifter.PlayAnimation("Guard_Start");
@@ -497,7 +497,7 @@ public class PlayerMovement : MonoBehaviour
         }
       
         //Disable Guarding
-        else if(!drifter.input.Guard && !status.HasStunEffect() && drifter.guarding && !status.HasStatusEffect(PlayerStatusEffect.GUARDBROKEN))
+        else if(!drifter.input[0].Guard && !status.HasStunEffect() && drifter.guarding && !status.HasStatusEffect(PlayerStatusEffect.GUARDBROKEN))
         {
             status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,framerateScalar * 3);
             drifter.guarding = false;
@@ -518,7 +518,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //mashout effects
-        if((status.HasStatusEffect(PlayerStatusEffect.PLANTED) || status.HasStatusEffect(PlayerStatusEffect.AMBERED) || status.HasStatusEffect(PlayerStatusEffect.PARALYZED) || status.HasStatusEffect(PlayerStatusEffect.GRABBED))&& drifter.prevInput[0].MoveX != drifter.input.MoveX){
+        if((status.HasStatusEffect(PlayerStatusEffect.PLANTED) || status.HasStatusEffect(PlayerStatusEffect.AMBERED) || status.HasStatusEffect(PlayerStatusEffect.PARALYZED) || status.HasStatusEffect(PlayerStatusEffect.GRABBED))&& drifter.input[1].MoveX != drifter.input[0].MoveX){
             status.mashOut();
 
             StartCoroutine(shake.Shake(.2f,.7f));
@@ -554,11 +554,11 @@ public class PlayerMovement : MonoBehaviour
     public void updateFacing()
     {
 
-        if(Facing != drifter.input.MoveX)accelerationPercent =.9f;
-        if(flipSprite ^ drifter.input.MoveX > 0)
+        if(Facing != drifter.input[0].MoveX)accelerationPercent =.9f;
+        if(flipSprite ^ drifter.input[0].MoveX > 0)
             Facing = 1;
         
-        else if(flipSprite ^ drifter.input.MoveX < 0)
+        else if(flipSprite ^ drifter.input[0].MoveX < 0)
             Facing = -1;
 
 
@@ -806,7 +806,7 @@ public class PlayerMovement : MonoBehaviour
         {
             yield return new WaitForFixedUpdate();
             time += Time.fixedDeltaTime;
-            if (!status.HasStunEffect() && drifter.input.Jump)
+            if (!status.HasStunEffect() && drifter.input[0].Jump)
             {
                 //rb.AddForce(Vector2.up * -Physics2D.gravity * varyJumpHeightForce);
                 rb.velocity = new Vector2(rb.velocity.x, jumpSpeed);

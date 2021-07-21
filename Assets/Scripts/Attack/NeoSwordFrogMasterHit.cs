@@ -41,7 +41,7 @@ public class NeoSwordFrogMasterHit : MasterHit
         if(!isHost)return;
         facing = movement.Facing;
 
-        if(drifter.input.MoveX == facing) rb.velocity = new Vector2(30 * facing,movement.grounded?22:rb.velocity.y+10f);
+        if(drifter.input[0].MoveX == facing) rb.velocity = new Vector2(30 * facing,movement.grounded?22:rb.velocity.y+10f);
         else rb.velocity = new Vector2(15 * facing,movement.grounded?30:rb.velocity.y+10f);
         
 
@@ -128,7 +128,7 @@ public class NeoSwordFrogMasterHit : MasterHit
     {
         if(!isHost)return;
         movement.updateFacing();
-        Vector2 TestDirection = new Vector2(drifter.input.MoveX,drifter.input.MoveY);
+        Vector2 TestDirection = new Vector2(drifter.input[0].MoveX,drifter.input[0].MoveY);
         HeldDirection = TestDirection == Vector2.zero? HeldDirection: TestDirection;
     }
 

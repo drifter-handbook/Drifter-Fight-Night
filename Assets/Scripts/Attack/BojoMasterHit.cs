@@ -21,8 +21,8 @@ public class BojoMasterHit : MasterHit
 
         if(!isHost)return;
 
-        //applyEndLag(drifter.input.Special?0:1);
-        Empowered = drifter.input.Special;
+        //applyEndLag(drifter.input[0].Special?0:1);
+        Empowered = drifter.input[0].Special;
         
     	facing = movement.Facing;
         Vector3 flip = new Vector3(facing *6f,6f,0f);
@@ -76,7 +76,7 @@ public class BojoMasterHit : MasterHit
         	resetTerminal();
         }
 
-        else if(drifter.input.MoveY <0 || movement.grounded)
+        else if(drifter.input[0].MoveY <0 || movement.grounded)
         {
         	resetTerminal();
         	returnToIdle();
@@ -85,7 +85,7 @@ public class BojoMasterHit : MasterHit
         {
 
         	movement.updateFacing();
-        	rb.velocity = new Vector2(Mathf.Lerp((!status.HasStatusEffect(PlayerStatusEffect.SLOWED)? drifter.input.MoveX * 20f:(.6f*20f)),rb.velocity.x,.85f),rb.velocity.y);
+        	rb.velocity = new Vector2(Mathf.Lerp((!status.HasStatusEffect(PlayerStatusEffect.SLOWED)? drifter.input[0].MoveX * 20f:(.6f*20f)),rb.velocity.x,.85f),rb.velocity.y);
             movement.updateFacing();
             movement.terminalVelocity = 10f;
         }

@@ -474,56 +474,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movement: {fileID: 3106753082241659641}
   input:
-    MoveX: 0
-    MoveY: 0
-    Jump: 0
-    Light: 0
-    Special: 0
-    Super: 0
-    Guard: 0
-  prevInput:
-  - MoveX: 0
-    MoveY: 0
-    Jump: 0
-    Light: 0
-    Special: 0
-    Super: 0
-    Guard: 0
-  - MoveX: 0
-    MoveY: 0
-    Jump: 0
-    Light: 0
-    Special: 0
-    Super: 0
-    Guard: 0
-  - MoveX: 0
-    MoveY: 0
-    Jump: 0
-    Light: 0
-    Special: 0
-    Super: 0
-    Guard: 0
-  - MoveX: 0
-    MoveY: 0
-    Jump: 0
-    Light: 0
-    Special: 0
-    Super: 0
-    Guard: 0
-  - MoveX: 0
-    MoveY: 0
-    Jump: 0
-    Light: 0
-    Special: 0
-    Super: 0
-    Guard: 0
-  - MoveX: 0
-    MoveY: 0
-    Jump: 0
-    Light: 0
-    Special: 0
-    Super: 0
-    Guard: 0
   - MoveX: 0
     MoveY: 0
     Jump: 0
@@ -633,6 +583,7 @@ MonoBehaviour:
   particleOffset: {x: 0, y: 0, z: 0}
   varyJumpHeightDuration: 0.2
   varyJumpHeightForce: 12
+  accelerationPercent: 0.9
 --- !u!114 &9142496942411782138
 MonoBehaviour:
   m_ObjectHideFlags: 0

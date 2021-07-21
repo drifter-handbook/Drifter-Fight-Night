@@ -34,11 +34,8 @@ public class Drifter : MonoBehaviour, INetworkInit
 {
     public PlayerMovement movement;
 
-    public PlayerInputData input;
-
     //Input Buffer
-    public PlayerInputData[] prevInput;// = new PlayerInputData[32];
-    //public PlayerInputData prevInput;
+    public PlayerInputData[] input;
 
     public Animator animator;
 
@@ -256,18 +253,18 @@ public class Drifter : MonoBehaviour, INetworkInit
     //Detects if the character dobule tapped the X directional key
     public bool doubleTappedX()
     {
-        if(input.MoveX ==0)return false;
+
+        if(input[0].MoveX ==0)return false;
 
         int state = 0;
 
-        for(int i = 0; i < prevInput.Length-5; i++)
+        for(int i = 1; i < input.Length; i++)
         {
-
-            if(state ==0 && prevInput[i].MoveX == 0)
+            if(state ==0 && input[i].MoveX == 0)
                 state++;
-            else if(state == 1 && prevInput[i].MoveX == -1 * input.MoveX) return false;
-
-            else if(state == 1 && prevInput[i].MoveX == input.MoveX)
+            else if(state == 1 && input[i].MoveX == -1 * input[0].MoveX)
+                return false;
+            else if(state == 1 && input[i].MoveX == input[0].MoveX)
                 return true;
         }
 
@@ -277,18 +274,18 @@ public class Drifter : MonoBehaviour, INetworkInit
     //Detects if the character dobule tapped the Y directional key
     public bool doubleTappedY()
     {
-        if(input.MoveY ==0)return false;
+        if(input[0].MoveY ==0)return false;
 
         int state = 0;
 
-        for(int i = 0; i < prevInput.Length-5; i++)
+        for(int i = 1; i < input.Length; i++)
         {
 
-            if(state ==0 && prevInput[i].MoveY == 0)
+            if(state ==0 && input[i].MoveY == 0)
                 state++;
-            else if(state == 1 && prevInput[i].MoveY == -1 * input.MoveY) return false;
+            else if(state == 1 && input[i].MoveY == -1 * input[0].MoveY) return false;
 
-            else if(state == 1 && prevInput[i].MoveY == input.MoveY)
+            else if(state == 1 && input[i].MoveY == input[0].MoveY)
                 return true;
         }
 
@@ -298,20 +295,26 @@ public class Drifter : MonoBehaviour, INetworkInit
     //Detects if the character executed a Quater Circle motion
     //Sign indicates direction, number indicated the number of times executed
     //in the case of ties, such as 1 QCF and one QCB, the most recent command will be returned
-    public bool qcf()
+    public bool qcf(bool normal = true)
     {
-        if(input.MoveX ==0 || input.MoveY !=0 )return false;
+        
+        if(input[0].MoveX ==0 || input[0].MoveY !=0 )return false;
+
+        bool attacked = normal? input[0].Light:input[0].Special;
 
         int state = 0;
-        for(int i = 0; i < prevInput.Length-5; i++)
+        for(int i = 1; i < input.Length; i++)
         {
-            if(state ==0 && prevInput[i].MoveY == -1 && prevInput[i].MoveX == input.MoveX)
+
+            if(input[i].MoveX == input[0].MoveX && state ==0 && (normal? input[0].Light:input[0].Special))attacked = true;
+
+            if(state ==0 && input[i].MoveY == -1 && input[i].MoveX == input[0].MoveX)
                 state++;
-            else if(state == 1 && prevInput[i].MoveY == 0 && prevInput[i].MoveX == input.MoveX) 
+            else if(state == 1 && input[i].MoveY == 0 && input[i].MoveX == input[0].MoveX) 
                 state--;
 
-            else if(state == 1 && prevInput[i].MoveY == -1 && prevInput[i].MoveX ==0)
-                return true;
+            else if(state == 1 && input[i].MoveY == -1 && input[i].MoveX ==0)
+                return attacked;
 
 
         }

@@ -73,22 +73,26 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
             return;
         
         // if(input == null)
-        //     input = player.GetComponent<Drifter>().prevInput[0];
+        //     input = player.GetComponent<Drifter>().input[0];
 
-        player.GetComponent<Drifter>().input = input;
+        Drifter playerDrifter = player.GetComponent<Drifter>();
+
+        for(int i = player.GetComponent<Drifter>().input.Length - 2; i >=0; i--)
+        {
+            playerDrifter.input[i + 1] = (PlayerInputData)playerDrifter.input[i].Clone();
+        }
+
+        playerDrifter.input[0] = input;
         player.GetComponent<PlayerMovement>().UpdateInput();
         player.GetComponent<PlayerAttacks>().UpdateInput();
 
         //Input Buffering Stores the last 16 input states
         //Newest state is at index 0
         //Remove the oldest state each frame 
-        for(int i = player.GetComponent<Drifter>().prevInput.Length - 2; i >=0; i--)
-        {
-            player.GetComponent<Drifter>().prevInput[i + 1] = (PlayerInputData)player.GetComponent<Drifter>().prevInput[i].Clone();
-        }
+        
         // add the newest state
 
-        player.GetComponent<Drifter>().prevInput[0] = (PlayerInputData)input.Clone();
+        //player.GetComponent<Drifter>().input[0] = (PlayerInputData)input.Clone();
     }
 
     public static PlayerInputData GetInput(InputActionAsset keyBindings)

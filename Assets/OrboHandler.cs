@@ -22,7 +22,8 @@ public class OrboHandler : StickToTarget
 
 	float rotation = 0;
 
-	float radius = .5f;
+	float radius = .35f;
+    bool orboJolt = true;
 
 
     // Start is called before the first frame update
@@ -62,9 +63,13 @@ public class OrboHandler : StickToTarget
     			
     	}
 
+        if(!status.HasStatusEffect(PlayerStatusEffect.ORBO) && orboJolt && radius < .60f)
+            radius += Time.deltaTime;
+            
+        if(radius >= .60f)orboJolt = false;
 
-    	if(!status.HasStatusEffect(PlayerStatusEffect.ORBO) && radius > 0)
-    		radius -= 2.5f *Time.deltaTime;
+    	if(!status.HasStatusEffect(PlayerStatusEffect.ORBO) && radius > 0 && !orboJolt)
+    		radius -= 3.5f *Time.deltaTime;
 
     	if(radius <= 0)
     		ClearOrbos();
@@ -86,7 +91,8 @@ public class OrboHandler : StickToTarget
 
     void AddOrbo()
     {
-    	radius = .5f;
+    	radius = .35f;
+        orboJolt = true;
     	if(!isHost)return;
     	int target = Mathf.Min(Orbos.Count + orbToSpawn,5); 
 

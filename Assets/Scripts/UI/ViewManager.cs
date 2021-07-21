@@ -43,7 +43,6 @@ public class ViewManager : MonoBehaviour
                     Debug.LogWarning("Views already contains key " + child.gameObject.name + "!");
                     continue;
                 }
-                Debug.Log(child.gameObject.name);
                 views.Add(child.gameObject.name, child.transform);
             }
         }
