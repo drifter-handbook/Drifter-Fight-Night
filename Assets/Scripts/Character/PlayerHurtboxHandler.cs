@@ -342,7 +342,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 StartCoroutine(Shake.zoomEffect(.6f,Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),false));
 
             // Ancillary Hitsparks
-            if (drifter != null && damageDealt >0f) StartCoroutine(delayHitsparks(hitSparkPos,attackData.AngleOfImpact,damageDealt,HitstunDuration *.25f));
+            if (drifter != null && damageDealt >0f && attackFX != null)
+                StartCoroutine(delayHitsparks(attackFX, hitSparkPos, attackData.AngleOfImpact, damageDealt, HitstunDuration *.25f));
         
 
             //METER BUILD
@@ -404,50 +405,27 @@ public class PlayerHurtboxHandler : MonoBehaviour
         }
     }
 
-    protected IEnumerator delayHitsparks(Vector3 position, float angle,float damage, float duration)
+    protected IEnumerator delayHitsparks(AttackFXSystem attackFX, Vector3 position, float angle,float damage, float duration)
     {
         Vector3 hitSparkPos = position;
         float angleT;
         float stepSize = duration / ((damage + 2 )/3);
-
-        if(damage >= 2.5f)GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.RING, position,angle, new Vector2(10f, 10f));
-
+        
         for (int i = 0; i < (damage + 2 )/3 ; i++)
         {
             angleT = angle + Random.Range(-45, 45);
             hitSparkPos += Quaternion.Euler(0, 0, angleT) * new Vector3(-Random.Range(1, 4), 0, 0);
-            GraphicalEffectManager.Instance.CreateHitSparks(randomSpark(), position, angleT, new Vector2(10f, 10f));
+            GraphicalEffectManager.Instance.CreateHitSparks(attackFX.GetSpark(), position, angleT, new Vector2(10f, 10f));
 
             angleT += 180;
 
             hitSparkPos += Quaternion.Euler(0, 0, angleT) * new Vector3(-Random.Range(1, 4), 0, 0);
-            GraphicalEffectManager.Instance.CreateHitSparks(randomSpark(), hitSparkPos, angleT, new Vector2(10f, 10f));
+            GraphicalEffectManager.Instance.CreateHitSparks(attackFX.GetSpark(), hitSparkPos, angleT, new Vector2(10f, 10f));
 
             yield return new WaitForSeconds(stepSize);
         }
+        
         yield break;
-    }
-
-    HitSpark randomSpark()
-    {
-        int index = Random.Range(0, 4);
-
-        //Preferantially spawn oomph sparks
-        switch(index)
-        {
-
-            case(0):
-                return HitSpark.OOMPHSPARK;
-            case(1):
-                return HitSpark.OOMPHDARK;
-            case(2):
-                return HitSpark.STAR1;
-            case(3):
-                return HitSpark.STAR2;
-            default:
-                return HitSpark.STAR1;
-        }
-
     }
 
     // Super-armor logic

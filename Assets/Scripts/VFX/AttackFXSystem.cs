@@ -88,35 +88,13 @@ public class AttackFXSystem : ScriptableObject
                 tempAngle = 0;
             GraphicalEffectManager.Instance.CreateHitSparks(miscParticles[i], pos, tempAngle, scale);
         }
-
-        //if (damage > 0f) 
-        //    StartCoroutine(delayHitsparks(pos, angle, damage, hitstun *.25f));
     }
 
-/*
-    private IEnumerator delayHitsparks(Vector3 position, float angle,float damage, float duration)
-    {
-        Vector3 hitSparkPos = position;
-        float angleT;
-        float stepSize = duration / ((damage + 2 )/3);
-
-        if (damage >= 2.5f) 
-            GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.RING, position,angle, new Vector2(10f, 10f));
-
-        for (int i = 0; i < (damage + 2 )/3 ; i++)
-        {
-            angleT = angle + Random.Range(-45, 45);
-            hitSparkPos += Quaternion.Euler(0, 0, angleT) * new Vector3(-Random.Range(1, 4), 0, 0);
-            GraphicalEffectManager.Instance.CreateHitSparks(sparks[Random.Range(0, sparks.Length - 1)], position, angleT, new Vector2(10f, 10f));
-
-            angleT += 180;
-
-            hitSparkPos += Quaternion.Euler(0, 0, angleT) * new Vector3(-Random.Range(1, 4), 0, 0);
-            GraphicalEffectManager.Instance.CreateHitSparks(sparks[Random.Range(0, sparks.Length - 1)], hitSparkPos, angleT, new Vector2(10f, 10f));
-
-            yield return new WaitForSeconds(stepSize);
-        }
-        yield break;
+    public HitSpark GetSpark() {
+        if (sparks.Length > 0)
+            return sparks[Random.Range(0, sparks.Length - 1)];
+        else
+            return HitSpark.NONE;
     }
-*/
+
 }

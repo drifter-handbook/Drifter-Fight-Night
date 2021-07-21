@@ -81,10 +81,12 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
             }
 
             float hitSparkAngle = facingDir * ((Mathf.Abs(attackData.AngleOfImpact) > 65f) ? Mathf.Sign(attackData.AngleOfImpact) * 90f : 0f);
-            attackFX.TriggerFXSystem(attackData.AttackDamage, HitstunDuration, hitSparkPos,attackData.AngleOfImpact * facingDir, adjustedAngle,  hitSparkScale);
+            if (attackFX != null)
+                attackFX.TriggerFXSystem(attackData.AttackDamage, HitstunDuration, hitSparkPos,attackData.AngleOfImpact * facingDir, adjustedAngle,  hitSparkScale);
 
             // Ancillary Hitsparks
-            if (attackData.AttackDamage >0f) StartCoroutine(delayHitsparks(hitSparkPos,attackData.AngleOfImpact,attackData.AttackDamage ,HitstunDuration *.25f));
+            if (attackData.AttackDamage > 0f && attackFX != null)
+                StartCoroutine(delayHitsparks(attackFX, hitSparkPos, attackData.AngleOfImpact, attackData.AttackDamage, HitstunDuration *.25f));
         
         }
 
