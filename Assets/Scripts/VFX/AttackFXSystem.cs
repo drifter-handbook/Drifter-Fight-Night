@@ -11,6 +11,7 @@ public class AttackFXSystem : ScriptableObject
     #endif
 
     [SerializeField] private HitSpark[] mainFlyouts;
+    [SerializeField] private int offsetPrimary;
     [SerializeField] private int minimumMainFlyouts;
     [SerializeField] private int maximumMainFlyouts;
     
@@ -18,8 +19,17 @@ public class AttackFXSystem : ScriptableObject
     [Header("Particles which will draw with some variance around the target, scaling with damage dealt")]
     #endif
     [SerializeField] private HitSpark[] secondaryFlyouts;
+    [SerializeField] private int offsetSecondary;
     [SerializeField] private int minimumSecondaryFlyouts;
     [SerializeField] private int maximumSecondaryFlyouts;
+
+    #if UNITY_EDITOR
+    [Header("Particles which will draw with some variance around the target, scaling with damage dealt")]
+    #endif
+    [SerializeField] private HitSpark[] tertiaryFlyouts;
+    [SerializeField] private int offsetTertiary;
+    [SerializeField] private int minimumTertiaryFlyouts;
+    [SerializeField] private int maximumTertiaryFlyouts;
 
     #if UNITY_EDITOR
     [Header("Particles which will draw directly on top of the struck target")]
@@ -43,14 +53,32 @@ public class AttackFXSystem : ScriptableObject
     [SerializeField] private AudioClip[] HitSounds;
 
 
-    public void TriggerFXSystem(float damage, float hitstun, Vector3 pos, float angle, Vector2 scale) {
+    public void TriggerFXSystem(float damage, float hitstun, Vector3 pos, float angle, Vector3 adjustedAngle, Vector2 scale) {
+        Vector3 tempOffsetP = adjustedAngle * offsetPrimary;
+        Vector3 tempOffsetS = adjustedAngle * offsetSecondary;
+        Vector3 tempOffsetT = adjustedAngle * offsetTertiary;
 
         for (int i = 0; i < Min(maximumMainFlyouts, minimumMainFlyouts + damage / 10); i++)
-            GraphicalEffectManager.Instance.CreateHitSparks(mainFlyouts[Random.Range(0, mainFlyouts.Length - 1)], pos, angle, scale);
-
+        {
+            float tempAngle = Random.Range(-8, 8);
+            Vector3 tempTempOffset = Quaternion.Euler(0, 0, tempAngle) * tempOffsetP;
+            GraphicalEffectManager.Instance.CreateHitSparks(mainFlyouts[Random.Range(0, mainFlyouts.Length - 1)], pos + tempTempOffset, angle + tempAngle, scale);
+        }
+            
         for (int i = 0; i < Min(maximumSecondaryFlyouts, minimumSecondaryFlyouts + damage / 10); i++)
-            GraphicalEffectManager.Instance.CreateHitSparks(secondaryFlyouts[Random.Range(0, secondaryFlyouts.Length - 1)], pos, angle, scale);
+        {
+            float tempAngle = Random.Range(-25, 25);
+            Vector3 tempTempOffset = Quaternion.Euler(0, 0, tempAngle) * tempOffsetS;
+            GraphicalEffectManager.Instance.CreateHitSparks(secondaryFlyouts[Random.Range(0, secondaryFlyouts.Length - 1)], pos + tempTempOffset, angle + 180f + tempAngle, scale);
+        }
 
+        for (int i = 0; i < Min(maximumTertiaryFlyouts, minimumTertiaryFlyouts + damage / 5); i++)
+        {
+            float tempAngle = Random.Range(-80, 80);
+            Vector3 tempTempOffset = Quaternion.Euler(0, 0, tempAngle) * tempOffsetT;
+            GraphicalEffectManager.Instance.CreateHitSparks(tertiaryFlyouts[Random.Range(0, tertiaryFlyouts.Length - 1)], pos + tempTempOffset, angle + tempAngle, scale);
+        }
+                
         foreach (HitSpark impact in impacts)
             GraphicalEffectManager.Instance.CreateHitSparks(impact, pos, 0, scale);
 

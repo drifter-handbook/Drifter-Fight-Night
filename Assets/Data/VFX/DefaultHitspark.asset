@@ -12,14 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2deb31ef3aa3e4b8f40753f8491a7c, type: 3}
   m_Name: DefaultHitspark
   m_EditorClassIdentifier: 
-  mainFlyouts: 
-  minimumMainFlyouts: 0
-  maximumMainFlyouts: 0
-  secondaryFlyouts: 
-  minimumSecondaryFlyouts: 0
-  maximumSecondaryFlyouts: 0
-  impacts: 
-  sparks: 
+  mainFlyouts: 17000000
+  offsetPrimary: 10
+  minimumMainFlyouts: 1
+  maximumMainFlyouts: 1
+  secondaryFlyouts: 18000000
+  offsetSecondary: -6
+  minimumSecondaryFlyouts: 2
+  maximumSecondaryFlyouts: 2
+  tertiaryFlyouts: 19000000
+  offsetTertiary: 3
+  minimumTertiaryFlyouts: 3
+  maximumTertiaryFlyouts: 7
+  impacts: 16000000
+  sparks: 0e000000
   miscParticles: 
   miscIsAngled: 
   HitSounds: []

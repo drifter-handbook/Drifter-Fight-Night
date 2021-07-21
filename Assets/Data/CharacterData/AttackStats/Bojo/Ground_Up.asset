@@ -15,9 +15,11 @@ MonoBehaviour:
   AttackDamage: 9
   Knockback: 35
   KnockbackScale: 0.2
+  hasStaticHitstun: 0
   HitStun: -1
   isGrab: 0
+  mirrorKnockback: 0
   AngleOfImpact: 80
   StatusEffect: 20
   StatusDuration: 0.1
-  HitVisual: 1
+  HitFX: {fileID: 11400000, guid: e007b7ceac776034b9838dfd15059cdd, type: 2}

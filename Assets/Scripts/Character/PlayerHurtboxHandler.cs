@@ -155,8 +155,13 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
             Vector3 hitSparkPos = hurtbox.capsule.ClosestPoint(hitbox.parent.transform.position);
             //Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f);
-            HitSpark hitSparkMode = HitSpark.POKE;
+            AttackFXSystem attackFX = attackData.HitFX;
+            if (attackFX == null) {
+                Debug.LogWarning("Attack is missing an AttackFXSystem. You should probably fix that.");
+            }
             Vector2 hitSparkScale =  new Vector2(facingDir *10f, 10f);
+            bool isCritical = false;
+            bool isBlocked = false;
 
             //Ignore knockback if invincible or armoured
             if (status != null && (attackData.isGrab || !drifter.guarding) && !drifter.parrying){
@@ -242,7 +247,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 
                 
                 //apply defender hitpause
-                if(HitstunDuration>0 && attackData.StatusEffect != PlayerStatusEffect.HITPAUSE )status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(attackData.HitVisual == HitSpark.CRIT || status.HasStatusEffect(PlayerStatusEffect.ARMOUR)) ? .6f:(damageDealt <=2.5f ? .15f :Mathf.Max(HitstunDuration*.25f ,.25f)));
+                if(HitstunDuration>0 && attackData.StatusEffect != PlayerStatusEffect.HITPAUSE )status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(isCritical || status.HasStatusEffect(PlayerStatusEffect.ARMOUR)) ? .6f:(damageDealt <=2.5f ? .15f :Mathf.Max(HitstunDuration*.25f ,.25f)));
                 StartCoroutine(drifter.GetComponentInChildren<GameObjectShake>().Shake(attackData.StatusEffect != PlayerStatusEffect.CRINGE?HitstunDuration*.2f:attackData.StatusDuration* framerateScalar,attackData.StatusEffect != PlayerStatusEffect.CRINGE?1.5f:2f));
 
                 returnCode = 0;             
@@ -301,28 +306,29 @@ public class PlayerHurtboxHandler : MonoBehaviour
             
 
             //When Guardbroken, play the crit animation
-            if(guardbroken) hitSparkMode = HitSpark.CRIT;
-
+            if(guardbroken) 
+                isCritical = true;
             //If a move is guarded successfully, play the relevant block hitspark
             //TODO: update for parries
-            else if (drifter != null && drifter.guarding && !attackData.isGrab)hitSparkMode = drifter.BlockReduction > 0.5f ? HitSpark.GUARD_WEAK : HitSpark.GUARD_STRONG;
-
-            //Otherwise, use the attacks hitspark
-            else hitSparkMode = attackData.HitVisual;
+            else if (drifter != null && drifter.guarding && !attackData.isGrab)
+                isBlocked = true;
 
             //apply attacker hitpause
-            if((hitbox.gameObject.tag != "Projectile" || hitSparkMode == HitSpark.CRIT)) attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(hitSparkMode == HitSpark.CRIT || status.HasStatusEffect(PlayerStatusEffect.ARMOUR))? .6f : (damageDealt <=2.5f ? .14f : Mathf.Max(HitstunDuration*.22f,.19f)));
+            if (hitbox.gameObject.tag != "Projectile" || isCritical)
+                attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(isCritical || status.HasStatusEffect(PlayerStatusEffect.ARMOUR))? .6f : (damageDealt <=2.5f ? .14f : Mathf.Max(HitstunDuration*.22f,.19f)));
 
             
 
-            float hitSparkAngle = facingDir * ((Mathf.Abs(attackData.AngleOfImpact) > 65f && attackData.HitVisual != HitSpark.SPIKE) ? Mathf.Sign(attackData.AngleOfImpact) * 90f : 0f);
-            GraphicalEffectManager.Instance.CreateHitSparks(hitSparkMode, hitSparkPos, hitSparkAngle, hitSparkScale);
-
-
-            if(attackData.SweetVisual != HitSpark.NONE)
-                GraphicalEffectManager.Instance.CreateHitSparks(attackData.SweetVisual, hitSparkPos, angle, hitSparkScale);
+            float hitSparkAngle = attackData.AngleOfImpact;
             
-        
+            if (attackFX != null)
+                attackFX.TriggerFXSystem(attackData.AttackDamage, HitstunDuration, hitSparkPos, attackData.AngleOfImpact * facingDir, adjustedAngle, hitSparkScale);
+            
+            if (isBlocked)
+                GraphicalEffectManager.Instance.CreateHitSparks(drifter.BlockReduction > 0.5f ? HitSpark.GUARD_WEAK : HitSpark.GUARD_STRONG, hitSparkPos, hitSparkAngle, hitSparkScale);
+            else if (isCritical)
+                GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.CRIT, hitSparkPos, hitSparkAngle, hitSparkScale);
+
             if (drifter != null && willCollideWithBlastZone(GetComponent<Rigidbody2D>(), HitstunDuration))
             {
                 //hitSparkPos = Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f);
@@ -332,7 +338,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
                     StartCoroutine(Shake.zoomEffect(HitstunDuration*.25f,Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),true));
             }
 
-            if(hitSparkMode == HitSpark.CRIT)StartCoroutine(Shake.zoomEffect(.6f,Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),false));
+            if (isCritical)
+                StartCoroutine(Shake.zoomEffect(.6f,Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),false));
 
             // Ancillary Hitsparks
             if (drifter != null && damageDealt >0f) StartCoroutine(delayHitsparks(hitSparkPos,attackData.AngleOfImpact,damageDealt,HitstunDuration *.25f));

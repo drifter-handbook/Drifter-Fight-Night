@@ -59,7 +59,7 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
             Vector3 hitSparkPos = hurtbox.capsule.ClosestPoint(hitbox.parent.transform.position);
 
             //Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f);
-            HitSpark hitSparkMode = attackData.HitVisual;
+            AttackFXSystem attackFX = attackData.HitFX;
             Vector2 hitSparkScale =  new Vector2(facingDir *10f, 10f);
 
 
@@ -80,14 +80,8 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
                 GetComponent<Rigidbody2D>().velocity = hitbox.parent.GetComponent<Rigidbody2D>().velocity * (1 + attackData.KnockbackScale);
             }
 
-            float hitSparkAngle = facingDir * ((Mathf.Abs(attackData.AngleOfImpact) > 65f && attackData.HitVisual != HitSpark.SPIKE) ? Mathf.Sign(attackData.AngleOfImpact) * 90f : 0f);
-            GraphicalEffectManager.Instance.CreateHitSparks(hitSparkMode, hitSparkPos, hitSparkAngle, hitSparkScale);
-
-
-            if((hitbox.gameObject.tag != "Projectile" || hitSparkMode == HitSpark.CRIT)) attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(hitSparkMode == HitSpark.CRIT)? .6f : (attackData.AttackDamage  <=2.5f ? .14f : Mathf.Max(HitstunDuration*.22f,.19f)));
-
-            
-            if(hitSparkMode == HitSpark.CRIT)StartCoroutine(Shake.zoomEffect(.6f,Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),false));
+            float hitSparkAngle = facingDir * ((Mathf.Abs(attackData.AngleOfImpact) > 65f) ? Mathf.Sign(attackData.AngleOfImpact) * 90f : 0f);
+            attackFX.TriggerFXSystem(attackData.AttackDamage, HitstunDuration, hitSparkPos,attackData.AngleOfImpact * facingDir, adjustedAngle,  hitSparkScale);
 
             // Ancillary Hitsparks
             if (attackData.AttackDamage >0f) StartCoroutine(delayHitsparks(hitSparkPos,attackData.AngleOfImpact,attackData.AttackDamage ,HitstunDuration *.25f));

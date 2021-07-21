@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum HitSpark
 {
-    NONE, POKE, BASH, PIERCE, GRAB, GUARD_STRONG, GUARD_WEAK, SPIKE, MAGICWEAK, CRIT, MAGICSTRONG, OOMPHSPARK, LUCILLE, REFLECT, STAR, STAR_FAST, OOMPHDARK, HEAL, RING, STAR1, STAR2, ORRO_SWEET
+    NONE, POKE, BASH, PIERCE, GRAB, GUARD_STRONG, GUARD_WEAK, SPIKE, MAGICWEAK, CRIT, MAGICSTRONG, OOMPHSPARK, LUCILLE, REFLECT, STAR, STAR_FAST, OOMPHDARK, HEAL, RING, STAR1, STAR2, ORRO_SWEET, DEFAULT_IMPACT, DEFAULT_FLYOUT_PRIMARY, DEFAULT_FLYOUT_SECONDARY, Default_FLYOUT_TERTIARY
 }
 
 
@@ -35,18 +35,9 @@ public class SingleAttackData : ScriptableObject
     #endif
     public bool isGrab = false;
    
-    public bool isSweetSpot = false;
-    #if UNITY_EDITOR
-    [Help("Does this attack mirror its knockback based on the opponents relative position to the user?", UnityEditor.MessageType.Info)]
-    #endif
     public bool mirrorKnockback = false;
     public float AngleOfImpact = 45f;
     public PlayerStatusEffect StatusEffect = PlayerStatusEffect.HIT;
-    public float StatusDuration =.1f;
-    public HitSpark HitVisual = HitSpark.POKE;
-
-     #if UNITY_EDITOR
-    [Help("If this is not NONE, the attack will play a second histspark and use sweetspot logic?", UnityEditor.MessageType.Info)]
-    #endif
-    public HitSpark SweetVisual = HitSpark.NONE;
+    public float StatusDuration = .1f;
+    public AttackFXSystem HitFX = null;
 }
