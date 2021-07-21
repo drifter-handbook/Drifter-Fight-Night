@@ -260,7 +260,6 @@ public class Drifter : MonoBehaviour, INetworkInit
 
         int state = 0;
 
-
         for(int i = 0; i < prevInput.Length-5; i++)
         {
 
@@ -281,7 +280,6 @@ public class Drifter : MonoBehaviour, INetworkInit
         if(input.MoveY ==0)return false;
 
         int state = 0;
-
 
         for(int i = 0; i < prevInput.Length-5; i++)
         {
