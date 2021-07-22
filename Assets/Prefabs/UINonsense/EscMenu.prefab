@@ -909,7 +909,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1465440093793688460}
   m_HandleRect: {fileID: 1886489588605611873}
   m_Direction: 0
-  m_Value: 0
+  m_Value: 1
   m_Size: 0.048
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -928,7 +928,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scrollbar: {fileID: 2199941169612259019}
-  volumeType: 2
+  mixer: {fileID: 24100000, guid: 314e9ffb32ef37540b72ba2b6f1a9d3f, type: 2}
+  channel: Volume_SFX
 --- !u!1 &8401852294046654628
 GameObject:
   m_ObjectHideFlags: 0
@@ -1129,7 +1130,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8165631918291899352}
   m_HandleRect: {fileID: 7918740789539940812}
   m_Direction: 0
-  m_Value: 0
+  m_Value: 1
   m_Size: 0.048
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -1148,7 +1149,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scrollbar: {fileID: 8139885197546116334}
-  volumeType: 1
+  mixer: {fileID: 24100000, guid: 314e9ffb32ef37540b72ba2b6f1a9d3f, type: 2}
+  channel: Volume_Music
 --- !u!1001 &104294935986747322
 PrefabInstance:
   m_ObjectHideFlags: 0

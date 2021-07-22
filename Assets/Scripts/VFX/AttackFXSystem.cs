@@ -53,7 +53,7 @@ public class AttackFXSystem : ScriptableObject
     [SerializeField] private string[] hitSounds;
 
 
-    public void TriggerFXSystem(float damage, float hitstun, Vector3 pos, float angle, Vector3 adjustedAngle, Vector2 scale) {
+    public void TriggerFXSystem(float damage, float hitstun, Vector3 pos, float angle, Vector3 adjustedAngle, Vector2 scale, bool overrideSFX = false) {
         Vector3 tempOffsetP = adjustedAngle * offsetPrimary;
         Vector3 tempOffsetS = adjustedAngle * offsetSecondary;
         Vector3 tempOffsetT = adjustedAngle * offsetTertiary;
@@ -89,7 +89,7 @@ public class AttackFXSystem : ScriptableObject
             GraphicalEffectManager.Instance.CreateHitSparks(miscParticles[i], pos, tempAngle, scale);
         }
 
-        if (hitSounds.Length > 0)
+        if (hitSounds.Length > 0 && !overrideSFX)
             AudioSystemManager.Instance.CreateSyncedSFX(hitSounds[Random.Range(0, hitSounds.Length)]);
     }
 

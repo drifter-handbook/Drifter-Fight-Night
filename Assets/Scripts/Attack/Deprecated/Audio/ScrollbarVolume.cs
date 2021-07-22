@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Audio;
+
 public class ScrollbarVolume : MonoBehaviour
 {
 
     public Scrollbar scrollbar;
-    public GameController.VolumeType volumeType;
+    public AudioMixer mixer;
+    public string channel;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,13 +18,6 @@ public class ScrollbarVolume : MonoBehaviour
 
     void ScrollbarCallback(float value)
     {
-        if(volumeType == GameController.VolumeType.MUSIC)
-        {
-            GameController.Instance.volume[(int)volumeType] = value;
-        }
-        else if(volumeType == GameController.VolumeType.SFX)
-        {
-            GameController.Instance.UpdateSFXVolume(value);
-        }
+        mixer.SetFloat(channel, 100 * value - 80);
     }
 }
