@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
+using System.IO;
 
 public class NetworkObjects : MonoBehaviour
 {
@@ -17,7 +19,9 @@ public class NetworkObjects : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
+        //UnityEngine.Debug.Log(Directory.GetCurrentDirectory());
+        aggregatePrefabs("Assets/Resources/");
     }
 
     // Update is called once per frame
@@ -156,5 +160,19 @@ public class NetworkObjects : MonoBehaviour
     public void RemoveNetworkObjectEntry(int objectID)
     {
         networkObjects.Remove(objectID);
+    }
+
+
+    //Populates the Network Prefabs list in Lucille Johnson
+    private void aggregatePrefabs(string basePath)
+    {
+
+        string[] networkPrefabs = Directory.GetFiles(basePath,"*.prefab",SearchOption.AllDirectories);
+
+        for(int i = 0; i < networkPrefabs.Length; i++)
+           NetworkTypePrefabs.Add((GameObject)AssetDatabase.LoadAssetAtPath(networkPrefabs[i], typeof(GameObject)));
+
+        UnityEngine.Debug.Log("Added " + NetworkTypePrefabs.Count + " Prefabs to the Network Prefab List");
+
     }
 }
