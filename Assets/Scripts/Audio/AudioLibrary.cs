@@ -48,6 +48,25 @@ public class AudioLibrary : ScriptableObject
     }
 
     [SerializeField] private StringClipPair[] library;
+    private Dictionary<string, short> map;
+
+    public void BuildLibrary() {
+        map = new Dictionary<string, short>();
+        for (short i = 0; i < library.Length; i++)
+            map.Add(library[i].name, i);
+    }
+
+    public short FetchID(string name) {
+        return map[name];
+    }
+
+    public AudioClip FetchClip(short id) {
+        return library[id].clip;
+    }
+
+    public AudioClip FetchClip(string name) {
+        return library[map[name]].clip;
+    }
 }
 
 

@@ -50,7 +50,7 @@ public class AttackFXSystem : ScriptableObject
     #if UNITY_EDITOR
     [Header("List of sounds to play on hit, one will be chosen randomly on each hit")]
     #endif
-    [SerializeField] private AudioClip[] HitSounds;
+    [SerializeField] private string[] hitSounds;
 
 
     public void TriggerFXSystem(float damage, float hitstun, Vector3 pos, float angle, Vector3 adjustedAngle, Vector2 scale) {
@@ -62,21 +62,21 @@ public class AttackFXSystem : ScriptableObject
         {
             float tempAngle = Random.Range(-8, 8);
             Vector3 tempTempOffset = Quaternion.Euler(0, 0, tempAngle) * tempOffsetP;
-            GraphicalEffectManager.Instance.CreateHitSparks(mainFlyouts[Random.Range(0, mainFlyouts.Length - 1)], pos + tempTempOffset, angle + tempAngle, scale);
+            GraphicalEffectManager.Instance.CreateHitSparks(mainFlyouts[Random.Range(0, mainFlyouts.Length)], pos + tempTempOffset, angle + tempAngle, scale);
         }
             
         for (int i = 0; i < Min(maximumSecondaryFlyouts, minimumSecondaryFlyouts + damage / 10); i++)
         {
             float tempAngle = Random.Range(-25, 25);
             Vector3 tempTempOffset = Quaternion.Euler(0, 0, tempAngle) * tempOffsetS;
-            GraphicalEffectManager.Instance.CreateHitSparks(secondaryFlyouts[Random.Range(0, secondaryFlyouts.Length - 1)], pos + tempTempOffset, angle + 180f + tempAngle, scale);
+            GraphicalEffectManager.Instance.CreateHitSparks(secondaryFlyouts[Random.Range(0, secondaryFlyouts.Length)], pos + tempTempOffset, angle + 180f + tempAngle, scale);
         }
 
         for (int i = 0; i < Min(maximumTertiaryFlyouts, minimumTertiaryFlyouts + damage / 5); i++)
         {
             float tempAngle = Random.Range(-80, 80);
             Vector3 tempTempOffset = Quaternion.Euler(0, 0, tempAngle) * tempOffsetT;
-            GraphicalEffectManager.Instance.CreateHitSparks(tertiaryFlyouts[Random.Range(0, tertiaryFlyouts.Length - 1)], pos + tempTempOffset, angle + tempAngle, scale);
+            GraphicalEffectManager.Instance.CreateHitSparks(tertiaryFlyouts[Random.Range(0, tertiaryFlyouts.Length)], pos + tempTempOffset, angle + tempAngle, scale);
         }
                 
         foreach (HitSpark impact in impacts)
@@ -88,6 +88,9 @@ public class AttackFXSystem : ScriptableObject
                 tempAngle = 0;
             GraphicalEffectManager.Instance.CreateHitSparks(miscParticles[i], pos, tempAngle, scale);
         }
+
+        if (hitSounds.Length > 0)
+            AudioSystemManager.Instance.CreateSyncedSFX(hitSounds[Random.Range(0, hitSounds.Length)]);
     }
 
     public HitSpark GetSpark() {

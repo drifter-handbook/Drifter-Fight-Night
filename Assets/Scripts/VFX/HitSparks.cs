@@ -6,10 +6,6 @@ public class HitSparks : MonoBehaviour
 {
     Animator anim;
     public int Effect { get; private set; }
-    public AudioSource SoundPlayer;
-    public AudioClip[] HitSounds;
-
-
 
     // Start is called before the first frame update
     void Start()
@@ -27,12 +23,7 @@ public class HitSparks : MonoBehaviour
 
     public void SetAnimation(HitSpark ef)
     {
-        Effect = (int)ef;
-        if(HitSounds.Length >= (int)ef && ef != 0 && (int)ef != 10){
-            SoundPlayer.clip = HitSounds[(int)ef -1];
-            SoundPlayer.Play();
-        }
-        
+        Effect = (int)ef; 
      }
 
     IEnumerator DestroyAfter(float duration)
