@@ -28,5 +28,6 @@ MonoBehaviour:
   sparks: 1300000014000000
   miscParticles: 
   miscIsAngled: 
-  HitSounds:
-  - {fileID: 8300000, guid: da998e5da6c5ba6498f430b16d043dc5, type: 3}
+  hitSounds:
+  - HitGuarded
+  - HitSmall

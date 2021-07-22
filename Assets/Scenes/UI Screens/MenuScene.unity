@@ -1857,7 +1857,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 648847457}
   m_HandleRect: {fileID: 648847456}
   m_Direction: 0
-  m_Value: 0
+  m_Value: 1
   m_Size: 0.048
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -1913,7 +1913,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scrollbar: {fileID: 472955315}
-  volumeType: 1
+  mixer: {fileID: 24100000, guid: 314e9ffb32ef37540b72ba2b6f1a9d3f, type: 2}
+  channel: Volume_Music
 --- !u!1 &514745454
 GameObject:
   m_ObjectHideFlags: 0
@@ -2890,7 +2891,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scrollbar: {fileID: 774922147}
-  volumeType: 2
+  mixer: {fileID: 24100000, guid: 314e9ffb32ef37540b72ba2b6f1a9d3f, type: 2}
+  channel: Volume_SFX
 --- !u!114 &774922147
 MonoBehaviour:
   m_ObjectHideFlags: 0

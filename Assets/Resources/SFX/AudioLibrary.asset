@@ -12,4 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37d0b216572e7942bb6e15cd89eddb1, type: 3}
   m_Name: AudioLibrary
   m_EditorClassIdentifier: 
-  library: []
+  library:
+  - name: Hit
+    clip: {fileID: 8300000, guid: 068422299031d8b4f9034ac5d7016e13, type: 3}
+  - name: HitSmall
+    clip: {fileID: 8300000, guid: da998e5da6c5ba6498f430b16d043dc5, type: 3}
+  - name: HitGuarded
+    clip: {fileID: 8300000, guid: 0c2e0c71ec6268740bfbf283e5e40d29, type: 3}
+  - name: HitCrit
+    clip: {fileID: 8300000, guid: e464c612621dd10449ac7e35e6077d14, type: 3}
