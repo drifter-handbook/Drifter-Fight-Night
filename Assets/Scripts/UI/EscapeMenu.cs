@@ -18,9 +18,14 @@ public class EscapeMenu : MonoBehaviour
     {
         //TODO: Add back joystick support
         //Input.GetKeyDown("joystick button 7")
-        if (Keyboard.current.escapeKey.wasPressedThisFrame)
+        if (GameController.Instance.controls.FindActionMap("PlayerKeyboard").FindAction("Pause").triggered)
         {
+            GameController.Instance.IsPaused = true;
             ToggleMenu();
+        }
+        if(!escapeMenu.activeSelf)
+        {
+            GameController.Instance.IsPaused = false;
         }
     }
 

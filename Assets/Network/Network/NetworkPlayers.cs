@@ -14,7 +14,7 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
     Dictionary<int, GameObject> clientPlayers = new Dictionary<int, GameObject>();
 
     [NonSerialized]
-    public Dictionary<int,GameObject> players = new Dictionary<int,GameObject>();
+    public Dictionary<int, GameObject> players = new Dictionary<int, GameObject>();
 
     public static NetworkPlayers Instance => GameObject.FindGameObjectWithTag("NetworkPlayers")?.GetComponent<NetworkPlayers>();
 
@@ -71,13 +71,13 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
     {
         if (player == null)
             return;
-        
+
         // if(input == null)
         //     input = player.GetComponent<Drifter>().input[0];
 
         Drifter playerDrifter = player.GetComponent<Drifter>();
 
-        for(int i = player.GetComponent<Drifter>().input.Length - 2; i >=0; i--)
+        for (int i = player.GetComponent<Drifter>().input.Length - 2; i >= 0; i--)
         {
             playerDrifter.input[i + 1] = (PlayerInputData)playerDrifter.input[i].Clone();
         }
@@ -88,8 +88,8 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
 
         //Input Buffering Stores the last 16 input states
         //Newest state is at index 0
-        //Remove the oldest state each frame 
-        
+        //Remove the oldest state each frame
+
         // add the newest state
 
         //player.GetComponent<Drifter>().input[0] = (PlayerInputData)input.Clone();
@@ -97,7 +97,7 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
 
     public static PlayerInputData GetInput(InputActionAsset keyBindings)
     {
-        InputActionMap playerInputAction = keyBindings.FindActionMap("Player");
+        InputActionMap playerInputAction = keyBindings.FindActionMap("PlayerKeyboard");
         PlayerInputData input = new PlayerInputData();
         // get player input
 
@@ -107,20 +107,22 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
         input.Super = playerInputAction.FindAction("Grab").ReadValue<float>() > 0;
         input.Guard = playerInputAction.FindAction("Guard 1").ReadValue<float>() > 0;
 
-        //input.Dash = playerInputAction.FindAction("Guard 2").ReadValue<float>() > 0;
-
         //TODO REIMPLEMENT GAMEPLAD CONTROLS
         //controller movement input
-        // if (Input.GetJoystickNames().Length > 0)
-        // {
-        //     input.MoveX = Input.GetAxis("Horizontal");
-        //     input.MoveY = Input.GetAxis("Vertical");
-        // }
+        if (Gamepad.all.Count != 0)
+        {
+            input.MoveX = playerInputAction.FindAction("Horizontal").ReadValue<float>();
+            input.MoveY = playerInputAction.FindAction("Vertical").ReadValue<float>();
+            if (playerInputAction.FindAction("Guard 1").triggered && playerInputAction.FindAction("Vertical").ReadValue<float>() < 0)
+            {
+                input.MoveY--;
+            }
+        }
 
-        // //keyboard movement input
-        // else
-        // {
-        input.MoveX = 0;
+        //keyboard movement input
+        else
+        {
+            input.MoveX = 0;
             if (playerInputAction.FindAction("Left").ReadValue<float>() > 0)
             {
                 input.MoveX--;
@@ -139,16 +141,16 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
             {
                 input.MoveY++;
             }
-        //}
+            //}
 
-        // if (playerInputAction.FindAction("Guard 1").triggered && playerInputAction.FindAction("Down").ReadValue<float>() > 0)
-        // {
-        //     input.MoveY--;
-        // }
+            // if (playerInputAction.FindAction("Guard 1").triggered && playerInputAction.FindAction("Down").ReadValue<float>() > 0)
+            // {
+            //     input.MoveY--;
+            // }
+        }
 
 
-
-        return input;
+            return input;
     }
 }
 

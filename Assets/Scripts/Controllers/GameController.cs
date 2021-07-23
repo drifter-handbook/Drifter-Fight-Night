@@ -36,7 +36,7 @@ public class GameController : MonoBehaviour
     //* Data storage
     // Character List
 
-    public bool IsPaused { get; private set; } = false;
+    public bool IsPaused { get; set; } = false;
 
     //* Prefabs
     public GameObject characterCardPrefab;
@@ -152,10 +152,6 @@ public class GameController : MonoBehaviour
 
     void Update()
     {
-        if (Keyboard.current.pKey.wasPressedThisFrame)
-        {
-            IsPaused = !IsPaused;
-        }
        /* if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();

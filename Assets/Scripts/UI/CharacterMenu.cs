@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -216,7 +217,20 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
         }
 
-        if ((Keyboard.current.anyKey.isPressed || GameController.Instance.controls.FindActionMap("Player").FindAction("Horizontal").ReadValue<float>() != 0 || GameController.Instance.controls.FindActionMap("Player").FindAction("Vertical").ReadValue<float>() != 0) && mouse && (!Mouse.current.leftButton.isPressed || Mouse.current.rightButton.isPressed || Mouse.current.middleButton.isPressed)){
+        bool gamepadButtonPressed = false;
+        for (int i = 0; i < Gamepad.current.allControls.Count; i++)
+        {
+            var c = Gamepad.current.allControls[i];
+            if (c is ButtonControl)
+            {
+                if (((ButtonControl)c).wasPressedThisFrame)
+                {
+                    gamepadButtonPressed = true;
+                }
+            }
+        }
+
+        if ((Keyboard.current.anyKey.isPressed || gamepadButtonPressed || GameController.Instance.controls.FindActionMap("PlayerKeyboard").FindAction("Horizontal").ReadValue<float>() != 0 || GameController.Instance.controls.FindActionMap("PlayerKeyboard").FindAction("Vertical").ReadValue<float>() != 0) && mouse && (!Mouse.current.leftButton.isPressed || Mouse.current.rightButton.isPressed || Mouse.current.middleButton.isPressed)){
             mouse = false;
             EventSystem.current.SetSelectedGameObject(everyoneReady() && GameController.Instance.IsHost ?(stageSelect?GameObject.Find("Training"):forwardButton):GameObject.Find("Random Figurine"));
         }

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEditor;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 
 // TODO: Rename to Menu Manager
 // Handles the menu logic flow and sends important stuff back to the game controller to disseminate
@@ -81,14 +82,28 @@ public class ViewManager : MonoBehaviour
             }
         }
 
-        if(Mouse.current.leftButton.isPressed || Mouse.current.rightButton.isPressed || Mouse.current.middleButton.isPressed && !mouse)
+        bool gamepadButtonPressed = false;
+        /*for (int i = 0; i < Gamepad.current.allControls.Count; i++)
+        {
+            var c = Gamepad.current.allControls[i];
+            if (c is ButtonControl)
+            {
+                if (((ButtonControl)c).wasPressedThisFrame)
+                {
+                    gamepadButtonPressed = true;
+                }
+            }
+        }*/
+
+
+        if (Mouse.current.leftButton.isPressed || Mouse.current.rightButton.isPressed || Mouse.current.middleButton.isPressed && !mouse)
         {
             mouse = true;
             //Cursor.visible = true;
             EventSystem.current.SetSelectedGameObject(null);
 
         }
-        else if(Keyboard.current.anyKey.isPressed && mouse && (!Mouse.current.leftButton.isPressed || !Mouse.current.rightButton.isPressed || !Mouse.current.middleButton.isPressed)){
+        else if((Keyboard.current.anyKey.isPressed || gamepadButtonPressed) && mouse && (!Mouse.current.leftButton.isPressed || !Mouse.current.rightButton.isPressed || !Mouse.current.middleButton.isPressed)){
             mouse = false;
             //Cursor.visible = false;
             switch (currentView){

@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -578,7 +578,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -102.2, y: -10.799988}
+  m_AnchoredPosition: {x: -102.20001, y: -10.799988}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &684723222
@@ -1274,16 +1274,35 @@ MonoBehaviour:
   m_GameObject: {fileID: 1746639488}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
-  m_InputActionsPerSecond: 10
-  m_RepeatDelay: 0.5
-  m_ForceModuleActive: 0
+  m_MoveRepeatDelay: 0.5
+  m_MoveRepeatRate: 0.1
+  m_ActionsAsset: {fileID: -944628639613478452, guid: 3ae2ee95e1ca3704091fac15cff26ed1,
+    type: 3}
+  m_PointAction: {fileID: 1154003765240358727, guid: 3ae2ee95e1ca3704091fac15cff26ed1,
+    type: 3}
+  m_MoveAction: {fileID: -5211495190103073798, guid: 3ae2ee95e1ca3704091fac15cff26ed1,
+    type: 3}
+  m_SubmitAction: {fileID: -8569513962682467077, guid: 3ae2ee95e1ca3704091fac15cff26ed1,
+    type: 3}
+  m_CancelAction: {fileID: -9188036418752402896, guid: 3ae2ee95e1ca3704091fac15cff26ed1,
+    type: 3}
+  m_LeftClickAction: {fileID: 1702627342240591222, guid: 3ae2ee95e1ca3704091fac15cff26ed1,
+    type: 3}
+  m_MiddleClickAction: {fileID: 8187053289591828916, guid: 3ae2ee95e1ca3704091fac15cff26ed1,
+    type: 3}
+  m_RightClickAction: {fileID: -8213150948825693895, guid: 3ae2ee95e1ca3704091fac15cff26ed1,
+    type: 3}
+  m_ScrollWheelAction: {fileID: 5816395078772947919, guid: 3ae2ee95e1ca3704091fac15cff26ed1,
+    type: 3}
+  m_TrackedDevicePositionAction: {fileID: 7043162503584760809, guid: 3ae2ee95e1ca3704091fac15cff26ed1,
+    type: 3}
+  m_TrackedDeviceOrientationAction: {fileID: 295414811564739058, guid: 3ae2ee95e1ca3704091fac15cff26ed1,
+    type: 3}
+  m_DeselectOnBackgroundClick: 1
+  m_PointerBehavior: 0
 --- !u!114 &1746639490
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1661,6 +1680,51 @@ PrefabInstance:
     - target: {fileID: 1232850341074944076, guid: 908190fe8f231ad4bb5bb812f06be118,
         type: 3}
       propertyPath: m_ChildForceExpandHeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1878359343907525598, guid: 908190fe8f231ad4bb5bb812f06be118,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1878359343907525598, guid: 908190fe8f231ad4bb5bb812f06be118,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1878359343907525598, guid: 908190fe8f231ad4bb5bb812f06be118,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1878359343907525598, guid: 908190fe8f231ad4bb5bb812f06be118,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5502942196269033376, guid: 908190fe8f231ad4bb5bb812f06be118,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5502942196269033376, guid: 908190fe8f231ad4bb5bb812f06be118,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5502942196269033376, guid: 908190fe8f231ad4bb5bb812f06be118,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5502942196269033376, guid: 908190fe8f231ad4bb5bb812f06be118,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7132257181501358728, guid: 908190fe8f231ad4bb5bb812f06be118,
+        type: 3}
+      propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

@@ -324,7 +324,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!GameController.Instance.IsHost || GameController.Instance.IsPaused)
         {
-            //return;
+            return;
         }
 
         bool jumpPressed = !drifter.input[1].Jump && drifter.input[0].Jump;
