@@ -13,12 +13,13 @@ MonoBehaviour:
   m_Name: Roswel
   m_EditorClassIdentifier: 
   AttackDamage: 4
-  Knockback: 20
-  KnockbackScale: 0
+  Knockback: 10
+  KnockbackScale: 0.6
   hasStaticHitstun: 0
   HitStun: 0
   isGrab: 1
-  AngleOfImpact: 25
-  StatusEffect: 5
-  StatusDuration: 9
-  HitVisual: 8
+  mirrorKnockback: 0
+  AngleOfImpact: 20
+  StatusEffect: 1
+  StatusDuration: 24
+  HitFX: {fileID: 0}

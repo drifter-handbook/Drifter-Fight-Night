@@ -66,11 +66,13 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
             Drifter attacker = hitbox.parent.GetComponent<Drifter>();
             attacker.canFeint = false;
+
+            Vector3 hitSparkPos = hurtbox.capsule.ClosestPoint(hitbox.parent.transform.position);
             
             //Freezefame if hit a counter
             if(hurtbox.gameObject.name == "Counter" &&  attackData.AttackDamage >0f && !attackData.isGrab)
             {
-                GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.STAR, Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),0, new Vector2(10f, 10f));
+                GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.STAR, hitSparkPos,0, new Vector2(10f, 10f));
                 attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.7f);
                 status.ApplyStatusEffect(PlayerStatusEffect.HIT,.3f);
                 return -4;
@@ -153,8 +155,6 @@ public class PlayerHurtboxHandler : MonoBehaviour
             bool guardbroken = false;
 
 
-            Vector3 hitSparkPos = hurtbox.capsule.ClosestPoint(hitbox.parent.transform.position);
-            //Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f);
             AttackFXSystem attackFX = attackData.HitFX;
             if (attackFX == null) {
                 Debug.LogWarning("Attack is missing an AttackFXSystem. You should probably fix that.");
@@ -310,7 +310,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 isCritical = true;
             //If a move is guarded successfully, play the relevant block hitspark
             //TODO: update for parries
-            else if (drifter != null && drifter.guarding && !attackData.isGrab)
+            else if (drifter != null && drifter.guarding && !attackData.isGrab && !isCritical)
                 isBlocked = true;
 
             //apply attacker hitpause
@@ -335,11 +335,11 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.CRIT, hitSparkPos, 0, new Vector2(facingDir * 10f, 10f));
 
                 if(drifter.Stocks <= 1 && willCollideWithBlastZoneAccurate(GetComponent<Rigidbody2D>(), HitstunDuration))
-                    StartCoroutine(Shake.zoomEffect(HitstunDuration*.25f,Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),true));
+                    StartCoroutine(Shake.zoomEffect(HitstunDuration*.25f,hitSparkPos,true));
             }
 
             if (isCritical)
-                StartCoroutine(Shake.zoomEffect(.6f,Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),false));
+                StartCoroutine(Shake.zoomEffect(.6f,hitSparkPos,false));
 
             // Ancillary Hitsparks
             if (drifter != null && damageDealt >0f && attackFX != null)

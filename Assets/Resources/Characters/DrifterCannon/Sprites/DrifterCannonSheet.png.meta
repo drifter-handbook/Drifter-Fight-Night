@@ -650,6 +650,12 @@ TextureImporter:
   - first:
       213: 8257335727502508648
     second: DrifterCannonSheet_171
+  - first:
+      213: -3213915738586568594
+    second: DrifterCannonSheet_36
+  - first:
+      213: 1738471616247456814
+    second: DrifterCannonSheet_38
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -1491,76 +1497,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DrifterCannonSheet_36
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 576
-        width: 128
-        height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: aef58c8c7dd98d7d0800000000000000
-      internalID: -2893389210473439254
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: DrifterCannonSheet_38
-      rect:
-        serializedVersion: 2
-        x: 256
-        y: 576
-        width: 128
-        height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7b2c1edbe4fd2cf70800000000000000
-      internalID: 9206166117584847543
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: DrifterCannonSheet_40
-      rect:
-        serializedVersion: 2
-        x: 384
-        y: 576
-        width: 64
-        height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 336f4d50c9f75b980800000000000000
-      internalID: -8523766411639327181
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: DrifterCannonSheet_41
       rect:
         serializedVersion: 2
         x: 192
         y: 512
         width: 64
-        height: 64
+        height: 128
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1580,7 +1523,7 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 512
-        width: 128
+        width: 64
         height: 64
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -1602,7 +1545,7 @@ TextureImporter:
         x: 128
         y: 512
         width: 64
-        height: 64
+        height: 128
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1622,8 +1565,8 @@ TextureImporter:
         serializedVersion: 2
         x: 256
         y: 512
-        width: 128
-        height: 64
+        width: 64
+        height: 128
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -4153,6 +4096,48 @@ TextureImporter:
       bones: []
       spriteID: 3468cdd311ae49bf0800000000000000
       internalID: -318372313863256509
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DrifterCannonSheet_36
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 512
+        width: 64
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e68a28fe9a0e563d0800000000000000
+      internalID: -3213915738586568594
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DrifterCannonSheet_38
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 512
+        width: 64
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e24678269ba402810800000000000000
+      internalID: 1738471616247456814
       vertices: []
       indices: 
       edges: []
