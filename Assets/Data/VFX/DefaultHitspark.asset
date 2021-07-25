@@ -12,23 +12,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2deb31ef3aa3e4b8f40753f8491a7c, type: 3}
   m_Name: DefaultHitspark
   m_EditorClassIdentifier: 
-  mainFlyouts: 17000000
+  mainFlyouts:
+  - flyoutEffect: 23
+    flyoutColor: {r: 1, g: 0.9401342, b: 0.514151, a: 1}
   offsetPrimary: 5
   minimumMainFlyouts: 1
   maximumMainFlyouts: 1
-  mainFlyoutColor: {r: 1, g: 0.9199997, b: 0.514151, a: 1}
-  secondaryFlyouts: 18000000
+  secondaryFlyouts:
+  - flyoutEffect: 24
+    flyoutColor: {r: 1, g: 0.9411765, b: 0.5176471, a: 1}
   offsetSecondary: -6
   minimumSecondaryFlyouts: 2
   maximumSecondaryFlyouts: 2
-  secondaryFlyoutColor: {r: 1, g: 0.92156863, b: 0.5176471, a: 0}
-  tertiaryFlyouts: 19000000
+  tertiaryFlyouts:
+  - flyoutEffect: 25
+    flyoutColor: {r: 1, g: 1, b: 1, a: 1}
   offsetTertiary: 3
   minimumTertiaryFlyouts: 3
   maximumTertiaryFlyouts: 7
-  tertiaryFlyoutColor: {r: 1, g: 1, b: 1, a: 1}
-  impacts: 16000000
-  impactColor: {r: 1, g: 1, b: 1, a: 1}
+  impacts:
+  - flyoutEffect: 22
+    flyoutColor: {r: 1, g: 1, b: 1, a: 1}
   sparks: 1300000014000000
   miscParticles: 
   miscIsAngled: 

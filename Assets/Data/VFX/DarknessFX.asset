@@ -12,23 +12,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2deb31ef3aa3e4b8f40753f8491a7c, type: 3}
   m_Name: DarknessFX
   m_EditorClassIdentifier: 
-  mainFlyouts: 17000000
+  mainFlyouts:
+  - flyoutEffect: 23
+    flyoutColor: {r: 0, g: 0, b: 0, a: 1}
   offsetPrimary: 5
   minimumMainFlyouts: 1
   maximumMainFlyouts: 1
-  mainFlyoutColor: {r: 1, g: 0.08235294, b: 0.003921569, a: 1}
-  secondaryFlyouts: 18000000
+  secondaryFlyouts:
+  - flyoutEffect: 24
+    flyoutColor: {r: 0, g: 0, b: 0, a: 1}
   offsetSecondary: -6
   minimumSecondaryFlyouts: 2
   maximumSecondaryFlyouts: 2
-  secondaryFlyoutColor: {r: 0.60784316, g: 0.003921569, b: 0.99607843, a: 1}
-  tertiaryFlyouts: 19000000
-  offsetTertiary: 3
-  minimumTertiaryFlyouts: 6
+  tertiaryFlyouts:
+  - flyoutEffect: 25
+    flyoutColor: {r: 1, g: 0.08235294, b: 0.003921569, a: 1}
+  - flyoutEffect: 25
+    flyoutColor: {r: 0.99607843, g: 0.003921569, b: 0.87058824, a: 1}
+  - flyoutEffect: 25
+    flyoutColor: {r: 0.60784316, g: 0.003921569, b: 0.99607843, a: 1}
+  - flyoutEffect: 25
+    flyoutColor: {r: 0.21176471, g: 0.003921569, b: 0.99607843, a: 1}
+  - flyoutEffect: 25
+    flyoutColor: {r: 0.011764706, g: 0.003921569, b: 0.99607843, a: 1}
+  offsetTertiary: 2
+  minimumTertiaryFlyouts: 8
   maximumTertiaryFlyouts: 12
-  tertiaryFlyoutColor: {r: 0.21176471, g: 0.003921569, b: 0.99607843, a: 1}
-  impacts: 16000000
-  impactColor: {r: 0, g: 0, b: 0, a: 1}
+  impacts:
+  - flyoutEffect: 22
+    flyoutColor: {r: 0, g: 0, b: 0, a: 1}
   sparks: 1300000014000000
   miscParticles: 
   miscIsAngled: 
