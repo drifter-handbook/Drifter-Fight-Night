@@ -10,28 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3e2deb31ef3aa3e4b8f40753f8491a7c, type: 3}
-  m_Name: DefaultHitspark
+  m_Name: DarknessFX
   m_EditorClassIdentifier: 
   mainFlyouts: 17000000
   offsetPrimary: 5
   minimumMainFlyouts: 1
   maximumMainFlyouts: 1
-  mainFlyoutColor: {r: 1, g: 0.9199997, b: 0.514151, a: 1}
+  mainFlyoutColor: {r: 1, g: 0.08235294, b: 0.003921569, a: 1}
   secondaryFlyouts: 18000000
   offsetSecondary: -6
   minimumSecondaryFlyouts: 2
   maximumSecondaryFlyouts: 2
-  secondaryFlyoutColor: {r: 1, g: 0.92156863, b: 0.5176471, a: 0}
+  secondaryFlyoutColor: {r: 0.60784316, g: 0.003921569, b: 0.99607843, a: 1}
   tertiaryFlyouts: 19000000
   offsetTertiary: 3
-  minimumTertiaryFlyouts: 3
-  maximumTertiaryFlyouts: 7
-  tertiaryFlyoutColor: {r: 1, g: 1, b: 1, a: 1}
+  minimumTertiaryFlyouts: 6
+  maximumTertiaryFlyouts: 12
+  tertiaryFlyoutColor: {r: 0.21176471, g: 0.003921569, b: 0.99607843, a: 1}
   impacts: 16000000
-  impactColor: {r: 1, g: 1, b: 1, a: 1}
+  impactColor: {r: 0, g: 0, b: 0, a: 1}
   sparks: 1300000014000000
   miscParticles: 
   miscIsAngled: 
-  hitSounds:
-  - HitGuarded
-  - HitSmall
+  hitSounds: []

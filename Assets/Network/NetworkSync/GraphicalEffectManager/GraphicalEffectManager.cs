@@ -28,20 +28,27 @@ public class GraphicalEffectManager : MonoBehaviour, INetworkMessageReceiver
         
     }
 
-    public void CreateHitSparks(HitSpark mode, Vector3 pos, float angle, Vector2 scale)
+    public void CreateHitSparks(HitSpark mode, Vector3 pos, float angle, Vector2 scale,Color color)
     {
         if (GameController.Instance.IsHost)
         {
-            SpawnHitSparks(mode, pos, angle, scale);
+            SpawnHitSparks(mode, pos, angle, scale, color);
             sync.SendNetworkMessage(new GraphicalEffectPacket()
             {
                 effect = (int)GraphicalEffectType.HitSpark,
                 mode = (int)mode,
                 pos = new SyncableVector3(pos),
                 angle = angle,
-                scale = new SyncableVector2(scale)
+                scale = new SyncableVector2(scale),
+                color = new SyncableColor(color)
             }, LiteNetLib.DeliveryMethod.Unreliable);
         }
+    }
+
+
+    public void CreateHitSparks(HitSpark mode, Vector3 pos, float angle, Vector2 scale)
+    {
+       CreateHitSparks(mode,pos,angle,scale,Color.white);
     }
 
     public void CreateMovementParticle(MovementParticleMode mode, Vector3 pos, float angle, Vector2 scale)
@@ -60,11 +67,17 @@ public class GraphicalEffectManager : MonoBehaviour, INetworkMessageReceiver
         }
     }
 
-    private void SpawnHitSparks(HitSpark mode, Vector3 pos, float angle, Vector2 scale)
+    private void SpawnHitSparks(HitSpark mode, Vector3 pos, float angle, Vector2 scale, Color color)
     {
         GameObject hitSpark = Instantiate(hitSparksPrefab, pos, Quaternion.Euler(0, 0, angle));
         hitSpark.GetComponent<HitSparks>().SetAnimation(mode);
+        hitSpark.GetComponent<SpriteRenderer>().color = color;
         hitSpark.transform.localScale = new Vector3(scale.x, scale.y, 1);
+    }
+
+    private void SpawnHitSparks(HitSpark mode, Vector3 pos, float angle, Vector2 scale)
+    {
+        SpawnHitSparks(mode,pos,angle,scale, Color.white);
     }
 
     private void SpawnMovementParticle(MovementParticleMode mode, Vector3 pos, float angle, Vector2 scale)
@@ -84,7 +97,7 @@ public class GraphicalEffectManager : MonoBehaviour, INetworkMessageReceiver
                 switch ((GraphicalEffectType)effect.effect)
                 {
                     case GraphicalEffectType.HitSpark:
-                        SpawnHitSparks((HitSpark)effect.mode, effect.pos.ToVector3(), effect.angle, effect.scale.ToVector2());
+                        SpawnHitSparks((HitSpark)effect.mode, effect.pos.ToVector3(), effect.angle, effect.scale.ToVector2(),effect.color.ToColor());
                         break;
                     case GraphicalEffectType.MovementParticle:
                         SpawnMovementParticle((MovementParticleMode)effect.mode, effect.pos.ToVector3(), effect.angle, effect.scale.ToVector2());
@@ -102,5 +115,26 @@ public class GraphicalEffectPacket : INetworkData
     public int mode;
     public SyncableVector3 pos;
     public float angle;
+    public SyncableColor color;
     public SyncableVector2 scale;
+}
+
+
+public class SyncableColor
+{
+    public float r = 0;
+    public float g = 0;
+    public float b = 0;
+    public float a = 0;
+    public SyncableColor(Color c)
+    {
+        r = c.r;
+        g = c.g;
+        b = c.b;
+        a = c.a;
+    }
+    public Color ToColor()
+    {
+        return new Color(r,g,b,a);
+    }
 }

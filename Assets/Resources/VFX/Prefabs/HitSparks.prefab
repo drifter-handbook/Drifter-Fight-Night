@@ -76,20 +76,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e075f0eed68b80647880c9b1fbad428c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SoundPlayer: {fileID: 0}
-  HitSounds:
-  - {fileID: 8300000, guid: da998e5da6c5ba6498f430b16d043dc5, type: 3}
-  - {fileID: 8300000, guid: c073c600a97835640923f0a685eaf8a1, type: 3}
-  - {fileID: 8300000, guid: 068422299031d8b4f9034ac5d7016e13, type: 3}
-  - {fileID: 8300000, guid: 671e0db6827e7044ba42efa346550735, type: 3}
-  - {fileID: 8300000, guid: 0c2e0c71ec6268740bfbf283e5e40d29, type: 3}
-  - {fileID: 8300000, guid: 583585e8cd5d8de4ebcaa0f2f3d3665b, type: 3}
-  - {fileID: 8300000, guid: 4ef2cbd3e3d45fd4e899463ad2d1e093, type: 3}
-  - {fileID: 8300000, guid: 118f427a73a2dc5479efbd92b3a0d875, type: 3}
-  - {fileID: 8300000, guid: e464c612621dd10449ac7e35e6077d14, type: 3}
-  - {fileID: 8300000, guid: 2673abfda5e7dde4bb5a310d48146556, type: 3}
-  - {fileID: 0}
-  - {fileID: 8300000, guid: 839650cd5804fdf48b179b5d9404133f, type: 3}
 --- !u!95 &3539374481922707033
 Animator:
   serializedVersion: 3
@@ -148,15 +134,15 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: -3985033086816798313, guid: b119c488ed73e0746abb89450b4b2091,
+  m_Sprite: {fileID: 3971726901336809371, guid: 3b2f426ff41870a48923e83da0788372,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.28, y: 1.28}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
