@@ -44,24 +44,17 @@ public class LucilleMasterHit : MasterHit
         movement.terminalVelocity = terminalVelocity;
     }
 
-    public void setBombTarget()
-    {
-        if(!isHost)return;
-        if(bomb != null)
-        {
-            bomb.GetComponent<StickToTarget>().victim = bombGrab.victim;
-            bombGrab.victim = null;
-            bomb = null;
-        } 
-    }
-
-
     public void Side_Grab_Bomb()
     {
-        // jump upwards and create spear projectile
         if(!isHost)return;
         facing = movement.Facing;
         Vector3 pos = new Vector3(facing * 3.7f,3.3f,0);
+
+        if(bomb != null)
+        {
+            bomb.GetComponent<LucillePortal>().decay();
+            breakRift(bomb);
+        }
 
         bomb = GameController.Instance.host.CreateNetworkObject("Lucille_Bomb", transform.position + pos, transform.rotation);
 
@@ -74,19 +67,34 @@ public class LucilleMasterHit : MasterHit
             hitbox.Facing = facing;
             
         }
+        bomb.GetComponent<StickToTarget>().victim = bombGrab.victim;
+        bombGrab.victim = null;
+        bomb.GetComponent<LucillePortal>().drifter = drifter.gameObject;
+        rifts.Enqueue(bomb);
+
     }
 
     public void SpawnRift()
     {
-        // jump upwards and create spear projectile
         if(!isHost || drifter.superCharge < 1)return;
+
+        SpawnRift(transform.position + new Vector3(0,3.5f,0));
+        drifter.superCharge -= 1f;
+        
+    }
+
+
+    public void SpawnRift(Vector3 pos)
+    {
+
+        if(!isHost)return;
 
         facing = movement.Facing;
 
         //remove the oldest portal if size limit would be exceeded.
         //if(getTotalPortalSize() >= 9) rifts.Dequeue().GetComponent<LucillePortal>().decay();
        
-        GameObject rift = GameController.Instance.host.CreateNetworkObject("Lucille_Rift", transform.position + new Vector3(0,3.5f,0), transform.rotation);
+        GameObject rift = GameController.Instance.host.CreateNetworkObject("Lucille_Rift", pos, transform.rotation);
 
         foreach (HitboxCollision hitbox in rift.GetComponentsInChildren<HitboxCollision>(true))
         {
@@ -100,7 +108,6 @@ public class LucilleMasterHit : MasterHit
         rift.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
         rift.GetComponent<LucillePortal>().drifter = drifter.gameObject;
        
-        drifter.superCharge -= 1f;
         rifts.Enqueue(rift);
         
         //drifter.SetCharge(3 + getTotalPortalSize());
@@ -116,7 +123,7 @@ public class LucilleMasterHit : MasterHit
 
         foreach(GameObject rift in riftarray)
         {
-            if(shortestDistance > Vector3.Distance(rift.transform.position, drifter.transform.position))
+            if(rift != null && shortestDistance > Vector3.Distance(rift.transform.position, drifter.transform.position))
             {
                 shortestDistance = Vector3.Distance(rift.transform.position, drifter.transform.position);
                 targetPortal = rift;
@@ -131,6 +138,8 @@ public class LucilleMasterHit : MasterHit
             rb.transform.position = targetPortal.transform.position;
 
             breakRift(targetPortal);
+
+            attacks.resetRecovery();
 
             targetPortal.GetComponent<LucillePortal>().detonate();
         }

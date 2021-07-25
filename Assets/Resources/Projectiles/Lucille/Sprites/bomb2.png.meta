@@ -1,55 +1,82 @@
 fileFormatVersion: 2
-guid: 9de4986b1fde3724a8cfe8446fd1f33f
+guid: 497722d045b100140a2c9abc246d70f6
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6766125213932595148
-    second: Lucille_Bomb_0
+      213: -7489009585814028084
+    second: bomb2_0
   - first:
-      213: 417597479225920139
-    second: Lucille_Bomb_1
+      213: -2744358775435010289
+    second: bomb2_1
   - first:
-      213: -3586455285376519822
-    second: Lucille_Bomb_2
+      213: -5153887947103641378
+    second: bomb2_2
   - first:
-      213: 8312152580192737086
-    second: Lucille_Bomb_3
+      213: -8982794913058672227
+    second: bomb2_3
   - first:
-      213: -897016497805460367
-    second: Lucille_Bomb_4
+      213: 5488592883487553432
+    second: bomb2_4
   - first:
-      213: 374722846727656006
-    second: Lucille_Bomb_5
+      213: 557664573850983712
+    second: bomb2_5
   - first:
-      213: -4980714770194803415
-    second: Lucille_Bomb_6
+      213: 5657119565318949200
+    second: bomb2_0
   - first:
-      213: -5768266314937712877
-    second: Lucille_Bomb_7
+      213: -5900868762276278381
+    second: bomb2_1
   - first:
-      213: 8444992136006561671
-    second: Lucille_Bomb_8
+      213: -960549380417490095
+    second: bomb2_2
   - first:
-      213: -5968707124639154456
-    second: Lucille_Bomb_9
+      213: -1540448713089963633
+    second: bomb2_3
   - first:
-      213: -462784566815605237
-    second: Lucille_Bomb_10
+      213: 4949910591252640861
+    second: bomb2_4
   - first:
-      213: 619702671792536480
-    second: Lucille_Bomb_11
+      213: -1024324966079597241
+    second: bomb2_5
   - first:
-      213: -1054396432148044157
-    second: Lucille_Bomb_12
+      213: 6658647036973315434
+    second: bomb2_6
   - first:
-      213: 9063245624458626043
-    second: Lucille_Bomb_13
+      213: 7730529781676058050
+    second: bomb2_7
   - first:
-      213: 2647326102412725889
-    second: Lucille_Bomb_14
+      213: 3091321580915974233
+    second: bomb2_8
   - first:
-      213: 5486676513099430926
-    second: Lucille_Bomb_15
+      213: -726120035530492026
+    second: bomb2_9
+  - first:
+      213: -6287576867095923083
+    second: bomb2_10
+  - first:
+      213: -7231043759077203965
+    second: bomb2_11
+  - first:
+      213: -2576026036225469061
+    second: bomb2_6
+  - first:
+      213: 8016208122772246825
+    second: bomb2_7
+  - first:
+      213: -1948723733686806205
+    second: bomb2_8
+  - first:
+      213: 4693313180517578576
+    second: bomb2_9
+  - first:
+      213: 8951806959999501205
+    second: bomb2_10
+  - first:
+      213: -4153342996442317353
+    second: bomb2_11
+  - first:
+      213: 3630122347434932483
+    second: bomb2_12
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -135,337 +162,274 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Lucille_Bomb_0
+      name: bomb2_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 32
-        width: 32
-        height: 32
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 438dbb567f4e912a0800000000000000
-      internalID: -6766125213932595148
+      spriteID: 0598fbe9540228e40800000000000000
+      internalID: 5657119565318949200
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Lucille_Bomb_1
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 32
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b8a0c50e1ba9bc500800000000000000
-      internalID: 417597479225920139
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Lucille_Bomb_2
+      name: bomb2_1
       rect:
         serializedVersion: 2
         x: 64
-        y: 32
-        width: 32
-        height: 32
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2717f487be95a3ec0800000000000000
-      internalID: -3586455285376519822
+      spriteID: 39fc256ff17eb1ea0800000000000000
+      internalID: -5900868762276278381
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Lucille_Bomb_3
-      rect:
-        serializedVersion: 2
-        x: 96
-        y: 32
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e371c356bb2ba5370800000000000000
-      internalID: 8312152580192737086
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Lucille_Bomb_4
+      name: bomb2_2
       rect:
         serializedVersion: 2
         x: 128
-        y: 32
-        width: 32
-        height: 32
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 17cf3a27f382d83f0800000000000000
-      internalID: -897016497805460367
+      spriteID: 1537efe7d617ba2f0800000000000000
+      internalID: -960549380417490095
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Lucille_Bomb_5
-      rect:
-        serializedVersion: 2
-        x: 160
-        y: 32
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 642dc689178433500800000000000000
-      internalID: 374722846727656006
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Lucille_Bomb_6
+      name: bomb2_3
       rect:
         serializedVersion: 2
         x: 192
-        y: 32
-        width: 32
-        height: 32
+        y: 192
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9255ff23e42f0eab0800000000000000
-      internalID: -4980714770194803415
+      spriteID: f89a09d9e0a3f9ae0800000000000000
+      internalID: -1540448713089963633
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Lucille_Bomb_7
+      name: bomb2_4
       rect:
         serializedVersion: 2
-        x: 224
-        y: 32
-        width: 32
-        height: 32
+        x: 0
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 31f3940295003ffa0800000000000000
-      internalID: -5768266314937712877
+      spriteID: d54be8df47d91b440800000000000000
+      internalID: 4949910591252640861
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Lucille_Bomb_8
+      name: bomb2_5
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 128
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 745f246deddd8c1f0800000000000000
+      internalID: -1024324966079597241
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bomb2_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b759f9ae7fd104cd0800000000000000
+      internalID: -2576026036225469061
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bomb2_7
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 921d073e0da4f3f60800000000000000
+      internalID: 8016208122772246825
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bomb2_8
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3499938c61eb4f4e0800000000000000
+      internalID: -1948723733686806205
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bomb2_9
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 057b860b87ff12140800000000000000
+      internalID: 4693313180517578576
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bomb2_10
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 32
-        height: 32
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 78f63adaa93a23570800000000000000
-      internalID: 8444992136006561671
+      spriteID: 593c3ac50053b3c70800000000000000
+      internalID: 8951806959999501205
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Lucille_Bomb_9
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 0
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8ee3a836e74ea2da0800000000000000
-      internalID: -5968707124639154456
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Lucille_Bomb_10
+      name: bomb2_11
       rect:
         serializedVersion: 2
         x: 64
         y: 0
-        width: 32
-        height: 32
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b0e3c6f63ebd399f0800000000000000
-      internalID: -462784566815605237
+      spriteID: 7ddf2b2dc8c5c56c0800000000000000
+      internalID: -4153342996442317353
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Lucille_Bomb_11
-      rect:
-        serializedVersion: 2
-        x: 96
-        y: 0
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 0abfd82fb40a99800800000000000000
-      internalID: 619702671792536480
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Lucille_Bomb_12
+      name: bomb2_12
       rect:
         serializedVersion: 2
         x: 128
         y: 0
-        width: 32
-        height: 32
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 386606908080e51f0800000000000000
-      internalID: -1054396432148044157
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Lucille_Bomb_13
-      rect:
-        serializedVersion: 2
-        x: 160
-        y: 0
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: bf348f550ed17cd70800000000000000
-      internalID: 9063245624458626043
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Lucille_Bomb_14
-      rect:
-        serializedVersion: 2
-        x: 192
-        y: 0
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 18e0ee260113db420800000000000000
-      internalID: 2647326102412725889
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Lucille_Bomb_15
-      rect:
-        serializedVersion: 2
-        x: 224
-        y: 0
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e0c35c01837942c40800000000000000
-      internalID: 5486676513099430926
+      spriteID: 309f012ba09c06230800000000000000
+      internalID: 3630122347434932483
       vertices: []
       indices: 
       edges: []

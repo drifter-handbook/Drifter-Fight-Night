@@ -10,6 +10,7 @@ public class StickToTarget : MonoBehaviour
     {
         if(!GameController.Instance.IsHost)return;
         if(victim != null) transform.position  = victim.transform.position;
+        if(transform.position.y > 100)Destroy(gameObject);
     }
 
     public void playStateIfHasVictim(string state)

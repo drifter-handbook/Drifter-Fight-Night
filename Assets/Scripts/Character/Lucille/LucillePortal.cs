@@ -23,6 +23,8 @@ public class LucillePortal : MonoBehaviour
 		rb = GetComponent<Rigidbody2D>();
 		anim = GetComponent<SyncAnimatorStateHost>();
 		myPriority = size;
+		if(size == -1)
+			canMerge = false;
 	}
 
 	void OnTriggerEnter2D(Collider2D collider)
@@ -43,7 +45,7 @@ public class LucillePortal : MonoBehaviour
 
 		try
 		{
-			if(hitbox != null && hitbox.parent == drifter && collider.gameObject.tag == "Lucille_Portal_Contact" )
+			if(hitbox != null && hitbox.parent == drifter && collider.gameObject.tag == "Lucille_Portal_Contact" && size != -1)
 			{
 
 				float verticalMag = Mathf.Sin(hitbox.OverrideData.AngleOfImpact * Mathf.PI/180f);
@@ -77,6 +79,12 @@ public class LucillePortal : MonoBehaviour
 
 				GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.LUCILLE,  Vector3.Lerp(transform.position, hitbox.parent.transform.position, 0.1f), 0, new Vector2(6f, 6f));
 			}
+			else if(hitbox != null && hitbox.parent == drifter && collider.gameObject.tag == "Lucille_Portal_Contact" && size == -1)
+			{
+				decay();
+				drifter.GetComponentInChildren<LucilleMasterHit>().SpawnRift(transform.position);
+
+			}
 
 			else if(hitbox != null && hitbox.parent == drifter && collider.gameObject.tag == "Lucille_Portal_Detonate")
 			{
@@ -95,7 +103,7 @@ public class LucillePortal : MonoBehaviour
 
 	public void contest(float enemyPriority, LucillePortal other)
 	{
-		if(myPriority < enemyPriority)
+		if(myPriority < enemyPriority && myPriority != -1)
 		{
 			other.grow(size);
 			decay();
@@ -106,7 +114,6 @@ public class LucillePortal : MonoBehaviour
 
 	public void grow(int growthIncrement)
 	{
-
 		UnityEngine.Debug.Log(size + " " +  growthIncrement);
 		size += growthIncrement;
 		rb.drag = size -.5f ;
