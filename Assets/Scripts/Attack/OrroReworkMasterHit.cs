@@ -8,7 +8,7 @@ public class OrroReworkMasterHit : MasterHit
 
     BeanWrangler bean;
     GameObject beanObject;
-    float neutralSpecialCharge = 0;
+    int neutralSpecialCharge = 0;
 
 
     void Start()
@@ -59,10 +59,16 @@ public class OrroReworkMasterHit : MasterHit
         }
     }
 
+    public void WDownCancel()
+    {
+        if(!isHost)return;
+        chargeAttackSingleUse("W_Down_End");
+    }
+
     public void WSideCharge()
     {
         if(!isHost)return;
-        applyEndLag(1);
+        //applyEndLag(1);
         if(neutralSpecialCharge > 9)
         {
             playState("W_Side_Fire");
@@ -146,7 +152,16 @@ public class OrroReworkMasterHit : MasterHit
     {
         if(!isHost)return;
         refreshBeanHitboxes();
-        bean.playState("Bean_Side_Special");
+        bean.charge = neutralSpecialCharge;
+        bean.SpawnBeanSideW();
+        //bean.playState("Bean_Side_Special");
+    }
+
+    public void BeanDownSpecial()
+    {
+        if(!isHost)return;
+        refreshBeanHitboxes();
+        bean.playState("Bean_Down_Special");
     }
 
     public void spawnBean()
@@ -197,33 +212,6 @@ public class OrroReworkMasterHit : MasterHit
        rip.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
        neutralSpecialCharge = 0;
     }
-
-
-
-    // public void SpawnBeanSideW()
-    // {
-    //     if(!isHost && neutralSpecialCharge >=3)return;
-    //     facing = movement.Facing;
-    //     Vector3 pos = new Vector3(2f * facing,2.7f,0);
-
-    //     SingleAttackData data = attacks.AttackMap[5].attackData;
-    //     data.StatusDuration = Mathf.Max(neutralSpecialCharge/3,1);
-        
-    //     GameObject rip = host.CreateNetworkObject("OrroWSide", transform.position + pos, transform.rotation);
-    //     rip.transform.localScale = new Vector3(10f * facing, 10f , 1f);
-    //     foreach (HitboxCollision hitbox in rip.GetComponentsInChildren<HitboxCollision>(true))
-    //     {
-    //         hitbox.parent = drifter.gameObject;
-    //         hitbox.AttackID = attacks.AttackID;
-    //         hitbox.AttackType = attacks.AttackType;
-    //         hitbox.AttackData = data;
-    //         hitbox.Active = true;
-    //         hitbox.Facing = facing;
-    //    }
-
-    //    rip.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
-    //    neutralSpecialCharge = 0;
-    // }
 
 
     private void refreshBeanHitboxes(){

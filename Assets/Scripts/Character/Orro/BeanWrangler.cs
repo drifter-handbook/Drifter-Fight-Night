@@ -11,6 +11,8 @@ public class BeanWrangler : NonplayerHurtboxHandler
     public int facing = 1;
     public int color = 0;
 
+    public int charge = 0;
+
     public float returnSpeed = 15f;
 
     SyncAnimatorStateHost anim;
@@ -20,6 +22,8 @@ public class BeanWrangler : NonplayerHurtboxHandler
     Rigidbody2D rb;
     bool following = true;
     float beancountdown = 1f;
+
+
     public bool canAct = false;
     public bool alive = false;
 
@@ -168,9 +172,9 @@ public class BeanWrangler : NonplayerHurtboxHandler
     public void bean_ground_Neutral()
     {
         if(!GameController.Instance.IsHost)return;
-        Vector3 flip = new Vector3(facing *10,10,0f);
+
         GameObject razor = GameController.Instance.host.CreateNetworkObject("SpaceRazor", transform.position , transform.rotation);
-        razor.transform.localScale = flip;
+        razor.transform.localScale = new Vector3(facing *10,10,1f);
         attacks.SetMultiHitAttackID();
         foreach (HitboxCollision hitbox in razor.GetComponentsInChildren<HitboxCollision>(true))
         {
@@ -182,6 +186,32 @@ public class BeanWrangler : NonplayerHurtboxHandler
         }
 
         razor.GetComponent<SyncProjectileColorDataHost>().setColor(color);
+    }
+
+
+    public void SpawnBeanSideW()
+    {
+
+        UnityEngine.Debug.Log("BEAN!");
+
+        //if(!GameController.Instance.IsHost || charge <=3)return;
+        Vector3 pos = new Vector3(2f * facing,2.9f,0);
+
+        multihit();
+
+        GameObject rip = host.CreateNetworkObject("BeanWSide", transform.position + pos, transform.rotation);
+        rip.transform.localScale = new Vector3(10f * facing, 10f , 1f);
+        foreach (HitboxCollision hitbox in rip.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = Orro;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+            hitbox.Facing = facing;
+            hitbox.AttackData.StatusDuration = Mathf.Max((charge-3)/3,1);
+       }
+
+       rip.GetComponent<SyncProjectileColorDataHost>().setColor(color);
     }
 
     public void returnToNeutral()

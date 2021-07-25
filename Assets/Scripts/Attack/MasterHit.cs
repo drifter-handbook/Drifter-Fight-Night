@@ -213,6 +213,8 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     {
         if(!isHost)return false;
 
+        applyEndLag(1);
+
         if(drifter.input[0].Guard)
         {
             movement.techParticle();
