@@ -218,17 +218,17 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         }
 
         bool gamepadButtonPressed = false;
-        /*for (int i = 0; i < Gamepad.current.allControls.Count; i++)
-        {
-            var c = Gamepad.current.allControls[i];
-            if (c is ButtonControl)
-            {
-                if (((ButtonControl)c).wasPressedThisFrame)
-                {
-                    gamepadButtonPressed = true;
-                }
-            }
-        }*/
+        // for (int i = 0; i < Gamepad.current.allControls.Count; i++)
+        // {
+        //     var c = Gamepad.current.allControls[i];
+        //     if (c is ButtonControl)
+        //     {
+        //         if (((ButtonControl)c).wasPressedThisFrame)
+        //         {
+        //             gamepadButtonPressed = true;
+        //         }
+        //     }
+        // }
 
         if ((Keyboard.current.anyKey.isPressed || gamepadButtonPressed || GameController.Instance.controls.FindActionMap("PlayerKeyboard").FindAction("Horizontal").ReadValue<float>() != 0 || GameController.Instance.controls.FindActionMap("PlayerKeyboard").FindAction("Vertical").ReadValue<float>() != 0) && mouse && (!Mouse.current.leftButton.isPressed || Mouse.current.rightButton.isPressed || Mouse.current.middleButton.isPressed)){
             mouse = false;
