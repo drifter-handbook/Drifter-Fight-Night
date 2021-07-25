@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static System.Math;
@@ -10,36 +11,38 @@ public class AttackFXSystem : ScriptableObject
     [Header("Particles which will draw along the launch angle, scaling with damage dealt")]
     #endif
 
-    [SerializeField] private HitSpark[] mainFlyouts = {HitSpark.DEFAULT_FLYOUT_PRIMARY};
-    [SerializeField] private int offsetPrimary=5;
+   	[SerializeField] public FlyoutDefinition[] mainFlyouts = {new FlyoutDefinition(HitSpark.DEFAULT_FLYOUT_PRIMARY,Color.white)};
+
+   	[SerializeField] private int offsetPrimary=5;
     [SerializeField] private int minimumMainFlyouts=1;
     [SerializeField] private int maximumMainFlyouts=1;
-    [SerializeField] private Color mainFlyoutColor = Color.white;
     
     #if UNITY_EDITOR
     [Header("Particles which will draw with some variance around the target, scaling with damage dealt")]
     #endif
-    [SerializeField] private HitSpark[] secondaryFlyouts = {HitSpark.DEFAULT_FLYOUT_SECONDARY};
+
+    [SerializeField] public FlyoutDefinition[] secondaryFlyouts = {new FlyoutDefinition(HitSpark.DEFAULT_FLYOUT_SECONDARY,Color.white)};
+
     [SerializeField] private int offsetSecondary = -6;
     [SerializeField] private int minimumSecondaryFlyouts = 2;
     [SerializeField] private int maximumSecondaryFlyouts = 2;
-    [SerializeField] private Color secondaryFlyoutColor = Color.white;
+    
 
     #if UNITY_EDITOR
     [Header("Particles which will draw with some variance around the target, scaling with damage dealt")]
     #endif
-    [SerializeField] private HitSpark[] tertiaryFlyouts = {HitSpark.DEFAULT_FLYOUT_TERTIARY};
+
+    [SerializeField] public FlyoutDefinition[] tertiaryFlyouts = {new FlyoutDefinition(HitSpark.DEFAULT_FLYOUT_TERTIARY,Color.white)};
+
     [SerializeField] private int offsetTertiary =3;
     [SerializeField] private int minimumTertiaryFlyouts = 3;
     [SerializeField] private int maximumTertiaryFlyouts = 7;
-    [SerializeField] private Color tertiaryFlyoutColor = Color.white;
-    
+
 
     #if UNITY_EDITOR
     [Header("Particles which will draw directly on top of the struck target")]
     #endif
-    [SerializeField] private HitSpark[] impacts = {HitSpark.DEFAULT_IMPACT};
-    [SerializeField] private Color impactColor = Color.white;
+    [SerializeField] public FlyoutDefinition[] impacts = {new FlyoutDefinition(HitSpark.DEFAULT_IMPACT,Color.white)};
 
     #if UNITY_EDITOR
     [Header("Particles which will draw in random locations around the hit, scaling with damage dealt")]
@@ -65,27 +68,30 @@ public class AttackFXSystem : ScriptableObject
 
         for (int i = 0; i < Min(maximumMainFlyouts, minimumMainFlyouts + damage / 10); i++)
         {
-            float tempAngle = Random.Range(-8, 8);
+            float tempAngle = UnityEngine.Random.Range(-8, 8);
+            int tempIndex = UnityEngine.Random.Range(0, mainFlyouts.Length);
             Vector3 tempTempOffset = Quaternion.Euler(0, 0, tempAngle) * tempOffsetP;
-            GraphicalEffectManager.Instance.CreateHitSparks(mainFlyouts[Random.Range(0, mainFlyouts.Length)], pos + tempTempOffset, angle + tempAngle, scale,mainFlyoutColor);
+            GraphicalEffectManager.Instance.CreateHitSparks(mainFlyouts[tempIndex].flyoutEffect, pos + tempTempOffset, angle + tempAngle, scale,mainFlyouts[tempIndex].flyoutColor);
         }
             
         for (int i = 0; i < Min(maximumSecondaryFlyouts, minimumSecondaryFlyouts + damage / 10); i++)
         {
-            float tempAngle = Random.Range(-25, 25);
+            float tempAngle = UnityEngine.Random.Range(-25, 25);
+            int tempIndex = UnityEngine.Random.Range(0, secondaryFlyouts.Length);
             Vector3 tempTempOffset = Quaternion.Euler(0, 0, tempAngle) * tempOffsetS;
-            GraphicalEffectManager.Instance.CreateHitSparks(secondaryFlyouts[Random.Range(0, secondaryFlyouts.Length)], pos + tempTempOffset, angle + 180f + tempAngle, scale,secondaryFlyoutColor);
+            GraphicalEffectManager.Instance.CreateHitSparks(secondaryFlyouts[tempIndex].flyoutEffect, pos + tempTempOffset, angle + 180f + tempAngle, scale,secondaryFlyouts[tempIndex].flyoutColor);
         }
 
         for (int i = 0; i < Min(maximumTertiaryFlyouts, minimumTertiaryFlyouts + damage / 5); i++)
         {
-            float tempAngle = Random.Range(-80, 80);
-            Vector3 tempTempOffset = Quaternion.Euler(0, 0, tempAngle) * tempOffsetT;
-            GraphicalEffectManager.Instance.CreateHitSparks(tertiaryFlyouts[Random.Range(0, tertiaryFlyouts.Length)], pos + tempTempOffset, angle + tempAngle, scale,tertiaryFlyoutColor);
+            float tempAngle = UnityEngine.Random.Range(-180, 180);
+            int tempIndex = UnityEngine.Random.Range(0, tertiaryFlyouts.Length);
+            Vector3 tempTempOffset = Quaternion.Euler(0, 0, tempAngle) * (tempOffsetT * UnityEngine.Random.Range(-2f, 2f));
+            GraphicalEffectManager.Instance.CreateHitSparks(tertiaryFlyouts[tempIndex].flyoutEffect, pos + tempTempOffset, angle + tempAngle, scale,tertiaryFlyouts[tempIndex].flyoutColor);
         }
                 
-        foreach (HitSpark impact in impacts)
-            GraphicalEffectManager.Instance.CreateHitSparks(impact, pos, 0, scale,impactColor);
+        foreach (FlyoutDefinition impact in impacts)
+            GraphicalEffectManager.Instance.CreateHitSparks(impact.flyoutEffect, pos, 0, scale,impact.flyoutColor);
 
         for (int i = 0; i < miscParticles.Length; i++) {
             float tempAngle = angle;
@@ -95,14 +101,27 @@ public class AttackFXSystem : ScriptableObject
         }
 
         if (hitSounds.Length > 0 && !overrideSFX)
-            AudioSystemManager.Instance.CreateSyncedSFX(hitSounds[Random.Range(0, hitSounds.Length)]);
+            AudioSystemManager.Instance.CreateSyncedSFX(hitSounds[UnityEngine.Random.Range(0, hitSounds.Length)]);
     }
 
     public HitSpark GetSpark() {
         if (sparks.Length > 0)
-            return sparks[Random.Range(0, sparks.Length - 1)];
+            return sparks[UnityEngine.Random.Range(0, sparks.Length - 1)];
         else
             return HitSpark.NONE;
-    }
+    }  
 
+}
+
+[Serializable]
+public struct FlyoutDefinition
+{
+    public HitSpark flyoutEffect;
+    public Color flyoutColor;
+
+	public FlyoutDefinition(HitSpark spark, Color color)
+	{
+		flyoutEffect = spark;
+    	flyoutColor = color;
+	}
 }
