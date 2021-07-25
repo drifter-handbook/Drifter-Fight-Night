@@ -61,8 +61,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
             float damageDealt = 0f;
 
-            //Ignore the collision if invulnerable
-            if(status.HasStatusEffect(PlayerStatusEffect.INVULN))return -3;
+            //Ignore the collision if invulnerable or You try to grab a planted opponenet
+            if(status.HasStatusEffect(PlayerStatusEffect.INVULN) || (status.HasStatusEffect(PlayerStatusEffect.PLANTED) && attackData.StatusEffect == PlayerStatusEffect.GRABBED))return -3;
 
             Drifter attacker = hitbox.parent.GetComponent<Drifter>();
             attacker.canFeint = false;
