@@ -1,46 +1,58 @@
 fileFormatVersion: 2
-guid: 6a3c2764472bd7d458d6d76dc69f64a2
+guid: 58b3c4f5369c30441a8f6638371b1d76
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6948672925027435140
-    second: charge_0
+      213: -8748971234737906783
+    second: CharacterCursor_0
   - first:
-      213: 8044723202107836511
-    second: charge_1
+      213: 2493187267541795780
+    second: CharacterCursor_1
   - first:
-      213: 8979233852318062227
-    second: charge_2
+      213: -5813001481299282753
+    second: CharacterCursor_2
   - first:
-      213: 70618444694489238
-    second: charge_3
+      213: -4188927184863576850
+    second: CharacterCursor_3
   - first:
-      213: -6095562032181254527
-    second: charge_4
+      213: -3830239230466968763
+    second: CharacterCursor_4
   - first:
-      213: 200186737066174234
-    second: charge_5
+      213: 8159631063961377383
+    second: CharacterCursor_5
   - first:
-      213: -2917460818455427619
-    second: charge_6
+      213: 4391625899786574290
+    second: CharacterCursor_6
   - first:
-      213: -5590208732071955505
-    second: charge_7
+      213: 8214134276820113909
+    second: CharacterCursor_0
   - first:
-      213: -5687363968089771159
-    second: charge_0
+      213: -8227628355509140731
+    second: CharacterCursor_1
   - first:
-      213: -7889945769643488886
-    second: charge_1
+      213: -7285197489029994830
+    second: CharacterCursor_2
   - first:
-      213: -2074045646810833606
-    second: charge_2
+      213: 2300968823081396884
+    second: CharacterCursor_3
   - first:
-      213: 7708901495008663165
-    second: charge_8
+      213: -946487802239161273
+    second: CharacterCursor_4
   - first:
-      213: -6657798430285423905
-    second: charge_9
+      213: -3682474900357776061
+    second: CharacterCursor_5
+  - first:
+      213: -5945604303662819021
+    second: CharacterCursor_6
+  - first:
+      213: 6208731722387438714
+    second: CharacterCursor_7
+  - first:
+      213: -4702230373895008939
+    second: CharacterCursor_7
+  - first:
+      213: 2211268301720011747
+    second: CharacterCursor_8
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -126,139 +138,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: charge_0
+      name: CharacterCursor_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 16
-        width: 61
-        height: 8
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 96337ad9a9c6211b0800000000000000
-      internalID: -5687363968089771159
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: charge_1
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 8
-        width: 61
-        height: 8
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a89cd4f0028418290800000000000000
-      internalID: -7889945769643488886
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: charge_2
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 61
-        height: 8
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a3d15e519728733e0800000000000000
-      internalID: -2074045646810833606
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: charge_3
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 24
-        width: 61
-        height: 8
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6980b9ee913eaf000800000000000000
-      internalID: 70618444694489238
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: charge_4
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 32
-        width: 61
-        height: 8
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 1866a7d90a6386ba0800000000000000
-      internalID: -6095562032181254527
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: charge_5
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 40
-        width: 61
-        height: 8
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a17e297d6c437c200800000000000000
-      internalID: 200186737066174234
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: charge_6
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 72
-        width: 61
-        height: 8
+        y: 128
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -266,20 +152,83 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: dd508ddc7d81387d0800000000000000
-      internalID: -2917460818455427619
+      spriteID: 5f9193bba977ef170800000000000000
+      internalID: 8214134276820113909
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: charge_7
+      name: CharacterCursor_1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 128
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 50342fd3a9791dd80800000000000000
+      internalID: -8227628355509140731
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CharacterCursor_2
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 128
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2b6accb7b77c5ea90800000000000000
+      internalID: -7285197489029994830
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CharacterCursor_3
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 128
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 49ae30b14feaeef10800000000000000
+      internalID: 2300968823081396884
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CharacterCursor_4
       rect:
         serializedVersion: 2
         x: 0
         y: 64
-        width: 61
-        height: 8
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -287,20 +236,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fc37090c6c69b62b0800000000000000
-      internalID: -5590208732071955505
+      spriteID: 74c6b4bcb566dd2f0800000000000000
+      internalID: -946487802239161273
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: charge_8
+      name: CharacterCursor_5
       rect:
         serializedVersion: 2
-        x: 0
-        y: 56
-        width: 61
-        height: 8
+        x: 64
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -308,20 +257,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d761872f0158bfa60800000000000000
-      internalID: 7708901495008663165
+      spriteID: 34df1e5b69835ecc0800000000000000
+      internalID: -3682474900357776061
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: charge_9
+      name: CharacterCursor_6
       rect:
         serializedVersion: 2
-        x: 0
-        y: 48
-        width: 61
-        height: 8
+        x: 128
+        y: 64
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -329,8 +278,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fda1fa82a9fba93a0800000000000000
-      internalID: -6657798430285423905
+      spriteID: 339d4211368fc7da0800000000000000
+      internalID: -5945604303662819021
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CharacterCursor_7
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 0
+        width: 64
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.75}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 55d8fef63625ebeb0800000000000000
+      internalID: -4702230373895008939
       vertices: []
       indices: 
       edges: []

@@ -1,19 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &8069485142519709846
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7961112140161951898}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74fd9abae7f8eb64989c13a38320cf31, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  assetPathName: Bojo
-  facing: 0
 --- !u!1 &6210333189731979638
 GameObject:
   m_ObjectHideFlags: 0
@@ -79,6 +65,20 @@ MonoBehaviour:
   isActive: 1
   OverrideData: {fileID: 11400000, guid: 8f14fc9651d47224daac1539b41b7890, type: 2}
   AttackData: {fileID: 0}
+--- !u!114 &8069485142519709846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7961112140161951898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74fd9abae7f8eb64989c13a38320cf31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  assetPathName: Bojo
+  facing: 0
 --- !u!1001 &5539119026263273291
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -340,6 +340,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.y
       value: -16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5578303729342035337, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: drifterType
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6941340441550975300, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}

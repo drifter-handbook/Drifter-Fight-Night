@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerCardArtHolder : MonoBehaviour
 {
-    public Sprite[] faces;// = new Sprite[8];
+    //public Sprite[] faces;// = new Sprite[8];
     public Sprite[] stocks;// = new Sprite[8];
     public GameObject summaryCardPrefab;
     public GameObject miniSummaryCardPrefab;
@@ -49,7 +49,9 @@ public class PlayerCardArtHolder : MonoBehaviour
                 playerCards[i] = newCard.GetComponent<PlayerCard>();
 
                 
-                int imageIndex = getDrifterTypeIndex(drifters[i].GetComponent<NetworkSync>().NetworkType);
+                int imageIndex = (int)drifters[i].drifterType;
+
+                UnityEngine.Debug.Log(imageIndex);
 
                 //Colors
                 playerCards[i].SetColor(drifters[i].myColor);
@@ -60,7 +62,7 @@ public class PlayerCardArtHolder : MonoBehaviour
                 
                 playerCards[i].drifterIndex = imageIndex;
 
-                playerCards[i].setImages(faces[imageIndex], stocks[imageIndex]);
+                playerCards[i].setImages(stocks[imageIndex]);
                 playerCards[i].addStocks(stockPrefab, 4);
 
             }
@@ -97,26 +99,4 @@ public class PlayerCardArtHolder : MonoBehaviour
                 count++;
         return count;
     }
-
-    private int getDrifterTypeIndex(string name)
-    {
-        switch (name)
-        {
-            case ("Bojo"): return 0;
-            case ("Swordfrog"): return 1;
-            case ("Lady Parhelion"): return 2;
-            case ("Spacejam"): return 3;
-            case ("Orro"): return 4;
-            case ("Ryyke"): return 5;
-            case ("Megurin"): return 6;
-            case ("Nero"): return 7;
-            case ("Lucille"): return 9;
-            case ("Mytharius"): return 10;
-            case ("Maryam"): return 11;
-            case ("Drifter Cannon"): return 12;
-            case ("Sandbag"): return 8;
-            default: return 8;
-        }
-    }
-
 }

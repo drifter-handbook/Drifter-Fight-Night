@@ -131,9 +131,9 @@ public class PlayerCard : MonoBehaviour
 
     }
 
-    public void setImages(Sprite face, Sprite stock)
+    public void setImages(Sprite stock)
     {
-        this.face.GetComponent<Image>().sprite = face;
+        //this.face.GetComponent<Image>().sprite = face;
         this.stockImage = stock;
     }
 

@@ -230,7 +230,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         //     }
         // }
 
-        if ((Keyboard.current.anyKey.isPressed || gamepadButtonPressed || GameController.Instance.controls.FindActionMap("PlayerKeyboard").FindAction("Horizontal").ReadValue<float>() != 0 || GameController.Instance.controls.FindActionMap("PlayerKeyboard").FindAction("Vertical").ReadValue<float>() != 0) && mouse && (!Mouse.current.leftButton.isPressed || Mouse.current.rightButton.isPressed || Mouse.current.middleButton.isPressed)){
+        if ((Keyboard.current.anyKey.isPressed || gamepadButtonPressed || GameController.Instance.controls[0].FindActionMap("PlayerKeyboard").FindAction("Horizontal").ReadValue<float>() != 0 || GameController.Instance.controls[0].FindActionMap("PlayerKeyboard").FindAction("Vertical").ReadValue<float>() != 0) && mouse && (!Mouse.current.leftButton.isPressed || Mouse.current.rightButton.isPressed || Mouse.current.middleButton.isPressed)){
             mouse = false;
             EventSystem.current.SetSelectedGameObject(everyoneReady() && GameController.Instance.IsHost ?(stageSelect?GameObject.Find("Training"):forwardButton):GameObject.Find("Random Figurine"));
         }

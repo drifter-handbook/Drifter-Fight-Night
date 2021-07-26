@@ -407,6 +407,44 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.5, y: 1}
   m_Direction: 1
+--- !u!114 &455603063265001478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1889287655395163044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02b29c235f0518e479f3b365b57524bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4953080295263930252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1889287655395163044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebe28c6cf8f618447973efd583382f15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  assetPathName: Maryam
+  facing: 0
+--- !u!114 &7780034261966464181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1889287655395163044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 617a17fb60e526b429a4a4dbf9280f7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1986077045186619262
 GameObject:
   m_ObjectHideFlags: 0
@@ -1106,44 +1144,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0.04876727, y: 0.038541798}
   m_Size: {x: 0.031562787, y: 0.0771836}
   m_Direction: 0
---- !u!114 &455603063265001478
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1889287655395163044}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02b29c235f0518e479f3b365b57524bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &4953080295263930252
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1889287655395163044}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ebe28c6cf8f618447973efd583382f15, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  assetPathName: Maryam
-  facing: 0
---- !u!114 &7780034261966464181
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1889287655395163044}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 617a17fb60e526b429a4a4dbf9280f7a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4158113970918944301
 GameObject:
   m_ObjectHideFlags: 0
@@ -2160,7 +2160,7 @@ PrefabInstance:
     - target: {fileID: 5578303729342035337, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: drifterType
-      value: Maryam
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 6941340441550975300, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}

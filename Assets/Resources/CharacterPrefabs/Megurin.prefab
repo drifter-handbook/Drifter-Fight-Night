@@ -60,6 +60,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 968483548776588903}
   playerType: {fileID: 0}
+  isActive: 1
   OverrideData: {fileID: 11400000, guid: ac3aec30241ab9c4e8cabce865a57f3d, type: 2}
   AttackData: {fileID: 0}
 --- !u!70 &3271884188819075952
@@ -329,6 +330,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.y
       value: -16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5578303729342035337, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: drifterType
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 6941340441550975300, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}

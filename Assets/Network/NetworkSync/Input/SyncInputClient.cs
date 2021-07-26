@@ -18,6 +18,6 @@ public class SyncInputClient : MonoBehaviour, ISyncClient
     // Update is called once per frame
     void Update()
     {
-        syncToHost["input"] = NetworkPlayers.GetInput(GameController.Instance.controls);
+        syncToHost["input"] = NetworkPlayers.GetInput(GameController.Instance.controls[0]);
     }
 }

@@ -185,6 +185,20 @@ MonoBehaviour:
   isActive: 1
   OverrideData: {fileID: 0}
   AttackData: {fileID: 0}
+--- !u!114 &2251526824488714663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2054295004346856378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b37eee839ce107439115fce96e58636, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  assetPathName: SwordFrog
+  facing: 0
 --- !u!1 &2928144758308975975
 GameObject:
   m_ObjectHideFlags: 0
@@ -531,20 +545,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &2251526824488714663
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2054295004346856378}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b37eee839ce107439115fce96e58636, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  assetPathName: SwordFrog
-  facing: 0
 --- !u!1 &5792825841915780886
 GameObject:
   m_ObjectHideFlags: 0
@@ -1173,6 +1173,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.y
       value: -16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5578303729342035337, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: drifterType
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6941340441550975300, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}

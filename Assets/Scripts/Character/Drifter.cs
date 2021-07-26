@@ -7,6 +7,8 @@ using UnityEngine;
 public enum DrifterType
 {
     None,
+    Random,
+    Sandbag,
     Bojo,
     Swordfrog,
     Lady_Parhelion,
@@ -15,13 +17,21 @@ public enum DrifterType
     Ryyke,
     Megurin,
     Nero,
-    Random,
     Lucille,
     Mytharius,
     Maryam,
     Drifter_Cannon,
-    Klatz,
-    Sandbag,
+    //Klatz,
+    //Eldaris,
+    //Reed,
+    //Bytor,
+    //Dyo,
+    //Ramstein,
+    //Tai,
+    //Tasma,
+    //Sola,
+    //Oono,
+
 }
 
 
@@ -61,7 +71,7 @@ public class Drifter : MonoBehaviour, INetworkInit
     
     public int myColor;
 
-    public String drifterType;
+    public DrifterType drifterType;
 
     public int peerID;
 
@@ -124,7 +134,7 @@ public class Drifter : MonoBehaviour, INetworkInit
     public void Start()
     {
         Stocks = !GameController.Instance.IsTraining ? 4:999;
-        if(drifterType=="Sandbag")SetColor(8);
+        if(drifterType==DrifterType.Sandbag)SetColor(8);
         DamageTaken = 0f;
 
         terminalVelocity = movement.terminalVelocity;
@@ -315,9 +325,9 @@ public class Drifter : MonoBehaviour, INetworkInit
     }
 
   
-    public DrifterType GetDrifterType(){
-        return DrifterTypeFromString(drifterType);
-    }
+    // public DrifterType GetDrifterType(){
+    //     return DrifterTypeFromString(drifterType);
+    // }
 
     public static DrifterType DrifterTypeFromString(String drfiterString){
         return (DrifterType)Enum.Parse(typeof(DrifterType), drfiterString.Replace(" ", "_"));

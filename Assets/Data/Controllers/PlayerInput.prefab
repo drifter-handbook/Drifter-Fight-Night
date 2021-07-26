@@ -1,0 +1,104 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1559094768925924026
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1559094768925924024}
+  - component: {fileID: 1559094768925924025}
+  m_Layer: 0
+  m_Name: PlayerInput
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1559094768925924024
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1559094768925924026}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.355033, y: 2.6949348, z: -1.2117392}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1559094768925924025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1559094768925924026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 3ff49b70592a74144929dff21dec19c5,
+    type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 36d693dc-9b1d-4c6f-9335-711f684b3e03
+    m_ActionName: PlayerKeyboard/Guard 1[/XInputControllerWindows/leftShoulder]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: a3fca386-c262-4100-a338-41a8e6a913d1
+    m_ActionName: PlayerKeyboard/Guard 2
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: a14ff94d-774f-4762-b0b6-bb2b5eed2d06
+    m_ActionName: PlayerKeyboard/Jump[/XInputControllerWindows/buttonEast]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 8147ec1f-4c01-4663-929b-fc835b03c6a7
+    m_ActionName: PlayerKeyboard/Jump Alt[/XInputControllerWindows/buttonNorth]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 2ddb2d73-058f-4fad-adb7-ceeddb63e37d
+    m_ActionName: PlayerKeyboard/Light[/XInputControllerWindows/buttonSouth]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 5db2ee89-ea3a-493a-8f58-2187c1fdaad0
+    m_ActionName: PlayerKeyboard/Special[/XInputControllerWindows/buttonWest]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 93e108d5-d6c4-4c75-a366-bb5136a5b802
+    m_ActionName: PlayerKeyboard/Grab
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 7fb862fc-f6d6-4e1a-b432-79e74c16999b
+    m_ActionName: PlayerKeyboard/Horizontal[/XInputControllerWindows/dpad/left,/XInputControllerWindows/dpad/right]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 7e934a32-9995-4ff7-b476-0e3f59e9ffec
+    m_ActionName: PlayerKeyboard/Vertical[/XInputControllerWindows/dpad/down,/XInputControllerWindows/dpad/up]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ae0a015c-c29e-45ae-a670-b2efb2e8fd0c
+    m_ActionName: PlayerKeyboard/Pause[/XInputControllerWindows/start]
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: PlayerKeyboard
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}

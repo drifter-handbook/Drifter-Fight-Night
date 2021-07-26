@@ -63,7 +63,11 @@ public class GameController : MonoBehaviour
     [NonSerialized]
     public IPEndPoint MatchmakingServer = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 6997);
 
-    public InputActionAsset controls;
+
+    public InputActionAsset[] baseControls;
+
+    [NonSerialized]
+    public InputActionAsset[] controls;
 
     public int PlayerID = -1;
     public float[] volume = { -1f, -1f, -1f };
@@ -102,6 +106,8 @@ public class GameController : MonoBehaviour
             NatPunchServer = new IPEndPoint(address, NatPunchServer.Port);
             MatchmakingServer = new IPEndPoint(address, MatchmakingServer.Port);
         }
+
+        AssignInputAssest();
         
     }
 
@@ -229,5 +235,37 @@ public class GameController : MonoBehaviour
         IsHost = false;
         IsOnline = false;
         endingGame = null;
+    }
+
+
+    public void AssignInputAssest()
+    {
+
+        controls = new InputActionAsset[Gamepad.all.Count + 1];
+
+        controls[0] = baseControls[0];
+
+        //Get all connected controllers on startup
+        for(int i = 0; i < 3; i++)
+        {
+
+            //Create a new input action asset
+            InputActionAsset controller = new InputActionAsset();
+
+            //Janky clone operation beacue the real clone doesnt work?
+            controller.LoadFromJson(baseControls[1].ToJson());
+
+            //Player x is assigned this control scheme
+            //Make this run off of peer id?
+            controls[i+1] = controller;
+
+            //If there is a controller, use it
+            //Change this to make a new array on use
+            if(Gamepad.all.Count > i)
+                controls[i+1].devices = new Gamepad[] {Gamepad.all[i]};
+            else
+                controls[i+1].devices = new Gamepad[] {};
+        }
+
     }
 }

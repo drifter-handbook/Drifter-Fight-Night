@@ -10,6 +10,8 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
 
     public List<GameObject> spawnPoints;
 
+    public GameObject playerInputPrefab;
+
     GameObject hostPlayer;
     Dictionary<int, GameObject> clientPlayers = new Dictionary<int, GameObject>();
 
@@ -36,13 +38,16 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
     // Update is called once per frame
     void Update()
     {
-        PlayerInputData input = GetInput(GameController.Instance.controls);
+        PlayerInputData input = GetInput(GameController.Instance.controls[0]);
         UpdateInput(hostPlayer, input);
         foreach (int peerID in GameController.Instance.host.Peers)
         {
+            //Link inputs to peer ids
             input = NetworkUtils.GetNetworkData<PlayerInputData>(syncFromClients["input", peerID]);
             if (input != null)
                 UpdateInput(clientPlayers[peerID], input);
+            else 
+                UpdateInput(clientPlayers[peerID], GetInput(GameController.Instance.controls[peerID+1]));
         }
     }
 
@@ -58,9 +63,13 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
                 playerIndex = state.PlayerIndex;
             }
         }
+        //GameObject PlayerInput = Instantiate(playerInputPrefab, transform.position, Quaternion.identity);
+
+        //Same here
         GameObject obj = GameController.Instance.host.CreateNetworkObject(drifter.ToString().Replace("_", " "),
             spawnPoints[i % spawnPoints.Count].transform.position, Quaternion.identity);
         obj.GetComponent<Drifter>().SetColor(playerIndex);
+        obj.GetComponent<PlayerInput>().actions = GameController.Instance.controls[i];
         i++;
         obj.GetComponent<Drifter>().SetPeerId(peerID);
         players[peerID] = obj;
