@@ -1,5 +1,5 @@
 {
-    "name": "DefaultControls",
+    "name": "Keyboard",
     "maps": [
         {
             "name": "PlayerKeyboard",
@@ -113,6 +113,14 @@
                     "name": "Pause",
                     "type": "Button",
                     "id": "5a03d515-0bf2-404e-9dc8-91f2c5cd8d54",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Quit",
+                    "type": "Button",
+                    "id": "b0f9d1d8-a458-4daa-b43d-dc49ea450855",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -325,6 +333,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "db146ce7-50ac-4b52-a93a-b09bed76a00e",
+                    "path": "<Keyboard>/backspace",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Quit",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

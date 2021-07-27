@@ -10,9 +10,6 @@ public class OrroReworkMasterHit : MasterHit
     GameObject beanObject;
     int neutralSpecialCharge = 0;
 
-    bool downW = false;
-
-
     void Start()
     {
         spawnBean();
@@ -33,7 +30,7 @@ public class OrroReworkMasterHit : MasterHit
             
             spawnBean();
         }
-        else bean.addBeanState(rb.position - new Vector2(-1f * movement.Facing, 3f), movement.Facing,downW);
+        else bean.addBeanState(rb.position - new Vector2(-1f * movement.Facing, 3f), movement.Facing);
     }
 
 
@@ -64,7 +61,6 @@ public class OrroReworkMasterHit : MasterHit
     public void WDownCancel()
     {
         if(!isHost)return;
-        downW = true;
         chargeAttackSingleUse("W_Down_End");
     }
 
@@ -163,8 +159,14 @@ public class OrroReworkMasterHit : MasterHit
     {
         if(!isHost)return;
         refreshBeanHitboxes();
-        downW = false;
         bean.playState("Bean_Down_Special");
+    }
+
+    public void BeanDownSpecialBurst()
+    {
+        if(!isHost)return;
+        refreshBeanHitboxes();
+        bean.shieldBurst();
     }
 
     public void spawnBean()
@@ -240,7 +242,6 @@ public class OrroReworkMasterHit : MasterHit
         UnityEngine.Debug.Log("ORRO RTI");
         base.returnToIdle();
         neutralSpecialCharge = 0;
-        downW = false;
     }
 
     public void WNeutralFire()

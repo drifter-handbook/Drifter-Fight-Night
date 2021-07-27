@@ -73,6 +73,8 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     public GameObject forwardButton;
     public GameObject backButton;
 
+    public GameObject playerInputPrefab;
+
     public GameObject selectedFigurine = null;
 
     public class PlayerMenuEntry
@@ -143,11 +145,30 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         }
         GameController.Instance.host.Peers =  new List<int>();
         // add host
-        AddCharSelState(-1);
+
+
+        foreach(InputActionAsset controller in GameController.Instance.availableControls)
+        {
+            GameObject PlayerInput = Instantiate(playerInputPrefab, transform.position, Quaternion.identity);
+            PlayerInput.GetComponent<PlayerInput>().actions = controller;
+        }
+
+        
         if(GameController.Instance.IsTraining)
         {
+            AddCharSelState(-1);
             AddCharSelState(0);
             SelectDrifter("Sandbag",0);
+        }
+        //Populate a card for each active controller
+        else
+        {
+            for(int i = -1; i < GameController.Instance.controls.Length-1; i++)
+            {
+                AddCharSelState(i);
+                SelectDrifter("Orro",i);
+            }
+
         }
             
     }
@@ -241,6 +262,21 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     void Update(){
         if(everyoneReady() && !stageSelect)forwardButton.GetComponent<Button>().interactable = true;
         else forwardButton.GetComponent<Button>().interactable = false;
+
+
+        for(int i = 0; i < GameController.Instance.checkForNewControllers(); i++)
+        {
+            AddCharSelState(GameController.Instance.host.Peers.Count);
+            SelectDrifter("Orro",GameController.Instance.host.Peers.Count-1);
+        }
+
+        int removeIndex = GameController.Instance.checkForRemoveControllers();
+
+        if(removeIndex >= 0)
+        {
+            RemovePlayerCard(removeIndex);
+            RemoveCharSelState(removeIndex-1);
+        }
 
         //Press B or esc to bo back a screen
         //TODO: Add joystick support here.
@@ -347,6 +383,14 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     public void RemovePlayerCard()
     {
         int index = menuEntries.Count - 1;
+        Transform parent = index < PANEL_MAX_PLAYERS ? leftPanel.transform : rightPanel.transform;
+        Destroy(menuEntries[index].characterCard);
+        menuEntries.RemoveAt(index);
+    }
+
+
+    public void RemovePlayerCard(int index)
+    {
         Transform parent = index < PANEL_MAX_PLAYERS ? leftPanel.transform : rightPanel.transform;
         Destroy(menuEntries[index].characterCard);
         menuEntries.RemoveAt(index);

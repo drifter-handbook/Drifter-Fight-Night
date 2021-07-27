@@ -66,7 +66,12 @@ public class GameController : MonoBehaviour
 
     public InputActionAsset[] baseControls;
 
-    [NonSerialized]
+    
+
+    //[NonSerialized]
+    public InputActionAsset[] availableControls;
+
+    //[NonSerialized]
     public InputActionAsset[] controls;
 
     public int PlayerID = -1;
@@ -231,6 +236,10 @@ public class GameController : MonoBehaviour
             matchmakingClient = null;
         }
         Destroy(GetComponent<NetworkSync>());
+
+
+        //TODO Remove this?
+        //AssignInputAssest();
        
         IsHost = false;
         IsOnline = false;
@@ -238,15 +247,21 @@ public class GameController : MonoBehaviour
     }
 
 
+    //Associates each input asset with a controller
+    //Call when a new controller is plugged in to associate it with an asset.
+    //Populates the keyboard as the default main control system.
     public void AssignInputAssest()
     {
 
-        controls = new InputActionAsset[Gamepad.all.Count + 1];
+        controls = new InputActionAsset[1];
 
+        availableControls = new InputActionAsset[Gamepad.all.Count+1];
+
+        availableControls[0] = baseControls[0];
         controls[0] = baseControls[0];
 
         //Get all connected controllers on startup
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i < Gamepad.all.Count; i++)
         {
 
             //Create a new input action asset
@@ -257,15 +272,80 @@ public class GameController : MonoBehaviour
 
             //Player x is assigned this control scheme
             //Make this run off of peer id?
-            controls[i+1] = controller;
+            availableControls[i+1] = controller;
 
             //If there is a controller, use it
             //Change this to make a new array on use
             if(Gamepad.all.Count > i)
-                controls[i+1].devices = new Gamepad[] {Gamepad.all[i]};
+                availableControls[i+1].devices = new Gamepad[] {Gamepad.all[i]};
             else
-                controls[i+1].devices = new Gamepad[] {};
+                availableControls[i+1].devices = new Gamepad[] {};
         }
 
     }
+
+
+    public int checkForNewControllers()
+    {
+        int addedCount = 0;
+        foreach(InputActionAsset controller in GameController.Instance.availableControls)
+        {
+            if(controller != null && controller.FindAction("Pause").triggered && !Array.Exists(controls, element => element == controller))
+            {
+                addController(controller);
+                addedCount++;
+            }
+        }
+
+        return addedCount;
+    }
+
+
+    public int checkForRemoveControllers()
+    {
+        int removedIndex = -1;
+        foreach(InputActionAsset controller in GameController.Instance.controls)
+        {
+            if(controller != null && controller.FindAction("Quit").triggered)
+            {
+                removedIndex = removeControler(controller);
+                UnityEngine.Debug.Log("REMOVED: " + controller);
+            }
+        }
+
+        return removedIndex;
+
+    }
+
+    private void addController(InputActionAsset controller)
+    {
+        InputActionAsset[] tempControls = new InputActionAsset[controls.Length +1];
+        for(int i = 0; i < controls.Length; i++)
+        {
+            if(controls[i] != null)tempControls[i] = controls[i];
+        }
+
+        tempControls[controls.Length] = controller;
+        controls = tempControls;
+
+        UnityEngine.Debug.Log(controls[controls.Length -1]);
+    }
+
+    private int removeControler(InputActionAsset controller)
+    {
+        InputActionAsset[] tempControls = new InputActionAsset[controls.Length -1];
+
+        int index = -1;
+
+        for(int i = 0; i < controls.Length; i++)
+        {
+            if(controls[i] != controller)tempControls[i] = controls[i];
+            else index = i;
+        }
+
+        controls = tempControls;
+        return index;
+    }
+
+
 }

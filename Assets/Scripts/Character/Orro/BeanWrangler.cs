@@ -23,7 +23,6 @@ public class BeanWrangler : NonplayerHurtboxHandler
     bool following = true;
     float beancountdown = 1f;
 
-    bool shield = false;
     public bool canAct = false;
     public bool alive = false;
 
@@ -31,16 +30,14 @@ public class BeanWrangler : NonplayerHurtboxHandler
 
     public struct BeanState
     {
-        public BeanState(Vector3 pos, int facing, bool shield)
+        public BeanState(Vector3 pos, int facing)
         {
             Pos = pos;
             Facing = facing;
-            Shield = shield;
         }
 
         public Vector3 Pos { get; set;}
         public int Facing { get; set;}
-        public bool Shield { get; set;}
     }
 
     new void Start()
@@ -53,7 +50,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
         anim = GetComponent<SyncAnimatorStateHost>();
         //Movement Stuff
         rb = GetComponent<Rigidbody2D>();
-        targetPos = new BeanState(rb.position, facing,shield);
+        targetPos = new BeanState(rb.position, facing);
         Orro = gameObject.GetComponentInChildren<HitboxCollision>().parent;
         attacks = gameObject.GetComponentInChildren<HitboxCollision>().parent.GetComponent<PlayerAttacks>();
 
@@ -71,8 +68,6 @@ public class BeanWrangler : NonplayerHurtboxHandler
 
 
             targetPos = states.Dequeue();
-
-            shield = targetPos.Shield;
 
             if(canAct)
                 facing = targetPos.Facing;
@@ -139,10 +134,10 @@ public class BeanWrangler : NonplayerHurtboxHandler
     }
 
 
-    public void addBeanState(Vector3 pos,int facingDir,bool shield)
+    public void addBeanState(Vector3 pos,int facingDir)
     {
         if(!GameController.Instance.IsHost)return;
-        states.Enqueue(new BeanState(pos,facingDir,shield));
+        states.Enqueue(new BeanState(pos,facingDir));
     }
 
 
@@ -150,13 +145,13 @@ public class BeanWrangler : NonplayerHurtboxHandler
     {
         if(!GameController.Instance.IsHost)return;
         states.Clear();
-        targetPos = new BeanState(pos, facingDir,false);
+        targetPos = new BeanState(pos, facingDir);
         following = true;
     }
 
     public void die()
     {
-        if(!GameController.Instance.IsHost)return;
+        if(!GameController.Instance.IsHost || !alive)return;
         canAct = false;
         alive = false;
         rb.velocity = Vector3.zero;
@@ -240,9 +235,9 @@ public class BeanWrangler : NonplayerHurtboxHandler
 
     public void shieldBurst()
     {
-        if(!GameController.Instance.IsHost) return;
+        if(!GameController.Instance.IsHost || !alive || HitstunDuration > 0 ) return;
 
-        if(!shield)playState("Bean_Shield_Burst");
+        playState("Bean_Shield_Burst");
     }
 
     public void playState(String stateName)
