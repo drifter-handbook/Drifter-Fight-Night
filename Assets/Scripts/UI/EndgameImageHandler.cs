@@ -112,7 +112,7 @@ public class EndgameImageHandler : MonoBehaviour
 
     public void playAgain()
     {
-        if(GameController.Instance.IsHost)GameController.Instance.host.SetScene("CharacterSelect");
+        if(GameController.Instance.IsHost)GameController.Instance.host.SetScene("Character_Select_Rework");
         else 
         {
             GameController.Instance.CleanupNetwork();

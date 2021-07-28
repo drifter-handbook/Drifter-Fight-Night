@@ -328,7 +328,7 @@ public class GameController : MonoBehaviour
         tempControls[controls.Length] = controller;
         controls = tempControls;
 
-        UnityEngine.Debug.Log(controls[controls.Length -1]);
+        UnityEngine.Debug.Log("Added: " + controls[controls.Length -1]);
     }
 
     private int removeControler(InputActionAsset controller)

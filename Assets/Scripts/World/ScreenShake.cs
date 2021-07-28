@@ -132,7 +132,7 @@ public class ScreenShake : MonoBehaviour , INetworkInit
 
       }
 
-      return Mathf.Lerp(self.orthographicSize,Mathf.Clamp(scaledZoom *1.7f,20f,30f),Time.deltaTime * 3f);
+      return Mathf.Lerp(self.orthographicSize,Mathf.Clamp(scaledZoom *1.7f,15f,30f),Time.deltaTime * 3f);
    }
 
 
