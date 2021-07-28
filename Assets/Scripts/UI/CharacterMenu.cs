@@ -32,16 +32,6 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         { PlayerColor.GREY, new Color(0.4f, 0.4f, 0.4f) }
     };
 
-
-    // [Serializable]
-    // public class PlayerSelectCursor
-    // {
-    //     public int x = 7;
-    //     public int y = 1;
-    //     public int peerID =-1;
-    //     public GameObject cursorObject;
-    // }
-
     public GameObject bottomPanel;
     //public GameObject rightPanel;
     public GameObject roomCode;
@@ -55,14 +45,10 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     public GameObject playerInputPrefab;
 
     NetworkSyncToHost syncFromClients;
-   
-    // [Serializable]
-    // public class PlayerSelectFigurine
-    // {
-    //     public DrifterType drifter;
-    //     public GameObject figurine;
-    //     public Sprite image;
-    // }
+
+
+    //Old Stuff
+
 
     [Serializable]
     public class FightZone
@@ -70,11 +56,6 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         public string sceneName;
     }
 
-
-
-
-    //public List<PlayerSelectFigurine> drifters;
-    //Dictionary<DrifterType, PlayerSelectFigurine> figurines = new Dictionary<DrifterType, PlayerSelectFigurine>();
     public  List<FightZone> fightzones = new List<FightZone>();
 
     private GameObject clientCard;
@@ -83,23 +64,12 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     private FightZone selectedFightzone;
     private int selectedFightzoneNum = 0;
 
-    //determines how many player cards we can fit on a panel
-    //private const int PANEL_MAX_PLAYERS = 2;
-
-    //public GameObject arrowPrefab;
-
-    //public GameObject forwardButton;
-    //public GameObject backButton;
-
-    //public GameObject selectedFigurine = null;
-
     public class PlayerMenuEntry
     {
         public GameObject arrow;
         public GameObject characterCard;
     }
     List<PlayerMenuEntry> menuEntries = new List<PlayerMenuEntry>();
-    bool mouse = true;
 
     bool stageSelect = false;
 
@@ -109,9 +79,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
     public static CharacterMenu Instance => GameObject.FindGameObjectWithTag("CharacterMenu")?.GetComponent<CharacterMenu>();
     //public static CharacterSelectSyncData CharSelData = new CharSelData;
-
-    DrifterType currentDrifter = DrifterType.None;
-
+    
     void Awake()
     {
         //UpdateFightzone();
@@ -163,8 +131,6 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         }
         GameController.Instance.host.Peers =  new List<int>();
         // add host
-
-
 
         foreach(InputActionAsset controller in GameController.Instance.availableControls)
         {
@@ -261,7 +227,6 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     }
 
 
-
     void Update()
     {
 
@@ -312,12 +277,14 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     //Updates input commands for a given cursor object
     public void UpdateInput(CharacterSelectState p_cursor,PlayerInputData input)
     {
+        //If no previous input yet, populate it
         if(p_cursor.prevInput == null)
         {
            p_cursor.prevInput = input;
            return; 
         }
         
+        //Wrap around the horizontal arrays
         if(p_cursor.prevInput.MoveX ==0 && input.MoveX != 0)
         {
             p_cursor.x = wrapIndex(p_cursor.x + (int)input.MoveX ,9);
@@ -326,6 +293,8 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
                 p_cursor.x = wrapIndex(p_cursor.x + (int)input.MoveX ,9);
         }
         
+        //Wrap around the vertical arrays
+        //Todo: make hanging edges work
         if(p_cursor.prevInput.MoveY ==0 && input.MoveY != 0)
         {
             p_cursor.y = wrapIndex(p_cursor.y + (int)input.MoveY ,2);
@@ -334,6 +303,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
                 p_cursor.y = wrapIndex(p_cursor.y + (int)input.MoveY ,2);
         }
         
+        //Sets the cursor's location to that of the current character icon
         p_cursor.Cursor.transform.position = characterRows[p_cursor.y][p_cursor.x].transform.position;
         
         //Select or deselelect on light press
@@ -347,10 +317,13 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         else if(input.Special && !p_cursor.prevInput.Special && p_cursor.PlayerType != DrifterType.None)
             p_cursor.PlayerType = DrifterType.None;
 
-
+        //Saves previous input
         p_cursor.prevInput = input;
 
     }
+
+
+    //TODO Below Here
 
 
 

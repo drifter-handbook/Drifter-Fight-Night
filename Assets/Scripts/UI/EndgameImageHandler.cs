@@ -96,10 +96,7 @@ public class EndgameImageHandler : MonoBehaviour
             EventSystem.current.SetSelectedGameObject(GameObject.Find("MainMenu"));
             mouse = false;
         }
-
-
-
-        
+     
     }
 
     public void backToMain()
@@ -119,30 +116,6 @@ public class EndgameImageHandler : MonoBehaviour
             GameController.Instance.StartNetworkClient();
         }
     }
-
-    // public void setSillyImage(DrifterType type, Color color)
-    // {
-    //     GameObject miniIcon = Instantiate(sillyImagePrefab);
-    //     Transform parent = rightPanel.transform;
-    //     miniIcon.transform.SetParent(parent, false);
-    //     miniIcon.transform.GetChild(0).GetComponent<Image>().color = color; //sets player Color on circle
-    //     switch (type)
-    //     {
-    //         case DrifterType.Nero: miniIcon.GetComponent<Image>().sprite = sprites[0]; break;
-    //         case DrifterType.Orro: miniIcon.GetComponent<Image>().sprite = sprites[1]; break;
-    //         case DrifterType.Bojo: miniIcon.GetComponent<Image>().sprite = sprites[2]; break;
-    //         case DrifterType.Ryyke: miniIcon.GetComponent<Image>().sprite = sprites[3]; break;
-    //         case DrifterType.Swordfrog: miniIcon.GetComponent<Image>().sprite = sprites[4]; break;
-    //         case DrifterType.Megurin: miniIcon.GetComponent<Image>().sprite = sprites[5]; break;
-    //         case DrifterType.Spacejam: miniIcon.GetComponent<Image>().sprite = sprites[6]; break;
-    //         case DrifterType.Lucille: miniIcon.GetComponent<Image>().sprite = sprites[8]; break;
-    //         case DrifterType.Mytharius: miniIcon.GetComponent<Image>().sprite = sprites[9]; break;
-    //         case DrifterType.Drifter_Cannon: miniIcon.GetComponent<Image>().sprite = sprites[10]; break;
-    //         case DrifterType.Maryam: miniIcon.GetComponent<Image>().sprite = sprites[11]; break;
-    //         case DrifterType.Lady_Parhelion:
-    //         default: miniIcon.GetComponent<Image>().sprite = sprites[7]; break;                        
-    //     }
-    // }
 
     public void Exit()
     {
