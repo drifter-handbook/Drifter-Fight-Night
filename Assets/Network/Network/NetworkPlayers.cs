@@ -109,6 +109,8 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
         input.MoveX = playerInputAction.FindAction("Horizontal").ReadValue<float>();
         input.MoveY = playerInputAction.FindAction("Vertical").ReadValue<float>();
 
+        input.Pause = playerInputAction.FindAction("Pause").ReadValue<float>()>0;
+
         return input;
     }
 }
@@ -125,6 +127,7 @@ public class PlayerInputData : INetworkData, ICloneable
     public bool Special;
     public bool Super;
     public bool Guard;
+    public bool Pause;
 
     public object Clone()
     {
@@ -137,7 +140,8 @@ public class PlayerInputData : INetworkData, ICloneable
             Light = Light,
             Special = Special,
             Super = Super,
-            Guard = Guard
+            Guard = Guard,
+            Pause = Pause,
         };
     }
 
@@ -151,5 +155,6 @@ public class PlayerInputData : INetworkData, ICloneable
         Special = data.Special;
         Super = data.Super;
         Guard = data.Guard;
+        Pause = data.Pause;
     }
 }

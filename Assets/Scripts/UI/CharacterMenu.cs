@@ -59,7 +59,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     public  List<FightZone> fightzones = new List<FightZone>();
 
     private GameObject clientCard;
-    public GameObject stageMenu;
+    public GameObject Banner;
 
     private FightZone selectedFightzone;
     private int selectedFightzoneNum = 0;
@@ -138,23 +138,13 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
             PlayerInput.GetComponent<PlayerInput>().actions = controller;
         }
 
-        
-        if(GameController.Instance.IsTraining)
-        {
-            AddCharSelState(-1);
-            AddCharSelState(0,DrifterType.Sandbag);
-        }
 
         //Populate a card for each active controller
-        else
-        {
-            for(int i = -1; i < GameController.Instance.controls.Length-1; i++)
-            {
-                AddCharSelState(i);
-            }
+        for(int i = -1; i < GameController.Instance.controls.Length-1; i++)
+            AddCharSelState(i);
 
-        }
-            
+        if(GameController.Instance.IsTraining) AddCharSelState(0,DrifterType.Sandbag);
+
     }
 
     public Dictionary<int, int> GetPeerIDsToPlayerIDs()
@@ -174,15 +164,17 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
     public void AddCharSelState(int peerID, DrifterType drifter)
     {
-
-        GameObject cursor = GameController.Instance.host.CreateNetworkObject("CharacterCursor",characterRows[1][7].transform.position, transform.rotation);
+        int[] drifterLoc = findDrifterMatrixPosition(drifter);
+        GameObject cursor = GameController.Instance.host.CreateNetworkObject("CharacterCursor",characterRows[drifterLoc[0]][drifterLoc[1]].transform.position, transform.rotation);
         cursor.GetComponent<SpriteRenderer>().color = ColorFromEnum[(PlayerColor)(peerID+1)];
 
         charSelStates.Add(new CharacterSelectState()
         {
             PeerID = peerID,
             Cursor = cursor,
-            PlayerType = drifter
+            PlayerType = drifter,
+            x = drifterLoc[1],
+            y = drifterLoc[0]
         });
 
         //Fix this for multiple input devices
@@ -221,6 +213,20 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         }
     }
 
+    //Finds the y-x positio of a certain drifter in the matrix and returns the values as an array
+    private int[] findDrifterMatrixPosition(DrifterType drifter)
+    {
+        for(int y = 0; y < 3; y++)
+        {
+            for(int x = 0; x < 10; x++)
+            {
+                if(characterRows[y][x] != null && characterRows[y][x].GetComponent<CharacterSelectPortrait>().drifterType == drifter)
+                    return new int[] {y,x};
+            }
+        }
+        return new int[] {1,7};
+    }
+
     void FixedUpdate()
     {
         SyncToCharSelectState();
@@ -231,18 +237,12 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     {
 
         //Make real stage select
-        if(everyoneReady())
-        {
-            SelectFightzone("Training");
-            UpdateFightzone();
-            GameController.Instance.BeginMatch();
-        }
-
         //Create Character Select State when an inactive controller becomes active
         for(int i = 0; i < GameController.Instance.checkForNewControllers(); i++)
             AddCharSelState(GameController.Instance.host.Peers.Count);
-        
+    
 
+    
         //Remove Character select state if a controller is disconnected
         int removeIndex = GameController.Instance.checkForRemoveControllers();
         if(removeIndex >= 0)
@@ -254,15 +254,34 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         //Update input on each active char select state
         PlayerInputData input = NetworkPlayers.GetInput(GameController.Instance.controls[0]);
         UpdateInput(charSelStates[0], input);
-        foreach (int peerID in GameController.Instance.host.Peers)
+        if(!GameController.Instance.IsTraining)
         {
-            //Link inputs to peer ids
-            input = NetworkUtils.GetNetworkData<PlayerInputData>(syncFromClients["input", peerID]);
-            if (input != null)
-                UpdateInput(charSelStates[peerID+1], input);
-            else
-                UpdateInput(charSelStates[peerID+1], NetworkPlayers.GetInput(GameController.Instance.controls[peerID+1]));
+
+            foreach (int peerID in GameController.Instance.host.Peers)
+            {
+                //Link inputs to peer ids
+                input = NetworkUtils.GetNetworkData<PlayerInputData>(syncFromClients["input", peerID]);
+                if (input != null)
+                    UpdateInput(charSelStates[peerID+1], input);
+                else
+                    UpdateInput(charSelStates[peerID+1], NetworkPlayers.GetInput(GameController.Instance.controls[peerID+1]));
+            }
         }
+
+      
+        if(everyoneReady() && stageSelect)
+        {
+            stageSelect = false;
+            SelectFightzone("Training");
+            UpdateFightzone();
+            GameController.Instance.BeginMatch();
+        }
+
+        //Return to title if the last player leaves
+        if(charSelStates.Count <1 || (charSelStates.Count <2 && GameController.Instance.IsTraining))ReturnToTitle();
+
+        stageSelect = false;
+
     }
 
     //Circular Array Helper
@@ -304,7 +323,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         }
         
         //Sets the cursor's location to that of the current character icon
-        p_cursor.Cursor.transform.position = characterRows[p_cursor.y][p_cursor.x].transform.position;
+        p_cursor.Cursor.transform.localPosition = characterRows[p_cursor.y][p_cursor.x].transform.position;
         
         //Select or deselelect on light press
         if(input.Light && !p_cursor.prevInput.Light)
@@ -316,6 +335,9 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         //Deselect on special press
         else if(input.Special && !p_cursor.prevInput.Special && p_cursor.PlayerType != DrifterType.None)
             p_cursor.PlayerType = DrifterType.None;
+
+        if(everyoneReady() && !p_cursor.prevInput.Pause && input.Pause)
+            stageSelect = true;
 
         //Saves previous input
         p_cursor.prevInput = input;
@@ -449,7 +471,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
             return;
         }
 
-        stageMenu.SetActive(true);
+        
 
         //EventSystem.current.SetSelectedGameObject(GameObject.Find("Training"));
 
@@ -541,14 +563,14 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         return DrifterType.Bojo;
     }
 
-    public void disableStages()
-    {
-        stageMenu.SetActive(false);
-    }
-    public void enableStages()
-    {
-        stageMenu.SetActive(true);
-    }
+    // public void disableStages()
+    // {
+    //     stageMenu.SetActive(false);
+    // }
+    // public void enableStages()
+    // {
+    //     stageMenu.SetActive(true);
+    // }
 
     // public void BackButton(){
     //     UnityEngine.Debug.Log("BACK PRESSED");
@@ -571,12 +593,15 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
     public bool everyoneReady()
     {
+
         foreach (CharacterSelectState selectState in charSelStates)
         {
             if(selectState.PlayerType == DrifterType.None){
+                Banner.SetActive(false);
                 return false;
             }
         }
+        if(charSelStates.Count >=2)Banner.SetActive(true);
         return charSelStates.Count >=2;
     }
 

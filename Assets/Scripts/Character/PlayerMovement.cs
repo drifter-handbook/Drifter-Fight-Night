@@ -576,6 +576,12 @@ public class PlayerMovement : MonoBehaviour
         transform.localScale = new Vector3(Facing * Mathf.Abs(transform.localScale.x),transform.localScale.y, transform.localScale.z);
     }
 
+    public void setFacing(int dir){
+        Facing = dir;
+        drifter.SetIndicatorDirection(Facing);
+        transform.localScale = new Vector3(Facing * Mathf.Abs(transform.localScale.x),transform.localScale.y, transform.localScale.z);
+    }
+
 
     //Kills jump coroutines if they exist, for paused gravity attacks
     public void cancelJump()

@@ -16,17 +16,26 @@ public class EscapeMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //TODO: Add back joystick support
-        //Input.GetKeyDown("joystick button 7")
-        if (GameController.Instance.controls[0].FindActionMap("PlayerKeyboard").FindAction("Pause").triggered)
-        {
-            GameController.Instance.IsPaused = true;
-            ToggleMenu();
-        }
+        // //TODO: Add back joystick support
+        // //Input.GetKeyDown("joystick button 7")
+        // if (GameController.Instance.controls[0].FindActionMap("PlayerKeyboard").FindAction("Pause").triggered)
+        // {
+        //     
+        // }
+       
+
+        foreach(InputActionAsset input in GameController.Instance.controls)
+            if(input.FindActionMap("PlayerKeyboard").FindAction("Pause").triggered)
+            {
+                GameController.Instance.IsPaused = true;
+                ToggleMenu();
+            }
+
         if(!escapeMenu.activeSelf)
         {
             GameController.Instance.IsPaused = false;
         }
+
     }
 
     public void ToggleMenu()

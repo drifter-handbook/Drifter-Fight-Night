@@ -130,7 +130,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
             //Calculate knockback magnitude
             float KB = (float)(((drifter.DamageTaken / 10f + drifter.DamageTaken * damageDealt / 20f)
-                        * 200 / (GetComponent<PlayerMovement>().Weight + 100) * 1.4 *
+                        * 200 / (drifter.movement.Weight + 100) * 1.4 *
                          ((status.HasStatusEffect(PlayerStatusEffect.EXPOSED) || status.HasStatusEffect(PlayerStatusEffect.FEATHERWEIGHT))
                             ?1.5f:1)) * attackData.KnockbackScale + attackData.Knockback);
 
@@ -183,6 +183,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 if(!status.HasStatusEffect(PlayerStatusEffect.ARMOUR) || attackData.isGrab){
 
                     status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0f);
+                    
+                    drifter.movement.setFacing((int)(facingDir *-1));
 
                     //Cause the screen to shake slightly on hit, as long as the move has knockback
                     if(Shake != null && attackData.Knockback !=0){
@@ -192,10 +194,10 @@ public class PlayerHurtboxHandler : MonoBehaviour
                     //If the defender is grounded, use the absolute value of the y component of the velocity
                     //This prevents grounded opponents from getting stuck when spiked on the ground
                     if(attackData.Knockback > 0 && attackData.AngleOfImpact > -361){
-                        GetComponent<Rigidbody2D>().velocity = new Vector2(forceDir.normalized.x * KB, GetComponent<PlayerMovement>().grounded?Mathf.Abs(forceDir.normalized.y * KB): forceDir.normalized.y * KB);
-
+                        GetComponent<Rigidbody2D>().velocity = new Vector2(forceDir.normalized.x * KB, drifter.movement.grounded?Mathf.Abs(forceDir.normalized.y * KB): forceDir.normalized.y * KB);
+                        
                         //Use restitution particle if spiked on the grounde
-                        if(GetComponent<PlayerMovement>().grounded && attackData.AngleOfImpact < -75 &&  attackData.AngleOfImpact > -105)GetComponent<PlayerMovement>().spawnJuiceParticle(transform.position + new Vector3(0,-2.5f,0), MovementParticleMode.Restitution);
+                        if(drifter.movement.grounded && attackData.AngleOfImpact < -75 &&  attackData.AngleOfImpact > -105)drifter.movement.spawnJuiceParticle(transform.position + new Vector3(0,-2.5f,0), MovementParticleMode.Restitution);
                     }
 
                     //Autolink angle (<361) scales its magnitude with distacne from said point, further scaled with the attacker's velocity
@@ -211,7 +213,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                     }
                 }
 
-                if(attackData.StatusEffect != PlayerStatusEffect.PLANTED || GetComponent<PlayerMovement>().grounded){
+                if(attackData.StatusEffect != PlayerStatusEffect.PLANTED || drifter.movement.grounded){
 
                     status?.calculateFrameAdvantage(attackData.StatusDuration* framerateScalar,attacker.getRemainingAttackTime());
 
@@ -233,7 +235,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                     }              	
                 }
                 //Pop playewrs out of the ground when they are already grounded
-                else if(attackData.StatusEffect == PlayerStatusEffect.PLANTED && !GetComponent<PlayerMovement>().grounded){
+                else if(attackData.StatusEffect == PlayerStatusEffect.PLANTED && !drifter.movement.grounded){
                 	status.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,6f * framerateScalar);
                 }
 
@@ -241,7 +243,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 if (willCollideWithBlastZoneAccurate(GetComponent<Rigidbody2D>(), HitstunDuration) && drifter.Stocks <= 1 && NetworkPlayers.Instance.players.Values.Where(x => x != null).ToList().Count <=2)
                 {
                     HitstunDuration = 3f;
-                    GetComponent<PlayerMovement>().techWindowElapsed = 2f;
+                    drifter.movement.techWindowElapsed = 2f;
                 } 
                 else if (willCollideWithBlastZone(GetComponent<Rigidbody2D>() , HitstunDuration) ) Mathf.Min(HitstunDuration*=2f,3f);
                 
@@ -266,7 +268,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                     GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(HitstunDuration,.2f,.8f) *10f  * hitbox.Facing , GetComponent<Rigidbody2D>().velocity.y);
                 }
 
-                else GetComponent<PlayerMovement>().spawnJuiceParticle(hitSparkPos, MovementParticleMode.Parry);
+                else drifter.movement.spawnJuiceParticle(hitSparkPos, MovementParticleMode.Parry);
                 //put defender in blockstun
                 if(attackData.HitStun != 0){
                         status?.calculateFrameAdvantage(framerateScalar * (1f + Mathf.Ceil(attackData.AttackDamage/4f)),attacker.getRemainingAttackTime());
@@ -292,7 +294,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             {
                 //TODO Shit out more paricles
 
-                GetComponent<PlayerMovement>().spawnJuiceParticle(hitSparkPos, MovementParticleMode.Parry);
+                drifter.movement.spawnJuiceParticle(hitSparkPos, MovementParticleMode.Parry);
 
                 attackerStatus.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,1f);
                 attackerStatus.ApplyStatusEffect(PlayerStatusEffect.CRINGE,1f);
