@@ -46,12 +46,12 @@ public class EndgameImageHandler : MonoBehaviour
             //Todo Cleanup
             if(i == 0)
             {
-                foreach (CharacterSelectState state in CharacterMenu.charSelStates)
+                foreach (CharacterSelectState state in CharacterMenu.charSelStates.Values)
                 {
                     if (state.PeerID == (i - 1))
                     {
                         UnityEngine.Debug.Log(state.PlayerType);
-                        setWinnerPic(state.PlayerType,CharacterMenu.ColorFromEnum[(PlayerColor)state.PlayerIndex]);
+                        setWinnerPic(state.PlayerType,CharacterMenu.ColorFromEnum[(PlayerColor)(state.PeerID+1)]);
                     }
                 }
 

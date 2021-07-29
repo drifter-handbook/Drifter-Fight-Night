@@ -12,8 +12,7 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
 
     public GameObject playerInputPrefab;
 
-    GameObject hostPlayer;
-    Dictionary<int, GameObject> clientPlayers = new Dictionary<int, GameObject>();
+    //Dictionary<int, GameObject> clientPlayers = new Dictionary<int, GameObject>();
 
     [NonSerialized]
     public Dictionary<int, GameObject> players = new Dictionary<int, GameObject>();
@@ -25,52 +24,47 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
     {
         //UnityEngine.Debug.Log(GameController.Instance.host.Peers.Count);
         syncFromClients = GetComponent<NetworkSyncToHost>();
-        // create host
-        int playerNum = 0;
-        hostPlayer = CreatePlayer(-1, ref playerNum);
-        // create other players
-        foreach (int peerID in GameController.Instance.host.Peers)
+
+        //int playerNum = 0;
+        // create players
+        foreach (CharacterSelectState charSel in CharacterMenu.charSelStates.Values)
         {
-            clientPlayers[peerID] = CreatePlayer(peerID, ref playerNum);
+            CreatePlayer(charSel.PeerID);
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        PlayerInputData input = GetInput(GameController.Instance.controls[0]);
-        UpdateInput(hostPlayer, input);
-        foreach (int peerID in GameController.Instance.host.Peers)
+        PlayerInputData input;
+
+        foreach (CharacterSelectState charSel in CharacterMenu.charSelStates.Values)
         {
             //Link inputs to peer ids
-            input = NetworkUtils.GetNetworkData<PlayerInputData>(syncFromClients["input", peerID]);
+            input = NetworkUtils.GetNetworkData<PlayerInputData>(syncFromClients["input", charSel.PeerID]);
             if (input != null)
-                UpdateInput(clientPlayers[peerID], input);
-            else 
-                UpdateInput(clientPlayers[peerID], GetInput(GameController.Instance.controls[peerID+1]));
+                UpdateInput(players[charSel.PeerID], input);
+            else if(GameController.Instance.controls.ContainsKey(charSel.PeerID))
+                UpdateInput(players[charSel.PeerID], GetInput(GameController.Instance.controls[charSel.PeerID]));
         }
     }
 
-    GameObject CreatePlayer(int peerID, ref int i)
+    GameObject CreatePlayer(int peerID)
     {
         DrifterType drifter = DrifterType.None;
-        int playerIndex = 0;
-        foreach (CharacterSelectState state in CharacterMenu.charSelStates)
+        foreach (CharacterSelectState state in CharacterMenu.charSelStates.Values)
         {
             if (state.PeerID == peerID)
-            {
                 drifter = state.PlayerType;
-                playerIndex = state.PlayerIndex;
-            }
+            
         }
         //GameObject PlayerInput = Instantiate(playerInputPrefab, transform.position, Quaternion.identity);
 
         //Same here
         GameObject obj = GameController.Instance.host.CreateNetworkObject(drifter.ToString().Replace("_", " "),
-            spawnPoints[i % spawnPoints.Count].transform.position, Quaternion.identity);
-        obj.GetComponent<Drifter>().SetColor(playerIndex);
-        obj.GetComponent<PlayerInput>().actions = GameController.Instance.controls[i];
-        i++;
+            spawnPoints[(peerID +1) % spawnPoints.Count].transform.position, Quaternion.identity);
+        obj.GetComponent<Drifter>().SetColor((peerID +1));
+        obj.GetComponent<PlayerInput>().actions = GameController.Instance.controls[peerID];
         obj.GetComponent<Drifter>().SetPeerId(peerID);
         players[peerID] = obj;
         return obj;

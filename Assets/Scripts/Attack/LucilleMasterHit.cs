@@ -90,9 +90,6 @@ public class LucilleMasterHit : MasterHit
         if(!isHost)return;
 
         facing = movement.Facing;
-
-        //remove the oldest portal if size limit would be exceeded.
-        //if(getTotalPortalSize() >= 9) rifts.Dequeue().GetComponent<LucillePortal>().decay();
        
         GameObject rift = GameController.Instance.host.CreateNetworkObject("Lucille_Rift", pos, transform.rotation);
 
@@ -109,8 +106,6 @@ public class LucilleMasterHit : MasterHit
         rift.GetComponent<LucillePortal>().drifter = drifter.gameObject;
        
         rifts.Enqueue(rift);
-        
-        //drifter.SetCharge(3 + getTotalPortalSize());
     }
 
     public void warpToNearestRift()
@@ -155,9 +150,6 @@ public class LucilleMasterHit : MasterHit
         rifts = new Queue<GameObject>(rifts.Where<GameObject>(x => x != self));
 
         if(pauseOnHit)status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.1f * self.GetComponent<LucillePortal>().size + .1f);
-
-        // if(getTotalPortalSize() == 0) drifter.SetCharge(0);
-        // else drifter.SetCharge(3 + getTotalPortalSize());
     }
 
 
@@ -182,29 +174,6 @@ public class LucilleMasterHit : MasterHit
         }
         rifts = new Queue<GameObject>();
     }
-
-    int getTotalPortalSize()
-    {
-        int totalPortalSize = 0;
-
-        //Lucille can have up to 3 total portal size active
-        //Calculates the current size before a new poeral is added
-
-        if(rifts.Count ==0)return 0;
-
-        rifts = new Queue<GameObject>(rifts.Where<GameObject>(x => x != null));
-
-        foreach(GameObject riftObj in rifts) totalPortalSize += riftObj.GetComponent<LucillePortal>().size;
-
-        if(totalPortalSize >9)
-        {
-            UnityEngine.Debug.Log("TOO MUCH GIRTH");
-            return 9;
-        }
-
-        return totalPortalSize;
-    }
-
 
     //Can gain 1 extra jump by bouncing on a portal. Only works once per airtime.
     public void grantJump()

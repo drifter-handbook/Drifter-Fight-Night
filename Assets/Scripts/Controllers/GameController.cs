@@ -72,7 +72,7 @@ public class GameController : MonoBehaviour
     public InputActionAsset[] availableControls;
 
     //[NonSerialized]
-    public InputActionAsset[] controls;
+    public Dictionary<int,InputActionAsset> controls;
 
     public int PlayerID = -1;
     public float[] volume = { -1f, -1f, -1f };
@@ -253,12 +253,12 @@ public class GameController : MonoBehaviour
     public void AssignInputAssest()
     {
 
-        controls = new InputActionAsset[1];
+        controls = new Dictionary<int,InputActionAsset>();
 
         availableControls = new InputActionAsset[Gamepad.all.Count+1];
 
         availableControls[0] = baseControls[0];
-        controls[0] = baseControls[0];
+        controls.Add(-1,baseControls[0]);
 
         //Get all connected controllers on startup
         for(int i = 0; i < Gamepad.all.Count; i++)
@@ -290,9 +290,13 @@ public class GameController : MonoBehaviour
         int addedCount = 0;
         foreach(InputActionAsset controller in GameController.Instance.availableControls)
         {
-            if(controller != null && controller.FindAction("Pause").triggered && !Array.Exists(controls, element => element == controller))
+            if(controller != null && controller.FindAction("Pause").triggered && !controls.ContainsValue(controller))
             {
-                addController(controller);
+                int peerID = -1;
+                while(controls.ContainsKey(peerID))
+                    peerID++;
+                controls.Add(peerID,controller);
+                UnityEngine.Debug.Log("Added: " + controller + " With peerID " + peerID);
                 addedCount++;
             }
         }
@@ -301,51 +305,28 @@ public class GameController : MonoBehaviour
     }
 
 
-    public int checkForRemoveControllers()
+    public List<int> checkForRemoveControllers()
     {
-        int removedIndex = -1;
-        foreach(InputActionAsset controller in GameController.Instance.controls)
+
+        List<int> peersToRemove = new List<int>();
+
+
+
+        foreach (KeyValuePair<int, InputActionAsset> kvp in GameController.Instance.controls)
         {
-            if(controller != null && controller.FindAction("Quit").triggered)
+            if(kvp.Value != null && kvp.Value.FindAction("Quit").triggered)
             {
-                removedIndex = removeControler(controller);
-                UnityEngine.Debug.Log("REMOVED: " + controller);
-            }
+                UnityEngine.Debug.Log("REMOVED: " + kvp.Value + " with peerID " + kvp.Key);
+
+                //controls.Remove(kvp.Key);
+
+                peersToRemove.Add(kvp.Key);
+            } 
         }
+        if(peersToRemove.Count >0)
+            foreach(int toRemove in peersToRemove)
+                controls.Remove(toRemove);
 
-        return removedIndex;
-
+        return peersToRemove;
     }
-
-    private void addController(InputActionAsset controller)
-    {
-        InputActionAsset[] tempControls = new InputActionAsset[controls.Length +1];
-        for(int i = 0; i < controls.Length; i++)
-        {
-            if(controls[i] != null)tempControls[i] = controls[i];
-        }
-
-        tempControls[controls.Length] = controller;
-        controls = tempControls;
-
-        UnityEngine.Debug.Log("Added: " + controls[controls.Length -1]);
-    }
-
-    private int removeControler(InputActionAsset controller)
-    {
-        InputActionAsset[] tempControls = new InputActionAsset[controls.Length -1];
-
-        int index = -1;
-
-        for(int i = 0; i < controls.Length; i++)
-        {
-            if(controls[i] != controller)tempControls[i] = controls[i];
-            else index = i;
-        }
-
-        controls = tempControls;
-        return index;
-    }
-
-
 }

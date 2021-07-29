@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
@@ -46,6 +46,9 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
     NetworkSyncToHost syncFromClients;
 
+    float prevScreenTimer = 0;
+    bool countingPrevScreen = false;
+
 
     //Old Stuff
 
@@ -75,7 +78,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
     NetworkSync sync;
 
-    public static List<CharacterSelectState> charSelStates;
+    public static Dictionary<int,CharacterSelectState> charSelStates;
 
     public static CharacterMenu Instance => GameObject.FindGameObjectWithTag("CharacterMenu")?.GetComponent<CharacterMenu>();
     //public static CharacterSelectSyncData CharSelData = new CharSelData;
@@ -114,9 +117,9 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
         syncFromClients = GetComponent<NetworkSyncToHost>();
 
-        charSelStates = new List<CharacterSelectState>();
+        charSelStates = new Dictionary<int,CharacterSelectState>();
 
-        //AssignInputAssest();
+        //
     
         if(GameController.Instance.IsOnline)
         {
@@ -132,15 +135,19 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         GameController.Instance.host.Peers =  new List<int>();
         // add host
 
+
+        //If no controllers are currently active, activate the primary controller
+        if(GameController.Instance.controls.Count <1 || GameController.Instance.IsTraining)
+            GameController.Instance.AssignInputAssest();
+
         foreach(InputActionAsset controller in GameController.Instance.availableControls)
         {
             GameObject PlayerInput = Instantiate(playerInputPrefab, transform.position, Quaternion.identity);
             PlayerInput.GetComponent<PlayerInput>().actions = controller;
         }
 
-
         //Populate a card for each active controller
-        for(int i = -1; i < GameController.Instance.controls.Length-1; i++)
+        for(int i = -1; i < GameController.Instance.controls.Count-1; i++)
             AddCharSelState(i);
 
         if(GameController.Instance.IsTraining) AddCharSelState(0,DrifterType.Sandbag);
@@ -150,25 +157,29 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     public Dictionary<int, int> GetPeerIDsToPlayerIDs()
     {
         Dictionary<int, int> peerIDsToPlayerIDs = new Dictionary<int, int>();
-        foreach (CharacterSelectState state in charSelStates)
+        foreach (CharacterSelectState state in charSelStates.Values)
         {
-            peerIDsToPlayerIDs[state.PeerID] = state.PlayerIndex;
+            peerIDsToPlayerIDs[state.PeerID] = (state.PeerID+1);
         }
         return peerIDsToPlayerIDs;
     }
 
     public void AddCharSelState(int peerID)
     {
+        UnityEngine.Debug.Log(peerID);
         AddCharSelState(peerID,DrifterType.None);
     }
 
     public void AddCharSelState(int peerID, DrifterType drifter)
     {
+        UnityEngine.Debug.Log(peerID);
+        if(charSelStates.Count >= (GameController.Instance.IsTraining?2:GameController.MAX_PLAYERS))return;
+
         int[] drifterLoc = findDrifterMatrixPosition(drifter);
         GameObject cursor = GameController.Instance.host.CreateNetworkObject("CharacterCursor",characterRows[drifterLoc[0]][drifterLoc[1]].transform.position, transform.rotation);
         cursor.GetComponent<SpriteRenderer>().color = ColorFromEnum[(PlayerColor)(peerID+1)];
 
-        charSelStates.Add(new CharacterSelectState()
+        charSelStates.Add(peerID,new CharacterSelectState()
         {
             PeerID = peerID,
             Cursor = cursor,
@@ -181,37 +192,43 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         if(peerID != -1)
             GameController.Instance.host.Peers.Add(peerID);
 
-        SortCharSelState(charSelStates);
+        //SortCharSelState(charSelStates);
     }
 
     public void RemoveCharSelState(int peerID)
     {
+        
+        if(!charSelStates.ContainsKey(peerID))return;
+    
         UnityEngine.Debug.Log("PEER REMOVED");
-        for (int i = 0; i < charSelStates.Count; i++)
-        {
-            if (charSelStates[i].PeerID == peerID)
-            {
-                Destroy(charSelStates[i].Cursor);
-                charSelStates.RemoveAt(i);
-                i--;
-            }
-        }
+
+        Destroy(charSelStates[peerID].Cursor);
+        charSelStates.Remove(peerID);
+
+        // for (int i = 0; i < charSelStates.Count; i++)
+        // {
+        //     if (charSelStates[i].PeerID == peerID)
+        //     {
+                
+        //         i--;
+        //     }
+        // }
 
         if(peerID != -1)
             GameController.Instance.host.Peers.Remove(peerID);
 
-        SortCharSelState(charSelStates);
+        //SortCharSelState(charSelStates);
     }
 
-    void SortCharSelState(List<CharacterSelectState> charSelStates)
-    {
-        // sort by peer ID
-        charSelStates.Sort((x, y) => x.PeerID.CompareTo(y.PeerID));
-        for (int i = 0; i < charSelStates.Count; i++)
-        {
-            charSelStates[i].PlayerIndex = i;
-        }
-    }
+    // void SortCharSelState(List<CharacterSelectState> charSelStates)
+    // {
+    //     // sort by peer ID
+    //     charSelStates.Sort((x, y) => x.PeerID.CompareTo(y.PeerID));
+    //     for (int i = 0; i < charSelStates.Count; i++)
+    //     {
+    //         charSelStates[i].PlayerIndex = i;
+    //     }
+    // }
 
     //Finds the y-x positio of a certain drifter in the matrix and returns the values as an array
     private int[] findDrifterMatrixPosition(DrifterType drifter)
@@ -237,38 +254,66 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     {
 
         //Make real stage select
+
+
+        //TODO make sure 
         //Create Character Select State when an inactive controller becomes active
         for(int i = 0; i < GameController.Instance.checkForNewControllers(); i++)
-            AddCharSelState(GameController.Instance.host.Peers.Count);
-    
+        {
+            int peerID = -1;
+            while(charSelStates.ContainsKey(peerID))
+                peerID++;
 
+            if(peerID < GameController.MAX_PLAYERS)AddCharSelState(peerID);
+        }
+    
     
         //Remove Character select state if a controller is disconnected
-        int removeIndex = GameController.Instance.checkForRemoveControllers();
-        if(removeIndex >= 0)
+        List<int> toRemove = GameController.Instance.checkForRemoveControllers();
+        if(toRemove.Count >0)
         {
-            RemovePlayerCard(removeIndex);
-            RemoveCharSelState(removeIndex-1);
+            foreach(int peerID in toRemove)
+                RemoveCharSelState(peerID);
+        }
+
+        //Return to title if the last player left
+        //Maybe remove?
+        if(GameController.Instance.controls.Count <1)
+        {
+            ReturnToTitle();
+            return;
         }
 
         //Update input on each active char select state
-        PlayerInputData input = NetworkPlayers.GetInput(GameController.Instance.controls[0]);
-        UpdateInput(charSelStates[0], input);
-        if(!GameController.Instance.IsTraining)
-        {
 
-            foreach (int peerID in GameController.Instance.host.Peers)
-            {
-                //Link inputs to peer ids
-                input = NetworkUtils.GetNetworkData<PlayerInputData>(syncFromClients["input", peerID]);
-                if (input != null)
-                    UpdateInput(charSelStates[peerID+1], input);
-                else
-                    UpdateInput(charSelStates[peerID+1], NetworkPlayers.GetInput(GameController.Instance.controls[peerID+1]));
-            }
+        PlayerInputData input;
+
+        int index = 0;
+        foreach (KeyValuePair<int, CharacterSelectState> kvp in charSelStates)
+        {
+            //Link inputs to peer ids
+            input = NetworkUtils.GetNetworkData<PlayerInputData>(syncFromClients["input", kvp.Value.PeerID]);
+            if (input != null)
+                UpdateInput(charSelStates[kvp.Key], input);
+            else if(GameController.Instance.controls.ContainsKey(kvp.Value.PeerID))
+                UpdateInput(charSelStates[kvp.Key], NetworkPlayers.GetInput(GameController.Instance.controls[kvp.Value.PeerID]));
+            index++;
         }
 
+        //Return to title if the special button is helf for 1.5 consecutive seconds
+        if(countingPrevScreen)
+        {
+            UnityEngine.Debug.Log(prevScreenTimer);
+            prevScreenTimer += Time.deltaTime;
+            if(prevScreenTimer > 1.5f) ReturnToTitle();
+        }
+        else
+            prevScreenTimer = 0;
+
+        countingPrevScreen = false;
       
+        //If every player has selected a character, display the ready banner
+        //If someone presses [pause], start the game
         if(everyoneReady() && stageSelect)
         {
             stageSelect = false;
@@ -278,8 +323,6 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         }
 
         //Return to title if the last player leaves
-        if(charSelStates.Count <1 || (charSelStates.Count <2 && GameController.Instance.IsTraining))ReturnToTitle();
-
         stageSelect = false;
 
     }
@@ -336,6 +379,11 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         else if(input.Special && !p_cursor.prevInput.Special && p_cursor.PlayerType != DrifterType.None)
             p_cursor.PlayerType = DrifterType.None;
 
+        //Return to previous screen if special is held
+        if(input.Special && p_cursor.prevInput.Special)
+            countingPrevScreen = true;
+
+        //Remove this probably
         if(everyoneReady() && !p_cursor.prevInput.Pause && input.Pause)
             stageSelect = true;
 
@@ -362,10 +410,10 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
             i--;
         }
         // set cards
-        for (int i = 0; i < menuEntries.Count; i++)
-        {
-            DrifterType drifter = charSelStates[i].PlayerType;
-        }
+        // for (int i = 0; i < menuEntries.Count; i++)
+        // {
+        //     DrifterType drifter = charSelStates[i].PlayerType;
+        // }
             
         
         // set stage
@@ -594,7 +642,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     public bool everyoneReady()
     {
 
-        foreach (CharacterSelectState selectState in charSelStates)
+        foreach (CharacterSelectState selectState in charSelStates.Values)
         {
             if(selectState.PlayerType == DrifterType.None){
                 Banner.SetActive(false);
@@ -623,7 +671,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         CharacterSelectClientPacket selectCharacter = NetworkUtils.GetNetworkData<CharacterSelectClientPacket>(message.contents);
         if (selectCharacter != null)
         {
-            foreach (CharacterSelectState state in charSelStates)
+            foreach (CharacterSelectState state in charSelStates.Values)
             {
                 if (state.PeerID == message.peerId)
                 {
@@ -643,7 +691,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 public class CharacterSelectSyncData : INetworkData
 {
     public string Type { get; set; }
-    public List<CharacterSelectState> charSelState = new List<CharacterSelectState>();
+    public Dictionary<int,CharacterSelectState> charSelState = new Dictionary<int,CharacterSelectState>();
     public string stage;
 }
 

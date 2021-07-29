@@ -22,14 +22,19 @@ public class EscapeMenu : MonoBehaviour
         // {
         //     
         // }
+
+
        
 
-        foreach(InputActionAsset input in GameController.Instance.controls)
-            if(input.FindActionMap("PlayerKeyboard").FindAction("Pause").triggered)
+        foreach(KeyValuePair<int, InputActionAsset> kvp in GameController.Instance.controls)
+        {
+            if(kvp.Value.FindActionMap("PlayerKeyboard").FindAction("Pause").triggered)
             {
                 GameController.Instance.IsPaused = true;
                 ToggleMenu();
+                break;
             }
+        }
 
         if(!escapeMenu.activeSelf)
         {
