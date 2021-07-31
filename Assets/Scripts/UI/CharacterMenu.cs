@@ -302,7 +302,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
                 if(phase < 3)ReturnToTitle();
                 else 
                 {
-                    phase = 1;
+                    phase = 3;
                     prevScreenTimer = 0;
                 }
         }
@@ -509,8 +509,8 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
                 return false;
             }
         }
-        Banner.SetActive(true);
-        return true;
+        if(charSelStates.Count >=2)Banner.SetActive(true);
+        return charSelStates.Count >=2;
     }
 
     //Backs out to the tile screen and disconnects clients if there plaeyr is host
