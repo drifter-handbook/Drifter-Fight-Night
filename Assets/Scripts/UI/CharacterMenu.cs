@@ -60,20 +60,8 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
     //Old Stuff
 
-
-    [Serializable]
-    public class FightZone
-    {
-        public string sceneName;
-    }
-
-    public  List<FightZone> fightzones = new List<FightZone>();
-
     private GameObject clientCard;
     public GameObject Banner;
-
-    private FightZone selectedFightzone;
-    private int selectedFightzoneNum = 0;
 
     public class PlayerMenuEntry
     {
@@ -82,7 +70,15 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     }
     List<PlayerMenuEntry> menuEntries = new List<PlayerMenuEntry>();
 
-    bool charactersSelected = false;
+
+    //0 - charactewr select
+    //1 - all characters selected
+    //2 - start pressed with all characters selected/ moving to stage select
+    //3 - stage select
+    //4 - all stages selected
+    //5 - game is starting 
+    //6 - returning to character select fromstage select
+    int phase = 0;
 
     NetworkSync sync;
 
@@ -170,9 +166,9 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     public Dictionary<int, int> GetPeerIDsToPlayerIDs()
     {
         Dictionary<int, int> peerIDsToPlayerIDs = new Dictionary<int, int>();
-        foreach (CharacterSelectState state in charSelStates.Values)
+        foreach (CharacterSelectState charSelState in charSelStates.Values)
         {
-            peerIDsToPlayerIDs[state.PeerID] = (state.PeerID+1);
+            peerIDsToPlayerIDs[charSelState.PeerID] = (charSelState.PeerID+1);
         }
         return peerIDsToPlayerIDs;
     }
@@ -198,7 +194,8 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
             Cursor = cursor,
             PlayerType = drifter,
             x = drifterLoc[1],
-            y = drifterLoc[0]
+            y = drifterLoc[0],
+            stage = "",
         });
 
         //Fix this for multiple input devices
@@ -249,23 +246,29 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
         //TODO make sure 
         //Create Character Select State when an inactive controller becomes active
-        for(int i = 0; i < GameController.Instance.checkForNewControllers(); i++)
-        {
-            int peerID = -1;
-            while(charSelStates.ContainsKey(peerID))
-                peerID++;
 
-            if(peerID < GameController.MAX_PLAYERS)AddCharSelState(peerID);
-        }
-    
-    
-        //Remove Character select state if a controller is disconnected
-        List<int> toRemove = GameController.Instance.checkForRemoveControllers();
-        if(toRemove.Count >0)
+        //Only allow adding and removing players before characters are locked in
+        if(phase <2)
         {
-            foreach(int peerID in toRemove)
-                RemoveCharSelState(peerID);
+            for(int i = 0; i < GameController.Instance.checkForNewControllers(); i++)
+            {
+                int peerID = -1;
+                while(charSelStates.ContainsKey(peerID))
+                    peerID++;
+
+                if(peerID < GameController.MAX_PLAYERS)AddCharSelState(peerID);
+            }
+    
+    
+            //Remove Character select state if a controller is disconnected
+            List<int> toRemove = GameController.Instance.checkForRemoveControllers();
+            if(toRemove.Count >0)
+            {
+                foreach(int peerID in toRemove)
+                    RemoveCharSelState(peerID);
+            }
         }
+        
 
         //Return to title if the last player left
         //Maybe remove?
@@ -294,35 +297,116 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         //Return to title if the special button is helf for 1.5 consecutive seconds
         if(countingPrevScreen)
         {
-            UnityEngine.Debug.Log(prevScreenTimer);
             prevScreenTimer += Time.deltaTime;
-            if(prevScreenTimer > 1.5f) ReturnToTitle();
+            if(prevScreenTimer > 1.5f) 
+                if(phase < 3)ReturnToTitle();
+                else 
+                {
+                    phase = 1;
+                    prevScreenTimer = 0;
+                }
         }
         else
             prevScreenTimer = 0;
 
         countingPrevScreen = false;
-      
-        //If every player has selected a character, display the ready banner
-        //If someone presses [pause], start the game
-        if(everyoneReady() && charactersSelected)
+    
+
+    //0 - charactewr select
+    //1 - all characters selected
+    //2 - start pressed with all characters selected/ moving to stage select
+    //3 - returning to character select fromstage select
+    //4 - stage select
+    //5 - all stages selected
+    //6 - game is starting 
+    
+
+        if(GameController.Instance.IsOnline)sync["location"] = phase;
+
+        switch(phase)
         {
-            charactersSelected = false;
-            SelectFightzone("Training");
-            UpdateFightzone();
-            GameController.Instance.BeginMatch();
+            case 0:
+                if(checkCharacterSelectReadiness())
+                    phase = 1;
+                break;
+
+            case 1:
+                if(!checkCharacterSelectReadiness())
+                    phase = 0;
+                break;
+
+            case 2:
+                gameObject.transform.position = new Vector2(0,18);
+                foreach(CharacterSelectState charSelState in charSelStates.Values)
+                {
+                    if(charSelState.PeerID <8)
+                    {
+                        charSelState.x = 3;
+                        charSelState.y = 0;
+                        charSelState.Cursor.transform.position = stageRows[0][3].transform.position;
+                    }
+                    else 
+                        charSelState.Cursor.transform.position = characterRows[1][2].transform.position;
+                }
+                phase = 4;
+                break;
+
+            case 3:
+                gameObject.transform.position = Vector2.zero;
+                foreach(CharacterSelectState charSelState in charSelStates.Values)
+                {
+                    int[] arr = findDrifterMatrixPosition(charSelState.PlayerType);
+                    charSelState.x = arr[1];
+                    charSelState.y = arr[0];
+                    charSelState.Cursor.transform.position = characterRows[arr[0]][arr[1]].transform.position;
+                }
+                phase = 0;
+                break;
+                
+            case 4:
+            if(checkStageSelectReadiness())
+                    phase = 5;
+                break;
+                
+            case 5:
+                if(!checkStageSelectReadiness())
+                    phase = 4;
+                break;  
+
+            case 6:
+                List<string> randomStage = new List<string>();
+                foreach(CharacterSelectState charSelState in charSelStates.Values)
+                {
+
+                    //Random Character sync
+                    if(charSelState.PlayerType == DrifterType.Random)
+                        charSelState.PlayerType = (DrifterType)UnityEngine.Random.Range(3,DrifterType.GetValues(typeof( DrifterType)).Length-1);
+
+                    //Populate stage list
+                    if(charSelState.stage != "" && charSelState.PeerID < 8)
+                        randomStage.Add(charSelState.stage);
+                }
+
+                string selectedStage = randomStage[UnityEngine.Random.Range(0,(randomStage.Count -1))];
+                GameController.Instance.selectedStage = selectedStage;
+
+                // if (GameController.Instance.IsHost && GameController.Instance.IsOnline)
+                // {
+                //     NetworkUtils.GetNetworkData<CharacterSelectSyncData>(sync["charSelState"]).stage = selectedFightzone.sceneName;
+                // }
+                GameController.Instance.BeginMatch();
+                break;
+            default:
+                break;
+
         }
-
-        //Return to title if the last player leaves
-        charactersSelected = false;
-
     }
 
     //Circular Array Helper
     private int wrapIndex(int curr, int max)
     {
-        if(curr > max) return 0;
-        else if(curr < 0) return max;
+        if(curr >= max) return 0;
+        else if(curr < 0) return (max-1);
         else return curr;
     }
 
@@ -337,50 +421,110 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
            return; 
         }
         
+        GameObject[][] matrix = (phase >2)?stageRows:characterRows;
+
         //Wrap around the horizontal arrays
         if(p_cursor.prevInput.MoveX ==0 && input.MoveX != 0)
         {
-            p_cursor.x = wrapIndex(p_cursor.x + (int)input.MoveX ,9);
+            p_cursor.x = wrapIndex(p_cursor.x + (int)input.MoveX ,matrix[0].Length);
         
-            while(characterRows[p_cursor.y][p_cursor.x] == null)
-                p_cursor.x = wrapIndex(p_cursor.x + (int)input.MoveX ,9);
+            while(matrix[p_cursor.y][p_cursor.x] == null)
+                p_cursor.x = wrapIndex(p_cursor.x + (int)input.MoveX ,matrix[0].Length);
         }
         
         //Wrap around the vertical arrays
         //Todo: make hanging edges work
         if(p_cursor.prevInput.MoveY ==0 && input.MoveY != 0)
         {
-            p_cursor.y = wrapIndex(p_cursor.y + (int)input.MoveY ,2);
+            p_cursor.y = wrapIndex(p_cursor.y + (int)input.MoveY ,matrix.Length);
 
-            while(characterRows[p_cursor.y][p_cursor.x] == null)
-                p_cursor.y = wrapIndex(p_cursor.y + (int)input.MoveY ,2);
+            while(matrix[p_cursor.y][p_cursor.x] == null)
+                p_cursor.y = wrapIndex(p_cursor.y + (int)input.MoveY ,matrix.Length);
         }
         
         //Sets the cursor's location to that of the current character icon
-        p_cursor.Cursor.transform.localPosition = characterRows[p_cursor.y][p_cursor.x].transform.position;
+        p_cursor.Cursor.transform.localPosition = matrix[p_cursor.y][p_cursor.x].transform.position;
         
         //Select or deselelect on light press
-        if(input.Light && !p_cursor.prevInput.Light)
+        if(input.Light && !p_cursor.prevInput.Light && phase <2)
         {
-            DrifterType selected = characterRows[p_cursor.y][p_cursor.x].GetComponent<CharacterSelectPortrait>().drifterType;
+            DrifterType selected = matrix[p_cursor.y][p_cursor.x].GetComponent<CharacterSelectPortrait>().drifterType;
             p_cursor.PlayerType = (p_cursor.PlayerType == DrifterType.None || p_cursor.PlayerType != selected)?selected:DrifterType.None;
+        }
+        else if(input.Light && !p_cursor.prevInput.Light && phase >=3)
+        {
+            String selected = matrix[p_cursor.y][p_cursor.x].GetComponent<CharacterSelectPortrait>().stageName;
+            p_cursor.stage = (p_cursor.stage.Equals("") || !p_cursor.stage.Equals(selected))?selected:"";
         }
         
         //Deselect on special press
-        else if(input.Special && !p_cursor.prevInput.Special && p_cursor.PlayerType != DrifterType.None)
+        else if(input.Special && !p_cursor.prevInput.Special && p_cursor.PlayerType != DrifterType.None && phase < 2)
             p_cursor.PlayerType = DrifterType.None;
+
+        else if(input.Special && !p_cursor.prevInput.Special && !p_cursor.stage.Equals("") && phase <3 && phase <6 )
+            p_cursor.stage = "";
 
         //Return to previous screen if special is held
         if(input.Special && p_cursor.prevInput.Special)
             countingPrevScreen = true;
 
         //Remove this probably
-        if(everyoneReady() && !p_cursor.prevInput.Pause && input.Pause)
-            charactersSelected = true;
+        if(!p_cursor.prevInput.Pause && input.Pause && phase == 1)
+            phase = 2;
+        else if(!p_cursor.prevInput.Pause && input.Pause && phase == 5)
+            phase = 6;
 
         //Saves previous input
         p_cursor.prevInput = input;
 
+    }
+
+    //Checks to make sure each player has selected a character
+    bool checkCharacterSelectReadiness()
+    {
+
+        foreach (CharacterSelectState charSelState in charSelStates.Values)
+        {
+            if(charSelState.PlayerType == DrifterType.None){
+                Banner.SetActive(false);
+                return false;
+            }
+        }
+
+        //phase = true;
+        if(charSelStates.Count >=2 && !Banner.activeInHierarchy)Banner.SetActive(true);
+        else if(charSelStates.Count <2 && Banner.activeInHierarchy)Banner.SetActive(false);
+
+        return charSelStates.Count >=2;
+    }
+
+    //checks if each active player has selected a stage
+    bool checkStageSelectReadiness()
+    {
+        foreach (CharacterSelectState charSelState in charSelStates.Values)
+        {
+            if(charSelState.stage.Equals("") && charSelState.PeerID < 8)
+            {
+                Banner.SetActive(false);
+                return false;
+            }
+        }
+        Banner.SetActive(true);
+        return true;
+    }
+
+    //Backs out to the tile screen and disconnects clients if there plaeyr is host
+    public void ReturnToTitle()
+    {
+        //TODO: C
+        if (GameController.Instance.GetComponent<NetworkClient>() != null)
+            GameController.Instance.CleanupNetwork();
+
+
+        if (GameController.Instance.GetComponent<NetworkHost>() != null)
+            GameController.Instance.CleanupNetwork();
+            
+        GameController.Instance.Load("MenuScene");
     }
 
 
@@ -410,7 +554,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         // set stage
         if (!GameController.Instance.IsHost)
         {
-            SelectFightzone(NetworkUtils.GetNetworkData<CharacterSelectSyncData>(sync["charSelState"]).stage);
+            //SelectFightzone(NetworkUtils.GetNetworkData<CharacterSelectSyncData>(sync["charSelState"]).stage);
         }
     }
 
@@ -470,125 +614,6 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         menuEntries.RemoveAt(index);
     }
 
-    public void SelectFightzone(string s)
-    {
-        selectedFightzoneNum = fightzones.FindIndex(x => x.sceneName == s);
-        UpdateFightzone();
-
-        //CharSelData.charSelState = charSelStates;
-        GameController.Instance.selectedStage = selectedFightzone.sceneName;
-        //Cursor.visible = false;
-        GameController.Instance.BeginMatch();
-    }
-
-    public void UpdateFightzone()
-    {
-        if (selectedFightzoneNum < 0)
-        {
-            return;
-        }
-        selectedFightzone = fightzones[selectedFightzoneNum];
-
-        if (charactersSelected)
-        {
-            GameController.Instance.selectedStage = selectedFightzone.sceneName;
-            if (GameController.Instance.IsHost && GameController.Instance.IsOnline)
-            {
-                NetworkUtils.GetNetworkData<CharacterSelectSyncData>(sync["charSelState"]).stage = selectedFightzone.sceneName;
-            }
-        }
-    }
-
-    public void HeadToLocationSelect()
-    {
-
-        if (charactersSelected)
-        {
-            //So you're the host?
-            //LET'S GO TO THE GAME!
-            GameController.Instance.BeginMatch();
-            return;
-        }
-
-        
-
-        //EventSystem.current.SetSelectedGameObject(GameObject.Find("Training"));
-
-        //forwardButton.GetComponent<Button>().interactable = false;
-
-        charactersSelected =  true;
-
-        if (GameController.Instance.IsHost)
-        {
-            if(GameController.Instance.IsOnline)sync["location"] = charactersSelected;
-            //GetComponent<SyncAnimatorStateHost>().SetState("BoardMove");
-
-        }
-
-        //List<DrifterType> pickedTypes = new List<DrifterType>();
-
-        // foreach (Animator card in rightPanel.GetComponentsInChildren<Animator>())
-        // {
-        //    card.GetComponent<Animator>().SetBool("present", false);
-        //     pickedTypes.Add(getDrifterTypeFromString(card.transform.GetChild(1).GetComponent<Text>().text));
-        // }
-
-        // foreach (Animator card in leftPanel.GetComponentsInChildren<Animator>())
-        // {
-        //     card.GetComponent<Animator>().SetBool("present", false);
-        //     pickedTypes.Add(getDrifterTypeFromString(card.transform.GetChild(1).GetComponent<Text>().text));
-        // }
-
-        // foreach (PlayerSelectFigurine drifter in drifters)
-        // {
-        //     drifter.figurine.GetComponent<Figurine>().TurnArrowOff();
-        //     //drifter.figurine.GetComponent<Animator>().SetBool("present", false);
-        //     drifter.figurine.GetComponent<Button>().interactable = false;
-        // }
-        UpdateFightzone();
-    }
-
-
-    public void HeadToCharacterSelect()
-    {
-
-        if (GameController.Instance.IsHost)
-        {
-            charactersSelected =  true;
-
-            if(GameController.Instance.IsOnline)sync["location"] = charactersSelected;
-            GetComponent<SyncAnimatorStateHost>().SetState("BoardMoveBack");
-
-        }
-
-        //forwardButton.GetComponent<Button>().interactable = true;
-
-        charactersSelected = false;
-
-        // foreach (Animator card in rightPanel.GetComponentsInChildren<Animator>())
-        // {
-        //     card.GetComponent<Animator>().SetBool("present", true);
-        // }
-
-        // foreach (Animator card in leftPanel.GetComponentsInChildren<Animator>())
-        // {
-        //     card.GetComponent<Animator>().SetBool("present", true);
-        // }
-
-        // foreach (PlayerSelectFigurine drifter in drifters)
-        // {
-        //     //drifter.figurine.GetComponent<Animator>().SetBool("present", true);
-        //     drifter.figurine.GetComponent<Button>().interactable = true;
-
-        // }
-
-        //selectedFigurine.GetComponent<Figurine>().TurnArrowOn();
-        //selectedFigurine.GetComponent<Button>().enabled = true;
-        //EventSystem.current.SetSelectedGameObject(selectedFigurine);
-        //selectedFigurine.GetComponent<Button>().enabled = false;
-        //EventSystem.current.SetSelectedGameObject(forwardButton);
-
-    }
 
     public DrifterType getDrifterTypeFromString(string name)
     {
@@ -599,81 +624,23 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
                 return drifter;
             }
         }
-        return DrifterType.Bojo;
+        return DrifterType.None;
     }
 
-    // public void disableStages()
-    // {
-    //     stageMenu.SetActive(false);
-    // }
-    // public void enableStages()
-    // {
-    //     stageMenu.SetActive(true);
-    // }
-
-    // public void BackButton(){
-    //     UnityEngine.Debug.Log("BACK PRESSED");
-    //     if(charactersSelected){
-    //         HeadToCharacterSelect();
-    //     }
-    //     else if(selectedFigurine != null){
-        	
-    //     	selectedFigurine.GetComponent<Button>().enabled = true;
-    //         currentDrifter = DrifterType.None;
-    //         SelectDrifter("None");
-    //         EventSystem.current.SetSelectedGameObject(backButton);
-            
-    //     }
-
-    //     else{
-    //         ReturnToTitle();
-    //     }
-    // }
-
-    public bool everyoneReady()
-    {
-
-        foreach (CharacterSelectState selectState in charSelStates.Values)
-        {
-            if(selectState.PlayerType == DrifterType.None){
-                Banner.SetActive(false);
-                return false;
-            }
-        }
-        if(charSelStates.Count >=2)Banner.SetActive(true);
-        return charSelStates.Count >=2;
-    }
-
-    public void ReturnToTitle()
-    {
-        //TODO: C
-        if (GameController.Instance.GetComponent<NetworkClient>() != null)
-            GameController.Instance.CleanupNetwork();
-
-
-        if (GameController.Instance.GetComponent<NetworkHost>() != null)
-            GameController.Instance.CleanupNetwork();
-            
-        GameController.Instance.Load("MenuScene");
-    }
 
     public void ReceiveNetworkMessage(NetworkMessage message)
     {
         CharacterSelectClientPacket selectCharacter = NetworkUtils.GetNetworkData<CharacterSelectClientPacket>(message.contents);
         if (selectCharacter != null)
         {
-            foreach (CharacterSelectState state in charSelStates.Values)
+            foreach (CharacterSelectState charSelState in charSelStates.Values)
             {
-                if (state.PeerID == message.peerId)
+                if (charSelState.PeerID == message.peerId)
                 {
-                    state.PlayerType = selectCharacter.drifter;
+                    charSelState.PlayerType = selectCharacter.drifter;
                 }
             }
         }
-    }
-    public void setStateWrapper(string state)
-    {
-        GetComponent<SyncAnimatorStateHost>().SetState(state);
     }
 }
 
