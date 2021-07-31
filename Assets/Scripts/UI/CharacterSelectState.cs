@@ -7,7 +7,7 @@ public class CharacterSelectState
     public DrifterType PlayerType = DrifterType.None;
     public int x = 7;
     public int y = 1;
-    public string stage;
+    public string stage = "";
     public GameObject Cursor;
     public PlayerInputData prevInput;
 }

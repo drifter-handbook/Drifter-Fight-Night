@@ -57,19 +57,10 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     float prevScreenTimer = 0;
     bool countingPrevScreen = false;
 
-
-    //Old Stuff
-
-    private GameObject clientCard;
+    private GameObject playerCardPrefab;
     public GameObject Banner;
 
-    public class PlayerMenuEntry
-    {
-        public GameObject arrow;
-        public GameObject characterCard;
-    }
-    List<PlayerMenuEntry> menuEntries = new List<PlayerMenuEntry>();
-
+    Dictionary<int,GameObject> playerCards = new Dictionary<int,GameObject>();
 
     //0 - charactewr select
     //1 - all characters selected
@@ -198,6 +189,12 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
             stage = "",
         });
 
+        GameObject card = GameController.Instance.host.CreateNetworkObject("CharacterSelectCard",new Vector2(-20 + 13.5f * ((peerID +1) % 4),-9), transform.rotation);
+
+        card.transform.SetParent(gameObject.transform , false);
+
+        playerCards.Add(peerID,card);
+
         //Fix this for multiple input devices
         if(peerID != -1)
             GameController.Instance.host.Peers.Add(peerID);
@@ -212,6 +209,10 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
         Destroy(charSelStates[peerID].Cursor);
         charSelStates.Remove(peerID);
+
+        Destroy(playerCards[peerID]);
+        playerCards.Remove(peerID);
+
 
         if(peerID != -1)
             GameController.Instance.host.Peers.Remove(peerID);
@@ -535,11 +536,11 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     public void SyncToCharSelectState()
     {
         // add cards if needed
-        for (int i = menuEntries.Count; i < charSelStates.Count; i++)
+        for (int i = playerCards.Count; i < charSelStates.Count; i++)
             AddPlayerCard();
 
         // remove cards if needed
-        for (int i = charSelStates.Count; i < menuEntries.Count; i++)
+        for (int i = charSelStates.Count; i < playerCards.Count; i++)
         {
             RemovePlayerCard();
             i--;
@@ -561,13 +562,11 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     //try to add player, return false if over max
     public void AddPlayerCard()
     {
-        if (menuEntries.Count >= GameController.MAX_PLAYERS)
+        if (playerCards.Count >= GameController.MAX_PLAYERS)
         {
             return;
         }
-        PlayerMenuEntry entry = new PlayerMenuEntry();
-        int index = menuEntries.Count;
-        menuEntries.Add(entry);
+        
 
         // GameObject charCard = CharacterCard.CreatePlayerCard(ColorFromEnum[(PlayerColor)index]);
         // entry.characterCard = charCard;
@@ -600,18 +599,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
     public void RemovePlayerCard()
     {
-        int index = menuEntries.Count - 1;
-        Transform parent = bottomPanel.transform;//index < PANEL_MAX_PLAYERS ? leftPanel.transform : rightPanel.transform;
-        Destroy(menuEntries[index].characterCard);
-        menuEntries.RemoveAt(index);
-    }
-
-
-    public void RemovePlayerCard(int index)
-    {
-        Transform parent = bottomPanel.transform;//index < PANEL_MAX_PLAYERS ? leftPanel.transform : rightPanel.transform;
-        Destroy(menuEntries[index].characterCard);
-        menuEntries.RemoveAt(index);
+        
     }
 
 
