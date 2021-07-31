@@ -263,6 +263,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         if(!isHost)return;
 		movement.jumping = false;
         specialReleased = false;
+        continueJabFlag = false;
 		unpauseGravity();
         movement.terminalVelocity = terminalVelocity;
         horizontalReleased = false;
@@ -297,7 +298,12 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     public void checkForContinueJab()
     {
         if(!isHost)return;
-        if(drifter.input[0].Light)continueJabFlag = true;
+        int state = 0;
+        for(int i = 0; i < 10; i++)
+        {
+            if(state >0 && !drifter.input[i].Light)continueJabFlag = true;
+            else if(state == 0 && drifter.input[0].Light) state++;
+        }
     }
 
     public void continueJab(string state)

@@ -28,7 +28,7 @@ public class EscapeMenu : MonoBehaviour
 
         foreach(KeyValuePair<int, InputActionAsset> kvp in GameController.Instance.controls)
         {
-            if(kvp.Value.FindActionMap("PlayerKeyboard").FindAction("Pause").triggered)
+            if(kvp.Value.FindActionMap("PlayerKeyboard").FindAction("Menu").triggered)
             {
                 GameController.Instance.IsPaused = true;
                 ToggleMenu();

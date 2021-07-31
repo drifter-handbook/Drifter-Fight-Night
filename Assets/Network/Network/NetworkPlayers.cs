@@ -103,7 +103,7 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
         input.MoveX = playerInputAction.FindAction("Horizontal").ReadValue<float>();
         input.MoveY = playerInputAction.FindAction("Vertical").ReadValue<float>();
 
-        input.Pause = playerInputAction.FindAction("Pause").ReadValue<float>()>0;
+        input.Pause = playerInputAction.FindAction("Start").ReadValue<float>()>0;
 
         return input;
     }

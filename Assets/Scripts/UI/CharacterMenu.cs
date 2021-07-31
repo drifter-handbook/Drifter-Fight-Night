@@ -10,7 +10,7 @@ using UnityEngine.UI;
 
 public enum PlayerColor
 {
-    RED, GOLD, GREEN, BLUE, PURPLE, MAGENTA, ORANGE, CYAN, GREY
+    RED, GOLD, GREEN, BLUE, PURPLE, MAGENTA, ORANGE, CYAN, GREY, WHITE, BLACK
 }
 
 
@@ -29,7 +29,9 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         { PlayerColor.MAGENTA, new Color(1.0f, 0.063f, 0.565f) },
         { PlayerColor.ORANGE, new Color(1.0f, 0.55f, 0.165f) },
         { PlayerColor.CYAN, new Color(0.0f, 1.0f, 0.702f) },
-        { PlayerColor.GREY, new Color(0.4f, 0.4f, 0.4f) }
+        { PlayerColor.GREY, new Color(0.6f, 0.6f, 0.6f) },
+        { PlayerColor.WHITE, new Color(0.9f, 0.9f, 0.9f) },
+        { PlayerColor.BLACK, new Color(0.1f, 0.1f, 0.1f) }
     };
 
     public GameObject bottomPanel;
@@ -41,6 +43,12 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     public GameObject[] middleRow;
     public GameObject[] bottomRow;
     GameObject[][] characterRows = new GameObject[3][];
+
+
+    public GameObject[] topStageRow;
+    public GameObject[] middleStageRow;
+    public GameObject[] bottomStageRow;
+    GameObject[][] stageRows = new GameObject[3][];
 
     public GameObject playerInputPrefab;
 
@@ -74,7 +82,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     }
     List<PlayerMenuEntry> menuEntries = new List<PlayerMenuEntry>();
 
-    bool stageSelect = false;
+    bool charactersSelected = false;
 
     NetworkSync sync;
 
@@ -115,6 +123,11 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         characterRows[1] = middleRow;
         characterRows[2] = bottomRow;
 
+
+        stageRows[0] = topStageRow;
+        stageRows[1] = middleStageRow;
+        stageRows[2] = bottomStageRow;
+
         syncFromClients = GetComponent<NetworkSyncToHost>();
 
         charSelStates = new Dictionary<int,CharacterSelectState>();
@@ -150,7 +163,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         for(int i = -1; i < GameController.Instance.controls.Count-1; i++)
             AddCharSelState(i);
 
-        if(GameController.Instance.IsTraining) AddCharSelState(0,DrifterType.Sandbag);
+        if(GameController.Instance.IsTraining) AddCharSelState(8,DrifterType.Sandbag);
 
     }
 
@@ -191,8 +204,6 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         //Fix this for multiple input devices
         if(peerID != -1)
             GameController.Instance.host.Peers.Add(peerID);
-
-        //SortCharSelState(charSelStates);
     }
 
     public void RemoveCharSelState(int peerID)
@@ -205,30 +216,10 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         Destroy(charSelStates[peerID].Cursor);
         charSelStates.Remove(peerID);
 
-        // for (int i = 0; i < charSelStates.Count; i++)
-        // {
-        //     if (charSelStates[i].PeerID == peerID)
-        //     {
-                
-        //         i--;
-        //     }
-        // }
-
         if(peerID != -1)
             GameController.Instance.host.Peers.Remove(peerID);
 
-        //SortCharSelState(charSelStates);
     }
-
-    // void SortCharSelState(List<CharacterSelectState> charSelStates)
-    // {
-    //     // sort by peer ID
-    //     charSelStates.Sort((x, y) => x.PeerID.CompareTo(y.PeerID));
-    //     for (int i = 0; i < charSelStates.Count; i++)
-    //     {
-    //         charSelStates[i].PlayerIndex = i;
-    //     }
-    // }
 
     //Finds the y-x positio of a certain drifter in the matrix and returns the values as an array
     private int[] findDrifterMatrixPosition(DrifterType drifter)
@@ -314,16 +305,16 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
       
         //If every player has selected a character, display the ready banner
         //If someone presses [pause], start the game
-        if(everyoneReady() && stageSelect)
+        if(everyoneReady() && charactersSelected)
         {
-            stageSelect = false;
+            charactersSelected = false;
             SelectFightzone("Training");
             UpdateFightzone();
             GameController.Instance.BeginMatch();
         }
 
         //Return to title if the last player leaves
-        stageSelect = false;
+        charactersSelected = false;
 
     }
 
@@ -385,7 +376,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
         //Remove this probably
         if(everyoneReady() && !p_cursor.prevInput.Pause && input.Pause)
-            stageSelect = true;
+            charactersSelected = true;
 
         //Saves previous input
         p_cursor.prevInput = input;
@@ -498,7 +489,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         }
         selectedFightzone = fightzones[selectedFightzoneNum];
 
-        if (stageSelect)
+        if (charactersSelected)
         {
             GameController.Instance.selectedStage = selectedFightzone.sceneName;
             if (GameController.Instance.IsHost && GameController.Instance.IsOnline)
@@ -511,7 +502,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     public void HeadToLocationSelect()
     {
 
-        if (stageSelect)
+        if (charactersSelected)
         {
             //So you're the host?
             //LET'S GO TO THE GAME!
@@ -525,11 +516,11 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
         //forwardButton.GetComponent<Button>().interactable = false;
 
-        stageSelect =  true;
+        charactersSelected =  true;
 
         if (GameController.Instance.IsHost)
         {
-            if(GameController.Instance.IsOnline)sync["location"] = stageSelect;
+            if(GameController.Instance.IsOnline)sync["location"] = charactersSelected;
             //GetComponent<SyncAnimatorStateHost>().SetState("BoardMove");
 
         }
@@ -563,16 +554,16 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
         if (GameController.Instance.IsHost)
         {
-            stageSelect =  true;
+            charactersSelected =  true;
 
-            if(GameController.Instance.IsOnline)sync["location"] = stageSelect;
+            if(GameController.Instance.IsOnline)sync["location"] = charactersSelected;
             GetComponent<SyncAnimatorStateHost>().SetState("BoardMoveBack");
 
         }
 
         //forwardButton.GetComponent<Button>().interactable = true;
 
-        stageSelect = false;
+        charactersSelected = false;
 
         // foreach (Animator card in rightPanel.GetComponentsInChildren<Animator>())
         // {
@@ -622,7 +613,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
     // public void BackButton(){
     //     UnityEngine.Debug.Log("BACK PRESSED");
-    //     if(stageSelect){
+    //     if(charactersSelected){
     //         HeadToCharacterSelect();
     //     }
     //     else if(selectedFigurine != null){

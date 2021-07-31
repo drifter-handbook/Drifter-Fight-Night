@@ -290,7 +290,7 @@ public class GameController : MonoBehaviour
         int addedCount = 0;
         foreach(InputActionAsset controller in GameController.Instance.availableControls)
         {
-            if(controller != null && controller.FindAction("Pause").triggered && !controls.ContainsValue(controller))
+            if(controller != null && controller.FindAction("Start").triggered && !controls.ContainsValue(controller))
             {
                 int peerID = -1;
                 while(controls.ContainsKey(peerID))
@@ -314,7 +314,7 @@ public class GameController : MonoBehaviour
 
         foreach (KeyValuePair<int, InputActionAsset> kvp in GameController.Instance.controls)
         {
-            if(kvp.Value != null && kvp.Value.FindAction("Quit").triggered)
+            if(kvp.Value != null && kvp.Value.FindAction("Menu").triggered)
             {
                 UnityEngine.Debug.Log("REMOVED: " + kvp.Value + " with peerID " + kvp.Key);
 
