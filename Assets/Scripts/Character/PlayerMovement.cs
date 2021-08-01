@@ -159,10 +159,10 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        if (!GameController.Instance.IsHost || GameController.Instance.IsPaused)
+            return;
 
-        // if(drifter.forceGuard){
-        //     drifter.guarding = true;
-        // }
+
         if(drifter.input[0].Guard) techWindowElapsed += Time.deltaTime;
         else if(status.HasGroundFriction()) techWindowElapsed = 0;
 
@@ -323,9 +323,8 @@ public class PlayerMovement : MonoBehaviour
     public void UpdateInput()
     {
         if (!GameController.Instance.IsHost || GameController.Instance.IsPaused)
-        {
             return;
-        }
+
 
         bool jumpPressed = !drifter.input[1].Jump && drifter.input[0].Jump;
         // TODO: spawn hitboxes
@@ -627,9 +626,8 @@ public class PlayerMovement : MonoBehaviour
         rb.gravityScale = 0f;
         if(strongLedgeGrab)drifter.PlayAnimation(drifter.StrongLedgeGrabStateName);
         else drifter.PlayAnimation(drifter.WeakLedgeGrabStateName);
-        Facing = flipSprite ^ rb.position.x > 0 ? -1 :1;
-        transform.localScale = new Vector3(Facing * Mathf.Abs(transform.localScale.x),
-                transform.localScale.y, transform.localScale.z);
+
+        setFacing(flipSprite ^ rb.position.x > 0 ? -1 :1);
 
         rb.position = new Vector3(pos.x - (rb.position.x > 0 ? -1 :1) *1.5f, pos.y - 1.75f - ledgeOffset,pos.z);
  

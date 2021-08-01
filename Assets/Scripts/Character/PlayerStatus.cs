@@ -126,6 +126,8 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
     // Update is called once per frame
     void Update()
     {
+        if(GameController.Instance.IsPaused)
+            return;
 
         if(grabPoint!=null && HasStatusEffect(PlayerStatusEffect.GRABBED) && grabPoint.enabled)rb.position = grabPoint.bounds.center;
 

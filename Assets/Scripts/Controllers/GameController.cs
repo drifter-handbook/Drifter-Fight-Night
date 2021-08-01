@@ -36,7 +36,17 @@ public class GameController : MonoBehaviour
     //* Data storage
     // Character List
 
-    public bool IsPaused { get; set; } = false;
+    private bool _IsPaused = false;
+
+    public bool IsPaused
+    {
+        get { return _IsPaused;}
+        set {
+            _IsPaused = value;
+            Time.timeScale = _IsPaused?0f:1f;
+        }
+    }
+
 
     //* Prefabs
     public GameObject characterCardPrefab;

@@ -156,15 +156,21 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         if(cancelAttack())return 1;
 
         else if(movementCancel())return 1;
-     
-        else if(!drifter.input[0].Special && !specialReleased)specialReleased = true;
 
-        else if(drifter.input[0].Special && specialReleased)
+        if(checkForSpecialTap())
         {
-            specialReleased = false;
             playState(stateName);
             return 2;
         }
+     
+        // else if(!drifter.input[0].Special && !specialReleased)specialReleased = true;
+
+        // else if(drifter.input[0].Special && specialReleased)
+        // {
+        //     specialReleased = false;
+        //     playState(stateName);
+        //     return 2;
+        // }
 
         return 0;
     }
@@ -304,6 +310,20 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
             if(state >0 && !drifter.input[i].Light)continueJabFlag = true;
             else if(state == 0 && drifter.input[0].Light) state++;
         }
+    }
+
+
+    public bool checkForSpecialTap()
+    {
+        if(!isHost)return false;
+        int state = 0;
+        for(int i = 0; i < 8; i++)
+        {
+            if(state >0 && !drifter.input[i].Special)return true;
+            else if(state == 0 && drifter.input[0].Special) state++;
+        }
+        return false;
+
     }
 
     public void continueJab(string state)

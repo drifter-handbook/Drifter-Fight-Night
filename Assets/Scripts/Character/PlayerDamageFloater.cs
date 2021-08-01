@@ -21,6 +21,9 @@ public class PlayerDamageFloater : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GameController.Instance.IsPaused)
+            return;
+
         Vector3 pos = gameObject.transform.position + new Vector3(0 , 0.01f, 0);
         gameObject.transform.position = pos;
         Color32 alpha = DamageDisplayText.faceColor;

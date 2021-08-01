@@ -51,7 +51,8 @@ public class EscapeMenu : MonoBehaviour
 
     public void ReturnToTitle()
     {
-            GameController.Instance.EndMatch(0);
+        GameController.Instance.IsPaused = false;
+        GameController.Instance.EndMatch(0);
     }
 
     public void QuitGame()

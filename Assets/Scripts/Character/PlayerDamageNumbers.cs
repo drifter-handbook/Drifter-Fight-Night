@@ -21,6 +21,9 @@ public class PlayerDamageNumbers : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GameController.Instance.IsPaused)
+            return;
+            
         if (persistTick > 0) {
             persistTick -= Time.deltaTime;
             if (persistTick <= 0) {
