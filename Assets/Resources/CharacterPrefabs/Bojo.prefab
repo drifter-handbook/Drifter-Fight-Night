@@ -1,5 +1,19 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &8069485142519709846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7961112140161951898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74fd9abae7f8eb64989c13a38320cf31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  assetPathName: Bojo
+  facing: 0
 --- !u!1 &6210333189731979638
 GameObject:
   m_ObjectHideFlags: 0
@@ -65,20 +79,6 @@ MonoBehaviour:
   isActive: 1
   OverrideData: {fileID: 11400000, guid: 8f14fc9651d47224daac1539b41b7890, type: 2}
   AttackData: {fileID: 0}
---- !u!114 &8069485142519709846
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7961112140161951898}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74fd9abae7f8eb64989c13a38320cf31, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  assetPathName: Bojo
-  facing: 0
 --- !u!1001 &5539119026263273291
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -86,6 +86,38 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 300831261, guid: 03006bf76a5e1274aaf3da8b9c69d8f9, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 300831261, guid: 03006bf76a5e1274aaf3da8b9c69d8f9, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 300831261, guid: 03006bf76a5e1274aaf3da8b9c69d8f9, type: 3}
+      propertyPath: m_Radius
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 300831261, guid: 03006bf76a5e1274aaf3da8b9c69d8f9, type: 3}
+      propertyPath: m_Offset.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1853559349, guid: 03006bf76a5e1274aaf3da8b9c69d8f9, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1853559349, guid: 03006bf76a5e1274aaf3da8b9c69d8f9, type: 3}
+      propertyPath: m_Offset.x
+      value: 0.09
+      objectReference: {fileID: 0}
+    - target: {fileID: 1853559349, guid: 03006bf76a5e1274aaf3da8b9c69d8f9, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1853559349, guid: 03006bf76a5e1274aaf3da8b9c69d8f9, type: 3}
+      propertyPath: m_Radius
+      value: 0.125
+      objectReference: {fileID: 0}
     - target: {fileID: 364774633814311839, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[1].y
@@ -200,6 +232,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Size.x
       value: 2.4302483
+      objectReference: {fileID: 0}
+    - target: {fileID: 2952663911849027975, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 3106753082241659636, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
@@ -398,6 +435,18 @@ PrefabInstance:
       propertyPath: AttackMap.Array.data[8].attackData
       value: 
       objectReference: {fileID: 11400000, guid: 174086d940cab5644b1297c09c45988c,
+        type: 2}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[9].attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: 53e34d73a6bfbca4a99045ea31db6354,
+        type: 2}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[11].attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: 81f0042735f8f9044b5ee7ac390f0bb0,
         type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 03006bf76a5e1274aaf3da8b9c69d8f9, type: 3}
