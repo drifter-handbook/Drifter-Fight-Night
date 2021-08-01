@@ -4,17 +4,6 @@ using UnityEngine;
 
 public class CharacterSelectPortrait : MonoBehaviour
 {
-	public string stageName;
+	public BattleStage StageType = BattleStage.None;
 	public DrifterType drifterType = DrifterType.None;
-    // Start is called before the first frame update
-    // void Start()
-    // {
-        
-    // }
-
-    // // Update is called once per frame
-    // void Update()
-    // {
-        
-    // }
 }

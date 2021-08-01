@@ -14,6 +14,12 @@ public enum PlayerColor
 }
 
 
+[Serializable]
+public enum BattleStage
+{
+    None,Random,Training,Moosejaw,Wendys,Treefell,Driftwood,Neotokyo,Amberriver,Hadalkeep
+}
+
 
 // Shows players and selected character [View]
 public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
@@ -186,7 +192,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
             PlayerType = drifter,
             x = drifterLoc[1],
             y = drifterLoc[0],
-            stage = "",
+            StageType = BattleStage.None,
         });
 
         GameObject card = GameController.Instance.host.CreateNetworkObject("CharacterSelectCard",new Vector2(-20 + 13.5f * ((peerID +1) % 4),-9), transform.rotation);
@@ -375,7 +381,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
                 break;  
 
             case 6:
-                List<string> randomStage = new List<string>();
+                List<BattleStage> randomStage = new List<BattleStage>();
                 foreach(CharacterSelectState charSelState in charSelStates.Values)
                 {
 
@@ -384,11 +390,18 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
                         charSelState.PlayerType = (DrifterType)UnityEngine.Random.Range(3,DrifterType.GetValues(typeof( DrifterType)).Length-1);
 
                     //Populate stage list
-                    if(charSelState.stage != "" && charSelState.PeerID < 8)
-                        randomStage.Add(charSelState.stage);
+                    if(charSelState.StageType != BattleStage.None && charSelState.PeerID < 8)
+                    {
+                        //Add a random non none, random, training stage to the list
+                        if(charSelState.StageType == BattleStage.Random)
+                             randomStage.Add((BattleStage)UnityEngine.Random.Range(4,BattleStage.GetValues(typeof(BattleStage)).Length-1));
+                        else
+                            randomStage.Add(charSelState.StageType);
+                    }
+                        
                 }
 
-                string selectedStage = randomStage[UnityEngine.Random.Range(0,(randomStage.Count -1))];
+                string selectedStage = randomStage[UnityEngine.Random.Range(0,(randomStage.Count -1))].ToString();
                 GameController.Instance.selectedStage = selectedStage;
 
                 // if (GameController.Instance.IsHost && GameController.Instance.IsOnline)
@@ -454,16 +467,16 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         }
         else if(input.Light && !p_cursor.prevInput.Light && phase >=3)
         {
-            String selected = matrix[p_cursor.y][p_cursor.x].GetComponent<CharacterSelectPortrait>().stageName;
-            p_cursor.stage = (p_cursor.stage.Equals("") || !p_cursor.stage.Equals(selected))?selected:"";
+            BattleStage selected = matrix[p_cursor.y][p_cursor.x].GetComponent<CharacterSelectPortrait>().StageType;
+            p_cursor.StageType = (p_cursor.StageType == BattleStage.None || p_cursor.StageType != selected)?selected:BattleStage.None;
         }
         
         //Deselect on special press
         else if(input.Special && !p_cursor.prevInput.Special && p_cursor.PlayerType != DrifterType.None && phase < 2)
             p_cursor.PlayerType = DrifterType.None;
 
-        else if(input.Special && !p_cursor.prevInput.Special && !p_cursor.stage.Equals("") && phase <3 && phase <6 )
-            p_cursor.stage = "";
+        else if(input.Special && !p_cursor.prevInput.Special && p_cursor.StageType != BattleStage.None && phase <3 && phase <6 )
+            p_cursor.StageType = BattleStage.None;
 
         //Return to previous screen if special is held
         if(input.Special && p_cursor.prevInput.Special)
@@ -504,7 +517,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     {
         foreach (CharacterSelectState charSelState in charSelStates.Values)
         {
-            if(charSelState.stage.Equals("") && charSelState.PeerID < 8)
+            if(charSelState.StageType == BattleStage.None && charSelState.PeerID < 8)
             {
                 Banner.SetActive(false);
                 return false;

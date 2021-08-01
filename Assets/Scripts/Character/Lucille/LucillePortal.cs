@@ -51,11 +51,6 @@ public class LucillePortal : MonoBehaviour
 				float verticalMag = Mathf.Sin(hitbox.OverrideData.AngleOfImpact * Mathf.PI/180f);
 				float horizontalMag = Mathf.Cos(hitbox.OverrideData.AngleOfImpact * Mathf.PI/180f);
 
-				UnityEngine.Debug.Log(hitbox.OverrideData.AngleOfImpact);
-
-				UnityEngine.Debug.Log("Y : " + verticalMag);
-				UnityEngine.Debug.Log("X : " + horizontalMag);
-
 				bool moveHorizontally = horizontalMag > .5f || horizontalMag <-.5f;
 				bool moveVertically = verticalMag > .5f || verticalMag < -.5f;
 

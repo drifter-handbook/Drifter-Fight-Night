@@ -417,6 +417,11 @@ PrefabInstance:
       propertyPath: stageName
       value: Warioware
       objectReference: {fileID: 0}
+    - target: {fileID: 1251265599836857301, guid: dabd9ec98cf674042ae7f6d74eccf167,
+        type: 3}
+      propertyPath: StageType
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 2165529254636331407, guid: dabd9ec98cf674042ae7f6d74eccf167,
         type: 3}
       propertyPath: m_Sprite
@@ -436,7 +441,7 @@ PrefabInstance:
     - target: {fileID: 7957583111170635559, guid: dabd9ec98cf674042ae7f6d74eccf167,
         type: 3}
       propertyPath: m_Name
-      value: Wario
+      value: Amber
       objectReference: {fileID: 0}
     - target: {fileID: 7957583111170635559, guid: dabd9ec98cf674042ae7f6d74eccf167,
         type: 3}
@@ -1104,7 +1109,7 @@ MonoBehaviour:
   - {fileID: 50227457}
   - {fileID: 630166806}
   - {fileID: 2035452850}
-  - {fileID: 0}
+  - {fileID: 1806127905}
   bottomStageRow:
   - {fileID: 0}
   - {fileID: 0}
@@ -1176,6 +1181,11 @@ PrefabInstance:
       propertyPath: stageName
       value: Yoshisisland
       objectReference: {fileID: 0}
+    - target: {fileID: 1251265599836857301, guid: dabd9ec98cf674042ae7f6d74eccf167,
+        type: 3}
+      propertyPath: StageType
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 2165529254636331407, guid: dabd9ec98cf674042ae7f6d74eccf167,
         type: 3}
       propertyPath: m_Sprite
@@ -1195,7 +1205,7 @@ PrefabInstance:
     - target: {fileID: 7957583111170635559, guid: dabd9ec98cf674042ae7f6d74eccf167,
         type: 3}
       propertyPath: m_Name
-      value: Yoshis
+      value: Neotokyo
       objectReference: {fileID: 0}
     - target: {fileID: 9113821722326303840, guid: dabd9ec98cf674042ae7f6d74eccf167,
         type: 3}
@@ -1385,6 +1395,11 @@ PrefabInstance:
       propertyPath: stageName
       value: TownCity
       objectReference: {fileID: 0}
+    - target: {fileID: 1251265599836857301, guid: dabd9ec98cf674042ae7f6d74eccf167,
+        type: 3}
+      propertyPath: StageType
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2165529254636331407, guid: dabd9ec98cf674042ae7f6d74eccf167,
         type: 3}
       propertyPath: m_Sprite
@@ -1404,7 +1419,7 @@ PrefabInstance:
     - target: {fileID: 7957583111170635559, guid: dabd9ec98cf674042ae7f6d74eccf167,
         type: 3}
       propertyPath: m_Name
-      value: Town
+      value: Driftwood
       objectReference: {fileID: 0}
     - target: {fileID: 9113821722326303840, guid: dabd9ec98cf674042ae7f6d74eccf167,
         type: 3}
@@ -1810,6 +1825,11 @@ PrefabInstance:
       propertyPath: stageName
       value: FD
       objectReference: {fileID: 0}
+    - target: {fileID: 1251265599836857301, guid: dabd9ec98cf674042ae7f6d74eccf167,
+        type: 3}
+      propertyPath: StageType
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 2165529254636331407, guid: dabd9ec98cf674042ae7f6d74eccf167,
         type: 3}
       propertyPath: m_Sprite
@@ -1829,7 +1849,7 @@ PrefabInstance:
     - target: {fileID: 7957583111170635559, guid: dabd9ec98cf674042ae7f6d74eccf167,
         type: 3}
       propertyPath: m_Name
-      value: FD
+      value: Wendys
       objectReference: {fileID: 0}
     - target: {fileID: 9113821722326303840, guid: dabd9ec98cf674042ae7f6d74eccf167,
         type: 3}
@@ -2155,6 +2175,11 @@ PrefabInstance:
       propertyPath: stageName
       value: Training
       objectReference: {fileID: 0}
+    - target: {fileID: 1251265599836857301, guid: dabd9ec98cf674042ae7f6d74eccf167,
+        type: 3}
+      propertyPath: StageType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2165529254636331407, guid: dabd9ec98cf674042ae7f6d74eccf167,
         type: 3}
       propertyPath: m_Sprite
@@ -2365,6 +2390,7 @@ Transform:
   - {fileID: 50227456}
   - {fileID: 630166805}
   - {fileID: 2035452849}
+  - {fileID: 1806127906}
   m_Father: {fileID: 387277066}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3026,6 +3052,108 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1638455170}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1806127904
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1090918567}
+    m_Modifications:
+    - target: {fileID: 1251265599836857301, guid: dabd9ec98cf674042ae7f6d74eccf167,
+        type: 3}
+      propertyPath: StageType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2165529254636331407, guid: dabd9ec98cf674042ae7f6d74eccf167,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: fb7b6b3544eae404fa9e64f021794337,
+        type: 3}
+    - target: {fileID: 2680714105630690354, guid: dabd9ec98cf674042ae7f6d74eccf167,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.276
+      objectReference: {fileID: 0}
+    - target: {fileID: 2680714105630690354, guid: dabd9ec98cf674042ae7f6d74eccf167,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.039
+      objectReference: {fileID: 0}
+    - target: {fileID: 7957583111170635559, guid: dabd9ec98cf674042ae7f6d74eccf167,
+        type: 3}
+      propertyPath: m_Name
+      value: Random
+      objectReference: {fileID: 0}
+    - target: {fileID: 9113821722326303840, guid: dabd9ec98cf674042ae7f6d74eccf167,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 17.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9113821722326303840, guid: dabd9ec98cf674042ae7f6d74eccf167,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -32
+      objectReference: {fileID: 0}
+    - target: {fileID: 9113821722326303840, guid: dabd9ec98cf674042ae7f6d74eccf167,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9113821722326303840, guid: dabd9ec98cf674042ae7f6d74eccf167,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9113821722326303840, guid: dabd9ec98cf674042ae7f6d74eccf167,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9113821722326303840, guid: dabd9ec98cf674042ae7f6d74eccf167,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9113821722326303840, guid: dabd9ec98cf674042ae7f6d74eccf167,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9113821722326303840, guid: dabd9ec98cf674042ae7f6d74eccf167,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 9113821722326303840, guid: dabd9ec98cf674042ae7f6d74eccf167,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9113821722326303840, guid: dabd9ec98cf674042ae7f6d74eccf167,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9113821722326303840, guid: dabd9ec98cf674042ae7f6d74eccf167,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: dabd9ec98cf674042ae7f6d74eccf167, type: 3}
+--- !u!1 &1806127905 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7957583111170635559, guid: dabd9ec98cf674042ae7f6d74eccf167,
+    type: 3}
+  m_PrefabInstance: {fileID: 1806127904}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1806127906 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9113821722326303840, guid: dabd9ec98cf674042ae7f6d74eccf167,
+    type: 3}
+  m_PrefabInstance: {fileID: 1806127904}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1900173107
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3349,6 +3477,11 @@ PrefabInstance:
       propertyPath: stageName
       value: Battlefield
       objectReference: {fileID: 0}
+    - target: {fileID: 1251265599836857301, guid: dabd9ec98cf674042ae7f6d74eccf167,
+        type: 3}
+      propertyPath: StageType
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 2165529254636331407, guid: dabd9ec98cf674042ae7f6d74eccf167,
         type: 3}
       propertyPath: m_Sprite
@@ -3558,6 +3691,11 @@ PrefabInstance:
       propertyPath: stageName
       value: fiveplat
       objectReference: {fileID: 0}
+    - target: {fileID: 1251265599836857301, guid: dabd9ec98cf674042ae7f6d74eccf167,
+        type: 3}
+      propertyPath: StageType
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2165529254636331407, guid: dabd9ec98cf674042ae7f6d74eccf167,
         type: 3}
       propertyPath: m_Sprite
@@ -3587,7 +3725,7 @@ PrefabInstance:
     - target: {fileID: 7957583111170635559, guid: dabd9ec98cf674042ae7f6d74eccf167,
         type: 3}
       propertyPath: m_Name
-      value: 5plat
+      value: Treefell
       objectReference: {fileID: 0}
     - target: {fileID: 9113821722326303840, guid: dabd9ec98cf674042ae7f6d74eccf167,
         type: 3}
@@ -3876,6 +4014,11 @@ PrefabInstance:
       propertyPath: stageName
       value: Lylat
       objectReference: {fileID: 0}
+    - target: {fileID: 1251265599836857301, guid: dabd9ec98cf674042ae7f6d74eccf167,
+        type: 3}
+      propertyPath: StageType
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 2165529254636331407, guid: dabd9ec98cf674042ae7f6d74eccf167,
         type: 3}
       propertyPath: m_Sprite
@@ -3905,7 +4048,7 @@ PrefabInstance:
     - target: {fileID: 7957583111170635559, guid: dabd9ec98cf674042ae7f6d74eccf167,
         type: 3}
       propertyPath: m_Name
-      value: Lylat
+      value: Hadal
       objectReference: {fileID: 0}
     - target: {fileID: 9113821722326303840, guid: dabd9ec98cf674042ae7f6d74eccf167,
         type: 3}
