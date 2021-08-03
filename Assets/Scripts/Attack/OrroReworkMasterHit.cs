@@ -22,10 +22,10 @@ public class OrroReworkMasterHit : MasterHit
 
         base.Update();
 
-        if(beanIsCharging && status.HasEnemyStunEffect() || movement.ledgeHanging)
+        if(beanIsCharging && (status.HasEnemyStunEffect() || movement.ledgeHanging || attackWasCanceled))
         {
             beanIsCharging = false;
-            bean.playFollowState("Bean_Idle");
+            bean.returnToNeutral();
         }
 
         if(status.HasStatusEffect(PlayerStatusEffect.DEAD))

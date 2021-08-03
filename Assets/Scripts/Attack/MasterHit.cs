@@ -56,11 +56,14 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
     protected string queuedState = "";
 
+    protected bool attackWasCanceled = false;
+
 
     //Every frame, listen for a given event if the flag is active
     protected void Update()
     {
         if(!isHost)return;
+        attackWasCanceled = true;
         //Clear all flags if the character is dead or stunned by an opponent
         if(status.HasEnemyStunEffect() || movement.ledgeHanging)
         {
@@ -124,6 +127,8 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
             queuedStateTrigger = true;
             lightTappedFlag = false;
         }
+        else
+            attackWasCanceled = false;
     }
 
     //Flag the character to begin listen for a given event
