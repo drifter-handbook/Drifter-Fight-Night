@@ -21,20 +21,20 @@ public class NeoSwordFrogMasterHit : MasterHit
         }
     }
 
-    public void charge_W_Neutral(int grantCharge)
-    {
-         if(!isHost)return;
-         if(chargeAttackPesistent("W_Neutral_Fire") !=0)return;
-         else if(grantCharge >=1)
-         {
-            charge++;
-            if(charge>=3)
-            {
-                Empowered = true;
-                returnToIdle();
-            }
-        }
-    }
+    // public void charge_W_Neutral(int grantCharge)
+    // {
+    //      if(!isHost)return;
+    //      if(chargeAttackPesistent("W_Neutral_Fire") !=0)return;
+    //      else if(grantCharge >=1)
+    //      {
+    //         charge++;
+    //         if(charge>=3)
+    //         {
+    //             Empowered = true;
+    //             returnToIdle();
+    //         }
+    //     }
+    // }
 
     public void backdash()
     {

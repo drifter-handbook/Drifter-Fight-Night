@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 368869369061001055}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 10, y: 10, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -51,6 +51,7 @@ MonoBehaviour:
   owner: {fileID: 0}
   OrboPrefab: {fileID: 5865775392469541185, guid: 038bcb061eb285144910db946313198b,
     type: 3}
+  orbToSpawn: 0
 --- !u!114 &1361989016921419222
 MonoBehaviour:
   m_ObjectHideFlags: 0

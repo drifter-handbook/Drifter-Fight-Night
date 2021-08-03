@@ -9,9 +9,10 @@ public class DrifterCannonMasterHit : MasterHit
     bool jumpGranted = false;
     int charge = 1;
 
-    void Update()
+    new void Update()
     {
     	if(!isHost)return;
+        base.Update();
     	if(status.HasStatusEffect(PlayerStatusEffect.DEAD))
     	{
     		Empowered = false;
@@ -127,25 +128,16 @@ public class DrifterCannonMasterHit : MasterHit
     {
         if(!isHost)return;
 
-        if(cancelAttack())return;
-     
-
-        else if(drifter.input[0].MoveY <0 || movement.grounded)
+        movement.updateFacing();
+        rb.velocity = new Vector2(Mathf.Lerp((!status.HasStatusEffect(PlayerStatusEffect.SLOWED)? drifter.input[0].MoveX * 20f:(.6f*20f)),rb.velocity.x,.75f),(drifter.input[0].MoveY >0?Mathf.Lerp(35f,rb.velocity.y,.45f):rb.velocity.y));
+        if(drifter.input[0].MoveY > 0 && activeCancelFlag)
         {
-            returnToIdle();
-        }
-        else
-        {
-            movement.updateFacing();
-            rb.velocity = new Vector2(Mathf.Lerp((!status.HasStatusEffect(PlayerStatusEffect.SLOWED)? drifter.input[0].MoveX * 20f:(.6f*20f)),rb.velocity.x,.75f),(drifter.input[0].MoveY >0?Mathf.Lerp(35f,rb.velocity.y,.45f):rb.velocity.y));
-            if(drifter.input[0].MoveY > 0)
-            {
-                drifter.PlayAnimation("W_Up_Loop");
-                boostTime -= .1f;
-            } 
-            else drifter.PlayAnimation("W_Up_Idle");
-            if(boostTime <=0)drifter.PlayAnimation("W_Up_End");
-        }
+            drifter.PlayAnimation("W_Up_Loop");
+            boostTime -= .1f;
+        } 
+        else if(activeCancelFlag) drifter.PlayAnimation("W_Up_Idle");
+        if(boostTime <=0)drifter.PlayAnimation("W_Up_End");
+        
     }
 
     //W_Neutral
@@ -153,7 +145,8 @@ public class DrifterCannonMasterHit : MasterHit
     public void handleRanchStartup()
     {
     	if(!isHost)return;
-    	if(charge > 1) drifter.PlayAnimation("W_Neutral_" + charge);
+        if(Empowered) drifter.PlayAnimation("W_Neutral_Fire");
+    	else if(charge > 1) drifter.PlayAnimation("W_Neutral_" + charge);
     }
 
     public void SetCharge(int charge)
@@ -167,12 +160,6 @@ public class DrifterCannonMasterHit : MasterHit
         drifter.JumpStartStateName = Empowered?"Jump_Start_Ranch":"Jump_Start";
         drifter.AirIdleStateName = Empowered?"Hang_Ranch":"Hang";
     }
-
-    public void neutralWCharge()
-     {
-        if(!isHost)return;
-        chargeAttackPesistent("W_Neutral_Fire");
-     }
 
      public void FireRanchProjectile()
     {

@@ -14,9 +14,11 @@ public class MaryamMasterHit : MasterHit
         SetStance(Empowered?1:0);
     }
 
-    void Update()
+    new void Update()
     {
         if(!isHost)return;
+
+        base.Update();      
 
         if(movement.terminalVelocity != terminalVelocity  && (movement.ledgeHanging || status.HasEnemyStunEffect()))
         {
@@ -85,24 +87,11 @@ public class MaryamMasterHit : MasterHit
     {
         if(!isHost)return;
 
-        if(cancelAttack())
-        {
-            resetTerminal();
-        }
-
-        else if(movement.grounded)
-        {
-            resetTerminal();
-            returnToIdle();
-        }
-        else
-        {
-
-            movement.updateFacing();
-            rb.velocity = new Vector2(Mathf.Lerp((!status.HasStatusEffect(PlayerStatusEffect.SLOWED)? drifter.input[0].MoveX * 23f:(.6f*23f)),rb.velocity.x,.75f),rb.velocity.y);
-            movement.updateFacing();
-            movement.terminalVelocity = 8f;
-        }
+        movement.updateFacing();
+        rb.velocity = new Vector2(Mathf.Lerp((!status.HasStatusEffect(PlayerStatusEffect.SLOWED)? drifter.input[0].MoveX * 23f:(.6f*23f)),rb.velocity.x,.75f),rb.velocity.y);
+        movement.updateFacing();
+        movement.terminalVelocity = 8f;
+        
     }
 
     //Resests terminal velocity to normal value after is has been altered by a move

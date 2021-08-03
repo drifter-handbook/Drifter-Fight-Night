@@ -195,7 +195,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
         UnityEngine.Debug.Log("BEAN!");
 
         //if(!GameController.Instance.IsHost || charge <=3)return;
-        Vector3 pos = new Vector3(2f * facing,3.1f,0);
+        Vector3 pos = new Vector3(2.4f * facing,3.4f,0);
 
         multihit();
 
@@ -233,11 +233,10 @@ public class BeanWrangler : NonplayerHurtboxHandler
         canAct = true;
     }
 
-    public void shieldBurst()
+    public void playFollowState(String stateName)
     {
-        if(!GameController.Instance.IsHost || !alive || HitstunDuration > 0 ) return;
-
-        playState("Bean_Shield_Burst");
+        if(!GameController.Instance.IsHost || !alive || HitstunDuration >0) return;
+        anim.SetState(stateName);
     }
 
     public void playState(String stateName)

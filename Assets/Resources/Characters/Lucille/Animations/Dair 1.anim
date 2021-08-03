@@ -1453,6 +1453,13 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.16666667
+    functionName: listenForGrounded
+    data: Aerial_Down_Land
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.16666667
     functionName: unpauseGravity
     data: 
     objectReferenceParameter: {fileID: 0}
@@ -1460,17 +1467,17 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.16666667
-    functionName: setYVelocity
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: -75
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.16666667
     functionName: setXVelocity
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 25
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.16666667
+    functionName: setYVelocity
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: -75
     intParameter: 0
     messageOptions: 0
   - time: 0.25

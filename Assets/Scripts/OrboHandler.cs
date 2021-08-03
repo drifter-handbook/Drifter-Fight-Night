@@ -19,11 +19,14 @@ public class OrboHandler : StickToTarget
 
 	public int orbToSpawn = 0;
 
+    Coroutine detonateOrbos = null;
+
+
+    float delay = 0f;
 
 	float rotation = 0;
 
-	float radius = .35f;
-    bool orboJolt = true;
+	float radius = 2.8f;
 
 
     // Start is called before the first frame update
@@ -44,56 +47,52 @@ public class OrboHandler : StickToTarget
         if(orbToSpawn > 0)
         	AddOrbo();
 
+        rotation += Time.deltaTime * 180;
+        if(rotation > 360f) rotation = 0f;
 
-        rotation += Time.deltaTime * 180f;
 
-        gameObject.transform.rotation =  Quaternion.Euler(0f,0f,rotation);
+        if(delay > 2.5f && detonateOrbos == null)detonateOrbos =StartCoroutine(ClearOrbos());
+        else if(detonateOrbos == null)
+        {
+            delay += Time.deltaTime;
 
-        if(rotation >= 360) rotation = 0;
+            gameObject.transform.rotation = Quaternion.Euler(0,0,rotation); 
 
-        for(int orboIndex = 0; orboIndex < Orbos.Count; orboIndex++ )
-    	{
-    		if(Orbos[orboIndex] == null)
-    			Orbos.RemoveAt(orboIndex);
-    		else
+            for(int orboIndex = 0; orboIndex < Orbos.Count; orboIndex++ )
             {
-    			((GameObject)Orbos[orboIndex]).transform.localPosition = new Vector3(radius * Mathf.Cos(2f * Mathf.PI * (float)orboIndex / Orbos.Count),radius * Mathf.Sin(2f * Mathf.PI * (float)orboIndex / Orbos.Count),0);
-                ((GameObject)Orbos[orboIndex]).transform.localRotation = Quaternion.Euler(0f,0f,-1 * rotation);
-            }
-    			
-    	}
-
-        if(!status.HasStatusEffect(PlayerStatusEffect.ORBO) && orboJolt && radius < .60f)
-            radius += Time.deltaTime;
-            
-        if(radius >= .60f)orboJolt = false;
-
-    	if(!status.HasStatusEffect(PlayerStatusEffect.ORBO) && radius > 0 && !orboJolt)
-    		radius -= 3.5f *Time.deltaTime;
-
-    	if(radius <= 0)
-    		ClearOrbos();
-
-
+                    if(Orbos[orboIndex] == null)
+                        Orbos.RemoveAt(orboIndex);
+                    else
+                    {
+                        ((GameObject)Orbos[orboIndex]).transform.localPosition = new Vector3(radius * Mathf.Cos(2f * Mathf.PI * (float)orboIndex / Orbos.Count),radius * Mathf.Sin(2f * Mathf.PI * (float)orboIndex / Orbos.Count),0);
+                        ((GameObject)Orbos[orboIndex]).transform.localRotation = Quaternion.Euler(0,0,-rotation);
+                    }
+                
+                }
+        }
+        
     }
 
 
-    void ClearOrbos()
+    IEnumerator ClearOrbos()
     {
-    	for(int orboIndex = 0; orboIndex < Orbos.Count; orboIndex++ )
+        int cnt = Orbos.Count;
+    	for(int orboIndex = 0; orboIndex < cnt;orboIndex++)
     	{
-    		((GameObject)Orbos[orboIndex]).GetComponent<SyncAnimatorStateHost>().SetState("OnHitState");
-    		Orbos[orboIndex] = null;
-    	}
+            UnityEngine.Debug.Log(orboIndex);
+            ((GameObject)Orbos[orboIndex]).GetComponent<SyncAnimatorStateHost>().SetState("Orbo_Break");
+            Orbos[orboIndex] = null;
+            yield return new WaitForSeconds(.05f);
+        }
 
     	Orbos = new ArrayList();
+        detonateOrbos = null;
+        yield break;
     }
 
     void AddOrbo()
     {
-    	radius = .35f;
-        orboJolt = true;
-    	if(!isHost)return;
+    	if(!isHost || detonateOrbos != null)return;
     	int target = Mathf.Min(Orbos.Count + orbToSpawn,5); 
 
     	for(int orboIndex = Orbos.Count; orboIndex < target; orboIndex++ )
@@ -117,7 +116,7 @@ public class OrboHandler : StickToTarget
     		  		
     	}
     	orbToSpawn = 0;
-
+        delay = 0f;
 
     }
 }

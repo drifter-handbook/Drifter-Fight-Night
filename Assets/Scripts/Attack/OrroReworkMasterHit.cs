@@ -8,7 +8,7 @@ public class OrroReworkMasterHit : MasterHit
 
     BeanWrangler bean;
     GameObject beanObject;
-    int neutralSpecialCharge = 0;
+    bool beanIsCharging = false;
 
     void Start()
     {
@@ -16,9 +16,18 @@ public class OrroReworkMasterHit : MasterHit
         Empowered = false;
     }
 
-    void Update()
+    new void Update()
     {
         if(!isHost)return;
+
+        base.Update();
+
+        if(beanIsCharging && status.HasEnemyStunEffect() || movement.ledgeHanging)
+        {
+            beanIsCharging = false;
+            bean.playFollowState("Bean_Idle");
+        }
+
         if(status.HasStatusEffect(PlayerStatusEffect.DEAD))
         {
             bean.die();
@@ -34,56 +43,39 @@ public class OrroReworkMasterHit : MasterHit
     }
 
 
-    //Roll Methods
-
-    public void WNeutralCharge()
+    public void BeginWNeutral()
     {
         if(!isHost)return;
-        applyEndLag(1);
-        if(neutralSpecialCharge > 8)
-        {
-            playState("W_Neutral_Fire");
-        }
-        switch(chargeAttackSingleUse("W_Neutral_Fire"))
-        {
-            case 0:
-                neutralSpecialCharge += 1;
-                break;
-            case 1:
-                neutralSpecialCharge = 0;
-                break;
-            default:
-            // The attack was fired;
-                break;     
-        }
+        specialReleasedFlag = true;
+        movementCancelFlag = true;
+        activeCancelFlag = true;
+        queuedState = "W_Neutral_Fire";
+        specialCharge = 0;
+        specialLimit = 8;
+        beanIsCharging = true;
     }
 
-    public void WDownCancel()
+    public void BeginWDown()
     {
         if(!isHost)return;
-        chargeAttackSingleUse("W_Down_End");
+        specialReleasedFlag = true;
+        movementCancelFlag = true;
+        activeCancelFlag = true;
+        queuedState = "W_Down_End";
+        beanIsCharging = true;
     }
 
-    public void WSideCharge()
+    public void BeginWSide()
     {
         if(!isHost)return;
-        //applyEndLag(1);
-        if(neutralSpecialCharge > 9)
-        {
-            playState("W_Side_Fire");
-        }
-        switch(chargeAttackSingleUse("W_Side_Fire"))
-        {
-            case 0:
-                neutralSpecialCharge += 1;
-                break;
-            case 1:
-                neutralSpecialCharge = 0;
-                break;
-            default:
-            // The attack was fired;
-                break;     
-        }
+
+        specialReleasedFlag = true;
+        movementCancelFlag = true;
+        activeCancelFlag = true;
+        queuedState = "W_Side_Fire";
+        specialCharge = 0;
+        specialLimit = 9;
+        beanIsCharging = true;
     }
 
     public void page()
@@ -151,8 +143,7 @@ public class OrroReworkMasterHit : MasterHit
     {
         if(!isHost)return;
         refreshBeanHitboxes();
-        bean.SpawnBeanSideW();
-        //bean.playState("Bean_Side_Special");
+        bean.playState("Bean_Side_Special");
     }
 
     public void BeanDownSpecial()
@@ -166,7 +157,21 @@ public class OrroReworkMasterHit : MasterHit
     {
         if(!isHost)return;
         refreshBeanHitboxes();
-        bean.shieldBurst();
+        bean.playFollowState("Counter_Success");
+    }
+
+    public void BeanSideSpecialBurst()
+    {
+        if(!isHost)return;
+        refreshBeanHitboxes();
+        bean.SpawnBeanSideW();
+        bean.playFollowState("Bean_Side_Special_Fire");
+    }
+
+    public void BeanReset()
+    {
+        if(!isHost)return;
+        bean.playFollowState("Bean_Idle");
     }
 
     public void spawnBean()
@@ -186,7 +191,10 @@ public class OrroReworkMasterHit : MasterHit
         }
 
         bean = beanObject.GetComponent<BeanWrangler>();
-        beanObject.GetComponentInChildren<HurtboxCollision>().owner = drifter.gameObject;
+
+        foreach (HurtboxCollision hurtbox in beanObject.GetComponentsInChildren<HurtboxCollision>(true))
+            hurtbox.owner = drifter.gameObject;
+        
         bean.facing = facing;
         bean.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
         bean.color = drifter.GetColor();
@@ -200,7 +208,7 @@ public class OrroReworkMasterHit : MasterHit
         Vector3 pos = new Vector3(2f * facing,2.7f,0);
 
         SingleAttackData data = attacks.AttackMap[5].attackData;
-        data.StatusDuration = Mathf.Max(neutralSpecialCharge/3,1);
+        data.StatusDuration = Mathf.Max(specialCharge/3,1);
         
         GameObject rip = host.CreateNetworkObject("OrroWSide", transform.position + pos, transform.rotation);
         rip.transform.localScale = new Vector3(10f * facing, 10f , 1f);
@@ -214,9 +222,8 @@ public class OrroReworkMasterHit : MasterHit
             hitbox.Facing = facing;
        }
 
-       bean.charge = neutralSpecialCharge;
+       bean.charge = specialCharge;
        rip.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
-       neutralSpecialCharge = 0;
     }
 
 
@@ -241,19 +248,21 @@ public class OrroReworkMasterHit : MasterHit
     {
         UnityEngine.Debug.Log("ORRO RTI");
         base.returnToIdle();
-        neutralSpecialCharge = 0;
+        specialCharge = 0;
     }
 
     public void WNeutralFire()
     {
         if(!isHost)return;
 
-        if(!Empowered)bean.setBean(neutralSpecialCharge * 4f  + 8f);
+        if(!Empowered)bean.setBean(specialCharge * 4f  + 8f);
         else bean.recallBean(rb.position - new Vector2(-2f * movement.Facing,4f),movement.Facing);
         Empowered =!Empowered;
-        neutralSpecialCharge = 0;
-
+        specialCharge = 0;
     }
+
+
+    //Roll Methods
 
     public override void roll()
     {

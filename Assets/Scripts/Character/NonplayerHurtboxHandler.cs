@@ -17,10 +17,24 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
             // register new attack
             oldAttacks[attackID] = Time.time;
 
+            Vector3 hitSparkPos = hurtbox.capsule.ClosestPoint(hitbox.parent.transform.position);
+
+            PlayerStatus attackerStatus = hitbox.parent.GetComponent<PlayerStatus>();
+
+
+            if(hurtbox.gameObject.name == "Counter" &&  attackData.AttackDamage >0f && !attackData.isGrab)
+            {
+                GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.STAR, hitSparkPos,0, new Vector2(10f, 10f));
+                attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.7f);
+                gameObject.GetComponent<SyncAnimatorStateHost>().SetState("Counter_Success");
+                return -4;
+            }
+
+
     	    percentage += attackData.AttackDamage;
 
 
-    	    PlayerStatus attackerStatus = hitbox.parent.GetComponent<PlayerStatus>();
+    	    
 
     	   //Calculate the direction for knockback
             float facingDir = Mathf.Sign(hitbox.Facing) == 0 ? 1 : Mathf.Sign(hitbox.Facing);
@@ -55,8 +69,6 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
             //Calculate hitstun duration
             HitstunDuration = (attackData.HitStun>=0 || attackData.hasStaticHitstun)?attackData.HitStun * framerateScalar:(KB*.006f + .1f);
 
-
-            Vector3 hitSparkPos = hurtbox.capsule.ClosestPoint(hitbox.parent.transform.position);
 
             //Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f);
             AttackFXSystem attackFX = attackData.HitFX;

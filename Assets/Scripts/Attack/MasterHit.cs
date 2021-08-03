@@ -25,21 +25,178 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
     protected bool Empowered = false;
 
-    protected bool continueJabFlag = false;
-
     protected Vector3 savedVelocity;
 
     protected bool savingVelocity = false;
 
-    protected PolygonCollider2D frictionCollider;
-
-    protected bool specialReleased = false;
-
-    protected bool horizontalReleased = false;
-
-    protected bool verticalReleased = false;
-
     protected float terminalVelocity;
+
+
+    //Listener Bools
+
+    protected bool specialTappedFlag = false;
+
+    protected bool specialReleasedFlag = false;
+
+    protected bool lightTappedFlag = false;
+
+    protected bool verticalCancelFlag = false;
+
+    protected bool movementCancelFlag = false;
+
+    protected bool activeCancelFlag = false;
+
+    protected bool listeningForGroundedFlag = false;
+
+    protected bool queuedStateTrigger = false;
+
+    protected int specialCharge = 0;
+
+    protected int specialLimit = -1;
+
+    protected string queuedState = "";
+
+
+    //Every frame, listen for a given event if the flag is active
+    protected void Update()
+    {
+        if(!isHost)return;
+        //Clear all flags if the character is dead or stunned by an opponent
+        if(status.HasEnemyStunEffect() || movement.ledgeHanging)
+        {
+            clearMasterhitVars();
+            movement.terminalVelocity = terminalVelocity;
+        }
+        else if(
+            (listeningForGroundedFlag && movement.grounded)||
+            (specialReleasedFlag && !drifter.input[0].Special)||
+            (specialTappedFlag && checkForSpecialTap())||
+            (specialLimit > 0 && specialCharge >= specialLimit)
+            )
+
+        {
+            playQueuedState();
+            clearMasterhitVars();
+        }
+
+        else if(movementCancelFlag && movement.grounded && drifter.doubleTappedX() )
+        {
+            movement.roll();
+            movement.techParticle();
+            clearMasterhitVars();
+            
+        }
+        else if(verticalCancelFlag && drifter.doubleTappedY() && drifter.input[0].MoveY <0)
+        {
+            playQueuedState();
+            movement.techParticle();
+            returnToIdle();
+        }
+        else if(activeCancelFlag && drifter.input[0].Guard)
+        {
+            movement.techParticle();
+            status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0f);
+            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
+            clearMasterhitVars();
+            movement.terminalVelocity = terminalVelocity;
+            playState("Guard");
+            drifter.guarding = true;
+            movement.jumping = false;
+            unpauseGravity();
+            
+
+        }
+        else if(activeCancelFlag && drifter.input[0].Jump && movement.currentJumps>0)
+        {
+            movement.jumping = false;
+            movement.techParticle();
+            status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0f);
+            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
+            clearMasterhitVars();
+            movement.terminalVelocity = terminalVelocity;
+            movement.jump();
+            unpauseGravity();
+            
+
+        }
+        else if(lightTappedFlag && checkForLightTap())
+        {
+            queuedStateTrigger = true;
+            lightTappedFlag = false;
+        }
+    }
+
+    //Flag the character to begin listen for a given event
+    public void listenForGrounded(string stateName)
+    {
+        if(!isHost)return;
+        queueState(stateName);
+        listeningForGroundedFlag = true;
+    }
+
+    public void listenForSpecialTapped(string stateName)
+    {
+        if(!isHost)return;
+        queueState(stateName);
+        specialTappedFlag = true;
+    }
+
+     public void listenForLightTapped(string stateName)
+    {
+        if(!isHost)return;
+        queueState(stateName);
+        lightTappedFlag = true;
+    }
+
+    public void listenForSpecialReleased(string stateName)
+    {
+        if(!isHost)return;
+        queueState(stateName);
+        specialReleasedFlag = true;
+    }
+
+    public void listenForMovementCancel()
+    {
+        if(!isHost)return;
+        movementCancelFlag = true;
+    }
+    public void listenForVerticalCancel(string stateName)
+    {
+        if(!isHost)return;
+        queueState(stateName);
+        verticalCancelFlag = true;
+    }
+
+    public void listenForActiveCancel()
+    {
+        if(!isHost)return;
+        activeCancelFlag = true;
+    }
+
+
+    public void addCharge(int charge =1)
+    {
+        if(!isHost)return;
+        specialCharge += charge;
+    }
+
+
+    //Clear all flags
+    public void clearMasterhitVars()
+    {
+        if(!isHost)return;
+        specialTappedFlag = false;
+        specialReleasedFlag = false;
+        lightTappedFlag = false;
+        verticalCancelFlag = false;
+        movementCancelFlag = false;
+        activeCancelFlag = false;
+        listeningForGroundedFlag = false;
+        queuedStateTrigger = false;
+        specialLimit = -1;
+        queuedState = ""; 
+    }
+
 
     // Start is called before the first frame update
     void Awake()
@@ -60,17 +217,11 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         status = drifter.GetComponent<PlayerStatus>();
         anim = drifter.GetComponent<Animator>();
 
-        frictionCollider = drifter.GetComponent<PolygonCollider2D>();
+        //frictionCollider = drifter.GetComponent<PolygonCollider2D>();
 
         terminalVelocity = movement.terminalVelocity;
         gravityScale = rb.gravityScale;
     }
-
-    // void Start()
-    // {
-    //     Resources.LoadAll("/Characters/" + assetPathName);
-    //     Resources.LoadAll("/Projectiles/" + assetPathName);
-    // }
 
     public void setYVelocity(float y)
     {
@@ -133,130 +284,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         if(!isHost)return;
         attacks.SetMultiHitAttackID();
     }
-
-    public void beginChanneledAttack()
-    {
-        specialReleased = false;
-    }
-
-    public void clearMasterhitVars()
-    {
-        specialReleased = false;   
-    }
-
-    //For charged attacks that store their current charge when canceled.
-    //Press the button once to start charging. if the button is released and then pressed again, the state will play
-    //0: Nothing happened (Executed as client, or no state-changing action occured)
-    //1: The attack was canceled by a jump or shield input[0]
-    //2: The provided state was executed  
-    public int chargeAttackPesistent(string stateName)
-    {
-        if(!isHost)return 0;
-
-        if(cancelAttack())return 1;
-
-        else if(movementCancel())return 1;
-
-        if(checkForSpecialTap())
-        {
-            playState(stateName);
-            return 2;
-        }
-     
-        // else if(!drifter.input[0].Special && !specialReleased)specialReleased = true;
-
-        // else if(drifter.input[0].Special && specialReleased)
-        // {
-        //     specialReleased = false;
-        //     playState(stateName);
-        //     return 2;
-        // }
-
-        return 0;
-    }
-
-    //For charged moves that cannot store charge. While the button is held, the charge will persist.
-    //When the button is released, the specified state will play.
-    //0: Nothing happened (Executed as client, or no state-changing action occured)
-    //1: The attack was canceled by a jump or shield input[0]
-    //2: The provided state was executed
-    public int chargeAttackSingleUse(string stateName)
-    {
-        if(!isHost)return 0;
-
-        else if(cancelAttack()) return 1;
-
-        else if(movementCancel())return 1;
-
-        if(!drifter.input[0].Special)
-        {
-            playState(stateName);
-            return 2;
-        }
-        return 0;    
-
-    }
-
-    public bool movementCancel()
-    {
-
-        if(drifter.input[0].MoveX ==0 && !horizontalReleased)horizontalReleased = true;
-
-        else if(drifter.input[0].MoveX != 0 && horizontalReleased && movement.grounded)
-        {
-            horizontalReleased = false;
-            movement.roll();
-            movement.techParticle();
-            return true;
-        }
-
-        return false;
-
-    }
-
-    //Allows for jump and shield canceling of moves. Returns true if it's condition was met
-    public bool cancelAttack()
-    {
-        if(!isHost)return false;
-
-        applyEndLag(1);
-
-        if(drifter.input[0].Guard)
-        {
-            movement.techParticle();
-            status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0f);
-            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
-            playState("Guard");
-            drifter.guarding = true;
-            movement.jumping = false;
-            unpauseGravity();
-            return true;
-        }
-        else if(drifter.input[0].Jump && movement.currentJumps>0)
-        {
-            movement.jumping = false;
-            movement.techParticle();
-            status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0f);
-            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
-            movement.jump();
-            unpauseGravity();
-            return true;
-        }
-
-        if(drifter.input[0].MoveY ==0 && !verticalReleased)verticalReleased = true;
-
-        else if(drifter.input[0].MoveY < 0 && verticalReleased)
-        {
-            verticalReleased = false;
-            movement.techParticle();
-            returnToIdle();
-            return true;
-        }
-
-        return false;
-    }
-
-
+    
     //Dynamically adjust walk speed to match walk cycle animations
     public void walkCycleSpeedSync(float speed)
     {
@@ -268,11 +296,9 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 	{
         if(!isHost)return;
 		movement.jumping = false;
-        specialReleased = false;
-        continueJabFlag = false;
 		unpauseGravity();
         movement.terminalVelocity = terminalVelocity;
-        horizontalReleased = false;
+        clearMasterhitVars();
     	drifter.returnToIdle();
     }
 
@@ -301,17 +327,17 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         else returnToIdle();
     }
 
-    public void checkForContinueJab()
+    public bool checkForLightTap()
     {
-        if(!isHost)return;
+        if(!isHost)return false;
         int state = 0;
         for(int i = 0; i < 10; i++)
         {
-            if(state >0 && !drifter.input[i].Light)continueJabFlag = true;
+            if(state >0 && !drifter.input[i].Light)return true;
             else if(state == 0 && drifter.input[0].Light) state++;
         }
+        return false;
     }
-
 
     public bool checkForSpecialTap()
     {
@@ -326,16 +352,24 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
     }
 
-    public void continueJab(string state)
+    public void queueState(string stateName)
     {
         if(!isHost)return;
-        if(continueJabFlag)
-        {
-            applyEndLag(8);
-            refreshHitboxID();
-            continueJabFlag = false;
-            playState(state);
-        }
+        queuedState = stateName;
+    }
+
+    public void playQueuedState()
+    {
+        if(!isHost || queuedState.Equals(""))return;
+        playState(queuedState);
+    }
+
+    public void triggerQueuedState()
+    {
+        if(!isHost || queuedState.Equals("") || !queuedStateTrigger)return;
+        applyEndLag(8);
+        playState(queuedState);
+        clearMasterhitVars();
     }
 
     public void beginGuard()

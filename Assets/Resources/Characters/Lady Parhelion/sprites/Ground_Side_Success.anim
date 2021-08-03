@@ -732,57 +732,8 @@ AnimationClip:
     floatParameter: 10
     intParameter: 0
     messageOptions: 0
-  - time: 0.8333333
-    functionName: playStateIfGrounded
-    data: Ground_Side_Land
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.9166667
-    functionName: playStateIfGrounded
-    data: Ground_Side_Land
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 1
-    functionName: playStateIfGrounded
-    data: Ground_Side_Land
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 1.0833334
-    functionName: playStateIfGrounded
-    data: Ground_Side_Land
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 1.1666666
-    functionName: playStateIfGrounded
-    data: Ground_Side_Land
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 1.25
-    functionName: playStateIfGrounded
-    data: Ground_Side_Land
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 1.3333334
-    functionName: playStateIfGrounded
-    data: Ground_Side_Land
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 1.4166666
-    functionName: playStateIfGrounded
+  - time: 0.33333334
+    functionName: listenForGrounded
     data: Ground_Side_Land
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

@@ -74,7 +74,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             {
                 GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.STAR, hitSparkPos,0, new Vector2(10f, 10f));
                 attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.7f);
-                status.ApplyStatusEffect(PlayerStatusEffect.HIT,.3f);
+                drifter.GetComponentInChildren<SyncAnimatorStateHost>().SetState("Counter_Success");
                 return -4;
             }
 

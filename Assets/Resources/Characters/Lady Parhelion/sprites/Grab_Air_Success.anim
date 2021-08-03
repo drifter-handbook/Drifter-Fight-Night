@@ -436,6 +436,13 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.5
+    functionName: listenForGrounded
+    data: Grab_Air_Land
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.5
     functionName: setTerminalVelocity
     data: 
     objectReferenceParameter: {fileID: 0}

@@ -27,8 +27,6 @@ public class NeoParhelionMasterHit : MasterHit
     	if(HeldDirection.y < 0)drifter.PlayAnimation("W_Up_Down");
     	else if(HeldDirection.x != 0)
     	{
-
-    		UnityEngine.Debug.Log("FORWARD");
     		drifter.PlayAnimation("W_Up_Forward");
     		if(HeldDirection.x * movement.Facing < 0)
     		{
