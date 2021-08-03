@@ -22,27 +22,31 @@ public class OrroReworkMasterHit : MasterHit
 
         base.Update();
 
+        //If orro cancles, or is hit out of a move where bean charges, cancel that move
+        //Note, bean continues doing the move if orro Byzantine Cancels the move
         if(beanIsCharging && (status.HasEnemyStunEffect() || movement.ledgeHanging || attackWasCanceled))
         {
             beanIsCharging = false;
             bean.returnToNeutral();
         }
 
+        //If orro dies, kill bean
         if(status.HasStatusEffect(PlayerStatusEffect.DEAD))
         {
             bean.die();
             beanObject = null;
             Empowered = false;
         }
+        //Make a new bean projectile when orro respawns
         else if(beanObject == null)
         {
-            
             spawnBean();
         }
+        //Send bean orros position and direction so he can follow on a delay
         else bean.addBeanState(rb.position - new Vector2(-1f * movement.Facing, 3f), movement.Facing);
     }
 
-
+    //Enables all relevant flags for orro's neutral special
     public void BeginWNeutral()
     {
         if(!isHost)return;
@@ -55,6 +59,7 @@ public class OrroReworkMasterHit : MasterHit
         beanIsCharging = true;
     }
 
+    //Enables all relevant flags for orro's down special
     public void BeginWDown()
     {
         if(!isHost)return;
@@ -65,6 +70,7 @@ public class OrroReworkMasterHit : MasterHit
         beanIsCharging = true;
     }
 
+    //Enables all relevant flags for orro's side special
     public void BeginWSide()
     {
         if(!isHost)return;
@@ -78,6 +84,7 @@ public class OrroReworkMasterHit : MasterHit
         beanIsCharging = true;
     }
 
+    //Spawns a page particle behind orro
     public void page()
     {
         if(!isHost)return;
@@ -85,14 +92,7 @@ public class OrroReworkMasterHit : MasterHit
         movement.spawnJuiceParticle(transform.position + new Vector3(0,1,0),MovementParticleMode.Orro_Page, false);
     }
 
-
-    public void boost()
-    {
-        if(!isHost)return;
-
-        movement.spawnJuiceParticle(transform.position + new Vector3(0,2,0),MovementParticleMode.Orro_Boost, false);
-    }
-
+    //Spawns a page particle in front of orro
     public void pageFlip()
     {
         if(!isHost)return;
@@ -100,6 +100,16 @@ public class OrroReworkMasterHit : MasterHit
         movement.spawnJuiceParticle(transform.position + new Vector3(facing * 1.5f,1,0),MovementParticleMode.Orro_Page, true);
     }
 
+    //Spawns a boost ring particle for orros up special
+    public void boost()
+    {
+        if(!isHost)return;
+
+        movement.spawnJuiceParticle(transform.position + new Vector3(0,2,0),MovementParticleMode.Orro_Boost, false);
+    }
+
+        
+    //Adjusts orro's terminal velocity for his down air
     public void setTerminalVelocity(float vel)
     {
         if(!isHost)return;
@@ -107,6 +117,7 @@ public class OrroReworkMasterHit : MasterHit
         movement.terminalVelocity = vel;
     }
 
+    //Returns orro's TV to normal at the end of the move
     public void resetTerminalVelocity()
     {
         if(!isHost)return; 
@@ -114,6 +125,7 @@ public class OrroReworkMasterHit : MasterHit
     }
 
     //Bean!
+    //Tells the current bean object to preform certain actions
     public void BeanSide()
     {
         if(!isHost)return;
@@ -174,6 +186,7 @@ public class OrroReworkMasterHit : MasterHit
         bean.playFollowState("Bean_Idle");
     }
 
+    //Creates a bean follower
     public void spawnBean()
     {
         if(!isHost)return;
@@ -201,6 +214,8 @@ public class OrroReworkMasterHit : MasterHit
 
     }
 
+
+    //Creates a side special projectile
     public void SpawnSideW()
     {
         if(!isHost)return;
@@ -227,6 +242,7 @@ public class OrroReworkMasterHit : MasterHit
     }
 
 
+    //Refreshes each of beans hitbox ids so he can keep doing damage
     private void refreshBeanHitboxes(){
         if(!isHost)return;
 
@@ -244,6 +260,8 @@ public class OrroReworkMasterHit : MasterHit
     }
 
 
+    //Overloads orro's return to idel command; Doesnt do anything anymore
+    //Remove later probably
     public new void returnToIdle()
     {
         UnityEngine.Debug.Log("ORRO RTI");
@@ -251,6 +269,8 @@ public class OrroReworkMasterHit : MasterHit
         specialCharge = 0;
     }
 
+
+    //Fires bean or recalls him for neutral W
     public void WNeutralFire()
     {
         if(!isHost)return;

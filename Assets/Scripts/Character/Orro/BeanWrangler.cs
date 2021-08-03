@@ -6,8 +6,6 @@ using System;
 public class BeanWrangler : NonplayerHurtboxHandler
 {
     // Start is called before the first frame update
-    
-
     public int facing = 1;
     public int color = 0;
 
@@ -61,22 +59,22 @@ public class BeanWrangler : NonplayerHurtboxHandler
 
         if(!GameController.Instance.IsHost)return;
 
-        //if(states.Count == 0)Destroy(gameObject);
-
         if(states.Count > 0 && HitstunDuration <=0)
         {
-
-
+            //Get the next state for bean to move towards
             targetPos = states.Dequeue();
 
+            //Flip bena to the targeted direction, if he can act
             if(canAct)
                 facing = targetPos.Facing;
 
+            //If bean is currently following orro,
             if(following && canAct)
             {
 
                 if(!alive)
                 {
+                    //Heal bean if he is dead
                     percentage -= 4f * Time.deltaTime;
                     if(percentage <= 0)
                     {
@@ -88,6 +86,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
                 }
 
                 //Return to orro
+                //If bean is too far away (more than 3 stage lengths, he will immediately teleport to orro.
                 if(Vector3.Distance(rb.position,targetPos.Pos) > 100f)
                 {
                     rb.position = targetPos.Pos;
@@ -95,6 +94,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
                         transform.localScale.y, transform.localScale.z);
                 }
 
+                //If bean is returning to orro, he will move at a slower speed and not heal
                 if(Vector3.Distance(rb.position,targetPos.Pos) > 2.8f)
                 {
                     rb.position =  Vector3.MoveTowards(rb.position,targetPos.Pos,returnSpeed * Time.deltaTime);
@@ -103,6 +103,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
                         beancountdown = .5f;
                 }
                 //Follow orro while attatched
+                //Bean follows more closely while attatched to not get left behind
                 else
                 {
                     //Tick down beans damage when he is attatched to orro
@@ -126,6 +127,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
             }
 
         }
+        //If bean is in hitstun, tick down his hitstun counter and remove all unused states
         else if(HitstunDuration >0)
         {
             states.Clear();
@@ -134,13 +136,14 @@ public class BeanWrangler : NonplayerHurtboxHandler
     }
 
 
+    //Enqueus a state for bean to mimic after a short delay
     public void addBeanState(Vector3 pos,int facingDir)
     {
         if(!GameController.Instance.IsHost)return;
         states.Enqueue(new BeanState(pos,facingDir));
     }
 
-
+    //Tells bean to start returning to orro. 
     public void recallBean(Vector3 pos,int facingDir)
     {
         if(!GameController.Instance.IsHost)return;
@@ -149,6 +152,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
         following = true;
     }
 
+    //BEAN IS GONE :Crab:
     public void die()
     {
         if(!GameController.Instance.IsHost || !alive)return;
@@ -158,6 +162,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
         anim.SetState("Bean_True_Death");
     }
 
+    //Sends bean out at a set speed.
     public void setBean(float speed)
     {
         if(!GameController.Instance.IsHost)return;
@@ -169,6 +174,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
             rb.velocity = new Vector3(facing * speed,0,0);
     }
 
+    //Spawns a mutlihit razor projectile for Orro's jab
     public void bean_ground_Neutral()
     {
         if(!GameController.Instance.IsHost)return;
@@ -189,12 +195,10 @@ public class BeanWrangler : NonplayerHurtboxHandler
     }
 
 
+    //Spawns a side special projectile for Bean, scaling more slowly than Orro
     public void SpawnBeanSideW()
     {
-
         UnityEngine.Debug.Log("BEAN!");
-
-        //if(!GameController.Instance.IsHost || charge <=3)return;
         Vector3 pos = new Vector3(2.4f * facing,3.4f,0);
 
         multihit();
@@ -215,6 +219,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
        charge = 0;
     }
 
+    //Returns bean to his neutral state, clearing all previous states and variables.
     public void returnToNeutral()
     {
         if(!GameController.Instance.IsHost)return;
@@ -233,12 +238,16 @@ public class BeanWrangler : NonplayerHurtboxHandler
         canAct = true;
     }
 
+    //Plays a follow up state, ignoring if bean "can act" or not. 
+    //Still will not play if he is in hitstun
     public void playFollowState(String stateName)
     {
         if(!GameController.Instance.IsHost || !alive || HitstunDuration >0) return;
         anim.SetState(stateName);
     }
 
+
+    //Plays an animation for bean, if he can act and is alive
     public void playState(String stateName)
     {
         if(!GameController.Instance.IsHost || !canAct || !alive)return;
@@ -250,12 +259,15 @@ public class BeanWrangler : NonplayerHurtboxHandler
         anim.SetState(stateName);
     }
  
+    //Refreshes beans hitboxes so he can multihit
     public void multihit()
     {
         if(!GameController.Instance.IsHost)return;
         attacks.SetMultiHitAttackID();    
     }
 
+    //Registers a hit on bean, and handles his counter.
+    //If bean has taken over 40%, he becomes inactive untill he can heal
     public override int RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, DrifterAttackType attackType, SingleAttackData attackData)
     {
 

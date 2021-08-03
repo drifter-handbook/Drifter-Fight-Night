@@ -10,8 +10,9 @@ public class NeoSwordFrogMasterHit : MasterHit
 
     int charge = 0;
 
-    void Update()
+    new void Update()
     {
+        base.Update();
         if(!isHost)return;
         if(status.HasStatusEffect(PlayerStatusEffect.DEAD))
         {
