@@ -100,10 +100,10 @@ public class PlayerCard : MonoBehaviour
     {
         chargeLevels.sprite = levels[(int)charge];
 
-        float loc = -(charge/5f) * 68f + 12f;
+        int loc = (int)(-(charge/5f) * 65f);
 
-        chargeBar.anchoredPosition  =  new Vector2(-1 *loc,0);
-        chargeMask.anchoredPosition  = new Vector2(loc,0);
+        chargeBar.anchoredPosition  =  new Vector2(-1 *loc,4);
+        chargeMask.anchoredPosition  = new Vector2(loc,-4);
 
     }
 
