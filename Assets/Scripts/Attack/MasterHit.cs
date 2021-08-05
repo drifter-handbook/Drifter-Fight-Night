@@ -95,7 +95,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
             movement.techParticle();
             returnToIdle();
         }
-        else if(activeCancelFlag && drifter.input[0].Guard)
+        else if(activeCancelFlag && drifter.input[0].Guard && !drifter.input[1].Guard)
         {
             movement.techParticle();
             status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0f);
@@ -109,7 +109,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
             
 
         }
-        else if(activeCancelFlag && drifter.input[0].Jump && movement.currentJumps>0)
+        else if(activeCancelFlag && drifter.input[0].Jump && !drifter.input[1].Jump && movement.currentJumps>0)
         {
             movement.jumping = false;
             movement.techParticle();
