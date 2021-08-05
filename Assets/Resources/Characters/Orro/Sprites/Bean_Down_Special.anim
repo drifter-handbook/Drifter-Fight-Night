@@ -46,8 +46,8 @@ AnimationClip:
         outSlope: 0
         tangentMode: 136
         weightedMode: 0
-        inWeight: 0
-        outWeight: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -65,8 +65,8 @@ AnimationClip:
         outSlope: 0
         tangentMode: 136
         weightedMode: 0
-        inWeight: 0
-        outWeight: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -84,8 +84,8 @@ AnimationClip:
         outSlope: 0
         tangentMode: 136
         weightedMode: 0
-        inWeight: 0
-        outWeight: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -103,8 +103,8 @@ AnimationClip:
         outSlope: 0
         tangentMode: 136
         weightedMode: 0
-        inWeight: 0
-        outWeight: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -156,6 +156,18 @@ AnimationClip:
         type: 3}
     - time: 0.5833333
       value: {fileID: -3114928600640496750, guid: 98a37aa8702c1484abdf6b1804955a91,
+        type: 3}
+    - time: 0.6666667
+      value: {fileID: -4203523632172995049, guid: 98a37aa8702c1484abdf6b1804955a91,
+        type: 3}
+    - time: 0.75
+      value: {fileID: -6745173421336391377, guid: 98a37aa8702c1484abdf6b1804955a91,
+        type: 3}
+    - time: 0.8333333
+      value: {fileID: -6111360793816394206, guid: 98a37aa8702c1484abdf6b1804955a91,
+        type: 3}
+    - time: 0.9166667
+      value: {fileID: -2817131697494313524, guid: 98a37aa8702c1484abdf6b1804955a91,
         type: 3}
     attribute: m_Sprite
     path: 
@@ -226,12 +238,16 @@ AnimationClip:
     - {fileID: 8128966670735188009, guid: 98a37aa8702c1484abdf6b1804955a91, type: 3}
     - {fileID: -2923683447692408715, guid: 98a37aa8702c1484abdf6b1804955a91, type: 3}
     - {fileID: -3114928600640496750, guid: 98a37aa8702c1484abdf6b1804955a91, type: 3}
+    - {fileID: -4203523632172995049, guid: 98a37aa8702c1484abdf6b1804955a91, type: 3}
+    - {fileID: -6745173421336391377, guid: 98a37aa8702c1484abdf6b1804955a91, type: 3}
+    - {fileID: -6111360793816394206, guid: 98a37aa8702c1484abdf6b1804955a91, type: 3}
+    - {fileID: -2817131697494313524, guid: 98a37aa8702c1484abdf6b1804955a91, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.6666666
+    m_StopTime: 1
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -276,8 +292,8 @@ AnimationClip:
         outSlope: 0
         tangentMode: 136
         weightedMode: 0
-        inWeight: 0
-        outWeight: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -295,8 +311,8 @@ AnimationClip:
         outSlope: 0
         tangentMode: 136
         weightedMode: 0
-        inWeight: 0
-        outWeight: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -314,8 +330,8 @@ AnimationClip:
         outSlope: 0
         tangentMode: 136
         weightedMode: 0
-        inWeight: 0
-        outWeight: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -333,8 +349,8 @@ AnimationClip:
         outSlope: 0
         tangentMode: 136
         weightedMode: 0
-        inWeight: 0
-        outWeight: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -365,7 +381,7 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.6666666
+  - time: 1
     functionName: playFollowState
     data: Counter_Success
     objectReferenceParameter: {fileID: 0}
