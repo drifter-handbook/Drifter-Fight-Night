@@ -22,10 +22,8 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
     // Start is called before the first frame update
     void Start()
     {
-        //UnityEngine.Debug.Log(GameController.Instance.host.Peers.Count);
         syncFromClients = GetComponent<NetworkSyncToHost>();
 
-        //int playerNum = 0;
         // create players
         foreach (CharacterSelectState charSel in CharacterMenu.charSelStates.Values)
         {
@@ -56,9 +54,7 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
         {
             if (state.PeerID == peerID)
                 drifter = state.PlayerType;
-            
         }
-        //GameObject PlayerInput = Instantiate(playerInputPrefab, transform.position, Quaternion.identity);
 
         //Same here
         GameObject obj = GameController.Instance.host.CreateNetworkObject(drifter.ToString().Replace("_", " "),
