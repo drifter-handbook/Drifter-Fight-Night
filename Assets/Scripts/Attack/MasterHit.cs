@@ -50,6 +50,8 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
     protected bool queuedStateTrigger = false;
 
+    protected bool jumpFlag = false;
+
     protected int specialCharge = 0;
 
     protected int specialLimit = -1;
@@ -109,7 +111,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
             
 
         }
-        else if(activeCancelFlag && drifter.input[0].Jump && !drifter.input[1].Jump && movement.currentJumps>0)
+        else if((activeCancelFlag || jumpFlag)&& drifter.input[0].Jump && !drifter.input[1].Jump && movement.currentJumps>0)
         {
             movement.jumping = false;
             movement.techParticle();
@@ -178,6 +180,12 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         activeCancelFlag = true;
     }
 
+    public void listenForJumpCancel()
+    {
+        if(!isHost)return;
+        jumpFlag = true;
+    }
+
 
     public void addCharge(int charge =1)
     {
@@ -198,6 +206,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         activeCancelFlag = false;
         listeningForGroundedFlag = false;
         queuedStateTrigger = false;
+        jumpFlag = false;
         specialLimit = -1;
         queuedState = ""; 
     }

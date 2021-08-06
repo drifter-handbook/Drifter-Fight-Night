@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Guard_Start
+  m_Name: Guard_Drop
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -20,10 +20,10 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: -8807089711056369896, guid: d420c2aa23c8db5469080db275602ca4,
+      value: {fileID: 4089389326833356611, guid: 766214f483bb97a4e8229e91a5dab72a,
         type: 3}
     - time: 0.083333336
-      value: {fileID: 3442793258748318622, guid: d420c2aa23c8db5469080db275602ca4,
+      value: {fileID: -9149248715622306189, guid: 766214f483bb97a4e8229e91a5dab72a,
         type: 3}
     attribute: m_Sprite
     path: 
@@ -44,8 +44,8 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: -8807089711056369896, guid: d420c2aa23c8db5469080db275602ca4, type: 3}
-    - {fileID: 3442793258748318622, guid: d420c2aa23c8db5469080db275602ca4, type: 3}
+    - {fileID: 4089389326833356611, guid: 766214f483bb97a4e8229e91a5dab72a, type: 3}
+    - {fileID: -9149248715622306189, guid: 766214f483bb97a4e8229e91a5dab72a, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
@@ -71,22 +71,15 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0
-    functionName: beginGuard
+  - time: 0.083333336
+    functionName: endParry
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.16666667
-    functionName: listenForJumpCancel
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.16666667
-    functionName: endPerfectGuard
+    functionName: returnToIdle
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

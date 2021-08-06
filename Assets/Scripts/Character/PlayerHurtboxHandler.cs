@@ -78,6 +78,9 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 return -4;
             }
 
+
+            bool crossUp = (hitbox.parent.transform.localPosition.x > transform.localPosition.x  && drifter.movement.Facing < 0) || (hitbox.parent.transform.localPosition.x < transform.localPosition.x  && drifter.movement.Facing > 0);
+
             // apply damage
             if (drifter != null && status != null)
             {
@@ -87,7 +90,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
                     //Blocking damage Reduction
                     //0 chip damage on perfect guard
-                      * (drifter.guarding && !attackData.isGrab ? (drifter.perfectGuarding || drifter.parrying? 0 : 1 - drifter.BlockReduction): 1f)
+                      * ((drifter.guarding && !attackData.isGrab && !crossUp) ? (drifter.perfectGuarding || drifter.parrying? 0 : .2f): 1f)
 
                     //Defense Buff damage reduction
                       * (status.HasStatusEffect(PlayerStatusEffect.DEFENSEUP) ? 0.7f:1f)
@@ -102,6 +105,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
             //Calculate the direction for knockback
             float facingDir = attackData.mirrorKnockback? (hurtbox.capsule.bounds.center.x > hitbox.gameObject.GetComponent<Collider2D>().bounds.center.x ? 1: -1) : Mathf.Sign(hitbox.Facing) == 0 ? 1 : Mathf.Sign(hitbox.Facing);
+
+            
 
             // rotate direction by angle of impact
             //Do we still need all this math?
@@ -164,23 +169,23 @@ public class PlayerHurtboxHandler : MonoBehaviour
             bool isBlocked = false;
 
             //Ignore knockback if invincible or armoured
-            if (status != null && (attackData.isGrab || !drifter.guarding) && !drifter.parrying){
+            if (status != null && (attackData.isGrab || !drifter.guarding || crossUp) && !drifter.parrying){
 
                 //If the player treid to guard a guardbreaker, they loose their shield for 5 seconds (60 frames)
-                if(attackData.isGrab && drifter.guarding)
+                if((attackData.isGrab || crossUp) && drifter.guarding)
                 {
-                    status.ApplyStatusEffect(PlayerStatusEffect.GUARDBROKEN,5f);
+                    //status.ApplyStatusEffect(PlayerStatusEffect.GUARDBROKEN,5f);
                     HitstunDuration = 1f;
                     guardbroken = true;
                     drifter.clearGuardFlags();
                     drifter.guardBreaking = true;
-                    status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.6f);
+                    status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.3f);
                     
                 }
                 else drifter.guardBreaking = false;
 
                 //As long as the defender isnt in superarmour, or they are being grabbed, apply knockback velocity
-                if(!status.HasStatusEffect(PlayerStatusEffect.ARMOUR) || attackData.isGrab){
+                if(!status.HasStatusEffect(PlayerStatusEffect.ARMOUR) || attackData.isGrab || crossUp){
 
                     status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0f);
                     
@@ -329,7 +334,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 attackFX.TriggerFXSystem(attackData.AttackDamage, HitstunDuration, hitSparkPos, attackData.AngleOfImpact * facingDir, adjustedAngle, hitSparkScale);
             
             if (isBlocked)
-                GraphicalEffectManager.Instance.CreateHitSparks(drifter.BlockReduction > 0.5f ? HitSpark.GUARD_WEAK : HitSpark.GUARD_STRONG, hitSparkPos, hitSparkAngle, hitSparkScale);
+                GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.GUARD_STRONG, hitSparkPos, hitSparkAngle, hitSparkScale);
             else if (isCritical)
                 GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.CRIT, hitSparkPos, hitSparkAngle, hitSparkScale);
 

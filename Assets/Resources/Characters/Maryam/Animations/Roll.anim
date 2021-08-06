@@ -291,7 +291,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.6666667
+    m_StopTime: 0.6666666
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -575,17 +575,10 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0
-    functionName: applyEndLag
+    functionName: pauseGravity
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 2
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.083333336
-    functionName: setXVelocity
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 30
     intParameter: 0
     messageOptions: 0
   - time: 0.16666667
@@ -603,13 +596,13 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.33333334
-    functionName: setXVelocity
+    functionName: unpauseGravity
     data: 
     objectReferenceParameter: {fileID: 0}
-    floatParameter: 30
+    floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.6666667
+  - time: 0.5833333
     functionName: returnToIdle
     data: 
     objectReferenceParameter: {fileID: 0}

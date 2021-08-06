@@ -12,7 +12,6 @@ public class PlayerMovement : MonoBehaviour
     public float groundAccelerationTime = .6f;
     public float airAccelerationTime = .8f;
     public float airSpeed = 15f;
-    public float dashSpeed = 30f;
     public float terminalVelocity = 25f;
     public float fastFallTerminalVelocity = 55f;
     public bool flipSprite = false;
@@ -33,9 +32,6 @@ public class PlayerMovement : MonoBehaviour
     //Calculated character properties
     float jumpSpeed;
     float baseGravity;
-
-    
-    bool dashState = true;
 
     //Animator State Fields
     public int Facing { get; set; } = 1;
@@ -340,36 +336,17 @@ public class PlayerMovement : MonoBehaviour
         ContactPoint2D[] contacts = new ContactPoint2D[1];
         bool groundFrictionPosition = frictionCollider.GetContacts(contacts) >0;
 
-
-        // if(dashState!=0 && ((drifter.input[7].MoveX != 0 && drifter.input[8].MoveX != 0) || (drifter.input[8].MoveX != 0 && drifter.input[9].MoveX != 0)))dashState = 0;
-        // else if(dashState == 0 && drifter.input[0].MoveX !=0)dashState = 1;
-        // else if(dashState == 1 && drifter.input[0].MoveX ==0) dashState = 2;
-
         if(!moving)accelerationPercent = .9f;
         
         //Normal walking logic
         if (moving && canAct && ! ledgeHanging)
         {
+
+            updateFacing();
         	//UnityEngine.Debug.Log("BEFORE velocity: " + rb.velocity.x);
-        	updateFacing();            
-
-            // bool canDash = drifter.input[0].MoveX == 0;
-
-            // bool moveReleased = drifter.input[0].MoveX
-
-            if(canAct && IsGrounded() && dashState && drifter.doubleTappedX())
-            {
-                walkSpeed = dashSpeed;
-                rb.velocity = new Vector2(Facing * dashSpeed,rb.velocity.y);
-                dashState = false;
-                accelerationPercent = 0;
-                StartCoroutine(endFoxTrot());
-                spawnJuiceParticle(BodyCollider.bounds.center + new Vector3(Facing * (flipSprite?-1:1)* 1.5f,0), MovementParticleMode.Dash_Ring, Quaternion.Euler(0f,0f,0f), false);
-                if(groundFrictionPosition) spawnJuiceParticle(new Vector2(-Facing * (flipSprite?-1:1)* 1.5f,0) + contacts[0].point, MovementParticleMode.Dash_Cloud);
-            }
 
             //If just started moving or switched directions
-            else if((rb.velocity.x == 0 || rb.velocity.x * drifter.input[0].MoveX < 0) && IsGrounded()){
+            if((rb.velocity.x == 0 || rb.velocity.x * drifter.input[0].MoveX < 0) && IsGrounded()){
 
                 if(groundFrictionPosition) spawnJuiceParticle(new Vector2(-Facing * (flipSprite?-1:1)* 1.5f,0) + contacts[0].point, MovementParticleMode.KickOff);
             }
@@ -481,18 +458,13 @@ public class PlayerMovement : MonoBehaviour
         }
 
 
-        //Roll
-        if(drifter.input[0].Guard && canGuard && moving && IsGrounded())
-        {
-            roll();
-        }
-
         //Guard
-        else if(drifter.input[0].Guard && canGuard && !ledgeHanging && !status.HasStatusEffect(PlayerStatusEffect.GUARDBROKEN))
+        if(drifter.input[0].Guard && canGuard && !ledgeHanging && !status.HasStatusEffect(PlayerStatusEffect.GUARDBROKEN))
         {
             //shift is guard
             if(!drifter.guarding)drifter.PlayAnimation("Guard_Start");
             drifter.guarding = true;
+            updateFacing();
         }
       
         //Disable Guarding
@@ -514,6 +486,12 @@ public class PlayerMovement : MonoBehaviour
         if (jumpPressed && canAct)
         {
             jump();
+        }
+
+
+        if(canAct && drifter.doubleTappedX())
+        {
+            dash();
         }
 
         //mashout effects
@@ -681,6 +659,19 @@ public class PlayerMovement : MonoBehaviour
             }
     }
 
+    public void dash()
+    {
+        if(currentJumps > 0)
+        {
+            accelerationPercent = 0;
+            spawnJuiceParticle(BodyCollider.bounds.center + new Vector3(Facing * (flipSprite?-1:1)* 1.5f,0), MovementParticleMode.Dash_Ring, Quaternion.Euler(0f,0f,0f), false);
+            //if(groundFrictionPosition) spawnJuiceParticle(new Vector2(-Facing * (flipSprite?-1:1)* 1.5f,0) + contacts[0].point, MovementParticleMode.Dash_Cloud);
+            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,4);
+            drifter.PlayAnimation("Dash");
+            currentJumps--;
+        }
+    }
+
     //Public wrapper for movement particle spawning
     public void spawnJuiceParticle(Vector3 pos, MovementParticleMode mode)
     {
@@ -773,15 +764,6 @@ public class PlayerMovement : MonoBehaviour
         }
         cancel.GetComponent<SyncAnimatorStateHost>().SetState(mode);
         
-    }
-
-
-    //Returns movement stats to normal after a dash
-    IEnumerator endFoxTrot()
-    {
-        yield return new WaitForSeconds(3* framerateScalar);
-        walkSpeed = baseWalkSpeed;
-        dashState = true;
     }
 
     //delays jump to allow for jump squant and move queuing
