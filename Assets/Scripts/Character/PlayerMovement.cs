@@ -153,7 +153,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (!GameController.Instance.IsHost || GameController.Instance.IsPaused)
             return;

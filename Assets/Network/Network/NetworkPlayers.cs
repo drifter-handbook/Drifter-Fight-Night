@@ -32,7 +32,7 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         PlayerInputData input;
 
