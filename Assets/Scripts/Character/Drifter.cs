@@ -227,6 +227,7 @@ public class Drifter : MonoBehaviour, INetworkInit
     {
         //UnityEngine.Debug.Log("DRIFTER: RETURNING TO IDLE: " + state);
         movement.canLandingCancel = false;
+        movement.jumping = false;
         canFeint = true;
         clearGuardFlags();
         if(movement.grounded)animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState(GroundIdleStateName,animationLayer);
