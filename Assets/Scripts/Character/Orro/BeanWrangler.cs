@@ -243,6 +243,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
     public void playFollowState(String stateName)
     {
         if(!GameController.Instance.IsHost || !alive || HitstunDuration >0) return;
+        canAct = false;
         anim.SetState(stateName);
     }
 
