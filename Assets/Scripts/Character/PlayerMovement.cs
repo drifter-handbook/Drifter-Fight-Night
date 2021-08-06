@@ -37,7 +37,7 @@ public class PlayerMovement : MonoBehaviour
     public int Facing { get; set; } = 1;
     [NonSerialized]
     public int currentJumps;
-    [NonSerialized]
+    //[NonSerialized]
     public bool grounded = true;
     [NonSerialized]
     public bool hitstun = false;
@@ -56,6 +56,8 @@ public class PlayerMovement : MonoBehaviour
     public float techWindowElapsed = 0;
 
     public float accelerationPercent = .9f;
+
+    float dashLock = 0;
 
 
     // public float activeFriction = .1f;
@@ -151,6 +153,11 @@ public class PlayerMovement : MonoBehaviour
                 techWindowElapsed = 0;
             }
         }
+    }
+
+    void Update()
+    {
+        if(dashLock >0)dashLock -= Time.deltaTime;
     }
 
     void FixedUpdate()
@@ -659,17 +666,21 @@ public class PlayerMovement : MonoBehaviour
             }
     }
 
-    public void dash()
+    public bool dash()
     {
-        if(currentJumps > 0)
+        if(currentJumps > 0 && dashLock <=0)
         {
+            jumping = false;
             accelerationPercent = 0;
+            dashLock = 1f;
             spawnJuiceParticle(BodyCollider.bounds.center + new Vector3(Facing * (flipSprite?-1:1)* 1.5f,0), MovementParticleMode.Dash_Ring, Quaternion.Euler(0f,0f,0f), false);
             //if(groundFrictionPosition) spawnJuiceParticle(new Vector2(-Facing * (flipSprite?-1:1)* 1.5f,0) + contacts[0].point, MovementParticleMode.Dash_Cloud);
             status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,4);
             drifter.PlayAnimation("Dash");
             currentJumps--;
+            return true;
         }
+        return false;
     }
 
     //Public wrapper for movement particle spawning

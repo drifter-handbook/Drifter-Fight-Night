@@ -84,12 +84,13 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
             clearMasterhitVars();
         }
 
-        else if(movementCancelFlag && movement.grounded && drifter.doubleTappedX() )
+        else if(movementCancelFlag && movement.currentJumps >0 && drifter.doubleTappedX() )
         {
-            movement.roll();
-            movement.techParticle();
-            clearMasterhitVars();
-            
+            if(movement.dash())
+            {
+                movement.techParticle();
+                clearMasterhitVars();
+            }            
         }
         else if(verticalCancelFlag && drifter.doubleTappedY() && drifter.input[0].MoveY <0)
         {
