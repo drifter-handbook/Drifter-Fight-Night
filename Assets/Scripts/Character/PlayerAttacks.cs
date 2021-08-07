@@ -99,28 +99,37 @@ public class PlayerAttacks : MonoBehaviour
     // Update is called once per frame
     public void UpdateInput()
     {
+
         if (!GameController.Instance.IsHost || GameController.Instance.IsPaused)
         {
             return;
         }
 
-        // get input[0]
-
-        bool lightPressed = !drifter.input[2].Light && drifter.input[1].Light && drifter.input[0].Light;
-        bool specialPressed = !drifter.input[2].Special &&  drifter.input[1].Special && drifter.input[0].Special;
-
-        bool superPressed = !drifter.input[1].Super  && drifter.input[0].Super;
-
-        bool grabPressed = 
-
-        !drifter.input[1].Light && drifter.input[0].Light && drifter.input[1].Special ||
-        !drifter.input[1].Special && drifter.input[0].Special && drifter.input[1].Light ||
-        !drifter.input[1].Light && drifter.input[0].Light && !drifter.input[1].Special && drifter.input[0].Special;
-
-
+        bool lightPressed = false;
+        bool specialPressed = false;
+        bool superPressed = false;
+        bool grabPressed = false;
 
         bool canAct = !status.HasStunEffect() && !drifter.guarding && !ledgeHanging;
         bool canSpecial = !status.HasStunEffect() && !ledgeHanging;
+
+
+        for (int i = 0; i < drifter.input.Length - 3; i++)
+        {
+            if(!lightPressed) lightPressed = !drifter.input[i+2].Light && drifter.input[i+1].Light && drifter.input[i].Light;
+
+            if(!specialPressed) specialPressed = !drifter.input[i+2].Special &&  drifter.input[i+1].Special && drifter.input[i].Special;
+
+            if(!superPressed) superPressed = !drifter.input[i+1].Super  && drifter.input[i].Super;
+
+            if(!grabPressed) grabPressed = 
+
+                !drifter.input[i+1].Light && drifter.input[i].Light && drifter.input[i+1].Special ||
+                !drifter.input[i+1].Special && drifter.input[i].Special && drifter.input[i+1].Light ||
+                !drifter.input[i+1].Light && drifter.input[i].Light && !drifter.input[i+1].Special && drifter.input[i].Special;
+
+        }
+
 
         if((movement.grounded && !status.HasStatusEffect(PlayerStatusEffect.END_LAG)) || status.HasEnemyStunEffect()){
             resetRecovery();
@@ -128,9 +137,6 @@ public class PlayerAttacks : MonoBehaviour
 
         if(superPressed)
         {
-            // if(drifter.qcf)
-            //     StartAttack(DrifterAttackType.Super_Attack);
-            // else
             movement.superCancel();
         }
 
@@ -145,11 +151,6 @@ public class PlayerAttacks : MonoBehaviour
         }
         else if(specialPressed && canSpecial)
         {
-
-            // if(drifter.qcf)
-            //     StartAttack(DrifterAttackType.QCF_W);
-            // else
-
             if(drifter.input[0].MoveY > 0 && currentRecoveries >0)
             {
                 StartAttack(DrifterAttackType.W_Up);
@@ -178,28 +179,23 @@ public class PlayerAttacks : MonoBehaviour
         {
             if (movement.grounded)
             {
-                // if(drifter.qcf)
-                //     StartAttack(DrifterAttackType.QCF_Ground);
-                // else
                 if(drifter.input[0].MoveY > 0)StartAttack(DrifterAttackType.Ground_Q_Up);
                 else if(drifter.input[0].MoveY < 0)StartAttack(DrifterAttackType.Ground_Q_Down);
                 else if(drifter.input[0].MoveX!=0)StartAttack(DrifterAttackType.Ground_Q_Side);
                 else StartAttack(DrifterAttackType.Ground_Q_Neutral);
             }
+
             else
             {   
-
                 movement.canLandingCancel = true;    
 
-                // if(drifter.qcf)
-                //     StartAttack(DrifterAttackType.QCF_Air);
-                // else
                 if(drifter.input[0].MoveY > 0)StartAttack(DrifterAttackType.Aerial_Q_Up);
                 else if(drifter.input[0].MoveY < 0)StartAttack(DrifterAttackType.Aerial_Q_Down);
                 else if(drifter.input[0].MoveX!=0)StartAttack(DrifterAttackType.Aerial_Q_Side);
                 else StartAttack(DrifterAttackType.Aerial_Q_Neutral);
             }
         }
+
     }
 
     public void resetRecovery(){

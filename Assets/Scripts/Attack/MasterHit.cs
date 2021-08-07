@@ -315,6 +315,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         movement.terminalVelocity = terminalVelocity;
         clearMasterhitVars();
     	drifter.returnToIdle();
+        attacks.UpdateInput();
     }
 
     public void playState(string state)
@@ -346,7 +347,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     {
         if(!isHost)return false;
         int state = 0;
-        for(int i = 0; i < 10; i++)
+        for(int i = 0; i < 8; i++)
         {
             if(state >0 && !drifter.input[i].Light)return true;
             else if(state == 0 && drifter.input[0].Light) state++;

@@ -482,6 +482,7 @@ MonoBehaviour:
     Special: 0
     Super: 0
     Guard: 0
+    Pause: 0
   - MoveX: 0
     MoveY: 0
     Jump: 0
@@ -489,6 +490,7 @@ MonoBehaviour:
     Special: 0
     Super: 0
     Guard: 0
+    Pause: 0
   - MoveX: 0
     MoveY: 0
     Jump: 0
@@ -496,6 +498,7 @@ MonoBehaviour:
     Special: 0
     Super: 0
     Guard: 0
+    Pause: 0
   - MoveX: 0
     MoveY: 0
     Jump: 0
@@ -503,6 +506,7 @@ MonoBehaviour:
     Special: 0
     Super: 0
     Guard: 0
+    Pause: 0
   - MoveX: 0
     MoveY: 0
     Jump: 0
@@ -510,6 +514,7 @@ MonoBehaviour:
     Special: 0
     Super: 0
     Guard: 0
+    Pause: 0
   - MoveX: 0
     MoveY: 0
     Jump: 0
@@ -517,6 +522,7 @@ MonoBehaviour:
     Special: 0
     Super: 0
     Guard: 0
+    Pause: 0
   - MoveX: 0
     MoveY: 0
     Jump: 0
@@ -524,6 +530,7 @@ MonoBehaviour:
     Special: 0
     Super: 0
     Guard: 0
+    Pause: 0
   - MoveX: 0
     MoveY: 0
     Jump: 0
@@ -531,6 +538,7 @@ MonoBehaviour:
     Special: 0
     Super: 0
     Guard: 0
+    Pause: 0
   - MoveX: 0
     MoveY: 0
     Jump: 0
@@ -538,6 +546,7 @@ MonoBehaviour:
     Special: 0
     Super: 0
     Guard: 0
+    Pause: 0
   - MoveX: 0
     MoveY: 0
     Jump: 0
@@ -545,11 +554,51 @@ MonoBehaviour:
     Special: 0
     Super: 0
     Guard: 0
+    Pause: 0
+  - MoveX: 0
+    MoveY: 0
+    Jump: 0
+    Light: 0
+    Special: 0
+    Super: 0
+    Guard: 0
+    Pause: 0
+  - MoveX: 0
+    MoveY: 0
+    Jump: 0
+    Light: 0
+    Special: 0
+    Super: 0
+    Guard: 0
+    Pause: 0
+  - MoveX: 0
+    MoveY: 0
+    Jump: 0
+    Light: 0
+    Special: 0
+    Super: 0
+    Guard: 0
+    Pause: 0
+  - MoveX: 0
+    MoveY: 0
+    Jump: 0
+    Light: 0
+    Special: 0
+    Super: 0
+    Guard: 0
+    Pause: 0
+  - MoveX: 0
+    MoveY: 0
+    Jump: 0
+    Light: 0
+    Special: 0
+    Super: 0
+    Guard: 0
+    Pause: 0
   animator: {fileID: 2000386183588008255}
   superCharge: 3
-  BlockReduction: 0.5
   myColor: 0
-  drifterType: 
+  drifterType: 0
   peerID: 0
   status: {fileID: 8182132679057442092}
   animationLayer: 0
@@ -572,7 +621,6 @@ MonoBehaviour:
   groundAccelerationTime: 0.6
   airAccelerationTime: 0.8
   airSpeed: 15
-  dashSpeed: 30
   terminalVelocity: 80
   fastFallTerminalVelocity: 55
   flipSprite: 0
@@ -584,6 +632,7 @@ MonoBehaviour:
   particleOffset: {x: 0, y: 0, z: 0}
   varyJumpHeightDuration: 0.2
   varyJumpHeightForce: 12
+  grounded: 1
   accelerationPercent: 0.9
 --- !u!114 &9142496942411782138
 MonoBehaviour:
