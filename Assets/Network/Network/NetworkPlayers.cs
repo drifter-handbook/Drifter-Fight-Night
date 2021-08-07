@@ -44,6 +44,8 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
                 UpdateInput(players[charSel.PeerID], input);
             else if(GameController.Instance.controls.ContainsKey(charSel.PeerID))
                 UpdateInput(players[charSel.PeerID], GetInput(GameController.Instance.controls[charSel.PeerID]));
+            else
+                UpdateInput(players[charSel.PeerID]);
         }
     }
 
@@ -83,6 +85,13 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
         player.GetComponent<PlayerMovement>().UpdateInput();
         player.GetComponent<PlayerAttacks>().UpdateInput();
 
+    }
+
+    //AI?
+    public static void UpdateInput(GameObject player)
+    {
+        player.GetComponent<PlayerMovement>().UpdateInput();
+        player.GetComponent<PlayerAttacks>().UpdateInput();
     }
 
     public static PlayerInputData GetInput(InputActionAsset keyBindings)
