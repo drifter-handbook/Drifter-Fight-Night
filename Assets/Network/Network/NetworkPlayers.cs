@@ -87,7 +87,7 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
 
     }
 
-    //AI?
+    //@Richard add AI here
     public static void UpdateInput(GameObject player)
     {
         player.GetComponent<PlayerMovement>().UpdateInput();
