@@ -315,6 +315,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         movement.terminalVelocity = terminalVelocity;
         clearMasterhitVars();
     	drifter.returnToIdle();
+        movement.updateFacing();
         attacks.UpdateInput();
     }
 
