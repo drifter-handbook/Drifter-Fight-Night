@@ -496,7 +496,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
 
-        if(canAct && drifter.doubleTappedX())
+        else if(canAct && drifter.doubleTappedX())
         {
             dash();
         }
@@ -670,13 +670,12 @@ public class PlayerMovement : MonoBehaviour
     {
         if(currentJumps > 0 && dashLock <=0)
         {
-            jumping = false;
             accelerationPercent = 0;
-            dashLock = 1f;
+            dashLock = .5f;
             spawnJuiceParticle(BodyCollider.bounds.center + new Vector3(Facing * (flipSprite?-1:1)* 1.5f,0), MovementParticleMode.Dash_Ring, Quaternion.Euler(0f,0f,0f), false);
-            //if(groundFrictionPosition) spawnJuiceParticle(new Vector2(-Facing * (flipSprite?-1:1)* 1.5f,0) + contacts[0].point, MovementParticleMode.Dash_Cloud);
             status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,4);
             drifter.PlayAnimation("Dash");
+            jumping = false;
             currentJumps--;
             return true;
         }
@@ -728,7 +727,6 @@ public class PlayerMovement : MonoBehaviour
                 spawnSuperParticle("Offensive_Cancel",2f);
                 drifter.PlayAnimation("Burst");
                 status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,5f * framerateScalar);
-                //drifter.returnToIdle();
             }
             else if(drifter.canFeint)
             {
