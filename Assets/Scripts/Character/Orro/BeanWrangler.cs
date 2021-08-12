@@ -244,6 +244,8 @@ public class BeanWrangler : NonplayerHurtboxHandler
     {
         if(!GameController.Instance.IsHost || !alive || HitstunDuration >0) return;
         canAct = false;
+        transform.localScale = new Vector3(targetPos.Facing * Mathf.Abs(transform.localScale.x),
+                    transform.localScale.y, transform.localScale.z); 
         anim.SetState(stateName);
     }
 
