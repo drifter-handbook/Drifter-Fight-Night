@@ -14,6 +14,71 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   assetPathName: Bojo
   facing: 0
+--- !u!1 &6047867420124449530
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9073769850386498466}
+  - component: {fileID: 1143064651174088598}
+  - component: {fileID: 1901735761830415996}
+  m_Layer: 0
+  m_Name: Nair_Backswing
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9073769850386498466
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6047867420124449530}
+  m_LocalRotation: {x: 0, y: 0, z: 0.38268343, w: 0.92387956}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3826530616932498284}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 45}
+--- !u!114 &1143064651174088598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6047867420124449530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parent: {fileID: 7476960680870583743}
+  playerType: {fileID: 0}
+  isActive: 1
+  OverrideData: {fileID: 11400000, guid: b317853e91ff90f4b8a39e86039d8a97, type: 2}
+  AttackData: {fileID: 0}
+--- !u!70 &1901735761830415996
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6047867420124449530}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 0.5, y: 1}
+  m_Direction: 0
 --- !u!1 &6210333189731979638
 GameObject:
   m_ObjectHideFlags: 0
@@ -553,6 +618,12 @@ PrefabInstance:
       propertyPath: AttackMap.Array.data[2].attackData
       value: 
       objectReference: {fileID: 11400000, guid: 926ee9d781314034ba4f764eb358b15c,
+        type: 2}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[1].attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: e2829ba00beeffa46941057dc3b3f7b0,
         type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 03006bf76a5e1274aaf3da8b9c69d8f9, type: 3}
