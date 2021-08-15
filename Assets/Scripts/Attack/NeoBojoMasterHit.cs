@@ -5,6 +5,29 @@ using UnityEngine;
 public class NeoBojoMasterHit : MasterHit
 {
 
+
+
+    public void SpawnDownTiltWave()
+    {
+        if(!isHost)return;
+        facing = movement.Facing;
+        //Vector3 pos = new Vector3(2f * facing,2.7f,0);
+        
+        GameObject wave = host.CreateNetworkObject("BojoDTiltWave", transform.position , transform.rotation);
+        wave.transform.localScale = new Vector3(10f * facing, 10f , 1f);
+
+        wave.GetComponent<Rigidbody2D>().velocity = new Vector3(facing * 28,-22);
+        foreach (HitboxCollision hitbox in wave.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = -attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+            hitbox.Facing = facing;
+       }
+    }
+
+
     //Inhereted Roll Methods
 
     public override void roll()
