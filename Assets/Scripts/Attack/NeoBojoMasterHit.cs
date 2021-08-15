@@ -16,7 +16,7 @@ public class NeoBojoMasterHit : MasterHit
         GameObject wave = host.CreateNetworkObject("BojoDTiltWave", transform.position , transform.rotation);
         wave.transform.localScale = new Vector3(10f * facing, 10f , 1f);
 
-        wave.GetComponent<Rigidbody2D>().velocity = new Vector3(facing * 28,-22);
+        wave.GetComponent<Rigidbody2D>().velocity = new Vector3(facing * 33,-22);
         foreach (HitboxCollision hitbox in wave.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;

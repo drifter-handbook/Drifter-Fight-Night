@@ -134,7 +134,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
 
             //Calculate knockback magnitude
-            float KB = (float)(((drifter.DamageTaken / 10f + drifter.DamageTaken * damageDealt / 20f)
+            float KB = (float)(((drifter.DamageTaken / 10f + drifter.DamageTaken * 7f / 20f)
                         * 200 / (drifter.movement.Weight + 100) * 1.4 *
                          ((status.HasStatusEffect(PlayerStatusEffect.EXPOSED) || status.HasStatusEffect(PlayerStatusEffect.FEATHERWEIGHT))
                             ?1.5f:1)) * attackData.KnockbackScale + attackData.Knockback);

@@ -19,7 +19,7 @@ public class PlayerDamageFloater : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (GameController.Instance.IsPaused)
             return;
