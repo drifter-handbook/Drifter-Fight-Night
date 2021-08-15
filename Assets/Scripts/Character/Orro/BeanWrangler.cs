@@ -24,9 +24,11 @@ public class BeanWrangler : NonplayerHurtboxHandler
     public bool canAct = false;
     public bool alive = false;
 
-    Queue<BeanState> states = new Queue<BeanState>();
+    //Queue<BeanState> states = new Queue<BeanState>();
 
-    public struct BeanState
+    BeanState state;
+
+    public class BeanState
     {
         public BeanState(Vector3 pos, int facing)
         {
@@ -59,10 +61,10 @@ public class BeanWrangler : NonplayerHurtboxHandler
 
         if(!GameController.Instance.IsHost)return;
 
-        if(states.Count > 0 && HitstunDuration <=0)
+        if(state!= null && HitstunDuration <=0)
         {
             //Get the next state for bean to move towards
-            targetPos = states.Dequeue();
+            targetPos = state;
 
             //Flip bena to the targeted direction, if he can act
             if(canAct)
@@ -130,7 +132,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
         //If bean is in hitstun, tick down his hitstun counter and remove all unused states
         else if(HitstunDuration >0)
         {
-            states.Clear();
+            state = null;
             HitstunDuration -= Time.deltaTime;
         }
     }
@@ -140,14 +142,14 @@ public class BeanWrangler : NonplayerHurtboxHandler
     public void addBeanState(Vector3 pos,int facingDir)
     {
         if(!GameController.Instance.IsHost)return;
-        states.Enqueue(new BeanState(pos,facingDir));
+        state = new BeanState(pos,facingDir);
     }
 
     //Tells bean to start returning to orro. 
     public void recallBean(Vector3 pos,int facingDir)
     {
         if(!GameController.Instance.IsHost)return;
-        states.Clear();
+        state = null;
         targetPos = new BeanState(pos, facingDir);
         following = true;
     }
@@ -165,12 +167,12 @@ public class BeanWrangler : NonplayerHurtboxHandler
     //Sends bean out at a set speed.
     public void setBean(float speed)
     {
-        if(!GameController.Instance.IsHost)return;
-        states.Clear();
+        if(!GameController.Instance.IsHost || !canAct || !alive)return;
+        state = null;
         following = false;
         transform.localScale = new Vector3(facing * Mathf.Abs(transform.localScale.x),
                         transform.localScale.y, transform.localScale.z); 
-        if(speed >0)
+        if(speed >0 && Vector3.Distance(rb.position,targetPos.Pos) < 2.8f)
             rb.velocity = new Vector3(facing * speed,0,0);
     }
 
@@ -223,7 +225,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
     public void returnToNeutral()
     {
         if(!GameController.Instance.IsHost)return;
-        states.Clear();
+        state = null;
         canAct = true;
         anim.SetState("Bean_Idle");
     }
@@ -233,7 +235,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
     public void setCanAct()
     {
         if(!GameController.Instance.IsHost)return;
-        states.Clear();
+        state = null;
         rb.position = targetPos.Pos;
         canAct = true;
     }
@@ -266,7 +268,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
     public void multihit()
     {
         if(!GameController.Instance.IsHost)return;
-        attacks.SetMultiHitAttackID();    
+        attacks.SetMultiHitAttackID();
     }
 
     //Registers a hit on bean, and handles his counter.

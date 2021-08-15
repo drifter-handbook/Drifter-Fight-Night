@@ -275,6 +275,7 @@ public class OrroReworkMasterHit : MasterHit
     {
         if(!isHost)return;
 
+        base.clearMasterhitVars();
         if(!Empowered)bean.setBean(specialCharge * 4f  + 8f);
         else bean.recallBean(rb.position - new Vector2(-2f * movement.Facing,4f),movement.Facing);
         Empowered =!Empowered;
