@@ -54,7 +54,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Grab",
+                    "name": "Super",
                     "type": "Button",
                     "id": "93e108d5-d6c4-4c75-a366-bb5136a5b802",
                     "expectedControlType": "Button",
@@ -89,6 +89,14 @@
                     "name": "Menu",
                     "type": "Button",
                     "id": "4e0bb105-cedc-4645-bb1b-7c36e1beef9e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Grab",
+                    "type": "Button",
+                    "id": "1b7a1d5e-3592-4e45-ac52-fceb73134524",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -218,23 +226,12 @@
                 },
                 {
                     "name": "",
-                    "id": "4ed682a2-23da-4844-9974-7233cdb6c00f",
-                    "path": "<Gamepad>/rightShoulder",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Grab",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "625ecf7e-8060-4412-914e-8343edbe23df",
                     "path": "<Gamepad>/rightTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Grab",
+                    "action": "Super",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -323,6 +320,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Menu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2347d171-6919-4c8b-a414-4f963e6f8d93",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Grab",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

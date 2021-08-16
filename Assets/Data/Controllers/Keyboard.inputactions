@@ -86,7 +86,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Grab",
+                    "name": "Super",
                     "type": "Button",
                     "id": "5d491792-9a2a-4c00-9c6b-998a3555cc08",
                     "expectedControlType": "Button",
@@ -121,6 +121,14 @@
                     "name": "Menu",
                     "type": "Button",
                     "id": "b0f9d1d8-a458-4daa-b43d-dc49ea450855",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Grab",
+                    "type": "Button",
+                    "id": "c5853b89-57f8-42b8-8097-5a6577e454c1",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -244,7 +252,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Grab",
+                    "action": "Super",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -344,6 +352,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Menu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "69df07ec-a17a-42a6-ab3f-a3cdc5c23f24",
+                    "path": "<Keyboard>/t",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Grab",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

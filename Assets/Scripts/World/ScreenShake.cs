@@ -51,7 +51,11 @@ public class ScreenShake : MonoBehaviour , INetworkInit
    public void startShakeCoroutine(float duration, float magnitude)
    {
       if(!isHost || killing)return;
-      if(CurrentShake != null) StopCoroutine(CurrentShake);
+      if(CurrentShake != null)
+      {
+         StopCoroutine(CurrentShake);
+         CurrentShake = null;
+      } 
       CurrentShake = StartCoroutine(Shake(duration,magnitude));
 
    }
@@ -85,6 +89,7 @@ public class ScreenShake : MonoBehaviour , INetworkInit
 
    		if(!DynamicCamera) transform.localPosition = basePos;
 
+         //StopCoroutine(CurrentShake);
          CurrentShake = null;
 
          yield break;
@@ -116,18 +121,16 @@ public class ScreenShake : MonoBehaviour , INetworkInit
          //If a player has died, remove them from the list for future iterations
       	try{
 
+            if(drifters[i] == null)drifters = drifters.Where(val => val != null).ToArray();
 
-      	
-         if(drifters[i] == null)drifters = drifters.Where(val => val != null).ToArray();
+            Vector2 currPos = drifters[i].gameObject.GetComponent<Rigidbody2D>().position;
+            scaledZoom = Mathf.Max(Vector2.Distance(new Vector2(Mathf.Clamp(currPos.x,-20f,20f),Mathf.Clamp(currPos.y,-10f,30f)),centerpoint),scaledZoom);
+     	   }
+     	   catch(System.IndexOutOfRangeException)
+     	   {
 
-         Vector2 currPos = drifters[i].gameObject.GetComponent<Rigidbody2D>().position;
-         scaledZoom = Mathf.Max(Vector2.Distance(new Vector2(Mathf.Clamp(currPos.x,-20f,20f),Mathf.Clamp(currPos.y,-10f,30f)),centerpoint),scaledZoom);
-     	}
-     	catch(System.IndexOutOfRangeException)
-     	{
-
-     		return 30;
-     	}
+     		  return 30;
+     	   }
 
 
       }
@@ -148,7 +151,11 @@ public class ScreenShake : MonoBehaviour , INetworkInit
       }
 
       //Stops the current screenshake process, if one is active
-      if(CurrentShake != null)StopCoroutine(CurrentShake);
+      if(CurrentShake != null)
+      {
+         StopCoroutine(CurrentShake);
+         CurrentShake = null;
+      }
 
       //Saves Starting position
       //Vector3 origPos = transform.localPosition;

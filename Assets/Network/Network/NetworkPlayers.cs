@@ -104,10 +104,11 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
         input.Jump = playerInputAction.FindAction("Jump").ReadValue<float>() > 0 || playerInputAction.FindAction("Jump Alt").ReadValue<float>() > 0;
         input.Light = playerInputAction.FindAction("Light").ReadValue<float>() > 0;
         input.Special = playerInputAction.FindAction("Special").ReadValue<float>() > 0;
-        input.Super = playerInputAction.FindAction("Grab").ReadValue<float>() > 0;
+        input.Super = playerInputAction.FindAction("Super").ReadValue<float>() > 0;
         input.Guard = playerInputAction.FindAction("Guard 1").ReadValue<float>() > 0;
         input.MoveX = playerInputAction.FindAction("Horizontal").ReadValue<float>();
         input.MoveY = playerInputAction.FindAction("Vertical").ReadValue<float>();
+        input.Grab = playerInputAction.FindAction("Grab").ReadValue<float>() > 0;
 
         input.Pause = playerInputAction.FindAction("Start").ReadValue<float>()>0;
 
@@ -128,6 +129,7 @@ public class PlayerInputData : INetworkData, ICloneable
     public bool Super;
     public bool Guard;
     public bool Pause;
+    public bool Grab;
 
     public object Clone()
     {
@@ -142,6 +144,7 @@ public class PlayerInputData : INetworkData, ICloneable
             Super = Super,
             Guard = Guard,
             Pause = Pause,
+            Grab = Grab,
         };
     }
 
@@ -156,5 +159,6 @@ public class PlayerInputData : INetworkData, ICloneable
         Super = data.Super;
         Guard = data.Guard;
         Pause = data.Pause;
+        Grab = data.Grab;
     }
 }
