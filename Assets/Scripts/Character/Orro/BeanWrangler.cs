@@ -11,13 +11,13 @@ public class BeanWrangler : NonplayerHurtboxHandler
 
     public int charge = 0;
 
-    public float returnSpeed = 15f;
+    public float returnSpeed = 17.5f;
 
     SyncAnimatorStateHost anim;
     PlayerAttacks attacks;
     GameObject Orro;
     BeanState targetPos;
-    Rigidbody2D rb;
+    public Rigidbody2D rb;
     bool following = true;
     float beancountdown = 1f;
 
@@ -149,9 +149,20 @@ public class BeanWrangler : NonplayerHurtboxHandler
     public void recallBean(Vector3 pos,int facingDir)
     {
         if(!GameController.Instance.IsHost)return;
-        state = null;
-        targetPos = new BeanState(pos, facingDir);
-        following = true;
+
+        if(!following)
+        {
+            state = null;
+            targetPos = new BeanState(pos, facingDir);
+            following = true; 
+        }
+        else
+        {
+            state = null;
+            addBeanState(rb.position,facing);
+            following = false;
+        }
+        
     }
 
     //BEAN IS GONE :Crab:

@@ -10,6 +10,8 @@ public class OrroReworkMasterHit : MasterHit
     GameObject beanObject;
     bool beanIsCharging = false;
 
+    Vector3 targetPos;
+
     void Start()
     {
         spawnBean();
@@ -43,7 +45,13 @@ public class OrroReworkMasterHit : MasterHit
             spawnBean();
         }
         //Send bean orros position and direction so he can follow on a delay
-        else bean.addBeanState(rb.position - new Vector2(-1f * movement.Facing, 3f), movement.Facing);
+        else
+        {
+            targetPos = rb.position - new Vector2(-1f * movement.Facing,3f);
+            bean.addBeanState(targetPos,movement.Facing);
+
+            Empowered = Vector3.Distance(targetPos,bean.rb.position) > 2.8f;
+        }
     }
 
     //Enables all relevant flags for orro's neutral special
@@ -264,7 +272,6 @@ public class OrroReworkMasterHit : MasterHit
     //Remove later probably
     public new void returnToIdle()
     {
-        UnityEngine.Debug.Log("ORRO RTI");
         base.returnToIdle();
         specialCharge = 0;
     }
@@ -276,9 +283,9 @@ public class OrroReworkMasterHit : MasterHit
         if(!isHost)return;
 
         base.clearMasterhitVars();
-        if(!Empowered)bean.setBean(specialCharge * 4f  + 8f);
+        if(Vector3.Distance(targetPos,bean.rb.position) <= 2.8f)bean.setBean(specialCharge * 4f  + 8f);
         else bean.recallBean(rb.position - new Vector2(-2f * movement.Facing,4f),movement.Facing);
-        Empowered =!Empowered;
+        //Empowered = true;
         specialCharge = 0;
     }
 
