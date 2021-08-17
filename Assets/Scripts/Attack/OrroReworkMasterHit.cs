@@ -12,6 +12,8 @@ public class OrroReworkMasterHit : MasterHit
 
     Vector3 targetPos;
 
+    bool beanFollowing = true;
+
     void Start()
     {
         spawnBean();
@@ -50,7 +52,7 @@ public class OrroReworkMasterHit : MasterHit
             targetPos = rb.position - new Vector2(-1f * movement.Facing,3f);
             bean.addBeanState(targetPos,movement.Facing);
 
-            Empowered = Vector3.Distance(targetPos,bean.rb.position) > 2.8f;
+            Empowered = !beanFollowing || Vector3.Distance(targetPos,bean.rb.position) > 2.8f;
         }
     }
 
@@ -289,15 +291,19 @@ public class OrroReworkMasterHit : MasterHit
         if(!isHost)return;
 
         base.clearMasterhitVars();
-        if(Vector3.Distance(targetPos,bean.rb.position) <= 2.8f)
+        if(Vector3.Distance(targetPos,bean.rb.position) <= 2.8f && beanFollowing)
         {
             bean.setBean(specialCharge * 4.5f  + 8f);
             refreshBeanHitboxes();
             bean.playFollowState("Bean_Neutral_Special_Fire");
             movement.spawnJuiceParticle(targetPos,MovementParticleMode.Bean_Launch, false);
+            beanFollowing = false;
         }
-        else bean.recallBean(rb.position - new Vector2(-2f * movement.Facing,4f),movement.Facing);
-        //Empowered = true;
+        else
+        {
+            beanFollowing = true;
+            bean.recallBean(rb.position - new Vector2(-2f * movement.Facing,4f),movement.Facing);
+        }
         specialCharge = 0;
     }
 
