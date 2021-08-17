@@ -134,10 +134,9 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
 
             //Calculate knockback magnitude
-            float KB = (float)(((drifter.DamageTaken / 10f + drifter.DamageTaken * 7f / 20f)
-                        * 200 / (drifter.movement.Weight + 100) * 1.4 *
-                         ((status.HasStatusEffect(PlayerStatusEffect.EXPOSED) || status.HasStatusEffect(PlayerStatusEffect.FEATHERWEIGHT))
-                            ?1.5f:1)) * attackData.KnockbackScale + attackData.Knockback);
+            float KB = GetKnockBack(drifter.DamageTaken, drifter.movement.Weight, 
+                                    (status.HasStatusEffect(PlayerStatusEffect.EXPOSED) || status.HasStatusEffect(PlayerStatusEffect.FEATHERWEIGHT)),
+                                    attackData);
 
 
             //COMBO DI
@@ -435,6 +434,11 @@ public class PlayerHurtboxHandler : MonoBehaviour
         }
         
         yield break;
+    }
+
+    protected float GetKnockBack(float damageTaken, float weight, bool strong, SingleAttackData attackData) {
+        return (float)(((damageTaken * 125) / (weight + 100) *
+                         (strong?1.5f:1)) * attackData.KnockbackScale + attackData.Knockback);
     }
 
     // Super-armor logic
