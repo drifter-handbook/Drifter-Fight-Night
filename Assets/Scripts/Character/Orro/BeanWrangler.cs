@@ -82,8 +82,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
                     {
                         percentage = 0;
                         alive = true;
-
-                        //play spawn animation
+                        anim.SetState("Bean_Spawn");
                     }
                 }
 
@@ -110,15 +109,13 @@ public class BeanWrangler : NonplayerHurtboxHandler
                 {
                     //Tick down beans damage when he is attatched to orro
                     if(percentage > 0)percentage -= 2f * Time.deltaTime;
-                    if(!alive && percentage <= 0)
-                    {
-                        anim.SetState("Bean_Spawn");
-                        canAct = false;
-                        percentage = 0;
-                        alive = true;
-                        
-
-                    }
+                    // if(!alive && percentage <= 0)
+                    // {
+                    //     anim.SetState("Bean_Spawn");
+                    //     canAct = false;
+                    //     percentage = 0;
+                    //     alive = true;
+                    // }
 
                     //Follow Logic
                     rb.position =  Vector3.Lerp(rb.position,targetPos.Pos,.25f * beancountdown);
@@ -130,7 +127,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
 
         }
         //If bean is in hitstun, tick down his hitstun counter and remove all unused states
-        else if(HitstunDuration >0)
+        else if(HitstunDuration > 0)
         {
             state = null;
             HitstunDuration -= Time.deltaTime;
@@ -250,6 +247,8 @@ public class BeanWrangler : NonplayerHurtboxHandler
         state = null;
         rb.position = targetPos.Pos;
         canAct = true;
+        following = true;
+        //alive = true;
     }
 
     //Plays a follow up state, ignoring if bean "can act" or not. 
@@ -288,20 +287,24 @@ public class BeanWrangler : NonplayerHurtboxHandler
     public override int RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, DrifterAttackType attackType, SingleAttackData attackData)
     {
 
-        if(following && Vector3.Distance(rb.position,targetPos.Pos) <= 2.8f) return -3;
+        int returnCode = -3;
 
-        int returnCode =  base.RegisterAttackHit(hitbox,hurtbox,attackID,attackType,attackData);
-
-        if(returnCode >= 0)anim.SetState("Hitstun");
-
-        if(percentage > 40f)
+        if(GameController.Instance.IsHost && hitbox.parent != hurtbox.parent && hurtbox.owner != hitbox.parent && !oldAttacks.ContainsKey(attackID))
         {
-            alive = false;
-            canAct = false;
-            anim.SetState("Bean_Death");
-            HitstunDuration = 0f;
-            rb.velocity = Vector3.zero;
-            //Play bean death animation
+            if(following && Vector3.Distance(rb.position,targetPos.Pos) <= 2.8f) return -3;
+
+                returnCode =  base.RegisterAttackHit(hitbox,hurtbox,attackID,attackType,attackData);
+
+                if(returnCode >= 0)anim.SetState("Hitstun");
+
+            if(percentage > 40f)
+            {
+                    alive = false;
+                    canAct = false;
+                    anim.SetState("Bean_Death");
+                    HitstunDuration = 0f;
+                    rb.velocity = Vector3.zero;
+                }
         }
 
         return returnCode;

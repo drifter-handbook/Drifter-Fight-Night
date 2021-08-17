@@ -34,8 +34,6 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
     	    percentage += attackData.AttackDamage;
 
 
-    	    
-
     	   //Calculate the direction for knockback
             float facingDir = Mathf.Sign(hitbox.Facing) == 0 ? 1 : Mathf.Sign(hitbox.Facing);
 
@@ -67,7 +65,7 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
                         *  attackData.KnockbackScale + attackData.Knockback);
 
             //Calculate hitstun duration
-            HitstunDuration = (attackData.HitStun>=0 || attackData.hasStaticHitstun)?attackData.HitStun * framerateScalar:(KB*.006f + .1f);
+            HitstunDuration = (attackData.HitStun >=0 || attackData.hasStaticHitstun)?attackData.HitStun * framerateScalar:(KB*.006f + .1f);
 
 
             //Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f);

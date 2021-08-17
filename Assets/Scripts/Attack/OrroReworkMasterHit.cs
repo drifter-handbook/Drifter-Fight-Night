@@ -113,7 +113,7 @@ public class OrroReworkMasterHit : MasterHit
     {
         if(!isHost)return;
 
-        movement.spawnJuiceParticle(transform.position + new Vector3(0,2,0),MovementParticleMode.Bean_Launch, false);
+        movement.spawnJuiceParticle(transform.position + new Vector3(0,2,0),MovementParticleMode.Orro_Boost, false);
     }
         
     //Adjusts orro's terminal velocity for his down air
