@@ -62,9 +62,7 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
 
 
             //Calculate knockback magnitude
-            float KB = (float)((percentage / 10f + percentage * attackData.AttackDamage / 20f)
-                        * 200 / (180f) * 1.4
-                        *  attackData.KnockbackScale + attackData.Knockback);
+            float KB = GetKnockBack(percentage, 80, false, attackData);
 
             //Calculate hitstun duration
             HitstunDuration = (attackData.HitStun>=0 || attackData.hasStaticHitstun)?attackData.HitStun * framerateScalar:(KB*.006f + .1f);
