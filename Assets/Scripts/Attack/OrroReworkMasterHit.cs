@@ -113,9 +113,8 @@ public class OrroReworkMasterHit : MasterHit
     {
         if(!isHost)return;
 
-        movement.spawnJuiceParticle(transform.position + new Vector3(0,2,0),MovementParticleMode.Orro_Boost, false);
+        movement.spawnJuiceParticle(transform.position + new Vector3(0,2,0),MovementParticleMode.Bean_Launch, false);
     }
-
         
     //Adjusts orro's terminal velocity for his down air
     public void setTerminalVelocity(float vel)
@@ -295,6 +294,7 @@ public class OrroReworkMasterHit : MasterHit
             bean.setBean(specialCharge * 4.5f  + 8f);
             refreshBeanHitboxes();
             bean.playFollowState("Bean_Neutral_Special_Fire");
+            movement.spawnJuiceParticle(targetPos,MovementParticleMode.Bean_Launch, false);
         }
         else bean.recallBean(rb.position - new Vector2(-2f * movement.Facing,4f),movement.Facing);
         //Empowered = true;
