@@ -52,7 +52,7 @@ public class OrroReworkMasterHit : MasterHit
             targetPos = rb.position - new Vector2(-1f * movement.Facing,3f);
             bean.addBeanState(targetPos,movement.Facing);
 
-            Empowered = !beanFollowing || Vector3.Distance(targetPos,bean.rb.position) > 2.8f;
+            Empowered = !beanFollowing || Vector3.Distance(targetPos,bean.rb.position) > 3.8f;
         }
     }
 
@@ -291,7 +291,7 @@ public class OrroReworkMasterHit : MasterHit
         if(!isHost)return;
 
         base.clearMasterhitVars();
-        if(Vector3.Distance(targetPos,bean.rb.position) <= 2.8f && beanFollowing)
+        if(Vector3.Distance(targetPos,bean.rb.position) <= 3.8f && beanFollowing)
         {
             bean.setBean(specialCharge * 4.5f  + 8f);
             refreshBeanHitboxes();

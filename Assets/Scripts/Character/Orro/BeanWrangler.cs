@@ -11,7 +11,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
 
     public int charge = 0;
 
-    public float returnSpeed = 20f;
+    public float returnSpeed = 25f;
 
     SyncAnimatorStateHost anim;
     PlayerAttacks attacks;
@@ -96,7 +96,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
                 }
 
                 //If bean is returning to orro, he will move at a slower speed and not heal
-                if(Vector3.Distance(rb.position,targetPos.Pos) > 2.8f)
+                if(Vector3.Distance(rb.position,targetPos.Pos) > 3.8f)
                 {
                     rb.position =  Vector3.MoveTowards(rb.position,targetPos.Pos,returnSpeed * Time.deltaTime);
                     transform.localScale = new Vector3((targetPos.Pos.x > rb.position.x ? 1f : -1f) * Mathf.Abs(transform.localScale.x),
@@ -174,7 +174,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
         following = false;
         transform.localScale = new Vector3(facing * Mathf.Abs(transform.localScale.x),
                         transform.localScale.y, transform.localScale.z); 
-        if(speed > 0 && Vector3.Distance(rb.position,targetPos.Pos) < 2.8f)
+        if(speed > 0 && Vector3.Distance(rb.position,targetPos.Pos) < 3.8f)
             rb.velocity = new Vector3(facing * speed,0,0);
     }
 
@@ -295,7 +295,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
 
         if(GameController.Instance.IsHost && hitbox.parent != hurtbox.parent && hurtbox.owner != hitbox.parent && !oldAttacks.ContainsKey(attackID))
         {
-            if(following && Vector3.Distance(rb.position,targetPos.Pos) <= 2.8f) return -3;
+            if(following && Vector3.Distance(rb.position,targetPos.Pos) <= 3.8f) return -3;
 
                 returnCode =  base.RegisterAttackHit(hitbox,hurtbox,attackID,attackType,attackData);
 
