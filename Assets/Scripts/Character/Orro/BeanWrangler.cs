@@ -11,7 +11,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
 
     public int charge = 0;
 
-    public float returnSpeed = 17.5f;
+    public float returnSpeed = 20f;
 
     SyncAnimatorStateHost anim;
     PlayerAttacks attacks;
@@ -109,13 +109,6 @@ public class BeanWrangler : NonplayerHurtboxHandler
                 {
                     //Tick down beans damage when he is attatched to orro
                     if(percentage > 0)percentage -= 2f * Time.deltaTime;
-                    // if(!alive && percentage <= 0)
-                    // {
-                    //     anim.SetState("Bean_Spawn");
-                    //     canAct = false;
-                    //     percentage = 0;
-                    //     alive = true;
-                    // }
 
                     //Follow Logic
                     rb.position =  Vector3.Lerp(rb.position,targetPos.Pos,.25f * beancountdown);
@@ -269,6 +262,17 @@ public class BeanWrangler : NonplayerHurtboxHandler
         if(!GameController.Instance.IsHost || !canAct || !alive)return;
 
         canAct = false;
+
+        transform.localScale = new Vector3(targetPos.Facing * Mathf.Abs(transform.localScale.x),
+                    transform.localScale.y, transform.localScale.z); 
+        anim.SetState(stateName);
+    }
+
+
+    //Plays an animation for bean, if he can act and is alive
+    public void playChargeState(String stateName)
+    {
+        if(!GameController.Instance.IsHost || HitstunDuration >0  || !canAct || !alive)return;
 
         transform.localScale = new Vector3(targetPos.Facing * Mathf.Abs(transform.localScale.x),
                     transform.localScale.y, transform.localScale.z); 

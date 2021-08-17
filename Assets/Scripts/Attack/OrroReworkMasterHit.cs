@@ -162,21 +162,21 @@ public class OrroReworkMasterHit : MasterHit
     {
         if(!isHost)return;
         refreshBeanHitboxes();
-        bean.playState("Bean_Side_Special");
+        bean.playChargeState("Bean_Side_Special");
     }
 
     public void BeanNeutralSpecial()
     {
         if(!isHost)return;
         refreshBeanHitboxes();
-        bean.playState("Bean_Neutral_Special");
+        bean.playChargeState("Bean_Neutral_Special");
     }
 
     public void BeanDownSpecial()
     {
         if(!isHost)return;
         refreshBeanHitboxes();
-        bean.playState("Bean_Down_Special");
+        bean.playChargeState("Bean_Down_Special");
     }
 
     public void BeanDownSpecialBurst()
