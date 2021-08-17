@@ -80,6 +80,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
             )
 
         {
+            attackWasCanceled = false;
             playQueuedState();
             clearMasterhitVars();
         }

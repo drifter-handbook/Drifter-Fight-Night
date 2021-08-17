@@ -9,6 +9,8 @@ public class DrifterCannonMasterHit : MasterHit
     bool jumpGranted = false;
     int charge = 1;
 
+    public SyncAnimatorStateHost sparkle;
+
     new void Update()
     {
     	if(!isHost)return;
@@ -16,12 +18,12 @@ public class DrifterCannonMasterHit : MasterHit
     	if(status.HasStatusEffect(PlayerStatusEffect.DEAD))
     	{
     		Empowered = false;
+            sparkle.SetState("Hide");
             jumpGranted = false;
     		SetCharge(1);
     	}
 
         if(jumpGranted && movement.grounded)jumpGranted = false;
-
     }
 
     public void SairExplosion()
@@ -154,6 +156,9 @@ public class DrifterCannonMasterHit : MasterHit
     	if(!isHost)return;
     	this.charge = charge;
     	Empowered = (charge == 3);
+
+        if(Empowered)sparkle.SetState("ChargeIndicator");
+        else sparkle.SetState("Hide");
 
     	drifter.WalkStateName = Empowered?"Walk_Ranch":"Walk";
         drifter.GroundIdleStateName = Empowered?"Idle_Ranch":"Idle";

@@ -166,6 +166,13 @@ public class OrroReworkMasterHit : MasterHit
         bean.playState("Bean_Side_Special");
     }
 
+    public void BeanNeutralSpecial()
+    {
+        if(!isHost)return;
+        refreshBeanHitboxes();
+        bean.playState("Bean_Neutral_Special");
+    }
+
     public void BeanDownSpecial()
     {
         if(!isHost)return;
@@ -283,7 +290,12 @@ public class OrroReworkMasterHit : MasterHit
         if(!isHost)return;
 
         base.clearMasterhitVars();
-        if(Vector3.Distance(targetPos,bean.rb.position) <= 2.8f)bean.setBean(specialCharge * 4f  + 8f);
+        if(Vector3.Distance(targetPos,bean.rb.position) <= 2.8f)
+        {
+            bean.setBean(specialCharge * 4.5f  + 8f);
+            refreshBeanHitboxes();
+            bean.playFollowState("Bean_Neutral_Special_Fire");
+        }
         else bean.recallBean(rb.position - new Vector2(-2f * movement.Facing,4f),movement.Facing);
         //Empowered = true;
         specialCharge = 0;

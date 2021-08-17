@@ -134,6 +134,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
         {
             state = null;
             HitstunDuration -= Time.deltaTime;
+            if(HitstunDuration <=0)returnToNeutral();
         }
     }
 
@@ -178,12 +179,12 @@ public class BeanWrangler : NonplayerHurtboxHandler
     //Sends bean out at a set speed.
     public void setBean(float speed)
     {
-        if(!GameController.Instance.IsHost || !canAct || !alive)return;
+        if(!GameController.Instance.IsHost || HitstunDuration > 0f || !alive)return;
         state = null;
         following = false;
         transform.localScale = new Vector3(facing * Mathf.Abs(transform.localScale.x),
                         transform.localScale.y, transform.localScale.z); 
-        if(speed >0 && Vector3.Distance(rb.position,targetPos.Pos) < 2.8f)
+        if(speed > 0 && Vector3.Distance(rb.position,targetPos.Pos) < 2.8f)
             rb.velocity = new Vector3(facing * speed,0,0);
     }
 
@@ -290,6 +291,8 @@ public class BeanWrangler : NonplayerHurtboxHandler
         if(following && Vector3.Distance(rb.position,targetPos.Pos) <= 2.8f) return -3;
 
         int returnCode =  base.RegisterAttackHit(hitbox,hurtbox,attackID,attackType,attackData);
+
+        if(returnCode >= 0)anim.SetState("Hitstun");
 
         if(percentage > 40f)
         {
