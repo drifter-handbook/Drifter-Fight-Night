@@ -13,7 +13,6 @@ public class PlayerMovement : MonoBehaviour
     public float airAccelerationTime = .8f;
     public float airSpeed = 15f;
     public float terminalVelocity = 25f;
-    public float fastFallTerminalVelocity = 55f;
     public bool flipSprite = false;
     public float jumpHeight = 20f;
     public float jumpTime = 1f;

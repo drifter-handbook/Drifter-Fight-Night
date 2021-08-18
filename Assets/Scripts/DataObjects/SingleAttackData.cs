@@ -40,4 +40,7 @@ public class SingleAttackData : ScriptableObject
     public PlayerStatusEffect StatusEffect = PlayerStatusEffect.HIT;
     public float StatusDuration = .1f;
     public AttackFXSystem HitFX = null;
+
+    public bool canHitGrounded = true;
+    public bool canHitAerial = true;
 }

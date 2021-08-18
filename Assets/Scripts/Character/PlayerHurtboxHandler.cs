@@ -64,6 +64,10 @@ public class PlayerHurtboxHandler : MonoBehaviour
             //Ignore the collision if invulnerable or You try to grab a planted opponenet
             if(status.HasStatusEffect(PlayerStatusEffect.INVULN) || (status.HasStatusEffect(PlayerStatusEffect.PLANTED) && attackData.StatusEffect == PlayerStatusEffect.GRABBED))return -3;
 
+
+            //Whiff on grounded or aerial when applicable
+            if((!attackData.canHitGrounded && drifter.movement.grounded) ||(!attackData.canHitAerial && !drifter.movement.grounded))return -3;
+
             Drifter attacker = hitbox.parent.GetComponent<Drifter>();
             attacker.canFeint = false;
 

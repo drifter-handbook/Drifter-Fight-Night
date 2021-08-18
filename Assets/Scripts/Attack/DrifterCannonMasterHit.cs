@@ -5,7 +5,7 @@ using UnityEngine;
 public class DrifterCannonMasterHit : MasterHit
 {
 
-    float boostTime = 1.3f;
+    float boostTime = 2.6f;
     bool jumpGranted = false;
     int charge = 1;
 
@@ -123,7 +123,7 @@ public class DrifterCannonMasterHit : MasterHit
     public void applyLandingLag()
     {
         movement.canLandingCancel = true;
-        boostTime = 1.3f;
+        boostTime = 2.6f;
     }
 
      public void upWGlide()

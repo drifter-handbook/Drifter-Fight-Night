@@ -5,8 +5,6 @@ using UnityEngine;
 public class NeoBojoMasterHit : MasterHit
 {
 
-
-
     public void SpawnDownTiltWave()
     {
         if(!isHost)return;
@@ -25,6 +23,21 @@ public class NeoBojoMasterHit : MasterHit
             hitbox.Active = true;
             hitbox.Facing = facing;
        }
+    }
+
+    public void whirl()
+    {
+        if(!isHost)return;
+
+        movement.spawnJuiceParticle(transform.position ,MovementParticleMode.Bojo_Whirl, false);
+    }
+
+
+    public void setTerminalVelocity(float vel)
+    {
+        if(!isHost)return;
+        movement.canLandingCancel = false;  
+        movement.terminalVelocity = vel;
     }
 
 
