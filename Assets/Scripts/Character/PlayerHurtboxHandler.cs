@@ -50,7 +50,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
         {
             
             // register new attack
-            oldAttacks[attackID] = Time.time;
+            
             // apply hit effects
             hitbox.parent.GetComponent<PlayerAttacks>().Hit(attackType, attackID, hurtbox.parent);
 
@@ -61,12 +61,17 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
             float damageDealt = 0f;
 
+
+            //Whiff on grounded or aerial when applicable
+            if((!attackData.canHitGrounded && drifter.movement.grounded) ||(!attackData.canHitAerial && !drifter.movement.grounded))return -3;
+
+            oldAttacks[attackID] = Time.time;
+
             //Ignore the collision if invulnerable or You try to grab a planted opponenet
             if(status.HasStatusEffect(PlayerStatusEffect.INVULN) || (status.HasStatusEffect(PlayerStatusEffect.PLANTED) && attackData.StatusEffect == PlayerStatusEffect.GRABBED))return -3;
 
 
-            //Whiff on grounded or aerial when applicable
-            if((!attackData.canHitGrounded && drifter.movement.grounded) ||(!attackData.canHitAerial && !drifter.movement.grounded))return -3;
+            
 
             Drifter attacker = hitbox.parent.GetComponent<Drifter>();
             attacker.canFeint = false;
