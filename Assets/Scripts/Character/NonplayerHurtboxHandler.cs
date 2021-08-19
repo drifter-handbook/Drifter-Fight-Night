@@ -5,6 +5,7 @@ using UnityEngine;
 public class NonplayerHurtboxHandler : PlayerHurtboxHandler
 {
 
+    protected bool takesKnockback = true;
 	public float percentage = 0f;
     protected float HitstunDuration = 0;
 
@@ -78,13 +79,13 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
 
             //If the defender is grounded, use the absolute value of the y component of the velocity
             //This prevents grounded opponents from getting stuck when spiked on the ground
-            if(attackData.Knockback > 0 && attackData.AngleOfImpact > -361){
+            if(attackData.Knockback > 0 && attackData.AngleOfImpact > -361 && takesKnockback){
                 GetComponent<Rigidbody2D>().velocity = new Vector2(forceDir.normalized.x * KB, forceDir.normalized.y * KB);
 
             }
 
             //Autolink angle (<361) scales its magnitude with distacne from said point, further scaled with the attacker's velocity
-            else if(attackData.Knockback > 0 && attackData.AngleOfImpact <= -361){
+            else if(attackData.Knockback > 0 && attackData.AngleOfImpact <= -361 && takesKnockback){
                 GetComponent<Rigidbody2D>().velocity = hitbox.parent.GetComponent<Rigidbody2D>().velocity * (1 + attackData.KnockbackScale);
             }
 
