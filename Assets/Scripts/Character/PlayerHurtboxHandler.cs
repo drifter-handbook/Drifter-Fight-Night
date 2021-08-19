@@ -446,7 +446,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
     }
 
     protected float GetKnockBack(float damageTaken, float weight, bool strong, SingleAttackData attackData) {
-        return (float)(((damageTaken * 125) / (weight + 100) *
+        return (float)(((damageTaken * 125f) / (weight + 100f) *
                          (strong?1.5f:1)) * attackData.KnockbackScale + attackData.Knockback);
     }
 
