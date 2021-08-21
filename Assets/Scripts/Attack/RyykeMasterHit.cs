@@ -25,7 +25,7 @@ public class RyykeMasterHit : MasterHit
         if(status.HasStatusEffect(PlayerStatusEffect.DEAD))
         {
        		for(int i = 0; i <3; i++)
-       			Destroy(tombstones[i]);
+       			Destroy(tombstones[i].gameObject);
         }
 
         isNearStone();
@@ -90,7 +90,7 @@ public class RyykeMasterHit : MasterHit
         	if(tombstones[i] != null && Vector3.Distance(rb.position,(tombstones[i].rb.position + stoneOffset) ) < 4.5f)
         	{
         		if(!Empowered)sparkle.SetState("ChargeIndicator");
-        		nearbyStone = i;
+        		if(tombstones[i].canAct)nearbyStone = i;
         		Empowered= true;
         		if(!tombstones[i].active)tombstones[i].playAnimation("Activate",true,true);
         		tombstones[i].active = true;
@@ -131,7 +131,7 @@ public class RyykeMasterHit : MasterHit
     	{
     		refeshStoneHitboxes(tombstones[nearbyStone]);
     		tombstones[nearbyStone].playAnimation(state,false,true);
-    		decrementStoneUses();
+    		//decrementStoneUses();
     	}
     }
 
