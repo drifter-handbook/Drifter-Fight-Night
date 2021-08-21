@@ -703,7 +703,7 @@ public class PlayerMovement : MonoBehaviour
     public void superCancel()
     {
 
-        if(!GameController.Instance.IsHost || drifter.superCharge < 1f || status.HasStatusEffect(PlayerStatusEffect.DEAD))return;
+        if(!GameController.Instance.IsHost || drifter.superCharge < 1f || status.HasStatusEffect(PlayerStatusEffect.DEAD) || !drifter.canSuper)return;
 
         //Hyperguard
         if(status.HasStatusEffect(PlayerStatusEffect.KNOCKBACK) && drifter.guarding && !drifter.guardBreaking  && drifter.superCharge > 1f)
@@ -755,6 +755,7 @@ public class PlayerMovement : MonoBehaviour
     private void spawnSuperParticle(string mode,float cost)
     {
 
+        drifter.canSuper = false;
         attacks.SetupAttackID(DrifterAttackType.Super_Cancel);
         Vector3 flip = new Vector3(Facing * 10f, 10f, 0f);
         //Vector3 pos = new Vector3(Facing * 3f, 3.5f, 1f);

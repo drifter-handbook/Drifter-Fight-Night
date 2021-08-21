@@ -14,6 +14,11 @@ public class InstantiatedEntityCleanup : MonoBehaviour
 		}
 	}
 
+	void OnTriggerExit2D(Collider2D other)
+	{
+		if(other.gameObject.tag == "Killzone")
+			Destroy(gameObject);
+	}
 
 	IEnumerator decay(){
         yield return new WaitForSeconds(duration);

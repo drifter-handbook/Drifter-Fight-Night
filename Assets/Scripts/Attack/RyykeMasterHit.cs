@@ -54,14 +54,14 @@ public class RyykeMasterHit : MasterHit
        foreach (HurtboxCollision hurtbox in stone.GetComponentsInChildren<HurtboxCollision>(true))
             hurtbox.owner = drifter.gameObject;
 
+
+      
+
        for(int i = 0; i <3; i++)
        {
        		if(tombstones[i] == null)
        		{
-       			tombstones[i] = stone.GetComponent<Tombstone>();
-       			stone.GetComponent<SyncAnimatorStateHost>().SetState(i + "_Idle");
        			tombstoneIndex = i;
-       			tombstones[i].tombstoneType = i;
        			i = 3;
        			stonesFull = false;
        		}
@@ -71,37 +71,83 @@ public class RyykeMasterHit : MasterHit
        {
        		tombstoneIndex++;
        		if(tombstoneIndex >2)tombstoneIndex = 0;
-       		stone.GetComponent<SyncAnimatorStateHost>().SetState(tombstoneIndex + "_Idle");
        		Destroy(tombstones[tombstoneIndex].gameObject);
-       		tombstones[tombstoneIndex] = stone.GetComponent<Tombstone>();
-       		tombstones[tombstoneIndex].tombstoneType = tombstoneIndex;
        }
 
+       stone.GetComponent<SyncAnimatorStateHost>().SetState(tombstoneIndex + "_Idle");
        stone.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
-       
+       tombstones[tombstoneIndex] = stone.GetComponent<Tombstone>();
+       tombstones[tombstoneIndex].tombstoneType = tombstoneIndex;
+       tombstones[tombstoneIndex].facing = facing;
+       tombstones[tombstoneIndex].attacks = attacks;       
     }
-
-    public void decrementStoneUses()
-    {
-    	if(Empowered && nearbyStone >=0)tombstones[nearbyStone].Uses--;
-    }
-
 
     void isNearStone()
     {
+    	bool reset = true;
     	for(int i = 0; i <3; i++)
     	{
-        	if(tombstones[i] != null && Vector3.Distance(rb.position,(tombstones[i].rb.position + stoneOffset)) < 4.5f)
+        	if(tombstones[i] != null && Vector3.Distance(rb.position,(tombstones[i].rb.position + stoneOffset) ) < 4.5f)
         	{
-        		sparkle.SetState("ChargeIndicator");
+        		if(!Empowered)sparkle.SetState("ChargeIndicator");
         		nearbyStone = i;
         		Empowered= true;
-        		return;
+        		if(!tombstones[i].active)tombstones[i].playAnimation("Activate",true,true);
+        		tombstones[i].active = true;
+        		reset = false;
+        	}
+        	else if(tombstones[i] != null && Vector3.Distance(rb.position,(tombstones[i].rb.position + stoneOffset) ) >= 4.5f)
+        	{
+        		//Deactivate tombstones that are not nearby
+        		if(tombstones[i].active)tombstones[i].playAnimation("Deactivate",false,true);
+        		tombstones[i].active = false;
+        		
         	}
     	}
-    	Empowered = false;
-    	nearbyStone = -1;
-    	sparkle.SetState("Hide");
+    	if(reset)
+    	{
+    		if(Empowered)sparkle.SetState("Hide");
+    		Empowered = false;
+    		nearbyStone = -1;
+    	}
+    	
+    }
+
+
+    
+
+    //Zombie Methods
+
+    public void decrementStoneUses()
+    {
+    	if(tombstones[nearbyStone] !=  null && Empowered && nearbyStone >=0)tombstones[nearbyStone].Uses--;
+    }
+
+
+    public void Command(string state)
+    {
+    	if(!isHost)return;
+    	if(tombstones[nearbyStone] !=  null && tombstones[nearbyStone].active)
+    	{
+    		refeshStoneHitboxes(tombstones[nearbyStone]);
+    		tombstones[nearbyStone].playAnimation(state,false,true);
+    		decrementStoneUses();
+    	}
+    }
+
+    public void refeshStoneHitboxes(Tombstone stone)
+    {
+    	if(!isHost)return;
+
+        stone.updateDirection(movement.Facing);
+
+        foreach (HitboxCollision hitbox in stone.gameObject.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Facing = stone.facing;
+        }
+
     }
 
     //Inhereted Roll Methods

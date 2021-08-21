@@ -24,9 +24,7 @@ public class MovingProjectileUtil : MonoBehaviour
     public void setXVelocity(float x)
     {
         if(!GameController.Instance.IsHost)return;
-
-        UnityEngine.Debug.Log(Mathf.Sign(rb.velocity.x) * x );
-        rb.velocity = new Vector2( Mathf.Sign(rb.velocity.x) * x ,rb.velocity.y);
+        rb.velocity = new Vector2( Mathf.Sign(gameObject.transform.localScale.x) * x ,rb.velocity.y);
     }
 
     public void setGravity(float gravity)

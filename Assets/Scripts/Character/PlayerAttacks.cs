@@ -120,7 +120,7 @@ public class PlayerAttacks : MonoBehaviour
 
             if(!specialPressed) specialPressed = !drifter.input[i+2].Special &&  drifter.input[i+1].Special && drifter.input[i].Special;
 
-            if(!superPressed) superPressed = !drifter.input[i+1].Super  && drifter.input[i].Super;
+            if(!superPressed) superPressed = !drifter.input[i+2].Super && drifter.input[i+1].Super && drifter.input[i].Super;
 
             if(!grabPressed)
                 grabPressed = 

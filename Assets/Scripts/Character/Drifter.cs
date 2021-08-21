@@ -114,6 +114,8 @@ public class Drifter : MonoBehaviour, INetworkInit
     public bool guardBreaking = false;
     [NonSerialized]
     public bool canFeint = true;
+    [NonSerialized]
+    public bool canSuper = true;
 
     public void OnNetworkInit()
     {
@@ -229,6 +231,7 @@ public class Drifter : MonoBehaviour, INetworkInit
         movement.canLandingCancel = false;
         movement.jumping = false;
         canFeint = true;
+        canSuper = true;
         clearGuardFlags();
         if(movement.grounded)animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState(GroundIdleStateName,animationLayer);
         else animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState(AirIdleStateName,animationLayer);
