@@ -513,19 +513,22 @@ public class PlayerMovement : MonoBehaviour
         
     }
 
-    //Preforms a dodge roll, granitn temporary I-Frames
-    public void roll()
+    //Moves the character left or right, based on the speed provided
+    public void move(float speed)
     {
+        if(accelerationPercent >0) accelerationPercent -= Time.deltaTime/airAccelerationTime;
+        else accelerationPercent = 0;
 
-        ContactPoint2D[] contacts = new ContactPoint2D[1];
-        bool groundFrictionPosition = frictionCollider.GetContacts(contacts) >0;
-
-        drifter.PlayAnimation("Roll");
-        if(groundFrictionPosition) spawnJuiceParticle(new Vector2(-Facing * (flipSprite?-1:1)* 1.5f,0) + contacts[0].point, MovementParticleMode.KickOff);
-        drifter.parrying = false;
-        drifter.perfectGuarding = false;
         updateFacing();
+
+        if(drifter.input[0].MoveX != 0)
+        {
+            currentSpeed = speed * (status.HasStatusEffect(PlayerStatusEffect.SLOWED) ? .6f: 1f) * (status.HasStatusEffect(PlayerStatusEffect.SPEEDUP) ? 1.5f: 1f) * (drifter.input[0].MoveX > 0 ? 1 : -1);
+            rb.velocity = new Vector2(Mathf.Lerp(currentSpeed,rb.velocity.x,accelerationPercent), rb.velocity.y);
+        }
+        
     }
+    
 
     //Made it public for treamlining channeled attack cancels
     public void techParticle()

@@ -8,14 +8,30 @@ public class RyykeMasterHit : MasterHit
 	public SyncAnimatorStateHost sparkle;
 
 
+	bool listeningForDirection = false;
+	bool listeningForMovement = false;
+	bool burrowing = false;
+
 	//0 Up stone
 	//1 Side Stone
 	//2 Down Stone
 	Tombstone[] tombstones = new Tombstone[] {null,null,null};
+
+
+
+	//Constant vector to offset stone detection range
+	Vector2 stoneOffset = new Vector2(0,2);
+
+	//Index of the next stone to place
 	int tombstoneIndex = 0;
+
+	//The current closest active stone
 	int nearbyStone = -1;
 
-	Vector2 stoneOffset = new Vector2(0,2);
+	//The current stone being targeted for teleportation with down special
+	int targetStone = -1;
+
+
 
 	new void Update()
     {
@@ -26,6 +42,28 @@ public class RyykeMasterHit : MasterHit
         {
        		for(int i = 0; i <3; i++)
        			Destroy(tombstones[i].gameObject);
+        }
+
+        if(listeningForDirection)
+        {
+        	targetStone = nearbyStone;
+        	if(drifter.input[0].MoveY  !=0 || drifter.input[0].MoveX != 0)
+      		{
+        		if(drifter.input[0].MoveY > 0 && drifter.input[1].MoveY  <= 0) targetStone = 0;
+        		else if(drifter.input[0].MoveY < 0) targetStone = 2;
+        		else targetStone = 1;
+        		playState("W_Down_Emerge_Empowered");
+        	}
+        	
+        }
+        else
+        	targetStone = -1;
+
+        if(listeningForMovement)
+        {
+        	movement.move(14f);
+        	if(!drifter.input[1].Jump && drifter.input[0].Jump)
+        		playState("W_Down_Emerge");
         }
 
         isNearStone();
@@ -54,8 +92,6 @@ public class RyykeMasterHit : MasterHit
        foreach (HurtboxCollision hurtbox in stone.GetComponentsInChildren<HurtboxCollision>(true))
             hurtbox.owner = drifter.gameObject;
 
-
-      
 
        for(int i = 0; i <3; i++)
        {
@@ -87,16 +123,17 @@ public class RyykeMasterHit : MasterHit
     	bool reset = true;
     	for(int i = 0; i <3; i++)
     	{
-        	if(tombstones[i] != null && Vector3.Distance(rb.position,(tombstones[i].rb.position + stoneOffset) ) < 4.5f)
+        	if(tombstones[i] != null && Vector3.Distance(rb.position,(tombstones[i].rb.position + stoneOffset) ) < 4.5f && !burrowing)
         	{
         		if(!Empowered)sparkle.SetState("ChargeIndicator");
         		if(tombstones[i].canAct)nearbyStone = i;
-        		Empowered= true;
         		if(!tombstones[i].active)tombstones[i].playAnimation("Activate",true,true);
+
         		tombstones[i].active = true;
+        		Empowered= true;
         		reset = false;
         	}
-        	else if(tombstones[i] != null && Vector3.Distance(rb.position,(tombstones[i].rb.position + stoneOffset) ) >= 4.5f)
+        	else if(tombstones[i] != null && (Vector3.Distance(rb.position,(tombstones[i].rb.position + stoneOffset) ) >= 4.5f || status.HasStunEffect() || burrowing))
         	{
         		//Deactivate tombstones that are not nearby
         		if(tombstones[i].active)tombstones[i].playAnimation("Deactivate",false,true);
@@ -112,9 +149,6 @@ public class RyykeMasterHit : MasterHit
     	}
     	
     }
-
-
-    
 
     //Zombie Methods
 
@@ -148,6 +182,65 @@ public class RyykeMasterHit : MasterHit
             hitbox.Facing = stone.facing;
         }
 
+    }
+
+    //W_Down Methods
+
+    //Up Special empowered
+    public void listenForDirection()
+    {
+        if(!isHost)return;
+        listeningForDirection = true;
+        isNearStone();
+    }
+
+    public void burrow()
+    {
+        if(!isHost)return;
+        burrowing = true;
+    }
+
+    public void moveWhileBurrowed(int moveFlag)
+    {
+        if(!isHost)return;
+        listeningForMovement = (moveFlag != 0);
+    }
+
+    public void warpToStone()
+    {
+    	if(!isHost)return;
+    	if(targetStone != -1 && tombstones[targetStone] != null)
+    			rb.position = tombstones[targetStone].gameObject.transform.position;
+
+    	listeningForDirection = false;
+
+    	burrowing = false;
+    	targetStone = -1;
+    	
+    }
+
+    //Adjusts Ryyke's terminal velocity for his down air
+    public void setTerminalVelocity(float vel)
+    {
+        if(!isHost)return;
+        movement.canLandingCancel = false;  
+        movement.terminalVelocity = vel;
+    }
+
+    //Returns Ryyke's TV to normal at the end of the move
+    public void resetTerminalVelocity()
+    {
+        if(!isHost)return; 
+        movement.terminalVelocity = terminalVelocity;
+    }
+
+
+    public new void returnToIdle()
+    {
+        base.returnToIdle();
+        listeningForDirection = false;
+        listeningForMovement = false;
+        burrowing = false;
     }
 
     //Inhereted Roll Methods
