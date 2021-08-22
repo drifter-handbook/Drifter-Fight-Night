@@ -20,11 +20,9 @@ public class OrroReworkMasterHit : MasterHit
         Empowered = false;
     }
 
-    new void Update()
+    void Update()
     {
         if(!isHost)return;
-
-        base.Update();
 
         //If orro cancles, or is hit out of a move where bean charges, cancel that move
         //Note, bean continues doing the move if orro Byzantine Cancels the move

@@ -7,21 +7,29 @@ public class Tombstone : NonplayerHurtboxHandler
 {
 
 	public int Uses = 3;
-	public Rigidbody2D rb;
+	
 	public int tombstoneType = 0;
 	public bool canAct = false;
 	public bool active = false;
 	public PlayerAttacks attacks;
 	public int facing;
 
-	public Collider2D physicsCollider; 
+
+	public WalkOff ledgeDetector;
+
+	bool isHost;
+
+	Collider2D physicsCollider; 
+
+	Rigidbody2D rb;
 
 	SyncAnimatorStateHost anim;
 
-	public bool listeningForGrounded = false;
+	bool listeningForGrounded = false;
+	float distanceFromParent = 0;
 
-
-	bool isHost;
+	//Const Vector offset
+	Vector2 offset = new Vector2(0,2);
 
 	// Start is called before the first frame update
     void Awake()
@@ -30,11 +38,12 @@ public class Tombstone : NonplayerHurtboxHandler
     	if(!isHost)return;
     	rb = GetComponent<Rigidbody2D>();
     	anim = GetComponent<SyncAnimatorStateHost>();
+    	physicsCollider = GetComponent<PolygonCollider2D>();
     	
     }
 
     // // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
     	if(!isHost)return;
     	if(Uses <=0 && canAct)Destroy(gameObject);
@@ -100,25 +109,43 @@ public class Tombstone : NonplayerHurtboxHandler
     public void returnToIdle()
     {
     	if(!isHost)return;
-    	canAct = true;
-    	if(active)
+
+    	if(active && distanceFromParent < 4.5f)
 			anim.SetState("Active_Idle");
+	
+		else if(!canAct && !active)
+			anim.SetState("Deactivate");
 		else
 			anim.SetState(tombstoneType + "_Idle");
 
-    }
+		//else
+			
+		listeningForGrounded = false;
+		ledgeDetector.setPreventWalkoff(false);
+		canAct = true;
 
-    //Refreshes the tombstone's hitboxes so it can multihit
-    public void multihit()
-    {
-        if(!isHost)return;
-        attacks.SetMultiHitAttackID();
     }
 
     public void listenForGrounded()
     {
     	if(!isHost)return;
     	listeningForGrounded = true;
+    }
+
+    public void listenForLedge()
+    {
+    	if(!isHost)return;
+
+    	ledgeDetector.togglePreventWalkoff();
+    }
+    
+    public float getDistance(Vector3 parent)
+    {
+    	if(!isHost) return 99;
+
+    	distanceFromParent = Vector3.Distance(parent,rb.position + offset);
+
+    	return distanceFromParent;
     }
 
 

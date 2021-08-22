@@ -14,11 +14,9 @@ public class MaryamMasterHit : MasterHit
         SetStance(Empowered?1:0);
     }
 
-    new void Update()
+    void Update()
     {
         if(!isHost)return;
-
-        base.Update();      
 
         if(movement.terminalVelocity != terminalVelocity  && (movement.ledgeHanging || status.HasEnemyStunEffect()))
         {

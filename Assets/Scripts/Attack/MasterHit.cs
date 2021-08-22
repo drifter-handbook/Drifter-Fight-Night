@@ -15,6 +15,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     protected float gravityScale;
     protected PlayerAttacks attacks;
     protected Animator anim;
+    protected WalkOff ledgeDetector;
 
     protected float framerateScalar =.0833333333f;
 
@@ -62,7 +63,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
 
     //Every frame, listen for a given event if the flag is active
-    protected void Update()
+    protected void FixedUpdate()
     {
         if(!isHost)return;
         attackWasCanceled = true;
@@ -195,6 +196,20 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         specialCharge += charge;
     }
 
+    public void listenForLedge()
+    {
+        if(!isHost)return;
+
+        ledgeDetector.togglePreventWalkoff();
+    }
+
+    public void listenForLedge(bool toggle)
+    {
+        if(!isHost)return;
+
+        ledgeDetector.setPreventWalkoff(toggle);
+    }
+
 
     //Clear all flags
     public void clearMasterhitVars()
@@ -210,7 +225,8 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         queuedStateTrigger = false;
         jumpFlag = false;
         specialLimit = -1;
-        queuedState = ""; 
+        queuedState = "";
+        ledgeDetector.setPreventWalkoff(false);
     }
 
 
@@ -232,8 +248,8 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         attacks = drifter.GetComponent<PlayerAttacks>();
         status = drifter.GetComponent<PlayerStatus>();
         anim = drifter.GetComponent<Animator>();
-
-        //frictionCollider = drifter.GetComponent<PolygonCollider2D>();
+        ledgeDetector = GetComponentInChildren<WalkOff>();
+        ledgeDetector.rb = rb;
 
         terminalVelocity = movement.terminalVelocity;
         gravityScale = rb.gravityScale;

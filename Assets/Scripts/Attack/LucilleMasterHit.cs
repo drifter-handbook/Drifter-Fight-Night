@@ -18,10 +18,9 @@ public class LucilleMasterHit : MasterHit
 
     //Coroutine riftDetonation;
 
-    new void Update()
+    void Update()
     {
         if(!isHost)return;
-        base.Update();
         if(movement.terminalVelocity !=  terminalVelocity && (movement.ledgeHanging || status.HasEnemyStunEffect()))
         {
             resetTerminal();

@@ -7,7 +7,6 @@ public class RyykeMasterHit : MasterHit
 
 	public SyncAnimatorStateHost sparkle;
 
-
 	bool listeningForDirection = false;
 	bool listeningForMovement = false;
 	bool burrowing = false;
@@ -17,10 +16,6 @@ public class RyykeMasterHit : MasterHit
 	//2 Down Stone
 	Tombstone[] tombstones = new Tombstone[] {null,null,null};
 
-
-
-	//Constant vector to offset stone detection range
-	Vector2 stoneOffset = new Vector2(0,2);
 
 	//Index of the next stone to place
 	int tombstoneIndex = 0;
@@ -33,11 +28,11 @@ public class RyykeMasterHit : MasterHit
 
 
 
-	new void Update()
+	new void FixedUpdate()
     {
         if(!isHost)return;
 
-        base.Update();
+        base.FixedUpdate();
         if(status.HasStatusEffect(PlayerStatusEffect.DEAD))
         {
        		for(int i = 0; i <3; i++)
@@ -121,24 +116,33 @@ public class RyykeMasterHit : MasterHit
     void isNearStone()
     {
     	bool reset = true;
+    	float bestDistance = 100f;
     	for(int i = 0; i <3; i++)
     	{
-        	if(tombstones[i] != null && Vector3.Distance(rb.position,(tombstones[i].rb.position + stoneOffset) ) < 4.5f && !burrowing)
-        	{
-        		if(!Empowered)sparkle.SetState("ChargeIndicator");
-        		if(tombstones[i].canAct)nearbyStone = i;
-        		if(!tombstones[i].active)tombstones[i].playAnimation("Activate",true,true);
-
-        		tombstones[i].active = true;
-        		Empowered= true;
-        		reset = false;
-        	}
-        	else if(tombstones[i] != null && (Vector3.Distance(rb.position,(tombstones[i].rb.position + stoneOffset) ) >= 4.5f || status.HasStunEffect() || burrowing))
-        	{
-        		//Deactivate tombstones that are not nearby
-        		if(tombstones[i].active)tombstones[i].playAnimation("Deactivate",false,true);
-        		tombstones[i].active = false;
-        		
+    		if(tombstones[i] != null)
+    		{
+    			float distance = tombstones[i].getDistance(rb.position);
+	    		
+	        	if(distance < 4.5f && !burrowing)
+	        	{
+	        		if(!Empowered)sparkle.SetState("ChargeIndicator");
+	        		Empowered = true;
+	        		if(tombstones[i].canAct && distance < bestDistance)
+	        		{
+	        			nearbyStone = i;
+	        			bestDistance = distance;
+	        		}
+	        		if(!tombstones[i].active)tombstones[i].playAnimation("Activate",true,true);
+	        		tombstones[i].active = true;
+	        		reset = false;
+	        	}
+	        	else if(distance >= 4.5f || status.HasStunEffect() || burrowing)
+	        	{
+	        		//Deactivate tombstones that are not nearby
+	        		if(tombstones[i].active)tombstones[i].playAnimation("Deactivate",true,true);
+	        		tombstones[i].active = false;
+	        		
+	        	}
         	}
     	}
     	if(reset)
@@ -161,7 +165,7 @@ public class RyykeMasterHit : MasterHit
     public void Command(string state)
     {
     	if(!isHost)return;
-    	if(tombstones[nearbyStone] !=  null && tombstones[nearbyStone].active)
+    	if(nearbyStone >=0 && tombstones[nearbyStone] != null && tombstones[nearbyStone].active)
     	{
     		refeshStoneHitboxes(tombstones[nearbyStone]);
     		tombstones[nearbyStone].playAnimation(state,false,true);
@@ -198,6 +202,8 @@ public class RyykeMasterHit : MasterHit
     {
         if(!isHost)return;
         burrowing = true;
+        listenForLedge(true);
+
     }
 
     public void moveWhileBurrowed(int moveFlag)
@@ -209,8 +215,8 @@ public class RyykeMasterHit : MasterHit
     public void warpToStone()
     {
     	if(!isHost)return;
-    	if(targetStone != -1 && tombstones[targetStone] != null)
-    			rb.position = tombstones[targetStone].gameObject.transform.position;
+    	if(targetStone != -1 && tombstones[targetStone] != null && tombstones[targetStone].canAct)
+    			rb.position = tombstones[targetStone].gameObject.transform.position + new Vector3(0,2f);
 
     	listeningForDirection = false;
 

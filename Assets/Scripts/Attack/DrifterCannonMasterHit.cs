@@ -11,10 +11,9 @@ public class DrifterCannonMasterHit : MasterHit
 
     public SyncAnimatorStateHost sparkle;
 
-    new void Update()
+    void Update()
     {
     	if(!isHost)return;
-        base.Update();
     	if(status.HasStatusEffect(PlayerStatusEffect.DEAD))
     	{
     		Empowered = false;
