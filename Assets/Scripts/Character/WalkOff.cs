@@ -23,6 +23,17 @@ public class WalkOff : MonoBehaviour
     		touchingGround = true;
     }
 
+    void OnTriggerExit2D(Collider2D collider)
+    {
+    	if(collider.gameObject.tag == "Ground" || collider.gameObject.tag == "Platform")
+    	{
+    		touchingGround = false;
+    		if(preventWalkOff)
+    			rb.velocity = new Vector2(0,rb.velocity.y);
+    	}
+
+    }
+
     public void togglePreventWalkoff()
     {
     	preventWalkOff = touchingGround;

@@ -111,10 +111,10 @@ public class Tombstone : NonplayerHurtboxHandler
     	if(!isHost)return;
 
     	if(active && distanceFromParent < 4.5f)
-			anim.SetState("Active_Idle");
+			anim.SetState(IsGrounded() ? "Active_Idle" : "Hang");
 	
 		else if(!canAct && !active)
-			anim.SetState("Deactivate");
+			anim.SetState(IsGrounded() ? "Deactivate" : "Hang");
 		else
 			anim.SetState(tombstoneType + "_Idle");
 
