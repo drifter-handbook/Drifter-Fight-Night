@@ -18,7 +18,10 @@ MonoBehaviour:
   hasStaticHitstun: 0
   HitStun: -1
   isGrab: 0
-  AngleOfImpact: -361
+  mirrorKnockback: 1
+  AngleOfImpact: 140
   StatusEffect: 20
   StatusDuration: 0.1
-  HitVisual: 12
+  HitFX: {fileID: 0}
+  canHitGrounded: 1
+  canHitAerial: 1

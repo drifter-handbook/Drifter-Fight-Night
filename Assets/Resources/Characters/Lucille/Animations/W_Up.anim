@@ -941,7 +941,7 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.083333336
-    functionName: freezeGravity
+    functionName: pauseGravity
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
@@ -959,6 +959,13 @@ AnimationClip:
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.5
+    functionName: setYVelocity
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 20
     intParameter: 0
     messageOptions: 0
   - time: 0.8333333
