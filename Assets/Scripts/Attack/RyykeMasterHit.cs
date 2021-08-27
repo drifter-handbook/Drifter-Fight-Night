@@ -10,6 +10,8 @@ public class RyykeMasterHit : MasterHit
 	bool listeningForDirection = false;
 	bool listeningForMovement = false;
 	bool burrowing = false;
+	static float maxBurrowTime = 2f;
+	float burrowTime = maxBurrowTime;
 
 	//0 Up stone
 	//1 Side Stone
@@ -27,6 +29,14 @@ public class RyykeMasterHit : MasterHit
 	int targetStone = -1;
 
 
+	void Update()
+	{
+		if(burrowing && burrowTime >0)
+        {
+        	burrowTime-= Time.deltaTime;
+        }
+	}
+
 
 	new void FixedUpdate()
     {
@@ -38,6 +48,8 @@ public class RyykeMasterHit : MasterHit
        		for(int i = 0; i <3; i++)
        			Destroy(tombstones[i].gameObject);
         }
+
+        
 
         if(listeningForDirection)
         {
@@ -57,8 +69,16 @@ public class RyykeMasterHit : MasterHit
         if(listeningForMovement)
         {
         	movement.move(14f);
-        	if(!drifter.input[1].Jump && drifter.input[0].Jump)
+        	if((!drifter.input[1].Jump && drifter.input[0].Jump) || burrowTime <=0)
+        	{
         		playState("W_Down_Emerge");
+        		burrowTime = maxBurrowTime;
+        	}
+        	else if(drifter.input[0].MoveX !=0)
+        		playState("W_Down_Move");
+        	else
+        		playState("W_Down_Idle");
+
         }
 
         isNearStone();
@@ -153,6 +173,13 @@ public class RyykeMasterHit : MasterHit
     	}
     	
     }
+    //Particles
+    public void dust()
+    {
+        if(!isHost)return;
+
+        if(movement.grounded)movement.spawnJuiceParticle(transform.position + new Vector3(3.5f * movement.Facing,0,0),MovementParticleMode.Dash_Cloud, true);
+    }
 
     //Zombie Methods
 
@@ -202,6 +229,7 @@ public class RyykeMasterHit : MasterHit
     {
         if(!isHost)return;
         burrowing = true;
+        burrowTime = maxBurrowTime;
         listenForLedge(true);
 
     }
