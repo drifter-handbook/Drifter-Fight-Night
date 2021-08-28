@@ -194,7 +194,7 @@ public class RyykeMasterHit : MasterHit
     public void Command(string state)
     {
     	if(!isHost)return;
-    	if(nearbyStone >=0 && tombstones[nearbyStone] != null && tombstones[nearbyStone].active)
+    	if(nearbyStone >=0 && tombstones[nearbyStone] != null && tombstones[nearbyStone].active && tombstones[nearbyStone].canAct)
     	{
     		refeshStoneHitboxes(tombstones[nearbyStone]);
     		tombstones[nearbyStone].playAnimation(state,false,true);
