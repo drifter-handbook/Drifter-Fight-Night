@@ -46,7 +46,9 @@ public class RyykeMasterHit : MasterHit
         if(status.HasStatusEffect(PlayerStatusEffect.DEAD))
         {
        		for(int i = 0; i <3; i++)
-       			Destroy(tombstones[i].gameObject);
+       			if(tombstones[i] != null)
+       				Destroy(tombstones[i].gameObject);
+       		
         }
 
         
@@ -72,7 +74,7 @@ public class RyykeMasterHit : MasterHit
         	if((!drifter.input[1].Jump && drifter.input[0].Jump) || burrowTime <=0)
         	{
         		playState("W_Down_Emerge");
-        		burrowTime = maxBurrowTime;
+        		listeningForMovement = false;
         	}
         	else if(drifter.input[0].MoveX !=0)
         		playState("W_Down_Move");
@@ -230,6 +232,7 @@ public class RyykeMasterHit : MasterHit
         if(!isHost)return;
         burrowing = true;
         burrowTime = maxBurrowTime;
+        movement.phase(true);
         listenForLedge(true);
 
     }
@@ -274,6 +277,7 @@ public class RyykeMasterHit : MasterHit
         base.returnToIdle();
         listeningForDirection = false;
         listeningForMovement = false;
+        burrowTime = maxBurrowTime;
         burrowing = false;
     }
 
