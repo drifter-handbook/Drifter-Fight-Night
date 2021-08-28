@@ -232,7 +232,6 @@ public class RyykeMasterHit : MasterHit
         if(!isHost)return;
         burrowing = true;
         burrowTime = maxBurrowTime;
-        movement.phase(true);
         listenForLedge(true);
 
     }

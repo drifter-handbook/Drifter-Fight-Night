@@ -740,7 +740,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //Burst/Defensive Cancel
-        else if(!drifter.guarding && drifter.superCharge > 2f && status.HasEnemyStunEffect())
+        else if(!drifter.guarding && drifter.superCharge > 2f && status.HasEnemyStunEffect() && !status.HasStatusEffect(PlayerStatusEffect.GRABBED))
         {
             animator.enabled = true;
             hitstun = false;
