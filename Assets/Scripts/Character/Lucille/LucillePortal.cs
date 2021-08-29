@@ -33,6 +33,12 @@ public class LucillePortal : MonoBehaviour
 
 		HitboxCollision hitbox = collider.gameObject.GetComponent<HitboxCollision>();
 
+		if(collider.gameObject.tag == "KillzoneTop")
+		{
+			decay();
+			return;
+		}
+
 		if(collider.gameObject.tag == "Lucille_Portal" && canMerge && collider.GetComponent<LucillePortal>().drifter == drifter)
 		{
 			LucillePortal merging_Portal = collider.GetComponent<LucillePortal>();

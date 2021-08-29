@@ -70,7 +70,7 @@ GameObject:
   - component: {fileID: 3930115833918187616}
   m_Layer: 11
   m_Name: Killzone_Top_Hitbox
-  m_TagString: Untagged
+  m_TagString: KillzoneTop
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -127,7 +127,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d08db6b80f117d4f882898b65009c15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Shake: {fileID: 0}
   endgameBanner: {fileID: 0}
+  currentPlayers: 0
+  playerList: 
 --- !u!1 &2483287920226936327
 GameObject:
   m_ObjectHideFlags: 0
@@ -405,4 +408,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6237f21e42b45e43b2c2349712e8fef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Shake: {fileID: 0}
   endgameBanner: {fileID: 0}
+  currentPlayers: 0
+  playerList: 
