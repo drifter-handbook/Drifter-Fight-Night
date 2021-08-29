@@ -86,16 +86,43 @@ public class RyykeMasterHit : MasterHit
         isNearStone();
     }
 
+    public void playStateByStone(string state)
+    {
+    	if(!isHost)return;
+
+    	int index = tombstoneIndex;
+    	bool stonesFull = true;
+    	for(int i = 0; i <3; i++)
+       {
+       		if(tombstones[i] == null)
+       		{
+       			index = i;
+       			i = 3;
+       			stonesFull = false;
+       		}
+       }
+
+       if(stonesFull)
+       {
+       		index++;
+       		if(index >2)index = 0;
+       }
+
+       UnityEngine.Debug.Log(index);
+
+       playState(index + state);
+    }
+
 
 	//Creates a tombstone projectile
-    public void SpawnTombstone()
+    public void SpawnTombstone(int mode = 0)
     {
         if(!isHost)return;
         facing = movement.Facing;
 
         bool stonesFull = true;
         
-        GameObject stone = host.CreateNetworkObject("Tombstone", transform.position, transform.rotation);
+        GameObject stone = host.CreateNetworkObject("Tombstone", transform.position + new Vector3(1 * facing,.5f,0), transform.rotation);
         stone.transform.localScale = new Vector3(10f * facing, 10f , 1f);
         foreach (HitboxCollision hitbox in stone.GetComponentsInChildren<HitboxCollision>(true))
         {
@@ -129,10 +156,8 @@ public class RyykeMasterHit : MasterHit
 
        stone.GetComponent<SyncAnimatorStateHost>().SetState(tombstoneIndex + "_Idle");
        stone.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
-       tombstones[tombstoneIndex] = stone.GetComponent<Tombstone>();
-       tombstones[tombstoneIndex].tombstoneType = tombstoneIndex;
-       tombstones[tombstoneIndex].facing = facing;
-       tombstones[tombstoneIndex].attacks = attacks;       
+       tombstones[tombstoneIndex] = stone.GetComponent<Tombstone>().setup(tombstoneIndex,facing,attacks,drifter.gameObject);
+       tombstones[tombstoneIndex].throwStone(mode);
     }
 
     void isNearStone()
@@ -145,7 +170,7 @@ public class RyykeMasterHit : MasterHit
     		{
     			float distance = tombstones[i].getDistance(rb.position);
 	    		
-	        	if(distance < 4.5f && !burrowing)
+	        	if(distance < 4f && !burrowing)
 	        	{
 	        		if(!Empowered)sparkle.SetState("ChargeIndicator");
 	        		Empowered = true;
@@ -155,10 +180,9 @@ public class RyykeMasterHit : MasterHit
 	        			bestDistance = distance;
 	        		}
 	        		if(!tombstones[i].active)tombstones[i].playAnimation("Activate",true,true);
-	        		tombstones[i].active = true;
 	        		reset = false;
 	        	}
-	        	else if(distance >= 4.5f || status.HasStunEffect() || burrowing)
+	        	else if(distance >= 4f || status.HasStunEffect() || burrowing)
 	        	{
 	        		//Deactivate tombstones that are not nearby
 	        		if(tombstones[i].active)tombstones[i].playAnimation("Deactivate",true,true);

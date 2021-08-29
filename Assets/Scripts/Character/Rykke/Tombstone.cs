@@ -14,6 +14,9 @@ public class Tombstone : NonplayerHurtboxHandler
 	public PlayerAttacks attacks;
 	public int facing;
 
+	public GameObject drifter;
+	bool projectile = true;
+
 
 	public WalkOff ledgeDetector;
 
@@ -25,7 +28,7 @@ public class Tombstone : NonplayerHurtboxHandler
 
 	SyncAnimatorStateHost anim;
 
-	bool listeningForGrounded = false;
+	bool listeningForGrounded = true;
 	float distanceFromParent = 0;
 
 	//Const Vector offset
@@ -38,8 +41,7 @@ public class Tombstone : NonplayerHurtboxHandler
     	if(!isHost)return;
     	rb = GetComponent<Rigidbody2D>();
     	anim = GetComponent<SyncAnimatorStateHost>();
-    	physicsCollider = GetComponent<PolygonCollider2D>();
-    	
+    	physicsCollider = GetComponentInChildren<PolygonCollider2D>();
     }
 
     // // Update is called once per frame
@@ -51,14 +53,34 @@ public class Tombstone : NonplayerHurtboxHandler
     	if(listeningForGrounded && IsGrounded())
     	{
     		listeningForGrounded = false;
-    		anim.SetState("Land");
-    		canAct = false;
+    		if(projectile) returnToIdle();
+    		else 
+    		{
+    			anim.SetState("Land");
+    			canAct = false;
+    		}
 
     	}
     }
 
+    new void Start()
+    {
+    	base.Start();
+    	playAnimationEvent(tombstoneType + "_Spin");
+    }
+
+    //sets necessary fields to make spawning cleaner
+    public Tombstone setup(int p_tombstoneIndex, int p_facing,PlayerAttacks p_attacks,GameObject p_drifter)
+    {
+       tombstoneType = p_tombstoneIndex;
+       facing = p_facing;
+       attacks = p_attacks;
+       drifter = p_drifter;
+       return this;
+    }
+
     //Registers a hit on bean, and handles his counter.
-    //If bean has taken over 40%, he becomes inactive untill he can heal
+    //
     public override int RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, DrifterAttackType attackType, SingleAttackData attackData)
     {
 
@@ -81,6 +103,16 @@ public class Tombstone : NonplayerHurtboxHandler
 
     }
 
+    void OnTriggerEnter2D(Collider2D collider)
+	{
+		if(!GameController.Instance.IsHost)return;
+
+		if(collider.gameObject.tag == "BounceObject" && collider.GetComponent<Tombstone>().drifter == drifter)
+			if(projectile)rb.velocity = new Vector3(facing * -10f,20f);
+			//else if(!active && ! canAct)rb.velocity = new Vector3(collider.gameObject.transform.position.x > transform.position.x ? -5f:5f,0);
+	}	
+			
+
     public void playAnimation(string state, bool actionable = false, bool gated = false)
     {
     	if(!isHost || (!canAct && gated))return;
@@ -97,6 +129,38 @@ public class Tombstone : NonplayerHurtboxHandler
 
     }
 
+    //Sets the "Active" flag
+    public void activate()
+    {
+    	if(!isHost)return;
+    	active = true;
+    }
+
+
+    //Launches stone with set velocity from an external object
+    public void throwStone(int mode)
+    {
+    	if(!isHost)return;
+    	//canAct = false;
+    	switch(mode)
+    	{
+    		case 0:
+    			rb.velocity = new Vector3(0,-40f);
+    			break;
+    		case 1:
+    			rb.velocity = new Vector3(facing * 35f,20f);
+    			break;
+    		case 2:
+    			rb.velocity = new Vector3(0,35f);
+    			break;
+    		default:
+    			break;
+    	}
+    	
+
+    }
+
+    //Switches the direction the object is facing when recieving a command;
     public void updateDirection(int p_facing)
     {
     	if(!isHost)return;
@@ -106,13 +170,15 @@ public class Tombstone : NonplayerHurtboxHandler
 
     }
 
+    //Returns to the idle state and resets most flags
     public void returnToIdle()
     {
     	if(!isHost)return;
 
-    	if(active && distanceFromParent < 4.5f)
+    	if(projectile)
+    		anim.SetState(tombstoneType + "_Idle");
+    	else if(active && distanceFromParent < 4f)
 			anim.SetState(IsGrounded() ? "Active_Idle" : "Hang");
-	
 		else if(!canAct && !active)
 			anim.SetState(IsGrounded() ? "Deactivate" : "Hang");
 		else
@@ -123,6 +189,7 @@ public class Tombstone : NonplayerHurtboxHandler
 		listeningForGrounded = false;
 		ledgeDetector.setPreventWalkoff(false);
 		canAct = true;
+		projectile = false;
 
     }
 
@@ -154,7 +221,7 @@ public class Tombstone : NonplayerHurtboxHandler
     	RaycastHit2D[] hits = new RaycastHit2D[10];
         int count = Physics2D.RaycastNonAlloc(physicsCollider.bounds.center + physicsCollider.bounds.extents.y * Vector3.down, Vector3.down, hits, 0.2f);
 
-        for (int i = 0; i < count; i++) if (hits[i].collider.gameObject.tag == "Ground" || (hits[i].collider.gameObject.tag == "Platform")) return true;
+        for (int i = 0; i < count; i++) if (hits[i].collider.gameObject.tag == "Ground" || (hits[i].collider.gameObject.tag == "Platform")) return rb.velocity.y <=.1f;
 
         return false;
     }
