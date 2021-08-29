@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: Grab_Ground_Launcher
   m_EditorClassIdentifier: 
   AttackDamage: 7
-  Knockback: 25
+  Knockback: 30
   KnockbackScale: 0.4
   hasStaticHitstun: 0
-  HitStun: 8
+  HitStun: 12
   isGrab: 0
   mirrorKnockback: 0
-  AngleOfImpact: 75
+  AngleOfImpact: 60
   StatusEffect: 20
   StatusDuration: 0.1
   HitFX: {fileID: 11400000, guid: e007b7ceac776034b9838dfd15059cdd, type: 2}

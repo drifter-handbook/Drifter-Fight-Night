@@ -148,13 +148,13 @@ public class Tombstone : NonplayerHurtboxHandler
     	switch(mode)
     	{
     		case 0:
-    			rb.velocity = new Vector3(0,-40f);
+    			rb.velocity = new Vector3(facing *5f,-40f);
     			break;
     		case 1:
-    			rb.velocity = new Vector3(facing * 35f,20f);
+    			rb.velocity = new Vector3(facing * 30f,20f);
     			break;
     		case 2:
-    			rb.velocity = new Vector3(0,35f);
+    			rb.velocity = new Vector3(0,45f);
     			break;
     		default:
     			break;
