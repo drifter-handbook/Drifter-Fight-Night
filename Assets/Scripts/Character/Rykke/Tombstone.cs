@@ -8,17 +8,19 @@ public class Tombstone : NonplayerHurtboxHandler
 
 	public int Uses = 3;
 	
-	public int tombstoneType = 0;
+	
 	public bool canAct = false;
 	public bool active = false;
-	public PlayerAttacks attacks;
 	public int facing;
+	public WalkOff ledgeDetector;
 
-	public GameObject drifter;
+	PlayerAttacks attacks;
+	int tombstoneType = 0;
+	
+	GameObject drifter;
 	bool projectile = true;
 
-
-	public WalkOff ledgeDetector;
+	float zombieRadius = 4.5f;
 
 	bool isHost;
 
@@ -70,12 +72,13 @@ public class Tombstone : NonplayerHurtboxHandler
     }
 
     //sets necessary fields to make spawning cleaner
-    public Tombstone setup(int p_tombstoneIndex, int p_facing,PlayerAttacks p_attacks,GameObject p_drifter)
+    public Tombstone setup(int p_tombstoneIndex, int p_facing,PlayerAttacks p_attacks,GameObject p_drifter,float p_radius)
     {
        tombstoneType = p_tombstoneIndex;
        facing = p_facing;
        attacks = p_attacks;
        drifter = p_drifter;
+       zombieRadius = p_radius;
        return this;
     }
 
@@ -177,7 +180,7 @@ public class Tombstone : NonplayerHurtboxHandler
 
     	if(projectile)
     		anim.SetState(tombstoneType + "_Idle");
-    	else if(active && distanceFromParent < 4f)
+    	else if(active && distanceFromParent < zombieRadius)
 			anim.SetState(IsGrounded() ? "Active_Idle" : "Hang");
 		else if(!canAct && !active)
 			anim.SetState(IsGrounded() ? "Deactivate" : "Hang");

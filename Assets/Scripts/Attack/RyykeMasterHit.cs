@@ -13,6 +13,8 @@ public class RyykeMasterHit : MasterHit
 	static float maxBurrowTime = 2f;
 	float burrowTime = maxBurrowTime;
 
+	float zombieRadius = 3.75f;
+
 	//0 Up stone
 	//1 Side Stone
 	//2 Down Stone
@@ -73,6 +75,7 @@ public class RyykeMasterHit : MasterHit
         	movement.move(14f);
         	if((!drifter.input[1].Jump && drifter.input[0].Jump) || burrowTime <=0)
         	{
+        		attacks.SetupAttackID(DrifterAttackType.W_Down);
         		playState("W_Down_Emerge");
         		listeningForMovement = false;
         	}
@@ -156,7 +159,7 @@ public class RyykeMasterHit : MasterHit
 
        stone.GetComponent<SyncAnimatorStateHost>().SetState(tombstoneIndex + "_Idle");
        stone.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
-       tombstones[tombstoneIndex] = stone.GetComponent<Tombstone>().setup(tombstoneIndex,facing,attacks,drifter.gameObject);
+       tombstones[tombstoneIndex] = stone.GetComponent<Tombstone>().setup(tombstoneIndex,facing,attacks,drifter.gameObject,zombieRadius);
        tombstones[tombstoneIndex].throwStone(mode);
     }
 
@@ -170,10 +173,9 @@ public class RyykeMasterHit : MasterHit
     		{
     			float distance = tombstones[i].getDistance(rb.position);
 	    		
-	        	if(distance < 4f && !burrowing)
+	        	if(distance < zombieRadius && !burrowing)
 	        	{
-	        		if(!Empowered)sparkle.SetState("ChargeIndicator");
-	        		Empowered = true;
+	        		
 	        		if(tombstones[i].canAct && distance < bestDistance)
 	        		{
 	        			nearbyStone = i;
@@ -181,8 +183,15 @@ public class RyykeMasterHit : MasterHit
 	        		}
 	        		if(!tombstones[i].active)tombstones[i].playAnimation("Activate",true,true);
 	        		reset = false;
+
+	        		if(tombstones[i].active)
+	        		{
+	        			if(!Empowered)sparkle.SetState("ChargeIndicator");
+	        			Empowered = true;
+	        		}
+	        		
 	        	}
-	        	else if(distance >= 4f || status.HasStunEffect() || burrowing)
+	        	else if(distance >= zombieRadius || status.HasStunEffect() || burrowing)
 	        	{
 	        		//Deactivate tombstones that are not nearby
 	        		if(tombstones[i].active)tombstones[i].playAnimation("Deactivate",true,true);
