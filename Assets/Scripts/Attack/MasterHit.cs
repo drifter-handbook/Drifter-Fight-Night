@@ -281,6 +281,12 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,statusDuration * framerateScalar);
     }
 
+    public void setLandingCancel()
+    {
+        if(!isHost)return;
+        movement.canLandingCancel = true;
+    }
+
     public void pauseGravity()
     {
         if(!isHost)return;
