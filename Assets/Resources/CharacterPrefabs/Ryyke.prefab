@@ -230,15 +230,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 300831261, guid: 03006bf76a5e1274aaf3da8b9c69d8f9, type: 3}
       propertyPath: m_Offset.x
-      value: -0.2
+      value: 0.1550171
       objectReference: {fileID: 0}
     - target: {fileID: 300831261, guid: 03006bf76a5e1274aaf3da8b9c69d8f9, type: 3}
       propertyPath: m_Radius
-      value: 0.25
+      value: 0.19145636
       objectReference: {fileID: 0}
     - target: {fileID: 300831261, guid: 03006bf76a5e1274aaf3da8b9c69d8f9, type: 3}
       propertyPath: m_Offset.y
-      value: 0
+      value: 0.476683
       objectReference: {fileID: 0}
     - target: {fileID: 364774633814311839, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
@@ -278,22 +278,22 @@ PrefabInstance:
     - target: {fileID: 1627984188795609511, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: m_Offset.y
-      value: 0.4452656
+      value: 0.45797005
       objectReference: {fileID: 0}
     - target: {fileID: 1627984188795609511, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: m_Size.y
-      value: 0.62969536
+      value: 0.6089253
       objectReference: {fileID: 0}
     - target: {fileID: 1627984188795609511, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: m_Offset.x
-      value: -0.06641378
+      value: -0.07912922
       objectReference: {fileID: 0}
     - target: {fileID: 1627984188795609511, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: m_Size.x
-      value: 0.16634808
+      value: 0.14091721
       objectReference: {fileID: 0}
     - target: {fileID: 1801323591959772194, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
@@ -414,6 +414,11 @@ PrefabInstance:
         type: 3}
       propertyPath: ledgeClimbOffset
       value: -0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3106753082241659641, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: delayedJumpDuration
+      value: 0.08
       objectReference: {fileID: 0}
     - target: {fileID: 3106753082241659643, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
