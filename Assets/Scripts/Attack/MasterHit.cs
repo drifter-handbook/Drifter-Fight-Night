@@ -259,6 +259,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     {
         if(!isHost)return;
         rb.velocity = new Vector2(rb.velocity.x,y);
+        status.saveYVelocity(y);
     }
 
     public void setXVelocity(float x)
@@ -267,6 +268,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
         if(movement.grounded && x >0) movement.spawnKickoffDust();
         rb.velocity = new Vector2(movement.Facing * x,rb.velocity.y);
+        status.saveXVelocity(x);
     }
 
     public void applyEndLag(float statusDuration)

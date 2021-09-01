@@ -216,6 +216,16 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         return false;        
     }
 
+    public void saveXVelocity(float p_vel)
+    {
+        delayedVelocity = new Vector2(p_vel,delayedVelocity.y);
+    }
+
+    public void saveYVelocity(float p_vel)
+    {
+        delayedVelocity = new Vector2(delayedVelocity.x,p_vel);
+    }
+
     //Player is not in hitstun
     public bool HasGroundFriction()
     {
