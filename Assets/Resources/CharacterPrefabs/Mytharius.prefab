@@ -179,7 +179,7 @@ PrefabInstance:
     - target: {fileID: 3106753082241659641, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: jumpTime
-      value: 0.2
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 3106753082241659643, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
@@ -327,6 +327,12 @@ PrefabInstance:
       propertyPath: AttackMap.Array.data[0].attackData
       value: 
       objectReference: {fileID: 11400000, guid: afbe927357ba62c4faf6542664d363ec,
+        type: 2}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[12].attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: 214123edb92cc194691c126357cb1611,
         type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 03006bf76a5e1274aaf3da8b9c69d8f9, type: 3}
