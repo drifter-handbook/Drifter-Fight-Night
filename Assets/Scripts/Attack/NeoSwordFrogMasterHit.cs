@@ -8,8 +8,6 @@ public class NeoSwordFrogMasterHit : MasterHit
 
     Vector2 HeldDirection;
 
-    public SyncAnimatorStateHost sparkle;
-
     int charge = 0;
 
     void Update()
@@ -18,7 +16,7 @@ public class NeoSwordFrogMasterHit : MasterHit
         if(status.HasStatusEffect(PlayerStatusEffect.DEAD))
         {
             Empowered = false;
-            sparkle.SetState("Hide");
+            drifter.sparkle.SetState("Hide");
             if(kunaiShoot != null)StopCoroutine(kunaiShoot);
             if(charge > 0)charge = 0;
         }
@@ -40,8 +38,8 @@ public class NeoSwordFrogMasterHit : MasterHit
     // }
 
 
-    // if(Empowered)sparkle.SetState("ChargeIndicator");
-    //     else sparkle.SetState("Hide");
+    // if(Empowered)drifter.sparkle.SetState("ChargeIndicator");
+    //     else drifter.sparkle.SetState("Hide");
 
     public void backdash()
     {

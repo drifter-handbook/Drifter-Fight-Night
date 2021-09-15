@@ -74,6 +74,8 @@ public class Drifter : MonoBehaviour, INetworkInit
     public int peerID;
 
     public PlayerStatus status;
+    public PlayerAttacks attacks;
+    public SyncAnimatorStateHost sparkle;
 
     bool isHost;
 
@@ -117,6 +119,24 @@ public class Drifter : MonoBehaviour, INetworkInit
     [NonSerialized]
     public bool canSuper = true;
 
+    [NonSerialized]
+    public bool canSpecialCancel = false;
+
+    //Cancle Normals into Specials Logic
+    public bool listenForSpecialCancel
+    {
+        get{
+            return _canSpecialCancel;
+        }
+        set{
+            _canSpecialCancel = value;
+            cancelTimer = _canSpecialCancel ? 2f *.0833333333f:0f;
+            sparkle.SetState(_canSpecialCancel?"ChargeIndicator":"Hide");
+        }
+    }
+    private float cancelTimer = 0f;
+    private bool _canSpecialCancel = false;
+
     public void OnNetworkInit()
     {
         NetworkUtils.RegisterChildObject("PlayerAnimator", transform.Find("Sprite").gameObject);
@@ -129,6 +149,7 @@ public class Drifter : MonoBehaviour, INetworkInit
         isHost = GameController.Instance.IsHost;
         sync = GetComponent<NetworkSync>();
         status = GetComponent<PlayerStatus>();
+        attacks =  GetComponent<PlayerAttacks>();
     }
 
     public void Start()
@@ -138,6 +159,27 @@ public class Drifter : MonoBehaviour, INetworkInit
         DamageTaken = 0f;
 
         terminalVelocity = movement.terminalVelocity;
+    }
+
+    void Update()
+    {
+        if(canSpecialCancel && listenForSpecialCancel && cancelTimer >0f)
+        {
+            if(!input[2].Special &&  input[1].Special && input[0].Special && !status.HasEnemyStunEffect())
+            {
+                status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, 2f *.0833333333f);
+                attacks.useSpecial();
+                listenForSpecialCancel = false;
+                movement.techParticle();
+                return;
+            }
+            cancelTimer -= Time.deltaTime;
+            if(cancelTimer <= 0)
+            {
+                listenForSpecialCancel = false;
+                canSpecialCancel = false;
+            }
+        }
     }
 
     //Returns the character's outline color as an int
@@ -237,6 +279,7 @@ public class Drifter : MonoBehaviour, INetworkInit
         else animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState(AirIdleStateName,animationLayer);
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
         movement.terminalVelocity = terminalVelocity;
+        canSpecialCancel = false;
         
     }
 
@@ -258,7 +301,6 @@ public class Drifter : MonoBehaviour, INetworkInit
         perfectGuarding = false;
         guardBreaking = false;
     }
-
 
     //Command Input Detection
 

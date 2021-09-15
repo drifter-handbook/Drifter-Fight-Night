@@ -5,8 +5,6 @@ using UnityEngine;
 public class RyykeMasterHit : MasterHit
 {
 
-	public SyncAnimatorStateHost sparkle;
-
 	bool listeningForDirection = false;
 	bool listeningForMovement = false;
 	bool burrowing = false;
@@ -186,7 +184,7 @@ public class RyykeMasterHit : MasterHit
 
 	        		if(tombstones[i].active)
 	        		{
-	        			if(!Empowered)sparkle.SetState("ChargeIndicator");
+	        			if(!Empowered)drifter.sparkle.SetState("ChargeIndicator");
 	        			Empowered = true;
 	        		}
 	        		
@@ -202,7 +200,7 @@ public class RyykeMasterHit : MasterHit
     	}
     	if(reset)
     	{
-    		if(Empowered)sparkle.SetState("Hide");
+    		if(Empowered)drifter.sparkle.SetState("Hide");
     		Empowered = false;
     		nearbyStone = -1;
     	}

@@ -150,32 +150,13 @@ public class PlayerAttacks : MonoBehaviour
         }
         else if(specialPressed && canSpecial)
         {
-            if(drifter.input[0].MoveY > 0 && currentRecoveries >0)
-            {
-                StartAttack(DrifterAttackType.W_Up);
-                currentRecoveries--;
-            }
-            else if((!W_Down_Is_Recovery || currentRecoveries >0) && drifter.input[0].MoveY < 0)
-            {
-                StartAttack(DrifterAttackType.W_Down);
-                if(W_Down_Is_Recovery)currentRecoveries--;
-            }
-            else if((!W_Side_Is_Recovery || currentRecoveries >0) &&drifter.input[0].MoveX!=0)
-            {
-                StartAttack(DrifterAttackType.W_Side);
-                if(W_Side_Is_Recovery)currentRecoveries--;
-            }
-            else if((!W_Neutral_Is_Recovery || currentRecoveries >0) &&drifter.input[0].MoveY==0 && drifter.input[0].MoveX==0)
-            {
-                StartAttack(DrifterAttackType.W_Neutral);
-                if(W_Neutral_Is_Recovery)currentRecoveries--;
-                
-            }
+            useSpecial();
         }
 
         //attack  //neutral aerial
         else if (lightPressed && canAct)
         {
+            drifter.canSpecialCancel = true;
             if (movement.grounded)
             {
                 if(drifter.input[0].MoveY > 0)StartAttack(DrifterAttackType.Ground_Q_Up);
@@ -197,6 +178,32 @@ public class PlayerAttacks : MonoBehaviour
 
     }
 
+    public void useSpecial()
+    {
+        movement.canLandingCancel = false;
+        if(drifter.input[0].MoveY > 0 && currentRecoveries >0)
+            {
+                StartAttack(DrifterAttackType.W_Up);
+                currentRecoveries--;
+            }
+            else if((!W_Down_Is_Recovery || currentRecoveries >0) && drifter.input[0].MoveY < 0)
+            {
+                StartAttack(DrifterAttackType.W_Down);
+                if(W_Down_Is_Recovery)currentRecoveries--;
+            }
+            else if((!W_Side_Is_Recovery || currentRecoveries >0) &&drifter.input[0].MoveX!=0)
+            {
+                StartAttack(DrifterAttackType.W_Side);
+                if(W_Side_Is_Recovery)currentRecoveries--;
+            }
+            else if((!W_Neutral_Is_Recovery || currentRecoveries >0) &&drifter.input[0].MoveY==0 && drifter.input[0].MoveX==0)
+            {
+                StartAttack(DrifterAttackType.W_Neutral);
+                if(W_Neutral_Is_Recovery)currentRecoveries--;
+                
+            }
+    }
+
     public void resetRecovery(){
         currentRecoveries = maxRecoveries;
     }
@@ -210,8 +217,6 @@ public class PlayerAttacks : MonoBehaviour
         drifter.PlayAnimation(AnimatorStates[attackType]);
         SetupAttackID(attackType);
 
-        
-        
     }
 
     public void Hit(DrifterAttackType attackType, int attackID, GameObject target)

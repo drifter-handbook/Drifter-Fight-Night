@@ -16,10 +16,13 @@ public class HitboxCollision : MonoBehaviour
     public SingleAttackData AttackData;
     public int Facing { get; set; } = 1;
 
+    Drifter drifter;
+
     // Start is called before the first frame update
     void Start()
     {
         playerType = parent.GetComponent<NetworkSync>();
+        drifter = parent.GetComponent<Drifter>();
     }
 
     // Update is called once per frame
@@ -60,13 +63,14 @@ public class HitboxCollision : MonoBehaviour
         if (hurtbox != null && AttackType != DrifterAttackType.Null && isActive)
         {
             //string player = playerType.NetworkType;
+            int hitresult = -3;
             if(OverrideData != null){
-                hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, OverrideData);
+                hitresult = hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, OverrideData);
             }
             else{
-                hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, AttackData);
+                hitresult = hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, AttackData);
             }
-            
+            if(hitresult >= -1 && drifter.canSpecialCancel)drifter.listenForSpecialCancel = true;
         }
     }
 }
