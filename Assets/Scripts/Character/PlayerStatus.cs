@@ -422,7 +422,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         if((ef == PlayerStatusEffect.KNOCKBACK || data.isStun && !data.isSelfInflicted))clearRemoveOnHitStatus();        
         
         //save delayed velocity
-        if(ef == PlayerStatusEffect.HITPAUSE || ef == PlayerStatusEffect.CRINGE || ef == PlayerStatusEffect.GRABBED) delayedVelocity = rb.velocity;
+        if((ef == PlayerStatusEffect.HITPAUSE || ef == PlayerStatusEffect.CRINGE || ef == PlayerStatusEffect.GRABBED )&& rb.velocity != Vector2.zero) delayedVelocity = rb.velocity;
 
     	data.duration = (ef == PlayerStatusEffect.ORBO) ? 240f * framerateScalar : duration * 10f;
 
