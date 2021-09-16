@@ -175,6 +175,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
             }
             
         }
+        if(delayedVelocity != Vector2.zero && !(HasStatusEffect(PlayerStatusEffect.HITPAUSE) || HasStatusEffect(PlayerStatusEffect.CRINGE) || HasStatusEffect(PlayerStatusEffect.GRABBED))) delayedVelocity = Vector2.zero;
 
         //If you are actionable, end combo
         if(!HasEnemyStunEffect() && combocount >0)
