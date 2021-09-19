@@ -130,7 +130,7 @@ public class Drifter : MonoBehaviour, INetworkInit
         set{
             _canSpecialCancel = value;
             cancelTimer = _canSpecialCancel ? 2f *.0833333333f:0f;
-            sparkle.SetState(_canSpecialCancel?"ChargeIndicator":"Hide");
+            //sparkle.SetState(_canSpecialCancel?"ChargeIndicator":"Hide");
         }
     }
 
