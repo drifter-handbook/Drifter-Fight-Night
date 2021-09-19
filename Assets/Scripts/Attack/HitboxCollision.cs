@@ -70,7 +70,7 @@ public class HitboxCollision : MonoBehaviour
             else{
                 hitresult = hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, AttackData);
             }
-            if(hitresult >= -1 && drifter.canSpecialCancel)drifter.listenForSpecialCancel = true;
+            if(hitresult >= -1 && drifter.canSpecialCancelFlag)drifter.listenForSpecialCancel = true;
         }
     }
 }

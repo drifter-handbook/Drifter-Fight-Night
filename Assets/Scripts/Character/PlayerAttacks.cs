@@ -156,7 +156,7 @@ public class PlayerAttacks : MonoBehaviour
         //attack  //neutral aerial
         else if (lightPressed && canAct)
         {
-            drifter.canSpecialCancel = true;
+            drifter.canSpecialCancelFlag = true;
             if (movement.grounded)
             {
                 if(drifter.input[0].MoveY > 0)StartAttack(DrifterAttackType.Ground_Q_Up);

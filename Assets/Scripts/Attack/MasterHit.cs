@@ -132,6 +132,13 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
             queuedStateTrigger = true;
             lightTappedFlag = false;
         }
+        else if(drifter. canSpecialCancel() && !drifter.input[2].Special &&  drifter.input[1].Special && drifter.input[0].Special && !status.HasEnemyStunEffect())
+        {
+            attacks.useSpecial();
+            status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, 2f *.0833333333f);
+            clearMasterhitVars();
+            movement.techParticle();
+        }
         else
             attackWasCanceled = false;
     }
@@ -208,6 +215,14 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         if(!isHost)return;
 
         ledgeDetector.setPreventWalkoff(toggle);
+    }
+
+    //Allow for a special cancel on a move that would normally not be canceleable
+    public void listenForSpecial()
+    {
+        if(!isHost)return;
+        drifter.canSpecialCancelFlag = true;
+        drifter.listenForSpecialCancel = true;
     }
 
 
