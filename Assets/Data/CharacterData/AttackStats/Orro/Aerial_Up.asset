@@ -13,15 +13,15 @@ MonoBehaviour:
   m_Name: Aerial_Up
   m_EditorClassIdentifier: 
   AttackDamage: 11
-  Knockback: 18
+  Knockback: 25
   KnockbackScale: 0.5
   hasStaticHitstun: 0
-  HitStun: 9
+  HitStun: 6
   isGrab: 0
-  isSweetSpot: 0
   mirrorKnockback: 0
-  AngleOfImpact: 90
-  StatusEffect: 5
-  StatusDuration: 1
-  HitVisual: 12
-  SweetVisual: 21
+  AngleOfImpact: 75
+  StatusEffect: 20
+  StatusDuration: 0.1
+  HitFX: {fileID: 0}
+  canHitGrounded: 1
+  canHitAerial: 1
