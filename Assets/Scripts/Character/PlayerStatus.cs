@@ -288,6 +288,11 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         }
     }
 
+    public void clearVelocity()
+    {
+        delayedVelocity = Vector2.zero;
+    }
+
     //Gets the remaining duration for a given stats effect
     public float remainingDuration(PlayerStatusEffect ef)
     {

@@ -352,6 +352,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         if(!isHost)return;
 		movement.jumping = false;
 		unpauseGravity();
+        status.clearVelocity();
         movement.terminalVelocity = terminalVelocity;
         clearMasterhitVars();
     	drifter.returnToIdle();

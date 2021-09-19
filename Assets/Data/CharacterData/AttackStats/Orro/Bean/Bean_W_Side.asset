@@ -21,5 +21,7 @@ MonoBehaviour:
   mirrorKnockback: 0
   AngleOfImpact: 45
   StatusEffect: 25
-  StatusDuration: 0.1
-  HitFX: {fileID: 0}
+  StatusDuration: 1
+  HitFX: {fileID: 11400000, guid: c40ffbef4bd5ad54dbc61660fa4d822a, type: 2}
+  canHitGrounded: 1
+  canHitAerial: 1
