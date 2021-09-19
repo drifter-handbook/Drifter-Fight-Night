@@ -278,7 +278,6 @@ public class Drifter : MonoBehaviour, INetworkInit
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
         movement.terminalVelocity = terminalVelocity;
         canSpecialCancelFlag = false;
-        sparkle.SetState("Hide");
         
     }
 

@@ -212,7 +212,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   assetPathName: Ryyke
   facing: 0
-  sparkle: {fileID: 5258953615745731439}
 --- !u!1 &5003767269622312760
 GameObject:
   m_ObjectHideFlags: 0
@@ -718,6 +717,11 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 5604989354107847522, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 6535619870088224090, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -855,15 +859,3 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 4904428939334806211}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5258953615745731439 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 930985434726900140, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
-    type: 3}
-  m_PrefabInstance: {fileID: 4904428939334806211}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4133822f74fe7224ea726bb338e62949, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
