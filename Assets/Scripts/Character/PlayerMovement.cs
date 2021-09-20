@@ -58,6 +58,8 @@ public class PlayerMovement : MonoBehaviour
 
     float dashLock = 0;
 
+    //Access to main camera for screen darkening
+    ScreenShake mainCamera;
 
     // public float activeFriction = .1f;
     // public float inactiveFriction = .4f;
@@ -95,6 +97,9 @@ public class PlayerMovement : MonoBehaviour
         sprite = GetComponentInChildren<SpriteRenderer>();
         attacks = GetComponent<PlayerAttacks>();
         shake = gameObject.GetComponentInChildren<GameObjectShake>();
+
+        //Do this better
+        mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<ScreenShake>();
 
         status = drifter.status;
         animator = drifter.animator;
@@ -758,6 +763,7 @@ public class PlayerMovement : MonoBehaviour
     private void spawnSuperParticle(string mode,float cost)
     {
 
+        StartCoroutine(mainCamera.darkenScreen(8f * framerateScalar));
         drifter.canSuper = false;
         attacks.SetupAttackID(DrifterAttackType.Super_Cancel);
         Vector3 flip = new Vector3(Facing * 10f, 10f, 0f);

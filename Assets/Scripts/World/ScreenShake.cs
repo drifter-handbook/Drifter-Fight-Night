@@ -14,7 +14,8 @@ public class ScreenShake : MonoBehaviour , INetworkInit
    bool DynamicCamera;
 
 
-   public Coroutine CurrentShake;
+   Coroutine CurrentShake;
+   Coroutine CurrentDarken;
 
    public Drifter[] drifters;
    public GameObject Background;
@@ -50,13 +51,25 @@ public class ScreenShake : MonoBehaviour , INetworkInit
 
    public void startShakeCoroutine(float duration, float magnitude)
    {
-      if(!isHost || killing)return;
+      //if(!isHost || killing)return;
+      if(CurrentDarken != null)
+      {
+         StopCoroutine(CurrentDarken);
+         CurrentDarken = null;
+      } 
+      CurrentDarken = StartCoroutine(darkenScreen(duration));
+
+   }
+
+   public void startDarkenCoroutine(float duration)
+   {
+      //if(!isHost || killing)return;
       if(CurrentShake != null)
       {
          StopCoroutine(CurrentShake);
          CurrentShake = null;
       } 
-      CurrentShake = StartCoroutine(Shake(duration,magnitude));
+      CurrentShake = StartCoroutine(darkenScreen(duration));
 
    }
 
@@ -67,7 +80,7 @@ public class ScreenShake : MonoBehaviour , INetworkInit
 
    IEnumerator Shake(float duration, float magnitude)
    {
-         if(!isHost)yield break;
+         //if(!isHost)yield break;
    		Vector3 origPos = (killing||!DynamicCamera)?transform.localPosition:CalculateCenter();
    		float elapsed = 0f;
 
@@ -143,7 +156,7 @@ public class ScreenShake : MonoBehaviour , INetworkInit
    {
       //Killing is a flag that indicates if a zoom effect is happening
       //This disallows many other screen effects from occuring that may cause zooms to jank out
-      if(killing || !isHost){
+      if(killing){
          yield break;
       }
       else{
@@ -195,4 +208,18 @@ public class ScreenShake : MonoBehaviour , INetworkInit
       killing = false;
       
    }
+
+   public IEnumerator darkenScreen(float duration)
+   {
+      if(killing){
+         yield break;
+      }
+      GetComponentInChildren<SyncAnimatorStateHost>().SetState("Darken"); 
+      yield return new WaitForSeconds(duration);
+      GetComponentInChildren<SyncAnimatorStateHost>().SetState("Lighten");
+      yield return new WaitForSeconds(.84f);
+      GetComponentInChildren<SyncAnimatorStateHost>().SetState("Hidden");
+      yield break;
+   }
+
 }
