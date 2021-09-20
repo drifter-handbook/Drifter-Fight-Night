@@ -716,7 +716,7 @@ public class PlayerMovement : MonoBehaviour
             status.clearStunStatus();
 
             spawnSuperParticle("Hyper_Guard_Burst",1f);
-            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,5f * framerateScalar);
+            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,10f * framerateScalar);
             drifter.PlayAnimation("Burst");
              //status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,3f * framerateScalar);
         }
@@ -728,13 +728,13 @@ public class PlayerMovement : MonoBehaviour
             {
                 spawnSuperParticle("Offensive_Cancel",2f);
                 drifter.PlayAnimation("Burst");
-                status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,5f * framerateScalar);
+                status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,10f * framerateScalar);
             }
             else if(drifter.canFeint)
             {
                 spawnSuperParticle("Feint_Cancel",1f);
                 drifter.PlayAnimation("Burst");
-                status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,5f * framerateScalar);
+                status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,10f * framerateScalar);
             }
             
         }
@@ -745,7 +745,7 @@ public class PlayerMovement : MonoBehaviour
             animator.enabled = true;
             hitstun = false;
             status.clearStunStatus();
-            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,5f * framerateScalar);
+            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,10f * framerateScalar);
 
             spawnSuperParticle("Defensive_Cancel",2f);
             if(currentJumps+1 < numberOfJumps) currentJumps++;

@@ -10,7 +10,7 @@ public class PlayerDamageFloater : MonoBehaviour
     private int persistTick = 0;
     private float displayValue = 0;
     private readonly int tickDelta = 10;
-    public int tickDelay = 16;
+    public int tickDelay = 4;
     // Start is called before the first frame update
     int totalDelay = 0;
     void Start()

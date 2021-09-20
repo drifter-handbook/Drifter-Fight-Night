@@ -35,7 +35,7 @@ public class PlayerDamageNumbers : MonoBehaviour
     }
 
     public void Increment(float damage, bool isCombo, float hitstun) {
-        if(!GameController.Instance.IsTraining)return;
+        if(!GameController.Instance.IsTraining || damage <=0)return;
         gameObject.SetActive(true);
         if (persistTick > 0) {
             if (isTrue && !isCombo)
