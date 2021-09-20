@@ -255,6 +255,27 @@ public class OrroReworkMasterHit : MasterHit
        rip.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
     }
 
+    //Creates a side air projectile
+    public void SpawnSideAir()
+    {
+        if(!isHost)return;
+        facing = movement.Facing;
+        Vector3 pos = new Vector3(7f * facing,2.7f,0);
+        
+        GameObject scratch = host.CreateNetworkObject("Orro_Sair_Proj", transform.position + pos, transform.rotation);
+        scratch.transform.localScale = new Vector3(10f * facing, 10f , 1f);
+        foreach (HitboxCollision hitbox in scratch.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+            hitbox.Facing = facing;
+       }
+
+       scratch.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
+    }
+
 
     //Refreshes each of beans hitbox ids so he can keep doing damage
     private void refreshBeanHitboxes(){

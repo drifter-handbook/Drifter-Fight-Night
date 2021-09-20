@@ -16,12 +16,12 @@ MonoBehaviour:
   Knockback: 25
   KnockbackScale: 0.3
   hasStaticHitstun: 0
-  HitStun: 9
+  HitStun: 6
   isGrab: 0
-  isSweetSpot: 0
   mirrorKnockback: 0
   AngleOfImpact: 55
-  StatusEffect: 5
-  StatusDuration: 1
-  HitVisual: 12
-  SweetVisual: 21
+  StatusEffect: 20
+  StatusDuration: 0.1
+  HitFX: {fileID: 0}
+  canHitGrounded: 1
+  canHitAerial: 1

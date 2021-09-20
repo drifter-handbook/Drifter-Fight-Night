@@ -1,52 +1,22 @@
 fileFormatVersion: 2
-guid: 882675dd2f567dd4f919d281741efd90
+guid: 4dc42d3b1f007424a8a9af74aba005e4
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2457916477720068447
-    second: orro_sair_0
+      213: -7514746013423389473
+    second: sair_proj_0
   - first:
-      213: -1942471545328519592
-    second: orro_sair_1
+      213: 1077796843361177832
+    second: sair_proj_1
   - first:
-      213: -4180328302935842425
-    second: orro_sair_2
+      213: -660961692048111204
+    second: sair_proj_2
   - first:
-      213: 8997074776038438841
-    second: orro_sair_3
+      213: -1173152636764380248
+    second: sair_proj_3
   - first:
-      213: -5695325191466218538
-    second: orro_sair_4
-  - first:
-      213: 8593022877592803868
-    second: orro_sair_5
-  - first:
-      213: -5254214419491794798
-    second: orro_sair_6
-  - first:
-      213: 8973545481163201507
-    second: orro_sair_0
-  - first:
-      213: 4132083938497123862
-    second: orro_sair_1
-  - first:
-      213: 2694950876708432076
-    second: orro_sair_2
-  - first:
-      213: 7042284889609835187
-    second: orro_sair_3
-  - first:
-      213: 2144794936591816987
-    second: orro_sair_4
-  - first:
-      213: -6994656037259108916
-    second: orro_sair_5
-  - first:
-      213: -7584825629193557886
-    second: orro_sair_6
-  - first:
-      213: -49510328258549731
-    second: orro_sair_7
+      213: 8935471723860494561
+    second: sair_proj_4
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -106,7 +76,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 4096
+    maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 0
@@ -118,7 +88,7 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: Standalone
-    maxTextureSize: 4096
+    maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 0
@@ -132,148 +102,106 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: orro_sair_0
+      name: sair_proj_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 80
+        width: 64
         height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3eb5b8c3210788c70800000000000000
-      internalID: 8973545481163201507
+      spriteID: fd4bd9cc05246b790800000000000000
+      internalID: -7514746013423389473
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: orro_sair_1
+      name: sair_proj_1
       rect:
         serializedVersion: 2
-        x: 80
+        x: 64
         y: 0
-        width: 80
+        width: 64
         height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 856b362db64fa05e0800000000000000
-      internalID: -1942471545328519592
+      spriteID: 8e09494c48a15fe00800000000000000
+      internalID: 1077796843361177832
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: orro_sair_2
+      name: sair_proj_2
       rect:
         serializedVersion: 2
-        x: 160
+        x: 128
         y: 0
-        width: 80
+        width: 64
         height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7816ffa8e8d7cf5c0800000000000000
-      internalID: -4180328302935842425
+      spriteID: c99c45fc7dac3d6f0800000000000000
+      internalID: -660961692048111204
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: orro_sair_3
+      name: sair_proj_3
       rect:
         serializedVersion: 2
-        x: 240
+        x: 192
         y: 0
-        width: 80
+        width: 64
         height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9b7f56b17d70cdc70800000000000000
-      internalID: 8997074776038438841
+      spriteID: 8a3a85a74ef18bfe0800000000000000
+      internalID: -1173152636764380248
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: orro_sair_4
+      name: sair_proj_4
       rect:
         serializedVersion: 2
-        x: 320
+        x: 256
         y: 0
-        width: 80
+        width: 64
         height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6db825ad9e326f0b0800000000000000
-      internalID: -5695325191466218538
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: orro_sair_5
-      rect:
-        serializedVersion: 2
-        x: 400
-        y: 0
-        width: 80
-        height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c1a59b587cc804770800000000000000
-      internalID: 8593022877592803868
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: orro_sair_6
-      rect:
-        serializedVersion: 2
-        x: 480
-        y: 0
-        width: 80
-        height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 290d470d2d74517b0800000000000000
-      internalID: -5254214419491794798
+      spriteID: 1e88041d03c210c70800000000000000
+      internalID: 8935471723860494561
       vertices: []
       indices: 
       edges: []
