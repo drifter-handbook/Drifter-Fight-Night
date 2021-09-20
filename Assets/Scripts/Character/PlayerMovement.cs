@@ -750,6 +750,7 @@ public class PlayerMovement : MonoBehaviour
             animator.enabled = true;
             hitstun = false;
             status.clearStunStatus();
+            status.ApplyStatusEffect(PlayerStatusEffect.INVULN,8f * framerateScalar);
             status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,10f * framerateScalar);
 
             spawnSuperParticle("Defensive_Cancel",2f,8f);
