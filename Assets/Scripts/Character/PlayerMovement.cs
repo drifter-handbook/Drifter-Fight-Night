@@ -720,7 +720,7 @@ public class PlayerMovement : MonoBehaviour
             hitstun = false;
             status.clearStunStatus();
 
-            spawnSuperParticle("Hyper_Guard_Burst",1f);
+            spawnSuperParticle("Hyper_Guard_Burst",1f,8f);
             status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,10f * framerateScalar);
             drifter.PlayAnimation("Burst");
              //status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,3f * framerateScalar);
@@ -731,13 +731,13 @@ public class PlayerMovement : MonoBehaviour
         {
             if(drifter.superCharge > 2f && !drifter.canFeint)
             {
-                spawnSuperParticle("Offensive_Cancel",2f);
+                spawnSuperParticle("Offensive_Cancel",2f,20f);
                 drifter.PlayAnimation("Burst");
                 status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,10f * framerateScalar);
             }
             else if(drifter.canFeint)
             {
-                spawnSuperParticle("Feint_Cancel",1f);
+                spawnSuperParticle("Feint_Cancel",1f,8f);
                 drifter.PlayAnimation("Burst");
                 status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,10f * framerateScalar);
             }
@@ -752,7 +752,7 @@ public class PlayerMovement : MonoBehaviour
             status.clearStunStatus();
             status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,10f * framerateScalar);
 
-            spawnSuperParticle("Defensive_Cancel",2f);
+            spawnSuperParticle("Defensive_Cancel",2f,8f);
             if(currentJumps+1 < numberOfJumps) currentJumps++;
             drifter.PlayAnimation("Burst");
             //status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,3f * framerateScalar);
@@ -760,10 +760,10 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    private void spawnSuperParticle(string mode,float cost)
+    private void spawnSuperParticle(string mode,float cost,float darkentime)
     {
 
-        StartCoroutine(mainCamera.darkenScreen(8f * framerateScalar));
+        StartCoroutine(mainCamera.darkenScreen(darkentime * framerateScalar));
         drifter.canSuper = false;
         attacks.SetupAttackID(DrifterAttackType.Super_Cancel);
         Vector3 flip = new Vector3(Facing * 10f, 10f, 0f);
