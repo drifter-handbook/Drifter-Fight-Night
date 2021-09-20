@@ -51,7 +51,19 @@ public class ScreenShake : MonoBehaviour , INetworkInit
 
    public void startShakeCoroutine(float duration, float magnitude)
    {
-      //if(!isHost || killing)return;
+          //if(!isHost || killing)return;
+      if(CurrentShake != null)
+      {
+         StopCoroutine(CurrentShake);
+         CurrentShake = null;
+      } 
+      CurrentShake = StartCoroutine(Shake(duration,magnitude));
+
+   }
+
+   public void startDarkenCoroutine(float duration)
+   {
+        //if(!isHost || killing)return;
       if(CurrentDarken != null)
       {
          StopCoroutine(CurrentDarken);
@@ -59,17 +71,6 @@ public class ScreenShake : MonoBehaviour , INetworkInit
       } 
       CurrentDarken = StartCoroutine(darkenScreen(duration));
 
-   }
-
-   public void startDarkenCoroutine(float duration)
-   {
-      //if(!isHost || killing)return;
-      if(CurrentShake != null)
-      {
-         StopCoroutine(CurrentShake);
-         CurrentShake = null;
-      } 
-      CurrentShake = StartCoroutine(darkenScreen(duration));
 
    }
 
@@ -87,8 +88,8 @@ public class ScreenShake : MonoBehaviour , INetworkInit
    		while(elapsed < duration)
    		{
    			transform.localPosition = origPos;
-   			float x = origPos.x + Random.Range(-1f,1f) * magnitude * (self.orthographicSize - 15f)/15f;
-   			float y = origPos.y + Random.Range(-.5f,.5f) * magnitude * (self.orthographicSize - 15f)/15f;
+   			float x = origPos.x + Random.Range(-1f,1f) * magnitude * self.orthographicSize/15f;
+   			float y = origPos.y + Random.Range(-.5f,.5f) * magnitude * self.orthographicSize/15f;
 
    			transform.localPosition = new Vector3(x,y,origPos.z);
             if(Background != null && DynamicCamera)Background.transform.localPosition = new Vector3(x/2f,y/2f,origPos.z);

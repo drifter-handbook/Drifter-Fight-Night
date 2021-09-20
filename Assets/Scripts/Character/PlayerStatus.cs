@@ -31,7 +31,8 @@ public enum PlayerStatusEffect
 	KNOCKBACK,
 	HITPAUSE,
     GUARDBROKEN,
-    ORBO 
+    ORBO,
+    SLOWMOTION, 
 }
 
 class PlayerStatusData
@@ -98,6 +99,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         {PlayerStatusEffect.HITPAUSE,                           new PlayerStatusData("HITPAUSE",stun: true, self:true)                              },
         {PlayerStatusEffect.GUARDBROKEN,                        new PlayerStatusData("GUARDBROKEN",icon: 14,remove: false)                          },
         {PlayerStatusEffect.ORBO,                               new PlayerStatusData("ORBO",icon: 15,remove: false)                                 },
+        {PlayerStatusEffect.SLOWMOTION,                         new PlayerStatusData("SLOWMOTION",icon: 16)                                         },
     };
 
     float time = 0f;
@@ -163,7 +165,11 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
                         if(ef.Key == PlayerStatusEffect.BURNING) drifter.DamageTaken += .2f;
                         
                         //Re-apply the saved velocity if the player just lost cringe
-                        if(ef.Key == PlayerStatusEffect.CRINGE && !HasStatusEffect(PlayerStatusEffect.CRINGE))rb.velocity = delayedVelocity;
+                        
+                        if(ef.Key == PlayerStatusEffect.SLOWMOTION)rb.velocity = delayedVelocity * .2f;
+
+
+                        if((ef.Key == PlayerStatusEffect.CRINGE && !HasStatusEffect(PlayerStatusEffect.CRINGE)) || (ef.Key == PlayerStatusEffect.SLOWMOTION && !HasStatusEffect(PlayerStatusEffect.SLOWMOTION)))rb.velocity = delayedVelocity;
 
 
                         //if(ef.Key == PlayerStatusEffect.ORBO && !HasStatusEffect(ef.Key)) 
@@ -175,7 +181,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
             }
             
         }
-        if(delayedVelocity != Vector2.zero && !(HasStatusEffect(PlayerStatusEffect.HITPAUSE) || HasStatusEffect(PlayerStatusEffect.CRINGE) || HasStatusEffect(PlayerStatusEffect.GRABBED))) delayedVelocity = Vector2.zero;
+        if(delayedVelocity != Vector2.zero && !(HasStatusEffect(PlayerStatusEffect.HITPAUSE) || HasStatusEffect(PlayerStatusEffect.CRINGE) || HasStatusEffect(PlayerStatusEffect.GRABBED) || HasStatusEffect(PlayerStatusEffect.SLOWMOTION))) delayedVelocity = Vector2.zero;
 
         //If you are actionable, end combo
         if(!HasEnemyStunEffect() && combocount >0)
@@ -428,7 +434,8 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         if((ef == PlayerStatusEffect.KNOCKBACK || data.isStun && !data.isSelfInflicted))clearRemoveOnHitStatus();        
         
         //save delayed velocity
-        if((ef == PlayerStatusEffect.HITPAUSE || ef == PlayerStatusEffect.CRINGE || ef == PlayerStatusEffect.GRABBED )&& rb.velocity != Vector2.zero) delayedVelocity = rb.velocity;
+        if((ef == PlayerStatusEffect.HITPAUSE || ef == PlayerStatusEffect.CRINGE || ef == PlayerStatusEffect.GRABBED || ef == PlayerStatusEffect.SLOWMOTION ||(ef == PlayerStatusEffect.KNOCKBACK &&  HasStatusEffect(PlayerStatusEffect.SLOWMOTION)))&& rb.velocity != Vector2.zero) delayedVelocity = rb.velocity;
+
 
     	data.duration = (ef == PlayerStatusEffect.ORBO) ? 240f * framerateScalar : duration * 10f;
 
