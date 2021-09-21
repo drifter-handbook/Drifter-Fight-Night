@@ -137,6 +137,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
             attacks.useSpecial();
             status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, 2f *.0833333333f);
             clearMasterhitVars();
+            drifter.canFeint = true;
             movement.techParticle();
         }
         else

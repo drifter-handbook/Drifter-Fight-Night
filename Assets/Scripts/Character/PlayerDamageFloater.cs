@@ -9,8 +9,8 @@ public class PlayerDamageFloater : MonoBehaviour
     [SerializeField] private TextMeshPro DamageDisplayText;
     private int persistTick = 0;
     private float displayValue = 0;
-    private readonly int tickDelta = 10;
-    public int tickDelay = 4;
+    private readonly int tickDelta = 2;
+    public int tickDelay = 1;
     // Start is called before the first frame update
     int totalDelay = 0;
     void Start()

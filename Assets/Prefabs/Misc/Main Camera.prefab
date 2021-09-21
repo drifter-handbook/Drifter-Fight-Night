@@ -105,6 +105,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drifters: []
+  Background: {fileID: 0}
 --- !u!114 &-5638585693037186545
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -239,6 +240,21 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 43271306552000443, guid: 46cd1eeb91382e444960d1675ed695f7,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 19.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 43271306552000443, guid: 46cd1eeb91382e444960d1675ed695f7,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 10.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 43271306552000443, guid: 46cd1eeb91382e444960d1675ed695f7,
+        type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4220832211443802049, guid: 46cd1eeb91382e444960d1675ed695f7,
         type: 3}
       propertyPath: NetworkType
@@ -253,6 +269,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5766170612931467240, guid: 46cd1eeb91382e444960d1675ed695f7,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7419451914891243370, guid: 46cd1eeb91382e444960d1675ed695f7,
         type: 3}

@@ -764,7 +764,7 @@ public class PlayerMovement : MonoBehaviour
     private void spawnSuperParticle(string mode,float cost,float darkentime)
     {
 
-        StartCoroutine(mainCamera.darkenScreen(darkentime * framerateScalar));
+        mainCamera.startDarkenCoroutine(darkentime * framerateScalar);
         drifter.canSuper = false;
         attacks.SetupAttackID(DrifterAttackType.Super_Cancel);
         Vector3 flip = new Vector3(Facing * 10f, 10f, 0f);

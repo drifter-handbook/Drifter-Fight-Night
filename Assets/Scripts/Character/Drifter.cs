@@ -140,7 +140,6 @@ public class Drifter : MonoBehaviour, INetworkInit
     public void OnNetworkInit()
     {
         NetworkUtils.RegisterChildObject("PlayerAnimator", transform.Find("Sprite").gameObject);
-        NetworkUtils.RegisterChildObject("PlayerStatusController", transform.Find("PlayerStatusController").gameObject);
         NetworkUtils.RegisterChildObject("PlayerNumberIndicator", transform.Find("PlayerIndicator").gameObject);
     }
 
@@ -211,7 +210,7 @@ public class Drifter : MonoBehaviour, INetworkInit
     {
         myColor = (colorID>=0?colorID:0);
         transform.GetChild(0).GetComponent<SpriteRenderer>().color = CharacterMenu.ColorFromEnum[(PlayerColor)myColor];
-        transform.GetChild(3).GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)myColor]);
+        transform.GetChild(2).GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)myColor]);
         if(isHost){
             transform.GetChild(0).GetComponent<SyncAnimatorStateHost>().SetState("P" + (colorID + 1));
             gameObject.GetComponent<SyncColorDataHost>().setColor(myColor);
@@ -224,7 +223,7 @@ public class Drifter : MonoBehaviour, INetworkInit
         if(isHost)
             {
                 transform.GetChild(0).localScale = new Vector2(Mathf.Abs(transform.GetChild(0).localScale.x) * facing,transform.GetChild(0).localScale.y);
-                transform.GetChild(4).localScale = new Vector2(Mathf.Abs(transform.GetChild(4).localScale.x) * facing,transform.GetChild(4).localScale.y);
+                transform.GetChild(3).localScale = new Vector2(Mathf.Abs(transform.GetChild(3).localScale.x) * facing,transform.GetChild(3).localScale.y);
             }
     }
 

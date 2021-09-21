@@ -148,7 +148,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
             if(HasStatusEffect(PlayerStatusEffect.HITPAUSE) || HasStatusEffect(PlayerStatusEffect.GRABBED))
             {
                  statusDataMap[PlayerStatusEffect.HITPAUSE].duration--;
-                 if(!HasStatusEffect(PlayerStatusEffect.HITPAUSE) && delayedVelocity != Vector2.zero)rb.velocity = delayedVelocity;
+                 if(!HasStatusEffect(PlayerStatusEffect.HITPAUSE) && !HasStatusEffect(PlayerStatusEffect.SLOWMOTION) && delayedVelocity != Vector2.zero)rb.velocity = delayedVelocity;
             }
             //Otherwise, tick down all active statuses
             else{

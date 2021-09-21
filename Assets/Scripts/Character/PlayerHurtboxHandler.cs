@@ -263,6 +263,9 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 else if (willCollideWithBlastZone(GetComponent<Rigidbody2D>() , HitstunDuration) ) Mathf.Min(HitstunDuration*=2f,3f);
                 
                 
+                if(status.HasStatusEffect(PlayerStatusEffect.ARMOUR) && !attackData.isGrab)
+                    Shake?.startDarkenCoroutine(5f* framerateScalar);
+
                 //apply defender hitpause
                 if(HitstunDuration>0 && attackData.StatusEffect != PlayerStatusEffect.HITPAUSE )status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(isCritical || status.HasStatusEffect(PlayerStatusEffect.ARMOUR)) ? 5f* framerateScalar:(damageDealt <=2f ? .075f :Mathf.Max(HitstunDuration*.3f ,2f * framerateScalar)));
                 StartCoroutine(drifter.GetComponentInChildren<GameObjectShake>().Shake(attackData.StatusEffect != PlayerStatusEffect.CRINGE?HitstunDuration*.2f:attackData.StatusDuration* framerateScalar,attackData.StatusEffect != PlayerStatusEffect.CRINGE?1.5f:2f));
