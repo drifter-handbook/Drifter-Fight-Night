@@ -274,7 +274,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     public void setYVelocity(float y)
     {
         if(!isHost)return;
-        rb.velocity = new Vector2(rb.velocity.x,y);
+        rb.velocity = new Vector2(rb.velocity.x,y * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f));
         status.saveYVelocity(y);
     }
 
@@ -283,8 +283,8 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         if(!isHost)return;
 
         if(movement.grounded && x >0) movement.spawnKickoffDust();
-        rb.velocity = new Vector2(movement.Facing * x,rb.velocity.y);
-        status.saveXVelocity(x);
+        rb.velocity = new Vector2(movement.Facing * x * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f),rb.velocity.y);
+        status.saveXVelocity(movement.Facing * x);
     }
 
     public void applyEndLag(float statusDuration)
@@ -354,7 +354,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 		movement.jumping = false;
 		unpauseGravity();
         status.clearVelocity();
-        movement.terminalVelocity = terminalVelocity;
+        movement.terminalVelocity = terminalVelocity * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f);
         clearMasterhitVars();
     	drifter.returnToIdle();
         movement.updateFacing();

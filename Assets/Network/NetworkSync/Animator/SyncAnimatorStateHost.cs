@@ -6,6 +6,7 @@ public class SyncAnimatorStateHost : MonoBehaviour, ISyncHost
 {
     NetworkSync sync;
     int animationLayer = 0;
+    float animationSpeed = 1;
     Animator anim;
     string lastSentState = "";
 
@@ -35,6 +36,12 @@ public class SyncAnimatorStateHost : MonoBehaviour, ISyncHost
                 active = anim.enabled
             };//new SyncAnimatorData() { parameters = parameters };
 
+        sync["animator_speed"] = 
+            new SyncAnimatorSpeed
+            {
+                speed = animationSpeed
+            };    
+
             //sync.SendNetworkMessage(new SyncAnimatorState() { stateHash = Animator.StringToHash(name), active = anim.enabled});
     }
 
@@ -58,6 +65,18 @@ public class SyncAnimatorStateHost : MonoBehaviour, ISyncHost
         }
         
     }
+
+    public void SetSpeed(float speed)
+    {
+        animationSpeed = speed;
+        anim.speed = speed;
+        if (GameController.Instance.IsHost && GameController.Instance.IsOnline)
+        {
+        //UnityEngine.Debug.Log("MESSAGE SENT: " + Animator.StringToHash(name));
+            sync.SendNetworkMessage(new SyncAnimatorSpeed() { speed = animationSpeed}); 
+        }
+    }
+      
 }
 
 public class SyncAnimatorState : INetworkData
@@ -65,5 +84,11 @@ public class SyncAnimatorState : INetworkData
     public int stateHash;
     public int layer;
     public bool active;
+    public string Type { get; set; }
+}
+
+public class SyncAnimatorSpeed : INetworkData
+{
+    public float speed;
     public string Type { get; set; }
 }

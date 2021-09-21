@@ -31,6 +31,7 @@ public class PlayerMovement : MonoBehaviour
     //Calculated character properties
     float jumpSpeed;
     float baseGravity;
+    float baseTerminalVelocity;
 
     //Animator State Fields
     public int Facing { get; set; } = 1;
@@ -107,6 +108,7 @@ public class PlayerMovement : MonoBehaviour
         BodyCollider = GetComponent<BoxCollider2D>();
         frictionCollider = GetComponent<PolygonCollider2D>();
 
+        baseTerminalVelocity = terminalVelocity;
         baseWalkSpeed = walkSpeed;
         
     }
@@ -314,11 +316,18 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = Vector2.zero;
             rb.gravityScale = 0;                       
         }
+        else if(status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) && !gravityPaused)
+        {
+            rb.gravityScale = baseGravity*.4f;
+            terminalVelocity =  baseTerminalVelocity *.4f;
+        }
+        
 
         //makes sure gavity is always reset after using a move
         //TODO make sure this is still necessary
         else if((!status.HasStatusEffect(PlayerStatusEffect.END_LAG) || !gravityPaused) && !ledgeHanging){
             rb.gravityScale = baseGravity;
+            if(!status.HasStatusEffect(PlayerStatusEffect.END_LAG))terminalVelocity = baseTerminalVelocity;
         }
 
         //Saves previpus vleocity for resitution. REMOVE IF NOT NEEDED
@@ -354,13 +363,11 @@ public class PlayerMovement : MonoBehaviour
         {
 
             updateFacing();
-        	//UnityEngine.Debug.Log("BEFORE velocity: " + rb.velocity.x);
 
             //If just started moving or switched directions
-            if((rb.velocity.x == 0 || rb.velocity.x * drifter.input[0].MoveX < 0) && IsGrounded()){
-
+            if((rb.velocity.x == 0 || rb.velocity.x * drifter.input[0].MoveX < 0) && IsGrounded())
                 if(groundFrictionPosition) spawnJuiceParticle(new Vector2(-Facing * (flipSprite?-1:1)* 1.5f,0) + contacts[0].point, MovementParticleMode.KickOff);
-            }
+            
 
             
             if(IsGrounded())
@@ -383,10 +390,10 @@ public class PlayerMovement : MonoBehaviour
                     }
 
                 }
-                if(accelerationPercent > 0) accelerationPercent -= Time.deltaTime/groundAccelerationTime;
+                if(accelerationPercent > 0) accelerationPercent -= Time.deltaTime/groundAccelerationTime * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f: 1f);
                 else accelerationPercent = 0;
 
-                currentSpeed = walkSpeed * (status.HasStatusEffect(PlayerStatusEffect.SLOWED) ? .6f: 1f) * (status.HasStatusEffect(PlayerStatusEffect.SPEEDUP) ? 1.5f: 1f) * (drifter.input[0].MoveX > 0 ? 1 : -1);
+                currentSpeed = walkSpeed * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f: 1f) * (status.HasStatusEffect(PlayerStatusEffect.SPEEDUP) ? 1.5f: 1f) * (drifter.input[0].MoveX > 0 ? 1 : -1);
 
             }
             else
@@ -394,10 +401,10 @@ public class PlayerMovement : MonoBehaviour
                 if(!jumping)drifter.PlayAnimation(drifter.AirIdleStateName);
                 status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0);
 
-                if(accelerationPercent >0) accelerationPercent -= Time.deltaTime/airAccelerationTime;
+                if(accelerationPercent >0) accelerationPercent -= Time.deltaTime/airAccelerationTime * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f: 1f);
                 else accelerationPercent = 0;
 
-                currentSpeed = airSpeed * (status.HasStatusEffect(PlayerStatusEffect.SLOWED) ? .6f: 1f) * (status.HasStatusEffect(PlayerStatusEffect.SPEEDUP) ? 1.5f: 1f) * (drifter.input[0].MoveX > 0 ? 1 : -1);
+                currentSpeed = airSpeed * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f: 1f) * (status.HasStatusEffect(PlayerStatusEffect.SPEEDUP) ? 1.5f: 1f) * (drifter.input[0].MoveX > 0 ? 1 : -1);
 
             	
             }
@@ -521,14 +528,14 @@ public class PlayerMovement : MonoBehaviour
     //Moves the character left or right, based on the speed provided
     public void move(float speed)
     {
-        if(accelerationPercent >0) accelerationPercent -= Time.deltaTime/airAccelerationTime;
+        if(accelerationPercent >0) accelerationPercent -= Time.deltaTime/airAccelerationTime * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f: 1f);
         else accelerationPercent = 0;
 
         updateFacing();
 
         if(drifter.input[0].MoveX != 0)
         {
-            currentSpeed = speed * (status.HasStatusEffect(PlayerStatusEffect.SLOWED) ? .6f: 1f) * (status.HasStatusEffect(PlayerStatusEffect.SPEEDUP) ? 1.5f: 1f) * (drifter.input[0].MoveX > 0 ? 1 : -1);
+            currentSpeed = speed * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f: 1f) * (status.HasStatusEffect(PlayerStatusEffect.SPEEDUP) ? 1.5f: 1f) * (drifter.input[0].MoveX > 0 ? 1 : -1);
             rb.velocity = new Vector2(Mathf.Lerp(currentSpeed,rb.velocity.x,accelerationPercent), rb.velocity.y);
         }
         
@@ -794,12 +801,12 @@ public class PlayerMovement : MonoBehaviour
         }
         rb.velocity = new Vector2(rb.velocity.x, 0f);
         float time = 0;
-        while (time <= delayedJumpDuration)
+        while (time <= delayedJumpDuration / (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .3f : 1f))
         {
             time += Time.deltaTime;
             yield return null;
         }
-        rb.velocity = new Vector2(rb.velocity.x, jumpSpeed);
+        rb.velocity = new Vector2(rb.velocity.x, jumpSpeed * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f));
         varyJumpHeight = StartCoroutine(VaryJumpHeight());
     }
 
@@ -807,14 +814,14 @@ public class PlayerMovement : MonoBehaviour
     private IEnumerator VaryJumpHeight()
     {
         float time = 0f;
-        while (time < varyJumpHeightDuration)
+        while (time < varyJumpHeightDuration / (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .3f : 1f))
         {
             yield return new WaitForFixedUpdate();
             time += Time.fixedDeltaTime;
             if (!status.HasStunEffect() && drifter.input[0].Jump)
             {
                 //rb.AddForce(Vector2.up * -Physics2D.gravity * varyJumpHeightForce);
-                rb.velocity = new Vector2(rb.velocity.x, jumpSpeed);
+                rb.velocity = new Vector2(rb.velocity.x, jumpSpeed * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f));
             }
         }
         varyJumpHeight = null;

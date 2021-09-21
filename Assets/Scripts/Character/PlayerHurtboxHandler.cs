@@ -175,6 +175,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             Vector2 hitSparkScale =  new Vector2(facingDir *10f, 10f);
             bool isCritical = false;
             bool isBlocked = false;
+            bool hadSlowmo = status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION);
 
             //Ignore knockback if invincible or armoured
             if (status != null && (attackData.isGrab || !drifter.guarding || crossUp) && !drifter.parrying){
@@ -197,7 +198,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
                     status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0f);
                     
-                    drifter.movement.setFacing((int)(facingDir *-1));
+                    if(damageDealt >0)drifter.movement.setFacing((int)(facingDir *-1));
 
                     //Cause the screen to shake slightly on hit, as long as the move has knockback
                     if(Shake != null && attackData.Knockback !=0){
@@ -267,7 +268,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                     Shake?.startDarkenCoroutine(5f* framerateScalar);
 
                 //apply defender hitpause
-                if(HitstunDuration>0 && attackData.StatusEffect != PlayerStatusEffect.HITPAUSE )status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(isCritical || status.HasStatusEffect(PlayerStatusEffect.ARMOUR)) ? 5f* framerateScalar:(damageDealt <=2f ? .075f :Mathf.Max(HitstunDuration*.3f ,2f * framerateScalar)));
+                if(HitstunDuration>0 && attackData.StatusEffect != PlayerStatusEffect.HITPAUSE )status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(isCritical || status.HasStatusEffect(PlayerStatusEffect.ARMOUR)) ? 5f* framerateScalar:((damageDealt <=2f ? .075f :Mathf.Max(HitstunDuration*.3f ,2f * framerateScalar)) * (hadSlowmo?2f:1f)));
                 StartCoroutine(drifter.GetComponentInChildren<GameObjectShake>().Shake(attackData.StatusEffect != PlayerStatusEffect.CRINGE?HitstunDuration*.2f:attackData.StatusDuration* framerateScalar,attackData.StatusEffect != PlayerStatusEffect.CRINGE?1.5f:2f));
 
                 returnCode = 0;             

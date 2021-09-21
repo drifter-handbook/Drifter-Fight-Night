@@ -101,6 +101,7 @@ public class Drifter : MonoBehaviour, INetworkInit
     public string LedgeRollStateName = "Ledge_Roll";
 
     public int animationLayer = 0;
+    public float animationSpeed = 1;
     
     
     //public bool forceGuard = false;
@@ -260,6 +261,15 @@ public class Drifter : MonoBehaviour, INetworkInit
         
         if(!isHost)return;
         animator.gameObject.GetComponent<SyncAnimatorLayerHost>().SetLayer(layer);
+
+    }
+
+    public void SetAnimationSpeed(float speed)
+    {
+        animationSpeed = speed;
+       
+        if(!isHost)return;
+        animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetSpeed(speed);
 
     }
 

@@ -7,6 +7,7 @@ public class SyncAnimatorStateClient : MonoBehaviour, ISyncClient, INetworkMessa
     Animator anim;
 
     SyncAnimatorState state = new SyncAnimatorState();
+    SyncAnimatorSpeed speed = new SyncAnimatorSpeed();
 
     // Start is called before the first frame update
     void Start()
@@ -21,11 +22,13 @@ public class SyncAnimatorStateClient : MonoBehaviour, ISyncClient, INetworkMessa
         try
         {
             state = NetworkUtils.GetNetworkData<SyncAnimatorState>(sync["animator_state"]);
+            speed = NetworkUtils.GetNetworkData<SyncAnimatorSpeed>(sync["animator_speed"]);
 
             if(anim.GetCurrentAnimatorStateInfo(state.layer).fullPathHash != state.stateHash)
             {
                 anim.Play(state.stateHash);
             }
+            anim.speed = speed.speed;
             anim.enabled = state.active;
         }
         catch (KeyNotFoundException)
@@ -39,11 +42,13 @@ public class SyncAnimatorStateClient : MonoBehaviour, ISyncClient, INetworkMessa
     {
         if(!GameController.Instance.IsOnline) return;
         state = NetworkUtils.GetNetworkData<SyncAnimatorState>(sync["animator_state"]);
+        speed = NetworkUtils.GetNetworkData<SyncAnimatorSpeed>(sync["animator_speed"]);
 
         if(anim.GetCurrentAnimatorStateInfo(state.layer).fullPathHash != state.stateHash)
             {
                 anim.Play(state.stateHash,state.layer);
             }
+            anim.speed = speed.speed;
             anim.enabled = state.active;
     }
 }

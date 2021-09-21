@@ -166,10 +166,14 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
                         
                         //Re-apply the saved velocity if the player just lost cringe
                         
-                        if(ef.Key == PlayerStatusEffect.SLOWMOTION)rb.velocity = delayedVelocity * .2f;
+                        if(ef.Key == PlayerStatusEffect.SLOWMOTION && HasEnemyStunEffect())rb.velocity = delayedVelocity * .2f;
 
 
-                        if((ef.Key == PlayerStatusEffect.CRINGE && !HasStatusEffect(PlayerStatusEffect.CRINGE)) || (ef.Key == PlayerStatusEffect.SLOWMOTION && !HasStatusEffect(PlayerStatusEffect.SLOWMOTION)))rb.velocity = delayedVelocity;
+                        if((ef.Key == PlayerStatusEffect.CRINGE && !HasStatusEffect(PlayerStatusEffect.CRINGE)) || (ef.Key == PlayerStatusEffect.SLOWMOTION && !HasStatusEffect(PlayerStatusEffect.SLOWMOTION)))
+                        {
+                            rb.velocity = delayedVelocity;
+                            drifter.SetAnimationSpeed(1f);
+                        }
 
 
                         //if(ef.Key == PlayerStatusEffect.ORBO && !HasStatusEffect(ef.Key)) 
@@ -257,6 +261,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
                 ef.Value.duration = 0;
         
         }
+        drifter.SetAnimationSpeed(1f);
         grabPoint = null;
     }
 
@@ -280,6 +285,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
             ef.Value.duration = 0;
 
         grabPoint = null;
+        drifter.SetAnimationSpeed(1f);
     }
 
     //Clears ALL status effects on a given status channel    
@@ -436,6 +442,9 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         //save delayed velocity
         if((ef == PlayerStatusEffect.HITPAUSE || ef == PlayerStatusEffect.CRINGE || ef == PlayerStatusEffect.GRABBED || ef == PlayerStatusEffect.SLOWMOTION ||(ef == PlayerStatusEffect.KNOCKBACK &&  HasStatusEffect(PlayerStatusEffect.SLOWMOTION)))&& rb.velocity != Vector2.zero) delayedVelocity = rb.velocity;
 
+        //Slow down animation speed in slowmo
+        if(ef == PlayerStatusEffect.SLOWMOTION)
+            drifter.SetAnimationSpeed(.4f);
 
     	data.duration = (ef == PlayerStatusEffect.ORBO) ? 240f * framerateScalar : duration * 10f;
 
