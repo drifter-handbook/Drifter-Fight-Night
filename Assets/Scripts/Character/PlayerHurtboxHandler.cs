@@ -259,7 +259,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 if (willCollideWithBlastZoneAccurate(GetComponent<Rigidbody2D>(), HitstunDuration) && drifter.Stocks <= 1 && NetworkPlayers.Instance.players.Values.Where(x => x != null).ToList().Count <=2)
                 {
                     HitstunDuration = 3f;
-                    drifter.movement.techWindowElapsed = 2f;
+                    //drifter.movement.techWindowElapsed = 2f;
                 } 
                 else if (willCollideWithBlastZone(GetComponent<Rigidbody2D>() , HitstunDuration) ) Mathf.Min(HitstunDuration*=2f,3f);
                 

@@ -53,7 +53,7 @@ public class PlayerMovement : MonoBehaviour
     public Vector3 wallSliding = Vector3.zero;
     bool strongLedgeGrab = true;
     [NonSerialized]
-    public float techWindowElapsed = 0;
+    //public float techWindowElapsed = 0;
 
     public float accelerationPercent = .9f;
 
@@ -130,34 +130,34 @@ public class PlayerMovement : MonoBehaviour
         if(!status.HasGroundFriction() && ((prevVelocity.y < 0 || col.gameObject.tag !=  "Platform" ) && prevVelocity.magnitude > 35f))
         {
 
-            if(techWindowElapsed <= framerateScalar * 2)UnityEngine.Debug.Log("COULD HAVE TECHED");
-            else UnityEngine.Debug.Log("COULD NOT HAVE TECHED");
+            // if(techWindowElapsed <= framerateScalar * 2)UnityEngine.Debug.Log("COULD HAVE TECHED");
+            // else UnityEngine.Debug.Log("COULD NOT HAVE TECHED");
 
-            if(drifter.input[0].Guard && techWindowElapsed <= framerateScalar * 2)
-            {
-                rb.velocity = Vector3.zero;
-                status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.01f);
-                status.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,.01f);
+            // if(drifter.input[0].Guard && techWindowElapsed <= framerateScalar * 2)
+            // {
+            //     rb.velocity = Vector3.zero;
+            //     status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.01f);
+            //     status.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,.01f);
         
-                hitstun = false;
+            //     hitstun = false;
                 
-                drifter.returnToIdle();
+            //     drifter.returnToIdle();
 
-                techParticle();
+            //     techParticle();
 
-                //PARTICLE EFFECT HERE
+            //     //PARTICLE EFFECT HERE
 
-            }
-            else
-            {
+            // }
+            // else
+            // {
                 //status.bounce();
                 Vector3 normal = col.contacts[0].normal;
                 
                 rb.velocity = Vector2.Reflect(prevVelocity,normal) *.8f;
                 //status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, Mathf.Min(rb.velocity.magnitude * .005f,.3f));
                 spawnJuiceParticle(col.contacts[0].point, MovementParticleMode.Restitution, Quaternion.Euler(0f,0f, ( (rb.velocity.x < 0)?1:-1 ) * Vector3.Angle(Vector3.up,normal)),false);
-                techWindowElapsed = 0;
-            }
+                //techWindowElapsed = 0;
+            //}
         }
     }
 
@@ -172,8 +172,8 @@ public class PlayerMovement : MonoBehaviour
             return;
 
 
-        if(drifter.input[0].Guard) techWindowElapsed += Time.deltaTime;
-        else if(status.HasGroundFriction()) techWindowElapsed = 0;
+        // if(drifter.input[0].Guard) techWindowElapsed += Time.deltaTime;
+        // else if(status.HasGroundFriction()) techWindowElapsed = 0;
 
         bool moving = drifter.input[0].MoveX != 0;
 
