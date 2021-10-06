@@ -340,7 +340,17 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         if(!isHost)return;
         attacks.SetMultiHitAttackID();
     }
+
+    public void setTerminalVelocity(float speed)
+    {
+        movement.terminalVelocity = speed;
+    }
     
+    public void resetTerminalVelocity()
+    {
+        movement.terminalVelocity = terminalVelocity;
+    }
+
     //Dynamically adjust walk speed to match walk cycle animations
     public void walkCycleSpeedSync(float speed)
     {
