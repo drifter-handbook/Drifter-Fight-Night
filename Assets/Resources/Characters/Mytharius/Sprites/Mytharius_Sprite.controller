@@ -7,7 +7,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Ground_Down
+  m_Name: Ground_Side
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -587,7 +587,7 @@ AnimatorStateMachine:
     m_Position: {x: 520, y: 0, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 6012232691053646425}
-    m_Position: {x: 730, y: 0, z: 0}
+    m_Position: {x: 520, y: 150, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3482681389534023498}
     m_Position: {x: 520, y: -60, z: 0}
