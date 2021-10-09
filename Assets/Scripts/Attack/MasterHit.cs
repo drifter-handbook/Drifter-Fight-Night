@@ -132,7 +132,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
             queuedStateTrigger = true;
             lightTappedFlag = false;
         }
-        else if(drifter.canSpecialCancel() && checkForSpecialTap() & !status.HasEnemyStunEffect())
+        else if(drifter.canSpecialCancel() && checkForSpecialTap(15) & !status.HasEnemyStunEffect())
         {
             attacks.useSpecial();
             status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, 2f *.0833333333f);
@@ -408,11 +408,11 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         return false;
     }
 
-    public bool checkForSpecialTap()
+    public bool checkForSpecialTap(int range = 8)
     {
         if(!isHost)return false;
         int state = 0;
-        for(int i = 0; i < 8; i++)
+        for(int i = 0; i < range; i++)
         {
             if(state >0 && !drifter.input[i].Special)return true;
             else if(state == 0 && drifter.input[0].Special) state++;
