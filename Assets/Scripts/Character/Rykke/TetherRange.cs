@@ -5,7 +5,6 @@ using UnityEngine;
 public class TetherRange : MonoBehaviour
 {
     // Start is called before the first frame update
-    Rigidbody2D rb;
     public Vector3 TetherPoint;
 
     void OnTriggerStay2D(Collider2D col)

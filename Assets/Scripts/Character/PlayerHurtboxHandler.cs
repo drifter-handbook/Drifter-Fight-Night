@@ -81,9 +81,11 @@ public class PlayerHurtboxHandler : MonoBehaviour
             //Freezefame if hit a counter
             if(hurtbox.gameObject.name == "Counter" &&  attackData.AttackDamage >0f && !attackData.isGrab)
             {
+                Shake?.startDarkenCoroutine(5f* framerateScalar);
                 GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.STAR, hitSparkPos,0, new Vector2(10f, 10f));
-                attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.7f);
-                drifter.GetComponentInChildren<SyncAnimatorStateHost>().SetState("Counter_Success");
+                attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,6f * framerateScalar);
+                drifter.PlayAnimation("Counter_Success");
+                status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,3f * framerateScalar);
                 return -4;
             }
 

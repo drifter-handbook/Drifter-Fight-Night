@@ -5,13 +5,18 @@ using UnityEngine;
 public class RyykeMasterHit : MasterHit
 {
 
+    static float maxBurrowTime = 2f;
 	bool listeningForDirection = false;
 	bool listeningForMovement = false;
 	bool burrowing = false;
-	static float maxBurrowTime = 2f;
 	float burrowTime = maxBurrowTime;
 
 	float zombieRadius = 3.75f;
+
+    //Tether Recovery Range object
+    TetherRange tether;
+    //Point to tether to
+    Vector3 TetherPoint = Vector3.zero;
 
 	//0 Up stone
 	//1 Side Stone
@@ -28,6 +33,11 @@ public class RyykeMasterHit : MasterHit
 	//The current stone being targeted for teleportation with down special
 	int targetStone = -1;
 
+
+    void Start()
+    {
+        tether = drifter.GetComponentInChildren<TetherRange>();
+    }
 
 	void Update()
 	{
@@ -159,6 +169,48 @@ public class RyykeMasterHit : MasterHit
        stone.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
        tombstones[tombstoneIndex] = stone.GetComponent<Tombstone>().setup(tombstoneIndex,facing,attacks,drifter.gameObject,zombieRadius);
        tombstones[tombstoneIndex].throwStone(mode);
+    }
+
+
+    public void SpawnTether()
+    {
+        if(!isHost)return;
+        facing = movement.Facing;
+        Vector3 pos = new Vector3(1.5f * facing,3.7f,0);
+        
+
+        if(tether.TetherPoint != Vector3.zero)
+        {
+            UnityEngine.Debug.Log("Ledge");
+            TetherPoint = tether.TetherPoint;
+            playState("W_Up_Ledge");
+        }
+
+        GameObject arm = host.CreateNetworkObject("Ryyke_Arm", transform.position + pos, Quaternion.Euler(0,0,55f * facing));
+        arm.transform.localScale = new Vector3(10f * facing, 10f , 1f);
+        foreach (HitboxCollision hitbox in arm.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+            hitbox.Facing = facing;
+       }
+       arm.transform.SetParent(drifter.gameObject.transform);
+       arm.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
+    }
+
+    public void pullToLedge()
+    {
+        if(TetherPoint!=Vector3.zero)
+        {
+
+            Vector3 dir = TetherPoint - new Vector3(rb.position.x,rb.position.y);
+            Vector3.Normalize(dir);
+            rb.velocity = 15f * dir;
+
+            TetherPoint=Vector3.zero;
+        }
     }
 
     void isNearStone()
