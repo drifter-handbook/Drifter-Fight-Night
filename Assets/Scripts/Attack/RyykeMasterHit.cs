@@ -286,21 +286,6 @@ public class RyykeMasterHit : MasterHit
     	
     }
 
-    //Adjusts Ryyke's terminal velocity for his down air
-    public void setTerminalVelocity(float vel)
-    {
-        if(!isHost)return;
-        movement.canLandingCancel = false;  
-        movement.terminalVelocity = vel;
-    }
-
-    //Returns Ryyke's TV to normal at the end of the move
-    public void resetTerminalVelocity()
-    {
-        if(!isHost)return; 
-        movement.terminalVelocity = terminalVelocity;
-    }
-
 
     public new void returnToIdle()
     {

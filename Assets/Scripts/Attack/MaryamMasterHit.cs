@@ -36,14 +36,6 @@ public class MaryamMasterHit : MasterHit
         movement.flipFacing();
     }
 
-    //Umbrella Dair
-    public void setTerminalVelocity(float vel)
-    {
-        if(!isHost)return;
-        movement.canLandingCancel = false;  
-        movement.terminalVelocity = vel;
-    }
-
     // Swaps between two movesents by changing the animation layer being used
     public void SetStance(int stance)
     {

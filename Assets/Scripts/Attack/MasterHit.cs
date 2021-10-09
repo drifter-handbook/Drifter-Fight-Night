@@ -132,7 +132,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
             queuedStateTrigger = true;
             lightTappedFlag = false;
         }
-        else if(drifter. canSpecialCancel() && !drifter.input[2].Special &&  drifter.input[1].Special && drifter.input[0].Special && !status.HasEnemyStunEffect())
+        else if(drifter.canSpecialCancel() && checkForSpecialTap() & !status.HasEnemyStunEffect())
         {
             attacks.useSpecial();
             status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, 2f *.0833333333f);

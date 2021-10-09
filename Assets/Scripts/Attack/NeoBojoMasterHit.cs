@@ -33,14 +33,6 @@ public class NeoBojoMasterHit : MasterHit
     }
 
 
-    public void setTerminalVelocity(float vel)
-    {
-        if(!isHost)return;
-        movement.canLandingCancel = false;  
-        movement.terminalVelocity = vel;
-    }
-
-
     //Inhereted Roll Methods
 
     public override void roll()

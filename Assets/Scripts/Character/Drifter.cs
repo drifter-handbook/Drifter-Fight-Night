@@ -130,7 +130,7 @@ public class Drifter : MonoBehaviour, INetworkInit
         }
         set{
             _canSpecialCancel = value;
-            cancelTimer = _canSpecialCancel ? 2f *.0833333333f:0f;
+            cancelTimer = _canSpecialCancel ? 3f *.0833333333f:0f;
             //sparkle.SetState(_canSpecialCancel?"ChargeIndicator":"Hide");
         }
     }
@@ -287,6 +287,7 @@ public class Drifter : MonoBehaviour, INetworkInit
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
         movement.terminalVelocity = terminalVelocity;
         canSpecialCancelFlag = false;
+        listenForSpecialCancel = false;
         
     }
 

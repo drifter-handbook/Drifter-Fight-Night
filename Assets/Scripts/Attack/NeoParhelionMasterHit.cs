@@ -59,12 +59,12 @@ public class NeoParhelionMasterHit : MasterHit
     	movement.spawnJuiceParticle(transform.position, MovementParticleMode.Restitution);
     }
 
-    public void setTerminalVelocity(float vel)
-    {
-        if(!isHost)return;
-        movement.canLandingCancel = false;  
-        movement.terminalVelocity = vel;
-    }
+    // public void setTerminalVelocity(float vel)
+    // {
+    //     if(!isHost)return;
+    //     movement.canLandingCancel = false;  
+    //     movement.terminalVelocity = vel;
+    // }
 
     public override void roll()
     {

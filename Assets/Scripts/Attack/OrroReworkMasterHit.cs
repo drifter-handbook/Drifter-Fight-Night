@@ -116,21 +116,6 @@ public class OrroReworkMasterHit : MasterHit
         movement.spawnJuiceParticle(transform.position + new Vector3(0,2,0),MovementParticleMode.Orro_Boost, false);
     }
         
-    //Adjusts orro's terminal velocity for his down air
-    public void setTerminalVelocity(float vel)
-    {
-        if(!isHost)return;
-        movement.canLandingCancel = false;  
-        movement.terminalVelocity = vel;
-    }
-
-    //Returns orro's TV to normal at the end of the move
-    public void resetTerminalVelocity()
-    {
-        if(!isHost)return; 
-        movement.terminalVelocity = terminalVelocity;
-    }
-
     //Bean!
     //Tells the current bean object to preform certain actions
     public void BeanSide()
