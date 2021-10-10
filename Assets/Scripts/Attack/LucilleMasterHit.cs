@@ -23,7 +23,7 @@ public class LucilleMasterHit : MasterHit
         if(!isHost)return;
         if(movement.terminalVelocity !=  terminalVelocity && (movement.ledgeHanging || status.HasEnemyStunEffect()))
         {
-            resetTerminal();
+            resetTerminalVelocity();
             jumpGranted = false;
         }
         if(jumpGranted && movement.grounded)jumpGranted = false;
@@ -31,18 +31,6 @@ public class LucilleMasterHit : MasterHit
         if(status.HasStatusEffect(PlayerStatusEffect.DEAD) && rifts.Count >0) collapseAllPortals(0);
     }
 
-    public void setTerminalVelocity()
-    {
-        if(!isHost)return;
-        movement.canLandingCancel = false;  
-        movement.terminalVelocity = 75;
-    }
-
-    public void resetTerminal()
-    {
-        if(!isHost)return;
-        movement.terminalVelocity = terminalVelocity;
-    }
 
     public void Side_Grab_Bomb()
     {
