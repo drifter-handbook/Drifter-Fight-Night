@@ -139,6 +139,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
             clearMasterhitVars();
             drifter.canFeint = true;
             movement.techParticle();
+            drifter.canSpecialCancelFlag = false;
         }
         else
             attackWasCanceled = false;

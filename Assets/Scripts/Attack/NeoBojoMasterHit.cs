@@ -5,6 +5,8 @@ using UnityEngine;
 public class NeoBojoMasterHit : MasterHit
 {
 
+    GameObject centaur;
+
     public void SpawnDownTiltWave()
     {
         if(!isHost)return;
@@ -23,6 +25,8 @@ public class NeoBojoMasterHit : MasterHit
             hitbox.Active = true;
             hitbox.Facing = facing;
        }
+
+       wave.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
     }
 
     public void whirl()
@@ -31,6 +35,35 @@ public class NeoBojoMasterHit : MasterHit
 
         movement.spawnJuiceParticle(transform.position ,MovementParticleMode.Bojo_Whirl, false);
     }
+
+
+    public void SpawnCentaur(int power)
+    {
+        if(!isHost || centaur != null)return;
+
+        facing = movement.Facing;
+        //Vector3 pos = new Vector3(2f * facing,2.7f,0);
+        
+        centaur = host.CreateNetworkObject("Centaur", transform.position , transform.rotation);
+        centaur.transform.localScale = new Vector3(10f * facing, 10f , 1f);
+
+
+        centaur.GetComponent<Rigidbody2D>().velocity = new Vector3(facing * 15,0);
+        foreach (HitboxCollision hitbox in centaur.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = -attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+            hitbox.Facing = facing;
+       }
+
+       centaur.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
+
+       centaur.GetComponent<SyncAnimatorStateHost>().SetState("Centaur_" + power);
+
+    }
+
 
 
     //Inhereted Roll Methods
