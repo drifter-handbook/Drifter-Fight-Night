@@ -14,14 +14,18 @@ public class RyykeMasterHit : MasterHit
 	float zombieRadius = 3.75f;
 
     //Tether Recovery Range object
-    TetherRange tether;
+    public TetherRange tether;
     //Point to tether to
     Vector3 TetherPoint = Vector3.zero;
+
+    GameObject arm;
 
 	//0 Up stone
 	//1 Side Stone
 	//2 Down Stone
 	Tombstone[] tombstones = new Tombstone[] {null,null,null};
+
+    Tether armTether;
 
 
 	//Index of the next stone to place
@@ -32,12 +36,6 @@ public class RyykeMasterHit : MasterHit
 
 	//The current stone being targeted for teleportation with down special
 	int targetStone = -1;
-
-
-    void Start()
-    {
-        tether = drifter.GetComponentInChildren<TetherRange>();
-    }
 
 	void Update()
 	{
@@ -171,48 +169,6 @@ public class RyykeMasterHit : MasterHit
        tombstones[tombstoneIndex].throwStone(mode);
     }
 
-
-    public void SpawnTether()
-    {
-        if(!isHost)return;
-        facing = movement.Facing;
-        Vector3 pos = new Vector3(1.5f * facing,3.7f,0);
-        
-
-        if(tether.TetherPoint != Vector3.zero)
-        {
-            UnityEngine.Debug.Log("Ledge");
-            TetherPoint = tether.TetherPoint;
-            playState("W_Up_Ledge");
-        }
-
-        GameObject arm = host.CreateNetworkObject("Ryyke_Arm", transform.position + pos, Quaternion.Euler(0,0,55f * facing));
-        arm.transform.localScale = new Vector3(10f * facing, 10f , 1f);
-        foreach (HitboxCollision hitbox in arm.GetComponentsInChildren<HitboxCollision>(true))
-        {
-            hitbox.parent = drifter.gameObject;
-            hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
-            hitbox.Active = true;
-            hitbox.Facing = facing;
-       }
-       arm.transform.SetParent(drifter.gameObject.transform);
-       arm.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
-    }
-
-    public void pullToLedge()
-    {
-        if(TetherPoint!=Vector3.zero)
-        {
-
-            Vector3 dir = TetherPoint - new Vector3(rb.position.x,rb.position.y);
-            Vector3.Normalize(dir);
-            rb.velocity = 15f * dir;
-
-            TetherPoint=Vector3.zero;
-        }
-    }
-
     void isNearStone()
     {
     	bool reset = true;
@@ -258,6 +214,97 @@ public class RyykeMasterHit : MasterHit
     	}
     	
     }
+
+
+    //W Up Methods
+    public void SpawnTether()
+    {
+        if(!isHost)return;
+        facing = movement.Facing;
+
+        float angle = 55f  * facing;
+        float len = 1.28f;
+                
+        Vector3 pos = new Vector3(1.5f * facing,3.7f,0);
+
+        if(arm != null)deleteArm();
+
+        if(tether.TetherPoint != Vector3.zero)
+        {
+
+            TetherPoint = tether.TetherPoint;
+            //angle = Vector2.Angle(tether.TetherPoint,transform.position + pos);
+            float deltay = TetherPoint.y- (transform.position + pos).y;
+            float deltax = TetherPoint.x- (transform.position + pos).x;
+            angle = Mathf.Atan2(deltay, deltax)*180 / Mathf.PI + (facing < 0 ?180:0);
+
+
+            len = Vector2.Distance(transform.position + pos,TetherPoint) /10f;
+  
+            playState("W_Up_Ledge");
+
+        }
+
+        arm = host.CreateNetworkObject("Ryyke_Arm", transform.position + pos, Quaternion.Euler(0,0,angle));
+        arm.transform.localScale = new Vector3(10f * facing, 10f , 1f);
+        foreach (HitboxCollision hitbox in arm.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+            hitbox.Facing = facing;
+        }
+        arm.transform.SetParent(drifter.gameObject.transform);
+        arm.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
+
+        armTether = arm.GetComponentInChildren<Tether>();
+        armTether.setTargetLength(len);
+
+        //Cut this later?
+        if(movement.currentJumps < movement.numberOfJumps) movement.currentJumps++;
+    }
+
+    public void setArmLen(float len)
+    {
+        if(!isHost || arm == null)return;
+        armTether.setTargetLength(len);
+    }
+
+    public void freezeTether(float len)
+    {
+        if(!isHost || arm == null)return;
+        armTether.freezeLen();
+    }
+
+
+    public void pullToLedge()
+    {
+        if(!isHost)return;
+        if(TetherPoint!=Vector3.zero)
+        {
+            Vector3 dir = TetherPoint - new Vector3(rb.position.x,rb.position.y);
+            Vector3.Normalize(dir);
+            rb.velocity = 10f * dir;
+            armTether.setSpeed(.5f);
+   
+            TetherPoint=Vector3.zero;
+        }
+    }
+    public void deleteArm()
+    {
+        if(arm != null)Destroy(arm);
+        arm = null;
+        armTether= null;
+
+    }
+
+    public void disableArmHitbox()
+    {
+        armTether.togglehitbox(0);
+    }
+
+
     //Particles
     public void dust()
     {
@@ -342,10 +389,16 @@ public class RyykeMasterHit : MasterHit
     public new void returnToIdle()
     {
         base.returnToIdle();
+        clear();
+    }
+
+    public void clear()
+    {
         listeningForDirection = false;
         listeningForMovement = false;
         burrowTime = maxBurrowTime;
         burrowing = false;
+        deleteArm(); 
     }
 
     //Inhereted Roll Methods

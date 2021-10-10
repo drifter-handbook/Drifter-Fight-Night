@@ -9,11 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 581676884066141311}
-  - component: {fileID: 370210022951231634}
-  - component: {fileID: 9156667734027804099}
+  - component: {fileID: 8274864276150189625}
+  - component: {fileID: 8655838878823675345}
   m_Layer: 9
   m_Name: Hitbox
-  m_TagString: Projectile
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 3791893272685448953}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &370210022951231634
+--- !u!114 &8274864276150189625
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,7 +41,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4505793718914060300}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
+  m_Script: {fileID: 11500000, guid: a5628fe228e8be043b618c6647ceb161, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 8423933562066253471}
@@ -49,8 +49,10 @@ MonoBehaviour:
   isActive: 1
   OverrideData: {fileID: 11400000, guid: ed586168e75c6df48b75664250bd04a8, type: 2}
   AttackData: {fileID: 0}
---- !u!58 &9156667734027804099
-CircleCollider2D:
+  SuccessState: W_Up_Drifter
+  victim: {fileID: 0}
+--- !u!70 &8655838878823675345
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -62,9 +64,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.1274514, y: 0.006889248}
-  serializedVersion: 2
-  m_Radius: 0.1
+  m_Offset: {x: 0.15, y: 0}
+  m_Size: {x: 0.3, y: 0.24}
+  m_Direction: 1
 --- !u!1 &8423933562066253471
 GameObject:
   m_ObjectHideFlags: 0
@@ -76,6 +78,7 @@ GameObject:
   - component: {fileID: 3791893272685448953}
   - component: {fileID: 1307784699378283604}
   - component: {fileID: 2934634908161314259}
+  - component: {fileID: 2708496790336166569}
   - component: {fileID: 6687377281057746589}
   - component: {fileID: 5138135857387232328}
   - component: {fileID: 6161390106928251017}
@@ -151,7 +154,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 0.16, y: 0.16}
+  m_Size: {x: 0.2, y: 0.16}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -176,6 +179,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &2708496790336166569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8423933562066253471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 731e47c0d855dee4585ada17eeb71abd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &6687377281057746589
 MonoBehaviour:
   m_ObjectHideFlags: 0

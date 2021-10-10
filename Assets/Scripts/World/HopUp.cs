@@ -13,7 +13,6 @@ public class HopUp : MonoBehaviour
     {
         if (col.gameObject.tag == "LedgeGrabBox" && !locked)
         {
-        	UnityEngine.Debug.Log("CORNER LOCKED");
             locked = true;
             lockingPlayer = col;
 
@@ -28,7 +27,6 @@ public class HopUp : MonoBehaviour
 
     IEnumerator Unlock(){
         yield return new WaitForSeconds(.5f);
-        UnityEngine.Debug.Log("CORNER UNLOCKED!");
         locked = false;
     }
 }
