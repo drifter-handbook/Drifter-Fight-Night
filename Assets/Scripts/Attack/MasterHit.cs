@@ -134,7 +134,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         }
         else if(drifter.canSpecialCancel() && checkForSpecialTap(15) & !status.HasEnemyStunEffect())
         {
-            movement.updateFacing();
+            movement.setFacing((int)checkForDirection(8));
             attacks.useSpecial();
             status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, 2f *.0833333333f);
             clearMasterhitVars();
@@ -410,11 +410,24 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         return false;
     }
 
-    public bool checkForSpecialTap(int range = 8)
+    //Returns the most common direction held over the last X inputs
+    public float checkForDirection(int frames = 8)
+    {
+        float dir = 0;
+        facing = movement.Facing;
+        if(!isHost)return facing;
+        for(int i = 0; i < frames; i++)
+        {
+            dir += drifter.input[i].MoveX;
+        }
+        return dir !=0 ?dir:facing;
+    }
+
+    public bool checkForSpecialTap(int frames = 8)
     {
         if(!isHost)return false;
         int state = 0;
-        for(int i = 0; i < range; i++)
+        for(int i = 0; i < frames; i++)
         {
             if(state >0 && !drifter.input[i].Special)return true;
             else if(state == 0 && drifter.input[0].Special) state++;
