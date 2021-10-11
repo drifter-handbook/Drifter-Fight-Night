@@ -467,11 +467,12 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 40f * Time.deltaTime), rb.velocity.y);
         }
 
-        //Drop through platforms
+        //Drop through platforms && fastfall
         if(drifter.doubleTappedY() && drifter.input[0].MoveY < 0)
         {
+            canLandingCancel = true;
             gameObject.layer = 13;
-            rb.velocity = new Vector2(rb.velocity.x,-terminalVelocity /2f);
+            rb.velocity = new Vector2(rb.velocity.x,Mathf.Min(-terminalVelocity /2f,rb.velocity.y));
             dropThroughTime = Time.time;
         }
 
