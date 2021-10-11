@@ -123,7 +123,6 @@ public class PlayerMovement : MonoBehaviour
     }
 
     //Restitution
-    //TODO Redo this whole mess
     void OnCollisionEnter2D(Collision2D col)
     {
 
@@ -211,7 +210,13 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //Cancel aerials on landing + landing animation
-        if(!grounded && IsGrounded() && !status.HasEnemyStunEffect() && !drifter.guarding && !drifter.guardBreaking && (!status.HasStatusEffect(PlayerStatusEffect.END_LAG) || canLandingCancel))drifter.PlayAnimation(drifter.JumpEndStateName);
+        if(!grounded && IsGrounded() && !status.HasEnemyStunEffect() && !drifter.guarding && !drifter.guardBreaking && (!status.HasStatusEffect(PlayerStatusEffect.END_LAG) || canLandingCancel))
+        {
+            drifter.PlayAnimation(drifter.JumpEndStateName);
+            //Remove armour on landing 
+            //TODO determine if there are more things that need to be removed on actionable landing
+            if(status.HasStatusEffect(PlayerStatusEffect.ARMOUR))status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0f);
+        }
 
         //Handles jumps
         if(grounded && !jumping)
@@ -226,7 +231,6 @@ public class PlayerMovement : MonoBehaviour
                 currentJumps--;
             }            
         }
-        //TODO make sure this doesnt shit particles everywhere 
         else if(IsGrounded() && !status.HasStunEffect() && !jumping)
         {
             //drifter.PlayAnimation("Jump_End");
@@ -343,7 +347,6 @@ public class PlayerMovement : MonoBehaviour
 
 
         bool jumpPressed = !drifter.input[1].Jump && drifter.input[0].Jump;
-        // TODO: spawn hitboxes
         bool canAct = !status.HasStunEffect() && !drifter.guarding;
         bool canGuard = !status.HasStunEffect() && !jumping;
         bool moving = drifter.input[0].MoveX != 0;
@@ -452,7 +455,6 @@ public class PlayerMovement : MonoBehaviour
         //Player is not trying to move, and is not in hitstun
         else if (!moving && status.HasGroundFriction())
         {
-            //TODO Make sure this isnt eating inputs
             if(canAct && !jumping)drifter.returnToIdle();
             //standing ground friction (When button is not held)
             if(!grounded)rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 20f * Time.deltaTime), rb.velocity.y);
@@ -568,7 +570,6 @@ public class PlayerMovement : MonoBehaviour
     }
 
     //Used to forcibly invert the players direction
-    //TODO This seems like it could be lumped in somewhere else
     public void flipFacing(){
         Facing *= -1;
         drifter.SetIndicatorDirection(Facing);
