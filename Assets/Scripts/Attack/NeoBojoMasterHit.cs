@@ -6,6 +6,7 @@ public class NeoBojoMasterHit : MasterHit
 {
 
     GameObject centaur;
+    int power = 0;
 
     public void SpawnDownTiltWave()
     {
@@ -37,7 +38,7 @@ public class NeoBojoMasterHit : MasterHit
     }
 
 
-    public void SpawnCentaur(int power)
+    public void SpawnCentaur()
     {
         if(!isHost || centaur != null)return;
 
@@ -64,6 +65,11 @@ public class NeoBojoMasterHit : MasterHit
 
     }
 
+    public void setCentaurPower(int pow)
+    {
+        if(!isHost)return;
+        power = pow;
+    }
 
 
     //Inhereted Roll Methods

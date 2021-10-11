@@ -1,52 +1,28 @@
 fileFormatVersion: 2
-guid: 8c2514319f767f244a546e19ff52e8f2
+guid: 47a44d35ab01b7e4a9a8cda31780e0ca
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6396780996930060583
-    second: myth_dtilt_0
+      213: -2898099494908271990
+    second: myth_stilt_0
   - first:
-      213: 7303648659405405455
-    second: myth_dtilt_1
+      213: -2811874891669411603
+    second: myth_stilt_1
   - first:
-      213: 4841710895199899210
-    second: myth_dtilt_2
+      213: 2263145401943200514
+    second: myth_stilt_2
   - first:
-      213: 4460157838064418555
-    second: myth_dtilt_3
+      213: 3454903227871871989
+    second: myth_stilt_3
   - first:
-      213: -1237316845441117066
-    second: myth_dtilt_4
+      213: 7153409192883877317
+    second: myth_stilt_4
   - first:
-      213: 2504923054139243250
-    second: myth_dtilt_5
+      213: 3865003175406157501
+    second: myth_stilt_5
   - first:
-      213: 6555525681803973556
-    second: myth_dtilt_6
-  - first:
-      213: -7826835317275804765
-    second: myth_dtilt_0
-  - first:
-      213: 7080378329191064196
-    second: myth_dtilt_1
-  - first:
-      213: -8321537222021246225
-    second: myth_dtilt_2
-  - first:
-      213: 2795647375507248527
-    second: myth_dtilt_3
-  - first:
-      213: -1867060221601063957
-    second: myth_dtilt_4
-  - first:
-      213: 5591484426607524940
-    second: myth_dtilt_5
-  - first:
-      213: 1147994727432881689
-    second: myth_dtilt_6
-  - first:
-      213: 4491684030172639988
-    second: myth_dtilt_7
+      213: 81051743163290498
+    second: myth_stilt_6
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -132,12 +108,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: myth_dtilt_0
+      name: myth_stilt_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 160
+        width: 128
         height: 64
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -146,19 +122,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3ab3b4e4fbe716390800000000000000
-      internalID: -7826835317275804765
+      spriteID: a82e04a3dd1e7c7d0800000000000000
+      internalID: -2898099494908271990
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: myth_dtilt_1
+      name: myth_stilt_1
       rect:
         serializedVersion: 2
-        x: 160
+        x: 128
         y: 0
-        width: 160
+        width: 128
         height: 64
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -167,19 +143,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 482aec2b39e824260800000000000000
-      internalID: 7080378329191064196
+      spriteID: de864391fa63af8d0800000000000000
+      internalID: -2811874891669411603
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: myth_dtilt_2
+      name: myth_stilt_2
       rect:
         serializedVersion: 2
-        x: 320
+        x: 256
         y: 0
-        width: 160
+        width: 128
         height: 64
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -188,19 +164,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fe29b386cf5f38c80800000000000000
-      internalID: -8321537222021246225
+      spriteID: 20312ed90ce486f10800000000000000
+      internalID: 2263145401943200514
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: myth_dtilt_3
+      name: myth_stilt_3
       rect:
         serializedVersion: 2
-        x: 480
+        x: 384
         y: 0
-        width: 160
+        width: 128
         height: 64
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -209,19 +185,40 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f85dc5ed9722cc620800000000000000
-      internalID: 2795647375507248527
+      spriteID: 5f347ae4e2842ff20800000000000000
+      internalID: 3454903227871871989
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: myth_dtilt_4
+      name: myth_stilt_4
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 0
+        width: 128
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5c57bd2b2c3064360800000000000000
+      internalID: 7153409192883877317
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: myth_stilt_5
       rect:
         serializedVersion: 2
         x: 640
         y: 0
-        width: 160
+        width: 128
         height: 64
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -230,19 +227,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bebd43dde9ed616e0800000000000000
-      internalID: -1867060221601063957
+      spriteID: dbe37dd09ef33a530800000000000000
+      internalID: 3865003175406157501
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: myth_dtilt_5
+      name: myth_stilt_6
       rect:
         serializedVersion: 2
-        x: 800
+        x: 768
         y: 0
-        width: 160
+        width: 128
         height: 64
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -251,50 +248,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c4cf1170671f89d40800000000000000
-      internalID: 5591484426607524940
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: myth_dtilt_6
-      rect:
-        serializedVersion: 2
-        x: 960
-        y: 0
-        width: 160
-        height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 91688ac4f1f7eef00800000000000000
-      internalID: 1147994727432881689
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: myth_dtilt_7
-      rect:
-        serializedVersion: 2
-        x: 1120
-        y: 0
-        width: 160
-        height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4f23cb5d3daa55e30800000000000000
-      internalID: 4491684030172639988
+      spriteID: 2839ca78124ff1100800000000000000
+      internalID: 81051743163290498
       vertices: []
       indices: 
       edges: []
