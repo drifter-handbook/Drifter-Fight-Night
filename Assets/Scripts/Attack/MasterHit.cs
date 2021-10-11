@@ -134,6 +134,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         }
         else if(drifter.canSpecialCancel() && checkForSpecialTap(15) & !status.HasEnemyStunEffect())
         {
+            movement.updateFacing();
             attacks.useSpecial();
             status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, 2f *.0833333333f);
             clearMasterhitVars();
