@@ -87,15 +87,8 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.16666667
+  - time: 0
     functionName: pauseGravity
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.16666667
-    functionName: warpStart
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
@@ -109,17 +102,17 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.16666667
+    functionName: warpStart
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.16666667
     functionName: setYVelocity
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 85
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.25
-    functionName: setYVelocity
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 15
     intParameter: 0
     messageOptions: 0
   - time: 0.25
@@ -129,7 +122,14 @@ AnimationClip:
     floatParameter: 15
     intParameter: 0
     messageOptions: 0
-  - time: 0.33333334
+  - time: 0.25
+    functionName: setYVelocity
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 15
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.41666666
     functionName: unpauseGravity
     data: 
     objectReferenceParameter: {fileID: 0}
