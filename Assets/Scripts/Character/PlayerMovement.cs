@@ -244,13 +244,14 @@ public class PlayerMovement : MonoBehaviour
        
         //Sets hitstun state when applicable
 
-        if(status.HasEnemyStunEffect() && drifter.guardBreaking)
-        {
-            drifter.PlayAnimation("Guard_Break");
-            hitstun = true;
-        }
+        // if(status.HasEnemyStunEffect() && drifter.guardBreaking)
+        // {
+        //     drifter.PlayAnimation("Guard_Break");
+        //     hitstun = true;
+        // }
 
-        else if(status.HasEnemyStunEffect() && !drifter.guarding)
+        // else 
+        if(status.HasEnemyStunEffect() && !drifter.guarding)
         {
             hitstun = true;
             drifter.PlayAnimation("HitStun");
@@ -470,7 +471,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //Drop through platforms && fastfall
-        if(drifter.doubleTappedY() && drifter.input[0].MoveY < 0)
+        if(drifter.doubleTappedY() && drifter.input[0].MoveY < 0 && !gravityPaused)
         {
             canLandingCancel = true;
             gameObject.layer = 13;

@@ -190,7 +190,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                     guardbroken = true;
                     drifter.clearGuardFlags();
                     drifter.guardBreaking = true;
-                    status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.3f);
+                    status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.6f);
                     
                 }
                 else drifter.guardBreaking = false;
@@ -362,7 +362,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             }
 
             if (isCritical)
-                StartCoroutine(Shake.zoomEffect(.6f,hitSparkPos,false));
+                Shake.startDarkenCoroutine(6 * framerateScalar);
 
             // Ancillary Hitsparks
             if (drifter != null && damageDealt >0f && attackFX != null)

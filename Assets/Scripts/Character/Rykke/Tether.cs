@@ -6,7 +6,7 @@ public class Tether : MonoBehaviour
 {
 
 	protected static float framerateScalar =.0833333333f;
-	private Vector2 target = new Vector2(.2f,.16f);
+	private Vector2 target = new Vector2(.24f,.16f);
 	private Vector2 targetOffset = new Vector2(.2f,0);
 	private float speed = 2f;
 	Collider2D hitbox;
@@ -21,12 +21,12 @@ public class Tether : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         sprite.size = Vector2.MoveTowards(sprite.size,target,extendPercent);
         hitbox.offset = Vector2.MoveTowards(hitbox.offset,targetOffset,extendPercent);
 
-        if(extendPercent < 1f) extendPercent+= Time.deltaTime/(speed * framerateScalar);
+        if(extendPercent < 1f) extendPercent+= Time.fixedDeltaTime/(speed * framerateScalar);
     }
 
     public void setTargetLength(float len)
@@ -52,4 +52,9 @@ public class Tether : MonoBehaviour
     {
     	hitbox.enabled = (active != 0);
     }
+
+    // void OnTriggerEnter2D(Collider2D col)
+    // {
+    // 	if(col.gameObject.layer==10)freezeLen();
+    // }
 }
