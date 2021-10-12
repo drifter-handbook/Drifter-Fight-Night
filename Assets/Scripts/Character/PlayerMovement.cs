@@ -578,6 +578,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void setFacing(int dir){
         Facing = Math.Sign(dir);
+        attacks.Facing = Facing;
         drifter.SetIndicatorDirection(Facing);
         transform.localScale = new Vector3(Facing * Mathf.Abs(transform.localScale.x),transform.localScale.y, transform.localScale.z);
     }
