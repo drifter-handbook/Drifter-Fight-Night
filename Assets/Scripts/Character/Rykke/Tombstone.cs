@@ -111,7 +111,12 @@ public class Tombstone : NonplayerHurtboxHandler
 		if(!GameController.Instance.IsHost)return;
 
 		if(collider.gameObject.tag == "BounceObject" && collider.GetComponent<Tombstone>().drifter == drifter)
-			if(projectile)rb.velocity = new Vector3(facing * -10f,20f);
+			if(projectile)
+            {
+                rb.velocity = new Vector3(facing * -10f,20f);
+                foreach (HitboxCollision hitbox in GetComponentsInChildren<HitboxCollision>(true))
+                    hitbox.Facing = -facing;
+            }
 			//else if(!active && ! canAct)rb.velocity = new Vector3(collider.gameObject.transform.position.x > transform.position.x ? -5f:5f,0);
 	}	
 			
