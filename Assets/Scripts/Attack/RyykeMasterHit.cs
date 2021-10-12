@@ -43,6 +43,8 @@ public class RyykeMasterHit : MasterHit
         {
         	burrowTime-= Time.deltaTime;
         }
+
+        if(arm!= null &&(movement.ledgeHanging || status.HasEnemyStunEffect())) deleteArm();
 	}
 
 
