@@ -14,38 +14,40 @@ public class AudioLibrary : ScriptableObject
         public AudioClip clip;
     }
 
-    // IngredientDrawer
-    [CustomPropertyDrawer(typeof(StringClipPair))]
-    public class StringClipDrawer : PropertyDrawer
-    {
-        // Draw the property inside the given rect
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
-        {
-            // Using BeginProperty / EndProperty on the parent property means that
-            // prefab override logic works on the entire property.
-            EditorGUI.BeginProperty(position, label, property);
+    //THIS BREAKS THE BUILD IF LEFT IN I DONT KNOW WHAT IT DOES
 
-            // Draw label
-            position = EditorGUI.PrefixLabel(position, GUIUtility.GetControlID(FocusType.Passive), label);
+    // // IngredientDrawer
+    // [CustomPropertyDrawer(typeof(StringClipPair))]
+    // public class StringClipDrawer : PropertyDrawer
+    // {
+    //     // Draw the property inside the given rect
+    //     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    //     {
+    //         // Using BeginProperty / EndProperty on the parent property means that
+    //         // prefab override logic works on the entire property.
+    //         EditorGUI.BeginProperty(position, label, property);
 
-            // Don't make child fields be indented
-            var indent = EditorGUI.indentLevel;
-            EditorGUI.indentLevel = 0;
+    //         // Draw label
+    //         position = EditorGUI.PrefixLabel(position, GUIUtility.GetControlID(FocusType.Passive), label);
 
-            // Calculate rects
-            var nameRect = new Rect(position.x + 0, position.y, position.width - 120, position.height);
-            var clipRect = new Rect(position.x + position.width - 120, position.y, 120, position.height);
+    //         // Don't make child fields be indented
+    //         var indent = EditorGUI.indentLevel;
+    //         EditorGUI.indentLevel = 0;
 
-            // Draw fields - passs GUIContent.none to each so they are drawn without labels
-            EditorGUI.PropertyField(nameRect, property.FindPropertyRelative("name"), GUIContent.none);
-            EditorGUI.PropertyField(clipRect, property.FindPropertyRelative("clip"), GUIContent.none);
+    //         // Calculate rects
+    //         var nameRect = new Rect(position.x + 0, position.y, position.width - 120, position.height);
+    //         var clipRect = new Rect(position.x + position.width - 120, position.y, 120, position.height);
 
-            // Set indent back to what it was
-            EditorGUI.indentLevel = indent;
+    //         // Draw fields - passs GUIContent.none to each so they are drawn without labels
+    //         EditorGUI.PropertyField(nameRect, property.FindPropertyRelative("name"), GUIContent.none);
+    //         EditorGUI.PropertyField(clipRect, property.FindPropertyRelative("clip"), GUIContent.none);
 
-            EditorGUI.EndProperty();
-        }
-    }
+    //         // Set indent back to what it was
+    //         EditorGUI.indentLevel = indent;
+
+    //         EditorGUI.EndProperty();
+    //     }
+    // }
 
     [SerializeField] private StringClipPair[] library;
     private Dictionary<string, short> map;

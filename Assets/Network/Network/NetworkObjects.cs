@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 using System.IO;
 
 public class NetworkObjects : MonoBehaviour
@@ -167,10 +166,13 @@ public class NetworkObjects : MonoBehaviour
     private void aggregatePrefabs(string basePath)
     {
 
-        string[] networkPrefabs = Directory.GetFiles(basePath,"*.prefab",SearchOption.AllDirectories);
+        //string[] networkPrefabs = Directory.GetFiles(basePath,"*.prefab",SearchOption.AllDirectories);
+
+        UnityEngine.Object[] networkPrefabs = Resources.LoadAll("", typeof(GameObject));
 
         for(int i = 0; i < networkPrefabs.Length; i++)
-           NetworkTypePrefabs.Add((GameObject)AssetDatabase.LoadAssetAtPath(networkPrefabs[i], typeof(GameObject)));
+
+           NetworkTypePrefabs.Add((GameObject)networkPrefabs[i]);
 
         UnityEngine.Debug.Log("Added " + NetworkTypePrefabs.Count + " Prefabs to the Network Prefab List");
 
