@@ -215,7 +215,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                         GetComponent<Rigidbody2D>().velocity = new Vector2(forceDir.normalized.x * KB, drifter.movement.grounded?Mathf.Abs(forceDir.normalized.y * KB): forceDir.normalized.y * KB);
                         
                         //Use restitution particle if spiked on the grounde
-                        if(drifter.movement.grounded && attackData.AngleOfImpact < -75 &&  attackData.AngleOfImpact > -105)drifter.movement.spawnJuiceParticle(transform.position + new Vector3(0,-2.5f,0), MovementParticleMode.Restitution);
+                        if(drifter.movement.grounded && attackData.AngleOfImpact < 285 &&  attackData.AngleOfImpact > 255)drifter.movement.spawnJuiceParticle(transform.position + new Vector3(0,-2.5f,0), MovementParticleMode.Restitution);
                     }
 
                     //Autolink angle (<361) scales its magnitude with distacne from said point, further scaled with the attacker's velocity

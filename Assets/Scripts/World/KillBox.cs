@@ -59,6 +59,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
 
     IEnumerator Respawn(Collider2D other)
     {
+        yield return new WaitForSeconds(.083f);
         other.transform.position = new Vector2(0f, 150f);
         yield return new WaitForSeconds(2f);
         CreateHalo();
