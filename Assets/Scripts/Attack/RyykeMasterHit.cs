@@ -306,6 +306,13 @@ public class RyykeMasterHit : MasterHit
         armTether.togglehitbox(0);
     }
 
+    //Flips the direction the character is facing mid move)
+    public void invertDirection()
+    {
+        if(!isHost)return;
+        movement.flipFacing();
+    }
+
 
     //Particles
     public void dust()
