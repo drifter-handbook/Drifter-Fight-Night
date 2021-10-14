@@ -14,11 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AttackDamage: 8
   Knockback: 26
-  KnockbackScale: 0.65
+  KnockbackScale: 0.55
   hasStaticHitstun: 0
   HitStun: -1
   isGrab: 0
-  AngleOfImpact: 285
+  mirrorKnockback: 0
+  AngleOfImpact: 65
   StatusEffect: 20
   StatusDuration: 0.1
-  HitVisual: 12
+  HitFX: {fileID: 11400000, guid: c40ffbef4bd5ad54dbc61660fa4d822a, type: 2}
+  canHitGrounded: 1
+  canHitAerial: 1
