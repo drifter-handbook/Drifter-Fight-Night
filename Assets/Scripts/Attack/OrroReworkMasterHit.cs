@@ -36,7 +36,7 @@ public class OrroReworkMasterHit : MasterHit
     	if(listeningForMovement)
         {
         	movement.move(13f);
-        	if((!drifter.input[1].Jump && drifter.input[0].Jump) || hoverTime <=0 || !drifter.input[0].Special)
+        	if(hoverTime <=0 || !drifter.input[0].Special)
         	{
         		playState("W_Down_End");
         		listeningForMovement = false;
@@ -107,6 +107,7 @@ public class OrroReworkMasterHit : MasterHit
         if(!isHost)return;
         if(!listeningForMovement)
         {
+        	listenForJumpCancel();
         	pauseGravity();
         	hoverTime = maxHoverTime;
         	listeningForMovement = true;
