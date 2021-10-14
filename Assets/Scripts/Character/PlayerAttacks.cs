@@ -110,7 +110,7 @@ public class PlayerAttacks : MonoBehaviour
         bool superPressed = false;
         bool grabPressed = false;
 
-        bool canAct = !status.HasStunEffect() && !drifter.guarding && !ledgeHanging;
+        bool canAct = !status.HasStunEffect() && !drifter.guarding && !ledgeHanging && !status.HasStatusEffect(PlayerStatusEffect.STANCE);
         bool canSpecial = !status.HasStunEffect() && !ledgeHanging;
 
 
@@ -139,7 +139,7 @@ public class PlayerAttacks : MonoBehaviour
             movement.superCancel();
         }
 
-        else if (grabPressed && canAct)
+        else if (grabPressed && canAct )
         {
             if (movement.grounded)StartAttack(DrifterAttackType.E_Side);
             else

@@ -31,7 +31,7 @@ public enum PlayerStatusEffect
 	KNOCKBACK,
 	HITPAUSE,
     GUARDBROKEN,
-    ORBO,
+    STANCE,
     SLOWMOTION, 
 }
 
@@ -98,7 +98,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         {PlayerStatusEffect.KNOCKBACK,                          new PlayerStatusData("KNOCKBACK",remove: false, stun: true)                         },
         {PlayerStatusEffect.HITPAUSE,                           new PlayerStatusData("HITPAUSE",stun: true, self:true)                              },
         {PlayerStatusEffect.GUARDBROKEN,                        new PlayerStatusData("GUARDBROKEN",icon: 14,remove: false)                          },
-        {PlayerStatusEffect.ORBO,                               new PlayerStatusData("ORBO",icon: 15,remove: false)                                 },
+        {PlayerStatusEffect.STANCE,                             new PlayerStatusData("STANCE",remove: false,self: true)                             },
         {PlayerStatusEffect.SLOWMOTION,                         new PlayerStatusData("SLOWMOTION",icon: 16)                                         },
     };
 
@@ -159,6 +159,8 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
                     {
                         if(ef.Key == PlayerStatusEffect.POISONED)
                             drifter.DamageTaken += Mathf.Min(statusDataMap[PlayerStatusEffect.POISONED].duration *.035f,.5f);
+                        else if(ef.Key == PlayerStatusEffect.STANCE)
+                            continue;
 
                         else ef.Value.duration--;
                         //Damage player if they are on fire
@@ -446,7 +448,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         if(ef == PlayerStatusEffect.SLOWMOTION)
             drifter.SetAnimationSpeed(.4f);
 
-    	data.duration = (ef == PlayerStatusEffect.ORBO) ? 240f * framerateScalar : duration * 10f;
+    	data.duration = duration * 10f;
 
     }
 

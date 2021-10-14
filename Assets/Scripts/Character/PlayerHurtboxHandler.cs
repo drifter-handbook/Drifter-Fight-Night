@@ -71,8 +71,6 @@ public class PlayerHurtboxHandler : MonoBehaviour
             if(status.HasStatusEffect(PlayerStatusEffect.INVULN) || (status.HasStatusEffect(PlayerStatusEffect.PLANTED) && attackData.StatusEffect == PlayerStatusEffect.GRABBED))return -3;
 
 
-            
-
             Drifter attacker = hitbox.parent.GetComponent<Drifter>();
             attacker.canFeint = false;
 
@@ -240,8 +238,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
                                                                     attackData.StatusDuration * framerateScalar *2f* 4f/(1f+Mathf.Exp(-0.03f * (drifter.DamageTaken -80f))):
                                                                     attackData.StatusDuration * framerateScalar));
 
-                    if(attackData.StatusEffect == PlayerStatusEffect.ORBO)
-                        SpawnOrboHandler(hitbox.parent,hurtbox.parent,(int)attackData.StatusDuration);
+                    // if(attackData.StatusEffect == PlayerStatusEffect.ORBO)
+                    //     SpawnOrboHandler(hitbox.parent,hurtbox.parent,(int)attackData.StatusDuration);
 
 
                     //Attatch Defender to attacker's hitbox for grab moves.
@@ -410,7 +408,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(MAX_ATTACK_DURATION);
+            yield return new WaitForSeconds(1);
             // find old attackIDs
             List<int> toRemove = new List<int>();
             foreach (int attackID in oldAttacks.Keys)
