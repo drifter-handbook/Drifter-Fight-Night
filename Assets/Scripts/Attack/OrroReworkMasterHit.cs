@@ -17,7 +17,7 @@ public class OrroReworkMasterHit : MasterHit
 
     bool listeningForMovement = false;
     float hoverTime = 1.5f;
-    float maxHoverTime = 1.5f;
+    float maxHoverTime = 1f;
 
     void Start()
     {
@@ -48,11 +48,15 @@ public class OrroReworkMasterHit : MasterHit
     {
         if(!isHost)return;
 
-        if(status.HasEnemyStunEffect() || movement.ledgeHanging)
-        	status.ApplyStatusEffect(PlayerStatusEffect.STANCE,0f);
-
-        if(status.HasStatusEffect(PlayerStatusEffect.STANCE) && drifter.input[0].Light && !drifter.input[1].Light)
+        if(status.HasEnemyStunEffect() || movement.ledgeHanging || (drifter.input[0].Special && drifter.input[1].Special &&(drifter.input[0].MoveX !=0 || drifter.input[0].MoveY !=0)))
         {
+        	status.ApplyStatusEffect(PlayerStatusEffect.STANCE,0f);
+        	bubble.SetState("Hide");
+        }
+
+        else if(status.HasStatusEffect(PlayerStatusEffect.STANCE) && drifter.input[0].Light && !drifter.input[1].Light)
+        {
+        	bean.setBeanDirection(movement.Facing);
         	applyEndLag(8f);
         	playState("W_Neutral_Command");
         	if(drifter.input[0].MoveY >0)
@@ -108,7 +112,8 @@ public class OrroReworkMasterHit : MasterHit
         if(!listeningForMovement)
         {
         	listenForJumpCancel();
-        	pauseGravity();
+        	setTerminalVelocity(-1f);
+        	setYVelocity(0);
         	hoverTime = maxHoverTime;
         	listeningForMovement = true;
         }

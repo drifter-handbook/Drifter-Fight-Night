@@ -136,6 +136,16 @@ public class BeanWrangler : NonplayerHurtboxHandler
         state = new BeanState(pos,facingDir);
     }
 
+
+    //Enqueus a state for bean to mimic after a short delay
+    public void setBeanDirection(int facingDir)
+    {
+        if(!GameController.Instance.IsHost)return;
+        facing = facingDir;
+        transform.localScale = new Vector3(facing * Mathf.Abs(transform.localScale.x),
+                        transform.localScale.y, transform.localScale.z); 
+    }
+
     //Tells bean to start returning to orro. 
     public void recallBean(Vector3 pos,int facingDir)
     {

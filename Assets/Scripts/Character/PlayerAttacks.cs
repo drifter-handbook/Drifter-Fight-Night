@@ -139,7 +139,7 @@ public class PlayerAttacks : MonoBehaviour
             movement.superCancel();
         }
 
-        else if (grabPressed && canAct )
+        else if (grabPressed && canAct)
         {
             if (movement.grounded)StartAttack(DrifterAttackType.E_Side);
             else
