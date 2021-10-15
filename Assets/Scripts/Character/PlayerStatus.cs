@@ -30,7 +30,7 @@ public enum PlayerStatusEffect
 	END_LAG,
 	KNOCKBACK,
 	HITPAUSE,
-    GUARDBROKEN,
+    GUARDCRUSHED,
     STANCE,
     SLOWMOTION, 
 }
@@ -97,7 +97,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         {PlayerStatusEffect.END_LAG,                            new PlayerStatusData("END_LAG",stun: true, self: true)                              },
         {PlayerStatusEffect.KNOCKBACK,                          new PlayerStatusData("KNOCKBACK",remove: false, stun: true)                         },
         {PlayerStatusEffect.HITPAUSE,                           new PlayerStatusData("HITPAUSE",stun: true, self:true)                              },
-        {PlayerStatusEffect.GUARDBROKEN,                        new PlayerStatusData("GUARDBROKEN",icon: 14,remove: false)                          },
+        {PlayerStatusEffect.GUARDCRUSHED,                       new PlayerStatusData("GUARDCRUSHED",icon: 14)                         },
         {PlayerStatusEffect.STANCE,                             new PlayerStatusData("STANCE",remove: false,self: true)                             },
         {PlayerStatusEffect.SLOWMOTION,                         new PlayerStatusData("SLOWMOTION",icon: 16)                                         },
     };
@@ -192,7 +192,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         //If you are actionable, end combo
         if(!HasEnemyStunEffect() && combocount >0)
         {
-        	UnityEngine.Debug.Log("COMBO DROPPED at :" + combocount);
+        	//UnityEngine.Debug.Log("COMBO DROPPED at :" + combocount);
         	combocount = 0;
         	frameAdvantage = 0;
             isInCombo = false;
@@ -386,7 +386,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
     		if(ef == PlayerStatusEffect.DEAD && combocount > 0)
     		{
     			
-    			UnityEngine.Debug.Log(drifter.drifterType + " got bodied in " + combocount + " hits!");
+    			//UnityEngine.Debug.Log(drifter.drifterType + " got bodied in " + combocount + " hits!");
     			combocount = 0;
                 isInCombo = false;
                 damageDisplay.Reset();
@@ -400,7 +400,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
     		else
     		{
     			combocount++;
-    			UnityEngine.Debug.Log(combocount + " Hit; " + (frameAdvantage > 0 ?"+":"" ) + frameAdvantage.ToString("0.0"));
+    			//UnityEngine.Debug.Log(combocount + " Hit; " + (frameAdvantage > 0 ?"+":"" ) + frameAdvantage.ToString("0.0"));
                 trainingUI.WriteCombo(combocount);
                 trainingUI.WriteFrame((int)frameAdvantage);
     			frameAdvantage = 0;

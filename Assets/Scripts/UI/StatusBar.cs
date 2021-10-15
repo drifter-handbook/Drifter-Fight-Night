@@ -21,7 +21,7 @@ public class StatusBar : MonoBehaviour , INetworkInit
         NetworkUtils.RegisterChildObject("StatusBarMask", mask.gameObject);
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if((duration *10f) < status.remainingDuration(ef)) duration = (status.remainingDuration(ef)/10f);
         if(duration == 0) Destroy(gameObject);

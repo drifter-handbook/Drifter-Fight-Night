@@ -71,6 +71,7 @@ public class HitboxCollision : MonoBehaviour
                 hitresult = hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, AttackData);
             }
             if(hitresult >= -1 && drifter.canSpecialCancelFlag)drifter.listenForSpecialCancel = true;
+            //Debug.Log("Hit result of: " + hitresult + "  For attack id: " + AttackID+ "  And AttackType: " + AttackType);
         }
     }
 }

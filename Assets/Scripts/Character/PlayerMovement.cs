@@ -244,13 +244,13 @@ public class PlayerMovement : MonoBehaviour
        
         //Sets hitstun state when applicable
 
-        // if(status.HasEnemyStunEffect() && drifter.guardBreaking)
-        // {
-        //     drifter.PlayAnimation("Guard_Break");
-        //     hitstun = true;
-        // }
+        if(status.HasEnemyStunEffect() && drifter.guardBreaking)
+        {
+            drifter.PlayAnimation("Guard_Break");
+            hitstun = true;
+        }
 
-        // else 
+        else 
         if(status.HasEnemyStunEffect() && !drifter.guarding)
         {
             hitstun = true;
@@ -481,7 +481,7 @@ public class PlayerMovement : MonoBehaviour
 
 
         //Guard
-        if(drifter.input[0].Guard && canGuard && !ledgeHanging && !status.HasStatusEffect(PlayerStatusEffect.GUARDBROKEN))
+        if(drifter.input[0].Guard && canGuard && !ledgeHanging)
         {
             //shift is guard
             if(!drifter.guarding)drifter.PlayAnimation("Guard_Start");
@@ -490,7 +490,7 @@ public class PlayerMovement : MonoBehaviour
         }
       
         //Disable Guarding
-        else if(!drifter.input[0].Guard && !status.HasStunEffect() && drifter.guarding && !status.HasStatusEffect(PlayerStatusEffect.GUARDBROKEN))
+        else if(!drifter.input[0].Guard && !status.HasStunEffect() && drifter.guarding)
         {
             status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,framerateScalar * 3);
             drifter.guarding = false;
@@ -775,6 +775,7 @@ public class PlayerMovement : MonoBehaviour
     private void spawnSuperParticle(string mode,float cost,float darkentime)
     {
 
+        canLandingCancel = false;
         mainCamera.startDarkenCoroutine(darkentime * framerateScalar);
         drifter.canSuper = false;
         attacks.SetupAttackID(DrifterAttackType.Super_Cancel);

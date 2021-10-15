@@ -23,7 +23,7 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
             PlayerStatus attackerStatus = hitbox.parent.GetComponent<PlayerStatus>();
 
 
-            if(hurtbox.gameObject.name == "Counter" &&  attackData.AttackDamage >0f && !attackData.isGrab)
+            if(hurtbox.gameObject.name == "Counter" &&  attackData.AttackDamage >0f && attackData.hitType!=HitType.GRAB)
             {
                 GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.STAR, hitSparkPos,0, new Vector2(10f, 10f));
                 attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.7f);

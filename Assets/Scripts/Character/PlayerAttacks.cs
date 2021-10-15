@@ -44,7 +44,7 @@ public class PlayerAttacks : MonoBehaviour
 
     static int nextID = 0;
     // get a new attack ID
-    public static int NextID { get { nextID++; return nextID; } }
+    public static int NextID { get { nextID++;if(nextID>100)nextID=0; return nextID; } }
 
     // current attack ID and Type, used for outgoing attacks
     public int AttackID { get; private set; }
@@ -208,14 +208,16 @@ public class PlayerAttacks : MonoBehaviour
         currentRecoveries = maxRecoveries;
     }
 
-    void StartAttack(DrifterAttackType attackType)
+    public void StartAttack(DrifterAttackType attackType)
     {
         drifter.gainSuperMeter(.05f);
-        //UnityEngine.Debug.Log("STARTING ATTACK: " + attackType.ToString());
+        
         SetHitboxesActive(false);
         status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,8f);
         drifter.PlayAnimation(AnimatorStates[attackType]);
         SetupAttackID(attackType);
+        //UnityEngine.Debug.Log("STARTING ATTACK: " + attackType.ToString() + "  With attackID: " + AttackID);
+
 
     }
 

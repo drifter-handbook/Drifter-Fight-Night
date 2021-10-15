@@ -77,7 +77,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             Vector3 hitSparkPos = hurtbox.capsule.ClosestPoint(hitbox.parent.transform.position);
             
             //Freezefame if hit a counter
-            if(hurtbox.gameObject.name == "Counter" &&  attackData.AttackDamage >0f && !attackData.isGrab)
+            if(hurtbox.gameObject.name == "Counter" &&  attackData.AttackDamage >0f && attackData.hitType!=HitType.GRAB)
             {
                 Shake?.startDarkenCoroutine(5f* framerateScalar);
                 GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.STAR, hitSparkPos,0, new Vector2(10f, 10f));
@@ -88,7 +88,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             }
 
 
-            bool crossUp = (hitbox.parent.transform.localPosition.x > transform.localPosition.x  && drifter.movement.Facing < 0) || (hitbox.parent.transform.localPosition.x < transform.localPosition.x  && drifter.movement.Facing > 0);
+            bool crossUp = (hitbox.parent.transform.localPosition.x > transform.localPosition.x  && drifter.movement.Facing < 0) || (hitbox.parent.transform.localPosition.x < transform.localPosition.x  && drifter.movement.Facing > 0 && attackData.AttackDamage >0f);
 
             // apply damage
             if (drifter != null && status != null)
@@ -99,7 +99,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
                     //Blocking damage Reduction
                     //0 chip damage on perfect guard
-                      * ((drifter.guarding && !attackData.isGrab && !crossUp) ? (drifter.perfectGuarding || drifter.parrying? 0 : .2f): 1f)
+                      * ((drifter.guarding && attackData.hitType!=HitType.GRAB && !crossUp) ? (drifter.perfectGuarding || drifter.parrying? 0 : .2f): 1f)
 
                     //Defense Buff damage reduction
                       * (status.HasStatusEffect(PlayerStatusEffect.DEFENSEUP) ? 0.7f:1f)
@@ -178,23 +178,23 @@ public class PlayerHurtboxHandler : MonoBehaviour
             bool hadSlowmo = status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION);
 
             //Ignore knockback if invincible or armoured
-            if (status != null && (attackData.isGrab || !drifter.guarding || crossUp) && !drifter.parrying){
+            if (status != null && (attackData.hitType==HitType.GRAB || !drifter.guarding || crossUp) && !drifter.parrying){
 
                 //If the player treid to guard a guardbreaker, they loose their shield for 5 seconds (60 frames)
-                if((attackData.isGrab || crossUp) && drifter.guarding)
+                if((attackData.hitType==HitType.GRAB || crossUp) && drifter.guarding && attackData.AttackDamage >0f)
                 {
                     //status.ApplyStatusEffect(PlayerStatusEffect.GUARDBROKEN,5f);
                     HitstunDuration = 1f;
                     guardbroken = true;
                     drifter.clearGuardFlags();
-                    drifter.guardBreaking = true;
+                    //drifter.guardBreaking = true;
                     status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.6f);
                     
                 }
                 else drifter.guardBreaking = false;
 
                 //As long as the defender isnt in superarmour, or they are being grabbed, apply knockback velocity
-                if(!status.HasStatusEffect(PlayerStatusEffect.ARMOUR) || attackData.isGrab || crossUp){
+                if(!status.HasStatusEffect(PlayerStatusEffect.ARMOUR) || attackData.hitType==HitType.GRAB || crossUp){
 
                     status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0f);
                     
@@ -264,7 +264,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 else if (willCollideWithBlastZone(GetComponent<Rigidbody2D>() , HitstunDuration) ) Mathf.Min(HitstunDuration*=2f,3f);
                 
                 
-                if(status.HasStatusEffect(PlayerStatusEffect.ARMOUR) && !attackData.isGrab)
+                if(status.HasStatusEffect(PlayerStatusEffect.ARMOUR) && attackData.hitType!=HitType.GRAB)
                     Shake?.startDarkenCoroutine(5f* framerateScalar);
 
                 //apply defender hitpause
@@ -276,8 +276,10 @@ public class PlayerHurtboxHandler : MonoBehaviour
             //Normal guarding behavior
             else if(drifter.guarding && !drifter.parrying)
             {
-                //push both players back on guarrd
 
+                if(attackData.hitType==HitType.GUARD_CRUSH)drifter.guardBreaking = true;
+                //push both players back on guarrd
+                
                 if(hitbox.gameObject.tag != "Projectile")hitbox.parent.GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(HitstunDuration,.2f,1f) * hitbox.Facing *-15f, hitbox.parent.GetComponent<Rigidbody2D>().velocity.y);
                
                 //No pushback on perfect guard
@@ -291,14 +293,17 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 //put defender in blockstun
                 if(attackData.HitStun != 0){
                         status?.calculateFrameAdvantage(framerateScalar * (1f + Mathf.Ceil(attackData.AttackDamage/4f)),attacker.getRemainingAttackTime());
-                        status?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, framerateScalar * (1f + Mathf.Ceil(attackData.AttackDamage/4f)));
+                        //6x blockstun on guardcrush
+                        float duration = framerateScalar * (attackData.hitType==HitType.GUARD_CRUSH ? 10f:(1f + Mathf.Ceil(attackData.AttackDamage/4f))) ;
+                        status?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, duration);
+                        status?.ApplyStatusEffect(PlayerStatusEffect.GUARDCRUSHED, duration);
                 }
 
                 returnCode = -1; 
 
             }
             //Parrying a guardbreaker
-            else if(drifter.parrying && attackData.isGrab && hitbox.gameObject.tag != "Projectile")
+            else if(drifter.parrying && attackData.hitType==HitType.GRAB && hitbox.gameObject.tag != "Projectile")
             {
 
                 //STODO Shit out lots of particles here
@@ -331,7 +336,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 isCritical = true;
             //If a move is guarded successfully, play the relevant block hitspark
             //TODO: update for parries
-            else if (drifter != null && drifter.guarding && !attackData.isGrab && !isCritical)
+            else if (drifter != null && drifter.guarding && attackData.hitType!=HitType.GRAB && !isCritical && attackData.AttackDamage >0f)
                 isBlocked = true;
 
             //apply attacker hitpause

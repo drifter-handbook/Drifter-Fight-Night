@@ -30,8 +30,9 @@ public class GrabHitboxCollision : HitboxCollision
         if (hurtbox != null && AttackType != DrifterAttackType.Null)
         {
             //string player = playerType.NetworkType;
+            int hitResult = -3;
             if(OverrideData != null){
-                int hitResult = hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, OverrideData);
+                hitResult = hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, OverrideData);
                 if(hitResult == 0)
                 {
                 	victim = hurtbox.parent;
@@ -42,7 +43,7 @@ public class GrabHitboxCollision : HitboxCollision
                 }
             }
             else{
-                hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, AttackData);
+                hitResult = hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, AttackData);
             }
             
         }

@@ -7,6 +7,11 @@ public enum HitSpark
     NONE, POKE, BASH, PIERCE, GRAB, GUARD_STRONG, GUARD_WEAK, SPIKE, MAGICWEAK, CRIT, MAGICSTRONG, OOMPHSPARK, LUCILLE, REFLECT, STAR, STAR_FAST, OOMPHDARK, HEAL, RING, STAR1, STAR2, ORRO_SWEET, DEFAULT_IMPACT, DEFAULT_FLYOUT_PRIMARY, DEFAULT_FLYOUT_SECONDARY, DEFAULT_FLYOUT_TERTIARY
 }
 
+public enum HitType
+{
+    NORMAL, GUARD_CRUSH, GRAB
+}
+
 
 [CreateAssetMenu(fileName = "SingleAttackData", menuName = "VirtuaDrifter/SingleAttackData", order = 70)]
 
@@ -31,9 +36,9 @@ public class SingleAttackData : ScriptableObject
     public float HitStun = -1f;
     //public float EndLag = 0.1f;
     #if UNITY_EDITOR
-    [Help("Does this attack Break shields?", UnityEditor.MessageType.Info)]
+    [Help("How does this move interact with shields? Normal is blocked by shields, Grab ignores shields, guard crush applies extra hitstun to shields", UnityEditor.MessageType.Info)]
     #endif
-    public bool isGrab = false;
+    public HitType hitType = HitType.NORMAL;
    
     public bool mirrorKnockback = false;
     public float AngleOfImpact = 45f;

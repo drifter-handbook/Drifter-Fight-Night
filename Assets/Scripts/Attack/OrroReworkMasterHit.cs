@@ -14,10 +14,11 @@ public class OrroReworkMasterHit : MasterHit
 
     bool beanFollowing = true;
 
-
-    bool listeningForMovement = false;
     float hoverTime = 1.5f;
-    float maxHoverTime = 1f;
+	float maxHoverTime = 1.5f;
+
+    bool canHover = true;
+    bool listeningForMovement = false;
 
     void Start()
     {
@@ -32,14 +33,35 @@ public class OrroReworkMasterHit : MasterHit
 
         base.FixedUpdate();
 
-
-    	if(listeningForMovement)
+        if(listeningForMovement)
         {
-        	movement.move(13f);
-        	if(hoverTime <=0 || !drifter.input[0].Special)
+        	if(hoverTime <=0)
         	{
+        		//movement.updateFacing();
         		playState("W_Down_End");
         		listeningForMovement = false;
+        		canHover = false;
+  			}
+  			else
+  			{
+  				rb.velocity = new Vector2(Mathf.Lerp((drifter.input[0].MoveX * 12f),rb.velocity.x,movement.accelerationPercent),rb.velocity.y);
+  			}
+
+        	if(drifter.input[0].Light)
+        	{
+        		movement.updateFacing();
+
+        		if(drifter.input[0].MoveY >0)
+        			attacks.StartAttack(DrifterAttackType.Ground_Q_Up);
+        		else if(drifter.input[0].MoveY <0)
+        			attacks.StartAttack(DrifterAttackType.Ground_Q_Down);
+        		else if(drifter.input[0].MoveX !=0)
+        			attacks.StartAttack(DrifterAttackType.Ground_Q_Side);
+        		else
+        			attacks.StartAttack(DrifterAttackType.Ground_Q_Neutral);
+
+        		listeningForMovement = false;
+        		canHover = false;
         	}
         }
     }
@@ -48,17 +70,24 @@ public class OrroReworkMasterHit : MasterHit
     {
         if(!isHost)return;
 
-        if(status.HasEnemyStunEffect() || movement.ledgeHanging || (drifter.input[0].Special && drifter.input[1].Special &&(drifter.input[0].MoveX !=0 || drifter.input[0].MoveY !=0)))
+        if(movement.grounded)
+        {
+        	canHover = true;
+        	hoverTime = maxHoverTime;
+        }
+
+        if(status.HasEnemyStunEffect() || movement.ledgeHanging  ||(drifter.input[0].Special && !drifter.input[1].Special &&(drifter.input[0].MoveX !=0 || drifter.input[0].MoveY !=0)))
         {
         	status.ApplyStatusEffect(PlayerStatusEffect.STANCE,0f);
         	bubble.SetState("Hide");
         }
 
-        else if(status.HasStatusEffect(PlayerStatusEffect.STANCE) && drifter.input[0].Light && !drifter.input[1].Light)
+        else if(status.HasStatusEffect(PlayerStatusEffect.STANCE) && drifter.input[0].Light )
         {
-        	bean.setBeanDirection(movement.Facing);
+        	movement.updateFacing();
         	applyEndLag(8f);
         	playState("W_Neutral_Command");
+
         	if(drifter.input[0].MoveY >0)
         		BeanUp();
         	else if(drifter.input[0].MoveY <0)
@@ -67,12 +96,16 @@ public class OrroReworkMasterHit : MasterHit
         		BeanSide();
         	else
         		BeanNeutral();
+
+        	bean.setBeanDirection(movement.Facing);
+        	status.ApplyStatusEffect(PlayerStatusEffect.STANCE,0f);
         }
 
 
         if(listeningForMovement && hoverTime >0)
         {
         	hoverTime-= Time.deltaTime;
+        	UnityEngine.Debug.Log(hoverTime);
         }
 
         //If orro cancles, or is hit out of a move where bean charges, cancel that move
@@ -106,15 +139,23 @@ public class OrroReworkMasterHit : MasterHit
     }
 
 
+    public void WDownStateSelect()
+    {
+    	if(!isHost)return;
+    	if(movement.grounded || !canHover)drifter.PlayAnimation("W_Down_End");
+    }
+
     public void hover()
     {
         if(!isHost)return;
         if(!listeningForMovement)
         {
+        	movement.gravityPaused = true;
+        	listenForSpecialTapped("W_Down_End");
+        	rb.gravityScale = .5f;
+        	movement.canLandingCancel = true;
         	listenForJumpCancel();
-        	setTerminalVelocity(-1f);
         	setYVelocity(0);
-        	hoverTime = maxHoverTime;
         	listeningForMovement = true;
         }
         
@@ -142,12 +183,6 @@ public class OrroReworkMasterHit : MasterHit
         
     }
 
-    // public void moveWhileHovering(int moveFlag)
-    // {
-    //     if(!isHost)return;
-    //     listeningForMovement = (moveFlag != 0);
-    // }
-
     //Enables all relevant flags for orro's neutral special
     public void BeginWSide()
     {
@@ -160,31 +195,6 @@ public class OrroReworkMasterHit : MasterHit
         specialLimit = 8;
         beanIsCharging = true;
     }
-
-    //Enables all relevant flags for orro's down special
-    // public void BeginWDown()
-    // {
-    //     if(!isHost)return;
-    //     specialReleasedFlag = true;
-    //     movementCancelFlag = true;
-    //     activeCancelFlag = true;
-    //     queuedState = "W_Down_End";
-    //     beanIsCharging = true;
-    // }
-
-    // //Enables all relevant flags for orro's side special
-    // public void BeginWNeutral()
-    // {
-    //     if(!isHost)return;
-
-    //     specialReleasedFlag = true;
-    //     movementCancelFlag = true;
-    //     activeCancelFlag = true;
-    //     queuedState = "W_Side_Fire";
-    //     specialCharge = 0;
-    //     specialLimit = 9;
-    //     beanIsCharging = true;
-    // }
 
     //Spawns a page particle behind orro
     public void page()
@@ -248,35 +258,6 @@ public class OrroReworkMasterHit : MasterHit
         bean.playChargeState("Bean_Side_Special");
     }
 
-    // public void BeanNeutralSpecial()
-    // {
-    //     if(!isHost)return;
-    //     refreshBeanHitboxes();
-    //     bean.playChargeState("Bean_Neutral_Special");
-    // }
-
-    // public void BeanDownSpecial()
-    // {
-    //     if(!isHost)return;
-    //     refreshBeanHitboxes();
-    //     bean.playChargeState("Bean_Down_Special");
-    // }
-
-    // public void BeanDownSpecialBurst()
-    // {
-    //     if(!isHost)return;
-    //     refreshBeanHitboxes();
-    //     bean.playFollowState("Counter_Success");
-    // }
-
-    // public void BeanSideSpecialBurst()
-    // {
-    //     if(!isHost)return;
-    //     refreshBeanHitboxes();
-    //     bean.SpawnBeanSideW();
-    //     bean.playFollowState("Bean_Side_Special_Fire");
-    // }
-
     public void BeanReset()
     {
         if(!isHost)return;
@@ -311,32 +292,6 @@ public class OrroReworkMasterHit : MasterHit
 
     }
 
-
-    //Creates a side special projectile
-    // public void SpawnSideW()
-    // {
-    //     if(!isHost)return;
-    //     facing = movement.Facing;
-    //     Vector3 pos = new Vector3(2f * facing,2.7f,0);
-
-    //     SingleAttackData data = attacks.AttackMap[5].attackData;
-    //     data.StatusDuration = Mathf.Max(specialCharge/3,1);
-        
-    //     GameObject rip = host.CreateNetworkObject("OrroWSide", transform.position + pos, transform.rotation);
-    //     rip.transform.localScale = new Vector3(10f * facing, 10f , 1f);
-    //     foreach (HitboxCollision hitbox in rip.GetComponentsInChildren<HitboxCollision>(true))
-    //     {
-    //         hitbox.parent = drifter.gameObject;
-    //         hitbox.AttackID = attacks.AttackID;
-    //         hitbox.AttackType = attacks.AttackType;
-    //         hitbox.AttackData = data;
-    //         hitbox.Active = true;
-    //         hitbox.Facing = facing;
-    //    }
-
-    //    bean.charge = specialCharge;
-    //    rip.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
-    // }
 
     //Creates a side air projectile
     public void SpawnSideAir()
@@ -405,9 +360,7 @@ public class OrroReworkMasterHit : MasterHit
     {
         base.returnToIdle();
         specialCharge = 0;
-        hoverTime = maxHoverTime;
         listeningForMovement = false;
-
     }
 
 

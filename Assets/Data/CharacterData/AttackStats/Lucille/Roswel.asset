@@ -17,9 +17,11 @@ MonoBehaviour:
   KnockbackScale: 0.6
   hasStaticHitstun: 0
   HitStun: 0
-  isGrab: 1
+  hitType: 2
   mirrorKnockback: 0
   AngleOfImpact: 20
   StatusEffect: 1
   StatusDuration: 24
   HitFX: {fileID: 0}
+  canHitGrounded: 1
+  canHitAerial: 1
