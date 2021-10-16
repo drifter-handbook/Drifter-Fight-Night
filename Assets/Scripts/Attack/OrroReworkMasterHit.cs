@@ -50,7 +50,7 @@ public class OrroReworkMasterHit : MasterHit
         	if(drifter.input[0].Light)
         	{
         		movement.updateFacing();
-
+        		clearMasterhitVars();
         		if(drifter.input[0].MoveY >0)
         			attacks.StartAttack(DrifterAttackType.Ground_Q_Up);
         		else if(drifter.input[0].MoveY <0)
