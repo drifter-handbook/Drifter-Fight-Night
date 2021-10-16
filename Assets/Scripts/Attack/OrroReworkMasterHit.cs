@@ -82,7 +82,7 @@ public class OrroReworkMasterHit : MasterHit
         	bubble.SetState("Hide");
         }
 
-        else if(status.HasStatusEffect(PlayerStatusEffect.STANCE) && drifter.input[0].Light )
+        else if(status.HasStatusEffect(PlayerStatusEffect.STANCE) && drifter.input[0].Light && !drifter.input[1].Light )
         {
         	movement.updateFacing();
         	applyEndLag(8f);
@@ -98,7 +98,7 @@ public class OrroReworkMasterHit : MasterHit
         		BeanNeutral();
 
         	bean.setBeanDirection(movement.Facing);
-        	status.ApplyStatusEffect(PlayerStatusEffect.STANCE,0f);
+        	//status.ApplyStatusEffect(PlayerStatusEffect.STANCE,0f);
         }
 
 
