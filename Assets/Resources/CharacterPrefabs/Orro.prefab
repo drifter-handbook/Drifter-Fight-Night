@@ -77,7 +77,7 @@ GameObject:
   - component: {fileID: 8853997813511301344}
   - component: {fileID: 3496857897225321060}
   m_Layer: 9
-  m_Name: Ground_Side_Weak
+  m_Name: Ground_Side_Launcher
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -112,7 +112,7 @@ MonoBehaviour:
   parent: {fileID: 1368196776239905945}
   playerType: {fileID: 0}
   isActive: 1
-  OverrideData: {fileID: 11400000, guid: c9449cdd32763d64abd38db42eb00369, type: 2}
+  OverrideData: {fileID: 11400000, guid: ec851d1eeac07d74fa811b4f630a0985, type: 2}
   AttackData: {fileID: 0}
 --- !u!70 &3496857897225321060
 CapsuleCollider2D:
@@ -656,7 +656,7 @@ PrefabInstance:
         type: 3}
       propertyPath: AttackMap.Array.data[11].attackData
       value: 
-      objectReference: {fileID: 11400000, guid: ec851d1eeac07d74fa811b4f630a0985,
+      objectReference: {fileID: 11400000, guid: c9449cdd32763d64abd38db42eb00369,
         type: 2}
     - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}

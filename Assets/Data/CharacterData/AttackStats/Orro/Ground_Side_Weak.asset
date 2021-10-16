@@ -13,12 +13,15 @@ MonoBehaviour:
   m_Name: Ground_Side_Weak
   m_EditorClassIdentifier: 
   AttackDamage: 2
-  Knockback: 15
-  KnockbackScale: 1
+  Knockback: 13
+  KnockbackScale: 0.1
   hasStaticHitstun: 0
-  HitStun: 5
-  isGrab: 0
+  HitStun: 6
+  hitType: 0
+  mirrorKnockback: 0
   AngleOfImpact: 65
-  StatusEffect: 20
-  StatusDuration: 0.1
-  HitVisual: 1
+  StatusEffect: 5
+  StatusDuration: 1
+  HitFX: {fileID: 11400000, guid: c40ffbef4bd5ad54dbc61660fa4d822a, type: 2}
+  canHitGrounded: 1
+  canHitAerial: 1
