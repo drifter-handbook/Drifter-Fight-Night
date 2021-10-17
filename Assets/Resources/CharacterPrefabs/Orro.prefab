@@ -616,7 +616,7 @@ PrefabInstance:
         type: 3}
       propertyPath: AttackMap.Array.data[0].attackData
       value: 
-      objectReference: {fileID: 11400000, guid: d648be6e91fc59d4782b4211b82bd4f5,
+      objectReference: {fileID: 11400000, guid: 6fc13554e575a7041ab19e2c76e639da,
         type: 2}
     - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
@@ -699,6 +699,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: e1a8d3d2d004a1942bb3e90fc1dd3976,
         type: 2}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[0].attack
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 03006bf76a5e1274aaf3da8b9c69d8f9, type: 3}
 --- !u!1 &1368196776239905945 stripped

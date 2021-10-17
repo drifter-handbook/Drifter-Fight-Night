@@ -297,6 +297,7 @@ public class OrroReworkMasterHit : MasterHit
     public void SpawnSideAir()
     {
         if(!isHost)return;
+
         facing = movement.Facing;
         Vector3 pos = new Vector3(7f * facing,2.7f,0);
         
@@ -318,8 +319,13 @@ public class OrroReworkMasterHit : MasterHit
     public void SpawnNeutralAir()
     {
         if(!isHost)return;
+
+
+        RaycastHit2D ray = Physics2D.Raycast(transform.position+ new Vector3(0,1f),new Vector3(facing * 7f/5f,-5f/5f,0),5f,1);
+
         facing = movement.Facing;
-        Vector3 pos = new Vector3(5f * facing,-2f,0);
+        Vector3 pos = new Vector3((ray.distance +1) * facing,-1* ray.distance +1f,0);
+        if(ray.distance ==0)pos = new Vector3(8* facing,-4,0);
         
         GameObject scratch = host.CreateNetworkObject("Orro_Nair_Proj", transform.position + pos, transform.rotation);
         scratch.transform.localScale = new Vector3(10f * facing, 10f , 1f);

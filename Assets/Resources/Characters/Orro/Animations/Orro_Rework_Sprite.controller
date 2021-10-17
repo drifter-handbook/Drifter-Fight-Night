@@ -130,6 +130,32 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!1102 &-7829748810729624163
+AnimatorState:
+  serializedVersion: 5
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Ground_Neutral
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 7400000, guid: c31ab07e60259f54fb7538ef9595ca24, type: 2}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!1102 &-7192728716071975075
 AnimatorState:
   serializedVersion: 5
@@ -473,9 +499,6 @@ AnimatorStateMachine:
     m_State: {fileID: 7568220147426085399}
     m_Position: {x: -260, y: -200, z: 0}
   - serializedVersion: 1
-    m_State: {fileID: -2534304135665621846}
-    m_Position: {x: -260, y: -150, z: 0}
-  - serializedVersion: 1
     m_State: {fileID: -8125732866189316669}
     m_Position: {x: 710, y: -140, z: 0}
   - serializedVersion: 1
@@ -484,6 +507,9 @@ AnimatorStateMachine:
   - serializedVersion: 1
     m_State: {fileID: -6377062242397642606}
     m_Position: {x: -275.5, y: -324.5, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: -7829748810729624163}
+    m_Position: {x: 710, y: -90, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -593,32 +619,6 @@ AnimatorState:
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: 7400000, guid: cb0bd656dcb75364eabbb467c16be834, type: 2}
-  m_Tag: 
-  m_SpeedParameter: 
-  m_MirrorParameter: 
-  m_CycleOffsetParameter: 
-  m_TimeParameter: 
---- !u!1102 &-2534304135665621846
-AnimatorState:
-  serializedVersion: 5
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Ground_Neutral
-  m_Speed: 1
-  m_CycleOffset: 0
-  m_Transitions: []
-  m_StateMachineBehaviours: []
-  m_Position: {x: 50, y: 50, z: 0}
-  m_IKOnFeet: 0
-  m_WriteDefaultValues: 1
-  m_Mirror: 0
-  m_SpeedParameterActive: 0
-  m_MirrorParameterActive: 0
-  m_CycleOffsetParameterActive: 0
-  m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 04bcedc32586b4e4b8fcc63c0429230f, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
