@@ -315,6 +315,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         movement.gravityPaused= true;
         rb.gravityScale = 0f;
         rb.velocity = Vector2.zero;
+        status.clearVelocity();
     }
 
     public void freezeGravity()

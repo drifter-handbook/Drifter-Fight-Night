@@ -230,7 +230,7 @@ public class RyykeMasterHit : MasterHit
         Vector3 pos = new Vector3(1.5f * facing,3.7f,0);
 
         if(arm != null)deleteArm();
-
+        bool targetLedge = false;
         if(tether.TetherPoint != Vector3.zero)
         {
 
@@ -242,7 +242,7 @@ public class RyykeMasterHit : MasterHit
 
 
             len = Vector2.Distance(transform.position + pos,TetherPoint) /10f;
-  
+            targetLedge = true;
             playState("W_Up_Ledge");
 
         }
@@ -262,9 +262,9 @@ public class RyykeMasterHit : MasterHit
 
         armTether = arm.GetComponentInChildren<Tether>();
         armTether.setTargetLength(len);
-
         //Cut this later?
-        if(movement.currentJumps < movement.numberOfJumps) movement.currentJumps++;
+        //if(movement.currentJumps < movement.numberOfJumps) movement.currentJumps++;
+        if(targetLedge)disableArmHitbox();
     }
 
     public void setArmLen(float len)

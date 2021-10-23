@@ -9,7 +9,7 @@ public class Tether : MonoBehaviour
 	private Vector2 target = new Vector2(.24f,.16f);
 	private Vector2 targetOffset = new Vector2(.2f,0);
 	private float speed = 2f;
-	Collider2D hitbox;
+	public Collider2D hitbox;
 
 	float extendPercent = 0;
 	SpriteRenderer sprite;
@@ -17,7 +17,7 @@ public class Tether : MonoBehaviour
     void Start()
     {
     	sprite = GetComponent<SpriteRenderer>();   
-    	hitbox = GetComponentInChildren<Collider2D>();
+    	//hitbox = GetComponentInChildren<Collider2D>();
     }
 
     // Update is called once per frame
