@@ -6,7 +6,9 @@ public class NeoSwordFrogMasterHit : MasterHit
 {
     Coroutine kunaiShoot;
 
-    Vector2 HeldDirection;
+    bool listeningForDirection = false;
+
+    Vector2 HeldDirection = Vector2.zero;
 
     int charge = 0;
 
@@ -20,6 +22,33 @@ public class NeoSwordFrogMasterHit : MasterHit
             if(kunaiShoot != null)StopCoroutine(kunaiShoot);
             if(charge > 0)charge = 0;
         }
+
+        if(listeningForDirection)
+        {
+            HeldDirection += new Vector2(drifter.input[0].MoveX,drifter.input[0].MoveY);
+            if(HeldDirection != Vector2.zero) NeutralSpecialSlash();
+        }
+    }
+
+
+    public void listenForDirection()
+    {
+        listeningForDirection = true;
+    }
+
+    public void NeutralSpecialSlash()
+    {
+        if(!isHost)return;
+
+        listeningForDirection = false;
+        if(HeldDirection.y <0 && movement.grounded) playState("W_Neutral_GD");
+        else if(HeldDirection.y <0) playState("W_Neutral_D");
+        else if(HeldDirection.y >0) playState("W_Neutral_U");
+        else if(HeldDirection.x * movement.Facing <0)playState("W_Neutral_B");
+        else playState("W_Neutral_S");
+
+        HeldDirection = Vector2.zero;
+
     }
 
     // public void charge_W_Neutral(int grantCharge)
@@ -41,23 +70,23 @@ public class NeoSwordFrogMasterHit : MasterHit
     // if(Empowered)drifter.sparkle.SetState("ChargeIndicator");
     //     else drifter.sparkle.SetState("Hide");
 
-    public void backdash()
-    {
-        if(!isHost)return;
-        facing = movement.Facing;
+    // public void backdash()
+    // {
+    //     if(!isHost)return;
+    //     facing = movement.Facing;
 
-        if(drifter.input[0].MoveX == facing) rb.velocity = new Vector2(30 * facing,movement.grounded?22:rb.velocity.y+10f);
-        else rb.velocity = new Vector2(15 * facing,movement.grounded?30:rb.velocity.y+10f);
+    //     if(drifter.input[0].MoveX == facing) rb.velocity = new Vector2(30 * facing,movement.grounded?22:rb.velocity.y+10f);
+    //     else rb.velocity = new Vector2(15 * facing,movement.grounded?30:rb.velocity.y+10f);
         
 
-    }
+    // }
 
-    //Causes a non-aerial move to cancle on htiing the ground
-    public void landingCancel()
-    {
-        if(!isHost)return;
-        movement.canLandingCancel = true;
-    }
+    // //Causes a non-aerial move to cancle on htiing the ground
+    // public void landingCancel()
+    // {
+    //     if(!isHost)return;
+    //     movement.canLandingCancel = true;
+    // }
 
     public void downSpecialProjectile()
     {
@@ -86,13 +115,13 @@ public class NeoSwordFrogMasterHit : MasterHit
         while(projnum >= 0)
         {
             yield return new WaitForSeconds(framerateScalar/7f);
-            radians = (baseCharge* 25 - projnum * 15) * Mathf.PI/180f ;
-            GameObject arrow = host.CreateNetworkObject("Arrow", transform.position + new Vector3((- (baseCharge - projnum) * .6f )* facing, 2.8f  - (baseCharge - projnum) * .6f, 0), Quaternion.Euler(0,0,movement.Facing * ((baseCharge - projnum) *-5f - 70f)));
-            arrow.transform.localScale = new Vector3(10f * facing, 10f, 1f);
+            radians = (baseCharge* 110 - projnum * 15) * Mathf.PI/180f ;
+            GameObject arrow = host.CreateNetworkObject("Kunai", transform.position + new Vector3((- (baseCharge - projnum) * .6f )* facing, 2.8f  - (baseCharge - projnum) * .6f, 0), Quaternion.Euler(0,0,movement.Facing * ((baseCharge - projnum) *-5f - 70f)));
+            arrow.transform.localScale = new Vector3(10f * -facing, 10f, 1f);
 
            
 
-            arrow.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + facing * (35f +  Mathf.Cos(radians) * 15), Mathf.Sin(radians) * -20 - 70f);
+            arrow.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + facing * (-35f +  Mathf.Cos(radians) * -15), Mathf.Sin(radians) * -20 - 70f);
             foreach (HitboxCollision hitbox in arrow.GetComponentsInChildren<HitboxCollision>(true))
             {
                 hitbox.parent = drifter.gameObject;
@@ -112,30 +141,30 @@ public class NeoSwordFrogMasterHit : MasterHit
 
     }
 
-    public void dance(int speed)
-    {
+    // public void dance(int speed)
+    // {
 
-        if(!isHost)return;
-        movement.gravityPaused = true;
-        rb.gravityScale = 5;
-        rb.velocity = speed * Vector3.Normalize(HeldDirection);
+    //     if(!isHost)return;
+    //     movement.gravityPaused = true;
+    //     rb.gravityScale = 5;
+    //     rb.velocity = speed * Vector3.Normalize(HeldDirection);
 
-    }
+    // }
 
-    public void dendrobate()
-    {
-        if(!isHost)return;
-        if(HeldDirection.x == 0 && HeldDirection.y  < 0)drifter.PlayAnimation("Dendro_Down");
-        else if(HeldDirection.x == 0 && HeldDirection.y > 0)drifter.PlayAnimation("Dendro_Up");
-    }
+    // public void dendrobate()
+    // {
+    //     if(!isHost)return;
+    //     if(HeldDirection.x == 0 && HeldDirection.y  < 0)drifter.PlayAnimation("Dendro_Down");
+    //     else if(HeldDirection.x == 0 && HeldDirection.y > 0)drifter.PlayAnimation("Dendro_Up");
+    // }
 
-    public void saveDirection()
-    {
-        if(!isHost)return;
-        movement.updateFacing();
-        Vector2 TestDirection = new Vector2(drifter.input[0].MoveX,drifter.input[0].MoveY);
-        HeldDirection = TestDirection == Vector2.zero? HeldDirection: TestDirection;
-    }
+    // public void saveDirection()
+    // {
+    //     if(!isHost)return;
+    //     movement.updateFacing();
+    //     Vector2 TestDirection = new Vector2(drifter.input[0].MoveX,drifter.input[0].MoveY);
+    //     HeldDirection = TestDirection == Vector2.zero? HeldDirection: TestDirection;
+    // }
 
 
 
@@ -144,6 +173,7 @@ public class NeoSwordFrogMasterHit : MasterHit
         if(!isHost)return;
         facing = movement.Facing;
         Empowered = false;
+        charge = 2;
         //Fire an arrow if Swordfrog has a charge
         kunaiShoot = StartCoroutine(fireKunaiNeutral());
 
@@ -160,12 +190,12 @@ public class NeoSwordFrogMasterHit : MasterHit
         {
             yield return new WaitForSeconds(framerateScalar/7f);
             radians = (baseCharge* 25 - projnum * 15) * Mathf.PI/180f ;
-            GameObject arrow = host.CreateNetworkObject("Arrow", transform.position + new Vector3(2.4f * facing, 2.8f  + (baseCharge - projnum) * .6f, 0), Quaternion.Euler(0,0,movement.Facing * ((baseCharge - projnum) *5f + 10f)));
+            GameObject arrow = host.CreateNetworkObject("Kunai", transform.position + new Vector3(1.5f * facing, 2.8f  + (baseCharge - projnum) * .6f, 0), Quaternion.Euler(0,0,movement.Facing * ((baseCharge - projnum) *5f + 10f)));
             arrow.transform.localScale = new Vector3(10f * facing, 10f, 1f);
 
            
 
-            arrow.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + facing * (70f +  Mathf.Cos(radians) * 15), Mathf.Sin(radians) * 20 + 10f);
+            arrow.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + facing * (50f +  Mathf.Cos(radians) * 15), Mathf.Sin(radians) * 20 + 10f);
             foreach (HitboxCollision hitbox in arrow.GetComponentsInChildren<HitboxCollision>(true))
             {
                 hitbox.parent = drifter.gameObject;

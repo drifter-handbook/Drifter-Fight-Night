@@ -1553,10 +1553,17 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.16666667
-    functionName: backdash
+    functionName: setYVelocity
     data: 
     objectReferenceParameter: {fileID: 0}
-    floatParameter: -20
+    floatParameter: 22
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.16666667
+    functionName: setXVelocity
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 25
     intParameter: 0
     messageOptions: 0
   - time: 0.41666666
@@ -1567,7 +1574,7 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.5833333
-    functionName: landingCancel
+    functionName: setLandingCancel
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
