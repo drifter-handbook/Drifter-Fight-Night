@@ -280,6 +280,13 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         status.saveYVelocity(y);
     }
 
+    public void setYVelocityIfGrounded(float y)
+    {
+        if(!isHost || !movement.grounded)return;
+        setYVelocity(y);
+    }
+
+
     public void setXVelocity(float x)
     {
         if(!isHost)return;
