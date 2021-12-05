@@ -12,6 +12,10 @@ public class NeoSwordFrogMasterHit : MasterHit
 
     int charge = 0;
 
+    static float maxFloatTime = 1f;
+    bool floating = false;
+    float floatTime = maxFloatTime;
+
     void Update()
     {
         if(!isHost)return;
@@ -22,18 +26,67 @@ public class NeoSwordFrogMasterHit : MasterHit
             if(kunaiShoot != null)StopCoroutine(kunaiShoot);
             if(charge > 0)charge = 0;
         }
+        // each frame, if SF is in his up special, tick down remaining time
+        if(listeningForDirection && floatTime >=0)
+        {
+            floatTime -= Time.deltaTime;
+        }
 
-        if(listeningForDirection)
+        if(movement.ledgeHanging || status.HasEnemyStunEffect())
+            clearFloat();
+    }
+
+
+    new void FixedUpdate()
+    {
+        if(!isHost)return;
+
+        base.FixedUpdate();
+
+        //Handle neutral special attacks
+        if(listeningForDirection && !floating)
         {
             HeldDirection += new Vector2(drifter.input[0].MoveX,drifter.input[0].MoveY);
             if(HeldDirection != Vector2.zero) NeutralSpecialSlash();
         }
+        //Handle floating movement
+        else if(listeningForDirection && floating)
+        {
+            movement.move(11f,false);
+            if(floatTime <=0)
+            {
+                playState("W_Up_End");
+                clearFloat();
+            }
+        }
     }
-
 
     public void listenForDirection()
     {
         listeningForDirection = true;
+    }
+
+    public void balloonFloat()
+    {
+        floatTime = maxFloatTime;
+        listeningForDirection = true;
+        floating = true;
+        listenForJumpCancel();
+        setTerminalVelocity(1);
+        setLandingCancel();
+    }
+
+    public void clearFloat()
+    {
+        floating = false;
+        floatTime = maxFloatTime;
+        listeningForDirection = false;
+    }
+
+    public new void returnToIdle()
+    {
+        base.returnToIdle();
+        clearFloat();
     }
 
     public void NeutralSpecialSlash()

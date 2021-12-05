@@ -530,12 +530,12 @@ public class PlayerMovement : MonoBehaviour
     }
 
     //Moves the character left or right, based on the speed provided
-    public void move(float speed)
+    public void move(float speed, bool flipDirection = true)
     {
         if(accelerationPercent >0) accelerationPercent -= Time.deltaTime/airAccelerationTime * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f: 1f);
         else accelerationPercent = 0;
 
-        updateFacing();
+        if(flipDirection)updateFacing();
 
         if(drifter.input[0].MoveX != 0)
         {
