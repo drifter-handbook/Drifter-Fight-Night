@@ -16,7 +16,7 @@ public class HitboxCollision : MonoBehaviour
     public SingleAttackData AttackData;
     public int Facing { get; set; } = 1;
 
-    Drifter drifter;
+    protected Drifter drifter;
 
     // Start is called before the first frame update
     void Start()
@@ -63,15 +63,15 @@ public class HitboxCollision : MonoBehaviour
         if (hurtbox != null && AttackType != DrifterAttackType.Null && isActive)
         {
             //string player = playerType.NetworkType;
-            int hitresult = -3;
+            int hitResult = -3;
             if(OverrideData != null){
-                hitresult = hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, OverrideData);
+                hitResult = hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, OverrideData);
             }
             else{
-                hitresult = hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, AttackData);
+                hitResult = hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, AttackData);
             }
-            if(hitresult >= -1 && drifter.canSpecialCancelFlag)drifter.listenForSpecialCancel = true;
-            //Debug.Log("Hit result of: " + hitresult + "  For attack id: " + AttackID+ "  And AttackType: " + AttackType);
+            if(hitResult >= -1 && drifter.canSpecialCancelFlag)drifter.listenForSpecialCancel = true;
+            //Debug.Log("Hit result of: " + hitResult + "  For attack id: " + AttackID+ "  And AttackType: " + AttackType);
         }
     }
 }

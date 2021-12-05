@@ -27,7 +27,7 @@ public class NeoSwordFrogMasterHit : MasterHit
             if(charge > 0)charge = 0;
         }
         // each frame, if SF is in his up special, tick down remaining time
-        if(listeningForDirection && floatTime >=0)
+        if(listeningForDirection && floating && floatTime >=0)
         {
             floatTime -= Time.deltaTime;
         }
@@ -53,7 +53,7 @@ public class NeoSwordFrogMasterHit : MasterHit
         else if(listeningForDirection && floating)
         {
             movement.move(11f,false);
-            if(floatTime <=0)
+            if(floatTime <=0 && floating)
             {
                 playState("W_Up_End");
                 clearFloat();
@@ -81,6 +81,12 @@ public class NeoSwordFrogMasterHit : MasterHit
         floating = false;
         floatTime = maxFloatTime;
         listeningForDirection = false;
+    }
+
+    public new void clearMasterhitVars()
+    {
+        base.clearMasterhitVars();
+        clearFloat();
     }
 
     public new void returnToIdle()

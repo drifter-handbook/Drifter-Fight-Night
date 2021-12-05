@@ -120,9 +120,10 @@ public class Drifter : MonoBehaviour, INetworkInit
     public bool canSuper = true;
 
     [NonSerialized]
+    //True when a move has connected but the player has not yet canceled their move
     public bool canSpecialCancelFlag = false;
 
-    //Cancle Normals into Specials Logic
+    //Cancel Normals into Specials Logic
     public bool listenForSpecialCancel
     {
         get{

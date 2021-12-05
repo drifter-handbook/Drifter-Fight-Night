@@ -225,7 +225,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     {
         if(!isHost)return;
         drifter.canSpecialCancelFlag = true;
-        drifter.listenForSpecialCancel = true;
+        //drifter.listenForSpecialCancel = true;
     }
 
 
