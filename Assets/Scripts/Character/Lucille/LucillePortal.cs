@@ -63,7 +63,7 @@ public class LucillePortal : MonoBehaviour
 
 				transform.localScale = new Vector2(Mathf.Abs(transform.localScale.x) * hitbox.Facing, Mathf.Abs(transform.localScale.y) * Mathf.Sign(verticalMag));
 
-				rb.velocity = speed * new Vector3(moveHorizontally?hitbox.Facing * .707f:0, moveVertically?Mathf.Sign(verticalMag) * .707f:0,0);
+				rb.velocity = speed * new Vector3(moveHorizontally?hitbox.Facing * .707f:0, (moveVertically?Mathf.Sign(verticalMag) * .707f:0) * ((!moveHorizontally && verticalMag <0)? 2f:1f),0);
 
 				if(moveHorizontally && moveVertically) anim.SetState("Diagonal_" + size);
 				else if(moveHorizontally)  anim.SetState("Horizontal_" + size);
@@ -135,6 +135,7 @@ public class LucillePortal : MonoBehaviour
 		
 		canMerge = false;
 		rb.velocity = Vector2.zero;
+		UnityEngine.Debug.Log("Rift_Detonate_" + size);
 		anim.SetState("Rift_Detonate_" + size);
 	}
 

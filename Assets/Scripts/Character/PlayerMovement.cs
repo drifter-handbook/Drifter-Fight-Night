@@ -90,6 +90,8 @@ public class PlayerMovement : MonoBehaviour
 
     float currentSpeed;
 
+    bool delayedFacingFlip = false;
+
     void Awake()
     {
         //Aggregate componenents
@@ -207,6 +209,12 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             animator.enabled = true;
+            if(delayedFacingFlip)
+            {
+                delayedFacingFlip = false;
+                drifter.SetIndicatorDirection(Facing);
+                transform.localScale = new Vector3(Facing * Mathf.Abs(transform.localScale.x),transform.localScale.y, transform.localScale.z);
+            }
         }
 
         //Cancel aerials on landing + landing animation
@@ -582,6 +590,12 @@ public class PlayerMovement : MonoBehaviour
         attacks.Facing = Facing;
         drifter.SetIndicatorDirection(Facing);
         transform.localScale = new Vector3(Facing * Mathf.Abs(transform.localScale.x),transform.localScale.y, transform.localScale.z);
+    }
+
+    public void setFacingDelayed(int dir){
+        delayedFacingFlip = true;
+        Facing = Math.Sign(dir);
+        attacks.Facing = Facing;
     }
 
 

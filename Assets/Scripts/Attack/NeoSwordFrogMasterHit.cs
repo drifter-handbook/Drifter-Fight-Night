@@ -174,13 +174,13 @@ public class NeoSwordFrogMasterHit : MasterHit
         while(projnum >= 0)
         {
             yield return new WaitForSeconds(framerateScalar/7f);
-            radians = (baseCharge* 110 - projnum * 15) * Mathf.PI/180f ;
-            GameObject arrow = host.CreateNetworkObject("Kunai", transform.position + new Vector3((- (baseCharge - projnum) * .6f )* facing, 2.8f  - (baseCharge - projnum) * .6f, 0), Quaternion.Euler(0,0,movement.Facing * ((baseCharge - projnum) *-5f - 70f)));
+            radians = (baseCharge* 110 - projnum * 5) * Mathf.PI/180f ;
+            GameObject arrow = host.CreateNetworkObject("Kunai", transform.position + new Vector3((- (baseCharge - projnum) * .6f )* facing, 2.8f  - (baseCharge - projnum) * .6f, 0), Quaternion.Euler(0,0,movement.Facing * ((baseCharge - projnum) *-1f - 40f)));
             arrow.transform.localScale = new Vector3(10f * -facing, 10f, 1f);
 
            
 
-            arrow.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + facing * (-35f +  Mathf.Cos(radians) * -15), Mathf.Sin(radians) * -20 - 70f);
+            arrow.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + facing * (-35f +  Mathf.Cos(radians) * -7), Mathf.Sin(radians) * -5 - 35f);
             foreach (HitboxCollision hitbox in arrow.GetComponentsInChildren<HitboxCollision>(true))
             {
                 hitbox.parent = drifter.gameObject;
@@ -254,7 +254,7 @@ public class NeoSwordFrogMasterHit : MasterHit
 
            
 
-            arrow.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + facing * (50f +  Mathf.Cos(radians) * 15), Mathf.Sin(radians) * 20 + 10f);
+            arrow.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + facing * (50f +  Mathf.Cos(radians) * 5), Mathf.Sin(radians) * 5 + 5f);
             foreach (HitboxCollision hitbox in arrow.GetComponentsInChildren<HitboxCollision>(true))
             {
                 hitbox.parent = drifter.gameObject;
