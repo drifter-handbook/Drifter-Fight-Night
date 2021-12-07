@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 193b57c47c6e0024ebee715bea3d6f17, type: 3}
-  m_Name: Aerial_Side_Launcher
+  m_Name: W_Side
   m_EditorClassIdentifier: 
-  AttackDamage: 3
-  Knockback: 25
-  KnockbackScale: 0.2
+  AttackDamage: 11
+  Knockback: 33
+  KnockbackScale: 0.4
   hasStaticHitstun: 0
   HitStun: 5
   hitType: 0
   mirrorKnockback: 0
-  AngleOfImpact: 80
+  AngleOfImpact: 25
   StatusEffect: 20
   StatusDuration: 0.1
   HitFX: {fileID: 11400000, guid: e007b7ceac776034b9838dfd15059cdd, type: 2}
