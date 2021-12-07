@@ -34,6 +34,15 @@ public class SingleAttackData : ScriptableObject
     [Help("A negative numbers indicate the move has no minimum HitStun and will always use the calculated value.", UnityEditor.MessageType.Info)]
     #endif
     public float HitStun = -1f;
+
+     #if UNITY_EDITOR
+    [Help("A negative value will cause the move to base hitpause on the hitstun dealt. A positive value indicates the number of effective frames of hitstun to use in hitstop calculations.", UnityEditor.MessageType.Info)]
+    #endif
+    public float HitStop= -1f;
+    //  #if UNITY_EDITOR
+    // [Help("Indicates whether or not the duration of the flat hit-stop will scale as a target takes more damage", UnityEditor.MessageType.Info)]
+    // #endif
+    // public bool ScaleHitStop = true;
     //public float EndLag = 0.1f;
     #if UNITY_EDITOR
     [Help("How does this move interact with shields? Normal is blocked by shields, Grab ignores shields, guard crush applies extra hitstun to shields", UnityEditor.MessageType.Info)]

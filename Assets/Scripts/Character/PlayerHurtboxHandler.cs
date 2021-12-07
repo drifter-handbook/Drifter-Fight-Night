@@ -157,7 +157,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
             //Calculate hitstun duration
             float HitstunDuration = (attackData.HitStun>=0 || attackData.hasStaticHitstun)?attackData.HitStun * framerateScalar:(KB*.006f + .1f);
-
+            float HitPauseDuration = HitstunDuration;
             //damage numbers managment
                 if (status != null)
                     status.ApplyDamage(damageDealt, status.isInCombo, HitstunDuration);
@@ -266,8 +266,13 @@ public class PlayerHurtboxHandler : MonoBehaviour
                     Shake?.startDarkenCoroutine(5f* framerateScalar);
 
                 //apply defender hitpause
-                if(HitstunDuration>0 && attackData.StatusEffect != PlayerStatusEffect.HITPAUSE )status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(isCritical || status.HasStatusEffect(PlayerStatusEffect.ARMOUR)) ? 5f* framerateScalar:((damageDealt <=2f ? .075f :Mathf.Max(HitstunDuration*.3f ,2f * framerateScalar)) * (hadSlowmo?2f:1f)));
-                StartCoroutine(drifter.GetComponentInChildren<GameObjectShake>().Shake(attackData.StatusEffect != PlayerStatusEffect.CRINGE?HitstunDuration*.2f:attackData.StatusDuration* framerateScalar,attackData.StatusEffect != PlayerStatusEffect.CRINGE?1.5f:2f));
+               
+                //If hitstop is scaled, and one is proviced, sum the hitstun duuration and the hitpause duration
+                if(attackData.HitStop >=0)
+                    HitPauseDuration += attackData.HitStop * framerateScalar;
+  
+                if(HitPauseDuration>0 && attackData.StatusEffect != PlayerStatusEffect.HITPAUSE )status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(isCritical || status.HasStatusEffect(PlayerStatusEffect.ARMOUR)) ? 5f* framerateScalar:((damageDealt <=2f ? .075f :Mathf.Max(HitPauseDuration*.3f ,2f * framerateScalar)) * (hadSlowmo?2f:1f)));
+                StartCoroutine(drifter.GetComponentInChildren<GameObjectShake>().Shake(attackData.StatusEffect != PlayerStatusEffect.CRINGE?HitPauseDuration*.2f:attackData.StatusDuration* framerateScalar,attackData.StatusEffect != PlayerStatusEffect.CRINGE?1.5f:2f));
 
                 returnCode = 0;             
             }
@@ -339,7 +344,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
             //apply attacker hitpause
             if (hitbox.gameObject.tag != "Projectile" || isCritical)
-                attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(isCritical || status.HasStatusEffect(PlayerStatusEffect.ARMOUR))? 5f* framerateScalar: (damageDealt <=2f ? .074f : Mathf.Max(HitstunDuration*.3f,2f * framerateScalar)));
+                attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(isCritical || status.HasStatusEffect(PlayerStatusEffect.ARMOUR))? 5f* framerateScalar: (damageDealt <=2f ? .074f : Mathf.Max(HitPauseDuration*.3f,2f * framerateScalar)));
 
             
 
