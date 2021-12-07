@@ -245,6 +245,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         jumpFlag = false;
         specialLimit = -1;
         queuedState = "";
+        resetTerminalVelocity();
         ledgeDetector.setPreventWalkoff(false);
     }
 

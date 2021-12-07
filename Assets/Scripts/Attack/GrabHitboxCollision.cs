@@ -25,7 +25,7 @@ public class GrabHitboxCollision : HitboxCollision
         if (hurtbox != null && AttackType != DrifterAttackType.Null)
         {
             //string player = playerType.NetworkType;
-            int hitResult = -3;
+            int hitResult = -5;
             if(OverrideData != null){
                 hitResult = hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, OverrideData);
                 if(hitResult == 0)
@@ -35,14 +35,13 @@ public class GrabHitboxCollision : HitboxCollision
                         parent.GetComponent<Drifter>().movement.canLandingCancel = false;
                         parent.GetComponent<Drifter>().PlayAnimation(SuccessState);
                     }
+
                 }
-                else if(hitResult !=-3) victim = null;
             }
             else{
                 hitResult = hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, AttackData);
             }
             if(hitResult >= -1 && drifter.canSpecialCancelFlag)drifter.listenForSpecialCancel = true;
-            
         }
     }
 }

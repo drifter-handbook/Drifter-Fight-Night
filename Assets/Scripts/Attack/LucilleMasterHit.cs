@@ -16,9 +16,14 @@ public class LucilleMasterHit : MasterHit
 
     GameObject accretionDisk;
 
-    public GrabHitboxCollision[] accretionBoxes;
+    GrabHitboxCollision[] grabBoxes;
 
     //Coroutine riftDetonation;
+
+    void Start()
+    {
+        grabBoxes = drifter.GetComponentsInChildren<GrabHitboxCollision>(true);
+    }
 
     void Update()
     {
@@ -42,7 +47,7 @@ public class LucilleMasterHit : MasterHit
         //Handle neutral special attacks
         if(listeningForDirection)
         {
-            movement.move(11f,false);
+            movement.move(14f,false);
         }
     }
 
@@ -50,6 +55,9 @@ public class LucilleMasterHit : MasterHit
     {
         base.returnToIdle();
         cancelListeningForDirection();
+        foreach(GrabHitboxCollision hitbox in grabBoxes)
+            hitbox.victim = null;
+
     }
 
     public void setListeningForDirection()
@@ -76,7 +84,7 @@ public class LucilleMasterHit : MasterHit
             breakRift(accretionDisk);
         }
 
-        foreach(GrabHitboxCollision infector in drifter.GetComponentsInChildren<GrabHitboxCollision>(true))
+        foreach(GrabHitboxCollision infector in grabBoxes)
         {
             if(infector.victim != null)
             {
