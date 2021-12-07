@@ -36,6 +36,7 @@ public class GrabHitboxCollision : HitboxCollision
                         parent.GetComponent<Drifter>().PlayAnimation(SuccessState);
                     }
                 }
+                else if(hitResult !=-3) victim = null;
             }
             else{
                 hitResult = hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, AttackData);

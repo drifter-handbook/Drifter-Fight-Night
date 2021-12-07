@@ -16,8 +16,6 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
     static protected float framerateScalar =.0833333333f;
 
-    private OrboHandler handler;
-
     // Start is called before the first frame update
     protected void Start()
     {
@@ -546,23 +544,23 @@ public class PlayerHurtboxHandler : MonoBehaviour
         return false;
     }
 
-    //I hate that this is here
-    protected void SpawnOrboHandler(GameObject owner,GameObject victim,int nums)
-    {
-        if(handler == null)
-        {
-            GameObject orbo = host.CreateNetworkObject("OrboHolder", Vector3.zero, transform.rotation);
-            OrboHandler handler = orbo.GetComponent<OrboHandler>();
-            handler.victim = victim;
-            handler.color = owner.GetComponent<Drifter>().GetColor();
-            handler.owner = owner;
-            this.handler = handler;
-            this.handler.orbToSpawn = nums;
+    // //I hate that this is here
+    // protected void SpawnOrboHandler(GameObject owner,GameObject victim,int nums)
+    // {
+    //     if(handler == null)
+    //     {
+    //         GameObject orbo = host.CreateNetworkObject("OrboHolder", Vector3.zero, transform.rotation);
+    //         OrboHandler handler = orbo.GetComponent<OrboHandler>();
+    //         handler.victim = victim;
+    //         handler.color = owner.GetComponent<Drifter>().GetColor();
+    //         handler.owner = owner;
+    //         this.handler = handler;
+    //         this.handler.orbToSpawn = nums;
 
-        }
-        else
-            this.handler.orbToSpawn = nums;
+    //     }
+    //     else
+    //         this.handler.orbToSpawn = nums;
 
-    }
+    // }
 
 }

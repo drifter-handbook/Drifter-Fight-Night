@@ -13,6 +13,9 @@ public class LucillePortal : MonoBehaviour
 
 	public float myPriority;
 	public SyncAnimatorStateHost anim;
+
+	protected ScreenShake Shake;
+
 	bool canMerge  = true;
 	Rigidbody2D rb;
 
@@ -25,6 +28,8 @@ public class LucillePortal : MonoBehaviour
 		myPriority = size;
 		if(size == -1)
 			canMerge = false;
+
+		Shake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<ScreenShake>();
 	}
 
 	void OnTriggerEnter2D(Collider2D collider)
@@ -43,10 +48,11 @@ public class LucillePortal : MonoBehaviour
 		{
 			LucillePortal merging_Portal = collider.GetComponent<LucillePortal>();
 
-			myPriority += size;
-
-			merging_Portal.contest(myPriority,this);
-
+			if(merging_Portal.canMerge)
+			{
+				myPriority += size;
+				merging_Portal.contest(myPriority,this);
+			}
 		}
 
 		try
@@ -63,7 +69,7 @@ public class LucillePortal : MonoBehaviour
 
 				transform.localScale = new Vector2(Mathf.Abs(transform.localScale.x) * hitbox.Facing, Mathf.Abs(transform.localScale.y) * Mathf.Sign(verticalMag));
 
-				rb.velocity = speed * new Vector3(moveHorizontally?hitbox.Facing * .707f:0, (moveVertically?Mathf.Sign(verticalMag) * .707f:0) * ((!moveHorizontally && verticalMag <0)? 2f:1f),0);
+				rb.velocity = speed * new Vector3((moveHorizontally?hitbox.Facing * .707f:0) + ((!moveHorizontally && verticalMag <0)? .4f * hitbox.Facing:0f), (moveVertically?Mathf.Sign(verticalMag) * .707f:0) * ((!moveHorizontally && verticalMag <0)? 2f:1f),0);
 
 				if(moveHorizontally && moveVertically) anim.SetState("Diagonal_" + size);
 				else if(moveHorizontally)  anim.SetState("Horizontal_" + size);
@@ -106,9 +112,9 @@ public class LucillePortal : MonoBehaviour
 	{
 		if(myPriority < enemyPriority && myPriority != -1)
 		{
-			other.grow(size);
 			decay();
 			drifter.GetComponentInChildren<LucilleMasterHit>().breakRift(gameObject);
+			other.grow(size);
 		}
 		
 	}
@@ -137,6 +143,7 @@ public class LucillePortal : MonoBehaviour
 		rb.velocity = Vector2.zero;
 		UnityEngine.Debug.Log("Rift_Detonate_" + size);
 		anim.SetState("Rift_Detonate_" + size);
+		Shake.startShakeCoroutine(.16f, size/2f);
 	}
 
 	public void decay()

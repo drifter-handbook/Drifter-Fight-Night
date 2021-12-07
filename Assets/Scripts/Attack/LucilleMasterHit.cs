@@ -12,9 +12,11 @@ public class LucilleMasterHit : MasterHit
 
     bool jumpGranted = false;
 
-    GameObject bomb;
+    bool listeningForDirection = false;
 
-    public GrabHitboxCollision bombGrab;
+    GameObject accretionDisk;
+
+    public GrabHitboxCollision[] accretionBoxes;
 
     //Coroutine riftDetonation;
 
@@ -31,35 +33,69 @@ public class LucilleMasterHit : MasterHit
         if(status.HasStatusEffect(PlayerStatusEffect.DEAD) && rifts.Count >0) collapseAllPortals(0);
     }
 
+    new void FixedUpdate()
+    {
+        if(!isHost)return;
 
-    public void Side_Grab_Bomb()
+        base.FixedUpdate();
+
+        //Handle neutral special attacks
+        if(listeningForDirection)
+        {
+            movement.move(11f,false);
+        }
+    }
+
+    public new void returnToIdle()
+    {
+        base.returnToIdle();
+        cancelListeningForDirection();
+    }
+
+    public void setListeningForDirection()
+    {
+       if(!isHost)return;
+       listeningForDirection = true; 
+    }
+
+    public void cancelListeningForDirection()
+    {
+       if(!isHost)return;
+       listeningForDirection = false; 
+    }
+
+
+    public void infectWithRift()
     {
         if(!isHost)return;
         facing = movement.Facing;
-        Vector3 pos = new Vector3(facing * 3.7f,3.3f,0);
 
-        if(bomb != null)
+        if(accretionDisk != null)
         {
-            bomb.GetComponent<LucillePortal>().decay();
-            breakRift(bomb);
+            accretionDisk.GetComponent<LucillePortal>().decay();
+            breakRift(accretionDisk);
         }
 
-        bomb = GameController.Instance.host.CreateNetworkObject("Lucille_Bomb", transform.position + pos, transform.rotation);
-
-        foreach (HitboxCollision hitbox in bomb.GetComponentsInChildren<HitboxCollision>(true))
+        foreach(GrabHitboxCollision infector in drifter.GetComponentsInChildren<GrabHitboxCollision>(true))
         {
-            hitbox.parent = drifter.gameObject;
-            hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
-            hitbox.Active = true;
-            hitbox.Facing = facing;
-            
+            if(infector.victim != null)
+            {
+                accretionDisk = GameController.Instance.host.CreateNetworkObject("Lucille_Disk", infector.victim.GetComponent<Rigidbody2D>().position, transform.rotation);
+                foreach (HitboxCollision hitbox in accretionDisk.GetComponentsInChildren<HitboxCollision>(true))
+                {
+                    hitbox.parent = drifter.gameObject;
+                    hitbox.AttackID = attacks.AttackID;
+                    hitbox.AttackType = attacks.AttackType;
+                    hitbox.Active = true;
+                    hitbox.Facing = facing;
+                }
+                accretionDisk.GetComponent<StickToTarget>().victim = infector.victim;
+                infector.victim = null;  
+                accretionDisk.GetComponent<LucillePortal>().drifter = drifter.gameObject;
+                rifts.Enqueue(accretionDisk);
+                return;
+            }
         }
-        bomb.GetComponent<StickToTarget>().victim = bombGrab.victim;
-        bombGrab.victim = null;
-        bomb.GetComponent<LucillePortal>().drifter = drifter.gameObject;
-        rifts.Enqueue(bomb);
-
     }
 
     public void SpawnRift()
@@ -127,7 +163,8 @@ public class LucilleMasterHit : MasterHit
             targetPortal.GetComponent<LucillePortal>().detonate();
         }
         else
-        {
+        {   
+            infectWithRift();
             UnityEngine.Debug.Log("NO PORTALS");
         }
     }
@@ -152,6 +189,8 @@ public class LucilleMasterHit : MasterHit
 
             if(rift == null)continue;
 
+            //Gain half of the meter value of the portal back when all are collapsed
+            drifter.gainSuperMeter(.33f * rift.GetComponent<LucillePortal>().size);
             foreach (HitboxCollision hitbox in rift.GetComponentsInChildren<HitboxCollision>(true))
             {
                 hitbox.AttackID -=3;
