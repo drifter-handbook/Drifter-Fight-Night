@@ -15,17 +15,16 @@ public class RyykeMasterHit : MasterHit
 
     //Tether Recovery Range object
     public TetherRange tether;
-    //Point to tether to
     Vector3 TetherPoint = Vector3.zero;
-
     GameObject arm;
+    Tether armTether;
 
 	//0 Up stone
 	//1 Side Stone
 	//2 Down Stone
 	Tombstone[] tombstones = new Tombstone[] {null,null,null};
 
-    Tether armTether;
+    
 
 
 	//Index of the next stone to place
@@ -273,7 +272,7 @@ public class RyykeMasterHit : MasterHit
         armTether.setTargetLength(len);
     }
 
-    public void freezeTether(float len)
+    public void freezeTether()
     {
         if(!isHost || arm == null)return;
         armTether.freezeLen();

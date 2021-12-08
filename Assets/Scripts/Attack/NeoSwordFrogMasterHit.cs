@@ -10,11 +10,12 @@ public class NeoSwordFrogMasterHit : MasterHit
 
     Vector2 HeldDirection = Vector2.zero;
 
-    int charge = 0;
-
     static float maxFloatTime = 1f;
     bool floating = false;
     float floatTime = maxFloatTime;
+
+    GameObject tongue;
+    Tether tongueTether;
 
     void Update()
     {
@@ -24,7 +25,6 @@ public class NeoSwordFrogMasterHit : MasterHit
             Empowered = false;
             drifter.sparkle.SetState("Hide");
             if(kunaiShoot != null)StopCoroutine(kunaiShoot);
-            if(charge > 0)charge = 0;
         }
         // each frame, if SF is in his up special, tick down remaining time
         if(listeningForDirection && floating && floatTime >=0)
@@ -33,7 +33,11 @@ public class NeoSwordFrogMasterHit : MasterHit
         }
 
         if(movement.ledgeHanging || status.HasEnemyStunEffect())
+        {
             clearFloat();
+            if(tongue != null)deleteTongue();
+        }
+
     }
 
 
@@ -110,53 +114,6 @@ public class NeoSwordFrogMasterHit : MasterHit
 
     }
 
-    // public void charge_W_Neutral(int grantCharge)
-    // {
-    //      if(!isHost)return;
-    //      if(chargeAttackPesistent("W_Neutral_Fire") !=0)return;
-    //      else if(grantCharge >=1)
-    //      {
-    //         charge++;
-    //         if(charge>=3)
-    //         {
-    //             Empowered = true;
-    //             returnToIdle();
-    //         }
-    //     }
-    // }
-
-
-    // if(Empowered)drifter.sparkle.SetState("ChargeIndicator");
-    //     else drifter.sparkle.SetState("Hide");
-
-    // public void backdash()
-    // {
-    //     if(!isHost)return;
-    //     facing = movement.Facing;
-
-    //     if(drifter.input[0].MoveX == facing) rb.velocity = new Vector2(30 * facing,movement.grounded?22:rb.velocity.y+10f);
-    //     else rb.velocity = new Vector2(15 * facing,movement.grounded?30:rb.velocity.y+10f);
-        
-
-    // }
-
-    // //Causes a non-aerial move to cancle on htiing the ground
-    // public void landingCancel()
-    // {
-    //     if(!isHost)return;
-    //     movement.canLandingCancel = true;
-    // }
-
-    public void downSpecialProjectile()
-    {
-        if(!isHost)return;
-        facing = movement.Facing;
-        Empowered = false;
-        //Fire an arrow if Swordfrog has a charge
-        kunaiShoot = StartCoroutine(fireKunaiDown());
-
-    }
-
      //Flips the direction the charactr is facing mid move)
     public void invertDirection()
     {
@@ -164,75 +121,66 @@ public class NeoSwordFrogMasterHit : MasterHit
         movement.flipFacing();
     }
 
-    IEnumerator fireKunaiDown()
+
+
+
+    //Grab Methods
+    public void SpawnTongue()
     {
+        if(!isHost)return;
+        facing = movement.Facing;
 
-        int baseCharge = charge;
-        int projnum = charge * 2;
-        float radians;
+        if(tongue != null)deleteTongue();
 
-        while(projnum >= 0)
+        tongue = host.CreateNetworkObject("SF_Tongue", transform.position + new Vector3(2.3f * facing,1.6f), transform.rotation);
+        tongue.transform.localScale = new Vector3(10f * facing, 10f , 1f);
+        foreach (HitboxCollision hitbox in tongue.GetComponentsInChildren<HitboxCollision>(true))
         {
-            yield return new WaitForSeconds(framerateScalar/7f);
-            radians = (baseCharge* 110 - projnum * 5) * Mathf.PI/180f ;
-            GameObject arrow = host.CreateNetworkObject("Kunai", transform.position + new Vector3((- (baseCharge - projnum) * .6f )* facing, 2.8f  - (baseCharge - projnum) * .6f, 0), Quaternion.Euler(0,0,movement.Facing * ((baseCharge - projnum) *-1f - 40f)));
-            arrow.transform.localScale = new Vector3(10f * -facing, 10f, 1f);
-
-           
-
-            arrow.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + facing * (-35f +  Mathf.Cos(radians) * -7), Mathf.Sin(radians) * -5 - 35f);
-            foreach (HitboxCollision hitbox in arrow.GetComponentsInChildren<HitboxCollision>(true))
-            {
-                hitbox.parent = drifter.gameObject;
-                hitbox.AttackID = attacks.AttackID;
-                hitbox.AttackType = attacks.AttackType;
-                hitbox.Active = true;
-                hitbox.Facing = facing;
-            }
-
-            projnum--;
-
-            refreshHitboxID();
-            if(projnum%2 ==0)charge--;
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            hitbox.Active = true;
+            hitbox.Facing = facing;
         }
-        if(charge < 0)charge = 0;
-        yield break;
+        tongue.transform.SetParent(drifter.gameObject.transform);
+        tongue.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
 
+        tongueTether = tongue.GetComponentInChildren<Tether>();
+        tongueTether.setTargetLength(.64f);
+        tongueTether.setSpeed(4f);
     }
 
-    // public void dance(int speed)
-    // {
+     public void deleteTongue()
+    {
+        if(tongue != null)Destroy(tongue);
+        tongue = null;
+    }
 
-    //     if(!isHost)return;
-    //     movement.gravityPaused = true;
-    //     rb.gravityScale = 5;
-    //     rb.velocity = speed * Vector3.Normalize(HeldDirection);
+    public void disableTongueHitbox()
+    {
+        tongueTether.togglehitbox(0);
+    }
 
-    // }
+    public void setTongueLen(float len)
+    {
+        if(!isHost || tongue == null)return;
+        tongueTether.setTargetLength(len);
+    }
 
-    // public void dendrobate()
-    // {
-    //     if(!isHost)return;
-    //     if(HeldDirection.x == 0 && HeldDirection.y  < 0)drifter.PlayAnimation("Dendro_Down");
-    //     else if(HeldDirection.x == 0 && HeldDirection.y > 0)drifter.PlayAnimation("Dendro_Up");
-    // }
-
-    // public void saveDirection()
-    // {
-    //     if(!isHost)return;
-    //     movement.updateFacing();
-    //     Vector2 TestDirection = new Vector2(drifter.input[0].MoveX,drifter.input[0].MoveY);
-    //     HeldDirection = TestDirection == Vector2.zero? HeldDirection: TestDirection;
-    // }
+    public void freezeTether()
+    {
+        if(!isHost || tongue == null)return;
+        tongueTether.freezeLen();
+    }
 
 
 
-    public void neutralSpecialProjectile()
+    public void downSpecialProjectile()
     {
         if(!isHost)return;
         facing = movement.Facing;
         Empowered = false;
-        charge = 2;
+        //int charge = 2;
         //Fire an arrow if Swordfrog has a charge
         kunaiShoot = StartCoroutine(fireKunaiNeutral());
 
@@ -240,7 +188,7 @@ public class NeoSwordFrogMasterHit : MasterHit
 
     IEnumerator fireKunaiNeutral()
     {
-
+        int charge = 2;
         int baseCharge = charge;
         int projnum = charge * 2;
         float radians;
