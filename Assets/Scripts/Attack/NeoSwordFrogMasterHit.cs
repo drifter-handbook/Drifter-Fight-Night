@@ -241,7 +241,7 @@ public class NeoSwordFrogMasterHit : MasterHit
         {
             yield return new WaitForSeconds(framerateScalar/6f);
 
-            GameObject arrowA = host.CreateNetworkObject("Kunai", transform.position + new Vector3(1.5f * facing, .8f  + (5 - projnum) * .6f, 0), transform.rotation);
+            GameObject arrowA = host.CreateNetworkObject("Kunai", transform.position + new Vector3(1.5f * facing, 1f + W_Down_Projectiles/5f + (W_Down_Projectiles - projnum) * .6f, 0), transform.rotation);
 
             arrowA.transform.localScale = size;
             arrowA.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + 50f * facing, 0);
