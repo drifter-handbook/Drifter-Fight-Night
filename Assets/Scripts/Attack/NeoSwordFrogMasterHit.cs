@@ -239,9 +239,9 @@ public class NeoSwordFrogMasterHit : MasterHit
 
         while(projnum > 0)
         {
-            yield return new WaitForSeconds(framerateScalar/6f);
+            yield return new WaitForSeconds(framerateScalar/3f);
 
-            GameObject arrowA = host.CreateNetworkObject("Kunai", transform.position + new Vector3(1.5f * facing, 1f + W_Down_Projectiles/5f + (W_Down_Projectiles - projnum) * .6f, 0), transform.rotation);
+            GameObject arrowA = host.CreateNetworkObject("Kunai", transform.position + new Vector3(1.5f * facing, 1.5f + W_Down_Projectiles/5f + (W_Down_Projectiles - projnum) * .6f, 0), transform.rotation);
 
             arrowA.transform.localScale = size;
             arrowA.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + 50f * facing, 0);
@@ -279,7 +279,7 @@ public class NeoSwordFrogMasterHit : MasterHit
             float posDegrees = (facing >0 ? 335f  : 215f);
             float posRadians = posDegrees * Mathf.PI/180f;
 
-            yield return new WaitForSeconds(framerateScalar/6f);
+            yield return new WaitForSeconds(framerateScalar/3f);
 
             GameObject arrowA = host.CreateNetworkObject("Kunai", transform.position + new Vector3(facing * (-.5f + projnum/2f), projnum/2f -.9f)
                                                                  + pos, 
