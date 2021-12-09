@@ -17,6 +17,8 @@ public class NeoSwordFrogMasterHit : MasterHit
     GameObject tongue;
     Tether tongueTether;
 
+    public int W_Down_Projectiles = 3;
+
     void Update()
     {
         if(!isHost)return;
@@ -230,7 +232,7 @@ public class NeoSwordFrogMasterHit : MasterHit
 
     IEnumerator fireKunaiGroundLine()
     {
-        int projnum = 5;
+        int projnum = W_Down_Projectiles;
 
         Vector3 size = new Vector3(10f * facing, 10f, 1f);
         Vector3 pos = new Vector3(.2f * facing, 2.7f, 1f);
@@ -239,7 +241,7 @@ public class NeoSwordFrogMasterHit : MasterHit
         {
             yield return new WaitForSeconds(framerateScalar/6f);
 
-            GameObject arrowA = host.CreateNetworkObject("Kunai", transform.position + new Vector3(1.5f * facing, 1.8f  + (5 - projnum) * .6f, 0), transform.rotation);
+            GameObject arrowA = host.CreateNetworkObject("Kunai", transform.position + new Vector3(1.5f * facing, .8f  + (5 - projnum) * .6f, 0), transform.rotation);
 
             arrowA.transform.localScale = size;
             arrowA.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + 50f * facing, 0);
@@ -264,7 +266,7 @@ public class NeoSwordFrogMasterHit : MasterHit
 
     IEnumerator fireKunaiAirLine()
     {
-        int projnum = 5;
+        int projnum = W_Down_Projectiles;
 
         Vector3 size = new Vector3(10f, 10f, 1f);
         Vector3 pos = new Vector3(.2f * facing, 2.7f, 1f);

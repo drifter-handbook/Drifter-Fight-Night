@@ -636,6 +636,13 @@ AnimationClip:
     floatParameter: 1
     intParameter: 0
     messageOptions: 0
+  - time: 0.083333336
+    functionName: setYVelocityIfGrounded
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 22
+    intParameter: 0
+    messageOptions: 0
   - time: 0.25
     functionName: listenForSpecialReleased
     data: W_Up_End
