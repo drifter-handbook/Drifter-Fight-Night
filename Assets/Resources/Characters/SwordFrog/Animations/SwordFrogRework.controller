@@ -33,7 +33,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: W_Up_Start_Grounded
+  m_Name: W_Up_Ground
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -189,7 +189,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Grab_Air_2
+  m_Name: Grab_Air_Success
   m_Speed: 2
   m_CycleOffset: 0
   m_Transitions: []
@@ -371,7 +371,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: W_Down
+  m_Name: W_Down_Air
   m_Speed: 2
   m_CycleOffset: 0
   m_Transitions: []
@@ -573,7 +573,7 @@ AnimatorStateMachine:
     m_Position: {x: 1350, y: -180, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -9046280410053236911}
-    m_Position: {x: 1350, y: -230, z: 0}
+    m_Position: {x: 1140, y: -230, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1837813607498135423}
     m_Position: {x: 1350, y: -80, z: 0}
@@ -1165,7 +1165,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: W_Up
+  m_Name: W_Up_Air
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []

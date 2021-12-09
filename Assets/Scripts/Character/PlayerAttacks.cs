@@ -18,6 +18,7 @@ public class SingleAttack
 {
     public DrifterAttackType attack;
     public SingleAttackData attackData;
+    public bool hasAirVariant;
 }
 
 public class PlayerAttacks : MonoBehaviour
@@ -51,9 +52,9 @@ public class PlayerAttacks : MonoBehaviour
     public DrifterAttackType AttackType { get; private set; }
     public List<SingleAttack> AttackMap = new List<SingleAttack>();
     public Dictionary<DrifterAttackType,SingleAttackData> Attacks = new Dictionary<DrifterAttackType,SingleAttackData>();
-
+    public Dictionary<DrifterAttackType,bool> AttackVariants = new Dictionary<DrifterAttackType,bool>();
+   
     //[Help("Declares if any specials other than Up-W consume and require a recovery charge", UnityEditor.MessageType.Info)]
-
     public bool W_Neutral_Is_Recovery = false;
     public bool W_Down_Is_Recovery = false;
     public bool W_Side_Is_Recovery = false;
@@ -81,6 +82,8 @@ public class PlayerAttacks : MonoBehaviour
         foreach (SingleAttack attack in AttackMap)
         {
             Attacks[attack.attack] = attack.attackData;
+            AttackVariants[attack.attack] = attack.hasAirVariant;
+
         }
     }
 
@@ -214,7 +217,12 @@ public class PlayerAttacks : MonoBehaviour
         
         SetHitboxesActive(false);
         status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,8f);
-        drifter.PlayAnimation(AnimatorStates[attackType]);
+        if(!AttackVariants[attackType])
+            drifter.PlayAnimation(AnimatorStates[attackType]);
+        else if(movement.grounded)
+            drifter.PlayAnimation(AnimatorStates[attackType] + "_Ground");
+        else
+            drifter.PlayAnimation(AnimatorStates[attackType] + "_Air");
         SetupAttackID(attackType);
         //UnityEngine.Debug.Log("STARTING ATTACK: " + attackType.ToString() + "  With attackID: " + AttackID);
 

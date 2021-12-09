@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: W_Down_Projectile
   m_EditorClassIdentifier: 
   AttackDamage: 1.5
-  Knockback: 13
+  Knockback: 16
   KnockbackScale: 0.1
   hasStaticHitstun: 1
   HitStun: 4
@@ -21,8 +21,8 @@ MonoBehaviour:
   hitType: 0
   mirrorKnockback: 0
   AngleOfImpact: 65
-  StatusEffect: 7
-  StatusDuration: 1
+  StatusEffect: 5
+  StatusDuration: 3
   HitFX: {fileID: 11400000, guid: e007b7ceac776034b9838dfd15059cdd, type: 2}
   canHitGrounded: 1
   canHitAerial: 1
