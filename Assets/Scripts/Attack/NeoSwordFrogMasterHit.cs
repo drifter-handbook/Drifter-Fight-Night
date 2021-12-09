@@ -96,6 +96,7 @@ public class NeoSwordFrogMasterHit : MasterHit
     public new void returnToIdle()
     {
         base.returnToIdle();
+        if(kunaiShoot != null)StopCoroutine(kunaiShoot);
         clearFloat();
     }
 
@@ -182,15 +183,25 @@ public class NeoSwordFrogMasterHit : MasterHit
         Empowered = false;
         //int charge = 2;
         //Fire an arrow if Swordfrog has a charge
-        kunaiShoot = StartCoroutine(fireKunaiNeutral());
+        kunaiShoot = StartCoroutine(fireKunaiGround());
 
     }
 
-    IEnumerator fireKunaiNeutral()
+    public void downSpecialProjectileAir()
     {
-        int charge = 2;
-        int baseCharge = charge;
-        int projnum = charge * 2;
+        if(!isHost)return;
+        facing = movement.Facing;
+        Empowered = false;
+        //int charge = 2;
+        //Fire an arrow if Swordfrog has a charge
+        kunaiShoot = StartCoroutine(fireKunaiAir());
+
+    }
+
+    IEnumerator fireKunaiGround()
+    {
+        int baseCharge = 2;
+        int projnum = 5;
         float radians;
 
         while(projnum >= 0)
@@ -215,9 +226,72 @@ public class NeoSwordFrogMasterHit : MasterHit
             projnum--;
 
             refreshHitboxID();
-            if(projnum%2 ==0)charge--;
         }
-        if(charge < 0)charge = 0;
+        yield break;
+
+    }
+
+    //Creates two arcs of projectiles for the air version of down special
+    IEnumerator fireKunaiAir()
+    {
+        //Upper arc
+        float degreesA;
+        float radiansA;
+        //lower arc
+        float degreesB;
+        float radiansB;
+
+        int projnum = 3;
+        Vector3 size = new Vector3(10f, 10f, 1f);
+        Vector3 pos = new Vector3(.2f * facing, 2.7f, 1f);
+
+        while(projnum > 0)
+        {
+            yield return new WaitForSeconds(framerateScalar/7f);
+            degreesA = facing >0 ? (330f  - projnum * 5) : (210f  + projnum * 5f);
+            degreesB = facing >0 ? (300f  + projnum * 5) : (240f  - projnum * 5f);
+            radiansA = degreesA * Mathf.PI/180f;
+            radiansB = degreesB* Mathf.PI/180f;
+
+
+            GameObject arrowA = host.CreateNetworkObject("Kunai", transform.position
+                                                                 + new Vector3((Mathf.Cos(radiansA)), Mathf.Sin(radiansA))
+                                                                 + pos, 
+                                                                 Quaternion.Euler(0,0,degreesA));
+            arrowA.transform.localScale = size;
+            arrowA.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + (Mathf.Cos(radiansA) *50f), Mathf.Sin(radiansA)*50f);
+            
+            foreach (HitboxCollision hitbox in arrowA.GetComponentsInChildren<HitboxCollision>(true))
+            {
+                hitbox.parent = drifter.gameObject;
+                hitbox.AttackID = attacks.AttackID;
+                hitbox.AttackType = attacks.AttackType;
+                hitbox.Active = true;
+                hitbox.Facing = facing;
+            }
+
+            // if(projnum !=1)
+            // {
+                GameObject arrowB = host.CreateNetworkObject("Kunai", transform.position
+                                                                 + new Vector3((Mathf.Cos(radiansB)), Mathf.Sin(radiansB))
+                                                                 + pos,
+                                                                 Quaternion.Euler(0,0,degreesB));
+                arrowB.transform.localScale = size;
+                arrowB.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + (Mathf.Cos(radiansB) *50f), Mathf.Sin(radiansB)*50f);
+                foreach (HitboxCollision hitbox in arrowB.GetComponentsInChildren<HitboxCollision>(true))
+                {
+                    hitbox.parent = drifter.gameObject;
+                    hitbox.AttackID = attacks.AttackID + 100;
+                    hitbox.AttackType = attacks.AttackType;
+                    hitbox.Active = true;
+                    hitbox.Facing = facing;
+                }
+            // }
+
+            projnum--;
+
+            refreshHitboxID();
+        }
         yield break;
 
     }
