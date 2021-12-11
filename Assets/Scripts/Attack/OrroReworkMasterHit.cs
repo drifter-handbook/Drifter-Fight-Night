@@ -38,7 +38,7 @@ public class OrroReworkMasterHit : MasterHit
         	if(hoverTime <=0)
         	{
         		//movement.updateFacing();
-        		playState("W_Down_End");
+        		playState("W_Down_Ground");
         		listeningForMovement = false;
         		canHover = false;
   			}
@@ -142,7 +142,7 @@ public class OrroReworkMasterHit : MasterHit
     public void WDownStateSelect()
     {
     	if(!isHost)return;
-    	if(movement.grounded || !canHover)drifter.PlayAnimation("W_Down_End");
+    	if(movement.grounded || !canHover)drifter.PlayAnimation("W_Down_Ground");
     }
 
     public void hover()
