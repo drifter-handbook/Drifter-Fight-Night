@@ -102,7 +102,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         {PlayerStatusEffect.SLOWMOTION,                         new PlayerStatusData("SLOWMOTION",icon: 16)                                         },
     };
 
-    float time = 0f;
+    // float time = 0f;
     Rigidbody2D rb;
     Drifter drifter;
     Vector2 delayedVelocity;
@@ -141,13 +141,13 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
             delayedVelocity = Vector2.zero;
         }
         
-        if(time >= .1f)
-        {
-            time = 0f;
+        // if(time >= .f)
+        // {
+        //     time = 0f;
             //Hitpause pauses all other statuses for its duration
             if(HasStatusEffect(PlayerStatusEffect.HITPAUSE) || HasStatusEffect(PlayerStatusEffect.GRABBED))
             {
-                 statusDataMap[PlayerStatusEffect.HITPAUSE].duration--;
+                 statusDataMap[PlayerStatusEffect.HITPAUSE].duration-= Time.deltaTime;
                  if(!HasStatusEffect(PlayerStatusEffect.HITPAUSE) && !HasStatusEffect(PlayerStatusEffect.SLOWMOTION) && delayedVelocity != Vector2.zero)rb.velocity = delayedVelocity;
             }
             //Otherwise, tick down all active statuses
@@ -157,14 +157,12 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
                 {
                     if(HasStatusEffect(ef.Key))
                     {
-                        if(ef.Key == PlayerStatusEffect.POISONED)
-                            drifter.DamageTaken += Mathf.Min(statusDataMap[PlayerStatusEffect.POISONED].duration *.035f,.5f);
-                        else if(ef.Key == PlayerStatusEffect.STANCE)
+                        if(ef.Key == PlayerStatusEffect.STANCE)
                             continue;
 
-                        else ef.Value.duration--;
+                        else ef.Value.duration -= Time.deltaTime;
                         //Damage player if they are on fire
-                        if(ef.Key == PlayerStatusEffect.BURNING) drifter.DamageTaken += .2f;
+                        if(ef.Key == PlayerStatusEffect.BURNING) drifter.DamageTaken += Time.deltaTime;
                         
                         //Re-apply the saved velocity if the player just lost cringe
                         
@@ -186,7 +184,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
                 }
             }
             
-        }
+        //}
         if(delayedVelocity != Vector2.zero && !(HasStatusEffect(PlayerStatusEffect.HITPAUSE) || HasStatusEffect(PlayerStatusEffect.CRINGE) || HasStatusEffect(PlayerStatusEffect.GRABBED) || HasStatusEffect(PlayerStatusEffect.SLOWMOTION))) delayedVelocity = Vector2.zero;
 
         //If you are actionable, end combo
@@ -198,7 +196,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
             isInCombo = false;
 
         }
-        time += Time.deltaTime;
+        //time += Time.deltaTime;
         
     }
 
@@ -411,7 +409,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         //If status effect stacks, add new duration to current duration and return.
         if(data.stacking && HasStatusEffect(ef))
         {
-            data.stacks += duration * 10f;
+            data.stacks += duration;
             return;
         }
 
@@ -420,7 +418,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
     	//Ignores hitstun if in superarmour or invuln
         if(ef == PlayerStatusEffect.DEAD){
             clearAllStatus();
-            data.duration = duration * 10f;
+            data.duration = duration;
             return;
         }
 
@@ -433,7 +431,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
 
         if((data.isStun && !data.isSelfInflicted && HasStatusEffect(ef)) && ef != PlayerStatusEffect.KNOCKBACK|| (HasStatusEffect(PlayerStatusEffect.PLANTED) && (ef == PlayerStatusEffect.GRABBED))){
             
-            statusDataMap[PlayerStatusEffect.KNOCKBACK].duration = 5.5f;
+            statusDataMap[PlayerStatusEffect.KNOCKBACK].duration = .55f;
             clearRemoveOnHitStatus();
             return;
         }
@@ -448,7 +446,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         if(ef == PlayerStatusEffect.SLOWMOTION)
             drifter.SetAnimationSpeed(.4f);
 
-    	data.duration = duration * 10f;
+    	data.duration = duration;
 
     }
 
