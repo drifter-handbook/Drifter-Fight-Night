@@ -633,16 +633,25 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1.25
-        value: -0.0051543238
-        inSlope: -0.27617127
-        outSlope: -0.27617127
+        value: 0.09459974
+        inSlope: -0.33225954
+        outSlope: -0.33225954
         tangentMode: 136
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1.4166666
-        value: -0.028168583
+        value: 0.028753294
+        inSlope: -0.39028442
+        outSlope: -0.39028442
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1.5833334
+        value: -0.03549509
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -707,24 +716,33 @@ AnimationClip:
       - serializedVersion: 3
         time: 1.0833334
         value: 0.29544124
-        inSlope: -0.19726498
-        outSlope: -0.19726498
+        inSlope: -0.19726539
+        outSlope: -0.19726539
         tangentMode: 136
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1.25
-        value: 0.19680882
-        inSlope: -0.078904755
-        outSlope: -0.078904755
+        value: 0.19568141
+        inSlope: -0.40016153
+        outSlope: -0.40016153
         tangentMode: 136
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1.4166666
-        value: 0.19023342
+        value: 0.16205409
+        inSlope: -0.14822337
+        outSlope: -0.14822337
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1.5833334
+        value: 0.14627361
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -1656,16 +1674,25 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1.25
-        value: -0.0051543238
-        inSlope: -0.27617127
-        outSlope: -0.27617127
+        value: 0.09459974
+        inSlope: -0.33225954
+        outSlope: -0.33225954
         tangentMode: 136
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1.4166666
-        value: -0.028168583
+        value: 0.028753294
+        inSlope: -0.39028442
+        outSlope: -0.39028442
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1.5833334
+        value: -0.03549509
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -1730,24 +1757,33 @@ AnimationClip:
       - serializedVersion: 3
         time: 1.0833334
         value: 0.29544124
-        inSlope: -0.19726498
-        outSlope: -0.19726498
+        inSlope: -0.19726539
+        outSlope: -0.19726539
         tangentMode: 136
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1.25
-        value: 0.19680882
-        inSlope: -0.078904755
-        outSlope: -0.078904755
+        value: 0.19568141
+        inSlope: -0.40016153
+        outSlope: -0.40016153
         tangentMode: 136
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1.4166666
-        value: 0.19023342
+        value: 0.16205409
+        inSlope: -0.14822337
+        outSlope: -0.14822337
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1.5833334
+        value: 0.14627361
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -1855,7 +1891,21 @@ AnimationClip:
     functionName: setXVelocity
     data: 
     objectReferenceParameter: {fileID: 0}
-    floatParameter: 20
+    floatParameter: 24
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.5833333
+    functionName: setXVelocity
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 15
+    intParameter: 0
+    messageOptions: 0
+  - time: 1.25
+    functionName: setXVelocity
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: -10
     intParameter: 0
     messageOptions: 0
   - time: 1.6666666

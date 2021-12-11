@@ -91,7 +91,9 @@ public class NeoSwordFrogMasterHit : MasterHit
 
     public new void clearMasterhitVars()
     {
+        UnityEngine.Debug.Log("SF");
         base.clearMasterhitVars();
+        deleteTongue();
         clearFloat();
     }
 
@@ -100,6 +102,7 @@ public class NeoSwordFrogMasterHit : MasterHit
         base.returnToIdle();
         if(kunaiShoot != null)StopCoroutine(kunaiShoot);
         clearFloat();
+        deleteTongue();
     }
 
     public void NeutralSpecialSlash()
