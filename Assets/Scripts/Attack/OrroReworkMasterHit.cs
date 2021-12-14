@@ -20,6 +20,8 @@ public class OrroReworkMasterHit : MasterHit
     bool canHover = true;
     bool listeningForMovement = false;
 
+    GameObject platform;
+
     void Start()
     {
         spawnBean();
@@ -138,11 +140,40 @@ public class OrroReworkMasterHit : MasterHit
         }
     }
 
+    /*
+    	Down Special Functions
+    */
 
+    //Handles orros float timer if he uses the move while it is depleted
     public void WDownStateSelect()
     {
     	if(!isHost)return;
     	if(movement.grounded || !canHover)drifter.PlayAnimation("W_Down_Ground");
+    	else
+    		spawnPlatform();
+    }
+
+    // Creates a platform to represent orro's float state
+    public void spawnPlatform()
+    {
+    	if(!isHost)return;
+    	deletePlatform();
+    	platform = host.CreateNetworkObject("orro_w_down_platform", transform.position, transform.rotation);
+    	platform.transform.SetParent(drifter.gameObject.transform);
+    	platform.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
+
+    }
+
+    //Deletes orro's floatstate platform
+    public void deletePlatform()
+    {
+    	if(!isHost)return;
+    	if(platform != null)
+    	{
+    		platform.GetComponent<SyncAnimatorStateHost>().SetState("W_Down_Platform_Decay");
+    		platform = null;
+    	}
+    	
     }
 
     public void hover()
@@ -160,6 +191,49 @@ public class OrroReworkMasterHit : MasterHit
         }
         
     }
+
+    /*
+    	Side Special Functions
+    */
+
+    //Enables all relevant flags for orro's neutral special
+    public void BeginWSide()
+    {
+        if(!isHost)return;
+        specialReleasedFlag = true;
+        movementCancelFlag = true;
+        activeCancelFlag = true;
+        queuedState = "W_Side_Fire";
+        specialCharge = 0;
+        specialLimit = 8;
+        beanIsCharging = true;
+    }
+
+    //Fires bean or recalls him for neutral W
+    public void WSideFire()
+    {
+        if(!isHost)return;
+
+        clearMasterhitVars();
+        if(Vector3.Distance(targetPos,bean.rb.position) <= 3.8f && beanFollowing)
+        {
+            bean.setBean(specialCharge * 4.5f  + 8f);
+            refreshBeanHitboxes();
+            bean.playFollowState("Bean_Side_Special_Fire");
+            movement.spawnJuiceParticle(targetPos,MovementParticleMode.Bean_Launch, false);
+            beanFollowing = false;
+        }
+        else
+        {
+            beanFollowing = true;
+            bean.recallBean(rb.position - new Vector2(-2f * movement.Facing,4f),movement.Facing);
+        }
+        specialCharge = 0;
+    }       
+
+    /*
+       	Neutral Special Functions
+    */
 
     public void endCommand()
     {
@@ -183,44 +257,7 @@ public class OrroReworkMasterHit : MasterHit
         
     }
 
-    //Enables all relevant flags for orro's neutral special
-    public void BeginWSide()
-    {
-        if(!isHost)return;
-        specialReleasedFlag = true;
-        movementCancelFlag = true;
-        activeCancelFlag = true;
-        queuedState = "W_Side_Fire";
-        specialCharge = 0;
-        specialLimit = 8;
-        beanIsCharging = true;
-    }
 
-    //Spawns a page particle behind orro
-    public void page()
-    {
-        if(!isHost)return;
-
-        movement.spawnJuiceParticle(transform.position + new Vector3(0,1,0),MovementParticleMode.Orro_Page, false);
-    }
-
-    //Spawns a page particle in front of orro
-    public void pageFlip()
-    {
-        if(!isHost)return;
-        facing = movement.Facing;
-        movement.spawnJuiceParticle(transform.position + new Vector3(facing * 1.5f,1,0),MovementParticleMode.Orro_Page, true);
-    }
-
-    //Spawns a boost ring particle for orros up special
-    public void boost()
-    {
-        if(!isHost)return;
-
-        movement.spawnJuiceParticle(transform.position + new Vector3(0,2,0),MovementParticleMode.Orro_Boost, false);
-    }
-        
-    //Bean!
     //Tells the current bean object to preform certain actions
     public void BeanSide()
     {
@@ -292,6 +329,12 @@ public class OrroReworkMasterHit : MasterHit
 
     }
 
+    /*
+
+		Other Projectiles
+
+    */
+
 
     //Creates a side air projectile
     public void SpawnSideAir()
@@ -359,38 +402,50 @@ public class OrroReworkMasterHit : MasterHit
         }
     }
 
+    /*
+    	Unique particle spawn Functions
+    */
 
-    //Overloads orro's return to idel command; Doesnt do anything anymore
-    //Remove later probably
+    //Spawns a page particle behind orro
+    public void page()
+    {
+        if(!isHost)return;
+
+        movement.spawnJuiceParticle(transform.position + new Vector3(0,1,0),MovementParticleMode.Orro_Page, false);
+    }
+
+    //Spawns a page particle in front of orro
+    public void pageFlip()
+    {
+        if(!isHost)return;
+        facing = movement.Facing;
+        movement.spawnJuiceParticle(transform.position + new Vector3(facing * 1.5f,1,0),MovementParticleMode.Orro_Page, true);
+    }
+
+    //Spawns a boost ring particle for orros up special
+    public void boost()
+    {
+        if(!isHost)return;
+
+        movement.spawnJuiceParticle(transform.position + new Vector3(0,2,0),MovementParticleMode.Orro_Boost, false);
+    }
+
+
+    //Overloads orro's return to idle command
     public new void returnToIdle()
     {
         base.returnToIdle();
+        deletePlatform();
         specialCharge = 0;
         listeningForMovement = false;
     }
 
-
-    //Fires bean or recalls him for neutral W
-    public void WSideFire()
+    public new void clearMasterhitVars()
     {
-        if(!isHost)return;
-
-        base.clearMasterhitVars();
-        if(Vector3.Distance(targetPos,bean.rb.position) <= 3.8f && beanFollowing)
-        {
-            bean.setBean(specialCharge * 4.5f  + 8f);
-            refreshBeanHitboxes();
-            bean.playFollowState("Bean_Side_Special_Fire");
-            movement.spawnJuiceParticle(targetPos,MovementParticleMode.Bean_Launch, false);
-            beanFollowing = false;
-        }
-        else
-        {
-            beanFollowing = true;
-            bean.recallBean(rb.position - new Vector2(-2f * movement.Facing,4f),movement.Facing);
-        }
-        specialCharge = 0;
+    	base.clearMasterhitVars();
+    	deletePlatform();
     }
+
 
 
     //Roll Methods
