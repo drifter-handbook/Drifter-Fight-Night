@@ -143,7 +143,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
 
         //If no controllers are currently active, activate the primary controller
-        if(GameController.Instance.controls.Count <1 || GameController.Instance.IsTraining)
+        if(GameController.Instance.IsTraining)
             GameController.Instance.AssignInputAssest();
 
         foreach(InputActionAsset controller in GameController.Instance.availableControls)
@@ -178,7 +178,6 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
     public void AddCharSelState(int peerID, DrifterType drifter)
     {
-        UnityEngine.Debug.Log(peerID);
         if(charSelStates.Count >= (GameController.Instance.IsTraining?2:GameController.MAX_PLAYERS))return;
 
         int[] drifterLoc = findDrifterMatrixPosition(drifter);
@@ -208,8 +207,13 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
     public void RemoveCharSelState(int peerID)
     {
-        
-        if(!charSelStates.ContainsKey(peerID))return;
+        if(!charSelStates.ContainsKey(peerID))
+        {
+            UnityEngine.Debug.Log("PEER NOT FOUND FOR REMOVAL: " + peerID);
+
+            return;
+
+        }
     
         UnityEngine.Debug.Log("PEER REMOVED");
 
@@ -223,6 +227,8 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         if(peerID != -1)
             GameController.Instance.host.Peers.Remove(peerID);
 
+        //Return to main menu if not in multiplayer
+        checkReturnToMenuConditions();
     }
 
     //Finds the y-x positio of a certain drifter in the matrix and returns the values as an array
@@ -279,11 +285,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
         //Return to title if the last player left
         //Maybe remove?
-        if(GameController.Instance.controls.Count <1)
-        {
-            ReturnToTitle();
-            return;
-        }
+        checkReturnToMenuConditions();
 
         //Update input on each active char select state
 
@@ -491,6 +493,14 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         //Saves previous input
         p_cursor.prevInput = input;
 
+    }
+
+    //Checks for conditions that should return players to the main menu
+    //Add to this later for other single player modes
+    void checkReturnToMenuConditions()
+    {
+        if(GameController.Instance.controls.Count <1 && GameController.Instance.IsTraining)
+            ReturnToTitle();
     }
 
     //Checks to make sure each player has selected a character

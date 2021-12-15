@@ -6,18 +6,19 @@ public class NeoSwordFrogMasterHit : MasterHit
 {
     Coroutine kunaiShoot;
 
-    bool listeningForDirection = false;
-
-    Vector2 HeldDirection = Vector2.zero;
-
-    static float maxFloatTime = 1f;
-    bool floating = false;
-    float floatTime = maxFloatTime;
-
     GameObject tongue;
     Tether tongueTether;
 
     public int W_Down_Projectiles = 3;
+
+    bool listeningForDirection = false;
+    bool floating = false;
+
+    Vector2 HeldDirection = Vector2.zero;
+
+    float floatTime = maxFloatTime;
+    static float maxFloatTime = 1f;
+
 
     void Update()
     {
@@ -162,11 +163,6 @@ public class NeoSwordFrogMasterHit : MasterHit
         tongue = null;
     }
 
-    public void disableTongueHitbox()
-    {
-        tongueTether.togglehitbox(0);
-    }
-
     public void setTongueLen(float len)
     {
         if(!isHost || tongue == null)return;
@@ -178,8 +174,6 @@ public class NeoSwordFrogMasterHit : MasterHit
         if(!isHost || tongue == null)return;
         tongueTether.freezeLen();
     }
-
-
 
     public void downSpecialProjectile()
     {
@@ -198,40 +192,6 @@ public class NeoSwordFrogMasterHit : MasterHit
         kunaiShoot = StartCoroutine(fireKunaiAirLine());
 
     }
-
-    IEnumerator fireKunaiGround()
-    {
-        int baseCharge = 2;
-        int projnum = 5;
-        float radians;
-
-        while(projnum >= 0)
-        {
-            yield return new WaitForSeconds(framerateScalar/7f);
-            radians = (baseCharge* 25 - projnum * 15) * Mathf.PI/180f ;
-            GameObject arrow = host.CreateNetworkObject("Kunai", transform.position + new Vector3(1.5f * facing, 2.8f  + (baseCharge - projnum) * .6f, 0), Quaternion.Euler(0,0,movement.Facing * ((baseCharge - projnum) *5f + 10f)));
-            arrow.transform.localScale = new Vector3(10f * facing, 10f, 1f);
-
-           
-
-            arrow.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + facing * (50f +  Mathf.Cos(radians) * 5), Mathf.Sin(radians) * 5 + 5f);
-            foreach (HitboxCollision hitbox in arrow.GetComponentsInChildren<HitboxCollision>(true))
-            {
-                hitbox.parent = drifter.gameObject;
-                hitbox.AttackID = attacks.AttackID;
-                hitbox.AttackType = attacks.AttackType;
-                hitbox.Active = true;
-                hitbox.Facing = facing;
-            }
-
-            projnum--;
-
-            refreshHitboxID();
-        }
-        yield break;
-
-    }
-
 
     IEnumerator fireKunaiGroundLine()
     {
@@ -310,70 +270,103 @@ public class NeoSwordFrogMasterHit : MasterHit
 
     }
 
-    //Creates two arcs of projectiles for the air version of down special
-    IEnumerator fireKunaiAir()
-    {
-        //Upper arc
-        float degreesA;
-        float radiansA;
-        //lower arc
-        float degreesB;
-        float radiansB;
+    // //Creates two arcs of projectiles for the air version of down special
+    // IEnumerator fireKunaiAir()
+    // {
+    //     //Upper arc
+    //     float degreesA;
+    //     float radiansA;
+    //     //lower arc
+    //     float degreesB;
+    //     float radiansB;
 
-        int projnum = 3;
-        Vector3 size = new Vector3(10f, 10f, 1f);
-        Vector3 pos = new Vector3(.2f * facing, 2.7f, 1f);
+    //     int projnum = 3;
+    //     Vector3 size = new Vector3(10f, 10f, 1f);
+    //     Vector3 pos = new Vector3(.2f * facing, 2.7f, 1f);
 
-        while(projnum > 0)
-        {
-            yield return new WaitForSeconds(framerateScalar/7f);
-            degreesA = facing >0 ? (330f  - projnum * 5) : (210f  + projnum * 5f);
-            degreesB = facing >0 ? (300f  + projnum * 5) : (240f  - projnum * 5f);
-            radiansA = degreesA * Mathf.PI/180f;
-            radiansB = degreesB* Mathf.PI/180f;
+    //     while(projnum > 0)
+    //     {
+    //         yield return new WaitForSeconds(framerateScalar/7f);
+    //         degreesA = facing >0 ? (330f  - projnum * 5) : (210f  + projnum * 5f);
+    //         degreesB = facing >0 ? (300f  + projnum * 5) : (240f  - projnum * 5f);
+    //         radiansA = degreesA * Mathf.PI/180f;
+    //         radiansB = degreesB* Mathf.PI/180f;
 
 
-            GameObject arrowA = host.CreateNetworkObject("Kunai", transform.position
-                                                                 + new Vector3((Mathf.Cos(radiansA)), Mathf.Sin(radiansA))
-                                                                 + pos, 
-                                                                 Quaternion.Euler(0,0,degreesA));
-            arrowA.transform.localScale = size;
-            arrowA.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + (Mathf.Cos(radiansA) *50f), Mathf.Sin(radiansA)*50f);
+    //         GameObject arrowA = host.CreateNetworkObject("Kunai", transform.position
+    //                                                              + new Vector3((Mathf.Cos(radiansA)), Mathf.Sin(radiansA))
+    //                                                              + pos, 
+    //                                                              Quaternion.Euler(0,0,degreesA));
+    //         arrowA.transform.localScale = size;
+    //         arrowA.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + (Mathf.Cos(radiansA) *50f), Mathf.Sin(radiansA)*50f);
             
-            foreach (HitboxCollision hitbox in arrowA.GetComponentsInChildren<HitboxCollision>(true))
-            {
-                hitbox.parent = drifter.gameObject;
-                hitbox.AttackID = attacks.AttackID;
-                hitbox.AttackType = attacks.AttackType;
-                hitbox.Active = true;
-                hitbox.Facing = facing;
-            }
+    //         foreach (HitboxCollision hitbox in arrowA.GetComponentsInChildren<HitboxCollision>(true))
+    //         {
+    //             hitbox.parent = drifter.gameObject;
+    //             hitbox.AttackID = attacks.AttackID;
+    //             hitbox.AttackType = attacks.AttackType;
+    //             hitbox.Active = true;
+    //             hitbox.Facing = facing;
+    //         }
 
-            // if(projnum !=1)
-            // {
-                GameObject arrowB = host.CreateNetworkObject("Kunai", transform.position
-                                                                 + new Vector3((Mathf.Cos(radiansB)), Mathf.Sin(radiansB))
-                                                                 + pos,
-                                                                 Quaternion.Euler(0,0,degreesB));
-                arrowB.transform.localScale = size;
-                arrowB.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + (Mathf.Cos(radiansB) *50f), Mathf.Sin(radiansB)*50f);
-                foreach (HitboxCollision hitbox in arrowB.GetComponentsInChildren<HitboxCollision>(true))
-                {
-                    hitbox.parent = drifter.gameObject;
-                    hitbox.AttackID = attacks.AttackID + 100;
-                    hitbox.AttackType = attacks.AttackType;
-                    hitbox.Active = true;
-                    hitbox.Facing = facing;
-                }
-            // }
+    //         // if(projnum !=1)
+    //         // {
+    //             GameObject arrowB = host.CreateNetworkObject("Kunai", transform.position
+    //                                                              + new Vector3((Mathf.Cos(radiansB)), Mathf.Sin(radiansB))
+    //                                                              + pos,
+    //                                                              Quaternion.Euler(0,0,degreesB));
+    //             arrowB.transform.localScale = size;
+    //             arrowB.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + (Mathf.Cos(radiansB) *50f), Mathf.Sin(radiansB)*50f);
+    //             foreach (HitboxCollision hitbox in arrowB.GetComponentsInChildren<HitboxCollision>(true))
+    //             {
+    //                 hitbox.parent = drifter.gameObject;
+    //                 hitbox.AttackID = attacks.AttackID + 100;
+    //                 hitbox.AttackType = attacks.AttackType;
+    //                 hitbox.Active = true;
+    //                 hitbox.Facing = facing;
+    //             }
+    //         // }
 
-            projnum--;
+    //         projnum--;
 
-            refreshHitboxID();
-        }
-        yield break;
+    //         refreshHitboxID();
+    //     }
+    //     yield break;
 
-    }
+    // }
+
+     // IEnumerator fireKunaiGround()
+    // {
+    //     int baseCharge = 2;
+    //     int projnum = 5;
+    //     float radians;
+
+    //     while(projnum >= 0)
+    //     {
+    //         yield return new WaitForSeconds(framerateScalar/7f);
+    //         radians = (baseCharge* 25 - projnum * 15) * Mathf.PI/180f ;
+    //         GameObject arrow = host.CreateNetworkObject("Kunai", transform.position + new Vector3(1.5f * facing, 2.8f  + (baseCharge - projnum) * .6f, 0), Quaternion.Euler(0,0,movement.Facing * ((baseCharge - projnum) *5f + 10f)));
+    //         arrow.transform.localScale = new Vector3(10f * facing, 10f, 1f);
+
+           
+
+    //         arrow.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + facing * (50f +  Mathf.Cos(radians) * 5), Mathf.Sin(radians) * 5 + 5f);
+    //         foreach (HitboxCollision hitbox in arrow.GetComponentsInChildren<HitboxCollision>(true))
+    //         {
+    //             hitbox.parent = drifter.gameObject;
+    //             hitbox.AttackID = attacks.AttackID;
+    //             hitbox.AttackType = attacks.AttackType;
+    //             hitbox.Active = true;
+    //             hitbox.Facing = facing;
+    //         }
+
+    //         projnum--;
+
+    //         refreshHitboxID();
+    //     }
+    //     yield break;
+
+    // }
 
     //Roll Methods
 

@@ -4,23 +4,22 @@ using UnityEngine;
 
 public class OrroReworkMasterHit : MasterHit
 {
-
 	public SyncAnimatorStateHost bubble;
+ 
     BeanWrangler bean;
+    
     GameObject beanObject;
+	GameObject platform;
+
     bool beanIsCharging = false;
-
-    Vector3 targetPos;
-
-    bool beanFollowing = true;
-
-    float hoverTime = 1.5f;
-	float maxHoverTime = 1.5f;
-
+    bool beanFollowing = true;   
     bool canHover = true;
     bool listeningForMovement = false;
 
-    GameObject platform;
+	float hoverTime = 1.5f;
+	static float maxHoverTime = 1.5f;
+    
+    Vector3 targetPos;
 
     void Start()
     {

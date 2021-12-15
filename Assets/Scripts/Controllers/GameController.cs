@@ -8,6 +8,7 @@ using System.Net;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Assertions;
+using UnityEngine.InputSystem.Users;
 using UnityEngine.InputSystem;
 using GameAnalyticsSDK;
 
@@ -76,7 +77,8 @@ public class GameController : MonoBehaviour
 
     public InputActionAsset[] baseControls;
 
-    
+    //0 is always empty
+    public InputUser[] users = new InputUser[5];
 
     //[NonSerialized]
     public InputActionAsset[] availableControls;
@@ -263,12 +265,17 @@ public class GameController : MonoBehaviour
     public void AssignInputAssest()
     {
 
+        //InputSystem.devices
+
         controls = new Dictionary<int,InputActionAsset>();
 
         availableControls = new InputActionAsset[Gamepad.all.Count+1];
-
+  
         availableControls[0] = baseControls[0];
         controls.Add(-1,baseControls[0]);
+
+        // users[0].PerformPairingWithDevice();
+        // users[0].AssociateActionsWithUser(availableControls[0]);
 
         //Get all connected controllers on startup
         for(int i = 0; i < Gamepad.all.Count; i++)
@@ -278,11 +285,15 @@ public class GameController : MonoBehaviour
             InputActionAsset controller = new InputActionAsset();
 
             //Janky clone operation beacue the real clone doesnt work?
+            UnityEngine.Debug.Log(baseControls[1].ToJson());
             controller.LoadFromJson(baseControls[1].ToJson());
+            controller.name = controller.name + i;
 
             //Player x is assigned this control scheme
             //Make this run off of peer id?
             availableControls[i+1] = controller;
+            users[i+1] = InputUser.PerformPairingWithDevice(Gamepad.all[i]);
+            users[i+1].AssociateActionsWithUser(controller);
 
             //If there is a controller, use it
             //Change this to make a new array on use
@@ -306,6 +317,8 @@ public class GameController : MonoBehaviour
                 while(controls.ContainsKey(peerID))
                     peerID++;
                 controls.Add(peerID,controller);
+                //users[peerID+1].AssociateActionsWithUser(controller);
+
                 UnityEngine.Debug.Log("Added: " + controller + " With peerID " + peerID);
                 addedCount++;
             }
@@ -335,7 +348,10 @@ public class GameController : MonoBehaviour
         }
         if(peersToRemove.Count >0)
             foreach(int toRemove in peersToRemove)
+            {
                 controls.Remove(toRemove);
+                //if(toRemove >= 0)users[toRemove+1].UnpairDevices();
+            }
 
         return peersToRemove;
     }
