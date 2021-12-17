@@ -11,6 +11,8 @@ public class GrabHitboxCollision : HitboxCollision
 
 	public GameObject victim;
 
+    public bool cancelable = true;
+
     // Update is called once per frame
     void Update()
     {
@@ -41,7 +43,7 @@ public class GrabHitboxCollision : HitboxCollision
             else{
                 hitResult = hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, AttackData);
             }
-            if(hitResult >= -1 && drifter.canSpecialCancelFlag)drifter.listenForSpecialCancel = true;
+            if(hitResult >= -1 && cancelable && drifter.canSpecialCancelFlag)drifter.listenForSpecialCancel = true;
         }
     }
 }

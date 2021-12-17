@@ -247,6 +247,7 @@ MonoBehaviour:
   AttackData: {fileID: 0}
   SuccessState: Grab_Ground_Success
   victim: {fileID: 0}
+  cancelable: 1
 --- !u!58 &291203137378617692
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -394,6 +395,7 @@ MonoBehaviour:
   AttackData: {fileID: 0}
   SuccessState: Ground_Side_Pull
   victim: {fileID: 0}
+  cancelable: 0
 --- !u!70 &147131941970974439
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -591,6 +593,7 @@ MonoBehaviour:
   AttackData: {fileID: 0}
   SuccessState: Grab_Air_Success
   victim: {fileID: 0}
+  cancelable: 1
 --- !u!58 &7633428700937911498
 CircleCollider2D:
   m_ObjectHideFlags: 0

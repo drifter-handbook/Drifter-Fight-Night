@@ -213,6 +213,7 @@ MonoBehaviour:
   AttackData: {fileID: 0}
   SuccessState: Ground_Side_Success
   victim: {fileID: 0}
+  cancelable: 0
 --- !u!1 &1137113044290567196
 GameObject:
   m_ObjectHideFlags: 0
@@ -283,6 +284,7 @@ MonoBehaviour:
   AttackData: {fileID: 0}
   SuccessState: 
   victim: {fileID: 0}
+  cancelable: 1
 --- !u!1 &2372283275600843837
 GameObject:
   m_ObjectHideFlags: 0
@@ -527,6 +529,7 @@ MonoBehaviour:
   AttackData: {fileID: 11400000, guid: 5a491362ae338d847b675eee3ab8d266, type: 2}
   SuccessState: 
   victim: {fileID: 0}
+  cancelable: 0
 --- !u!1 &5034480123341228570
 GameObject:
   m_ObjectHideFlags: 0
@@ -708,6 +711,7 @@ MonoBehaviour:
   AttackData: {fileID: 0}
   SuccessState: Grab_Air_Success
   victim: {fileID: 0}
+  cancelable: 1
 --- !u!58 &3654227744791879941
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -906,6 +910,7 @@ MonoBehaviour:
   AttackData: {fileID: 0}
   SuccessState: Ground_Grab_Success
   victim: {fileID: 0}
+  cancelable: 1
 --- !u!58 &2940955276280636197
 CircleCollider2D:
   m_ObjectHideFlags: 0
