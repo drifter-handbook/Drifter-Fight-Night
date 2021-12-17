@@ -256,7 +256,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     public void listenForDacus()
     {
         if(!isHost)return;
-        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,3f);
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,4f*framerateScalar);
         dacusCancelFlag = true;
     }
 
