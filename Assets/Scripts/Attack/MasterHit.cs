@@ -105,6 +105,15 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
             clearMasterhitVars();
 
         }
+        else if(dacusCancelFlag && attacks.specialPressed())
+         {
+            status.ApplyStatusEffect(PlayerStatusEffect.INVULN,0);
+            unpauseGravity();
+            setXVelocity(movement.dashSpeed);
+            attacks.useSpecial();
+            clearMasterhitVars();
+
+        }
         else if(dacusCancelFlag && attacks.lightPressed())
         {
             status.ApplyStatusEffect(PlayerStatusEffect.INVULN,0);

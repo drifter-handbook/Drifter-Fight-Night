@@ -105,7 +105,6 @@ public class PlayerAttacks : MonoBehaviour
 
         if (!GameController.Instance.IsHost || GameController.Instance.IsPaused)
             return;
-    
 
         bool canAct = !status.HasStunEffect() && !drifter.guarding && !ledgeHanging && !status.HasStatusEffect(PlayerStatusEffect.STANCE);
         bool canSpecial = !status.HasStunEffect() && !ledgeHanging;
@@ -117,9 +116,8 @@ public class PlayerAttacks : MonoBehaviour
         else if (grabPressed() && canAct) useGrab();
 
         else if(specialPressed() && canSpecial) useSpecial();
-        
-        else if (lightPressed() && canAct) useNormal();
 
+        else if (lightPressed() && canAct) useNormal();
     }
 
     public void useSpecial()

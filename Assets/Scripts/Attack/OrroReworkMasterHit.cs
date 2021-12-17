@@ -156,8 +156,10 @@ public class OrroReworkMasterHit : MasterHit
     public void spawnPlatform()
     {
     	if(!isHost)return;
+        facing = movement.Facing;
     	deletePlatform();
     	platform = host.CreateNetworkObject("orro_w_down_platform", transform.position, transform.rotation);
+        platform.transform.localScale = new Vector3(10f * facing, 10f , 1f);
     	platform.transform.SetParent(drifter.gameObject.transform);
     	platform.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
 

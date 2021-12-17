@@ -11,6 +11,7 @@ using UnityEngine.Assertions;
 using UnityEngine.InputSystem.Users;
 using UnityEngine.InputSystem;
 using GameAnalyticsSDK;
+using UnityEngine.EventSystems;
 
 [DisallowMultipleComponent]
 public class GameController : MonoBehaviour
@@ -52,10 +53,11 @@ public class GameController : MonoBehaviour
         get{ return inputManager.maxPlayerCount;}
     }
 
-
+    //TODO move this elsewhere
     //* Prefabs
     public GameObject characterCardPrefab;
-    public GameObject deathExplosionPrefab;
+
+    public GameObject escapeMenu;
 
     //* Variables
     string SceneName { get; set; }
@@ -80,15 +82,6 @@ public class GameController : MonoBehaviour
 
     [NonSerialized]
     public PlayerInputManager inputManager;
-
-    //public InputActionAsset[] baseControls;
-    
-
-    //0 is always empty
-    //public InputUser[] users = new InputUser[5];
-
-    //[NonSerialized]
-    //public InputActionAsset[] availableControls;
 
     //[NonSerialized]
     public Dictionary<int,PlayerInput> controls = new Dictionary<int,PlayerInput>();
@@ -187,12 +180,12 @@ public class GameController : MonoBehaviour
         clearingPeers = false;
     }
 
-    //Wrap enable/disable methods
+    //Wrap enable method
     public void EnableJoining()
     {
         inputManager.EnableJoining();
     }
-
+    //Wrap Disable method
     public void DisableJoining()
     {
         inputManager.DisableJoining();
@@ -246,14 +239,6 @@ public class GameController : MonoBehaviour
         endingGame = null;
         yield break;
 
-    }
-
-    void Update()
-    {
-       /* if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Application.Quit();
-        }*/
     }
 
     public void UpdateSFXVolume(float val)
@@ -332,104 +317,4 @@ public class GameController : MonoBehaviour
         IsOnline = false;
         endingGame = null;
     }
-
-
-
-
-    //Associates each input asset with a controller
-    //Call when a new controller is plugged in to associate it with an asset.
-    //Populates the keyboard as the default main control system.
-    // public void AssignInputAssest()
-    // {
-
-    //     //InputSystem.devices
-
-    //     controls = new Dictionary<int,InputActionAsset>();
-
-    //     availableControls = new InputActionAsset[Gamepad.all.Count+1];
-  
-    //     availableControls[0] = baseControls[0];
-    //     controls.Add(-1,baseControls[0]);
-
-    //     // users[0].PerformPairingWithDevice();
-    //     // users[0].AssociateActionsWithUser(availableControls[0]);
-
-    //     //Get all connected controllers on startup
-    //     for(int i = 0; i < Gamepad.all.Count; i++)
-    //     {
-
-    //         //Create a new input action asset
-    //         InputActionAsset controller = baseControls[i+1];
-
-    //         //Janky clone operation beacue the real clone doesnt work?
-    //         // UnityEngine.Debug.Log(baseControls[i+1].ToJson());
-    //         // controller.LoadFromJson(.ToJson());
-    //         //controller.name = controller.name + i;
-
-    //         //Player x is assigned this control scheme
-    //         //Make this run off of peer id?
-    //         availableControls[i+1] = controller;
-    //         users[i+1] = InputUser.PerformPairingWithDevice(Gamepad.all[i]);
-    //         users[i+1].AssociateActionsWithUser(controller);
-
-    //         //If there is a controller, use it
-    //         //Change this to make a new array on use
-    //         if(Gamepad.all.Count > i)
-    //             availableControls[i+1].devices = new Gamepad[] {Gamepad.all[i]};
-    //         else
-    //             availableControls[i+1].devices = new Gamepad[] {};
-    //     }
-
-    // }
-
-
-    // public int checkForNewControllers()
-    // {
-    //     int addedCount = 0;
-    //     foreach(InputActionAsset controller in GameController.Instance.availableControls)
-    //     {
-    //         if(controller != null && controller.FindAction("Start").triggered && !controls.ContainsValue(controller))
-    //         {
-    //             int peerID = -1;
-    //             while(controls.ContainsKey(peerID))
-    //                 peerID++;
-    //             controls.Add(peerID,controller);
-    //             //users[peerID+1].AssociateActionsWithUser(controller);
-
-    //             UnityEngine.Debug.Log("Added: " + controller + " With peerID " + peerID);
-    //             addedCount++;
-    //         }
-    //     }
-
-    //     return addedCount;
-    // }
-
-
-    // public List<int> checkForRemoveControllers()
-    // {
-
-    //     List<int> peersToRemove = new List<int>();
-
-
-
-    //     foreach (KeyValuePair<int, InputActionAsset> kvp in GameController.Instance.controls)
-    //     {
-    //         if(kvp.Value != null && kvp.Value.FindAction("Menu").triggered)
-    //         {
-    //             UnityEngine.Debug.Log("REMOVED: " + kvp.Value + " with peerID " + kvp.Key);
-
-    //             //controls.Remove(kvp.Key);
-
-    //             peersToRemove.Add(kvp.Key);
-    //         } 
-    //     }
-    //     if(peersToRemove.Count >0)
-    //         foreach(int toRemove in peersToRemove)
-    //         {
-    //             controls.Remove(toRemove);
-    //             //if(toRemove >= 0)users[toRemove+1].UnpairDevices();
-    //         }
-
-    //     return peersToRemove;
-    // }
 }

@@ -13,9 +13,26 @@ public class EscapeMenu : MonoBehaviour
 
     }
 
+    void Update()
+    {
+        if(!GameController.Instance.IsPaused)
+        {
+            foreach(PlayerInput input in GameController.Instance.controls.Values)
+            {
+                if(input.currentActionMap.FindAction("Menu").ReadValue<float>()>0)
+                {
+                    ToggleMenu();
+                    return;
+                }
+
+            }
+        }        
+    }
+
     public void ToggleMenu()
     {
         escapeMenu.SetActive(!(escapeMenu.activeSelf));
+        GameController.Instance.IsPaused = !GameController.Instance.IsPaused;
         EventSystem.current.SetSelectedGameObject(GameObject.Find("Continue"));
     }
 
