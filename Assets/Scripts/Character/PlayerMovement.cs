@@ -532,7 +532,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //mashout effects
-        if((status.HasStatusEffect(PlayerStatusEffect.PLANTED) || status.HasStatusEffect(PlayerStatusEffect.AMBERED) || status.HasStatusEffect(PlayerStatusEffect.PARALYZED) || status.HasStatusEffect(PlayerStatusEffect.GRABBED))&& drifter.input[1].MoveX != drifter.input[0].MoveX){
+        if((status.HasStatusEffect(PlayerStatusEffect.PLANTED) || status.HasStatusEffect(PlayerStatusEffect.AMBERED) || status.HasStatusEffect(PlayerStatusEffect.PARALYZED))&& drifter.input[1].MoveX != drifter.input[0].MoveX){
             status.mashOut();
 
             StartCoroutine(shake.Shake(.2f,.7f));
