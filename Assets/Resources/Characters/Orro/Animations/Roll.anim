@@ -474,13 +474,6 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0
-    functionName: listenForDacus
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0
     functionName: pauseGravity
     data: 
     objectReferenceParameter: {fileID: 0}
@@ -488,10 +481,10 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.083333336
-    functionName: setXVelocity
+    functionName: listenForDacus
     data: 
     objectReferenceParameter: {fileID: 0}
-    floatParameter: 45
+    floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.25
@@ -502,16 +495,16 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.33333334
-    functionName: setXVelocity
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 20
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.33333334
     functionName: returnToIdle
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.33333334
+    functionName: setXVelocity
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 20
     intParameter: 0
     messageOptions: 0

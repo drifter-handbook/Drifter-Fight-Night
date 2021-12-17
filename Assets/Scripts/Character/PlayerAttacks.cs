@@ -104,53 +104,21 @@ public class PlayerAttacks : MonoBehaviour
     {
 
         if (!GameController.Instance.IsHost || GameController.Instance.IsPaused)
-        {
             return;
-        }
-
-        bool _lightPressed = false;
-        bool _specialPressed = false;
-        bool _superPressed = false;
-        bool _grabPressed = false;
+    
 
         bool canAct = !status.HasStunEffect() && !drifter.guarding && !ledgeHanging && !status.HasStatusEffect(PlayerStatusEffect.STANCE);
         bool canSpecial = !status.HasStunEffect() && !ledgeHanging;
 
+        if((movement.grounded && !status.HasStatusEffect(PlayerStatusEffect.END_LAG)) || status.HasEnemyStunEffect()) resetRecovery();
+        
+        if(superPressed())  movement.superCancel();
+        
+        else if (grabPressed() && canAct) useGrab();
 
-        for (int i = 0; i < drifter.input.Length - 3; i++)
-        {
-            if(!_lightPressed) _lightPressed = lightPressed();
-
-            if(!_specialPressed) _specialPressed = specialPressed();
-
-            if(!_superPressed) _superPressed = !drifter.input[i+2].Super && drifter.input[i+1].Super && drifter.input[i].Super;
-
-            if(!_grabPressed) _grabPressed = grabPressed();
-        }
-
-
-        if((movement.grounded && !status.HasStatusEffect(PlayerStatusEffect.END_LAG)) || status.HasEnemyStunEffect()){
-            resetRecovery();
-        }
-
-        if(_superPressed)
-        {
-            movement.superCancel();
-        }
-
-        else if (_grabPressed && canAct)
-            useGrab();
-
-        else if(_specialPressed && canSpecial)
-        {
-            useSpecial();
-        }
-
-        //attack  //neutral aerial
-        else if (_lightPressed && canAct)
-        {
-            useNormal();
-        }
+        else if(specialPressed() && canSpecial) useSpecial();
+        
+        else if (lightPressed() && canAct) useNormal();
 
     }
 
@@ -213,17 +181,42 @@ public class PlayerAttacks : MonoBehaviour
 
     public bool lightPressed()
     {
-        return !drifter.input[2].Light && drifter.input[1].Light && drifter.input[0].Light;
+        bool _lightPressed = false;
+        for (int i = 0; i < drifter.input.Length - 3; i++)
+            if(!_lightPressed) _lightPressed = !drifter.input[i+2].Light && drifter.input[i+1].Light && drifter.input[i].Light;
+            else return _lightPressed;
+        return _lightPressed;
     }
     public bool specialPressed()
     {
-        return !drifter.input[2].Special &&  drifter.input[1].Special && drifter.input[0].Special;
+        bool _specialPressed = false;
+        for (int i = 0; i < drifter.input.Length - 3; i++)
+           if(!_specialPressed) _specialPressed = drifter.input[2].Special &&  drifter.input[1].Special && drifter.input[0].Special;
+           else return _specialPressed;
+
+        return _specialPressed;
     }
     public bool grabPressed()
     {
-        return ((drifter.input[0].Light || drifter.input[1].Light) && !drifter.input[2].Light &&
-                    (drifter.input[0].Special || drifter.input[1].Special) && !drifter.input[2].Special)
-                    || (!drifter.input[2].Grab && drifter.input[1].Grab && drifter.input[0].Grab);
+        bool _grabPressed = false;
+        for (int i = 0; i < drifter.input.Length - 3; i++)
+        {
+            if(!_grabPressed) _grabPressed = ((drifter.input[i].Light || drifter.input[i + 1].Light) && !drifter.input[i + 2].Light &&
+                    (drifter.input[i].Special || drifter.input[i + 1].Special) && !drifter.input[i+ 2].Special)
+                    || (!drifter.input[i + 2].Grab && drifter.input[i + 1].Grab && drifter.input[i].Grab);
+            else return _grabPressed;
+        }
+        return _grabPressed;
+    }
+
+    public bool superPressed()
+    {
+        bool _superPressed = false;
+        for (int i = 0; i < drifter.input.Length - 3; i++)
+            if(!_superPressed) _superPressed = !drifter.input[i+2].Super && drifter.input[i+1].Super && drifter.input[i].Super;
+            else return _superPressed;
+
+        return _superPressed;
     }
 
     public void resetRecovery(){

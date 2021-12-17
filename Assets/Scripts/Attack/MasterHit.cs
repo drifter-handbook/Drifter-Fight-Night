@@ -96,16 +96,21 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
                 clearMasterhitVars();
             }            
         }
-        else if(dacusCancelFlag && (attacks.lightPressed() || attacks.specialPressed()))
+        else if(dacusCancelFlag && attacks.grabPressed())
+         {
+            status.ApplyStatusEffect(PlayerStatusEffect.INVULN,0);
+            unpauseGravity();
+            setXVelocity(movement.dashSpeed);
+            attacks.useGrab();
+            clearMasterhitVars();
+
+        }
+        else if(dacusCancelFlag && attacks.lightPressed())
         {
             status.ApplyStatusEffect(PlayerStatusEffect.INVULN,0);
             unpauseGravity();
-            setTerminalVelocity(0);
-            setXVelocity(movement.grounded?movement.dacusSpeed * 1.5f : movement.dacusSpeed);
-            if(attacks.grabPressed())
-                attacks.useGrab();
-            else
-                attacks.useNormal();
+            setXVelocity(movement.dashSpeed);
+            attacks.useNormal();
             clearMasterhitVars();
 
         }
@@ -256,6 +261,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     public void listenForDacus()
     {
         if(!isHost)return;
+        setXVelocity(movement.dashSpeed);
         status.ApplyStatusEffect(PlayerStatusEffect.INVULN,4f*framerateScalar);
         dacusCancelFlag = true;
     }

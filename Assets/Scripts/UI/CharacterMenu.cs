@@ -10,7 +10,7 @@ using UnityEngine.UI;
 
 public enum PlayerColor
 {
-    RED, GOLD, GREEN, BLUE, PURPLE, MAGENTA, ORANGE, CYAN, GREY, WHITE, BLACK
+    RED, GOLD, GREEN, BLUE, PURPLE, MAGENTA, ORANGE, CYAN, GREY, WHITE, BLACK, DARK_GREY
 }
 
 
@@ -35,9 +35,10 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         { PlayerColor.MAGENTA, new Color(1.0f, 0.063f, 0.565f) },
         { PlayerColor.ORANGE, new Color(1.0f, 0.55f, 0.165f) },
         { PlayerColor.CYAN, new Color(0.0f, 1.0f, 0.702f) },
-        { PlayerColor.GREY, new Color(0.6f, 0.6f, 0.6f) },
-        { PlayerColor.WHITE, new Color(0.9f, 0.9f, 0.9f) },
-        { PlayerColor.BLACK, new Color(0.1f, 0.1f, 0.1f) }
+        { PlayerColor.WHITE, new Color(0.1f, 0.1f, 0.1f) },
+        { PlayerColor.GREY, new Color(0.5f, 0.5f, 0.5f) },
+        { PlayerColor.DARK_GREY, new Color(0.75f, 0.75f, 0.75f)},
+        { PlayerColor.BLACK, new Color(0.9f, 0.9f, 0.9f) }
     };
 
     public GameObject bottomPanel;
@@ -157,7 +158,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         // for(int i = -1; i < GameController.Instance.controls.Count-1; i++)
         //     AddCharSelState(i);
 
-        if(GameController.Instance.IsTraining) AddCharSelState(8,DrifterType.Sandbag);
+        if(GameController.Instance.IsTraining) AddCharSelState(10,DrifterType.Sandbag);
 
     }
     IEnumerator delayJoining()

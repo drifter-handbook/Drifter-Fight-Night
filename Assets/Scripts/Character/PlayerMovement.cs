@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
     //Character Properties
     public int numberOfJumps;
     public int numberOfDashes = 1;
-    public float dacusSpeed = 20f;
+    public float dashSpeed = 35f;
     public float delayedJumpDuration = 0.05f;
     public float walkSpeed = 15f;
     public float groundAccelerationTime = .6f;
