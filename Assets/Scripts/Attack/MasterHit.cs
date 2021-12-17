@@ -61,6 +61,8 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
     protected bool attackWasCanceled = false;
 
+    protected bool dacusCancelFlag = false;
+
 
     //Every frame, listen for a given event if the flag is active
     protected void FixedUpdate()
@@ -86,13 +88,26 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
             clearMasterhitVars();
         }
 
-        else if(movementCancelFlag && movement.currentJumps >0 && drifter.doubleTappedX() )
+        else if(movementCancelFlag && movement.currentDashes >0 && drifter.doubleTappedX())
         {
             if(movement.dash())
             {
                 movement.techParticle();
                 clearMasterhitVars();
             }            
+        }
+        else if(dacusCancelFlag && (attacks.lightPressed() || attacks.specialPressed()))
+        {
+            status.ApplyStatusEffect(PlayerStatusEffect.INVULN,0);
+            unpauseGravity();
+            setTerminalVelocity(0);
+            setXVelocity(movement.grounded?movement.dacusSpeed * 1.5f : movement.dacusSpeed);
+            if(attacks.grabPressed())
+                attacks.useGrab();
+            else
+                attacks.useNormal();
+            clearMasterhitVars();
+
         }
         else if(verticalCancelFlag && drifter.doubleTappedY() && drifter.input[0].MoveY <0)
         {
@@ -236,7 +251,13 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     {
         if(!isHost)return;
         drifter.canSpecialCancelFlag = true;
-        //drifter.listenForSpecialCancel = true;
+    }
+
+    public void listenForDacus()
+    {
+        if(!isHost)return;
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,3f);
+        dacusCancelFlag = true;
     }
 
 
@@ -257,6 +278,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         queuedState = "";
         resetTerminalVelocity();
         ledgeDetector.setPreventWalkoff(false);
+        dacusCancelFlag= false;
     }
 
 
@@ -306,6 +328,15 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         if(movement.grounded && x >0) movement.spawnKickoffDust();
         rb.velocity = new Vector2(movement.Facing * x * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f),rb.velocity.y);
         status.saveXVelocity(movement.Facing * x);
+    }
+
+    public void setXVelocityMin(float x)
+    {
+        if(!isHost)return;
+
+        if(movement.grounded && x >0) movement.spawnKickoffDust();
+        rb.velocity = new Vector2(movement.Facing * Mathf.Max(x,Mathf.Abs(rb.velocity.x)) * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f),rb.velocity.y);
+        status.saveXVelocity(rb.velocity.x);
     }
 
     public void applyEndLag(float statusDuration)

@@ -108,10 +108,10 @@ public class PlayerAttacks : MonoBehaviour
             return;
         }
 
-        bool lightPressed = false;
-        bool specialPressed = false;
-        bool superPressed = false;
-        bool grabPressed = false;
+        bool _lightPressed = false;
+        bool _specialPressed = false;
+        bool _superPressed = false;
+        bool _grabPressed = false;
 
         bool canAct = !status.HasStunEffect() && !drifter.guarding && !ledgeHanging && !status.HasStatusEffect(PlayerStatusEffect.STANCE);
         bool canSpecial = !status.HasStunEffect() && !ledgeHanging;
@@ -119,17 +119,13 @@ public class PlayerAttacks : MonoBehaviour
 
         for (int i = 0; i < drifter.input.Length - 3; i++)
         {
-            if(!lightPressed) lightPressed = !drifter.input[i+2].Light && drifter.input[i+1].Light && drifter.input[i].Light;
+            if(!_lightPressed) _lightPressed = lightPressed();
 
-            if(!specialPressed) specialPressed = !drifter.input[i+2].Special &&  drifter.input[i+1].Special && drifter.input[i].Special;
+            if(!_specialPressed) _specialPressed = specialPressed();
 
-            if(!superPressed) superPressed = !drifter.input[i+2].Super && drifter.input[i+1].Super && drifter.input[i].Super;
+            if(!_superPressed) _superPressed = !drifter.input[i+2].Super && drifter.input[i+1].Super && drifter.input[i].Super;
 
-            if(!grabPressed)
-                grabPressed = 
-                    ((drifter.input[i].Light || drifter.input[i+1].Light) && !drifter.input[i+2].Light &&
-                    (drifter.input[i].Special || drifter.input[i+1].Special) && !drifter.input[i+2].Special)
-                    || (!drifter.input[i+2].Grab && drifter.input[i+1].Grab && drifter.input[i].Grab);
+            if(!_grabPressed) _grabPressed = grabPressed();
         }
 
 
@@ -137,46 +133,23 @@ public class PlayerAttacks : MonoBehaviour
             resetRecovery();
         }
 
-        if(superPressed)
+        if(_superPressed)
         {
             movement.superCancel();
         }
 
-        else if (grabPressed && canAct)
-        {
-            if (movement.grounded)StartAttack(DrifterAttackType.E_Side);
-            else
-            {
-                movement.canLandingCancel = true;
-                StartAttack(DrifterAttackType.E_Air);  
-            } 
-        }
-        else if(specialPressed && canSpecial)
+        else if (_grabPressed && canAct)
+            useGrab();
+
+        else if(_specialPressed && canSpecial)
         {
             useSpecial();
         }
 
         //attack  //neutral aerial
-        else if (lightPressed && canAct)
+        else if (_lightPressed && canAct)
         {
-            drifter.canSpecialCancelFlag = true;
-            if (movement.grounded)
-            {
-                if(drifter.input[0].MoveY > 0)StartAttack(DrifterAttackType.Ground_Q_Up);
-                else if(drifter.input[0].MoveY < 0)StartAttack(DrifterAttackType.Ground_Q_Down);
-                else if(drifter.input[0].MoveX!=0)StartAttack(DrifterAttackType.Ground_Q_Side);
-                else StartAttack(DrifterAttackType.Ground_Q_Neutral);
-            }
-
-            else
-            {   
-                movement.canLandingCancel = true;    
-
-                if(drifter.input[0].MoveY > 0)StartAttack(DrifterAttackType.Aerial_Q_Up);
-                else if(drifter.input[0].MoveY < 0)StartAttack(DrifterAttackType.Aerial_Q_Down);
-                else if(drifter.input[0].MoveX!=0)StartAttack(DrifterAttackType.Aerial_Q_Side);
-                else StartAttack(DrifterAttackType.Aerial_Q_Neutral);
-            }
+            useNormal();
         }
 
     }
@@ -205,6 +178,52 @@ public class PlayerAttacks : MonoBehaviour
                 if(W_Neutral_Is_Recovery)currentRecoveries--;
                 
             }
+    }
+
+    public void useNormal()
+    {
+        drifter.canSpecialCancelFlag = true;
+
+        if (movement.grounded)
+        {
+            if(drifter.input[0].MoveY > 0)StartAttack(DrifterAttackType.Ground_Q_Up);
+            else if(drifter.input[0].MoveY < 0)StartAttack(DrifterAttackType.Ground_Q_Down);
+            else if(drifter.input[0].MoveX!=0)StartAttack(DrifterAttackType.Ground_Q_Side);
+            else StartAttack(DrifterAttackType.Ground_Q_Neutral);
+        }
+        else
+        {   
+            movement.canLandingCancel = true;    
+            if(drifter.input[0].MoveY > 0)StartAttack(DrifterAttackType.Aerial_Q_Up);
+            else if(drifter.input[0].MoveY < 0)StartAttack(DrifterAttackType.Aerial_Q_Down);
+            else if(drifter.input[0].MoveX!=0)StartAttack(DrifterAttackType.Aerial_Q_Side);
+            else StartAttack(DrifterAttackType.Aerial_Q_Neutral);
+        }
+    }
+
+    public void useGrab()
+    {
+        if (movement.grounded)StartAttack(DrifterAttackType.E_Side);
+        else
+        {
+            movement.canLandingCancel = true;
+            StartAttack(DrifterAttackType.E_Air);  
+        } 
+    }
+
+    public bool lightPressed()
+    {
+        return !drifter.input[2].Light && drifter.input[1].Light && drifter.input[0].Light;
+    }
+    public bool specialPressed()
+    {
+        return !drifter.input[2].Special &&  drifter.input[1].Special && drifter.input[0].Special;
+    }
+    public bool grabPressed()
+    {
+        return ((drifter.input[0].Light || drifter.input[1].Light) && !drifter.input[2].Light &&
+                    (drifter.input[0].Special || drifter.input[1].Special) && !drifter.input[2].Special)
+                    || (!drifter.input[2].Grab && drifter.input[1].Grab && drifter.input[0].Grab);
     }
 
     public void resetRecovery(){
