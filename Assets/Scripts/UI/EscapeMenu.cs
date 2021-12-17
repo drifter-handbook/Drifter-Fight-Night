@@ -15,7 +15,7 @@ public class EscapeMenu : MonoBehaviour
 
     void Update()
     {
-        if(!GameController.Instance.IsPaused)
+        if(!GameController.Instance.IsPaused && GameController.Instance.canPause)
         {
             foreach(PlayerInput input in GameController.Instance.controls.Values)
             {
@@ -38,6 +38,7 @@ public class EscapeMenu : MonoBehaviour
 
     public void ReturnToTitle()
     {
+        ToggleMenu();
         GameController.Instance.IsPaused = false;
         GameController.Instance.EndMatch(0);
     }

@@ -40,11 +40,21 @@ public class GameController : MonoBehaviour
 
     private bool _IsPaused = false;
 
+    public bool canPause = false;
+
     public bool IsPaused
     {
         get { return _IsPaused;}
         set {
             _IsPaused = value;
+
+            List<int> inputsToToggle = new List<int>();
+            foreach(int peerID in controls.Keys)
+                inputsToToggle.Add(peerID);
+
+            foreach(int peer in inputsToToggle)
+                controls[peer].gameObject.SetActive(!value);
+
             Time.timeScale = _IsPaused?0f:1f;
         }
     }
@@ -138,7 +148,7 @@ public class GameController : MonoBehaviour
             peerID++;
         controls.Add(peerID,playerInput);
 
-        FindObjectOfType<CharacterMenu>().AddCharSelState(peerID);
+        FindObjectOfType<CharacterMenu>()?.AddCharSelState(peerID);
 
         playerInput.ActivateInput();
 
@@ -216,6 +226,7 @@ public class GameController : MonoBehaviour
         // Create appropriate spawn points
         // Create player characters & give them an input
         // Yeet into world and allow playing the game
+        canPause = true;
         host?.SetScene(selectedStage);
     }
 
@@ -226,7 +237,7 @@ public class GameController : MonoBehaviour
         // Create player characters & give them an input
         // Yeet into world and allow playing the game
         //host?.SetScene("Endgame");
-
+        canPause = false;
         if(endingGame==null)endingGame=StartCoroutine(EndGameCoroutine(delay));
     }
 

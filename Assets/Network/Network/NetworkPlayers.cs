@@ -102,9 +102,6 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
     {
         InputActionMap playerInputAction = playerInput.currentActionMap;
         PlayerInputData input = new PlayerInputData();
-        
-        UnityEngine.Debug.Log(playerInput.currentActionMap);
-        UnityEngine.Debug.Log(playerInputAction.FindAction("Horizontal"));
 
         // get player input
         input.Jump = playerInputAction.FindAction("Jump").ReadValue<float>() > 0 || playerInputAction.FindAction("Jump Alt").ReadValue<float>() > 0;
