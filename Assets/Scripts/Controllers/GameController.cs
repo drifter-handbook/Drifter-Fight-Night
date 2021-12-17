@@ -98,6 +98,7 @@ public class GameController : MonoBehaviour
 
     Coroutine endingGame = null;
     string cachedRoomCode ="";
+    bool clearingPeers = false;
 
     void Awake()
     {
@@ -150,6 +151,9 @@ public class GameController : MonoBehaviour
 
         DontDestroyOnLoad(playerInput);
 
+        if(controls.Count >= 1 && IsTraining)
+            DisableJoining();
+
     }
 
     public void removeUserByPeer(int peerID)
@@ -166,10 +170,13 @@ public class GameController : MonoBehaviour
         controls.Remove(peerID);
         FindObjectOfType<CharacterMenu>()?.RemoveCharSelState(peerID);
         if(peerID != -1) host.Peers.Remove(peerID);
+        if(!clearingPeers && IsTraining && controls.Count ==0)
+            EnableJoining();
     }
 
     public void removeAllPeers()
     {
+        clearingPeers = true;
         DisableJoining();
         List<int> peersToRemove = new List<int>();
         foreach(int peerID in controls.Keys)
@@ -177,6 +184,7 @@ public class GameController : MonoBehaviour
 
         foreach(int peer in peersToRemove)
             removeUserByPeer(peer);
+        clearingPeers = false;
     }
 
     //Wrap enable/disable methods

@@ -142,7 +142,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         // add host
 
         //Delay this by 1/2 a second
-        GameController.Instance.EnableJoining();
+        StartCoroutine(delayJoining());
 
         //If no controllers are currently active, activate the primary controller
         // if(GameController.Instance.IsTraining || GameController.Instance.controls.Count <1 )
@@ -159,6 +159,11 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
         if(GameController.Instance.IsTraining) AddCharSelState(8,DrifterType.Sandbag);
 
+    }
+    IEnumerator delayJoining()
+    {
+        yield return new WaitForSeconds(.25f);
+        GameController.Instance.EnableJoining();
     }
 
     public Dictionary<int, int> GetPeerIDsToPlayerIDs()
@@ -483,7 +488,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         //Saves previous input
         p_cursor.prevInput = input;
 
-        return input.Menu && GameController.Instance.CanJoin();
+        return input.Menu && (phase == 0 || phase == 1);
 
     }
 
