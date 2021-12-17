@@ -28,7 +28,7 @@ public class GameController : MonoBehaviour
     public bool IsOnline;
     public bool IsTraining;
 
-    public const int MAX_PLAYERS = 8;
+    //public const int MAX_PLAYERS = 4;
 
     // Evans's horrid hack, please help me fix this Lyn
     public string selectedStage = null;
@@ -46,6 +46,10 @@ public class GameController : MonoBehaviour
             _IsPaused = value;
             Time.timeScale = _IsPaused?0f:1f;
         }
+    }
+    public int maxPlayerCount
+    {
+        get{ return inputManager.maxPlayerCount;}
     }
 
 
@@ -74,17 +78,20 @@ public class GameController : MonoBehaviour
     [NonSerialized]
     public IPEndPoint MatchmakingServer = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 6997);
 
+    [NonSerialized]
+    public PlayerInputManager inputManager;
 
-    public InputActionAsset[] baseControls;
+    //public InputActionAsset[] baseControls;
+    
 
     //0 is always empty
-    public InputUser[] users = new InputUser[5];
+    //public InputUser[] users = new InputUser[5];
 
     //[NonSerialized]
-    public InputActionAsset[] availableControls;
+    //public InputActionAsset[] availableControls;
 
     //[NonSerialized]
-    public Dictionary<int,InputActionAsset> controls;
+    public Dictionary<int,PlayerInput> controls = new Dictionary<int,PlayerInput>();
 
     public int PlayerID = -1;
     public float[] volume = { -1f, -1f, -1f };
@@ -102,6 +109,7 @@ public class GameController : MonoBehaviour
         {
             Instance = this;
         }
+        inputManager = GetComponent<PlayerInputManager>();
         DontDestroyOnLoad(gameObject);
     }
 
@@ -124,8 +132,67 @@ public class GameController : MonoBehaviour
             MatchmakingServer = new IPEndPoint(address, MatchmakingServer.Port);
         }
 
-        AssignInputAssest();
+        //AssignInputAssest();
         
+    }
+
+    public void addUser(PlayerInput playerInput)
+    {
+        UnityEngine.Debug.Log(playerInput);
+        int peerID = -1;
+        while(controls.ContainsKey(peerID))
+            peerID++;
+        controls.Add(peerID,playerInput);
+
+        FindObjectOfType<CharacterMenu>().AddCharSelState(peerID);
+
+        playerInput.ActivateInput();
+
+        DontDestroyOnLoad(playerInput);
+
+    }
+
+    public void removeUserByPeer(int peerID)
+    {
+        if(!controls.ContainsKey(peerID))
+        {
+            UnityEngine.Debug.Log("PEER ID " + peerID +" ATTEMPTED TO BE REMOVED BUT WAS NOT FOUND");
+            return;
+        }
+        
+        controls[peerID].DeactivateInput();
+        //inputManager.Un
+        Destroy(controls[peerID].gameObject);
+        controls.Remove(peerID);
+        FindObjectOfType<CharacterMenu>()?.RemoveCharSelState(peerID);
+        if(peerID != -1) host.Peers.Remove(peerID);
+    }
+
+    public void removeAllPeers()
+    {
+        DisableJoining();
+        List<int> peersToRemove = new List<int>();
+        foreach(int peerID in controls.Keys)
+            peersToRemove.Add(peerID);
+
+        foreach(int peer in peersToRemove)
+            removeUserByPeer(peer);
+    }
+
+    //Wrap enable/disable methods
+    public void EnableJoining()
+    {
+        inputManager.EnableJoining();
+    }
+
+    public void DisableJoining()
+    {
+        inputManager.DisableJoining();
+    }
+
+    public bool CanJoin()
+    {
+        return inputManager.joiningEnabled;
     }
 
     public void Load(string sceneName)
@@ -164,7 +231,7 @@ public class GameController : MonoBehaviour
 
     IEnumerator EndGameCoroutine(float delay)
     {
-   
+        removeAllPeers();
         yield return new WaitForSeconds(delay);
 
         host?.SetScene("Endgame");
@@ -259,100 +326,102 @@ public class GameController : MonoBehaviour
     }
 
 
+
+
     //Associates each input asset with a controller
     //Call when a new controller is plugged in to associate it with an asset.
     //Populates the keyboard as the default main control system.
-    public void AssignInputAssest()
-    {
+    // public void AssignInputAssest()
+    // {
 
-        //InputSystem.devices
+    //     //InputSystem.devices
 
-        controls = new Dictionary<int,InputActionAsset>();
+    //     controls = new Dictionary<int,InputActionAsset>();
 
-        availableControls = new InputActionAsset[Gamepad.all.Count+1];
+    //     availableControls = new InputActionAsset[Gamepad.all.Count+1];
   
-        availableControls[0] = baseControls[0];
-        controls.Add(-1,baseControls[0]);
+    //     availableControls[0] = baseControls[0];
+    //     controls.Add(-1,baseControls[0]);
 
-        // users[0].PerformPairingWithDevice();
-        // users[0].AssociateActionsWithUser(availableControls[0]);
+    //     // users[0].PerformPairingWithDevice();
+    //     // users[0].AssociateActionsWithUser(availableControls[0]);
 
-        //Get all connected controllers on startup
-        for(int i = 0; i < Gamepad.all.Count; i++)
-        {
+    //     //Get all connected controllers on startup
+    //     for(int i = 0; i < Gamepad.all.Count; i++)
+    //     {
 
-            //Create a new input action asset
-            InputActionAsset controller = new InputActionAsset();
+    //         //Create a new input action asset
+    //         InputActionAsset controller = baseControls[i+1];
 
-            //Janky clone operation beacue the real clone doesnt work?
-            UnityEngine.Debug.Log(baseControls[1].ToJson());
-            controller.LoadFromJson(baseControls[1].ToJson());
-            controller.name = controller.name + i;
+    //         //Janky clone operation beacue the real clone doesnt work?
+    //         // UnityEngine.Debug.Log(baseControls[i+1].ToJson());
+    //         // controller.LoadFromJson(.ToJson());
+    //         //controller.name = controller.name + i;
 
-            //Player x is assigned this control scheme
-            //Make this run off of peer id?
-            availableControls[i+1] = controller;
-            users[i+1] = InputUser.PerformPairingWithDevice(Gamepad.all[i]);
-            users[i+1].AssociateActionsWithUser(controller);
+    //         //Player x is assigned this control scheme
+    //         //Make this run off of peer id?
+    //         availableControls[i+1] = controller;
+    //         users[i+1] = InputUser.PerformPairingWithDevice(Gamepad.all[i]);
+    //         users[i+1].AssociateActionsWithUser(controller);
 
-            //If there is a controller, use it
-            //Change this to make a new array on use
-            if(Gamepad.all.Count > i)
-                availableControls[i+1].devices = new Gamepad[] {Gamepad.all[i]};
-            else
-                availableControls[i+1].devices = new Gamepad[] {};
-        }
+    //         //If there is a controller, use it
+    //         //Change this to make a new array on use
+    //         if(Gamepad.all.Count > i)
+    //             availableControls[i+1].devices = new Gamepad[] {Gamepad.all[i]};
+    //         else
+    //             availableControls[i+1].devices = new Gamepad[] {};
+    //     }
 
-    }
-
-
-    public int checkForNewControllers()
-    {
-        int addedCount = 0;
-        foreach(InputActionAsset controller in GameController.Instance.availableControls)
-        {
-            if(controller != null && controller.FindAction("Start").triggered && !controls.ContainsValue(controller))
-            {
-                int peerID = -1;
-                while(controls.ContainsKey(peerID))
-                    peerID++;
-                controls.Add(peerID,controller);
-                //users[peerID+1].AssociateActionsWithUser(controller);
-
-                UnityEngine.Debug.Log("Added: " + controller + " With peerID " + peerID);
-                addedCount++;
-            }
-        }
-
-        return addedCount;
-    }
+    // }
 
 
-    public List<int> checkForRemoveControllers()
-    {
+    // public int checkForNewControllers()
+    // {
+    //     int addedCount = 0;
+    //     foreach(InputActionAsset controller in GameController.Instance.availableControls)
+    //     {
+    //         if(controller != null && controller.FindAction("Start").triggered && !controls.ContainsValue(controller))
+    //         {
+    //             int peerID = -1;
+    //             while(controls.ContainsKey(peerID))
+    //                 peerID++;
+    //             controls.Add(peerID,controller);
+    //             //users[peerID+1].AssociateActionsWithUser(controller);
 
-        List<int> peersToRemove = new List<int>();
+    //             UnityEngine.Debug.Log("Added: " + controller + " With peerID " + peerID);
+    //             addedCount++;
+    //         }
+    //     }
+
+    //     return addedCount;
+    // }
+
+
+    // public List<int> checkForRemoveControllers()
+    // {
+
+    //     List<int> peersToRemove = new List<int>();
 
 
 
-        foreach (KeyValuePair<int, InputActionAsset> kvp in GameController.Instance.controls)
-        {
-            if(kvp.Value != null && kvp.Value.FindAction("Menu").triggered)
-            {
-                UnityEngine.Debug.Log("REMOVED: " + kvp.Value + " with peerID " + kvp.Key);
+    //     foreach (KeyValuePair<int, InputActionAsset> kvp in GameController.Instance.controls)
+    //     {
+    //         if(kvp.Value != null && kvp.Value.FindAction("Menu").triggered)
+    //         {
+    //             UnityEngine.Debug.Log("REMOVED: " + kvp.Value + " with peerID " + kvp.Key);
 
-                //controls.Remove(kvp.Key);
+    //             //controls.Remove(kvp.Key);
 
-                peersToRemove.Add(kvp.Key);
-            } 
-        }
-        if(peersToRemove.Count >0)
-            foreach(int toRemove in peersToRemove)
-            {
-                controls.Remove(toRemove);
-                //if(toRemove >= 0)users[toRemove+1].UnpairDevices();
-            }
+    //             peersToRemove.Add(kvp.Key);
+    //         } 
+    //     }
+    //     if(peersToRemove.Count >0)
+    //         foreach(int toRemove in peersToRemove)
+    //         {
+    //             controls.Remove(toRemove);
+    //             //if(toRemove >= 0)users[toRemove+1].UnpairDevices();
+    //         }
 
-        return peersToRemove;
-    }
+    //     return peersToRemove;
+    // }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -42,10 +42,14 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
             input = NetworkUtils.GetNetworkData<PlayerInputData>(syncFromClients["input", charSel.PeerID]);
             if (input != null)
                 UpdateInput(players[charSel.PeerID], input);
+
             else if(GameController.Instance.controls.ContainsKey(charSel.PeerID))
                 UpdateInput(players[charSel.PeerID], GetInput(GameController.Instance.controls[charSel.PeerID]));
+                
             else
                 UpdateInput(players[charSel.PeerID]);
+
+
         }
     }
 
@@ -63,7 +67,7 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
             spawnPoints[(peerID +1) % spawnPoints.Count].transform.position, Quaternion.identity);
         obj.GetComponent<Drifter>().SetColor((peerID +1));
 
-        if(GameController.Instance.controls.ContainsKey(peerID))obj.GetComponent<PlayerInput>().actions = GameController.Instance.controls[peerID];
+        if(GameController.Instance.controls.ContainsKey(peerID))obj.GetComponent<Drifter>().playerInputController = GameController.Instance.controls[peerID];
         obj.GetComponent<Drifter>().SetPeerId(peerID);
         players[peerID] = obj;
         return obj;
@@ -90,16 +94,18 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
     //@Richard add AI here
     public static void UpdateInput(GameObject player)
     {
-        player.GetComponent<PlayerMovement>().UpdateInput();
-        player.GetComponent<PlayerAttacks>().UpdateInput();
+        player?.GetComponent<PlayerMovement>().UpdateInput();
+        player?.GetComponent<PlayerAttacks>().UpdateInput();
     }
 
-    public static PlayerInputData GetInput(InputActionAsset keyBindings)
+    public static PlayerInputData GetInput(PlayerInput playerInput)
     {
-
-        InputActionMap playerInputAction = keyBindings.FindActionMap("PlayerKeyboard");
+        InputActionMap playerInputAction = playerInput.currentActionMap;
         PlayerInputData input = new PlayerInputData();
         
+        UnityEngine.Debug.Log(playerInput.currentActionMap);
+        UnityEngine.Debug.Log(playerInputAction.FindAction("Horizontal"));
+
         // get player input
         input.Jump = playerInputAction.FindAction("Jump").ReadValue<float>() > 0 || playerInputAction.FindAction("Jump Alt").ReadValue<float>() > 0;
         input.Light = playerInputAction.FindAction("Light").ReadValue<float>() > 0;
@@ -111,6 +117,8 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
         input.Grab = playerInputAction.FindAction("Grab").ReadValue<float>() > 0;
 
         input.Pause = playerInputAction.FindAction("Start").ReadValue<float>()>0;
+
+        input.Menu = playerInputAction.FindAction("Menu").ReadValue<float>()>0;
 
         return input;
     }
@@ -130,6 +138,7 @@ public class PlayerInputData : INetworkData, ICloneable
     public bool Guard;
     public bool Pause;
     public bool Grab;
+    public bool Menu;
 
     public object Clone()
     {
@@ -145,6 +154,7 @@ public class PlayerInputData : INetworkData, ICloneable
             Guard = Guard,
             Pause = Pause,
             Grab = Grab,
+            Menu = Menu,
         };
     }
 
@@ -160,5 +170,6 @@ public class PlayerInputData : INetworkData, ICloneable
         Guard = data.Guard;
         Pause = data.Pause;
         Grab = data.Grab;
+        Menu = data.Menu;
     }
 }

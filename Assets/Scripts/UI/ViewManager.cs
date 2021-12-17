@@ -83,17 +83,17 @@ public class ViewManager : MonoBehaviour
         }
 
         bool gamepadButtonPressed = false;
-        // for (int i = 0; i < Gamepad.current.allControls.Count; i++)
-        // {
-        //     var c = Gamepad.current.allControls[i];
-        //     if (c is ButtonControl)
-        //     {
-        //         if (((ButtonControl)c).wasPressedThisFrame)
-        //         {
-        //             gamepadButtonPressed = true;
-        //         }
-        //     }
-        // }
+        for (int i = 0; i < Gamepad.current.allControls.Count; i++)
+        {
+            var c = Gamepad.current.allControls[i];
+            if (c is ButtonControl)
+            {
+                if (((ButtonControl)c).wasPressedThisFrame)
+                {
+                    gamepadButtonPressed = true;
+                }
+            }
+        }
 
 
         if (Mouse.current.leftButton.isPressed || Mouse.current.rightButton.isPressed || Mouse.current.middleButton.isPressed && !mouse)

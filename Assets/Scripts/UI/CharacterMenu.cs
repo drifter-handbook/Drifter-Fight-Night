@@ -141,20 +141,21 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         GameController.Instance.host.Peers =  new List<int>();
         // add host
 
+        //Delay this by 1/2 a second
+        GameController.Instance.EnableJoining();
 
         //If no controllers are currently active, activate the primary controller
-        if(GameController.Instance.IsTraining)
-            GameController.Instance.AssignInputAssest();
+        // if(GameController.Instance.IsTraining || GameController.Instance.controls.Count <1 )
+        //     GameController.Instance.AssignInputAssest();
 
-        foreach(InputActionAsset controller in GameController.Instance.availableControls)
+        foreach(int peer in GameController.Instance.controls.Keys)
         {
-            GameObject PlayerInput = Instantiate(playerInputPrefab, transform.position, Quaternion.identity);
-            PlayerInput.GetComponent<PlayerInput>().actions = controller;
+            AddCharSelState(peer);
         }
 
         //Populate a card for each active controller
-        for(int i = -1; i < GameController.Instance.controls.Count-1; i++)
-            AddCharSelState(i);
+        // for(int i = -1; i < GameController.Instance.controls.Count-1; i++)
+        //     AddCharSelState(i);
 
         if(GameController.Instance.IsTraining) AddCharSelState(8,DrifterType.Sandbag);
 
@@ -178,7 +179,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
     public void AddCharSelState(int peerID, DrifterType drifter)
     {
-        if(charSelStates.Count >= (GameController.Instance.IsTraining?2:GameController.MAX_PLAYERS))return;
+        if(charSelStates.Count >= (GameController.Instance.IsTraining?2:GameController.Instance.maxPlayerCount))return;
 
         int[] drifterLoc = findDrifterMatrixPosition(drifter);
         GameObject cursor = GameController.Instance.host.CreateNetworkObject("CharacterCursor",characterRows[drifterLoc[0]][drifterLoc[1]].transform.position, transform.rotation);
@@ -224,8 +225,8 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         playerCards.Remove(peerID);
 
 
-        if(peerID != -1)
-            GameController.Instance.host.Peers.Remove(peerID);
+        //if(peerID != -1)
+            
 
         //Return to main menu if not in multiplayer
         checkReturnToMenuConditions();
@@ -261,27 +262,6 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         //Create Character Select State when an inactive controller becomes active
 
         //Only allow adding and removing players before characters are locked in
-        if(phase <2)
-        {
-            for(int i = 0; i < GameController.Instance.checkForNewControllers(); i++)
-            {
-                int peerID = -1;
-                while(charSelStates.ContainsKey(peerID))
-                    peerID++;
-
-                if(peerID < GameController.MAX_PLAYERS)AddCharSelState(peerID);
-            }
-    
-    
-            //Remove Character select state if a controller is disconnected
-            List<int> toRemove = GameController.Instance.checkForRemoveControllers();
-            if(toRemove.Count >0)
-            {
-                foreach(int peerID in toRemove)
-                    RemoveCharSelState(peerID);
-            }
-        }
-        
 
         //Return to title if the last player left
         //Maybe remove?
@@ -292,16 +272,24 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         PlayerInputData input;
 
         int index = 0;
+        List<int> peersToRemove = new List<int>();
         foreach (KeyValuePair<int, CharacterSelectState> kvp in charSelStates)
         {
             //Link inputs to peer ids
+            bool remove = false;
             input = NetworkUtils.GetNetworkData<PlayerInputData>(syncFromClients["input", kvp.Value.PeerID]);
             if (input != null)
-                UpdateInput(charSelStates[kvp.Key], input);
+                remove = UpdateInput(charSelStates[kvp.Key], input);
+                    
             else if(GameController.Instance.controls.ContainsKey(kvp.Value.PeerID))
-                UpdateInput(charSelStates[kvp.Key], NetworkPlayers.GetInput(GameController.Instance.controls[kvp.Value.PeerID]));
+                remove = UpdateInput(charSelStates[kvp.Key], NetworkPlayers.GetInput(GameController.Instance.controls[kvp.Value.PeerID]));
+
+            if(remove)peersToRemove.Add(kvp.Value.PeerID);
             index++;
         }
+
+        foreach(int peerToRemove in peersToRemove)
+            GameController.Instance.removeUserByPeer(peerToRemove);
 
         //Return to title if the special button is helf for 1.5 consecutive seconds
         if(countingPrevScreen)
@@ -345,6 +333,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
                 break;
 
             case 2:
+                GameController.Instance.DisableJoining();
                 gameObject.transform.position = new Vector2(0,18);
                 foreach(CharacterSelectState charSelState in charSelStates.Values)
                 {
@@ -362,6 +351,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
             case 3:
                 gameObject.transform.position = Vector2.zero;
+                GameController.Instance.EnableJoining();
                 foreach(CharacterSelectState charSelState in charSelStates.Values)
                 {
                     int[] arr = findDrifterMatrixPosition(charSelState.PlayerType);
@@ -428,13 +418,13 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
 
     //Updates input commands for a given cursor object
-    public void UpdateInput(CharacterSelectState p_cursor,PlayerInputData input)
+    public bool UpdateInput(CharacterSelectState p_cursor,PlayerInputData input)
     {
         //If no previous input yet, populate it
         if(p_cursor.prevInput == null)
         {
            p_cursor.prevInput = input;
-           return; 
+           return false; 
         }
         
         GameObject[][] matrix = (phase >2)?stageRows:characterRows;
@@ -493,14 +483,16 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         //Saves previous input
         p_cursor.prevInput = input;
 
+        return input.Menu && GameController.Instance.CanJoin();
+
     }
 
     //Checks for conditions that should return players to the main menu
     //Add to this later for other single player modes
     void checkReturnToMenuConditions()
     {
-        if(GameController.Instance.controls.Count <1 && GameController.Instance.IsTraining)
-            ReturnToTitle();
+        // if(GameController.Instance.playerCount <1 && GameController.Instance.IsTraining)
+        //     ReturnToTitle();
     }
 
     //Checks to make sure each player has selected a character
@@ -540,6 +532,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     //Backs out to the tile screen and disconnects clients if there plaeyr is host
     public void ReturnToTitle()
     {
+        GameController.Instance.removeAllPeers();
         //TODO: C
         if (GameController.Instance.GetComponent<NetworkClient>() != null)
             GameController.Instance.CleanupNetwork();
@@ -585,10 +578,10 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     //try to add player, return false if over max
     public void AddPlayerCard()
     {
-        if (playerCards.Count >= GameController.MAX_PLAYERS)
-        {
-            return;
-        }
+        // if (playerCards.Count >= GameController.maxPlayerCount)
+        // {
+        //     return;
+        // }
         
 
         // GameObject charCard = CharacterCard.CreatePlayerCard(ColorFromEnum[(PlayerColor)index]);

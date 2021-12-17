@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using UnityEngine.InputSystem.Controls;
 
 public class EndgameImageHandler : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class EndgameImageHandler : MonoBehaviour
 
     NetworkSync sync;
 
-    bool mouse = false;
+    bool mouse = true;
 
     void Start()
     {
@@ -83,6 +84,19 @@ public class EndgameImageHandler : MonoBehaviour
     void Update()
     {
 
+    	bool gamepadButtonPressed = false;
+        for (int i = 0; i < Gamepad.current.allControls.Count; i++)
+        {
+            var c = Gamepad.current.allControls[i];
+            if (c is ButtonControl)
+            {
+                if (((ButtonControl)c).wasPressedThisFrame)
+                {
+                    gamepadButtonPressed = true;
+                }
+            }
+        }
+
         if(Keyboard.current.escapeKey.wasPressedThisFrame) backToMain();
         
         if((Mouse.current.leftButton.isPressed || Mouse.current.rightButton.isPressed || Mouse.current.middleButton.isPressed) && !mouse)
@@ -92,7 +106,7 @@ public class EndgameImageHandler : MonoBehaviour
             EventSystem.current.SetSelectedGameObject(null);
 
         }
-        else if(Keyboard.current.anyKey.isPressed && mouse && (!Mouse.current.leftButton.isPressed || !Mouse.current.rightButton.isPressed || !Mouse.current.middleButton.isPressed)){
+        if((Keyboard.current.anyKey.isPressed || gamepadButtonPressed)&& mouse && (!Mouse.current.leftButton.isPressed || !Mouse.current.rightButton.isPressed || !Mouse.current.middleButton.isPressed)){
             EventSystem.current.SetSelectedGameObject(GameObject.Find("MainMenu"));
             mouse = false;
         }

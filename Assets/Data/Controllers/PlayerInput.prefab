@@ -43,9 +43,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 3ff49b70592a74144929dff21dec19c5,
+  m_Actions: {fileID: -944628639613478452, guid: 3ae2ee95e1ca3704091fac15cff26ed1,
     type: 3}
-  m_NotificationBehavior: 2
+  m_NotificationBehavior: 0
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
     m_PersistentCalls:
@@ -97,8 +97,16 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: ae0a015c-c29e-45ae-a670-b2efb2e8fd0c
     m_ActionName: PlayerKeyboard/Pause[/XInputControllerWindows/start]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 4e0bb105-cedc-4645-bb1b-7c36e1beef9e
+    m_ActionName: PlayerKeyboard/Menu
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 1b7a1d5e-3592-4e45-ac52-fceb73134524
+    m_ActionName: PlayerKeyboard/Grab
   m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: PlayerKeyboard
+  m_DefaultControlScheme: Gamepad
+  m_DefaultActionMap: Controls
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}

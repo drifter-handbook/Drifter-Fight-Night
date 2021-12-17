@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [Serializable]
 public enum DrifterType
@@ -75,6 +76,8 @@ public class Drifter : MonoBehaviour, INetworkInit
 
     public PlayerStatus status;
     public SyncAnimatorStateHost sparkle;
+
+    public PlayerInput playerInputController;
 
     bool isHost;
 
