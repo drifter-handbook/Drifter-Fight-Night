@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
 {
     //Character Properties
     public int numberOfJumps;
+    public int numberOfDashes = 1;
     public float delayedJumpDuration = 0.05f;
     public float walkSpeed = 15f;
     public float groundAccelerationTime = .6f;
@@ -37,6 +38,8 @@ public class PlayerMovement : MonoBehaviour
     public int Facing { get; set; } = 1;
     [NonSerialized]
     public int currentJumps;
+    [NonSerialized]
+    public int currentDashes;
     //[NonSerialized]
     public bool grounded = true;
     [NonSerialized]
@@ -231,6 +234,7 @@ public class PlayerMovement : MonoBehaviour
         {
             //Resets jumps if player is on the ground
             currentJumps = numberOfJumps;
+            currentDashes = numberOfDashes;
             strongLedgeGrab = true;
         
             //If the player walked off a ledge, remove their grounded jump
@@ -501,6 +505,8 @@ public class PlayerMovement : MonoBehaviour
         else if(!drifter.input[0].Guard && !status.HasStunEffect() && drifter.guarding)
         {
             status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,framerateScalar * 3);
+            drifter.canSpecialCancelFlag = true;
+            drifter.listenForSpecialCancel = true;
             drifter.guarding = false;
             drifter.parrying = true;
             drifter.PlayAnimation("Guard_Drop");
@@ -709,15 +715,17 @@ public class PlayerMovement : MonoBehaviour
 
     public bool dash()
     {
-        if(currentJumps > 0 && dashLock <=0)
+        if(currentDashes > 0 && dashLock <=0)
         {
+            // drifter.canSpecialCancelFlag = true;
+            // drifter.listenForSpecialCancel = true;
             accelerationPercent = 0;
             dashLock = .5f;
             spawnJuiceParticle(BodyCollider.bounds.center + new Vector3(Facing * (flipSprite?-1:1)* 1.5f,0), MovementParticleMode.Dash_Ring, Quaternion.Euler(0f,0f,0f), false);
             status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,4);
             drifter.PlayAnimation("Dash");
             jumping = false;
-            currentJumps--;
+            currentDashes--;
             return true;
         }
         return false;

@@ -114,17 +114,27 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
             
 
         }
-        else if((activeCancelFlag || jumpFlag)&& drifter.input[0].Jump && !drifter.input[1].Jump && movement.currentJumps>0)
+        else if((activeCancelFlag || jumpFlag)&& ((drifter.input[0].Jump && !drifter.input[1].Jump && movement.currentJumps>0) || (drifter.doubleTappedX() && movement.currentDashes >0) ))
         {
-            movement.jumping = false;
-            movement.techParticle();
-            status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0f);
-            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
-            clearMasterhitVars();
-            movement.terminalVelocity = terminalVelocity;
-            movement.jump();
-            unpauseGravity();
-            
+            if(drifter.input[0].Jump)
+            {
+                movement.jumping = false;
+                movement.techParticle();
+                status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0f);
+                status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
+                clearMasterhitVars();
+                movement.terminalVelocity = terminalVelocity;
+                movement.jump();
+                unpauseGravity();
+            }
+            else
+            {
+                if(movement.dash())
+                {
+                    movement.techParticle();
+                    clearMasterhitVars();
+                }
+            }
 
         }
         else if(lightTappedFlag && checkForLightTap())
