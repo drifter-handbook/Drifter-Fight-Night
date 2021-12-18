@@ -123,17 +123,32 @@ public class PlayerHurtboxHandler : MonoBehaviour
             float angle = Mathf.Sign(attackData.AngleOfImpact) * Mathf.Atan2(hurtbox.parent.transform.position.y-hitbox.parent.transform.position.y, hurtbox.parent.transform.position.x-hitbox.parent.transform.position.x)*180 / Mathf.PI;
 
             //KILL DI
-            float directionInfluenceAngle = drifter.input[0].MoveY < 0 ? 360f - Vector3.Angle(facingDir * Vector3.right,new Vector2(drifter.input[0].MoveX,drifter.input[0].MoveY)): Vector3.Angle(facingDir * Vector3.right,new Vector2(drifter.input[0].MoveX,drifter.input[0].MoveY));
+            //float directionInfluenceAngle = drifter.input[0].MoveY < 0 ? 360f - Vector3.Angle(facingDir * Vector3.right,new Vector2(drifter.input[0].MoveX,drifter.input[0].MoveY)): Vector3.Angle(facingDir * Vector3.right,new Vector2(drifter.input[0].MoveX,drifter.input[0].MoveY));
+
 
             Vector3 adjustedAngle = Quaternion.Euler(0, 0, attackData.AngleOfImpact * facingDir)  * Vector2.right * facingDir;
+
+
+            UnityEngine.Debug.Log(attackData.AngleOfImpact);
 
             float horizontalComponent = facingDir * Mathf.Cos(attackData.AngleOfImpact *Mathf.Deg2Rad);
             float verticalComponent = Mathf.Sin(attackData.AngleOfImpact *Mathf.Deg2Rad);
 
+            UnityEngine.Debug.Log(horizontalComponent);
+
+            UnityEngine.Debug.Log(verticalComponent);
 
             //DI Angle Adjustment
-            if(drifter.input[0].MoveX !=0 || drifter.input[0].MoveY !=0 )adjustedAngle = Quaternion.Euler(0, 0, Mathf.Atan((verticalComponent * 1 + .2f * drifter.input[0].MoveY)/(horizontalComponent* 1 + .2f * drifter.input[0].MoveX)) * Mathf.Rad2Deg)  * Vector2.right * facingDir;
+            if(drifter.input[0].MoveX !=0 || drifter.input[0].MoveY !=0 )
+                adjustedAngle = Quaternion.Euler(0, 0, 
+                    Mathf.Atan(
+                            (verticalComponent + .2f * drifter.input[0].MoveY)/
+                            (horizontalComponent+ .2f * drifter.input[0].MoveX)
+                        )
+                        * Mathf.Rad2Deg) 
+                        * Vector2.right * Mathf.Sign(horizontalComponent);
 
+            UnityEngine.Debug.Log(adjustedAngle);
             //Autolink angle (<-361) sets the knockback angle to send towards the hitbox's centerpoint
             Vector2 forceDir = Mathf.Abs(attackData.AngleOfImpact) <= 360?
                                     adjustedAngle:
