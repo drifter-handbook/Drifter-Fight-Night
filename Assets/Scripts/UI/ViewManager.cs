@@ -32,6 +32,7 @@ public class ViewManager : MonoBehaviour
 
     void Awake()
     {
+        mouse = true;
         views = new Dictionary<string, Transform>();
         if (views.Count <= 0)
         {

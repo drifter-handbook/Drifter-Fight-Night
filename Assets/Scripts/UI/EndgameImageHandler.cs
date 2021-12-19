@@ -42,28 +42,15 @@ public class EndgameImageHandler : MonoBehaviour
         for(int i = 0; i< GameController.Instance.winnerOrder.Length; i++)
         {
 
-            UnityEngine.Debug.Log("Player " +  GameController.Instance.winnerOrder[i] + " came in " + (i + 1) + "th place!");
+            UnityEngine.Debug.Log("Player " + (i + 1) + " came in " + GameController.Instance.winnerOrder[i] + "th place!");
 
             //Todo Cleanup
-            if(i == 0)
-            {
+            if(GameController.Instance.winnerOrder[i] == 1)
                 foreach (CharacterSelectState state in CharacterMenu.charSelStates.Values)
-                {
                     if (state.PeerID == (i - 1))
-                    {
-                        UnityEngine.Debug.Log(state.PlayerType);
                         setWinnerPic(state.PlayerType,CharacterMenu.ColorFromEnum[(PlayerColor)(state.PeerID+1)]);
-                    }
-                }
-
-            }
         }
     }
-
-    // public void playWinnerAudio(int winnerIndex)
-    // {
-    //     gameObject.GetComponent<MultiSound>().PlayAudio(winnerIndex);
-    // }
 
     public void setWinnerPic(DrifterType type,Color color)
     {

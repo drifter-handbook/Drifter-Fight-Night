@@ -29,7 +29,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
 
             playerList = new int[NetworkPlayers.Instance.players.Count]; 
             foreach (KeyValuePair<int, GameObject> kvp in NetworkPlayers.Instance.players)
-                playerList[kvp.Key +1] = 1;
+                if(kvp.Key <=4) playerList[kvp.Key +1] = 1;
     
 
             startingPlayers = NetworkPlayers.Instance.players.Count;
@@ -103,7 +103,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                 else
                 {
                     //UnityEngine.Debug.Log(drifter.peerID);
-                    playerList[drifter.peerID==-1?0:drifter.peerID] = currentPlayers;
+                    playerList[drifter.peerID + 1] = currentPlayers;
 
                     currentPlayers--;
 

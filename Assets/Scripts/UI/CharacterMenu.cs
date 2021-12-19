@@ -158,7 +158,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         // for(int i = -1; i < GameController.Instance.controls.Count-1; i++)
         //     AddCharSelState(i);
 
-        if(GameController.Instance.IsTraining) AddCharSelState(10,DrifterType.Sandbag);
+        if(GameController.Instance.IsTraining) AddCharSelState(8,DrifterType.Sandbag);
 
     }
     IEnumerator delayJoining()
@@ -179,7 +179,6 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
     public void AddCharSelState(int peerID)
     {
-        UnityEngine.Debug.Log(peerID);
         AddCharSelState(peerID,DrifterType.None);
     }
 
