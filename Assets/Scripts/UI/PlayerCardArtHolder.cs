@@ -28,9 +28,6 @@ public class PlayerCardArtHolder : MonoBehaviour
 
             if(!GameController.Instance.IsTraining)
                 trainingUI.gameObject.SetActive(false);
-            // else
-            //     trainingUI.gameObject.SetActive(true);
-
 
             drifters = FindObjectsOfType<Drifter>();
 
@@ -50,8 +47,6 @@ public class PlayerCardArtHolder : MonoBehaviour
 
                 
                 int imageIndex = (int)drifters[i].drifterType;
-
-                UnityEngine.Debug.Log(imageIndex);
 
                 //Colors
                 playerCards[i].SetColor(drifters[i].myColor);

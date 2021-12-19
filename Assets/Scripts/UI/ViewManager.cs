@@ -50,6 +50,9 @@ public class ViewManager : MonoBehaviour
         }
         startingMenu.gameObject.SetActive(true);
         currentView = startingMenu.gameObject.name;
+
+        //Change this later to back out to the previous menu instead
+        ShowView("Main Menu");
     }
 
     public void UpdateToggles()
@@ -126,6 +129,9 @@ public class ViewManager : MonoBehaviour
                 case "Settings Menu":
                     EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Settings"));
                     break;
+                case "Main Menu":
+                    EventSystem.current.SetSelectedGameObject(GameObject.Find("Main Play"));
+                    break;
                 default:
                     break;
             }
@@ -165,6 +171,9 @@ public class ViewManager : MonoBehaviour
         if(name == "Mode Menu" && !mouse)
             EventSystem.current.SetSelectedGameObject(GameObject.Find("Local"));
 
+        if (name == "Main Menu" && !mouse)
+            EventSystem.current.SetSelectedGameObject(GameObject.Find("Main Play"));
+
         if (name == "Join Menu")
         {
             if(!mouse)EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Join"));
@@ -181,6 +190,7 @@ public class ViewManager : MonoBehaviour
             //     savedIPObject.GetComponent<InputField>().text = PlayerPrefs.GetString("savedIP");
             // }
         }
+        
 
         if (name == "Host Menu")
         {
