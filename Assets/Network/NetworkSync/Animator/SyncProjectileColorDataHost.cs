@@ -8,7 +8,7 @@ public class SyncProjectileColorDataHost : MonoBehaviour, ISyncHost
 
     SpriteRenderer sprite;
 
-    int color = 0;
+    public int color = 0;
 
     // Start is called before the first frame update
     void Awake()

@@ -444,7 +444,12 @@ public class OrroReworkMasterHit : MasterHit
     public new void clearMasterhitVars()
     {
     	base.clearMasterhitVars();
-    	deletePlatform();
+        listeningForMovement = false;
+    	if(platform != null)
+        {
+            Destroy(platform);
+            platform = null;
+        }
     }
 
 

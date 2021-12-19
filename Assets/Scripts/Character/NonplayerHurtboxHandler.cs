@@ -1,13 +1,71 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class NonplayerHurtboxHandler : PlayerHurtboxHandler
 {
 
     protected bool takesKnockback = true;
-	public float percentage = 0f;
+    public float maxPercentage = 30f;
+    float _percentage = 0f;
+	public float percentage
+    {
+        get{ return _percentage;}
+        set
+        {
+            if(_percentage != value)
+            {
+                    _percentage = value;
+                    healthBar?.updateHealthbar((maxPercentage - _percentage) / maxPercentage);
+            }
+        }
+    }
+
+    private int _facing = 1;
+    public int facing
+    {
+        get { return _facing;}
+        set {
+            _facing = value;
+            healthBar.facing = value;
+        }
+    }
+
     protected float HitstunDuration = 0;
+    protected float HitPauseDuration = 0;
+    protected Vector3 delayedVelocity = Vector3.zero;
+    public Rigidbody2D rb;
+
+    public SummonHealthbarHandler healthBar;
+
+    protected void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
+
+    protected void Update()
+    {
+        if(!GameController.Instance.IsHost)return;
+
+        if(HitPauseDuration > 0)
+        {
+            HitPauseDuration -= Time.deltaTime;
+            if(takesKnockback && delayedVelocity != Vector3.zero && HitPauseDuration <=0)
+            {
+                rb.velocity = delayedVelocity;
+                delayedVelocity = Vector3.zero;
+            }
+        }
+
+        else if(HitstunDuration > 0)
+        {
+            HitstunDuration -= Time.deltaTime;
+        }
+
+                    
+
+    }
 
 	public override int RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, DrifterAttackType attackType, SingleAttackData attackData)
     {
@@ -71,6 +129,16 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
             AttackFXSystem attackFX = attackData.HitFX;
             Vector2 hitSparkScale =  new Vector2(facingDir *10f, 10f);
 
+            //apply attacker hitpause
+            HitPauseDuration = HitstunDuration *.3f;
+            if(attackData.HitStop >=0)
+                HitPauseDuration += attackData.HitStop * framerateScalar;
+
+
+            if (hitbox.gameObject.tag != "Projectile")
+                attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(attackData.AttackDamage <=2f ? .074f : Mathf.Max(HitPauseDuration,2f * framerateScalar)));
+
+
 
             //Cause the screen to shake slightly on hit, as long as the move has knockback
             if(Shake != null && attackData.Knockback !=0){
@@ -80,13 +148,14 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
             //If the defender is grounded, use the absolute value of the y component of the velocity
             //This prevents grounded opponents from getting stuck when spiked on the ground
             if(attackData.Knockback > 0 && attackData.AngleOfImpact > -361 && takesKnockback){
-                GetComponent<Rigidbody2D>().velocity = new Vector2(forceDir.normalized.x * KB, forceDir.normalized.y * KB);
+                rb.velocity = Vector3.zero;
+                delayedVelocity = new Vector2(forceDir.normalized.x * KB, forceDir.normalized.y * KB);
 
             }
 
             //Autolink angle (<361) scales its magnitude with distacne from said point, further scaled with the attacker's velocity
             else if(attackData.Knockback > 0 && attackData.AngleOfImpact <= -361 && takesKnockback){
-                GetComponent<Rigidbody2D>().velocity = hitbox.parent.GetComponent<Rigidbody2D>().velocity * (1 + attackData.KnockbackScale);
+                rb.velocity = hitbox.parent.GetComponent<Rigidbody2D>().velocity * (1 + attackData.KnockbackScale);
             }
 
             float hitSparkAngle = facingDir * ((Mathf.Abs(attackData.AngleOfImpact) > 65f) ? Mathf.Sign(attackData.AngleOfImpact) * 90f : 0f);
@@ -96,12 +165,11 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
             // Ancillary Hitsparks
             if (attackData.AttackDamage > 0f && attackFX != null)
                 StartCoroutine(delayHitsparks(attackFX, hitSparkPos, attackData.AngleOfImpact, attackData.AttackDamage, HitstunDuration *.25f));
-        
+
         }
 
     	return 2;
 
     }
-
 
 }

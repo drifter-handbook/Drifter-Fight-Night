@@ -6,7 +6,6 @@ using System;
 public class BeanWrangler : NonplayerHurtboxHandler
 {
     // Start is called before the first frame update
-    public int facing = 1;
     public int color = 0;
 
     public int charge = 0;
@@ -17,7 +16,6 @@ public class BeanWrangler : NonplayerHurtboxHandler
     PlayerAttacks attacks;
     GameObject Orro;
     BeanState targetPos;
-    public Rigidbody2D rb;
     bool following = true;
     float beancountdown = 1f;
 
@@ -49,35 +47,44 @@ public class BeanWrangler : NonplayerHurtboxHandler
 
         anim = GetComponent<SyncAnimatorStateHost>();
         //Movement Stuff
-        rb = GetComponent<Rigidbody2D>();
         targetPos = new BeanState(rb.position, facing);
         Orro = gameObject.GetComponentInChildren<HitboxCollision>().parent;
         attacks = gameObject.GetComponentInChildren<HitboxCollision>().parent.GetComponent<PlayerAttacks>();
 
     }
 
-    void Update()
+    new void Update()
     {
 
         if(!GameController.Instance.IsHost)return;
 
-        if(state!= null && HitstunDuration <=0)
+        //If bean is in hitstun, tick down his hitstun counter and remove all unused states
+        if(HitstunDuration > 0)
+            state = null;
+        
+        base.Update();
+        if(HitstunDuration >0) 
+            return;
+
+        else if(state == null)
+            returnToNeutral();
+
+        else
         {
             //Get the next state for bean to move towards
             targetPos = state;
 
             //Flip bena to the targeted direction, if he can act
-            if(canAct)
-                facing = targetPos.Facing;
 
             //If bean is currently following orro,
             if(following && canAct)
             {
+                facing = targetPos.Facing;
 
                 if(!alive)
                 {
                     //Heal bean if he is dead
-                    percentage -= 4f * Time.deltaTime;
+                    if(percentage > 0) percentage -= 4f * Time.deltaTime;
                     if(percentage <= 0)
                     {
                         percentage = 0;
@@ -108,7 +115,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
                 else
                 {
                     //Tick down beans damage when he is attatched to orro
-                    if(percentage > 0)percentage -= 2f * Time.deltaTime;
+                    if(percentage > 0) percentage -= 2f * Time.deltaTime;
 
                     //Follow Logic
                     rb.position =  Vector3.Lerp(rb.position,targetPos.Pos,.25f * beancountdown);
@@ -118,13 +125,6 @@ public class BeanWrangler : NonplayerHurtboxHandler
                 }
             }
 
-        }
-        //If bean is in hitstun, tick down his hitstun counter and remove all unused states
-        else if(HitstunDuration > 0)
-        {
-            state = null;
-            HitstunDuration -= Time.deltaTime;
-            if(HitstunDuration <=0)returnToNeutral();
         }
     }
 
@@ -311,7 +311,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
 
                 if(returnCode >= 0)anim.SetState("Hitstun");
 
-            if(percentage > 40f)
+            if(percentage > maxPercentage)
             {
                     alive = false;
                     canAct = false;

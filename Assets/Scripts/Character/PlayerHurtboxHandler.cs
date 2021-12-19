@@ -281,7 +281,6 @@ public class PlayerHurtboxHandler : MonoBehaviour
                     Shake?.startDarkenCoroutine(5f* framerateScalar);
 
                 //apply defender hitpause
-               
                 //If hitstop is scaled, and one is proviced, sum the hitstun duuration and the hitpause duration
                 if(attackData.HitStop >=0)
                     HitPauseDuration += attackData.HitStop * framerateScalar;
@@ -563,24 +562,4 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
         return false;
     }
-
-    // //I hate that this is here
-    // protected void SpawnOrboHandler(GameObject owner,GameObject victim,int nums)
-    // {
-    //     if(handler == null)
-    //     {
-    //         GameObject orbo = host.CreateNetworkObject("OrboHolder", Vector3.zero, transform.rotation);
-    //         OrboHandler handler = orbo.GetComponent<OrboHandler>();
-    //         handler.victim = victim;
-    //         handler.color = owner.GetComponent<Drifter>().GetColor();
-    //         handler.owner = owner;
-    //         this.handler = handler;
-    //         this.handler.orbToSpawn = nums;
-
-    //     }
-    //     else
-    //         this.handler.orbToSpawn = nums;
-
-    // }
-
 }

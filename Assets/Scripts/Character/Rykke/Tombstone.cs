@@ -11,7 +11,6 @@ public class Tombstone : NonplayerHurtboxHandler
 	
 	public bool canAct = false;
 	public bool active = false;
-	public int facing;
 	public WalkOff ledgeDetector;
 
 	PlayerAttacks attacks;
@@ -26,8 +25,6 @@ public class Tombstone : NonplayerHurtboxHandler
 
 	Collider2D physicsCollider; 
 
-	Rigidbody2D rb;
-
 	SyncAnimatorStateHost anim;
 
 	bool listeningForGrounded = true;
@@ -37,11 +34,11 @@ public class Tombstone : NonplayerHurtboxHandler
 	Vector2 offset = new Vector2(0,2);
 
 	// Start is called before the first frame update
-    void Awake()
+    new void Awake()
     {
     	isHost = GameController.Instance.IsHost;
     	if(!isHost)return;
-    	rb = GetComponent<Rigidbody2D>();
+        base.Awake();
     	anim = GetComponent<SyncAnimatorStateHost>();
     	physicsCollider = GetComponentInChildren<PolygonCollider2D>();
     }
@@ -82,7 +79,7 @@ public class Tombstone : NonplayerHurtboxHandler
        return this;
     }
 
-    //Registers a hit on bean, and handles his counter.
+    //Registers a hit on the stone, and handles his counter.
     //
     public override int RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, DrifterAttackType attackType, SingleAttackData attackData)
     {
@@ -95,10 +92,7 @@ public class Tombstone : NonplayerHurtboxHandler
         {
    			returnCode =  base.RegisterAttackHit(hitbox,hurtbox,attackID,attackType,attackData);
 
-            if(returnCode >= 0)
-              	Uses--;
-
-            if(Uses <=0)Destroy(gameObject);
+            if(percentage >= maxPercentage)Destroy(gameObject);
             
         }
 

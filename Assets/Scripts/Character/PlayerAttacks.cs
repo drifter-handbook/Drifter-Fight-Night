@@ -189,7 +189,7 @@ public class PlayerAttacks : MonoBehaviour
     {
         bool _specialPressed = false;
         for (int i = 0; i < drifter.input.Length - 3; i++)
-           if(!_specialPressed) _specialPressed = drifter.input[2].Special &&  drifter.input[1].Special && drifter.input[0].Special;
+           if(!_specialPressed) _specialPressed = !drifter.input[i + 2].Special &&  drifter.input[i + 1].Special && drifter.input[i].Special;
            else return _specialPressed;
 
         return _specialPressed;
