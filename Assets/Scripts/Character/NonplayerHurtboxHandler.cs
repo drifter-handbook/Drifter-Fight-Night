@@ -61,6 +61,7 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
         else if(HitstunDuration > 0)
         {
             HitstunDuration -= Time.deltaTime;
+            if(HitstunDuration < 0) HitstunDuration = 0;
         }
 
                     

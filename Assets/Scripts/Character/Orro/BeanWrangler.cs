@@ -12,6 +12,8 @@ public class BeanWrangler : NonplayerHurtboxHandler
 
     public float returnSpeed = 25f;
 
+    public float Bean_Respawn_Delay = 3f;
+
     SyncAnimatorStateHost anim;
     PlayerAttacks attacks;
     GameObject Orro;
@@ -21,6 +23,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
 
     public bool canAct = false;
     public bool alive = false;
+    float prevHitstunDuration;
 
     //Queue<BeanState> states = new Queue<BeanState>();
 
@@ -42,7 +45,6 @@ public class BeanWrangler : NonplayerHurtboxHandler
     {
 
         if(!GameController.Instance.IsHost)return;
-
         base.Start();
 
         anim = GetComponent<SyncAnimatorStateHost>();
@@ -57,18 +59,12 @@ public class BeanWrangler : NonplayerHurtboxHandler
     {
 
         if(!GameController.Instance.IsHost)return;
-
-        //If bean is in hitstun, tick down his hitstun counter and remove all unused states
-        if(HitstunDuration > 0)
-            state = null;
-        
+        prevHitstunDuration = HitstunDuration;
         base.Update();
         if(HitstunDuration >0) 
             return;
-
-        else if(state == null)
+        else if(prevHitstunDuration != HitstunDuration && HitstunDuration <=0 && alive)
             returnToNeutral();
-
         else
         {
             //Get the next state for bean to move towards
@@ -135,7 +131,6 @@ public class BeanWrangler : NonplayerHurtboxHandler
         if(!GameController.Instance.IsHost)return;
         state = new BeanState(pos,facingDir);
     }
-
 
     //Enqueus a state for bean to mimic after a short delay
     public void setBeanDirection(int facingDir)
@@ -317,8 +312,11 @@ public class BeanWrangler : NonplayerHurtboxHandler
                     canAct = false;
                     anim.SetState("Bean_Death");
                     HitstunDuration = 0f;
+                    //Delay before bean begins recharging
+                    HitPauseDuration = Bean_Respawn_Delay;
                     rb.velocity = Vector3.zero;
-                }
+                    delayedVelocity = Vector3.zero;
+            }
         }
 
         return returnCode;

@@ -77,6 +77,12 @@ public class OrroReworkMasterHit : MasterHit
         	hoverTime = maxHoverTime;
         }
 
+        if(!bean.alive)
+        {
+            beanFollowing= true;
+            Empowered = false;
+        }
+
         if(status.HasEnemyStunEffect() || movement.ledgeHanging  ||(drifter.input[0].Special && !drifter.input[1].Special &&(drifter.input[0].MoveX !=0 || drifter.input[0].MoveY !=0)))
         {
         	status.ApplyStatusEffect(PlayerStatusEffect.STANCE,0f);
