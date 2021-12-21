@@ -1,19 +1,28 @@
 fileFormatVersion: 2
-guid: aaaa5465cf5da45458bfce6b88083357
+guid: a0af82a70925102419eee5c3cd397397
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2309422582903865274
-    second: GO LOUD_0
+      213: -8569701582421521280
+    second: 321go_0
   - first:
-      213: -7506610516018634018
-    second: GO LOUD_1
+      213: -895693020430279015
+    second: 321go_1
   - first:
-      213: 72023595237292147
-    second: GO LOUD_2
+      213: 832529028589743154
+    second: 321go_2
   - first:
-      213: -917910479907905995
-    second: GO LOUD_3
+      213: -4500709791927764836
+    second: 321go_0
+  - first:
+      213: -4369351379480482841
+    second: 321go_1
+  - first:
+      213: -7977449575232093994
+    second: 321go_2
+  - first:
+      213: -133454768147873141
+    second: 321go_3
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -59,7 +68,7 @@ TextureImporter:
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 1
+  spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -99,12 +108,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: GO LOUD_0
+      name: 321go_0
       rect:
         serializedVersion: 2
         x: 0
         y: 192
-        width: 256
+        width: 512
         height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -113,19 +122,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 64000cd856843ffd0800000000000000
-      internalID: -2309422582903865274
+      spriteID: c98f50f3a444a81c0800000000000000
+      internalID: -4500709791927764836
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: GO LOUD_1
+      name: 321go_1
       rect:
         serializedVersion: 2
         x: 0
         y: 128
-        width: 256
+        width: 512
         height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -134,19 +143,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ed26f75e18923d790800000000000000
-      internalID: -7506610516018634018
+      spriteID: 7ebe337f112fc53c0800000000000000
+      internalID: -4369351379480482841
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: GO LOUD_2
+      name: 321go_2
       rect:
         serializedVersion: 2
         x: 0
         y: 64
-        width: 256
+        width: 512
         height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -155,19 +164,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 378b0990411eff000800000000000000
-      internalID: 72023595237292147
+      spriteID: 6d043bea0e76a4190800000000000000
+      internalID: -7977449575232093994
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: GO LOUD_3
+      name: 321go_3
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 256
+        width: 512
         height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -176,8 +185,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 53e1b75284de243f0800000000000000
-      internalID: -917910479907905995
+      spriteID: b82c6fe689fd52ef0800000000000000
+      internalID: -133454768147873141
       vertices: []
       indices: 
       edges: []

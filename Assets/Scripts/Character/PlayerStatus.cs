@@ -123,7 +123,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
     	sync = GetComponent<NetworkSync>();
         rb = GetComponent<Rigidbody2D>();
         drifter = GetComponent<Drifter>();
-        ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,99f);
+        if(!GameController.Instance.IsTraining)ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,1.85f);
     }
  
     // Update is called once per frame
