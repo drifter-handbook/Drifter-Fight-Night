@@ -69,6 +69,7 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
 
         if(GameController.Instance.controls.ContainsKey(peerID))obj.GetComponent<Drifter>().playerInputController = GameController.Instance.controls[peerID];
         obj.GetComponent<Drifter>().SetPeerId(peerID);
+        obj.GetComponent<PlayerMovement>().setFacing((peerID+1 % 2) * 2 - 1);
         players[peerID] = obj;
         return obj;
     }

@@ -128,15 +128,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
             Vector3 adjustedAngle = Quaternion.Euler(0, 0, attackData.AngleOfImpact * facingDir)  * Vector2.right * facingDir;
 
-
-            UnityEngine.Debug.Log(attackData.AngleOfImpact);
-
             float horizontalComponent = facingDir * Mathf.Cos(attackData.AngleOfImpact *Mathf.Deg2Rad);
             float verticalComponent = Mathf.Sin(attackData.AngleOfImpact *Mathf.Deg2Rad);
-
-            UnityEngine.Debug.Log(horizontalComponent);
-
-            UnityEngine.Debug.Log(verticalComponent);
 
             //DI Angle Adjustment
             if(drifter.input[0].MoveX !=0 || drifter.input[0].MoveY !=0 )
@@ -147,8 +140,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                         )
                         * Mathf.Rad2Deg) 
                         * Vector2.right * Mathf.Sign(horizontalComponent);
-
-            UnityEngine.Debug.Log(adjustedAngle);
+                        
             //Autolink angle (<-361) sets the knockback angle to send towards the hitbox's centerpoint
             Vector2 forceDir = Mathf.Abs(attackData.AngleOfImpact) <= 360?
                                     adjustedAngle:
