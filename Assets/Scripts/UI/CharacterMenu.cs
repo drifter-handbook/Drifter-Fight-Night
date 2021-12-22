@@ -67,7 +67,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     private GameObject playerCardPrefab;
     public GameObject Banner;
 
-    public Image backArrow;
+    public Image[] backArrows;
 
     Dictionary<int,GameObject> playerCards = new Dictionary<int,GameObject>();
 
@@ -312,8 +312,8 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         }
         else
             prevScreenTimer = 0;
-
-        backArrow.fillAmount = prevScreenTimer/2.3f;
+        foreach(Image backArrow in backArrows)
+            backArrow.fillAmount = prevScreenTimer/2.3f;
 
         countingPrevScreen = false;
     

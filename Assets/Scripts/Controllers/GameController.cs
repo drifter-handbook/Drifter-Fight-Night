@@ -48,12 +48,7 @@ public class GameController : MonoBehaviour
         set {
             _IsPaused = value;
 
-            List<int> inputsToToggle = new List<int>();
-            foreach(int peerID in controls.Keys)
-                inputsToToggle.Add(peerID);
-
-            foreach(int peer in inputsToToggle)
-                controls[peer].gameObject.SetActive(!value);
+            toggleInuptSystem(value);
 
             Time.timeScale = _IsPaused?0f:1f;
         }
@@ -206,6 +201,16 @@ public class GameController : MonoBehaviour
         return inputManager.joiningEnabled;
     }
 
+    public void toggleInuptSystem(bool ui)
+    {
+        List<int> inputsToToggle = new List<int>();
+        foreach(int peerID in controls.Keys)
+            inputsToToggle.Add(peerID);
+
+        foreach(int peer in inputsToToggle)
+            controls[peer].gameObject.SetActive(!ui);
+    }
+
     public void Load(string sceneName)
     {
         if (SceneManager.GetActiveScene().name == sceneName) return;
@@ -238,6 +243,7 @@ public class GameController : MonoBehaviour
         // Yeet into world and allow playing the game
         //host?.SetScene("Endgame");
         canPause = false;
+
         if(endingGame==null)endingGame=StartCoroutine(EndGameCoroutine(delay));
     }
 

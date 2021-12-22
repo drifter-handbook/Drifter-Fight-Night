@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 560462486943918926}
   - component: {fileID: 4687861180655855015}
   - component: {fileID: 4159018947004831506}
+  - component: {fileID: 8851714393004837786}
   m_Layer: 5
   m_Name: CharacterSelectCard
   m_TagString: Untagged
@@ -122,6 +123,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d1925752a4980314891b5dbe83f9cfac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8851714393004837786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 462288162345788007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5993f2f06724a8e47a67b6f1cfc3fb77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &5230707295507390680
