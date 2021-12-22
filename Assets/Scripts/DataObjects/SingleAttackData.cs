@@ -25,15 +25,12 @@ public class SingleAttackData : ScriptableObject
     public float AttackDamage = 10.0f;
     public float Knockback = 10.0f;
     public float KnockbackScale = .5f;
-    #if UNITY_EDITOR
-    [Help("Indicates whether the move's hitstun scales with the opponents damage. A true value disables scaling.", UnityEditor.MessageType.Info)]
-    #endif
-    public bool hasStaticHitstun = false;
     //A value of -1 uses NO baseline hitstun
     #if UNITY_EDITOR
-    [Help("A negative numbers indicate the move has no minimum HitStun and will always use the calculated value.", UnityEditor.MessageType.Info)]
+    [Help("Use +/-x to determine advantage on hit or on shield.", UnityEditor.MessageType.Info)]
     #endif
-    public float HitStun = -1f;
+    public int HitStun = 0;
+    public int ShieldStun = 0;
 
      #if UNITY_EDITOR
     [Help("A negative value will cause the move to base hitpause on the hitstun dealt. A positive value indicates the number of effective frames of hitstun to use in hitstop calculations.", UnityEditor.MessageType.Info)]

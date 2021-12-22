@@ -380,6 +380,11 @@ public class Drifter : MonoBehaviour, INetworkInit
         return false;
     }
 
+    public float GetCurrentAnimationRemainder() {
+        AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(animationLayer);
+        return (1 - (info.normalizedTime - (int)info.normalizedTime)) * info.length;
+    }
+
   
     // public DrifterType GetDrifterType(){
     //     return DrifterTypeFromString(drifterType);

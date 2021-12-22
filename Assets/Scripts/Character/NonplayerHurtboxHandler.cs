@@ -125,7 +125,7 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
             float KB = GetKnockBack(percentage, 80, false, attackData);
 
             //Calculate hitstun duration
-            HitstunDuration = (attackData.HitStun >=0 || attackData.hasStaticHitstun)?attackData.HitStun * framerateScalar:(KB*.006f + .1f);
+            HitstunDuration = GetHitStun(null, hitbox.parent.GetComponent<Drifter>(), attackData);
 
 
             //Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f);
