@@ -262,15 +262,6 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     void Update()
     {
 
-        //Make real stage select
-
-
-        //TODO make sure 
-        //Create Character Select State when an inactive controller becomes active
-
-        //Only allow adding and removing players before characters are locked in
-
-        //Return to title if the last player left
         //Maybe remove?
         checkReturnToMenuConditions();
 
