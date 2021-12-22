@@ -51,7 +51,6 @@ public class Tombstone : NonplayerHurtboxHandler
 
     	if(listeningForGrounded && IsGrounded())
     	{
-            UnityEngine.Debug.Log("GROUNDED");
     		listeningForGrounded = false;
     		if(projectile) returnToIdle();
     		else 
@@ -224,10 +223,7 @@ public class Tombstone : NonplayerHurtboxHandler
         int count = Physics2D.RaycastNonAlloc(physicsCollider.bounds.center + physicsCollider.bounds.extents.y * Vector3.down, Vector3.down, hits, 0.2f);
 
         for (int i = 0; i < count; i++) if (hits[i].collider.gameObject.tag == "Ground" || (hits[i].collider.gameObject.tag == "Platform")) 
-        {
-            UnityEngine.Debug.Log(hits[i].collider.gameObject);
             return rb.velocity.y <=.1f;
-        }
 
         return false;
     }

@@ -118,8 +118,6 @@ public class RyykeMasterHit : MasterHit
        		if(index >2)index = 0;
        }
 
-       UnityEngine.Debug.Log(index);
-
        playState(index + state);
     }
 
@@ -176,28 +174,35 @@ public class RyykeMasterHit : MasterHit
     	float bestDistance = 100f;
     	for(int i = 0; i <3; i++)
     	{
+            //If the tombstone with ID I exists
     		if(tombstones[i] != null)
     		{
+                //Get the distance to Ryyke
     			float distance = tombstones[i].getDistance(rb.position);
 	    		
+                //If it is within the active range, and Ryyke is not burrowing
 	        	if(distance < zombieRadius && !burrowing)
 	        	{
-	        		
+                    //Disable the reset flag for empowered state if a stone is nearby
+	        		reset = false;
+                    //If the tombstone can act and it is the closer than the current closest tombstone
 	        		if(tombstones[i].canAct && distance < bestDistance)
 	        		{
+                        //Set it as the closest stone and update the distance
 	        			nearbyStone = i;
 	        			bestDistance = distance;
 	        		}
-	        		if(!tombstones[i].active)tombstones[i].playAnimation("Activate",true,true);
-	        		reset = false;
+	        		//if(!tombstones[i].active)tombstones[i].playAnimation("Activate",true,true);
+	        		
 
-	        		if(tombstones[i].active)
-	        		{
-	        			if(!Empowered)drifter.sparkle.SetState("ChargeIndicator");
-	        			Empowered = true;
-	        		}
+	        		// if(tombstones[i].active)
+	        		// {
+	        		// 	if(!Empowered)drifter.sparkle.SetState("ChargeIndicator");
+	        		// 	Empowered = true;
+	        		// }
 	        		
 	        	}
+                //Otherwise, if Ryyke is stunned, burrowing, or out of range
 	        	else if(distance >= zombieRadius || status.HasStunEffect() || burrowing)
 	        	{
 	        		//Deactivate tombstones that are not nearby
@@ -207,6 +212,33 @@ public class RyykeMasterHit : MasterHit
 	        	}
         	}
     	}
+
+        //After the closest stone is found, Activate it
+        if(nearbyStone >=0 && !tombstones[nearbyStone].active)
+        {
+            tombstones[nearbyStone].playAnimation("Activate",true,true);
+
+            //Deactivate all other active stones, so only one zombie is active at a time
+            for(int i = 0; i <3; i++)
+            {
+                if(tombstones[i] != null && i != nearbyStone && tombstones[i].active)
+                {
+                    tombstones[i].playAnimation("Deactivate",true,true);
+                    tombstones[i].active = false;
+                }
+
+            }
+        }
+        
+        //If the closest stone is already active and exists, and Ryyke is not empowered
+        else if(nearbyStone >=0 && tombstones[nearbyStone].active && !Empowered)
+        {
+            //Show the empowered sparkle
+            drifter.sparkle.SetState("ChargeIndicator");
+            Empowered = true;
+        }
+
+        //If the reset flag is set, de-empower Ryyke and hide the sparkle.
     	if(reset)
     	{
     		if(Empowered)drifter.sparkle.SetState("Hide");
