@@ -14,7 +14,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
     protected NetworkHost host;
     protected ScreenShake Shake;
 
-    static protected float framerateScalar =.0833333333f;
+    static protected float framerateScalar = 1f / 60f;
 
     // Start is called before the first frame update
     protected void Start()
@@ -77,11 +77,11 @@ public class PlayerHurtboxHandler : MonoBehaviour
             //Freezefame if hit a counter
             if(hurtbox.gameObject.name == "Counter" &&  attackData.AttackDamage >0f && attackData.hitType!=HitType.GRAB)
             {
-                Shake?.startDarkenCoroutine(5f* framerateScalar);
+                Shake?.startDarkenCoroutine(25f * framerateScalar);
                 GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.STAR, hitSparkPos,0, new Vector2(10f, 10f));
-                attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,6f * framerateScalar);
+                attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,30f * framerateScalar);
                 drifter.PlayAnimation("Counter_Success");
-                status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,3f * framerateScalar);
+                status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,15f * framerateScalar);
                 return -4;
             }
 
@@ -163,7 +163,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             }
 
             //Calculate hitstun duration
-            float HitstunDuration = (attackData.HitStun>=0 || attackData.hasStaticHitstun)?attackData.HitStun * framerateScalar:(KB*.006f + .1f);
+            float HitstunDuration = GetHitStun(drifter, attacker, attackData);
             float HitPauseDuration = HitstunDuration;
             //damage numbers managment
                 if (status != null)
@@ -251,13 +251,13 @@ public class PlayerHurtboxHandler : MonoBehaviour
                     if(attackData.StatusEffect == PlayerStatusEffect.GRABBED)
                     {
                         status.grabPoint = hitbox.gameObject.GetComponent<Collider2D>();
-                        attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,framerateScalar);
+                        attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,5f * framerateScalar);
 
                     }              	
                 }
                 //Pop playewrs out of the ground when they are already grounded
                 else if(attackData.StatusEffect == PlayerStatusEffect.PLANTED && !drifter.movement.grounded){
-                	status.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,6f * framerateScalar);
+                	status.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,30f * framerateScalar);
                 }
 
                 //Extend hitpause on kill
@@ -270,14 +270,14 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 
                 
                 if(status.HasStatusEffect(PlayerStatusEffect.ARMOUR) && attackData.hitType!=HitType.GRAB)
-                    Shake?.startDarkenCoroutine(5f* framerateScalar);
+                    Shake?.startDarkenCoroutine(25f * framerateScalar);
 
                 //apply defender hitpause
                 //If hitstop is scaled, and one is proviced, sum the hitstun duuration and the hitpause duration
                 if(attackData.HitStop >=0)
                     HitPauseDuration += attackData.HitStop * framerateScalar;
   
-                if(HitPauseDuration>0 && attackData.StatusEffect != PlayerStatusEffect.HITPAUSE )status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(isCritical || status.HasStatusEffect(PlayerStatusEffect.ARMOUR)) ? 5f* framerateScalar:((damageDealt <=2f ? .075f :Mathf.Max(HitPauseDuration*.3f ,2f * framerateScalar)) * (hadSlowmo?2f:1f)));
+                if(HitPauseDuration>0 && attackData.StatusEffect != PlayerStatusEffect.HITPAUSE )status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(isCritical || status.HasStatusEffect(PlayerStatusEffect.ARMOUR)) ? 25f* framerateScalar:((damageDealt <=2f ? .075f :Mathf.Max(HitPauseDuration*.3f ,10f * framerateScalar)) * (hadSlowmo?2f:1f)));
                 StartCoroutine(drifter.GetComponentInChildren<GameObjectShake>().Shake(attackData.StatusEffect != PlayerStatusEffect.CRINGE?HitPauseDuration*.2f:attackData.StatusDuration* framerateScalar,attackData.StatusEffect != PlayerStatusEffect.CRINGE?1.5f:2f));
 
                 returnCode = 0;             
@@ -301,11 +301,10 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 else drifter.movement.spawnJuiceParticle(hitSparkPos, MovementParticleMode.Parry);
                 //put defender in blockstun
                 if(attackData.HitStun != 0){
-                        status?.calculateFrameAdvantage(framerateScalar * (1f + Mathf.Ceil(attackData.AttackDamage/4f)),attacker.getRemainingAttackTime());
+                        status?.calculateFrameAdvantage(HitstunDuration, attacker.getRemainingAttackTime());
                         //6x blockstun on guardcrush
-                        float duration = framerateScalar * (attackData.hitType==HitType.GUARD_CRUSH ? 10f:(1f + Mathf.Ceil(attackData.AttackDamage/4f))) ;
-                        status?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, duration);
-                        status?.ApplyStatusEffect(PlayerStatusEffect.GUARDCRUSHED, duration);
+                        status?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, HitstunDuration);
+                        status?.ApplyStatusEffect(PlayerStatusEffect.GUARDCRUSHED, HitstunDuration);
                 }
 
                 returnCode = -1; 
@@ -350,7 +349,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
             //apply attacker hitpause
             if (hitbox.gameObject.tag != "Projectile" || isCritical)
-                attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(isCritical || status.HasStatusEffect(PlayerStatusEffect.ARMOUR))? 5f* framerateScalar: (damageDealt <=2f ? .074f : Mathf.Max(HitPauseDuration*.3f,2f * framerateScalar)));
+                attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(isCritical || status.HasStatusEffect(PlayerStatusEffect.ARMOUR))? 25f* framerateScalar: (damageDealt <=2f ? .074f : Mathf.Max(HitPauseDuration * .3f,2f * framerateScalar)));
 
             
 
@@ -374,7 +373,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             }
 
             if (isCritical)
-                Shake.startDarkenCoroutine(6 * framerateScalar);
+                Shake.startDarkenCoroutine(30f * framerateScalar);
 
             // Ancillary Hitsparks
             if (drifter != null && damageDealt >0f && attackFX != null)
@@ -466,6 +465,13 @@ public class PlayerHurtboxHandler : MonoBehaviour
     protected float GetKnockBack(float damageTaken, float weight, bool strong, SingleAttackData attackData) {
         return (float)(((damageTaken * 125f) / (weight + 100f) *
                          (strong?1.5f:1)) * attackData.KnockbackScale + attackData.Knockback);
+    }
+
+    protected float GetHitStun(Drifter defender, Drifter attacker, SingleAttackData attackData) {
+        int adv = attackData.HitStun;
+        if (defender != null && defender.guarding)
+            adv = attackData.ShieldStun;
+        return attacker.GetCurrentAnimationRemainder() + adv * framerateScalar;
     }
 
     // Super-armor logic

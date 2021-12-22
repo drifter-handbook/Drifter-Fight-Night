@@ -66,7 +66,7 @@ class PlayerStatusData
 public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
 {
 
-	static float framerateScalar =.0833333333f;
+	static float framerateScalar = 1f / 60f;
 
 	NetworkSync sync;
 
@@ -322,9 +322,9 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
 
 
     // //Called by playerHurtboxHandler to calculate frame advantage on hit.
-    public void calculateFrameAdvantage(float defeander,float attacker)
+    public void calculateFrameAdvantage(float defender, float attacker)
     {
-    	frameAdvantage =  ((defeander - attacker ) / framerateScalar * 12);
+    	frameAdvantage =  ((defender - attacker ) / framerateScalar);
     }
 
     //Called once per frame if the player is mashing; Reduces remaining duration of effects
