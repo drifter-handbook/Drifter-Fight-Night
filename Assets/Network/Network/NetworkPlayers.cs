@@ -22,18 +22,24 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
     // Start is called before the first frame update
     void Start()
     {
+        GameController.Instance.host.CreateNetworkObject(GameController.Instance.selectedStage);
+
+        //populate spawn points
+        spawnPoints = new List<GameObject>();
+        for(int i = 0; i <4; i++)
+            spawnPoints.Add(GameObject.Find("SpawnPoint" + i));
+
         syncFromClients = GetComponent<NetworkSyncToHost>();
 
         // create players
         foreach (CharacterSelectState charSel in CharacterMenu.charSelStates.Values)
-        {
             CreatePlayer(charSel.PeerID);
-        }
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+
         PlayerInputData input;
 
         foreach (CharacterSelectState charSel in CharacterMenu.charSelStates.Values)

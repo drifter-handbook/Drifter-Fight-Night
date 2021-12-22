@@ -227,7 +227,7 @@ public class GameController : MonoBehaviour
         // Create player characters & give them an input
         // Yeet into world and allow playing the game
         canPause = true;
-        host?.SetScene(selectedStage);
+        host?.SetScene("Combat");
     }
 
     public void EndMatch(float delay)

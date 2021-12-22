@@ -17,7 +17,7 @@ public class Tombstone : NonplayerHurtboxHandler
 	int tombstoneType = 0;
 	
 	GameObject drifter;
-	bool projectile = true;
+	public bool projectile = true;
 
 	float zombieRadius = 4.5f;
 
@@ -27,30 +27,31 @@ public class Tombstone : NonplayerHurtboxHandler
 
 	SyncAnimatorStateHost anim;
 
-	bool listeningForGrounded = true;
+	public bool listeningForGrounded = true;
 	float distanceFromParent = 0;
 
 	//Const Vector offset
 	Vector2 offset = new Vector2(0,2);
 
 	// Start is called before the first frame update
-    new void Awake()
+    void Awake()
     {
     	isHost = GameController.Instance.IsHost;
-    	if(!isHost)return;
-        base.Awake();
-    	anim = GetComponent<SyncAnimatorStateHost>();
-    	physicsCollider = GetComponentInChildren<PolygonCollider2D>();
+        rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<SyncAnimatorStateHost>();
+        physicsCollider = GetComponentInChildren<PolygonCollider2D>();
     }
 
     // // Update is called once per frame
-    void FixedUpdate()
+    new void Update()
     {
     	if(!isHost)return;
+        base.Update();
     	if(Uses <=0 && canAct)Destroy(gameObject);
 
     	if(listeningForGrounded && IsGrounded())
     	{
+            UnityEngine.Debug.Log("GROUNDED");
     		listeningForGrounded = false;
     		if(projectile) returnToIdle();
     		else 
@@ -64,7 +65,6 @@ public class Tombstone : NonplayerHurtboxHandler
 
     new void Start()
     {
-    	base.Start();
     	playAnimationEvent(tombstoneType + "_Spin");
     }
 
@@ -223,7 +223,11 @@ public class Tombstone : NonplayerHurtboxHandler
     	RaycastHit2D[] hits = new RaycastHit2D[10];
         int count = Physics2D.RaycastNonAlloc(physicsCollider.bounds.center + physicsCollider.bounds.extents.y * Vector3.down, Vector3.down, hits, 0.2f);
 
-        for (int i = 0; i < count; i++) if (hits[i].collider.gameObject.tag == "Ground" || (hits[i].collider.gameObject.tag == "Platform")) return rb.velocity.y <=.1f;
+        for (int i = 0; i < count; i++) if (hits[i].collider.gameObject.tag == "Ground" || (hits[i].collider.gameObject.tag == "Platform")) 
+        {
+            UnityEngine.Debug.Log(hits[i].collider.gameObject);
+            return rb.velocity.y <=.1f;
+        }
 
         return false;
     }

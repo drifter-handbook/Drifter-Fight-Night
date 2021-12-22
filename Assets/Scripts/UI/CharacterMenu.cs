@@ -17,7 +17,7 @@ public enum PlayerColor
 [Serializable]
 public enum BattleStage
 {
-    None,Random,Training,Moosejaw,Wendys,Treefell,Driftwood,Neotokyo,Amberriver,Hadalkeep
+    None,Random,Training,Moosejaw,Mendys,Treefell,Driftwood,Neo_Tokyo,Amber_River,Hadal_Keep
 }
 
 
@@ -35,10 +35,10 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         { PlayerColor.MAGENTA, new Color(1.0f, 0.063f, 0.565f) },
         { PlayerColor.ORANGE, new Color(1.0f, 0.55f, 0.165f) },
         { PlayerColor.CYAN, new Color(0.0f, 1.0f, 0.702f) },
-        { PlayerColor.WHITE, new Color(0.1f, 0.1f, 0.1f) },
-        { PlayerColor.GREY, new Color(0.5f, 0.5f, 0.5f) },
-        { PlayerColor.DARK_GREY, new Color(0.75f, 0.75f, 0.75f)},
-        { PlayerColor.BLACK, new Color(0.9f, 0.9f, 0.9f) }
+        { PlayerColor.WHITE, new Color(.9f, .9f, .9f) },
+        { PlayerColor.GREY, new Color(0.7f, 0.7f, 0.7f) },
+        { PlayerColor.DARK_GREY, new Color(0.5f, 0.5f, 0.5f)},
+        { PlayerColor.BLACK, new Color(0.3f, 0.3f, 0.3f) }
     };
 
     public GameObject bottomPanel;

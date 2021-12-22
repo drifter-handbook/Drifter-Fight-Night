@@ -432,6 +432,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         clearMasterhitVars();
     	drifter.returnToIdle();
         movement.updateFacing();
+        //if(checkForJumpTap())movement.jump();
         attacks.UpdateInput();
     }
 
@@ -468,6 +469,18 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         {
             if(state >0 && !drifter.input[i].Light)return true;
             else if(state == 0 && drifter.input[0].Light) state++;
+        }
+        return false;
+    }
+
+    public bool checkForJumpTap()
+    {
+        if(!isHost)return false;
+        int state = 0;
+        for(int i = 0; i < 15; i++)
+        {
+            if(state >0 && !drifter.input[i].Jump)return true;
+            else if(state == 0 && drifter.input[i].Jump) state++;
         }
         return false;
     }

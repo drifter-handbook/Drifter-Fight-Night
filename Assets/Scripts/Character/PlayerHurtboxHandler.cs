@@ -207,7 +207,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
                     //Cause the screen to shake slightly on hit, as long as the move has knockback
                     if(Shake != null && attackData.Knockback !=0){
-                        Shake.startShakeCoroutine((willCollideWithBlastZone(GetComponent<Rigidbody2D>(), HitstunDuration)?0.3f:0.15f),Mathf.Clamp((((attackData.Knockback - 10)/100f + (damageDealt-10)/44f)) * attackData.KnockbackScale,.07f,.8f));
+                        Shake.startShakeCoroutine((willCollideWithBlastZone(GetComponent<Rigidbody2D>(), HitstunDuration)?0.3f:0.15f),Mathf.Clamp((((attackData.Knockback - 10)/100f + (damageDealt-10)/44f)) * attackData.KnockbackScale,.1f,.8f));
 
                         //Shake.startShakeCoroutine(.3f,2f);
                     }

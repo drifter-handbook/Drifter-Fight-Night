@@ -862,6 +862,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8275c87f3a6a3b448e6cf19f65e07d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  color: 0
 --- !u!114 &4227515611320080144
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -935,6 +936,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxPercentage: 20
+  rb: {fileID: 0}
   healthBar: {fileID: 5787117527418930293}
   Uses: 3
   canAct: 1
@@ -988,10 +990,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4219523599779550106}
     m_Modifications:
+    - target: {fileID: 2392193091388255683, guid: c6c79391f426f2f48828a3f95303a7d7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2877694234310408140, guid: c6c79391f426f2f48828a3f95303a7d7,
         type: 3}
       propertyPath: m_Name
       value: Healthbar
+      objectReference: {fileID: 0}
+    - target: {fileID: 2877694234310408140, guid: c6c79391f426f2f48828a3f95303a7d7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2877694234310408140, guid: c6c79391f426f2f48828a3f95303a7d7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3021082228834055724, guid: c6c79391f426f2f48828a3f95303a7d7,
         type: 3}
@@ -1107,6 +1124,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8735108342018280069, guid: c6c79391f426f2f48828a3f95303a7d7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c6c79391f426f2f48828a3f95303a7d7, type: 3}

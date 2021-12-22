@@ -692,26 +692,26 @@ public class PlayerMovement : MonoBehaviour
     //Public jump method allows for forced jumps from attacks
     public void jump()
     {
-        jumping = true;
-        if(ledgeHanging)DropLedge();
+        if (currentJumps > 0)
+        {
+            jumping = true;
+            if(ledgeHanging)DropLedge();
             //jump
-            if (currentJumps > 0)
-            {
-                gravityPaused = false;
-                currentJumps--;
-                if(!grounded)drifter.PlayAnimation("Air_Jump_Start");
-                else drifter.PlayAnimation(drifter.JumpStartStateName);
-                //Particles
-                if(IsGrounded()){
-                    spawnJuiceParticle(transform.position + particleOffset + new Vector3(0,-1,0), MovementParticleMode.Jump);
-                }
-                else{
-                    spawnJuiceParticle(transform.position + particleOffset +new Vector3(0,-1,0), MovementParticleMode.DoubleJump);
-                }
-                //jump needs a little delay so character animations can spend
-                //a frame of two preparing to jump
-                jumpCoroutine = StartCoroutine(DelayedJump());
-            }
+            gravityPaused = false;
+            currentJumps--;
+            if(!grounded)drifter.PlayAnimation("Air_Jump_Start");
+            else drifter.PlayAnimation(drifter.JumpStartStateName);
+            //Particles
+            if(IsGrounded())
+                spawnJuiceParticle(transform.position + particleOffset + new Vector3(0,-1,0), MovementParticleMode.Jump);
+            
+            else
+                spawnJuiceParticle(transform.position + particleOffset +new Vector3(0,-1,0), MovementParticleMode.DoubleJump);
+            
+            //jump needs a little delay so character animations can spend
+            //a frame of two preparing to jump
+            jumpCoroutine = StartCoroutine(DelayedJump());
+        }
     }
 
     public bool dash()

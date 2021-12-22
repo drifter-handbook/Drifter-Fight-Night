@@ -18,7 +18,7 @@ public class ScreenShake : MonoBehaviour , INetworkInit
    Coroutine CurrentDarken;
 
    public Drifter[] drifters;
-   public GameObject Background;
+   List<GameObject> paralaxLayers;
 
    void Awake()
    {
@@ -34,15 +34,30 @@ public class ScreenShake : MonoBehaviour , INetworkInit
         NetworkUtils.RegisterChildObject("Dynamic_Background", transform.Find("Dynamic_Background").gameObject);
    }
 
+   public void Start()
+   {
+      //Populate a lsit of paralax layers from the instantiated stage
+      paralaxLayers = new List<GameObject>();
+      for(int i = 0; i <5; i++)
+         paralaxLayers.Add(GameObject.Find("Paralax_" + i));
+   }
+
 
    void Update()
    {
       if(drifters == null || !DynamicCamera || killing) return;
+      //Get cneterpoint once per frame to save on performance.
+      Vector3 centerpoint = CalculateCenter();
 
       if(CurrentShake == null) 
       {
-         transform.localPosition = Vector3.Lerp(CalculateCenter(),transform.localPosition,Time.deltaTime/1.5f);
-         if(Background != null)Background.transform.localPosition = Vector3.Lerp(CalculateCenter()/2f,transform.localPosition,Time.deltaTime/1.5f);
+         transform.localPosition = Vector3.Lerp(centerpoint,transform.localPosition,Time.deltaTime/1.5f);
+         for(int i = 0; i < paralaxLayers.Count; i++)
+         {
+            //If the paralax layer at index i exists, adjust its position accordingly
+            if(paralaxLayers[i] != null)
+               paralaxLayers[i].transform.localPosition = Vector3.Lerp(centerpoint/(7.5f-1.5f*i),transform.localPosition,Time.deltaTime/1.5f);
+         }
       }
 
       if(!killing) self.orthographicSize = CalculateZoom();
@@ -92,7 +107,6 @@ public class ScreenShake : MonoBehaviour , INetworkInit
    			float y = origPos.y + Random.Range(-.5f,.5f) * magnitude * self.orthographicSize/15f;
 
    			transform.localPosition = new Vector3(x,y,origPos.z);
-            if(Background != null && DynamicCamera)Background.transform.localPosition = new Vector3(x/2f,y/2f,origPos.z);
             // self.orthographicSize += Random.Range(-2f,2f) * magnitude;
 
    			elapsed += Time.deltaTime;

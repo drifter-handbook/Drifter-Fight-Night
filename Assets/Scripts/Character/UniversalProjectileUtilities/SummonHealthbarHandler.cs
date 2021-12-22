@@ -30,20 +30,20 @@ public class SummonHealthbarHandler : MonoBehaviour
     }
 
     //TODO Make this not awful, and make it work for multiplayer
-    void Start()
-    {
-        foreach (Image barChild in GetComponentsInChildren<Image>(true))
-        {
-            //Currently doesnt work for clients, and clients would not recieve color data in time
-            barChild.color = CharacterMenu.ColorFromEnum[(PlayerColor)rectTransform.transform.parent.gameObject.GetComponent<SyncProjectileColorDataHost>().color];
-        }
-        GetComponent<Image>().color = UnityEngine.Color.white;
-    }
+    // void Start()
+    // {
+    //     foreach (Image barChild in GetComponentsInChildren<Image>(true))
+    //     {
+    //         //Currently doesnt work for clients, and clients would not recieve color data in time
+    //         barChild.color = CharacterMenu.ColorFromEnum[(PlayerColor)rectTransform.transform.parent.gameObject.GetComponent<SyncProjectileColorDataHost>().color];
+    //     }
+    //     GetComponent<Image>().color = UnityEngine.Color.white;
+    // }
 
     // Update is called once per frame
     void Update()
     {
-        if(barFadeTime <maxBarFadeTime)
+        if(barFadeTime < maxBarFadeTime)
         {
         	barFadeTime += Time.deltaTime;
         	if(barFadeTime >=maxBarFadeTime)

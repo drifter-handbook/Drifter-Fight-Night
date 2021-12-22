@@ -6,7 +6,6 @@ using UnityEngine;
 public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
 {
     public ScreenShake Shake;
-    public Animator endgameBanner;
     //public List<int> deadByOrder = new List<int>(); //keeps track of who died in what order
 
     int startingPlayers;
@@ -113,8 +112,6 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                     {
 
                         GameController.Instance.winnerOrder = playerList;
-
-                        endgameBanner.enabled = true;
 
                         UnityEngine.Debug.Log("ENDING GAME");
                         

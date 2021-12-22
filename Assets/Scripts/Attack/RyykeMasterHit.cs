@@ -164,7 +164,7 @@ public class RyykeMasterHit : MasterHit
        		Destroy(tombstones[tombstoneIndex].gameObject);
        }
 
-       stone.GetComponent<SyncAnimatorStateHost>().SetState(tombstoneIndex + "_Idle");
+       //stone.GetComponent<SyncAnimatorStateHost>().SetState(tombstoneIndex + "_Spin");
        stone.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
        tombstones[tombstoneIndex] = stone.GetComponent<Tombstone>().setup(tombstoneIndex,facing,attacks,drifter.gameObject,zombieRadius);
        tombstones[tombstoneIndex].throwStone(mode);

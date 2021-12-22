@@ -39,8 +39,10 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
 
     public SummonHealthbarHandler healthBar;
 
-    protected void Awake()
+    new void Start()
     {
+        base.Start();
+        if(!GameController.Instance.IsHost)return;
         rb = GetComponent<Rigidbody2D>();
     }
 
