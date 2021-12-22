@@ -192,6 +192,8 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         GameObject cursor = GameController.Instance.host.CreateNetworkObject("CharacterCursor",characterRows[drifterLoc[0]][drifterLoc[1]].transform.position, transform.rotation);
         cursor.GetComponent<SpriteRenderer>().color = ColorFromEnum[(PlayerColor)(peerID+1)];
 
+        GameObject card = GameController.Instance.host.CreateNetworkObject("CharacterSelectCard",new Vector2(-20 + 13.5f * ((peerID +1) % 4),-9), transform.rotation);
+
         charSelStates.Add(peerID,new CharacterSelectState()
         {
             PeerID = peerID,
@@ -202,10 +204,8 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
             StageType = BattleStage.None,
         });
 
-        GameObject card = GameController.Instance.host.CreateNetworkObject("CharacterSelectCard",new Vector2(-20 + 13.5f * ((peerID +1) % 4),-9), transform.rotation);
-
         card.transform.SetParent(gameObject.transform , false);
-
+        card.GetComponent<CharacterCard>().SetCharacter(drifter);
         playerCards.Add(peerID,card);
 
         //Fix this for multiple input devices
@@ -456,11 +456,15 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         {
             DrifterType selected = matrix[p_cursor.y][p_cursor.x].GetComponent<CharacterSelectPortrait>().drifterType;
             p_cursor.PlayerType = (p_cursor.PlayerType == DrifterType.None || p_cursor.PlayerType != selected)?selected:DrifterType.None;
+            playerCards[p_cursor.PeerID].GetComponent<CharacterCard>().SetCharacter(p_cursor.PlayerType);
+
         }
         else if(input.Light && !p_cursor.prevInput.Light && phase >=3)
         {
             BattleStage selected = matrix[p_cursor.y][p_cursor.x].GetComponent<CharacterSelectPortrait>().StageType;
             p_cursor.StageType = (p_cursor.StageType == BattleStage.None || p_cursor.StageType != selected)?selected:BattleStage.None;
+            //This might need some work if it needs to be more flashy
+            playerCards[p_cursor.PeerID].GetComponent<CharacterCard>().SetStage(matrix[p_cursor.y][p_cursor.x].GetComponent<CharacterSelectPortrait>().portrait.sprite);
         }
         
         //Deselect on special press

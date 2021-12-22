@@ -3,20 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Shows players and selected character [View]
-public class CharacterCard : MonoBehaviour
+public class CharacterCard : MonoBehaviour , INetworkInit
 {
-    public SpriteRenderer character;
     public SpriteRenderer stage;
     public SpriteRenderer flourish;
 
-    public void SetCharacter(DrifterType drifter)
-    {
+    SyncAnimatorStateHost anim;
 
+    void Awake()
+    {
+        anim = GetComponentInChildren<SyncAnimatorStateHost>();
     }
 
-    public void setStage(BattleStage stage)
+    public void OnNetworkInit()
     {
+        NetworkUtils.RegisterChildObject("Card", transform.Find("Character").gameObject);
+    }
 
+    public void SetCharacter(DrifterType drifter)
+    {
+        anim.SetState(drifter.ToString().Replace("_", " "));
+    }
+
+    public void SetStage(Sprite sprite)
+    {
+        stage.sprite = sprite;
     }
 
     public void setColor(int color)

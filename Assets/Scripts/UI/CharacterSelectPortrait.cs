@@ -6,4 +6,5 @@ public class CharacterSelectPortrait : MonoBehaviour
 {
 	public BattleStage StageType = BattleStage.None;
 	public DrifterType drifterType = DrifterType.None;
+	public SpriteRenderer portrait;
 }

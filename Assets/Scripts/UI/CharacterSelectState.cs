@@ -8,7 +8,6 @@ public class CharacterSelectState
     public BattleStage StageType = BattleStage.None;
     public int x = 7;
     public int y = 1;
-    public string stage = "";
     public GameObject Cursor;
     public PlayerInputData prevInput;
 }
