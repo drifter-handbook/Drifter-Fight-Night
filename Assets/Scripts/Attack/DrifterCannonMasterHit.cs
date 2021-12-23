@@ -9,6 +9,8 @@ public class DrifterCannonMasterHit : MasterHit
     bool jumpGranted = false;
     int charge = 1;
 
+    bool listeningForWallbounce = false;
+
     void Update()
     {
     	if(!isHost)return;
@@ -21,6 +23,17 @@ public class DrifterCannonMasterHit : MasterHit
     	}
 
         if(jumpGranted && movement.grounded)jumpGranted = false;
+
+        if(movement.wallSliding != Vector3.zero && listeningForWallbounce)
+        {
+        	listeningForWallbounce = false;
+            drifter.PlayAnimation("W_Side_End_Early");
+            rb.velocity = new Vector2(movement.Facing * -15f,30f);
+            if(!jumpGranted && movement.currentJumps <= movement.numberOfJumps -1) movement.currentJumps++;
+            jumpGranted = true;
+            GraphicalEffectManager.Instance.CreateMovementParticle(MovementParticleMode.Restitution,rb.position + new Vector2(facing * .5f,0), (facing > 0)?90:-90,Vector3.one);
+            unpauseGravity();
+        }
     }
 
     public void SairExplosion()
@@ -62,20 +75,17 @@ public class DrifterCannonMasterHit : MasterHit
        }
     }
 
-    public void wallBounce()
+    public void listenForWallBounce()
     {
         if(!isHost)return;
-
-        if(movement.wallSliding != Vector3.zero)
-        {
-            rb.velocity = new Vector2(movement.Facing * -15f,30f);
-            drifter.PlayAnimation("W_Side_End_Early");
-            if(!jumpGranted && movement.currentJumps <= movement.numberOfJumps -1) movement.currentJumps++;
-            jumpGranted = true;
-            GraphicalEffectManager.Instance.CreateMovementParticle(MovementParticleMode.Restitution,rb.position + new Vector2(facing * .5f,0), (facing > 0)?90:-90,Vector3.one);
-            unpauseGravity();
-        }
+        listeningForWallbounce = true;
     }
+
+    public new void clearMasterhitVars()
+    {
+        base.clearMasterhitVars();
+        listeningForWallbounce = false;
+    } 
 
     public void UpAirExplosion()
     {
