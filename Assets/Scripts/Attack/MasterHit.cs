@@ -550,12 +550,4 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         if(!isHost)return;
         drifter.parrying = false;
     }
-
-    public abstract void roll();
-
-    public abstract void rollGetupStart();
-    
-
-    public abstract void rollGetupEnd();
-   
 }

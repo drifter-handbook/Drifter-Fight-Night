@@ -435,14 +435,14 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.velocity = Vector2.zero;
             //Roll Onto Ledge
-            if(drifter.input[0].Guard)
-            {
-                status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,framerateScalar * 2);
-                drifter.PlayAnimation(drifter.LedgeRollStateName);
-            }
+            // if(drifter.input[0].Guard)
+            // {
+            //     status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,framerateScalar * 2);
+            //     drifter.PlayAnimation(drifter.LedgeRollStateName);
+            // }
 
             //Jump away from ledge
-            else if((drifter.input[0].MoveX * (flipSprite?-1:1) * Facing < 0)){
+            if((drifter.input[0].MoveX * (flipSprite?-1:1) * Facing < 0)){
                 DropLedge();
                 drifter.returnToIdle();
 

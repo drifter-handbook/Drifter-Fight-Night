@@ -187,36 +187,6 @@ public class DrifterCannonMasterHit : MasterHit
             hitbox.Facing = facing;
        }
     }
-
-
-    //Roll Methods
-
-    public override void roll()
-    {
-        if(!isHost)return;
-        facing = movement.Facing;
-        applyEndLag(1);
-        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,4f * framerateScalar);
-        rb.velocity = new Vector2(facing * 35f,0f);
-    }
-
-
-    public override void rollGetupStart()
-    {
-        if(!isHost)return;
-        applyEndLag(1);
-        rb.position += new Vector2(facing * 1f,4.5f);
-    }
-
-    public override void rollGetupEnd()
-    {
-        if(!isHost)return;
-        facing = movement.Facing;
-        movement.gravityPaused = false;
-        rb.gravityScale = gravityScale;
-        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,4f * framerateScalar);
-        rb.velocity = new Vector2(facing * 35f,5f);
-    }
 }
 
 

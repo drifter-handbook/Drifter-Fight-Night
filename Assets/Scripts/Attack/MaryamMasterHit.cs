@@ -91,37 +91,6 @@ public class MaryamMasterHit : MasterHit
         movement.terminalVelocity = terminalVelocity;
     }
 
-    //Roll Methods
-
-    public override void roll()
-    {
-        if(!isHost)return;
-        facing = movement.Facing;
-        applyEndLag(1);
-        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.2f);
-        rb.velocity = new Vector2(facing * 35f,0f);
-    }
-
-
-    public override void rollGetupStart()
-    {
-        if(!isHost)return;
-        applyEndLag(1);
-        rb.position += new Vector2(facing * 1f,6f);
-    }
-
-
-    public override void rollGetupEnd()
-    {
-        if(!isHost)return;
-        facing = movement.Facing;
-        movement.gravityPaused = false;
-        rb.gravityScale = gravityScale;
-        rb.velocity = new Vector2(facing * 30f,0f);
-    }
-
-
-
     //Shotgun explosion projectiles
     public void SGJabExplosion()
     {

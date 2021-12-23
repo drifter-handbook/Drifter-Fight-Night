@@ -217,26 +217,4 @@ public class LucilleMasterHit : MasterHit
         movement.currentJumps++;
         jumpGranted = true;
     }
-
-
-
-    public override void roll()
-    {
-        if(!isHost)return;
-        facing = movement.Facing;
-        applyEndLag(1);
-        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,4f * framerateScalar);
-    }
-
-    public override void rollGetupStart()
-    {
-        //unused
-    }
-
-    public override void rollGetupEnd()
-    {
-        if(!isHost)return;
-        facing = movement.Facing;
-        rb.position += new Vector2(8.5f* facing,5.8f);
-    }
 }
