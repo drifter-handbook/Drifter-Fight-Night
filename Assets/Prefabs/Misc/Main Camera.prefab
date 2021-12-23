@@ -254,6 +254,16 @@ PrefabInstance:
       propertyPath: m_WasSpriteAssigned
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 43271306552000443, guid: 46cd1eeb91382e444960d1675ed695f7,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 43271306552000443, guid: 46cd1eeb91382e444960d1675ed695f7,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 4220832211443802049, guid: 46cd1eeb91382e444960d1675ed695f7,
         type: 3}
       propertyPath: NetworkType
@@ -277,7 +287,7 @@ PrefabInstance:
     - target: {fileID: 5766170612931467240, guid: 46cd1eeb91382e444960d1675ed695f7,
         type: 3}
       propertyPath: m_MaskInteraction
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7419451914891243370, guid: 46cd1eeb91382e444960d1675ed695f7,
         type: 3}

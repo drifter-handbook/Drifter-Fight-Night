@@ -10,19 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 193b57c47c6e0024ebee715bea3d6f17, type: 3}
-  m_Name: Portal_Explosion_3
+  m_Name: Grab_Ground_Launcher
   m_EditorClassIdentifier: 
-  AttackDamage: 19
-  Knockback: 30
-  KnockbackScale: 0.5
-  HitStun: 12
+  AttackDamage: 1
+  Knockback: 22
+  KnockbackScale: 0.2
+  HitStun: 6
   ShieldStun: 0
   HitStop: -1
-  hitType: 1
-  mirrorKnockback: 1
-  AngleOfImpact: 55
-  StatusEffect: 5
-  StatusDuration: 24
-  HitFX: {fileID: 0}
+  hitType: 0
+  mirrorKnockback: 0
+  AngleOfImpact: 65
+  StatusEffect: 20
+  StatusDuration: 0.1
+  HitFX: {fileID: 11400000, guid: c40ffbef4bd5ad54dbc61660fa4d822a, type: 2}
   canHitGrounded: 1
   canHitAerial: 1

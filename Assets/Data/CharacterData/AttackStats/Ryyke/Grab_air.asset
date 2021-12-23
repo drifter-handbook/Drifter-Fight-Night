@@ -10,13 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 193b57c47c6e0024ebee715bea3d6f17, type: 3}
-  m_Name: Grab_air
+  m_Name: Grab_Air
   m_EditorClassIdentifier: 
   AttackDamage: 1
   Knockback: 10
   KnockbackScale: 0.1
-  hasStaticHitstun: 0
   HitStun: 1
+  ShieldStun: 0
+  HitStop: -1
   hitType: 2
   mirrorKnockback: 0
   AngleOfImpact: 45
