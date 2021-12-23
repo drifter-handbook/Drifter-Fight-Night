@@ -403,6 +403,7 @@ public class RyykeMasterHit : MasterHit
         burrowing = true;
         burrowTime = maxBurrowTime;
         listenForLedge(true);
+        movement.cancelJump();
 
     }
 
