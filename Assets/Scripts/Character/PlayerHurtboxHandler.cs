@@ -240,8 +240,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
                 	if(attackData.StatusEffect == PlayerStatusEffect.PLANTED && !status.HasStatusEffect(PlayerStatusEffect.PLANTED)) GetComponent<Rigidbody2D>().velocity = Vector3.down*5f;
                 	status.ApplyStatusEffect(attackData.StatusEffect, (attackData.StatusEffect == PlayerStatusEffect.PLANTED || attackData.StatusEffect == PlayerStatusEffect.AMBERED?
-                                                                    attackData.StatusDuration * framerateScalar *2f* 4f/(1f+Mathf.Exp(-0.03f * (drifter.DamageTaken -80f))):
-                                                                    attackData.StatusDuration * framerateScalar));
+                                                                    attackData.StatusDuration * 4f/(1f+Mathf.Exp(-0.03f * (drifter.DamageTaken -80f))):
+                                                                    attackData.StatusDuration));
 
                     // if(attackData.StatusEffect == PlayerStatusEffect.ORBO)
                     //     SpawnOrboHandler(hitbox.parent,hurtbox.parent,(int)attackData.StatusDuration);
