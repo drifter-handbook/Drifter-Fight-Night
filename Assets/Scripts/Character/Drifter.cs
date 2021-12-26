@@ -158,7 +158,7 @@ public class Drifter : MonoBehaviour, INetworkInit
     public void Start()
     {
         Stocks = !GameController.Instance.IsTraining ? 4:999;
-        if(drifterType==DrifterType.Sandbag)SetColor(8);
+        //if(drifterType==DrifterType.Sandbag)SetColor(8);
         DamageTaken = 0f;
 
         terminalVelocity = movement.terminalVelocity;
@@ -217,7 +217,7 @@ public class Drifter : MonoBehaviour, INetworkInit
         transform.GetChild(0).GetComponent<SpriteRenderer>().color = CharacterMenu.ColorFromEnum[(PlayerColor)myColor];
         transform.GetChild(2).GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)myColor]);
         if(isHost){
-            transform.GetChild(0).GetComponent<SyncAnimatorStateHost>().SetState("P" + (colorID + 1));
+            transform.GetChild(0).GetComponent<SyncAnimatorStateHost>().SetState( (colorID < 8)?"P" + (colorID + 1):"P9");
             gameObject.GetComponent<SyncColorDataHost>().setColor(myColor);
         }
     }
