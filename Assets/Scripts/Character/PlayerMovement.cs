@@ -720,6 +720,7 @@ public class PlayerMovement : MonoBehaviour
         {
             // drifter.canSpecialCancelFlag = true;
             // drifter.listenForSpecialCancel = true;
+            status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.7f);
             accelerationPercent = 0;
             dashLock = .5f;
             spawnJuiceParticle(BodyCollider.bounds.center + new Vector3(Facing * (flipSprite?-1:1)* 1.5f,0), MovementParticleMode.Dash_Ring, Quaternion.Euler(0f,0f,0f), false);

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &6259111314670813505
+--- !u!114 &7166794766402292572
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 5042137962990405991}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b3bd34121433ff4db4503e4605c9ab6, type: 3}
+  m_Script: {fileID: 11500000, guid: 64e2f60dc2428f54da6a61524f968914, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  assetPathName: Sandbag
+  assetPathName: 
   facing: 0
 --- !u!1001 &7447880543064985270
 PrefabInstance:
@@ -191,6 +191,16 @@ PrefabInstance:
       propertyPath: inactiveFriction
       value: 0.8
       objectReference: {fileID: 0}
+    - target: {fileID: 3106753082241659641, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: jumpHeight
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 3106753082241659641, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: jumpTime
+      value: 0.6
+      objectReference: {fileID: 0}
     - target: {fileID: 3106753082241659643, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -310,7 +320,7 @@ PrefabInstance:
     - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: AttackMap.Array.size
-      value: 4
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
@@ -330,7 +340,7 @@ PrefabInstance:
     - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: AttackMap.Array.data[3].attack
-      value: 2
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
@@ -361,6 +371,94 @@ PrefabInstance:
       propertyPath: AttackMap.Array.data[1].hasAirVariant
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[4].attack
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[4].attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: 86fcf97a980c5bd40826abcc6c7ea67b,
+        type: 2}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[5].attack
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[5].attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: 86fcf97a980c5bd40826abcc6c7ea67b,
+        type: 2}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[6].attack
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[6].attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: 86fcf97a980c5bd40826abcc6c7ea67b,
+        type: 2}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[7].attack
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[7].attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: 86fcf97a980c5bd40826abcc6c7ea67b,
+        type: 2}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[8].attack
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[8].attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: 86fcf97a980c5bd40826abcc6c7ea67b,
+        type: 2}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[9].attack
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[9].attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: 86fcf97a980c5bd40826abcc6c7ea67b,
+        type: 2}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[10].attack
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[10].attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: 86fcf97a980c5bd40826abcc6c7ea67b,
+        type: 2}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[11].attack
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[11].attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: 86fcf97a980c5bd40826abcc6c7ea67b,
+        type: 2}
     m_RemovedComponents:
     - {fileID: 271773049362604864, guid: 03006bf76a5e1274aaf3da8b9c69d8f9, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 03006bf76a5e1274aaf3da8b9c69d8f9, type: 3}

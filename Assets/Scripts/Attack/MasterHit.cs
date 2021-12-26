@@ -171,7 +171,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
             queuedStateTrigger = true;
             lightTappedFlag = false;
         }
-        else if(drifter.canSpecialCancel() && checkForSpecialTap(15) & !status.HasEnemyStunEffect())
+        else if(drifter.canSpecialCancel() && !attacks.grabPressed() && attacks.specialPressed() && !status.HasEnemyStunEffect())
         {
             int dir = (int)checkForDirection(8);
             attacks.useSpecial();
