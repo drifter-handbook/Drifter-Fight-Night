@@ -30,7 +30,7 @@ AnimationClip:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 0.25
+        time: 0.41666666
         value: 1
         inSlope: Infinity
         outSlope: Infinity
@@ -49,7 +49,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.25
+        time: 0.41666666
         value: -0.0073509216
         inSlope: 0
         outSlope: 0
@@ -68,7 +68,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.25
+        time: 0.41666666
         value: 0.21756516
         inSlope: 0
         outSlope: 0
@@ -87,7 +87,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.25
+        time: 0.41666666
         value: 0.21582031
         inSlope: 0
         outSlope: 0
@@ -107,20 +107,17 @@ AnimationClip:
     - time: 0
       value: {fileID: -4053190879614581094, guid: 4fc1abb216396174c87dffc236f7442e,
         type: 3}
-    - time: 0.083333336
+    - time: 0.16666667
       value: {fileID: 1147369997332531275, guid: 4fc1abb216396174c87dffc236f7442e,
         type: 3}
-    - time: 0.16666667
+    - time: 0.25
       value: {fileID: -2288543588758447684, guid: 4fc1abb216396174c87dffc236f7442e,
         type: 3}
-    - time: 0.25
+    - time: 0.41666666
       value: {fileID: -3323560694674871167, guid: 4fc1abb216396174c87dffc236f7442e,
         type: 3}
-    - time: 0.33333334
+    - time: 0.5833333
       value: {fileID: -1864730629476620553, guid: 4fc1abb216396174c87dffc236f7442e,
-        type: 3}
-    - time: 0.41666666
-      value: {fileID: -70091064209555782, guid: 4fc1abb216396174c87dffc236f7442e,
         type: 3}
     attribute: m_Sprite
     path: 
@@ -174,13 +171,12 @@ AnimationClip:
     - {fileID: -2288543588758447684, guid: 4fc1abb216396174c87dffc236f7442e, type: 3}
     - {fileID: -3323560694674871167, guid: 4fc1abb216396174c87dffc236f7442e, type: 3}
     - {fileID: -1864730629476620553, guid: 4fc1abb216396174c87dffc236f7442e, type: 3}
-    - {fileID: -70091064209555782, guid: 4fc1abb216396174c87dffc236f7442e, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.5
+    m_StopTime: 0.75
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -209,7 +205,7 @@ AnimationClip:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 0.25
+        time: 0.41666666
         value: 1
         inSlope: Infinity
         outSlope: Infinity
@@ -228,7 +224,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.25
+        time: 0.41666666
         value: -0.0073509216
         inSlope: 0
         outSlope: 0
@@ -247,7 +243,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.25
+        time: 0.41666666
         value: 0.21756516
         inSlope: 0
         outSlope: 0
@@ -266,7 +262,7 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.25
+        time: 0.41666666
         value: 0.21582031
         inSlope: 0
         outSlope: 0
@@ -285,35 +281,35 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.083333336
-    functionName: setXVelocityMin
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 20
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.083333336
+  - time: 0.16666667
     functionName: setYVelocity
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 17
     intParameter: 0
     messageOptions: 0
-  - time: 0.25
+  - time: 0.16666667
+    functionName: setXVelocityMin
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 20
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.41666666
     functionName: SetRolling
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 33
     intParameter: 0
     messageOptions: 0
-  - time: 0.5
+  - time: 0.75
     functionName: listenForSpecialReleased
     data: W_Side_End
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.5
+  - time: 0.75
     functionName: playState
     data: W_Side_Loop
     objectReferenceParameter: {fileID: 0}
