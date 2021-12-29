@@ -8,7 +8,7 @@ public class HitboxCollision : MonoBehaviour
     public NetworkSync playerType;
 
     public bool isActive = true;
-
+    public bool destroyParentOnHit = false;
     public int AttackID { get; set; }
     public DrifterAttackType AttackType { get; set; }
     public bool Active { get; set; } = true;
@@ -71,6 +71,7 @@ public class HitboxCollision : MonoBehaviour
                 hitResult = hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, AttackData);
             }
             if(hitResult >= -1 && drifter.canSpecialCancelFlag)drifter.listenForSpecialCancel = true;
+            if(hitResult >= -2 && destroyParentOnHit)Destroy(gameObject.transform.parent.gameObject);
             //Debug.Log("Hit result of: " + hitResult + "  For attack id: " + AttackID+ "  And AttackType: " + AttackType);
         }
     }

@@ -62,6 +62,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 6327158609564964814}
   playerType: {fileID: 0}
+  isActive: 1
+  destroyParentOnHit: 1
   OverrideData: {fileID: 11400000, guid: f717fef1328f1c04eb3cc13a748dc361, type: 2}
   AttackData: {fileID: 0}
 --- !u!1 &6327158609564964814
@@ -80,7 +82,6 @@ GameObject:
   - component: {fileID: 5581584887805751745}
   - component: {fileID: 3498156493601320348}
   - component: {fileID: 2090563671142725949}
-  - component: {fileID: 8372264569274558435}
   m_Layer: 0
   m_Name: Ranch2
   m_TagString: Untagged
@@ -244,15 +245,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   duration: -1
---- !u!114 &8372264569274558435
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6327158609564964814}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e616ba64b17e466408d647622dd28ac7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
