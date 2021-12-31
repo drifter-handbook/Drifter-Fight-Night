@@ -61,6 +61,7 @@ public class PlayerAttacks : MonoBehaviour
 
     public int maxRecoveries = 1;
 
+    public bool shareRecoveries = false;
 
     [NonSerialized]
     public int currentUpRecoveries;
@@ -136,22 +137,37 @@ public class PlayerAttacks : MonoBehaviour
         if(drifter.input[0].MoveY > 0 && currentUpRecoveries > 0)
             {
                 StartAttack(DrifterAttackType.W_Up);
-                currentUpRecoveries--;
+                if(shareRecoveries)
+                    decrementAllRecoveries();
+                else
+                    currentUpRecoveries--;
             }
             else if((!W_Down_Is_Recovery || currentDownRecoveries > 0) && drifter.input[0].MoveY < 0)
             {
                 StartAttack(DrifterAttackType.W_Down);
-                if(W_Down_Is_Recovery)currentDownRecoveries--;
+                if(W_Down_Is_Recovery)
+                    if(shareRecoveries)
+                        decrementAllRecoveries();
+                    else
+                        currentDownRecoveries--;
             }
             else if((!W_Side_Is_Recovery || currentSideRecoveries > 0) &&drifter.input[0].MoveX!=0)
             {
                 StartAttack(DrifterAttackType.W_Side);
-                if(W_Side_Is_Recovery)currentSideRecoveries--;
+                if(W_Side_Is_Recovery)
+                    if(shareRecoveries)
+                        decrementAllRecoveries();
+                    else
+                        currentSideRecoveries--;
             }
-            else if((!W_Neutral_Is_Recovery || currentNeutralRecoveries > 0) &&drifter.input[0].MoveY==0 && drifter.input[0].MoveX==0)
+            else if((!W_Neutral_Is_Recovery || currentNeutralRecoveries > 0) && drifter.input[0].MoveY==0 && drifter.input[0].MoveX==0)
             {
                 StartAttack(DrifterAttackType.W_Neutral);
-                if(W_Neutral_Is_Recovery)currentNeutralRecoveries--;
+                if(W_Neutral_Is_Recovery)
+                    if(shareRecoveries)
+                        decrementAllRecoveries();
+                    else
+                        currentNeutralRecoveries--;
                 
             }
     }
@@ -225,6 +241,14 @@ public class PlayerAttacks : MonoBehaviour
             else return _superPressed;
 
         return _superPressed;
+    }
+
+    void decrementAllRecoveries()
+    {
+        currentUpRecoveries--;
+        currentDownRecoveries--;
+        currentSideRecoveries--;
+        currentNeutralRecoveries--;
     }
 
     public void resetRecovery(){
