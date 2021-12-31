@@ -16,9 +16,9 @@ public class LedgeGrabCollision : MonoBehaviour
 
     // Update is called once per frame
 
-    void OnTriggerEnter2D(Collider2D col){
+    void OnTriggerStay2D(Collider2D col){
 
-    	if(col.gameObject.tag == "Ledge" && !col.GetComponent<HopUp>().locked && !status.HasEnemyStunEffect()){
+    	if(col.gameObject.tag == "Ledge" && !col.GetComponent<HopUp>().locked && !status.HasEnemyStunEffect() && !movement.ledgeHanging){
     		movement.GrabLedge(col.gameObject.transform.position);
     	}
 
@@ -26,14 +26,13 @@ public class LedgeGrabCollision : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D col){
 
-    	if(col.gameObject.tag == "Ledge"){
+    	if(col.gameObject.tag == "Ledge" && movement.ledgeHanging){
     		movement.DropLedge();
-
-    		StartCoroutine(FlicerLedgebox());
+    		StartCoroutine(FlickerLedgebox());
     	}
     }
 
-    IEnumerator FlicerLedgebox(){
+    IEnumerator FlickerLedgebox(){
     	ledgeBox.enabled = false;
     	yield return new WaitForSeconds(.5f);
     	ledgeBox.enabled = true;

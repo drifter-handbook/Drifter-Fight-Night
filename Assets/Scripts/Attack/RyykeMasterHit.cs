@@ -24,9 +24,6 @@ public class RyykeMasterHit : MasterHit
 	//2 Down Stone
 	Tombstone[] tombstones = new Tombstone[] {null,null,null};
 
-    
-
-
 	//Index of the next stone to place
 	int tombstoneIndex = 0;
 
@@ -59,8 +56,6 @@ public class RyykeMasterHit : MasterHit
        				Destroy(tombstones[i].gameObject);
        		
         }
-
-        
 
         if(listeningForDirection)
         {
@@ -277,6 +272,8 @@ public class RyykeMasterHit : MasterHit
             playState("W_Up_Ledge");
 
         }
+        else
+            TetherPoint = Vector3.zero;
 
         arm = host.CreateNetworkObject("Ryyke_Arm", transform.position + pos, Quaternion.Euler(0,0,angle));
         arm.transform.localScale = new Vector3(10f * facing, 10f , 1f);
@@ -321,7 +318,7 @@ public class RyykeMasterHit : MasterHit
             rb.velocity = 10f * dir;
             armTether.setSpeed(.5f);
    
-            TetherPoint=Vector3.zero;
+            //TetherPoint=Vector3.zero;
         }
     }
     public void deleteArm()
@@ -329,7 +326,6 @@ public class RyykeMasterHit : MasterHit
         if(arm != null)Destroy(arm);
         arm = null;
         armTether= null;
-
     }
 
     public void disableArmHitbox()

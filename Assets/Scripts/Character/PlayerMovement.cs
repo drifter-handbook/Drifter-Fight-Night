@@ -668,6 +668,7 @@ public class PlayerMovement : MonoBehaviour
         attacks.resetRecovery();      
         
         currentJumps = numberOfJumps;
+        currentDashes = numberOfDashes;
 
         rb.velocity = Vector2.zero;
     }

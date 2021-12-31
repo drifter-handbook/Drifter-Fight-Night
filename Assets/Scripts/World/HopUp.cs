@@ -9,7 +9,7 @@ public class HopUp : MonoBehaviour
     public bool locked = false;
     Collider2D lockingPlayer;
 
-    void OnTriggerEnter2D(Collider2D col)
+    void OnTriggerStay2D(Collider2D col)
     {
         if (col.gameObject.tag == "LedgeGrabBox" && !locked)
         {
@@ -21,12 +21,13 @@ public class HopUp : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D col){
         if(col == lockingPlayer && locked){
-            StartCoroutine(Unlock());
+            //StartCoroutine(Unlock());
+            locked = false;
         }
     }
 
     IEnumerator Unlock(){
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(.083333f);
         locked = false;
     }
 }
