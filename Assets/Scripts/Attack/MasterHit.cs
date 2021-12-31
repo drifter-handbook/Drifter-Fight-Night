@@ -432,7 +432,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         clearMasterhitVars();
     	drifter.returnToIdle();
         movement.updateFacing();
-        //if(checkForJumpTap())movement.jump();
+        if(checkForJumpTap())movement.jump();
         attacks.UpdateInput();
     }
 
