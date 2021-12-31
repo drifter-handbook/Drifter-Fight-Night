@@ -63,6 +63,7 @@ MonoBehaviour:
   parent: {fileID: 7638574618725185666}
   playerType: {fileID: 0}
   isActive: 1
+  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: e9bb44863e762854db392448168d82b5, type: 2}
   AttackData: {fileID: 0}
 --- !u!1 &1270886761685636637
@@ -112,6 +113,7 @@ MonoBehaviour:
   parent: {fileID: 7638574618725185666}
   playerType: {fileID: 0}
   isActive: 1
+  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 60bbd2db92934484887af5c7334699d1, type: 2}
   AttackData: {fileID: 0}
 --- !u!70 &3046803888342422117
@@ -177,6 +179,7 @@ MonoBehaviour:
   parent: {fileID: 7638574618725185666}
   playerType: {fileID: 0}
   isActive: 1
+  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: b5655b2d2f065454389c0b26cd9ae61d, type: 2}
   AttackData: {fileID: 0}
 --- !u!58 &8000176596380762009
@@ -195,20 +198,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &2146704400105097593
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7185957702941560231}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b3bd34121433ff4db4503e4605c9ab6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  assetPathName: 
-  facing: 0
 --- !u!1 &6602211661803700767
 GameObject:
   m_ObjectHideFlags: 0
@@ -256,6 +245,7 @@ MonoBehaviour:
   parent: {fileID: 7638574618725185666}
   playerType: {fileID: 0}
   isActive: 1
+  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 5a7f1d8090b66ca4a86c148cc1127082, type: 2}
   AttackData: {fileID: 0}
 --- !u!58 &5225520604657597225
@@ -274,6 +264,20 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0.08551421}
   serializedVersion: 2
   m_Radius: 0.21811967
+--- !u!114 &2146704400105097593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7185957702941560231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b3bd34121433ff4db4503e4605c9ab6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  assetPathName: 
+  facing: 0
 --- !u!1 &8009381211782674667
 GameObject:
   m_ObjectHideFlags: 0
@@ -321,6 +325,7 @@ MonoBehaviour:
   parent: {fileID: 7638574618725185666}
   playerType: {fileID: 0}
   isActive: 1
+  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 24de4480af67c44419440174715d8986, type: 2}
   AttackData: {fileID: 11400000, guid: 24de4480af67c44419440174715d8986, type: 2}
 --- !u!70 &5407720446179453045
@@ -386,6 +391,7 @@ MonoBehaviour:
   parent: {fileID: 7638574618725185666}
   playerType: {fileID: 0}
   isActive: 1
+  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: c353e10bb13f97f46a6aa0d5b41e480a, type: 2}
   AttackData: {fileID: 0}
 --- !u!58 &8263479130366815019
@@ -616,7 +622,7 @@ PrefabInstance:
     - target: {fileID: 3106753082241659641, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: numberOfJumps
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3106753082241659641, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
@@ -667,6 +673,11 @@ PrefabInstance:
         type: 3}
       propertyPath: walkSpeed
       value: 23.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3106753082241659641, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: numberOfDashes
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3106753082241659643, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}

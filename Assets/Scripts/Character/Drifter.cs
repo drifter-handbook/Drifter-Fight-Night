@@ -126,6 +126,8 @@ public class Drifter : MonoBehaviour, INetworkInit
     //True when a move has connected but the player has not yet canceled their move
     public bool canSpecialCancelFlag = false;
 
+    bool hiddenFlag = false;
+
     //Cancel Normals into Specials Logic
     public bool listenForSpecialCancel
     {
@@ -220,6 +222,17 @@ public class Drifter : MonoBehaviour, INetworkInit
             transform.GetChild(0).GetComponent<SyncAnimatorStateHost>().SetState( (colorID < 8)?"P" + (colorID + 1):"P9");
             gameObject.GetComponent<SyncColorDataHost>().setColor(myColor);
         }
+    }
+
+    public void toggleHidden(bool hidden)
+    {
+        if(hiddenFlag == hidden) return;
+        hiddenFlag = hidden;
+        SpriteRenderer render = transform.GetChild(2).GetComponent<SpriteRenderer>();
+        Color newColor = render.color;
+        newColor.a = hidden?0:1;
+        render.color = newColor;
+        //transform.GetChild(2).GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)myColor]);
     }
 
     //Flips text-based objects attacked to characters to keep them readable as the character turns

@@ -374,7 +374,8 @@ public class PlayerMovement : MonoBehaviour
         bool groundFrictionPosition = frictionCollider.GetContacts(contacts) >0;
 
         if(!moving)accelerationPercent = .9f;
-        
+        drifter.toggleHidden(status.HasStatusEffect(PlayerStatusEffect.HIDDEN));
+
         //Normal walking logic
         if (moving && canAct && ! ledgeHanging)
         {
