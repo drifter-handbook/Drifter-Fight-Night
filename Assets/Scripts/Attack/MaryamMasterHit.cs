@@ -42,7 +42,7 @@ public class MaryamMasterHit : MasterHit
         //if(!isHost)return;
         Empowered = (stance==0);
         
-        if(isHost) attacks.currentRecoveries = (Empowered && hasSGRecovery) || (!Empowered && hasUmbrellaRecovery)? 1:0;
+        //if(isHost) attacks.currentRecoveries = (Empowered && hasSGRecovery) || (!Empowered && hasUmbrellaRecovery)? 1:0;
 
         drifter.SetAnimationLayer(Empowered?1:0);
     }

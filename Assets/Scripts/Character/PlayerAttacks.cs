@@ -63,7 +63,14 @@ public class PlayerAttacks : MonoBehaviour
 
 
     [NonSerialized]
-    public int currentRecoveries;
+    public int currentUpRecoveries;
+    [NonSerialized]
+    public int currentDownRecoveries;
+    [NonSerialized]
+    public int currentSideRecoveries;
+    [NonSerialized]
+    public int currentNeutralRecoveries;
+
     [NonSerialized]
     public bool ledgeHanging = false;
     [NonSerialized]
@@ -96,7 +103,10 @@ public class PlayerAttacks : MonoBehaviour
         movement = GetComponent<PlayerMovement>();
         hit = GetComponentInChildren<IMasterHit>();
         sync = GetComponent<NetworkSync>();
-        currentRecoveries = maxRecoveries;
+        currentUpRecoveries = maxRecoveries;
+        currentDownRecoveries = maxRecoveries;
+        currentSideRecoveries = maxRecoveries;
+        currentNeutralRecoveries = maxRecoveries;
     }
 
     // Update is called once per frame
@@ -123,25 +133,25 @@ public class PlayerAttacks : MonoBehaviour
     public void useSpecial()
     {
         movement.canLandingCancel = false;
-        if(drifter.input[0].MoveY > 0 && currentRecoveries >0)
+        if(drifter.input[0].MoveY > 0 && currentUpRecoveries > 0)
             {
                 StartAttack(DrifterAttackType.W_Up);
-                currentRecoveries--;
+                currentUpRecoveries--;
             }
-            else if((!W_Down_Is_Recovery || currentRecoveries >0) && drifter.input[0].MoveY < 0)
+            else if((!W_Down_Is_Recovery || currentDownRecoveries > 0) && drifter.input[0].MoveY < 0)
             {
                 StartAttack(DrifterAttackType.W_Down);
-                if(W_Down_Is_Recovery)currentRecoveries--;
+                if(W_Down_Is_Recovery)currentDownRecoveries--;
             }
-            else if((!W_Side_Is_Recovery || currentRecoveries >0) &&drifter.input[0].MoveX!=0)
+            else if((!W_Side_Is_Recovery || currentSideRecoveries > 0) &&drifter.input[0].MoveX!=0)
             {
                 StartAttack(DrifterAttackType.W_Side);
-                if(W_Side_Is_Recovery)currentRecoveries--;
+                if(W_Side_Is_Recovery)currentSideRecoveries--;
             }
-            else if((!W_Neutral_Is_Recovery || currentRecoveries >0) &&drifter.input[0].MoveY==0 && drifter.input[0].MoveX==0)
+            else if((!W_Neutral_Is_Recovery || currentNeutralRecoveries > 0) &&drifter.input[0].MoveY==0 && drifter.input[0].MoveX==0)
             {
                 StartAttack(DrifterAttackType.W_Neutral);
-                if(W_Neutral_Is_Recovery)currentRecoveries--;
+                if(W_Neutral_Is_Recovery)currentNeutralRecoveries--;
                 
             }
     }
@@ -218,7 +228,10 @@ public class PlayerAttacks : MonoBehaviour
     }
 
     public void resetRecovery(){
-        currentRecoveries = maxRecoveries;
+        currentUpRecoveries = maxRecoveries;
+        currentDownRecoveries = maxRecoveries;
+        currentSideRecoveries = maxRecoveries;
+        currentNeutralRecoveries = maxRecoveries;
     }
 
     public void StartAttack(DrifterAttackType attackType)
