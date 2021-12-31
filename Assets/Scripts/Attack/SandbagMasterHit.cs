@@ -7,8 +7,9 @@ public class SandbagMasterHit : MasterHit
 	bool rolling = false;
 	GameObject sandblast;
 	int dustCount = 7;
-	void Update()
+	new void FixedUpdate()
 	{
+		base.FixedUpdate();
 		if(status.HasEnemyStunEffect() || movement.ledgeHanging)
 			rolling = false;
 		else if(rolling && movement.grounded)

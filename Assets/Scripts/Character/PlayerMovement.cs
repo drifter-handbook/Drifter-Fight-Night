@@ -721,6 +721,7 @@ public class PlayerMovement : MonoBehaviour
         {
             // drifter.canSpecialCancelFlag = true;
             // drifter.listenForSpecialCancel = true;
+            updateFacing();
             status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.7f);
             accelerationPercent = 0;
             dashLock = .5f;
