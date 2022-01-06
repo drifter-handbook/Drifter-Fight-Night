@@ -47,6 +47,7 @@ MonoBehaviour:
   parent: {fileID: 5494752818666650690}
   playerType: {fileID: 0}
   isActive: 1
+  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 557d84405ef606e4699a8964a1866361, type: 2}
   AttackData: {fileID: 0}
 --- !u!70 &6204943898317555974
@@ -128,8 +129,75 @@ MonoBehaviour:
   parent: {fileID: 5494752818666650690}
   playerType: {fileID: 0}
   isActive: 1
+  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 018a84f61a0bfaa40996634f967982c5, type: 2}
   AttackData: {fileID: 0}
+--- !u!1 &5992161604254009577
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8648184608159930648}
+  - component: {fileID: 7784008120450553490}
+  - component: {fileID: 1288435986614012965}
+  m_Layer: 9
+  m_Name: W_Down_End
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8648184608159930648
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5992161604254009577}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2204610828077095569}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7784008120450553490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5992161604254009577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parent: {fileID: 5494752818666650690}
+  playerType: {fileID: 0}
+  isActive: 1
+  destroyParentOnHit: 0
+  OverrideData: {fileID: 11400000, guid: 93f24021425336e438bf038057a6f10f, type: 2}
+  AttackData: {fileID: 0}
+--- !u!58 &1288435986614012965
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5992161604254009577}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.016446209, y: 0.14888898}
+  serializedVersion: 2
+  m_Radius: 0.35659304
 --- !u!1 &7372514724226886094
 GameObject:
   m_ObjectHideFlags: 0
@@ -177,6 +245,7 @@ MonoBehaviour:
   parent: {fileID: 5494752818666650690}
   playerType: {fileID: 0}
   isActive: 1
+  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 3bd2ebedc3c43c841aba1646fbddac62, type: 2}
   AttackData: {fileID: 0}
 --- !u!70 &7031304890290109403
@@ -693,7 +762,7 @@ PrefabInstance:
         type: 3}
       propertyPath: AttackMap.Array.data[5].attackData
       value: 
-      objectReference: {fileID: 11400000, guid: 86fcf97a980c5bd40826abcc6c7ea67b,
+      objectReference: {fileID: 11400000, guid: 7362341b1ae9ad8449e878947c7e61a5,
         type: 2}
     - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
