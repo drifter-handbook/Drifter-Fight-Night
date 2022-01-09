@@ -31,6 +31,12 @@ public class SandbagMasterHit : MasterHit
 		dustCount = 7;
 	}
 
+	public new void returnToIdle()
+    {
+        base.returnToIdle();
+        rolling = false;
+    }
+
 	new public void clearMasterhitVars()
 	{
 		base.clearMasterhitVars();

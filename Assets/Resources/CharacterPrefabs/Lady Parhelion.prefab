@@ -47,6 +47,7 @@ MonoBehaviour:
   parent: {fileID: 2465989409418114531}
   playerType: {fileID: 0}
   isActive: 1
+  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: ad7a89d9d8a710241a6576936e179288, type: 2}
   AttackData: {fileID: 0}
 --- !u!70 &4857834250431248178
@@ -128,6 +129,7 @@ MonoBehaviour:
   parent: {fileID: 2465989409418114531}
   playerType: {fileID: 0}
   isActive: 1
+  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 7331573e54e3c174abef342dd2a55a51, type: 2}
   AttackData: {fileID: 0}
 --- !u!114 &5066608592034762774
@@ -209,6 +211,7 @@ MonoBehaviour:
   parent: {fileID: 2465989409418114531}
   playerType: {fileID: 0}
   isActive: 1
+  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 5a491362ae338d847b675eee3ab8d266, type: 2}
   AttackData: {fileID: 0}
   SuccessState: Ground_Side_Success
@@ -280,6 +283,7 @@ MonoBehaviour:
   parent: {fileID: 2465989409418114531}
   playerType: {fileID: 0}
   isActive: 1
+  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: dcc97463a2133784e91cce68396d80df, type: 2}
   AttackData: {fileID: 0}
   SuccessState: 
@@ -348,55 +352,9 @@ MonoBehaviour:
   parent: {fileID: 2465989409418114531}
   playerType: {fileID: 0}
   isActive: 1
+  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 22bcd3058ae29a14f820d236c823e669, type: 2}
   AttackData: {fileID: 0}
---- !u!1 &2393626368593423587
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4592390687848611883}
-  - component: {fileID: 396369408614582760}
-  m_Layer: 10
-  m_Name: Reflector
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4592390687848611883
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2393626368593423587}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 8134034190548964144}
-  m_RootOrder: 9
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &396369408614582760
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2393626368593423587}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.07967253}
-  serializedVersion: 2
-  m_Radius: 0.6154439
 --- !u!1 &3451955293568421525
 GameObject:
   m_ObjectHideFlags: 0
@@ -444,6 +402,7 @@ MonoBehaviour:
   parent: {fileID: 2465989409418114531}
   playerType: {fileID: 0}
   isActive: 1
+  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 30ed80bca6998284aad500211a59e4bd, type: 2}
   AttackData: {fileID: 0}
 --- !u!70 &5843840282557762139
@@ -525,6 +484,7 @@ MonoBehaviour:
   parent: {fileID: 2465989409418114531}
   playerType: {fileID: 0}
   isActive: 1
+  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: e1870ea03a676354081d9cd91da3dd44, type: 2}
   AttackData: {fileID: 11400000, guid: 5a491362ae338d847b675eee3ab8d266, type: 2}
   SuccessState: 
@@ -577,6 +537,7 @@ MonoBehaviour:
   parent: {fileID: 2465989409418114531}
   playerType: {fileID: 0}
   isActive: 1
+  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 73e4918f4e256e2469d461d9e7b57a57, type: 2}
   AttackData: {fileID: 0}
 --- !u!58 &2460248729340115610
@@ -642,6 +603,7 @@ MonoBehaviour:
   parent: {fileID: 2465989409418114531}
   playerType: {fileID: 0}
   isActive: 1
+  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 7bc51d0d9cf57fb4ba4a636b769dc2c8, type: 2}
   AttackData: {fileID: 0}
 --- !u!70 &3916190828978953712
@@ -690,7 +652,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8134034190548964144}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2846703858252975746
 MonoBehaviour:
@@ -707,6 +669,7 @@ MonoBehaviour:
   parent: {fileID: 2465989409418114531}
   playerType: {fileID: 0}
   isActive: 1
+  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 2c86a4bf23078a64c802b1de6092ee5d, type: 2}
   AttackData: {fileID: 0}
   SuccessState: Grab_Air_Success
@@ -758,7 +721,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8134034190548964144}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!58 &8419026510137241792
 CircleCollider2D:
@@ -791,6 +754,7 @@ MonoBehaviour:
   parent: {fileID: 2465989409418114531}
   playerType: {fileID: 0}
   isActive: 1
+  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 068ff3bf642012a4983d2e6bdeca8e64, type: 2}
   AttackData: {fileID: 0}
 --- !u!1 &7213078404764834302
@@ -840,6 +804,7 @@ MonoBehaviour:
   parent: {fileID: 2465989409418114531}
   playerType: {fileID: 0}
   isActive: 1
+  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 27af2653ba7c739469fbce04480dfc39, type: 2}
   AttackData: {fileID: 0}
 --- !u!70 &6721800499289621040
@@ -906,6 +871,7 @@ MonoBehaviour:
   parent: {fileID: 2465989409418114531}
   playerType: {fileID: 0}
   isActive: 1
+  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 0b57779a920cf374c8d32894bbc65a3a, type: 2}
   AttackData: {fileID: 0}
   SuccessState: Ground_Grab_Success
