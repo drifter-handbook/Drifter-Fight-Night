@@ -337,7 +337,7 @@ public class Drifter : MonoBehaviour, INetworkInit
 
         int state = 0;
 
-        for(int i = 1; i < input.Length-8; i++)
+        for(int i = 1; i < input.Length-6; i++)
         {
             if(state ==0 && input[i].MoveX == 0)
                 state++;
@@ -357,7 +357,7 @@ public class Drifter : MonoBehaviour, INetworkInit
 
         int state = 0;
 
-        for(int i = 1; i < input.Length-8; i++)
+        for(int i = 1; i < input.Length-6; i++)
         {
 
             if(state ==0 && input[i].MoveY == 0)
