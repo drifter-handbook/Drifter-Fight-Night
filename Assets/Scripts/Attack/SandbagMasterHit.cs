@@ -48,6 +48,12 @@ public class SandbagMasterHit : MasterHit
 		dust = false;
 	}
 
+	public void WDownRestitute()
+    {
+    	if(!isHost || !movement.grounded)return;
+    	movement.spawnJuiceParticle(transform.position, MovementParticleMode.Restitution);
+    }
+
 	public void Neutral_Special()
 	{
 		if(!isHost)return;
