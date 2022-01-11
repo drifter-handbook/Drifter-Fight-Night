@@ -4,43 +4,48 @@ using UnityEngine;
 
 public class SandbagMasterHit : MasterHit
 {
-	bool rolling = false;
+	bool dust = false;
 	GameObject sandblast;
 	int dustCount = 7;
 	new void FixedUpdate()
 	{
 		base.FixedUpdate();
 		if(status.HasEnemyStunEffect() || movement.ledgeHanging)
-			rolling = false;
-		else if(rolling && movement.grounded)
+			dust = false;
+		else if(dust)
 		{
-			if(dustCount > 7f)
+			if(dustCount > 3f)
 			{
 				dustCount = 0;
-				movement.spawnKickoffDust();
+				movement.spawnJuiceParticle(transform.position + new Vector3(movement.Facing * -1.4f,2.7f,0), MovementParticleMode.SmokeTrail);
 			}
-			rb.velocity = new Vector2(movement.Facing * 33f * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f),rb.velocity.y);
-        	status.saveXVelocity(movement.Facing *33f);
         	dustCount +=1;
 		}
 	}
 
-	public void SetRolling()
+	public void Setdust()
 	{
-		rolling = true;
-		dustCount = 7;
+		dust = true;
+		facing = movement.Facing;
+		GameObject ring = GameController.Instance.host.CreateNetworkObject("LaunchRing", transform.position,  transform.rotation);
+		ring.transform.localScale = new Vector3(10f * facing, 10f , 1f);
+		dustCount = 3;
+	}
+	public void disableDust()
+	{
+		dust = false;
 	}
 
 	public new void returnToIdle()
     {
         base.returnToIdle();
-        rolling = false;
+        dust = false;
     }
 
 	new public void clearMasterhitVars()
 	{
 		base.clearMasterhitVars();
-		rolling = false;
+		dust = false;
 	}
 
 	public void Neutral_Special()
