@@ -113,8 +113,8 @@ public class GameController : MonoBehaviour
     }
 
     void Start() {
-        GameAnalytics.Initialize();
-        GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, "startGame");
+        //GameAnalytics.Initialize();
+        //GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, "startGame");
         // this is horrid practice please dont do this but
         if(IsOnline)
         {
