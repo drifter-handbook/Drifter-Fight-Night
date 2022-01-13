@@ -9,7 +9,7 @@ public enum HitSpark
 
 public enum HitType
 {
-    NORMAL, GUARD_CRUSH, GRAB
+    NORMAL, GUARD_CRUSH, GRAB,TRANSCENDANT
 }
 
 
@@ -42,7 +42,7 @@ public class SingleAttackData : ScriptableObject
     // public bool ScaleHitStop = true;
     //public float EndLag = 0.1f;
     #if UNITY_EDITOR
-    [Help("How does this move interact with shields? Normal is blocked by shields, Grab ignores shields, guard crush applies extra hitstun to shields", UnityEditor.MessageType.Info)]
+    [Help("How does this move interact with shields? Normal is blocked by shields, Grab ignores shields, guard crush applies extra hitstun to shields, Trancendant will always hit not matter what", UnityEditor.MessageType.Info)]
     #endif
     public HitType hitType = HitType.NORMAL;
    

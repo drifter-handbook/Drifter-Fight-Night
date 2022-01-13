@@ -63,7 +63,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
     protected bool dacusCancelFlag = false;
 
-    //protected bool knockdownFlag = false;
+    protected bool knockdownFlag = false;
 
 
     //Every frame, listen for a given event if the flag is active
@@ -76,6 +76,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         if(status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN))
         {
             drifter.knockedDown = true;
+            knockdownFlag = true;
             movement.terminalVelocity = terminalVelocity;
             if(listeningForGroundedFlag && movement.grounded)
             {
@@ -85,11 +86,15 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
                 clearMasterhitVars();
             }
         }
-        else if(drifter.knockedDown && !status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN))
+        else if(knockdownFlag && !status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN))
         {
-            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,3);
-            playState("Jump_End");
-            drifter.knockedDown = false;
+            knockdownFlag = false;
+            if(!status.HasEnemyStunEffect())
+            {
+                status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,3);
+                //UnityEngine.Debug.Log("GETUP");
+                playState("Jump_End");
+            }
         }
 
         else if(status.HasEnemyStunEffect() || movement.ledgeHanging)
@@ -316,6 +321,8 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         resetTerminalVelocity();
         ledgeDetector.setPreventWalkoff(false);
         dacusCancelFlag= false;
+        drifter.knockedDown = false;
+        knockdownFlag = false;
     }
 
 
@@ -456,7 +463,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         movement.updateFacing();
         if(checkForJumpTap())movement.jump();
         attacks.UpdateInput();
-        drifter.knockedDown = false;
+        //drifter.knockedDown = false;
     }
 
     public void playState(string state)

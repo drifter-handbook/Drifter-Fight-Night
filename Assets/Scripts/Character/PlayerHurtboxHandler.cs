@@ -60,8 +60,17 @@ public class PlayerHurtboxHandler : MonoBehaviour
             float damageDealt = 0f;
 
 
-            //Whiff on grounded or aerial when applicable
-            if((!attackData.canHitGrounded && drifter.movement.grounded) ||(!attackData.canHitAerial && !drifter.movement.grounded) || (!attackData.canHitKnockedDown && status.HasStatusEffect(PlayerStatusEffect.FLATTEN)))return -3;
+            //Whiff on based on state and hit type
+            if(
+                //Whiff air only moves against grounded opponenets
+                (!attackData.canHitGrounded && drifter.movement.grounded) ||
+                //Whiff ground only moves on aerial opponenets
+                (!attackData.canHitAerial && !drifter.movement.grounded) ||
+                //Whiff grabs and command grabs on jumping opponents
+                ((drifter.movement.jumping || status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN)) && attackData.hitType == HitType.GRAB ) || 
+                //Whiff non-OTG moves on otg opponents
+                (!attackData.canHitKnockedDown && status.HasStatusEffect(PlayerStatusEffect.FLATTEN))
+            ) return -3;
 
             oldAttacks[attackID] = Time.time;
 
@@ -183,6 +192,11 @@ public class PlayerHurtboxHandler : MonoBehaviour
             bool hadSlowmo = status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION);
 
             //Ignore knockback if invincible or armoured
+            if(attackData.hitType==HitType.TRANSCENDANT)
+            {
+                status?.ApplyStatusEffect(attackData.StatusEffect,attackData.StatusDuration);
+                returnCode = 0;
+            }
             if (status != null && (attackData.hitType==HitType.GRAB || !drifter.guarding || crossUp) && !drifter.parrying){
 
                 //If the player treid to guard a guardbreaker, they loose their shield for 5 seconds (60 frames)

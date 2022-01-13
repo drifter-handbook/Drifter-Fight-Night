@@ -261,7 +261,7 @@ public class PlayerAttacks : MonoBehaviour
     public void StartAttack(DrifterAttackType attackType)
     {
         drifter.gainSuperMeter(.05f);
-        
+        movement.jumping = false;
         SetHitboxesActive(false);
         status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,8f);
         if(!AttackVariants[attackType])

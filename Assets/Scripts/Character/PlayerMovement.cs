@@ -144,7 +144,8 @@ public class PlayerMovement : MonoBehaviour
                     UnityEngine.Debug.Log("KD");
                     //Determine knockdown duration
                     status.ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,1.5f);
-                    terminalVelocity = 7f;
+                    //status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.5f);
+                    terminalVelocity = 2f;
                     drifter.PlayAnimation("Knockdown_Bounce");
 
                     mainCamera.startShakeCoroutine(.1f,.33f);
@@ -154,8 +155,8 @@ public class PlayerMovement : MonoBehaviour
                     //     if(status.HasStatusEffect(PlayerStatusEffect.HITPAUSE)) status.setDelayedVelocity(new Vector3(kdbounceVelocity.x,Mathf.Clamp(kdbounceVelocity.y,-15f,15f)));
                     //     else rb.velocity= new Vector3(kdbounceVelocity.x,Mathf.Clamp(kdbounceVelocity.y,-15f,15f));
 
-                        if(status.HasStatusEffect(PlayerStatusEffect.HITPAUSE)) status.setDelayedVelocity(new Vector3(Facing *-10f,15));
-                        else rb.velocity = new Vector3(Facing *-12f,15);
+                        if(status.HasStatusEffect(PlayerStatusEffect.HITPAUSE)) status.setDelayedVelocity(new Vector3(Facing *-9f,20));
+                        else rb.velocity = new Vector3(Facing *-9f,20);
                     //kdbounceVelocity = Vector3.zero;
 
                 }
@@ -239,11 +240,16 @@ public class PlayerMovement : MonoBehaviour
                 drifter.PlayAnimation("Guard_Break");
                 StartCoroutine(shake.Shake(.3f,.7f));
             }
+            else if(status.HasStatusEffect(PlayerStatusEffect.FLATTEN))
+            {
+                //do nothing
+            }
             else if(status.HasEnemyStunEffect() && !drifter.guarding)
             {
                 drifter.PlayAnimation("HitStun");
                 StartCoroutine(shake.Shake(.2f,.7f));
             }
+
             else if(status.HasEnemyStunEffect())
             {
                 drifter.PlayAnimation("BlockStun");
