@@ -53,13 +53,7 @@ public class NeoParhelionMasterHit : MasterHit
         movement.flipFacing();
     }
 
-    public void slamRestitute()
-    {
-    	if(!isHost || !movement.grounded)return;
-    	movement.spawnJuiceParticle(transform.position, MovementParticleMode.Restitution);
-    }
-
-        public void dust()
+    public void dust()
     {
         if(!isHost)return;
 

@@ -132,7 +132,7 @@ public class PlayerMovement : MonoBehaviour
     void OnCollisionEnter2D(Collision2D col)
     {
 
-        if(!status.HasGroundFriction() && ((prevVelocity.y < 0 || col.gameObject.tag !=  "Platform" ) && prevVelocity.magnitude > 35f))
+        if(!status.HasGroundFriction() && ((prevVelocity.y < 0 || col.gameObject.tag !=  "Platform" )))
         {
 
             // if(techWindowElapsed <= framerateScalar * 2)UnityEngine.Debug.Log("COULD HAVE TECHED");
@@ -157,10 +157,28 @@ public class PlayerMovement : MonoBehaviour
             // {
                 //status.bounce();
                 Vector3 normal = col.contacts[0].normal;
-                
-                rb.velocity = Vector2.Reflect(prevVelocity,normal) *.8f;
+
+
+                UnityEngine.Debug.Log(normal);
+
+                if(normal.y == 1f && status.canbeKnockedDown())
+                {
+                    //Determine knockdown duration
+                    status.ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,1f);
+                    drifter.PlayAnimation("Knockdown_Bounce");
+                    spawnJuiceParticle(col.contacts[0].point, MovementParticleMode.Restitution, Quaternion.Euler(0f,0f, ( (rb.velocity.x < 0)?1:-1 ) * Vector3.Angle(Vector3.up,normal)),false);
+                    //knockdown
+                }
+
+                else if(prevVelocity.magnitude > 35f)
+                {
+                    rb.velocity = Vector2.Reflect(prevVelocity,normal) *.8f;
+                    spawnJuiceParticle(col.contacts[0].point, MovementParticleMode.Restitution, Quaternion.Euler(0f,0f, ( (rb.velocity.x < 0)?1:-1 ) * Vector3.Angle(Vector3.up,normal)),false);
+                }
+
+
                 //status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, Mathf.Min(rb.velocity.magnitude * .005f,.3f));
-                spawnJuiceParticle(col.contacts[0].point, MovementParticleMode.Restitution, Quaternion.Euler(0f,0f, ( (rb.velocity.x < 0)?1:-1 ) * Vector3.Angle(Vector3.up,normal)),false);
+                
                 //techWindowElapsed = 0;
             //}
         }
@@ -263,8 +281,13 @@ public class PlayerMovement : MonoBehaviour
             hitstun = true;
         }
 
-        else 
-        if(status.HasEnemyStunEffect() && !drifter.guarding)
+        else if(status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN))
+        {
+            hitstun = true;
+            DropLedge();
+        }
+
+        else if(status.HasEnemyStunEffect() && !drifter.guarding)
         {
             hitstun = true;
             drifter.PlayAnimation("HitStun");
@@ -394,7 +417,7 @@ public class PlayerMovement : MonoBehaviour
                 if(!jumping)
                 {
                     drifter.PlayAnimation(drifter.WalkStateName);
-                    status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0);
+                    //status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0);
                     if(groundFrictionPosition)
                     {
                         if(walkTime > .2f + (30f -walkSpeed)/100f)
@@ -417,7 +440,7 @@ public class PlayerMovement : MonoBehaviour
             else
             {
                 if(!jumping)drifter.PlayAnimation(drifter.AirIdleStateName);
-                status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0);
+                //status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0);
 
                 if(accelerationPercent >0) accelerationPercent -= Time.deltaTime/airAccelerationTime * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f: 1f);
                 else accelerationPercent = 0;

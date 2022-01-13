@@ -48,10 +48,15 @@ public class SingleAttackData : ScriptableObject
    
     public bool mirrorKnockback = false;
     public float AngleOfImpact = 45f;
+    
+    
     public PlayerStatusEffect StatusEffect = PlayerStatusEffect.HIT;
     public float StatusDuration = .1f;
     public AttackFXSystem HitFX = null;
 
     public bool canHitGrounded = true;
     public bool canHitAerial = true;
+
+    //public bool knockDown = false;
+    public bool canHitKnockedDown = false;
 }

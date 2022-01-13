@@ -34,6 +34,8 @@ public enum PlayerStatusEffect
     STANCE,
     SLOWMOTION, 
     HIDDEN,
+    KNOCKDOWN,
+    TUMBLE,
 }
 
 class PlayerStatusData
@@ -102,6 +104,8 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         {PlayerStatusEffect.STANCE,                             new PlayerStatusData("STANCE",remove: false,self: true)                             },
         {PlayerStatusEffect.SLOWMOTION,                         new PlayerStatusData("SLOWMOTION",icon: 16)                                         },
         {PlayerStatusEffect.HIDDEN,                             new PlayerStatusData("HIDDEN",remove: false)                                        },
+        {PlayerStatusEffect.KNOCKDOWN,                          new PlayerStatusData("KNOCKDOWN", stun: true)                                       },
+        {PlayerStatusEffect.TUMBLE,                             new PlayerStatusData("TUMBLE")                                                      },
     };
 
     // float time = 0f;
@@ -230,6 +234,15 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         return false;        
     }
 
+    public bool canbeKnockedDown()
+    {
+        foreach(KeyValuePair<PlayerStatusEffect,PlayerStatusData> ef in statusDataMap)
+        {
+            if(HasStatusEffect(ef.Key) && ef.Value.isStun && !ef.Value.isSelfInflicted && ef.Key != PlayerStatusEffect.KNOCKBACK) return false;
+        }
+        return HasStatusEffect(PlayerStatusEffect.TUMBLE);        
+    }
+
     public void saveXVelocity(float p_vel)
     {
         delayedVelocity = new Vector2(p_vel,delayedVelocity.y);
@@ -269,7 +282,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
     }
 
 
-    //Clears all removable Status effects
+    //Clears all stun Status effects
     public void clearStunStatus()
     {
         foreach(KeyValuePair<PlayerStatusEffect,PlayerStatusData> ef in statusDataMap)
@@ -408,6 +421,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
                 isInCombo = true;
     		}
     	}
+        UnityEngine.Debug.Log(ef);
 
         //If status effect stacks, add new duration to current duration and return.
         if(data.stacking && HasStatusEffect(ef))

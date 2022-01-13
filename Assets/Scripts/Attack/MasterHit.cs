@@ -63,6 +63,8 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
     protected bool dacusCancelFlag = false;
 
+    protected bool knockdownFlag = false;
+
 
     //Every frame, listen for a given event if the flag is active
     protected void FixedUpdate()
@@ -70,7 +72,28 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         if(!isHost)return;
         attackWasCanceled = true;
         //Clear all flags if the character is dead or stunned by an opponent
-        if(status.HasEnemyStunEffect() || movement.ledgeHanging)
+
+        if(status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN))
+        {
+            knockdownFlag = true;
+            movement.terminalVelocity = terminalVelocity;
+            if(listeningForGroundedFlag && movement.grounded)
+            {
+                BounceParticle();
+                playQueuedState();
+                clearMasterhitVars();
+            }
+        }
+        else if(knockdownFlag && !status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN))
+        {
+            status.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,0);
+            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,3);
+            playState("Jump_End");
+            knockdownFlag = false;
+            
+        }
+
+        else if(status.HasEnemyStunEffect() || movement.ledgeHanging)
         {
             clearMasterhitVars();
             movement.terminalVelocity = terminalVelocity;
@@ -549,5 +572,11 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     {
         if(!isHost)return;
         drifter.parrying = false;
+    }
+
+    public void BounceParticle()
+    {
+        if(!isHost || !movement.grounded)return;
+        movement.spawnJuiceParticle(transform.position, MovementParticleMode.Restitution);
     }
 }
