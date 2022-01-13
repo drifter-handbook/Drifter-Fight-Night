@@ -203,7 +203,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
                     status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0f);
                     
-                    if(damageDealt >0)drifter.movement.setFacing((int)(facingDir *-1));
+                    if(damageDealt >0)drifter.movement.setFacing((int)(facingDir *-1) * ((attackData.AngleOfImpact > 90 && attackData.AngleOfImpact <= 270)?-1:1));
 
                     //Cause the screen to shake slightly on hit, as long as the move has knockback
                     if(Shake != null && attackData.Knockback !=0){
@@ -275,7 +275,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 //apply defender hitpause
                 //If hitstop is scaled, and one is proviced, sum the hitstun duuration and the hitpause duration
                 if(attackData.HitStop >=0)
-                    HitPauseDuration += attackData.HitStop * framerateScalar;
+                    HitPauseDuration = attackData.HitStop * framerateScalar;
   
                 if(HitPauseDuration>0 && attackData.StatusEffect != PlayerStatusEffect.HITPAUSE )status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(isCritical || status.HasStatusEffect(PlayerStatusEffect.ARMOUR)) ? 25f* framerateScalar:((damageDealt <=2f ? .075f :Mathf.Max(HitPauseDuration*.3f ,10f * framerateScalar)) * (hadSlowmo?2f:1f)));
                 StartCoroutine(drifter.GetComponentInChildren<GameObjectShake>().Shake(attackData.StatusEffect != PlayerStatusEffect.CRINGE?HitPauseDuration*.2f:attackData.StatusDuration* framerateScalar,attackData.StatusEffect != PlayerStatusEffect.CRINGE?1.5f:2f));
@@ -553,6 +553,17 @@ public class PlayerHurtboxHandler : MonoBehaviour
         {
             g *= -1;
         }
+
+        //Dont play kill if youre gonna hit the stage
+        if(rigidbody.velocity.y < 0)
+        {
+             RaycastHit2D[] hits = new RaycastHit2D[10];
+
+            int count = Physics2D.RaycastNonAlloc(rigidbody.position, Vector2.down, hits,rigidbody.velocity.y );
+
+            for (int i = 0; i < count; i++) if (hits[i].collider.gameObject.tag == "Ground" || (hits[i].collider.gameObject.tag == "Platform")) return false;
+        }
+       
 
         if (xVel * hitstun >= xDel || yVel * hitstun + (0.5 * g * hitstun * hitstun) >= yDel)
             return true;

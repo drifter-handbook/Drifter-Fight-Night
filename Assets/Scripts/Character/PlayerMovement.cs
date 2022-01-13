@@ -96,6 +96,8 @@ public class PlayerMovement : MonoBehaviour
 
     bool delayedFacingFlip = false;
 
+    Vector2 kdbounceVelocity;
+
     void Awake()
     {
         //Aggregate componenents
@@ -129,11 +131,52 @@ public class PlayerMovement : MonoBehaviour
     }
 
     //Restitution
-    void OnCollisionEnter2D(Collision2D col)
+    void OnCollisionStay2D(Collision2D col)
     {
 
         if(!status.HasGroundFriction() && ((prevVelocity.y < 0 || col.gameObject.tag !=  "Platform" )))
         {
+                //status.bounce();
+                Vector3 normal = col.contacts[0].normal;
+
+                if(normal.y == 1f && status.canbeKnockedDown() && !drifter.knockedDown)
+                {
+                    UnityEngine.Debug.Log("KD");
+                    //Determine knockdown duration
+                    status.ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,status.remainingDuration(PlayerStatusEffect.KNOCKBACK));
+                    terminalVelocity = 7f;
+                    drifter.PlayAnimation("Knockdown_Bounce");
+
+                    mainCamera.startShakeCoroutine(.1f,.33f);
+                    UnityEngine.Debug.Log(prevVelocity);
+                    UnityEngine.Debug.Log(rb.velocity);
+
+                    //If the victim is in hitpause, set their delayed velocity instead
+                    if(kdbounceVelocity.magnitude >15f)
+                        if(status.HasStatusEffect(PlayerStatusEffect.HITPAUSE)) status.setDelayedVelocity(new Vector3(kdbounceVelocity.x,Mathf.Clamp(kdbounceVelocity.y,-15f,15f)));
+                        else rb.velocity= new Vector3(kdbounceVelocity.x,Mathf.Clamp(kdbounceVelocity.y,-15f,15f));
+                    kdbounceVelocity = Vector3.zero;
+                }
+
+       
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D col)
+    {
+         if(!status.HasGroundFriction() && ((prevVelocity.y < 0 || col.gameObject.tag !=  "Platform" )))
+        {
+            Vector3 normal = col.contacts[0].normal;
+
+            UnityEngine.Debug.Log(prevVelocity + "Instant PREV");
+            UnityEngine.Debug.Log(rb.velocity + "Instant");
+
+            if(normal.y == 1f && status.canbeKnockedDown() && !drifter.knockedDown)
+            {
+                //Save velocity the frame before hitting the ground to be used for the KD bounce
+                kdbounceVelocity = Vector2.Reflect(prevVelocity,normal) *.65f;
+            }
+
 
             // if(techWindowElapsed <= framerateScalar * 2)UnityEngine.Debug.Log("COULD HAVE TECHED");
             // else UnityEngine.Debug.Log("COULD NOT HAVE TECHED");
@@ -155,27 +198,14 @@ public class PlayerMovement : MonoBehaviour
             // }
             // else
             // {
-                //status.bounce();
-                Vector3 normal = col.contacts[0].normal;
 
-                if(normal.y == 1f && status.canbeKnockedDown() && !drifter.knockedDown)
-                {
-                    //Determine knockdown duration
-                    status.ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,1.5f);
-                    terminalVelocity = 7f;
-                    drifter.PlayAnimation("Knockdown_Bounce");
-                    spawnJuiceParticle(col.contacts[0].point, MovementParticleMode.Restitution, Quaternion.Euler(0f,0f, ( (rb.velocity.x < 0)?1:-1 ) * Vector3.Angle(Vector3.up,normal)),false);
-                    //knockdown
-                }
+            else if(prevVelocity.magnitude > 35f)
+            {
+                rb.velocity = Vector2.Reflect(prevVelocity,normal) *.8f;
+                spawnJuiceParticle(col.contacts[0].point, MovementParticleMode.Restitution, Quaternion.Euler(0f,0f, ( (rb.velocity.x < 0)?1:-1 ) * Vector3.Angle(Vector3.up,normal)),false);
+            }
 
-                else if(prevVelocity.magnitude > 35f)
-                {
-                    rb.velocity = Vector2.Reflect(prevVelocity,normal) *.8f;
-                    spawnJuiceParticle(col.contacts[0].point, MovementParticleMode.Restitution, Quaternion.Euler(0f,0f, ( (rb.velocity.x < 0)?1:-1 ) * Vector3.Angle(Vector3.up,normal)),false);
-                }
-
-
-                //status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, Mathf.Min(rb.velocity.magnitude * .005f,.3f));
+                    //status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, Mathf.Min(rb.velocity.magnitude * .005f,.3f));
                 
                 //techWindowElapsed = 0;
             //}

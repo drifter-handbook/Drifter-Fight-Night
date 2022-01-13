@@ -226,6 +226,16 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
     	return false;
     }
 
+    public Vector2 getDelayedVelocity()
+    {
+        return delayedVelocity;
+    }
+
+    public void setDelayedVelocity(Vector2 p_vel)
+    {
+        delayedVelocity = p_vel;
+    }
+
     //Returns true if player is not actionable by an enemy's hand
     public bool HasEnemyStunEffect()
     {
