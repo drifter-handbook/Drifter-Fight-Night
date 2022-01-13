@@ -158,13 +158,10 @@ public class PlayerMovement : MonoBehaviour
                 //status.bounce();
                 Vector3 normal = col.contacts[0].normal;
 
-
-                UnityEngine.Debug.Log(normal);
-
-                if(normal.y == 1f && status.canbeKnockedDown())
+                if(normal.y == 1f && status.canbeKnockedDown() && !drifter.knockedDown)
                 {
                     //Determine knockdown duration
-                    status.ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,1f);
+                    status.ApplyStatusEffect(PlayerStatusEffect.BOUNCE,1.5f);
                     drifter.PlayAnimation("Knockdown_Bounce");
                     spawnJuiceParticle(col.contacts[0].point, MovementParticleMode.Restitution, Quaternion.Euler(0f,0f, ( (rb.velocity.x < 0)?1:-1 ) * Vector3.Angle(Vector3.up,normal)),false);
                     //knockdown
@@ -281,7 +278,7 @@ public class PlayerMovement : MonoBehaviour
             hitstun = true;
         }
 
-        else if(status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN))
+        else if(status.HasStatusEffect(PlayerStatusEffect.BOUNCE))
         {
             hitstun = true;
             DropLedge();

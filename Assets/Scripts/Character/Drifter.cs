@@ -122,8 +122,8 @@ public class Drifter : MonoBehaviour, INetworkInit
     [NonSerialized]
     public bool canSuper = true;
 
-    // [NonSerialized]
-    // public bool knockedDown = true;
+    [NonSerialized]
+    public bool knockedDown = true;
 
     [NonSerialized]
     //True when a move has connected but the player has not yet canceled their move
@@ -308,7 +308,8 @@ public class Drifter : MonoBehaviour, INetworkInit
         if(status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN)) status.ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,0f);
         movement.terminalVelocity = terminalVelocity;
         canSpecialCancelFlag = false;
-        listenForSpecialCancel = false;        
+        listenForSpecialCancel = false;     
+        knockedDown = false;   
     }
 
 

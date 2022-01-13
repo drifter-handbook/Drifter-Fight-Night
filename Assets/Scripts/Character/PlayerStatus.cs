@@ -36,6 +36,7 @@ public enum PlayerStatusEffect
     HIDDEN,
     KNOCKDOWN,
     TUMBLE,
+    BOUNCE,
 }
 
 class PlayerStatusData
@@ -104,8 +105,9 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         {PlayerStatusEffect.STANCE,                             new PlayerStatusData("STANCE",remove: false,self: true)                             },
         {PlayerStatusEffect.SLOWMOTION,                         new PlayerStatusData("SLOWMOTION",icon: 16)                                         },
         {PlayerStatusEffect.HIDDEN,                             new PlayerStatusData("HIDDEN",remove: false)                                        },
-        {PlayerStatusEffect.KNOCKDOWN,                          new PlayerStatusData("KNOCKDOWN", stun: true)                                       },
+        {PlayerStatusEffect.KNOCKDOWN,                          new PlayerStatusData("KNOCKDOWN")                                                   },
         {PlayerStatusEffect.TUMBLE,                             new PlayerStatusData("TUMBLE")                                                      },
+        {PlayerStatusEffect.BOUNCE,                             new PlayerStatusData("BOUNCE", stun: true)                                          },
     };
 
     // float time = 0f;
@@ -421,7 +423,6 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
                 isInCombo = true;
     		}
     	}
-        UnityEngine.Debug.Log(ef);
 
         //If status effect stacks, add new duration to current duration and return.
         if(data.stacking && HasStatusEffect(ef))

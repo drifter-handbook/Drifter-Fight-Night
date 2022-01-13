@@ -63,7 +63,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
     protected bool dacusCancelFlag = false;
 
-    protected bool knockdownFlag = false;
+    //protected bool knockdownFlag = false;
 
 
     //Every frame, listen for a given event if the flag is active
@@ -73,23 +73,23 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         attackWasCanceled = true;
         //Clear all flags if the character is dead or stunned by an opponent
 
-        if(status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN))
+        if(status.HasStatusEffect(PlayerStatusEffect.BOUNCE))
         {
-            knockdownFlag = true;
+            drifter.knockedDown = true;
             movement.terminalVelocity = terminalVelocity;
             if(listeningForGroundedFlag && movement.grounded)
             {
+                status.ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,3f);
                 BounceParticle();
                 playQueuedState();
                 clearMasterhitVars();
             }
         }
-        else if(knockdownFlag && !status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN))
+        else if(drifter.knockedDown && !status.HasStatusEffect(PlayerStatusEffect.BOUNCE))
         {
-            status.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,0);
             status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,3);
             playState("Jump_End");
-            knockdownFlag = false;
+            drifter.knockedDown = false;
             
         }
 
