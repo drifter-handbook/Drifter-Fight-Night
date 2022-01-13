@@ -143,19 +143,21 @@ public class PlayerMovement : MonoBehaviour
                 {
                     UnityEngine.Debug.Log("KD");
                     //Determine knockdown duration
-                    status.ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,status.remainingDuration(PlayerStatusEffect.KNOCKBACK));
+                    status.ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,1.5f);
                     terminalVelocity = 7f;
                     drifter.PlayAnimation("Knockdown_Bounce");
 
                     mainCamera.startShakeCoroutine(.1f,.33f);
-                    UnityEngine.Debug.Log(prevVelocity);
-                    UnityEngine.Debug.Log(rb.velocity);
 
                     //If the victim is in hitpause, set their delayed velocity instead
-                    if(kdbounceVelocity.magnitude >15f)
-                        if(status.HasStatusEffect(PlayerStatusEffect.HITPAUSE)) status.setDelayedVelocity(new Vector3(kdbounceVelocity.x,Mathf.Clamp(kdbounceVelocity.y,-15f,15f)));
-                        else rb.velocity= new Vector3(kdbounceVelocity.x,Mathf.Clamp(kdbounceVelocity.y,-15f,15f));
-                    kdbounceVelocity = Vector3.zero;
+                    // if(kdbounceVelocity.magnitude >15f)
+                    //     if(status.HasStatusEffect(PlayerStatusEffect.HITPAUSE)) status.setDelayedVelocity(new Vector3(kdbounceVelocity.x,Mathf.Clamp(kdbounceVelocity.y,-15f,15f)));
+                    //     else rb.velocity= new Vector3(kdbounceVelocity.x,Mathf.Clamp(kdbounceVelocity.y,-15f,15f));
+
+                        if(status.HasStatusEffect(PlayerStatusEffect.HITPAUSE)) status.setDelayedVelocity(new Vector3(Facing *-10f,15));
+                        else rb.velocity = new Vector3(Facing *-12f,15);
+                    //kdbounceVelocity = Vector3.zero;
+
                 }
 
        
@@ -168,13 +170,10 @@ public class PlayerMovement : MonoBehaviour
         {
             Vector3 normal = col.contacts[0].normal;
 
-            UnityEngine.Debug.Log(prevVelocity + "Instant PREV");
-            UnityEngine.Debug.Log(rb.velocity + "Instant");
-
             if(normal.y == 1f && status.canbeKnockedDown() && !drifter.knockedDown)
             {
                 //Save velocity the frame before hitting the ground to be used for the KD bounce
-                kdbounceVelocity = Vector2.Reflect(prevVelocity,normal) *.65f;
+                //kdbounceVelocity = Vector2.Reflect(prevVelocity,normal) *.65f;
             }
 
 
