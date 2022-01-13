@@ -306,6 +306,7 @@ public class Drifter : MonoBehaviour, INetworkInit
         else animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState(AirIdleStateName,animationLayer);
         if(status.HasStatusEffect(PlayerStatusEffect.END_LAG)) status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
         if(status.HasStatusEffect(PlayerStatusEffect.FLATTEN)) status.ApplyStatusEffect(PlayerStatusEffect.FLATTEN,0f);
+        if(status.HasStatusEffect(PlayerStatusEffect.KNOCKBACK)) status.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,0f);
         movement.terminalVelocity = terminalVelocity;
         canSpecialCancelFlag = false;
         listenForSpecialCancel = false;     
