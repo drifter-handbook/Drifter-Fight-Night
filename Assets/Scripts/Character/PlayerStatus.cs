@@ -34,9 +34,9 @@ public enum PlayerStatusEffect
     STANCE,
     SLOWMOTION, 
     HIDDEN,
-    KNOCKDOWN,
+    FLATTEN,
     TUMBLE,
-    BOUNCE,
+    KNOCKDOWN,
 }
 
 class PlayerStatusData
@@ -105,9 +105,9 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         {PlayerStatusEffect.STANCE,                             new PlayerStatusData("STANCE",remove: false,self: true)                             },
         {PlayerStatusEffect.SLOWMOTION,                         new PlayerStatusData("SLOWMOTION",icon: 16)                                         },
         {PlayerStatusEffect.HIDDEN,                             new PlayerStatusData("HIDDEN",remove: false)                                        },
-        {PlayerStatusEffect.KNOCKDOWN,                          new PlayerStatusData("KNOCKDOWN")                                                   },
+        {PlayerStatusEffect.FLATTEN,                            new PlayerStatusData("FLATTEN")                                                     },
         {PlayerStatusEffect.TUMBLE,                             new PlayerStatusData("TUMBLE")                                                      },
-        {PlayerStatusEffect.BOUNCE,                             new PlayerStatusData("BOUNCE", stun: true)                                          },
+        {PlayerStatusEffect.KNOCKDOWN,                          new PlayerStatusData("KNOCKDOWN", stun: true)                                       },
     };
 
     // float time = 0f;

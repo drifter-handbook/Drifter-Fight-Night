@@ -305,11 +305,11 @@ public class Drifter : MonoBehaviour, INetworkInit
         if(movement.grounded)animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState(GroundIdleStateName,animationLayer);
         else animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState(AirIdleStateName,animationLayer);
         if(status.HasStatusEffect(PlayerStatusEffect.END_LAG)) status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
-        if(status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN)) status.ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,0f);
+        if(status.HasStatusEffect(PlayerStatusEffect.FLATTEN)) status.ApplyStatusEffect(PlayerStatusEffect.FLATTEN,0f);
         movement.terminalVelocity = terminalVelocity;
         canSpecialCancelFlag = false;
         listenForSpecialCancel = false;     
-        knockedDown = false;   
+        //knockedDown = false;   
     }
 
 

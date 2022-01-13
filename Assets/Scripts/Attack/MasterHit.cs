@@ -73,24 +73,23 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         attackWasCanceled = true;
         //Clear all flags if the character is dead or stunned by an opponent
 
-        if(status.HasStatusEffect(PlayerStatusEffect.BOUNCE))
+        if(status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN))
         {
             drifter.knockedDown = true;
             movement.terminalVelocity = terminalVelocity;
             if(listeningForGroundedFlag && movement.grounded)
             {
-                status.ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,3f);
+                status.ApplyStatusEffect(PlayerStatusEffect.FLATTEN,3f);
                 BounceParticle();
                 playQueuedState();
                 clearMasterhitVars();
             }
         }
-        else if(drifter.knockedDown && !status.HasStatusEffect(PlayerStatusEffect.BOUNCE))
+        else if(drifter.knockedDown && !status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN))
         {
             status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,3);
             playState("Jump_End");
             drifter.knockedDown = false;
-            
         }
 
         else if(status.HasEnemyStunEffect() || movement.ledgeHanging)
@@ -457,6 +456,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         movement.updateFacing();
         if(checkForJumpTap())movement.jump();
         attacks.UpdateInput();
+        drifter.knockedDown = false;
     }
 
     public void playState(string state)

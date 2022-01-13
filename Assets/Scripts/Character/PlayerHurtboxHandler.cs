@@ -61,7 +61,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
 
             //Whiff on grounded or aerial when applicable
-            if((!attackData.canHitGrounded && drifter.movement.grounded) ||(!attackData.canHitAerial && !drifter.movement.grounded) || (!attackData.canHitKnockedDown && status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN)))return -3;
+            if((!attackData.canHitGrounded && drifter.movement.grounded) ||(!attackData.canHitAerial && !drifter.movement.grounded) || (!attackData.canHitKnockedDown && status.HasStatusEffect(PlayerStatusEffect.FLATTEN)))return -3;
 
             oldAttacks[attackID] = Time.time;
 
