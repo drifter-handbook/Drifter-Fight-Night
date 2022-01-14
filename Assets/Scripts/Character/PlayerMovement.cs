@@ -204,6 +204,12 @@ public class PlayerMovement : MonoBehaviour
                 rb.velocity = Vector2.Reflect(prevVelocity,normal) *.8f;
                 spawnJuiceParticle(col.contacts[0].point, MovementParticleMode.Restitution, Quaternion.Euler(0f,0f, ( (rb.velocity.x < 0)?1:-1 ) * Vector3.Angle(Vector3.up,normal)),false);
             }
+            //didnt have enough force to restitute, didnt get knocked down. Return to idle.
+            // else
+            // {
+            //     drifter.returnToIdle();
+            //     drifter.knockedDown = false;
+            // }
 
                     //status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, Mathf.Min(rb.velocity.magnitude * .005f,.3f));
                 
@@ -333,12 +339,13 @@ public class PlayerMovement : MonoBehaviour
             hitstun = true;
         }  
         
-
+        //come out of hitstun logic
         if(hitstun && !status.HasEnemyStunEffect() && !drifter.guarding)
         {
             hitstun = false;
             drifter.guardBreaking = false;
             drifter.returnToIdle();
+            drifter.knockedDown = false;
             ringTime = 6;
         }
 

@@ -321,7 +321,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         resetTerminalVelocity();
         ledgeDetector.setPreventWalkoff(false);
         dacusCancelFlag= false;
-        drifter.knockedDown = false;
+        //drifter.knockedDown = false;
         knockdownFlag = false;
     }
 

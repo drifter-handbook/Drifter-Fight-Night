@@ -122,7 +122,7 @@ public class Drifter : MonoBehaviour, INetworkInit
     [NonSerialized]
     public bool canSuper = true;
 
-    [NonSerialized]
+    //[NonSerialized]
     public bool knockedDown = true;
 
     [NonSerialized]
