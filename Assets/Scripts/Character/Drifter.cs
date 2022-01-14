@@ -310,7 +310,8 @@ public class Drifter : MonoBehaviour, INetworkInit
         movement.terminalVelocity = terminalVelocity;
         canSpecialCancelFlag = false;
         listenForSpecialCancel = false;     
-        //knockedDown = false;   
+        //knockedDown = false;
+        if(transform.position.z != -1) transform.position = new Vector3(transform.position.x,transform.position.y,-1);
     }
 
 

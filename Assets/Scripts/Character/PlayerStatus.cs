@@ -144,12 +144,17 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         if(GameController.Instance.IsPaused)
             return;
 
-        if(grabPoint!=null && HasStatusEffect(PlayerStatusEffect.GRABBED) && grabPoint.enabled)rb.position = grabPoint.bounds.center;
+        if(grabPoint!=null && HasStatusEffect(PlayerStatusEffect.GRABBED) && grabPoint.enabled)
+        {
+            //rb.position = grabPoint.bounds.center;
+            drifter.transform.position = grabPoint.bounds.center;
+        }
 
         else if(HasStatusEffect(PlayerStatusEffect.GRABBED) && (grabPoint== null || !grabPoint.enabled))
         {
             grabPoint=null;
             statusDataMap[PlayerStatusEffect.GRABBED].duration = 0;
+            drifter.transform.position = new Vector3(drifter.transform.position.x,drifter.transform.position.y,0);
             rb.velocity = delayedVelocity;
             delayedVelocity = Vector2.zero;
         }
