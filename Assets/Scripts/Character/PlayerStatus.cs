@@ -154,7 +154,6 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         {
             grabPoint=null;
             statusDataMap[PlayerStatusEffect.GRABBED].duration = 0;
-            drifter.transform.position = new Vector3(drifter.transform.position.x,drifter.transform.position.y,0);
             rb.velocity = delayedVelocity;
             delayedVelocity = Vector2.zero;
         }
