@@ -125,6 +125,10 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
     [SerializeField] private PlayerDamageNumbers damageDisplay;
 
     public Collider2D grabPoint = null;
+
+    PlayerStatusEffect delayedEffect;
+    float delayedEffectDuration;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -156,8 +160,16 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
             //Hitpause pauses all other statuses for its duration
             if(HasStatusEffect(PlayerStatusEffect.HITPAUSE) || HasStatusEffect(PlayerStatusEffect.GRABBED))
             {
-                 statusDataMap[PlayerStatusEffect.HITPAUSE].duration-= Time.deltaTime;
-                 if(!HasStatusEffect(PlayerStatusEffect.HITPAUSE) && !HasStatusEffect(PlayerStatusEffect.SLOWMOTION) && delayedVelocity != Vector2.zero)rb.velocity = delayedVelocity;
+                statusDataMap[PlayerStatusEffect.HITPAUSE].duration-= Time.deltaTime;
+                if(!HasStatusEffect(PlayerStatusEffect.HITPAUSE) && !HasStatusEffect(PlayerStatusEffect.SLOWMOTION))
+                {
+                    if(delayedVelocity != Vector2.zero)rb.velocity = delayedVelocity;
+                    if(delayedEffect != PlayerStatusEffect.HIT)
+                    {
+                        ApplyStatusEffect(delayedEffect,delayedEffectDuration);
+                        delayedEffect = PlayerStatusEffect.HIT;
+                    }
+                }
             }
             //Otherwise, tick down all active statuses
             else{
@@ -250,7 +262,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
     {
         foreach(KeyValuePair<PlayerStatusEffect,PlayerStatusData> ef in statusDataMap)
         {
-            if(HasStatusEffect(ef.Key) && ef.Value.isStun && !ef.Value.isSelfInflicted && ef.Key != PlayerStatusEffect.KNOCKBACK) return false;
+            if(HasStatusEffect(ef.Key) && ef.Value.isStun && !ef.Value.isSelfInflicted && ef.Key != PlayerStatusEffect.KNOCKBACK  && ef.Key != PlayerStatusEffect.HITPAUSE) return false;
         }
         return HasStatusEffect(PlayerStatusEffect.TUMBLE);        
     }
@@ -274,6 +286,17 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
     public void ApplyStatusEffect(PlayerStatusEffect ef, float duration)
     {
         ApplyStatusEffectFor(ef, duration);
+    }
+
+    public void ApplyDelayedStatusEffect(PlayerStatusEffect p_ef, float p_duration)
+    {
+        if(!HasStatusEffect(PlayerStatusEffect.HITPAUSE) && !HasStatusEffect(PlayerStatusEffect.SLOWMOTION))ApplyStatusEffectFor(p_ef, p_duration);
+        else
+        {
+            delayedEffect = p_ef;
+            delayedEffectDuration = p_duration;
+        }
+        
     }
 
     public void ApplyDamage(float damage, bool isCombo, float hitstun) {

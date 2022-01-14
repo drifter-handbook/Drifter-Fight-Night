@@ -192,12 +192,12 @@ public class PlayerHurtboxHandler : MonoBehaviour
             bool hadSlowmo = status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION);
 
             //Ignore knockback if invincible or armoured
-            if(attackData.hitType==HitType.TRANSCENDANT)
+            if(attackData.hitType == HitType.TRANSCENDANT)
             {
                 status?.ApplyStatusEffect(attackData.StatusEffect,attackData.StatusDuration);
                 returnCode = 0;
             }
-            if (status != null && (attackData.hitType==HitType.GRAB || !drifter.guarding || crossUp) && !drifter.parrying){
+            else if (status != null && (attackData.hitType==HitType.GRAB || !drifter.guarding || crossUp) && !drifter.parrying){
 
                 //If the player treid to guard a guardbreaker, they loose their shield for 5 seconds (60 frames)
                 if((attackData.hitType==HitType.GRAB || crossUp) && drifter.guarding && attackData.AttackDamage >0f)
