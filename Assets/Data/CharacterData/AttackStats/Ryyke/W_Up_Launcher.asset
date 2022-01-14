@@ -13,15 +13,17 @@ MonoBehaviour:
   m_Name: W_Up_Launcher
   m_EditorClassIdentifier: 
   AttackDamage: 3
-  Knockback: 22
+  Knockback: 30
   KnockbackScale: 0.2
-  hasStaticHitstun: 0
-  HitStun: 5
-  isGrab: 0
+  HitStun: 22
+  ShieldStun: 0
+  HitStop: -1
+  hitType: 0
   mirrorKnockback: 0
-  AngleOfImpact: 200
+  AngleOfImpact: 230
   StatusEffect: 20
   StatusDuration: 0.1
   HitFX: {fileID: 11400000, guid: c40ffbef4bd5ad54dbc61660fa4d822a, type: 2}
   canHitGrounded: 1
   canHitAerial: 1
+  canHitKnockedDown: 0
