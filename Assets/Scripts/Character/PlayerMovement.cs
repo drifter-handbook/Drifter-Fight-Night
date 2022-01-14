@@ -205,11 +205,12 @@ public class PlayerMovement : MonoBehaviour
                 spawnJuiceParticle(col.contacts[0].point, MovementParticleMode.Restitution, Quaternion.Euler(0f,0f, ( (rb.velocity.x < 0)?1:-1 ) * Vector3.Angle(Vector3.up,normal)),false);
             }
             //didnt have enough force to restitute, didnt get knocked down. Return to idle.
-            // else
-            // {
-            //     drifter.returnToIdle();
-            //     drifter.knockedDown = false;
-            // }
+            else if(!status.hasAdditionalStunEffect() && !status.HasGroundFriction())
+            {
+                UnityEngine.Debug.Log("Restitution Failed, returning to idle. If something was was wierd, this probably caused it.");
+                drifter.returnToIdle();
+                drifter.knockedDown = false;
+            }
 
                     //status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, Mathf.Min(rb.velocity.magnitude * .005f,.3f));
                 

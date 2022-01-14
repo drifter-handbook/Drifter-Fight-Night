@@ -262,12 +262,17 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         return false;        
     }
 
-    public bool canbeKnockedDown()
+    public bool hasAdditionalStunEffect()
     {
         foreach(KeyValuePair<PlayerStatusEffect,PlayerStatusData> ef in statusDataMap)
         {
-            if(HasStatusEffect(ef.Key) && ef.Value.isStun && !ef.Value.isSelfInflicted && ef.Key != PlayerStatusEffect.KNOCKBACK  && ef.Key != PlayerStatusEffect.HITPAUSE) return false;
+            if(HasStatusEffect(ef.Key) && ef.Value.isStun && !ef.Value.isSelfInflicted && ef.Key != PlayerStatusEffect.KNOCKBACK  && ef.Key != PlayerStatusEffect.HITPAUSE) return true;
         }
+        return false;
+    }
+    public bool canbeKnockedDown()
+    {
+        if(hasAdditionalStunEffect())return false;
         return HasStatusEffect(PlayerStatusEffect.TUMBLE);        
     }
 

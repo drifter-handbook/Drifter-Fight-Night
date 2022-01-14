@@ -63,6 +63,7 @@ MonoBehaviour:
   parent: {fileID: 3106753082241659636}
   playerType: {fileID: 0}
   isActive: 1
+  destroyParentOnHit: 0
   OverrideData: {fileID: 0}
   AttackData: {fileID: 0}
 --- !u!1 &1853559347
@@ -128,6 +129,7 @@ MonoBehaviour:
   parent: {fileID: 3106753082241659636}
   playerType: {fileID: 0}
   isActive: 1
+  destroyParentOnHit: 0
   OverrideData: {fileID: 0}
   AttackData: {fileID: 0}
 --- !u!1 &428734560881909087
@@ -193,6 +195,7 @@ MonoBehaviour:
   parent: {fileID: 3106753082241659636}
   playerType: {fileID: 0}
   isActive: 1
+  destroyParentOnHit: 0
   OverrideData: {fileID: 0}
   AttackData: {fileID: 0}
 --- !u!1 &1709800075325733094
@@ -484,6 +487,7 @@ MonoBehaviour:
     Guard: 0
     Pause: 0
     Grab: 0
+    Menu: 0
   - MoveX: 0
     MoveY: 0
     Jump: 0
@@ -493,6 +497,7 @@ MonoBehaviour:
     Guard: 0
     Pause: 0
     Grab: 0
+    Menu: 0
   - MoveX: 0
     MoveY: 0
     Jump: 0
@@ -502,6 +507,7 @@ MonoBehaviour:
     Guard: 0
     Pause: 0
     Grab: 0
+    Menu: 0
   - MoveX: 0
     MoveY: 0
     Jump: 0
@@ -511,6 +517,7 @@ MonoBehaviour:
     Guard: 0
     Pause: 0
     Grab: 0
+    Menu: 0
   - MoveX: 0
     MoveY: 0
     Jump: 0
@@ -520,6 +527,7 @@ MonoBehaviour:
     Guard: 0
     Pause: 0
     Grab: 0
+    Menu: 0
   - MoveX: 0
     MoveY: 0
     Jump: 0
@@ -529,6 +537,7 @@ MonoBehaviour:
     Guard: 0
     Pause: 0
     Grab: 0
+    Menu: 0
   - MoveX: 0
     MoveY: 0
     Jump: 0
@@ -538,6 +547,7 @@ MonoBehaviour:
     Guard: 0
     Pause: 0
     Grab: 0
+    Menu: 0
   - MoveX: 0
     MoveY: 0
     Jump: 0
@@ -547,6 +557,7 @@ MonoBehaviour:
     Guard: 0
     Pause: 0
     Grab: 0
+    Menu: 0
   - MoveX: 0
     MoveY: 0
     Jump: 0
@@ -556,6 +567,7 @@ MonoBehaviour:
     Guard: 0
     Pause: 0
     Grab: 0
+    Menu: 0
   - MoveX: 0
     MoveY: 0
     Jump: 0
@@ -565,6 +577,7 @@ MonoBehaviour:
     Guard: 0
     Pause: 0
     Grab: 0
+    Menu: 0
   - MoveX: 0
     MoveY: 0
     Jump: 0
@@ -574,6 +587,7 @@ MonoBehaviour:
     Guard: 0
     Pause: 0
     Grab: 0
+    Menu: 0
   - MoveX: 0
     MoveY: 0
     Jump: 0
@@ -583,6 +597,7 @@ MonoBehaviour:
     Guard: 0
     Pause: 0
     Grab: 0
+    Menu: 0
   - MoveX: 0
     MoveY: 0
     Jump: 0
@@ -592,6 +607,7 @@ MonoBehaviour:
     Guard: 0
     Pause: 0
     Grab: 0
+    Menu: 0
   - MoveX: 0
     MoveY: 0
     Jump: 0
@@ -601,6 +617,7 @@ MonoBehaviour:
     Guard: 0
     Pause: 0
     Grab: 0
+    Menu: 0
   - MoveX: 0
     MoveY: 0
     Jump: 0
@@ -610,6 +627,7 @@ MonoBehaviour:
     Guard: 0
     Pause: 0
     Grab: 0
+    Menu: 0
   animator: {fileID: 2000386183588008255}
   superCharge: 3
   myColor: 0
@@ -617,9 +635,11 @@ MonoBehaviour:
   peerID: 0
   status: {fileID: 8182132679057442092}
   sparkle: {fileID: 930985434726900140}
+  playerInputController: {fileID: 0}
   animationLayer: 0
   animationSpeed: 1
   guarding: 0
+  knockedDown: 1
 --- !u!114 &3106753082241659641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -633,6 +653,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numberOfJumps: 2
+  numberOfDashes: 1
+  dashSpeed: 35
   delayedJumpDuration: 0.08
   walkSpeed: 25
   groundAccelerationTime: 0.6
@@ -711,6 +733,7 @@ MonoBehaviour:
   W_Down_Is_Recovery: 0
   W_Side_Is_Recovery: 0
   maxRecoveries: 1
+  shareRecoveries: 0
 --- !u!50 &3106753082241659639
 Rigidbody2D:
   serializedVersion: 4
@@ -1115,6 +1138,7 @@ MonoBehaviour:
   parent: {fileID: 3106753082241659636}
   playerType: {fileID: 0}
   isActive: 1
+  destroyParentOnHit: 0
   OverrideData: {fileID: 0}
   AttackData: {fileID: 0}
 --- !u!70 &1801323591959772194
@@ -1199,6 +1223,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7257428522657596887, guid: 4d11c29958f167c4c84d3453c88daff5,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 0.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4d11c29958f167c4c84d3453c88daff5, type: 3}
