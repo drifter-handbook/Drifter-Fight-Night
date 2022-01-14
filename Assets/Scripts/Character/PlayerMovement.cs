@@ -155,8 +155,8 @@ public class PlayerMovement : MonoBehaviour
                     //     if(status.HasStatusEffect(PlayerStatusEffect.HITPAUSE)) status.setDelayedVelocity(new Vector3(kdbounceVelocity.x,Mathf.Clamp(kdbounceVelocity.y,-15f,15f)));
                     //     else rb.velocity= new Vector3(kdbounceVelocity.x,Mathf.Clamp(kdbounceVelocity.y,-15f,15f));
 
-                        if(status.HasStatusEffect(PlayerStatusEffect.HITPAUSE)) status.setDelayedVelocity(new Vector3(Facing *-9f,20));
-                        else rb.velocity = new Vector3(Facing *-9f,20);
+                    if(status.HasStatusEffect(PlayerStatusEffect.HITPAUSE)) status.setDelayedVelocity(new Vector3(Facing *-9f,20));
+                    else rb.velocity = new Vector3(Facing *-9f,20);
                     //kdbounceVelocity = Vector3.zero;
 
                 }

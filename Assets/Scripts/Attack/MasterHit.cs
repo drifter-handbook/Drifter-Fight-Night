@@ -80,6 +80,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
             movement.terminalVelocity = terminalVelocity;
             if(listeningForGroundedFlag && movement.grounded)
             {
+                status.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,0f);
                 status.ApplyStatusEffect(PlayerStatusEffect.FLATTEN,3f);
                 BounceParticle();
                 playQueuedState();
@@ -92,7 +93,6 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
             if(!status.HasEnemyStunEffect())
             {
                 status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,3);
-                //UnityEngine.Debug.Log("GETUP");
                 playState("Jump_End");
             }
         }
