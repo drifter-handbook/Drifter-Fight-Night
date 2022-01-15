@@ -299,6 +299,7 @@ public class Drifter : MonoBehaviour, INetworkInit
         //UnityEngine.Debug.Log("DRIFTER: RETURNING TO IDLE: " + state);
         movement.canLandingCancel = false;
         movement.jumping = false;
+        movement.dashing = false;
         canFeint = true;
         canSuper = true;
         clearGuardFlags();

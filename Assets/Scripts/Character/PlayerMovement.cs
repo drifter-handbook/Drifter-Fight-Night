@@ -50,6 +50,8 @@ public class PlayerMovement : MonoBehaviour
     [NonSerialized]
     public bool jumping = false;
     [NonSerialized]
+    public bool dashing = false;
+    [NonSerialized]
     public bool gravityPaused = false;
     [NonSerialized]
     public bool ledgeHanging = false;
@@ -61,7 +63,7 @@ public class PlayerMovement : MonoBehaviour
 
     public float accelerationPercent = .9f;
 
-    float dashLock = 0;
+    //float dashLock = 0;
 
     //Access to main camera for screen darkening
     ScreenShake mainCamera;
@@ -205,12 +207,12 @@ public class PlayerMovement : MonoBehaviour
                 spawnJuiceParticle(col.contacts[0].point, MovementParticleMode.Restitution, Quaternion.Euler(0f,0f, ( (rb.velocity.x < 0)?1:-1 ) * Vector3.Angle(Vector3.up,normal)),false);
             }
             //didnt have enough force to restitute, didnt get knocked down. Return to idle.
-            else if(!status.hasAdditionalStunEffect() && !status.HasGroundFriction())
-            {
-                UnityEngine.Debug.Log("Restitution Failed, returning to idle. If something was was wierd, this probably caused it.");
-                drifter.returnToIdle();
-                drifter.knockedDown = false;
-            }
+            // else if(!status.hasAdditionalStunEffect() && !status.HasGroundFriction())
+            // {
+            //     UnityEngine.Debug.Log("Restitution Failed, returning to idle. If something was was wierd, this probably caused it.");
+            //     drifter.returnToIdle();
+            //     drifter.knockedDown = false;
+            // }
 
                     //status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, Mathf.Min(rb.velocity.magnitude * .005f,.3f));
                 
@@ -219,10 +221,10 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        if(dashLock >0)dashLock -= Time.deltaTime;
-    }
+    // void Update()
+    // {
+    //     if(dashLock >0)dashLock -= Time.deltaTime;
+    // }
 
     void FixedUpdate()
     {
@@ -782,14 +784,14 @@ public class PlayerMovement : MonoBehaviour
 
     public bool dash()
     {
-        if(currentDashes > 0 && dashLock <=0)
+        if(currentDashes > 0 && !dashing)
         {
             // drifter.canSpecialCancelFlag = true;
             // drifter.listenForSpecialCancel = true;
             updateFacing();
-            status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.7f);
+            //status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.25f);
             accelerationPercent = 0;
-            dashLock = .5f;
+            dashing = true;
             spawnJuiceParticle(BodyCollider.bounds.center + new Vector3(Facing * (flipSprite?-1:1)* 1.5f,0), MovementParticleMode.Dash_Ring, Quaternion.Euler(0f,0f,0f), false);
             status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,4);
             drifter.PlayAnimation("Dash");
