@@ -123,7 +123,7 @@ public class Drifter : MonoBehaviour, INetworkInit
     public bool canSuper = true;
 
     //[NonSerialized]
-    public bool knockedDown = true;
+    public bool knockedDown = false;
 
     [NonSerialized]
     //True when a move has connected but the player has not yet canceled their move
