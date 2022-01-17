@@ -94,6 +94,7 @@ MonoBehaviour:
   parent: {fileID: 6811903245808162709}
   playerType: {fileID: 0}
   isActive: 1
+  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 52df4d1391d78374fb1bea3ed668ce2d, type: 2}
   AttackData: {fileID: 0}
 --- !u!70 &7445875928279050482
@@ -112,7 +113,7 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.5, y: 1}
   m_Direction: 0
---- !u!1 &1580097970894589540
+--- !u!1 &2790495838637832857
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -120,23 +121,23 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8738832018571270239}
-  - component: {fileID: 5204199876349906476}
-  - component: {fileID: 6838933396944785288}
+  - component: {fileID: 6320079870239495245}
+  - component: {fileID: 3579361998105607944}
+  - component: {fileID: 8777476784344087688}
   m_Layer: 9
-  m_Name: Aerial_Down_Grounded
+  m_Name: Aerial_Down_Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8738832018571270239
+--- !u!4 &6320079870239495245
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1580097970894589540}
+  m_GameObject: {fileID: 2790495838637832857}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -144,13 +145,13 @@ Transform:
   m_Father: {fileID: 887680423487451462}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5204199876349906476
+--- !u!114 &3579361998105607944
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1580097970894589540}
+  m_GameObject: {fileID: 2790495838637832857}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
@@ -159,15 +160,16 @@ MonoBehaviour:
   parent: {fileID: 6811903245808162709}
   playerType: {fileID: 0}
   isActive: 1
+  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 83ad5b2cb93cb054a98d246bf7646418, type: 2}
   AttackData: {fileID: 0}
---- !u!70 &6838933396944785288
+--- !u!70 &8777476784344087688
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1580097970894589540}
+  m_GameObject: {fileID: 2790495838637832857}
   m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
@@ -225,6 +227,7 @@ MonoBehaviour:
   parent: {fileID: 6811903245808162709}
   playerType: {fileID: 0}
   isActive: 1
+  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: c666aaa660b8aff45b22cd5246ba4af5, type: 2}
   AttackData: {fileID: 0}
 --- !u!70 &7724495709485183831
@@ -290,6 +293,7 @@ MonoBehaviour:
   parent: {fileID: 6811903245808162709}
   playerType: {fileID: 0}
   isActive: 1
+  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: ff58cc8e5c3806c47bb9a0f9ea77cf25, type: 2}
   AttackData: {fileID: 0}
 --- !u!70 &4976661473283151366
@@ -371,6 +375,7 @@ MonoBehaviour:
   parent: {fileID: 6811903245808162709}
   playerType: {fileID: 0}
   isActive: 1
+  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 2d0ed79703c4781469e4936eb8305d7c, type: 2}
   AttackData: {fileID: 0}
 --- !u!1 &7116259420309927751
@@ -420,6 +425,7 @@ MonoBehaviour:
   parent: {fileID: 6811903245808162709}
   playerType: {fileID: 0}
   isActive: 1
+  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 874952301b06abd4babc88b8ec488d9c, type: 2}
   AttackData: {fileID: 0}
 --- !u!70 &2236564265453246856

@@ -827,7 +827,7 @@ public class PlayerMovement : MonoBehaviour
         if(!GameController.Instance.IsHost || drifter.superCharge < 1f || status.HasStatusEffect(PlayerStatusEffect.DEAD) || !drifter.canSuper)return;
 
         //Hyperguard
-        if(status.HasStatusEffect(PlayerStatusEffect.KNOCKBACK) && drifter.guarding && !drifter.guardBreaking  && drifter.superCharge > 1f)
+        if(status.HasStatusEffect(PlayerStatusEffect.KNOCKBACK) && drifter.guarding && !drifter.guardBreaking  && drifter.superCharge >= 1f)
         {
             animator.enabled = true;
             hitstun = false;
@@ -840,9 +840,9 @@ public class PlayerMovement : MonoBehaviour
         }
         
         //Offensive Cancel
-        else if(status.HasStatusEffect(PlayerStatusEffect.END_LAG) && drifter.superCharge > 1f)
+        else if(status.HasStatusEffect(PlayerStatusEffect.END_LAG) && drifter.superCharge >= 1f)
         {
-            if(drifter.superCharge > 2f && !drifter.canFeint)
+            if(drifter.superCharge >= 2f && !drifter.canFeint)
             {
                 spawnSuperParticle("Offensive_Cancel",2f,20f);
                 drifter.PlayAnimation("Burst");
@@ -860,7 +860,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //Burst/Defensive Cancel
-        else if(!drifter.guarding && drifter.superCharge > 2f && status.HasEnemyStunEffect() && !status.HasStatusEffect(PlayerStatusEffect.GRABBED))
+        else if(!drifter.guarding && drifter.superCharge >= 2f && status.HasEnemyStunEffect() && !status.HasStatusEffect(PlayerStatusEffect.GRABBED))
         {
             animator.enabled = true;
             hitstun = false;
@@ -873,6 +873,13 @@ public class PlayerMovement : MonoBehaviour
             drifter.PlayAnimation("Burst");
             pauseGravity();
             //status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,3f * framerateScalar);
+        }
+        else if (!drifter.guarding && drifter.superCharge >= 1f && !status.HasStunEffect())
+        {
+            spawnSuperParticle("Time_Cancel",1f,8f);
+            drifter.PlayAnimation("Burst");
+            pauseGravity();
+            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,10f * framerateScalar);
         }
 
     }
