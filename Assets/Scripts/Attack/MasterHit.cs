@@ -90,6 +90,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         else if(knockdownFlag && !status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN))
         {
             knockdownFlag = false;
+            movement.terminalVelocity = terminalVelocity;
             if(!status.HasEnemyStunEffect())
             {
                 status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,3);
@@ -464,6 +465,13 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         if(checkForJumpTap())movement.jump();
         attacks.UpdateInput();
         //drifter.knockedDown = false;
+    }
+
+    public void knockdownRecover()
+    {
+        if(status.HasStatusEffect(PlayerStatusEffect.FLATTEN)) status.ApplyStatusEffect(PlayerStatusEffect.FLATTEN,0f);
+        if(status.HasEnemyStunEffect())status.clearStunStatus();
+        movement.techParticle();
     }
 
     public void playState(string state)
