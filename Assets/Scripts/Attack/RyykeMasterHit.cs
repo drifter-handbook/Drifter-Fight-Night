@@ -176,7 +176,7 @@ public class RyykeMasterHit : MasterHit
     			float distance = tombstones[i].getDistance(rb.position);
 	    		
                 //If it is within the active range, and Ryyke is not burrowing
-	        	if(distance < zombieRadius && !burrowing && tombstones[i].canAct && !status.HasEnemyStunEffect())
+	        	if(distance < zombieRadius && !burrowing && !status.HasEnemyStunEffect())
 	        	{
                     //Disable the reset flag for empowered state if a stone is nearby
 	        		reset = false;
@@ -198,7 +198,7 @@ public class RyykeMasterHit : MasterHit
 	        		
 	        	}
                 //Otherwise, if Ryyke is stunned, burrowing, or out of range
-	        	else if(distance >= zombieRadius  || burrowing || status.HasStunEffect())
+	        	else if((distance >= zombieRadius  || burrowing || status.HasStunEffect()) && !tombstones[i].attacking)
 	        	{
 	        		//Deactivate tombstones that are not nearby
 	        		if(tombstones[i].active)tombstones[i].playAnimation("Deactivate",true,true);
@@ -216,7 +216,7 @@ public class RyykeMasterHit : MasterHit
             //Deactivate all other active stones, so only one zombie is active at a time
             for(int i = 0; i <3; i++)
             {
-                if(tombstones[i] != null && i != nearbyStone && tombstones[i].active)
+                if(tombstones[i] != null && i != nearbyStone && tombstones[i].active && !tombstones[i].attacking)
                 {
                     tombstones[i].playAnimation("Deactivate",true,true);
                     tombstones[i].active = false;
@@ -364,6 +364,7 @@ public class RyykeMasterHit : MasterHit
     	{
     		refeshStoneHitboxes(tombstones[nearbyStone]);
     		tombstones[nearbyStone].playAnimation(state,false,true);
+            tombstones[nearbyStone].attacking = true;
     		//decrementStoneUses();
     	}
     }

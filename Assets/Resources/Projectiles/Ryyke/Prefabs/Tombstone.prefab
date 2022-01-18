@@ -949,8 +949,9 @@ MonoBehaviour:
   Uses: 3
   canAct: 1
   active: 0
-  ledgeDetector: {fileID: 2227580378250939028}
   projectile: 1
+  attacking: 0
+  ledgeDetector: {fileID: 2227580378250939028}
   listeningForGrounded: 1
 --- !u!114 &6503217773878009374
 MonoBehaviour:
@@ -990,8 +991,8 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.01, y: 0.175}
-  m_Size: {x: 0.15, y: 0.35}
+  m_Offset: {x: -0.01, y: 0.2}
+  m_Size: {x: 0.15, y: 0.4}
   m_Direction: 0
 --- !u!1001 &6089518659126985128
 PrefabInstance:

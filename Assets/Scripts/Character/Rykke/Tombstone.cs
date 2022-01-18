@@ -11,13 +11,16 @@ public class Tombstone : NonplayerHurtboxHandler
 	
 	public bool canAct = false;
 	public bool active = false;
+    public bool projectile = true;
+    public bool attacking = false;
 	public WalkOff ledgeDetector;
+    bool dealyGrounding = false;
 
 	PlayerAttacks attacks;
 	int tombstoneType = 0;
 	
 	GameObject drifter;
-	public bool projectile = true;
+
 
 	float zombieRadius = 4.5f;
 
@@ -49,7 +52,9 @@ public class Tombstone : NonplayerHurtboxHandler
         base.Update();
     	if(Uses <=0 && canAct)Destroy(gameObject);
 
-    	if(listeningForGrounded && IsGrounded())
+        if(dealyGrounding)
+            dealyGrounding = false;
+    	else if(listeningForGrounded && IsGrounded())
     	{
     		listeningForGrounded = false;
     		if(projectile) returnToIdle();
@@ -110,6 +115,13 @@ public class Tombstone : NonplayerHurtboxHandler
                 foreach (HitboxCollision hitbox in GetComponentsInChildren<HitboxCollision>(true))
                     hitbox.Facing = -facing;
             }
+            else if(!attacking && !collider.GetComponent<Tombstone>().projectile)
+            {
+                updateDirection(collider.GetComponent<Tombstone>().facing);
+                projectilize();
+                //Add particle here
+
+            }
 			//else if(!active && ! canAct)rb.velocity = new Vector3(collider.gameObject.transform.position.x > transform.position.x ? -5f:5f,0);
 	}	
 			
@@ -154,6 +166,9 @@ public class Tombstone : NonplayerHurtboxHandler
     		case 2:
     			rb.velocity = new Vector3(0,45f);
     			break;
+            case 3:
+                rb.velocity = new Vector3(facing *-5f,45f);
+                break;
     		default:
     			break;
     	}
@@ -190,9 +205,27 @@ public class Tombstone : NonplayerHurtboxHandler
 		listeningForGrounded = false;
 		ledgeDetector.setPreventWalkoff(false);
 		canAct = true;
+        attacking = false;
 		projectile = false;
 
     }
+
+    public void setCanAct()
+    {
+        canAct = true;
+    }
+
+    void projectilize()
+    {
+        canAct = false;
+        active = false;
+        projectile = true;
+        dealyGrounding = true;
+        listeningForGrounded = true;
+        playAnimationEvent(tombstoneType + "_Spin");
+        throwStone(3);
+    }
+
 
     public void listenForGrounded()
     {
