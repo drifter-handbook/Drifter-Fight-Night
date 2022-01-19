@@ -299,7 +299,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     {
         if(!isHost)return;
         setXVelocity(movement.dashSpeed);
-        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,4f*framerateScalar);
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN,3f*framerateScalar);
         dacusCancelFlag = true;
     }
 

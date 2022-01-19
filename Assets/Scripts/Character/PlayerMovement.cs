@@ -63,7 +63,7 @@ public class PlayerMovement : MonoBehaviour
 
     public float accelerationPercent = .9f;
 
-    //float dashLock = 0;
+    float dashLock = 0;
 
     //Access to main camera for screen darkening
     ScreenShake mainCamera;
@@ -220,10 +220,10 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // void Update()
-    // {
-    //     if(dashLock >0)dashLock -= Time.deltaTime;
-    // }
+    void Update()
+    {
+        if(dashLock >0)dashLock -= Time.deltaTime;
+    }
 
     void FixedUpdate()
     {
@@ -790,6 +790,7 @@ public class PlayerMovement : MonoBehaviour
             updateFacing();
             //status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.25f);
             accelerationPercent = 0;
+            dashLock = 1f;
             dashing = true;
             spawnJuiceParticle(BodyCollider.bounds.center + new Vector3(Facing * (flipSprite?-1:1)* 1.5f,0), MovementParticleMode.Dash_Ring, Quaternion.Euler(0f,0f,0f), false);
             status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,4);
