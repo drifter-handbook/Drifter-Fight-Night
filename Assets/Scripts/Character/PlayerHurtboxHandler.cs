@@ -556,17 +556,17 @@ public class PlayerHurtboxHandler : MonoBehaviour
         else
             vZone = parentZone.transform.Find("Killzone Bottom");
 
-        xDel = Mathf.Abs(hZone.position.x - rigidbody.position.x);
-        yDel = Mathf.Abs(vZone.position.y - rigidbody.position.y);
-        xVel = Mathf.Abs(rigidbody.velocity.x);
-        yVel = Mathf.Abs(rigidbody.velocity.y);
+        xDel = 1.2f * Mathf.Abs(hZone.position.x - rigidbody.position.x);
+        yDel = 1.2f * Mathf.Abs(vZone.position.y - rigidbody.position.y);
+        xVel = 1.2f * Mathf.Abs(rigidbody.velocity.x);
+        yVel = 1.2f * Mathf.Abs(rigidbody.velocity.y);
 
         float g = rigidbody.gravityScale * Physics2D.gravity.y;
 
-        if (Mathf.Sign(rigidbody.velocity.y) == -1)
-        {
-            g *= -1;
-        }
+        // if (Mathf.Sign(rigidbody.velocity.y) == -1)
+        // {
+        //     g *= -1;
+        // }
 
         //Dont play kill if youre gonna hit the stage
         if(rigidbody.velocity.y < 0)

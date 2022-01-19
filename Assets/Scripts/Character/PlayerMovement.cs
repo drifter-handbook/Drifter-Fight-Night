@@ -143,7 +143,6 @@ public class PlayerMovement : MonoBehaviour
 
                 if(normal.y == 1f && status.canbeKnockedDown() && !drifter.knockedDown)
                 {
-                    UnityEngine.Debug.Log("KD");
                     //Determine knockdown duration
                     status.ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,1.5f);
                     //status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.5f);
