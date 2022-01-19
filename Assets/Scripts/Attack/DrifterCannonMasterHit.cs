@@ -154,6 +154,11 @@ public class DrifterCannonMasterHit : MasterHit
     public void handleRanchStartup()
     {
     	if(!isHost)return;
+    	//sets all special inputs to true to "clear" it
+
+    	foreach(PlayerInputData input in drifter.input)
+    		input.Special = true;
+    	listenForSpecialTapped("W_Neutral_Fire");
         if(Empowered) drifter.PlayAnimation("W_Neutral_Fire");
     	else if(charge > 1) drifter.PlayAnimation("W_Neutral_" + charge);
     }
@@ -184,7 +189,7 @@ public class DrifterCannonMasterHit : MasterHit
 
         rb.velocity = new Vector2((charge - 1) * -15f* facing,0);
         
-        if(charge < 3)ranch.GetComponent<Rigidbody2D>().velocity = new Vector2((charge == 1?40f:20f)* facing,0);
+        if(charge < 3)ranch.GetComponent<Rigidbody2D>().velocity = new Vector2((charge == 1?55f:25f)* facing,0);
 
         SetCharge(1);
 

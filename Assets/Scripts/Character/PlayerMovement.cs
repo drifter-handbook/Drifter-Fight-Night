@@ -58,12 +58,12 @@ public class PlayerMovement : MonoBehaviour
     [NonSerialized]
     public Vector3 wallSliding = Vector3.zero;
     bool strongLedgeGrab = true;
-    [NonSerialized]
+    
     //public float techWindowElapsed = 0;
-
+    [NonSerialized]
     public float accelerationPercent = .9f;
-
-    float dashLock = 0;
+    [NonSerialized]
+    public float dashLock = 0;
 
     //Access to main camera for screen darkening
     ScreenShake mainCamera;
