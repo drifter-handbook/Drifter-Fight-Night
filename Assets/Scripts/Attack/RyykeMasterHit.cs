@@ -378,6 +378,7 @@ public class RyykeMasterHit : MasterHit
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             hitbox.Facing = stone.facing;
+            hitbox.isActive = true;
         }
 
     }
