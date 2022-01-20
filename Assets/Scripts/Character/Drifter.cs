@@ -169,11 +169,11 @@ public class Drifter : MonoBehaviour, INetworkInit
         terminalVelocity = movement.terminalVelocity;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if(cancelTimer >0)
         {
-            cancelTimer -= Time.deltaTime;
+            cancelTimer -= Time.fixedDeltaTime;
             if(cancelTimer <=0)
             {
                 cancelTimer = 0;

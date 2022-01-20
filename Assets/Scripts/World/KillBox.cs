@@ -20,7 +20,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
         host = GameController.Instance.host;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (GameController.Instance.IsHost && NetworkPlayers.Instance != null && playerList.Length == 0)
         {

@@ -28,7 +28,8 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
         get { return _facing;}
         set {
             _facing = value;
-            healthBar.facing = value;
+            if(healthBar!=null)
+                healthBar.facing = value;
         }
     }
 

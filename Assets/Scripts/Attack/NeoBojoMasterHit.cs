@@ -78,6 +78,11 @@ public class NeoBojoMasterHit : MasterHit
             hitbox.Facing = facing;
        }
 
+       foreach (HurtboxCollision hurtbox in centaur.GetComponentsInChildren<HurtboxCollision>(true))
+       {
+            hurtbox.owner = drifter.gameObject;
+       }
+
        centaur.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
 
        centaur.GetComponent<SyncAnimatorStateHost>().SetState("Centaur_" + power);
