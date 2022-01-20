@@ -11,7 +11,7 @@ public class MultihitZoneProjectile : MonoBehaviour
             {
                 hitbox.AttackID += 9;
                 hitbox.AttackType = DrifterAttackType.W_Down;
-                hitbox.Active = true;
+                hitbox.isActive = true;
             }
         
     }

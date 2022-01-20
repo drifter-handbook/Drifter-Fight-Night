@@ -97,10 +97,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 9091461624587303316}
   playerType: {fileID: 0}
-  isActive: 1
   destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 4cbd808f5309afc4f98fd7d66019d21c, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!1 &2918908799003735742
 GameObject:
   m_ObjectHideFlags: 0
@@ -163,10 +163,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 9091461624587303316}
   playerType: {fileID: 0}
-  isActive: 1
   destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 7e7a95404c186eb4fa6bdaae5b37e865, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!1 &3013779264580500651
 GameObject:
   m_ObjectHideFlags: 0
@@ -213,10 +213,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 9091461624587303316}
   playerType: {fileID: 0}
-  isActive: 1
   destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: f34c666bef11796478c15f13e2c13845, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!70 &1406875387026951124
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -296,10 +296,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 9091461624587303316}
   playerType: {fileID: 0}
-  isActive: 1
   destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 380b524862f934e4ab5b7a152c0ac6e4, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -1
 --- !u!1 &4061571360135781240
 GameObject:
   m_ObjectHideFlags: 0
@@ -363,10 +363,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 9091461624587303316}
   playerType: {fileID: 0}
-  isActive: 1
   destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 234c8791425e57e4fa48b40e7b2179ef, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
   SuccessState: W_Up_Throw
   anim: {fileID: 99137103134557838}
 --- !u!1 &5430352776943473637
@@ -415,10 +415,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 9091461624587303316}
   playerType: {fileID: 0}
-  isActive: 1
   destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: b893b5dd0fe0c1a459abbd36404d3951, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!70 &2877071784615842992
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -632,10 +632,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 9091461624587303316}
   playerType: {fileID: 0}
-  isActive: 1
   destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: c25eda7d6fd9b4247a5c77f64fccacfc, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!1 &9071377762134712091
 GameObject:
   m_ObjectHideFlags: 0
@@ -699,10 +699,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 9091461624587303316}
   playerType: {fileID: 0}
-  isActive: 1
   destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 642a72b4faa3ea24cb09a89f47794585, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -1
   SuccessState: W_Side_Hit
   anim: {fileID: 99137103134557838}
 --- !u!1 &9091461624587303316

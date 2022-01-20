@@ -291,7 +291,7 @@ public class PlayerAttacks : MonoBehaviour
             hitbox.AttackID = AttackID;
             hitbox.AttackType = AttackType;
             hitbox.AttackData = Attacks[AttackType];
-            hitbox.Active = false;
+            hitbox.isActive = true;
             hitbox.Facing = Facing;
         }
     }
@@ -303,6 +303,7 @@ public class PlayerAttacks : MonoBehaviour
         foreach (HitboxCollision hitbox in GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.AttackID = AttackID;
+            hitbox.isActive = true;
         }
     }
     // set hitboxes
@@ -310,7 +311,7 @@ public class PlayerAttacks : MonoBehaviour
     {
         foreach (HitboxCollision hitbox in GetComponentsInChildren<HitboxCollision>(true))
         {
-            hitbox.Active = active;
+            hitbox.isActive = active;
         }
     }
 }

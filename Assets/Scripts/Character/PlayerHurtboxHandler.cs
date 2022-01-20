@@ -37,7 +37,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
     // -2: Hit was registerted, but Parried, dealing no damage
     // -1: Hit was registered, but blocked
     // 0: Hit was registered normally
-    // 1: hit was against a non-player object
+    // 1: Hit was registered normally and has attatched the opponent to the players hitbox
+    // 2: hit was against a non-player object
 
     public virtual int RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, DrifterAttackType attackType, SingleAttackData attackData)
     {
@@ -294,7 +295,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 if(HitPauseDuration>0 && attackData.StatusEffect != PlayerStatusEffect.HITPAUSE )status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(isCritical || status.HasStatusEffect(PlayerStatusEffect.ARMOUR)) ? 25f* framerateScalar:((damageDealt <=2f ? .075f :Mathf.Max(HitPauseDuration*.3f ,10f * framerateScalar)) * (hadSlowmo?2f:1f)));
                 StartCoroutine(drifter.GetComponentInChildren<GameObjectShake>().Shake(attackData.StatusEffect != PlayerStatusEffect.CRINGE?HitPauseDuration*.2f:attackData.StatusDuration* framerateScalar,attackData.StatusEffect != PlayerStatusEffect.CRINGE?1.5f:2f));
 
-                returnCode = 0;             
+                returnCode = attackData.StatusEffect == PlayerStatusEffect.GRABBED?1: 0;             
             }
             //Normal guarding behavior
             else if(drifter.guarding && !drifter.parrying)

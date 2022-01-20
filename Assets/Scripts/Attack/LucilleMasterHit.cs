@@ -94,7 +94,7 @@ public class LucilleMasterHit : MasterHit
                     hitbox.parent = drifter.gameObject;
                     hitbox.AttackID = attacks.AttackID;
                     hitbox.AttackType = attacks.AttackType;
-                    hitbox.Active = true;
+    
                     hitbox.Facing = facing;
                 }
                 accretionDisk.GetComponent<StickToTarget>().victim = infector.victim;
@@ -130,7 +130,6 @@ public class LucilleMasterHit : MasterHit
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
-            hitbox.Active = true;
             hitbox.Facing = facing;
             
         }

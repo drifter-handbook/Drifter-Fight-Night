@@ -61,7 +61,7 @@ public class SandbagMasterHit : MasterHit
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
-            hitbox.Active = true;
+            
             hitbox.Facing = facing;
         }
 		sandblast.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
@@ -83,7 +83,7 @@ public class SandbagMasterHit : MasterHit
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
-            hitbox.Active = true;
+            
             hitbox.Facing = facing;
         }
         foreach (HitboxCollision hitbox in sandspear2.GetComponentsInChildren<HitboxCollision>(true))
@@ -91,7 +91,7 @@ public class SandbagMasterHit : MasterHit
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
-            hitbox.Active = true;
+            
             hitbox.Facing = facing;
         }
 		sandspear1.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());

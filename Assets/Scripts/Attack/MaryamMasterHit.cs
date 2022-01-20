@@ -106,7 +106,6 @@ public class MaryamMasterHit : MasterHit
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             hitbox.AttackData = attacks.Attacks[attacks.AttackType];
-            hitbox.Active = true;
             hitbox.Facing = facing;
        }
     }
@@ -125,7 +124,6 @@ public class MaryamMasterHit : MasterHit
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             hitbox.AttackData = attacks.Attacks[attacks.AttackType];
-            hitbox.Active = true;
             hitbox.Facing = facing;
        }
     }
@@ -144,7 +142,6 @@ public class MaryamMasterHit : MasterHit
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             hitbox.AttackData = attacks.Attacks[DrifterAttackType.W_Down];
-            hitbox.Active = true;
             hitbox.Facing = facing;
        }
     }
@@ -163,7 +160,6 @@ public class MaryamMasterHit : MasterHit
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             hitbox.AttackData = attacks.Attacks[DrifterAttackType.Roll];
-            hitbox.Active = true;
             hitbox.Facing = facing;
        }
     }
@@ -183,7 +179,6 @@ public class MaryamMasterHit : MasterHit
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             hitbox.AttackData = attacks.Attacks[DrifterAttackType.Aerial_Q_Neutral];
-            hitbox.Active = true;
             hitbox.Facing = facing;
        }
     }
@@ -202,7 +197,6 @@ public class MaryamMasterHit : MasterHit
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             hitbox.AttackData = attacks.Attacks[attacks.AttackType];
-            hitbox.Active = true;
             hitbox.Facing = facing;
        }
     }
@@ -221,7 +215,6 @@ public class MaryamMasterHit : MasterHit
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             hitbox.AttackData = attacks.Attacks[attacks.AttackType];
-            hitbox.Active = true;
             hitbox.Facing = facing;
        }
     }

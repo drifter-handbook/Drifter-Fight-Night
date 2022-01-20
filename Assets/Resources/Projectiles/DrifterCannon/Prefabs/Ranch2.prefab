@@ -62,10 +62,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 6327158609564964814}
   playerType: {fileID: 0}
-  isActive: 1
   destroyParentOnHit: 1
   OverrideData: {fileID: 11400000, guid: f717fef1328f1c04eb3cc13a748dc361, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!1 &6327158609564964814
 GameObject:
   m_ObjectHideFlags: 0
@@ -244,4 +244,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ef945a1776594438c7a9223e2d7bb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  duration: -1
+  duration: 2

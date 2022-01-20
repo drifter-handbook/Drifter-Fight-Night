@@ -312,8 +312,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 625069843417986663}
   playerType: {fileID: 0}
+  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 6610c2741f171ac44b8cc5dae7c30875, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: 0
 --- !u!1 &6980073882341431624
 GameObject:
   m_ObjectHideFlags: 0
@@ -376,5 +378,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 625069843417986663}
   playerType: {fileID: 0}
+  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: eaf71c37fb381dc4f96592a946615332, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2

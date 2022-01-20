@@ -23,7 +23,6 @@ public class NeoBojoMasterHit : MasterHit
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = -attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
-            hitbox.Active = true;
             hitbox.Facing = facing;
        }
 
@@ -55,7 +54,6 @@ public class NeoBojoMasterHit : MasterHit
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = -attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
-            hitbox.Active = true;
             hitbox.Facing = facing;
        }
 

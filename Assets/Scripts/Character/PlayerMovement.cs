@@ -902,7 +902,7 @@ public class PlayerMovement : MonoBehaviour
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
-            hitbox.Active = true;
+            hitbox.isActive = true;
             hitbox.Facing = Facing;
         }
         cancel.GetComponent<SyncAnimatorStateHost>().SetState(mode);

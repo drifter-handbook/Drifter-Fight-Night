@@ -196,7 +196,6 @@ public class BeanWrangler : NonplayerHurtboxHandler
                 hitbox.parent = Orro;
                 hitbox.AttackID = attacks.AttackID;
                 hitbox.AttackType = attacks.AttackType;
-                hitbox.Active = true;
                 hitbox.Facing = facing;
         }
 
@@ -219,7 +218,6 @@ public class BeanWrangler : NonplayerHurtboxHandler
             hitbox.parent = Orro;
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
-            hitbox.Active = true;
             hitbox.Facing = facing;
             hitbox.OverrideData.StatusDuration = Mathf.Max((charge-3)/3,1);
        }

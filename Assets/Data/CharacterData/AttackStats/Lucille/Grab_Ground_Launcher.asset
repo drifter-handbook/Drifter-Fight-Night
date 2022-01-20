@@ -14,15 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AttackDamage: 1
   Knockback: 22
-  KnockbackScale: 0.2
+  KnockbackScale: 0
   HitStun: 6
   ShieldStun: 0
   HitStop: -1
   hitType: 0
   mirrorKnockback: 0
-  AngleOfImpact: 65
-  StatusEffect: 20
-  StatusDuration: 0.1
+  AngleOfImpact: 25
+  StatusEffect: 29
+  StatusDuration: 60
   HitFX: {fileID: 11400000, guid: c40ffbef4bd5ad54dbc61660fa4d822a, type: 2}
   canHitGrounded: 1
   canHitAerial: 1
+  canHitKnockedDown: 0
