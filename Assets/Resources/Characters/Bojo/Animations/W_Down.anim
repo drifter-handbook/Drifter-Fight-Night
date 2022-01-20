@@ -20,22 +20,43 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 9042383100130327564, guid: 13b6554034d467b439c18799d228dd68,
+      value: {fileID: 6616443434502623412, guid: 987d370ce4165bc42bbb21c688ba7aa0,
         type: 3}
     - time: 0.083333336
-      value: {fileID: 4792331030914266926, guid: 13b6554034d467b439c18799d228dd68,
+      value: {fileID: -7257985373048771555, guid: 987d370ce4165bc42bbb21c688ba7aa0,
         type: 3}
     - time: 0.16666667
-      value: {fileID: -2451110176798808767, guid: 13b6554034d467b439c18799d228dd68,
+      value: {fileID: 1562856767633813617, guid: 987d370ce4165bc42bbb21c688ba7aa0,
         type: 3}
     - time: 0.25
-      value: {fileID: 3954433253854374330, guid: 13b6554034d467b439c18799d228dd68,
+      value: {fileID: 822540933878092947, guid: 987d370ce4165bc42bbb21c688ba7aa0,
         type: 3}
     - time: 0.33333334
-      value: {fileID: 7160154756823373877, guid: 13b6554034d467b439c18799d228dd68,
+      value: {fileID: -7914846508011252761, guid: 987d370ce4165bc42bbb21c688ba7aa0,
         type: 3}
     - time: 0.41666666
-      value: {fileID: 2642941787723902500, guid: 13b6554034d467b439c18799d228dd68,
+      value: {fileID: 7361847061875340491, guid: 987d370ce4165bc42bbb21c688ba7aa0,
+        type: 3}
+    - time: 0.5
+      value: {fileID: 3082251292718099602, guid: 987d370ce4165bc42bbb21c688ba7aa0,
+        type: 3}
+    - time: 0.5833333
+      value: {fileID: -4223272493227528419, guid: 987d370ce4165bc42bbb21c688ba7aa0,
+        type: 3}
+    - time: 0.6666667
+      value: {fileID: -2055893491231885286, guid: 987d370ce4165bc42bbb21c688ba7aa0,
+        type: 3}
+    - time: 0.75
+      value: {fileID: -6957369195242344134, guid: 987d370ce4165bc42bbb21c688ba7aa0,
+        type: 3}
+    - time: 0.8333333
+      value: {fileID: -7637615291825153964, guid: 987d370ce4165bc42bbb21c688ba7aa0,
+        type: 3}
+    - time: 0.9166667
+      value: {fileID: 4364824686205640577, guid: 987d370ce4165bc42bbb21c688ba7aa0,
+        type: 3}
+    - time: 1
+      value: {fileID: 6213893650358615160, guid: 987d370ce4165bc42bbb21c688ba7aa0,
         type: 3}
     attribute: m_Sprite
     path: 
@@ -56,18 +77,25 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 9042383100130327564, guid: 13b6554034d467b439c18799d228dd68, type: 3}
-    - {fileID: 4792331030914266926, guid: 13b6554034d467b439c18799d228dd68, type: 3}
-    - {fileID: -2451110176798808767, guid: 13b6554034d467b439c18799d228dd68, type: 3}
-    - {fileID: 3954433253854374330, guid: 13b6554034d467b439c18799d228dd68, type: 3}
-    - {fileID: 7160154756823373877, guid: 13b6554034d467b439c18799d228dd68, type: 3}
-    - {fileID: 2642941787723902500, guid: 13b6554034d467b439c18799d228dd68, type: 3}
+    - {fileID: 6616443434502623412, guid: 987d370ce4165bc42bbb21c688ba7aa0, type: 3}
+    - {fileID: -7257985373048771555, guid: 987d370ce4165bc42bbb21c688ba7aa0, type: 3}
+    - {fileID: 1562856767633813617, guid: 987d370ce4165bc42bbb21c688ba7aa0, type: 3}
+    - {fileID: 822540933878092947, guid: 987d370ce4165bc42bbb21c688ba7aa0, type: 3}
+    - {fileID: -7914846508011252761, guid: 987d370ce4165bc42bbb21c688ba7aa0, type: 3}
+    - {fileID: 7361847061875340491, guid: 987d370ce4165bc42bbb21c688ba7aa0, type: 3}
+    - {fileID: 3082251292718099602, guid: 987d370ce4165bc42bbb21c688ba7aa0, type: 3}
+    - {fileID: -4223272493227528419, guid: 987d370ce4165bc42bbb21c688ba7aa0, type: 3}
+    - {fileID: -2055893491231885286, guid: 987d370ce4165bc42bbb21c688ba7aa0, type: 3}
+    - {fileID: -6957369195242344134, guid: 987d370ce4165bc42bbb21c688ba7aa0, type: 3}
+    - {fileID: -7637615291825153964, guid: 987d370ce4165bc42bbb21c688ba7aa0, type: 3}
+    - {fileID: 4364824686205640577, guid: 987d370ce4165bc42bbb21c688ba7aa0, type: 3}
+    - {fileID: 6213893650358615160, guid: 987d370ce4165bc42bbb21c688ba7aa0, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.5
+    m_StopTime: 1.0833334
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -88,43 +116,64 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0
-    functionName: setTerminalVelocity
+    functionName: setCentaurPower
     data: 
     objectReferenceParameter: {fileID: 0}
-    floatParameter: 8
+    floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.083333336
-    functionName: setYVelocity
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 20
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.41666666
-    functionName: listenForGrounded
-    data: W_Down_Land
+    functionName: listenForSpecialReleased
+    data: W_Down_End_Weak
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.41666666
-    functionName: setYVelocity
-    data: 
+    functionName: listenForSpecialReleased
+    data: W_Down_End_Mid
     objectReferenceParameter: {fileID: 0}
-    floatParameter: -55
+    floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.41666666
-    functionName: setTerminalVelocity
+    functionName: setCentaurPower
     data: 
     objectReferenceParameter: {fileID: 0}
-    floatParameter: 55
+    floatParameter: 0
+    intParameter: 1
+    messageOptions: 0
+  - time: 0.5833333
+    functionName: listenForSpecialReleased
+    data: W_Down_End_High
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.5
-    functionName: playState
-    data: W_Down_Loop
+  - time: 0.75
+    functionName: clearMasterhitVars
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.8333333
+    functionName: setCentaurPower
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 2
+    messageOptions: 0
+  - time: 0.8333333
+    functionName: SpawnCentaur
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 2
+    messageOptions: 0
+  - time: 1.0833334
+    functionName: returnToIdle
+    data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0

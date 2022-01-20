@@ -6,6 +6,7 @@ public class NeoBojoMasterHit : MasterHit
 {
 
     GameObject centaur;
+    GameObject soundwave;
     int power = 0;
 
     public void SpawnDownTiltWave()
@@ -34,6 +35,26 @@ public class NeoBojoMasterHit : MasterHit
         if(!isHost)return;
 
         movement.spawnJuiceParticle(transform.position ,MovementParticleMode.Bojo_Whirl, false);
+    }
+
+    public void Neutral_Special()
+    {
+        if(!isHost)return;
+
+        facing = movement.Facing;
+        if(soundwave!= null) Destroy(soundwave);
+        soundwave = host.CreateNetworkObject("Sandblast", transform.position + new Vector3(1.5f * movement.Facing, 2.5f), transform.rotation);
+        soundwave.transform.localScale = new Vector3(10f * facing, 10f , 1f);
+        foreach (HitboxCollision hitbox in soundwave.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
+            
+            hitbox.Facing = facing;
+        }
+        soundwave.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
+        soundwave.GetComponent<Rigidbody2D>().velocity = new Vector3(facing * 25f,0,0);
     }
 
 
