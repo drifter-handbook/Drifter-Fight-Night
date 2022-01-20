@@ -33,30 +33,25 @@ public class RyykeMasterHit : MasterHit
 	//The current stone being targeted for teleportation with down special
 	int targetStone = -1;
 
-	void Update()
-	{
-		if(burrowing && burrowTime >0)
-        {
-        	burrowTime-= Time.deltaTime;
-        }
-
-        if(arm!= null &&(movement.ledgeHanging || status.HasEnemyStunEffect())) deleteArm();
-	}
-
-
 	new void FixedUpdate()
     {
         if(!isHost)return;
 
         base.FixedUpdate();
+
+        //Remove the arm if it is not needed
+        if(arm!= null &&(movement.ledgeHanging || status.HasEnemyStunEffect())) deleteArm();
+
+        //remove all tombstones on death
         if(status.HasStatusEffect(PlayerStatusEffect.DEAD))
         {
        		for(int i = 0; i <3; i++)
        			if(tombstones[i] != null)
        				Destroy(tombstones[i].gameObject);
-       		
         }
 
+
+        //Listen for a directional input in empowered down special
         if(listeningForDirection)
         {
         	targetStone = nearbyStone;
@@ -72,6 +67,7 @@ public class RyykeMasterHit : MasterHit
         else
         	targetStone = -1;
 
+        //Listen for movement commands in unempowered down special
         if(listeningForMovement)
         {
         	movement.move(14f);
@@ -86,6 +82,12 @@ public class RyykeMasterHit : MasterHit
         	else
         		playState("W_Down_Idle");
 
+        }
+
+        //Tick down the burrow timer
+        if(burrowing && burrowTime >0)
+        {
+            burrowTime -= Time.fixedDeltaTime;
         }
 
         isNearStone();

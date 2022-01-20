@@ -46,7 +46,7 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
         rb = GetComponent<Rigidbody2D>();
     }
 
-    protected void Update()
+    protected void FixedUpdate()
     {
         if(!GameController.Instance.IsHost)return;
 

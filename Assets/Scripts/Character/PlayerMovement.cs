@@ -220,18 +220,14 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        if(dashLock >0)dashLock -= Time.deltaTime;
-    }
-
     void FixedUpdate()
     {
         if (!GameController.Instance.IsHost || GameController.Instance.IsPaused)
             return;
 
 
-        // if(drifter.input[0].Guard) techWindowElapsed += Time.deltaTime;
+        if(dashLock >0)dashLock -= Time.fixedDeltaTime;
+        // if(drifter.input[0].Guard) techWindowElapsed += Time.fixedDeltaTime;
         // else if(status.HasGroundFriction()) techWindowElapsed = 0;
 
         bool moving = drifter.input[0].MoveX != 0;
@@ -467,13 +463,13 @@ public class PlayerMovement : MonoBehaviour
                             spawnJuiceParticle(new Vector2(-Facing * (flipSprite?-1:1)* 1.5f,0) + contacts[0].point, MovementParticleMode.WalkDust);
                             walkTime = 0;
                         }
-                        else walkTime += Time.deltaTime;
+                        else walkTime += Time.fixedDeltaTime;
                         
 
                     }
 
                 }
-                if(accelerationPercent > 0) accelerationPercent -= Time.deltaTime/groundAccelerationTime * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f: 1f);
+                if(accelerationPercent > 0) accelerationPercent -= Time.fixedDeltaTime/groundAccelerationTime * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f: 1f);
                 else accelerationPercent = 0;
 
                 currentSpeed = walkSpeed * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f: 1f) * (status.HasStatusEffect(PlayerStatusEffect.SPEEDUP) ? 1.5f: 1f) * (drifter.input[0].MoveX > 0 ? 1 : -1);
@@ -484,7 +480,7 @@ public class PlayerMovement : MonoBehaviour
                 if(!jumping)drifter.PlayAnimation(drifter.AirIdleStateName);
                 //status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0);
 
-                if(accelerationPercent >0) accelerationPercent -= Time.deltaTime/airAccelerationTime * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f: 1f);
+                if(accelerationPercent >0) accelerationPercent -= Time.fixedDeltaTime/airAccelerationTime * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f: 1f);
                 else accelerationPercent = 0;
 
                 currentSpeed = airSpeed * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f: 1f) * (status.HasStatusEffect(PlayerStatusEffect.SPEEDUP) ? 1.5f: 1f) * (drifter.input[0].MoveX > 0 ? 1 : -1);
@@ -537,8 +533,8 @@ public class PlayerMovement : MonoBehaviour
         {
             if(canAct && !jumping)drifter.returnToIdle();
             //standing ground friction (When button is not held)
-            if(!grounded)rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 20f * Time.deltaTime), rb.velocity.y);
-            else rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 80f * Time.deltaTime), rb.velocity.y);
+            if(!grounded)rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 20f * Time.fixedDeltaTime), rb.velocity.y);
+            else rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 80f * Time.fixedDeltaTime), rb.velocity.y);
         }
 
 
@@ -546,7 +542,7 @@ public class PlayerMovement : MonoBehaviour
         else if(IsGrounded())
         {
             //Moving Ground Friction
-            rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 40f * Time.deltaTime), rb.velocity.y);
+            rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 40f * Time.fixedDeltaTime), rb.velocity.y);
         }
 
         //Drop through platforms && fastfall
@@ -613,7 +609,7 @@ public class PlayerMovement : MonoBehaviour
     //Moves the character left or right, based on the speed provided
     public void move(float speed, bool flipDirection = true)
     {
-        if(accelerationPercent >0) accelerationPercent -= Time.deltaTime/airAccelerationTime * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f: 1f);
+        if(accelerationPercent >0) accelerationPercent -= Time.fixedDeltaTime/airAccelerationTime * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f: 1f);
         else accelerationPercent = 0;
 
         if(flipDirection)updateFacing();
@@ -920,7 +916,7 @@ public class PlayerMovement : MonoBehaviour
         float time = 0;
         while (time <= delayedJumpDuration / (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .3f : 1f))
         {
-            time += Time.deltaTime;
+            time += Time.fixedDeltaTime;
             yield return null;
         }
         rb.velocity = new Vector2(rb.velocity.x, jumpSpeed * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f));

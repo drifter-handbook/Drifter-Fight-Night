@@ -55,12 +55,12 @@ public class BeanWrangler : NonplayerHurtboxHandler
 
     }
 
-    new void Update()
+    new void FixedUpdate()
     {
 
         if(!GameController.Instance.IsHost)return;
         prevHitstunDuration = HitstunDuration;
-        base.Update();
+        base.FixedUpdate();
         if(HitstunDuration >0) 
             return;
         else if(prevHitstunDuration != HitstunDuration && HitstunDuration <=0 && alive)
@@ -80,7 +80,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
                 if(!alive)
                 {
                     //Heal bean if he is dead
-                    if(percentage > 0) percentage -= 4f * Time.deltaTime;
+                    if(percentage > 0) percentage -= 4f * Time.fixedDeltaTime;
                     if(percentage <= 0)
                     {
                         percentage = 0;
@@ -101,7 +101,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
                 //If bean is returning to orro, he will move at a slower speed and not heal
                 if(Vector3.Distance(rb.position,targetPos.Pos) > 3.8f)
                 {
-                    rb.position =  Vector3.MoveTowards(rb.position,targetPos.Pos,returnSpeed * Time.deltaTime);
+                    rb.position =  Vector3.MoveTowards(rb.position,targetPos.Pos,returnSpeed * Time.fixedDeltaTime);
                     transform.localScale = new Vector3((targetPos.Pos.x > rb.position.x ? 1f : -1f) * Mathf.Abs(transform.localScale.x),
                         transform.localScale.y, transform.localScale.z); 
                         beancountdown = .5f;
@@ -111,13 +111,13 @@ public class BeanWrangler : NonplayerHurtboxHandler
                 else
                 {
                     //Tick down beans damage when he is attatched to orro
-                    if(percentage > 0) percentage -= 2f * Time.deltaTime;
+                    if(percentage > 0) percentage -= 2f * Time.fixedDeltaTime;
 
                     //Follow Logic
                     rb.position =  Vector3.Lerp(rb.position,targetPos.Pos,.25f * beancountdown);
                     transform.localScale = new Vector3(targetPos.Facing * Mathf.Abs(transform.localScale.x),
                         transform.localScale.y, transform.localScale.z); 
-                    if(beancountdown < 1f)beancountdown += 2.5f * Time.deltaTime;
+                    if(beancountdown < 1f)beancountdown += 2.5f * Time.fixedDeltaTime;
                 }
             }
 

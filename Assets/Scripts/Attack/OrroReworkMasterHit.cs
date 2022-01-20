@@ -34,6 +34,46 @@ public class OrroReworkMasterHit : MasterHit
 
         base.FixedUpdate();
 
+        //Refresh hover values when you land
+        if(movement.grounded)
+        {
+            canHover = true;
+            hoverTime = maxHoverTime;
+        }
+
+        //reset bean when he dies
+        if(!bean.alive)
+        {
+            beanFollowing= true;
+            Empowered = false;
+        }
+
+        //Deactivate stance if cerain conditions are met
+        if(status.HasEnemyStunEffect() || movement.ledgeHanging  ||(drifter.input[0].Special && !drifter.input[1].Special &&(drifter.input[0].MoveX !=0 || drifter.input[0].MoveY !=0)))
+        {
+            status.ApplyStatusEffect(PlayerStatusEffect.STANCE,0f);
+            bubble.SetState("Hide");
+        }
+        //Otherwise, use a stance move 
+        else if(status.HasStatusEffect(PlayerStatusEffect.STANCE) && drifter.input[0].Light && !drifter.input[1].Light )
+        {
+            movement.updateFacing();
+            applyEndLag(8f);
+            playState("W_Neutral_Command");
+
+            if(drifter.input[0].MoveY >0)
+                BeanUp();
+            else if(drifter.input[0].MoveY <0)
+                BeanDown();
+            else if(drifter.input[0].MoveX !=0)
+                BeanSide();
+            else
+                BeanNeutral();
+
+            bean.setBeanDirection(movement.Facing);
+            //status.ApplyStatusEffect(PlayerStatusEffect.STANCE,0f);
+        }
+
         if(listeningForMovement)
         {
         	if(hoverTime <=0)
@@ -45,6 +85,7 @@ public class OrroReworkMasterHit : MasterHit
   			}
   			else
   			{
+                hoverTime-= Time.fixedDeltaTime;
   				rb.velocity = new Vector2(Mathf.Lerp((drifter.input[0].MoveX * 12f),rb.velocity.x,movement.accelerationPercent),rb.velocity.y);
   			}
 
@@ -65,57 +106,8 @@ public class OrroReworkMasterHit : MasterHit
         		canHover = false;
         	}
         }
-    }
 
-    void Update()
-    {
-        if(!isHost)return;
-
-        if(movement.grounded)
-        {
-        	canHover = true;
-        	hoverTime = maxHoverTime;
-        }
-
-        if(!bean.alive)
-        {
-            beanFollowing= true;
-            Empowered = false;
-        }
-
-        if(status.HasEnemyStunEffect() || movement.ledgeHanging  ||(drifter.input[0].Special && !drifter.input[1].Special &&(drifter.input[0].MoveX !=0 || drifter.input[0].MoveY !=0)))
-        {
-        	status.ApplyStatusEffect(PlayerStatusEffect.STANCE,0f);
-        	bubble.SetState("Hide");
-        }
-
-        else if(status.HasStatusEffect(PlayerStatusEffect.STANCE) && drifter.input[0].Light && !drifter.input[1].Light )
-        {
-        	movement.updateFacing();
-        	applyEndLag(8f);
-        	playState("W_Neutral_Command");
-
-        	if(drifter.input[0].MoveY >0)
-        		BeanUp();
-        	else if(drifter.input[0].MoveY <0)
-        		BeanDown();
-        	else if(drifter.input[0].MoveX !=0)
-        		BeanSide();
-        	else
-        		BeanNeutral();
-
-        	bean.setBeanDirection(movement.Facing);
-        	//status.ApplyStatusEffect(PlayerStatusEffect.STANCE,0f);
-        }
-
-
-        if(listeningForMovement && hoverTime >0)
-        {
-        	hoverTime-= Time.deltaTime;
-        	UnityEngine.Debug.Log(hoverTime);
-        }
-
-        //If orro cancles, or is hit out of a move where bean charges, cancel that move
+        //If orro cancels, or is hit out of a move where bean charges, cancel that move
         //Note, bean continues doing the move if orro Byzantine Cancels the move
         if(beanIsCharging && (status.HasEnemyStunEffect() || movement.ledgeHanging || attackWasCanceled))
         {

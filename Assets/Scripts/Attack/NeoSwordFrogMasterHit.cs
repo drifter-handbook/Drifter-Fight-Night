@@ -18,21 +18,19 @@ public class NeoSwordFrogMasterHit : MasterHit
 
     float floatTime = maxFloatTime;
     static float maxFloatTime = 1f;
+    
 
-
-    void Update()
+    new void FixedUpdate()
     {
         if(!isHost)return;
+
+        base.FixedUpdate();
+
         if(status.HasStatusEffect(PlayerStatusEffect.DEAD))
         {
             Empowered = false;
             drifter.sparkle.SetState("Hide");
             if(kunaiShoot != null)StopCoroutine(kunaiShoot);
-        }
-        // each frame, if SF is in his up special, tick down remaining time
-        if(listeningForDirection && floating && floatTime >=0)
-        {
-            floatTime -= Time.deltaTime;
         }
 
         if(movement.ledgeHanging || status.HasEnemyStunEffect())
@@ -40,15 +38,6 @@ public class NeoSwordFrogMasterHit : MasterHit
             clearFloat();
             if(tongue != null)deleteTongue();
         }
-
-    }
-
-
-    new void FixedUpdate()
-    {
-        if(!isHost)return;
-
-        base.FixedUpdate();
 
         //Handle neutral special attacks
         if(listeningForDirection && !floating)
@@ -65,6 +54,8 @@ public class NeoSwordFrogMasterHit : MasterHit
                 playState("W_Up_End");
                 clearFloat();
             }
+            else
+                floatTime -= Time.fixedDeltaTime;
         }
     }
 

@@ -43,7 +43,7 @@ public class NeoBojoMasterHit : MasterHit
 
         facing = movement.Facing;
         if(soundwave!= null) Destroy(soundwave);
-        soundwave = host.CreateNetworkObject("Sandblast", transform.position + new Vector3(1.5f * movement.Facing, 4.5f), transform.rotation);
+        soundwave = host.CreateNetworkObject("Bojo_Note", transform.position + new Vector3(1.5f * movement.Facing, 4f), transform.rotation);
         soundwave.transform.localScale = new Vector3(10f * facing, 10f , 1f);
         foreach (HitboxCollision hitbox in soundwave.GetComponentsInChildren<HitboxCollision>(true))
         {
@@ -54,7 +54,7 @@ public class NeoBojoMasterHit : MasterHit
             hitbox.Facing = facing;
         }
         soundwave.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
-        soundwave.GetComponent<Rigidbody2D>().velocity = new Vector3(facing * 25f,0,0);
+        soundwave.GetComponent<Rigidbody2D>().velocity = new Vector3(facing * 20f,0,0);
     }
 
 

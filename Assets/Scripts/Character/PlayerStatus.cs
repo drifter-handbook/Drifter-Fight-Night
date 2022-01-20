@@ -139,7 +139,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
     }
  
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if(GameController.Instance.IsPaused)
             return;
@@ -164,7 +164,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
             //Hitpause pauses all other statuses for its duration
             if(HasStatusEffect(PlayerStatusEffect.HITPAUSE) || HasStatusEffect(PlayerStatusEffect.GRABBED))
             {
-                statusDataMap[PlayerStatusEffect.HITPAUSE].duration-= Time.deltaTime;
+                statusDataMap[PlayerStatusEffect.HITPAUSE].duration-= Time.fixedDeltaTime;
                 if(!HasStatusEffect(PlayerStatusEffect.HITPAUSE) && !HasStatusEffect(PlayerStatusEffect.SLOWMOTION))
                 {
                     if(delayedVelocity != Vector2.zero)rb.velocity = delayedVelocity;
@@ -185,9 +185,9 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
                         if(ef.Key == PlayerStatusEffect.STANCE)
                             continue;
 
-                        else ef.Value.duration -= Time.deltaTime;
+                        else ef.Value.duration -= Time.fixedDeltaTime;
                         //Damage player if they are on fire
-                        if(ef.Key == PlayerStatusEffect.BURNING) drifter.DamageTaken += Time.deltaTime;
+                        if(ef.Key == PlayerStatusEffect.BURNING) drifter.DamageTaken += Time.fixedDeltaTime;
                         
                         //Re-apply the saved velocity if the player just lost cringe
                         
@@ -221,7 +221,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
             isInCombo = false;
 
         }
-        //time += Time.deltaTime;
+        //time += Time.fixedDeltaTime;
         
     }
 

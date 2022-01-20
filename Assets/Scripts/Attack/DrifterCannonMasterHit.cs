@@ -8,12 +8,15 @@ public class DrifterCannonMasterHit : MasterHit
     float boostTime = 2.6f;
     bool jumpGranted = false;
     int charge = 1;
-
     bool listeningForWallbounce = false;
+    
 
-    void Update()
+    new void FixedUpdate()
     {
     	if(!isHost)return;
+
+    	base.FixedUpdate();
+
     	if(status.HasStatusEffect(PlayerStatusEffect.DEAD))
     	{
     		Empowered = false;
@@ -129,7 +132,8 @@ public class DrifterCannonMasterHit : MasterHit
         boostTime = 2.6f;
     }
 
-     public void upWGlide()
+    //Fix this shit
+    public void upWGlide()
     {
         if(!isHost)return;
 
@@ -174,7 +178,7 @@ public class DrifterCannonMasterHit : MasterHit
         drifter.AirIdleStateName = Empowered?"Hang_Ranch":"Hang";
     }
 
-     public void FireRanchProjectile()
+    public void FireRanchProjectile()
     {
         if(!isHost)return;
         facing = movement.Facing;

@@ -8,8 +8,6 @@ public class LucilleMasterHit : MasterHit
 
     Queue<GameObject> rifts = new Queue<GameObject>();
 
-    //Queue<GameObject> rifts = new Queue<GameObject>(new GameObject[3]);
-
     bool jumpGranted = false;
 
     bool listeningForDirection = false;
@@ -25,9 +23,12 @@ public class LucilleMasterHit : MasterHit
         grabBoxes = drifter.GetComponentsInChildren<GrabHitboxCollision>(true);
     }
 
-    void Update()
+    new void FixedUpdate()
     {
         if(!isHost)return;
+
+        base.FixedUpdate();
+
         if(movement.terminalVelocity !=  terminalVelocity && (movement.ledgeHanging || status.HasEnemyStunEffect()))
         {
             resetTerminalVelocity();
@@ -36,13 +37,6 @@ public class LucilleMasterHit : MasterHit
         if(jumpGranted && movement.grounded)jumpGranted = false;
 
         if(status.HasStatusEffect(PlayerStatusEffect.DEAD) && rifts.Count >0) collapseAllPortals(0);
-    }
-
-    new void FixedUpdate()
-    {
-        if(!isHost)return;
-
-        base.FixedUpdate();
 
         //Handle neutral special attacks
         if(listeningForDirection)

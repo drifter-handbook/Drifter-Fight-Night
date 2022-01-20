@@ -46,10 +46,10 @@ public class Tombstone : NonplayerHurtboxHandler
     }
 
     // // Update is called once per frame
-    new void Update()
+    new void FixedUpdate()
     {
     	if(!isHost)return;
-        base.Update();
+        base.FixedUpdate();
     	if(Uses <=0 && canAct)Destroy(gameObject);
 
         if(dealyGrounding)
