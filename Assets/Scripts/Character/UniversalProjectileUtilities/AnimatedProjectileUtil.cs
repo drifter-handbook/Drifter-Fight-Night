@@ -26,9 +26,6 @@ public class AnimatedProjectileUtil : MonoBehaviour
   {
 
     if(!GameController.Instance.IsHost)return;
-    
-    if(col.gameObject.name == "Hurtboxes" && col.GetComponent<HurtboxCollision>() != this.gameObject.GetComponentInChildren<HitboxCollision>().parent.GetComponentInChildren<HurtboxCollision>()) 
-          PlayAnimation("OnHitState");
 
     if(playStateWhenGrounded && (col.gameObject.tag == "Ground" || col.gameObject.tag == "Platform")) PlayAnimation("OnGroundState");
   }

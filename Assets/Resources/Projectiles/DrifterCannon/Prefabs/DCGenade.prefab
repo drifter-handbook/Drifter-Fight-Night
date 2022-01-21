@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 5727077204013000560}
   - component: {fileID: 5963595650009289345}
   - component: {fileID: 1060739831492476122}
+  - component: {fileID: 2627802396346532646}
   m_Layer: 8
   m_Name: DCGenade
   m_TagString: Untagged
@@ -249,6 +250,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7b12ef163997554cbbdbc51e4f062ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2627802396346532646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 625069843417986663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9fa41060c8e88848bc207d9557175ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6730794273463611592
 GameObject:
   m_ObjectHideFlags: 0
@@ -259,7 +272,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8739359299380346118}
   - component: {fileID: 9188103699458453444}
-  - component: {fileID: 4913528258989342961}
+  - component: {fileID: 273333885104108183}
   m_Layer: 9
   m_Name: Hitboxes
   m_TagString: Projectile
@@ -298,7 +311,7 @@ CircleCollider2D:
   m_Offset: {x: 0.005408001, y: -0.0065087317}
   serializedVersion: 2
   m_Radius: 0.06884088
---- !u!114 &4913528258989342961
+--- !u!114 &273333885104108183
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -307,15 +320,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 6730794273463611592}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
+  m_Script: {fileID: 11500000, guid: 65c4d126f18c9ca47b80033f0cb0d909, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 625069843417986663}
   playerType: {fileID: 0}
-  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 6610c2741f171ac44b8cc5dae7c30875, type: 2}
   AttackData: {fileID: 0}
   projectilePriority: 0
+  SuccessState: DC_Grenade_Detonate
+  anim: {fileID: 419772856163376502}
 --- !u!1 &6980073882341431624
 GameObject:
   m_ObjectHideFlags: 0
@@ -378,7 +392,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 625069843417986663}
   playerType: {fileID: 0}
-  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: eaf71c37fb381dc4f96592a946615332, type: 2}
   AttackData: {fileID: 0}
   projectilePriority: -2

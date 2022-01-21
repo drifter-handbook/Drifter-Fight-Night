@@ -7,7 +7,7 @@ public class HitboxCollision : MonoBehaviour
     public GameObject parent;
     public NetworkSync playerType;
 
-    public bool destroyParentOnHit = false;
+    //public bool destroyParentOnHit = false;
     public int AttackID { get; set; }
     public DrifterAttackType AttackType { get; set; }
     public bool isActive { get; set; } = true;
@@ -78,7 +78,7 @@ public class HitboxCollision : MonoBehaviour
             }
             if(hitResult == 1) isActive = false;
             if(hitResult >= -1 && drifter.canSpecialCancelFlag)drifter.listenForSpecialCancel = true;
-            if(hitResult >= -2 && destroyParentOnHit)Destroy(gameObject.transform.parent.gameObject);
+            //if(hitResult >= -2 && destroyParentOnHit)Destroy(gameObject.transform.parent.gameObject);
             //Debug.Log("Hit result of: " + hitResult + "  For attack id: " + AttackID+ "  And AttackType: " + AttackType);
         }
         else if(hitbox != null && projectilePriority >= 0 && hitbox.projectilePriority>=-1)

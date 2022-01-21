@@ -42,7 +42,11 @@ public class NeoBojoMasterHit : MasterHit
         if(!isHost)return;
 
         facing = movement.Facing;
-        if(soundwave!= null) return;
+        if(soundwave!= null) 
+        {
+                //Detonate here;
+            return;
+        }
         soundwave = host.CreateNetworkObject("Bojo_Note", transform.position + new Vector3(1.5f * movement.Facing, 4f), transform.rotation);
         soundwave.transform.localScale = new Vector3(10f * facing, 10f , 1f);
         foreach (HitboxCollision hitbox in soundwave.GetComponentsInChildren<HitboxCollision>(true))
@@ -60,38 +64,52 @@ public class NeoBojoMasterHit : MasterHit
 
     public void SpawnCentaur()
     {
-        if(!isHost || centaur != null)return;
+        if(!isHost)return;
 
-        facing = movement.Facing;
-        //Vector3 pos = new Vector3(2f * facing,2.7f,0);
-        
-        centaur = host.CreateNetworkObject("Centaur", transform.position , transform.rotation);
-        centaur.transform.localScale = new Vector3(10f * facing, 10f , 1f);
-
-
-        centaur.GetComponent<Rigidbody2D>().velocity = new Vector3(facing * 15,0);
-        foreach (HitboxCollision hitbox in centaur.GetComponentsInChildren<HitboxCollision>(true))
+        if(centaur == null)
         {
-            hitbox.parent = drifter.gameObject;
-            hitbox.AttackID = -attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
-            hitbox.Facing = facing;
-       }
+            facing = movement.Facing;
+                //Vector3 pos = new Vector3(2f * facing,2.7f,0);
+        
+            centaur = host.CreateNetworkObject("Centaur", transform.position , transform.rotation);
+            centaur.transform.localScale = new Vector3(10f * facing, 10f , 1f);
 
-       foreach (HurtboxCollision hurtbox in centaur.GetComponentsInChildren<HurtboxCollision>(true))
-       {
-            hurtbox.owner = drifter.gameObject;
-       }
 
-       centaur.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
+            centaur.GetComponent<Rigidbody2D>().velocity = new Vector3(facing * 15,0);
+            foreach (HitboxCollision hitbox in centaur.GetComponentsInChildren<HitboxCollision>(true))
+            {
+                    hitbox.parent = drifter.gameObject;
+                    hitbox.AttackID = -attacks.AttackID;
+                    hitbox.AttackType = attacks.AttackType;
+                    hitbox.Facing = facing;
+            }
 
-       centaur.GetComponent<SyncAnimatorStateHost>().SetState("Centaur_" + power);
+            foreach (HurtboxCollision hurtbox in centaur.GetComponentsInChildren<HurtboxCollision>(true))
+                hurtbox.owner = drifter.gameObject;
+       
 
+            centaur.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
+            UnityEngine.Debug.Log("PLACING CENTAUT");
+            centaur.GetComponent<SyncAnimatorStateHost>().SetState("Centaur_" + power);
+            UnityEngine.Debug.Log("Centaur_" + power);
+        }
+    }
+
+    public void fireCentaur()
+    {
+        if(centaur != null)
+        {
+            centaur.GetComponent<SyncAnimatorStateHost>().SetState("Centaur_Fire_" + power);
+            UnityEngine.Debug.Log("Centaur_Fire_" + power);
+            
+        }
+        power = 0;
     }
 
     public void setCentaurPower(int pow)
     {
         if(!isHost)return;
-        power = pow;
+        power = pow; 
+        
     }
 }
