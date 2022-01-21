@@ -4,34 +4,35 @@ using UnityEngine;
 
 public class RyykeMasterHit : MasterHit
 {
-
+    //Static values
     static float maxBurrowTime = 2f;
-	bool listeningForDirection = false;
-	bool listeningForMovement = false;
-	bool burrowing = false;
-	float burrowTime = maxBurrowTime;
+    static float zombieRadius = 3.75f;
 
-	float zombieRadius = 3.75f;
-
+    //Tether References
     //Tether Recovery Range object
     public TetherRange tether;
     Vector3 TetherPoint = Vector3.zero;
     GameObject arm;
     Tether armTether;
 
-	//0 Up stone
-	//1 Side Stone
-	//2 Down Stone
-	Tombstone[] tombstones = new Tombstone[] {null,null,null};
 
-	//Index of the next stone to place
-	int tombstoneIndex = 0;
+	//Gamestate sync
+    bool listeningForDirection = false;
+    bool listeningForMovement = false;
+    bool burrowing = false;
+    float burrowTime = maxBurrowTime;
+    //0 Up stone
+    //1 Side Stone
+    //2 Down Stone
+    Tombstone[] tombstones = new Tombstone[] {null,null,null};
+    //Index of the next stone to place
+    int tombstoneIndex = 0;
+    //The current closest active stone
+    int nearbyStone = -1;
+    //The current stone being targeted for teleportation with down special
+    int targetStone = -1;
 
-	//The current closest active stone
-	int nearbyStone = -1;
 
-	//The current stone being targeted for teleportation with down special
-	int targetStone = -1;
 
 	new void FixedUpdate()
     {
