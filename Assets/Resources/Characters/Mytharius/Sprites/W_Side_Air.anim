@@ -516,7 +516,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 1.4166667
+    m_StopTime: 1.5833334
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -1096,10 +1096,10 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.6666667
-    functionName: setTerminalVelocity
+    functionName: setXVelocityMin
     data: 
     objectReferenceParameter: {fileID: 0}
-    floatParameter: -1
+    floatParameter: 50
     intParameter: 0
     messageOptions: 0
   - time: 0.6666667
@@ -1110,17 +1110,17 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.6666667
-    functionName: setXVelocityMin
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 50
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.6666667
     functionName: ring
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.6666667
+    functionName: setTerminalVelocity
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: -1
     intParameter: 0
     messageOptions: 0
   - time: 0.8333333
@@ -1138,20 +1138,20 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 1.1666666
-    functionName: resetTerminalVelocity
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 1.1666666
     functionName: setXVelocity
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 18
     intParameter: 0
     messageOptions: 0
-  - time: 1.4166666
+  - time: 1.25
+    functionName: resetTerminalVelocity
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 1.5833334
     functionName: returnToIdle
     data: 
     objectReferenceParameter: {fileID: 0}
