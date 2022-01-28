@@ -93,10 +93,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 6811903245808162709}
   playerType: {fileID: 0}
-  isActive: 1
-  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 52df4d1391d78374fb1bea3ed668ce2d, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!70 &7445875928279050482
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -159,10 +158,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 6811903245808162709}
   playerType: {fileID: 0}
-  isActive: 1
-  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 83ad5b2cb93cb054a98d246bf7646418, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!70 &8777476784344087688
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -226,10 +224,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 6811903245808162709}
   playerType: {fileID: 0}
-  isActive: 1
-  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: c666aaa660b8aff45b22cd5246ba4af5, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!70 &7724495709485183831
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -292,10 +289,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 6811903245808162709}
   playerType: {fileID: 0}
-  isActive: 1
-  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: ff58cc8e5c3806c47bb9a0f9ea77cf25, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!70 &4976661473283151366
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -312,6 +308,74 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.5, y: 1}
   m_Direction: 0
+--- !u!1 &6299704708043736858
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8788740906786712366}
+  - component: {fileID: 679482244933445360}
+  - component: {fileID: 2642120447768366757}
+  m_Layer: 9
+  m_Name: W_Side
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8788740906786712366
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6299704708043736858}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 887680423487451462}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+--- !u!70 &679482244933445360
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6299704708043736858}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 0.5, y: 1}
+  m_Direction: 0
+--- !u!114 &2642120447768366757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6299704708043736858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5628fe228e8be043b618c6647ceb161, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parent: {fileID: 6811903245808162709}
+  playerType: {fileID: 0}
+  OverrideData: {fileID: 11400000, guid: 7b88725c2fdd03a469eeeee598a0c309, type: 2}
+  AttackData: {fileID: 0}
+  projectilePriority: -2
+  SuccessState: W_Side_End
+  victim: {fileID: 0}
+  cancelable: 1
 --- !u!1 &6319907926086568809
 GameObject:
   m_ObjectHideFlags: 0
@@ -374,10 +438,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 6811903245808162709}
   playerType: {fileID: 0}
-  isActive: 1
-  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 2d0ed79703c4781469e4936eb8305d7c, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!1 &7116259420309927751
 GameObject:
   m_ObjectHideFlags: 0
@@ -424,10 +487,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 6811903245808162709}
   playerType: {fileID: 0}
-  isActive: 1
-  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 874952301b06abd4babc88b8ec488d9c, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!70 &2236564265453246856
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -929,8 +991,19 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 7b88725c2fdd03a469eeeee598a0c309,
         type: 2}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[5].hasAirVariant
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 03006bf76a5e1274aaf3da8b9c69d8f9, type: 3}
+--- !u!4 &1567607555534230565 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6941340441550975300, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+    type: 3}
+  m_PrefabInstance: {fileID: 8472918650224174433}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6282715789183443632 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2496518287981053905, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
@@ -940,12 +1013,6 @@ GameObject:
 --- !u!4 &887680423487451462 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8774267968347264039, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
-    type: 3}
-  m_PrefabInstance: {fileID: 8472918650224174433}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1567607555534230565 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6941340441550975300, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
     type: 3}
   m_PrefabInstance: {fileID: 8472918650224174433}
   m_PrefabAsset: {fileID: 0}
