@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: W_Down_Letter
   m_EditorClassIdentifier: 
   AttackDamage: 3
-  Knockback: 10
-  KnockbackScale: 0.1
+  Knockback: 0
+  KnockbackScale: 0
   HitStun: 15
   ShieldStun: 0
   HitStop: -1
   hitType: 0
   mirrorKnockback: 0
-  AngleOfImpact: 90
+  AngleOfImpact: 0
   StatusEffect: 20
   StatusDuration: 0.1
   HitFX: {fileID: 11400000, guid: c40ffbef4bd5ad54dbc61660fa4d822a, type: 2}
