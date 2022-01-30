@@ -36,7 +36,7 @@ public class MythariusMasterHit : MasterHit
             Destroy(bird);
         }
         facing = movement.Facing;
-        bird = host.CreateNetworkObject("Mytharius_Bird", transform.position + new Vector3(facing * 1.4f,2.4f), transform.rotation);
+        bird = host.CreateNetworkObject("Mytharius_Bird", transform.position + new Vector3(facing * 1.4f,3f), transform.rotation);
         bird.transform.localScale = new Vector3(10f * facing, 10f , 1f);
         foreach (HitboxCollision hitbox in bird.GetComponentsInChildren<HitboxCollision>(true))
         {

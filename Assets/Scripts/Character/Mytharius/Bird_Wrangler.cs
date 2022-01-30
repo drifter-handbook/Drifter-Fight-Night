@@ -9,10 +9,12 @@ public class Bird_Wrangler : MonoBehaviour
     GameObject Mytharius;
     int facing;
     int color;
+    Rigidbody2D rb;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+     	rb = GetComponent<Rigidbody2D>();   
     }
 
     public void setup(GameObject p_drifter, PlayerAttacks p_attacks, int p_facing,int p_color)
@@ -39,6 +41,11 @@ public class Bird_Wrangler : MonoBehaviour
         }
 
         letter.GetComponent<SyncProjectileColorDataHost>().setColor(color);
+    }
+
+    public void remove_Gravity()
+    {
+    	rb.gravityScale = 0;
     }
 
 }
