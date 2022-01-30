@@ -17,13 +17,13 @@ MonoBehaviour:
   KnockbackScale: 0
   HitStun: 10
   ShieldStun: 0
-  HitStop: 0
+  HitStop: 5
   hitType: 0
-  mirrorKnockback: 0
-  AngleOfImpact: 75
+  mirrorKnockback: 1
+  AngleOfImpact: 115
   StatusEffect: 20
   StatusDuration: 0.1
-  HitFX: {fileID: 0}
+  HitFX: {fileID: 11400000, guid: e007b7ceac776034b9838dfd15059cdd, type: 2}
   canHitGrounded: 1
   canHitAerial: 1
   canHitKnockedDown: 0
