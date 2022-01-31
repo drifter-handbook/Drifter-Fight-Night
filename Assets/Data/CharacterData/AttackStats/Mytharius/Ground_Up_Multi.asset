@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 193b57c47c6e0024ebee715bea3d6f17, type: 3}
   m_Name: Ground_Up_Multi
   m_EditorClassIdentifier: 
-  AttackDamage: 0.7
+  AttackDamage: 1
   Knockback: 8
   KnockbackScale: 0
-  hasStaticHitstun: 1
-  HitStun: 3
-  isGrab: 0
+  HitStun: 5
+  ShieldStun: 0
+  HitStop: -1
+  hitType: 0
   mirrorKnockback: 1
   AngleOfImpact: 145
   StatusEffect: 20
@@ -25,3 +26,4 @@ MonoBehaviour:
   HitFX: {fileID: 11400000, guid: e007b7ceac776034b9838dfd15059cdd, type: 2}
   canHitGrounded: 1
   canHitAerial: 1
+  canHitKnockedDown: 0
