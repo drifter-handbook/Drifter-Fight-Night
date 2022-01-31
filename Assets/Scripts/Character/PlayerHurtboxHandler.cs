@@ -477,7 +477,21 @@ public class PlayerHurtboxHandler : MonoBehaviour
     }
 
     protected float GetKnockBack(float damageTaken, float weight, bool strong, SingleAttackData attackData) {
-        return (float)(((damageTaken * 125f) / (weight + 100f) *
+        
+        float effectiveDamage = damageTaken;
+        float effectiveCeiling = attackData.scalingUpperBound;
+
+        //Sets the effective ceiling if both bounds are used.
+        if(attackData.scalingUpperBound >= 0 &&  attackData.scalingLowerBound >= 0) effectiveCeiling = (attackData.scalingUpperBound - attackData.scalingLowerBound);
+
+        //If the drifter is below the damage floor, no scaling. If there is a floor and they are above it, subtract the floor from their damage and use that
+        if(attackData.scalingLowerBound >= 0 && damageTaken < attackData.scalingLowerBound) effectiveDamage = Mathf.Max(0,damageTaken - attackData.scalingLowerBound);
+
+        //if there is a ceiling, and the drifter is above that, set their effective damage to the ceiling, minus the floor, if there is one.
+        if(attackData.scalingUpperBound >= 0 && damageTaken > attackData.scalingUpperBound) effectiveDamage = effectiveCeiling;
+
+
+        return (float)(((effectiveDamage * 125f) / (weight + 100f) *
                          (strong?1.5f:1)) * attackData.KnockbackScale + attackData.Knockback);
     }
 
@@ -486,28 +500,6 @@ public class PlayerHurtboxHandler : MonoBehaviour
         if (defender != null && defender.guarding)
             adv = attackData.ShieldStun;
         return attacker.GetCurrentAnimationRemainder() + adv * framerateScalar;
-    }
-
-    // Super-armor logic
-    protected class AttackEffect
-    {
-        public Coroutine Effect;
-        public float SuperArmor;
-        public float Damage;
-    }
-
-    List<AttackEffect> movementEffects = new List<AttackEffect>();
-    protected void StartMovementEffect(IEnumerator ef, float superArmor)
-    {
-        if (ef != null)
-        {
-            movementEffects.Add(new AttackEffect()
-            {
-                Effect = StartCoroutine(ef),
-                SuperArmor = superArmor,
-                Damage = 0
-            });
-        }
     }
 
     protected bool willCollideWithBlastZone(Rigidbody2D rigidbody, float hitstun)

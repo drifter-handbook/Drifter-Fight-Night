@@ -32,7 +32,7 @@ public class SingleAttackData : ScriptableObject
     public int HitStun = 0;
     public int ShieldStun = 0;
 
-     #if UNITY_EDITOR
+    #if UNITY_EDITOR
     [Help("A negative value will cause the move to base hitpause on the hitstun dealt. A positive value indicates the number of effective frames of hitstun to use in hitstop calculations.", UnityEditor.MessageType.Info)]
     #endif
     public float HitStop= -1f;
@@ -59,4 +59,10 @@ public class SingleAttackData : ScriptableObject
 
     //public bool knockDown = false;
     public bool canHitKnockedDown = false;
+
+    #if UNITY_EDITOR
+    [Help("The percentage range in which knockback scaling applies. -1 is unbounded. Scaling is not prorated and will begin from 0 at the floor.", UnityEditor.MessageType.Info)]
+    #endif
+    public float scalingLowerBound = -1;
+    public float scalingUpperBound = -1;
 }
