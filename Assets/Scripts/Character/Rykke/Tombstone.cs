@@ -14,7 +14,7 @@ public class Tombstone : NonplayerHurtboxHandler
     public bool projectile = true;
     public bool attacking = false;
 	public WalkOff ledgeDetector;
-    bool dealyGrounding = false;
+    bool dealyGrounding = true;
 
 	PlayerAttacks attacks;
 	int tombstoneType = 0;
