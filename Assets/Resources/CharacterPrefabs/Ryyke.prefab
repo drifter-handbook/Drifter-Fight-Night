@@ -62,10 +62,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 8002174525866203191}
   playerType: {fileID: 0}
-  isActive: 1
-  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 129930b437737ce4f9571647c1b6a429, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!1 &626732986203311705
 GameObject:
   m_ObjectHideFlags: 0
@@ -113,10 +112,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 8002174525866203191}
   playerType: {fileID: 0}
-  isActive: 1
-  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 7fdccd5f6ebf9e3469c2de98e214c76e, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!70 &3171627824841989897
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -195,10 +193,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 8002174525866203191}
   playerType: {fileID: 0}
-  isActive: 1
-  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: df00242206b1fe440bc810722547fce9, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!1 &1021144339645891931
 GameObject:
   m_ObjectHideFlags: 0
@@ -262,10 +259,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 8002174525866203191}
   playerType: {fileID: 0}
-  isActive: 1
-  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: fb7ba28a1e665fe4eaa406e665e0565a, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!1 &1306371808821346267
 GameObject:
   m_ObjectHideFlags: 0
@@ -312,10 +308,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 8002174525866203191}
   playerType: {fileID: 0}
-  isActive: 1
-  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 91b82da629913d6438bfabef00c1421f, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
   SuccessState: Grab_Ground_Success
   victim: {fileID: 0}
   cancelable: 1
@@ -381,10 +376,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 8002174525866203191}
   playerType: {fileID: 0}
-  isActive: 1
-  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 812892f2fc9c88e448bc74441f7ea970, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!70 &7250771204955656737
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -462,10 +456,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 8002174525866203191}
   playerType: {fileID: 0}
-  isActive: 1
-  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 57a7440e5ac660742a8db9b8198e8e4b, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
   SuccessState: Ground_Side_Pull
   victim: {fileID: 0}
   cancelable: 0
@@ -531,10 +524,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 8002174525866203191}
   playerType: {fileID: 0}
-  isActive: 1
-  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 53ca74d4b8f982541a6d5caf647d5922, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!70 &8000324652183888153
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -597,10 +589,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 8002174525866203191}
   playerType: {fileID: 0}
-  isActive: 1
-  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: ed506049f6d1d9a4e860318d3bb4ad97, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!70 &2810117765393602758
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -663,10 +654,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 8002174525866203191}
   playerType: {fileID: 0}
-  isActive: 1
-  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 330d3aea9295e38418bd57f9af6f032c, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!70 &3557473963843476382
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -729,10 +719,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 8002174525866203191}
   playerType: {fileID: 0}
-  isActive: 1
-  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 075429f38a54a314f9fcf04845e95fc9, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
   SuccessState: Grab_Air_Success
   victim: {fileID: 0}
   cancelable: 1
@@ -1094,7 +1083,7 @@ PrefabInstance:
     - target: {fileID: 3106753082241659641, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: ledgeClimbOffset
-      value: -0.4
+      value: -0.1
       objectReference: {fileID: 0}
     - target: {fileID: 3106753082241659641, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
