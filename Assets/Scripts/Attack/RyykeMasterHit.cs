@@ -178,7 +178,7 @@ public class RyykeMasterHit : MasterHit
     			float distance = tombstones[i].getDistance(rb.position);
 	    		
                 //If it is within the active range, and Ryyke is not burrowing
-	        	if(distance < zombieRadius && !burrowing && !status.HasEnemyStunEffect())
+	        	if(distance < zombieRadius && !burrowing && !status.HasEnemyStunEffect() &&  tombstones[i].canAct)
 	        	{
                     //Disable the reset flag for empowered state if a stone is nearby
 	        		reset = false;
@@ -228,7 +228,7 @@ public class RyykeMasterHit : MasterHit
         }
         
         //If the closest stone is already active and exists, and Ryyke is not empowered
-        if(nearbyStone >=0 && tombstones[nearbyStone].active && !Empowered)
+        if(nearbyStone >=0 && tombstones[nearbyStone].active && !Empowered && tombstones[nearbyStone].canAct)
         {
             //Show the empowered sparkle
             drifter.sparkle.SetState("ChargeIndicator");
