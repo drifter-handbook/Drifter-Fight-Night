@@ -9,19 +9,38 @@ public class NeoParhelionMasterHit : MasterHit
 
 	Vector2 HeldDirection;
 	public GrabHitboxCollision Up_W_Grab;
+    bool listeningForDirection = false;
 
 
-	public void saveDirection()
+    new void FixedUpdate()
     {
         if(!isHost)return;
-        Vector2 TestDirection = new Vector2(drifter.input[0].MoveX,drifter.input[0].MoveY);
-        HeldDirection = TestDirection == Vector2.zero? HeldDirection: TestDirection;
+
+        base.FixedUpdate();
+
+        if(listeningForDirection)
+        {
+            Vector2 TestDirection = new Vector2(drifter.input[0].MoveX,drifter.input[0].MoveY);
+            HeldDirection = TestDirection == Vector2.zero? HeldDirection: TestDirection;
+            
+        }
+
+    }
+
+    public void listenForDirection()
+    {
+        listeningForDirection = true;
+    }
+
+    public new void returnToIdle()
+    {
+        base.returnToIdle();
+        listeningForDirection = false;
     }
 
     public void UpWThrow()
     {
     	if(!isHost)return;
-    	saveDirection();
     	if(Up_W_Grab.victim != null)attacks.resetRecovery();
     	else return;
     	if(HeldDirection.y < 0)drifter.PlayAnimation("W_Up_Down");
@@ -37,6 +56,7 @@ public class NeoParhelionMasterHit : MasterHit
     	else drifter.PlayAnimation("W_Up_Up");
     	HeldDirection = Vector2.zero;
     	Up_W_Grab.victim = null;
+        listeningForDirection = false;
     }
 
     //Causes a non-aerial move to cancle on htiing the ground
