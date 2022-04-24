@@ -10,18 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 193b57c47c6e0024ebee715bea3d6f17, type: 3}
-  m_Name: Aerial_Up_Launcher
+  m_Name: Aerial_Side_Weak
   m_EditorClassIdentifier: 
-  AttackDamage: 2.6
-  Knockback: 30
-  KnockbackScale: 0.3
-  hasStaticHitstun: 0
-  HitStun: 3
-  isGrab: 0
+  AttackDamage: 4
+  Knockback: 22
+  KnockbackScale: 0.1
+  HitStun: 0
+  ShieldStun: 0
+  HitStop: -1
+  hitType: 0
   mirrorKnockback: 0
-  AngleOfImpact: 65
+  AngleOfImpact: 55
   StatusEffect: 20
   StatusDuration: 0.1
-  HitFX: {fileID: 11400000, guid: c40ffbef4bd5ad54dbc61660fa4d822a, type: 2}
+  HitFX: {fileID: 11400000, guid: e007b7ceac776034b9838dfd15059cdd, type: 2}
   canHitGrounded: 1
   canHitAerial: 1
+  canHitKnockedDown: 0
+  scalingLowerBound: -1
+  scalingUpperBound: -1

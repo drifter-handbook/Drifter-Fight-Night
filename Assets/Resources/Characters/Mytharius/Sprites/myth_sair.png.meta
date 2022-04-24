@@ -1,55 +1,31 @@
 fileFormatVersion: 2
-guid: e692ba50d7f79cd4588f5cc66360f1e6
+guid: e169cdd7b4216394c978b9657ceb5099
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5449301270664147448
-    second: myth_uair_0
+      213: -6560480241008502512
+    second: myth_sair_0
   - first:
-      213: 8017863161139019366
-    second: myth_uair_1
+      213: -7287401282638136405
+    second: myth_sair_1
   - first:
-      213: -1304650525437109729
-    second: myth_uair_2
+      213: 2015694968012966240
+    second: myth_sair_2
   - first:
-      213: -8866412919439614763
-    second: myth_uair_3
+      213: -8474692960465372407
+    second: myth_sair_3
   - first:
-      213: -5509942577126017351
-    second: myth_uair_4
+      213: -8278165145327152374
+    second: myth_sair_4
   - first:
-      213: -8296045255439775263
-    second: myth_uair_5
+      213: -4099899865153845465
+    second: myth_sair_5
   - first:
-      213: -8229356889701076447
-    second: myth_uair_6
+      213: -673830587706169134
+    second: myth_sair_6
   - first:
-      213: -679793971953596438
-    second: myth_uair_7
-  - first:
-      213: -1899602181108877542
-    second: myth_uair_8
-  - first:
-      213: -7242352656382505917
-    second: myth_uair_0
-  - first:
-      213: 4748396641497095920
-    second: myth_uair_1
-  - first:
-      213: -639147536400439516
-    second: myth_uair_2
-  - first:
-      213: -1499988486192098943
-    second: myth_uair_3
-  - first:
-      213: -5765162731583383717
-    second: myth_uair_4
-  - first:
-      213: -6148231108523527182
-    second: myth_uair_5
-  - first:
-      213: 2368380084515096855
-    second: myth_uair_6
+      213: 5784838070395421821
+    second: myth_sair_7
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -131,152 +107,197 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: myth_uair_0
+      name: myth_sair_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 128
-        height: 128
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+        width: 64
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 34cc63271aefd7b90800000000000000
-      internalID: -7242352656382505917
+      spriteID: 01918becafd74f4a0800000000000000
+      internalID: -6560480241008502512
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: myth_uair_1
+      name: myth_sair_1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 64
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: babb0acc423fdda90800000000000000
+      internalID: -7287401282638136405
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: myth_sair_2
       rect:
         serializedVersion: 2
         x: 128
         y: 0
-        width: 128
-        height: 128
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+        width: 64
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0fe971d5691b5e140800000000000000
-      internalID: 4748396641497095920
+      spriteID: 06984ffc4ef29fb10800000000000000
+      internalID: 2015694968012966240
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: myth_uair_2
+      name: myth_sair_3
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 0
+        width: 64
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 90b35fe37a7d36a80800000000000000
+      internalID: -8474692960465372407
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: myth_sair_4
       rect:
         serializedVersion: 2
         x: 256
         y: 0
-        width: 128
-        height: 128
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+        width: 64
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 42729c5b3ba4127f0800000000000000
-      internalID: -639147536400439516
+      spriteID: a0351c0f8ac0e1d80800000000000000
+      internalID: -8278165145327152374
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: myth_uair_3
+      name: myth_sair_5
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 0
+        width: 64
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 72745da7bca3a17c0800000000000000
+      internalID: -4099899865153845465
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: myth_sair_6
       rect:
         serializedVersion: 2
         x: 384
         y: 0
-        width: 128
-        height: 128
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+        width: 64
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 18118594b68fe2be0800000000000000
-      internalID: -1499988486192098943
+      spriteID: 2d82bfc86a216a6f0800000000000000
+      internalID: -673830587706169134
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: myth_uair_4
+      name: myth_sair_7
       rect:
         serializedVersion: 2
-        x: 512
+        x: 448
         y: 0
-        width: 128
-        height: 128
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+        width: 64
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b57d6af6a070effa0800000000000000
-      internalID: -5765162731583383717
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: myth_uair_5
-      rect:
-        serializedVersion: 2
-        x: 640
-        y: 0
-        width: 128
-        height: 128
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2f3f27ba1681daaa0800000000000000
-      internalID: -6148231108523527182
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: myth_uair_6
-      rect:
-        serializedVersion: 2
-        x: 768
-        y: 0
-        width: 128
-        height: 128
-      alignment: 9
-      pivot: {x: 0.5, y: 0.25}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 719c1ae732d2ed020800000000000000
-      internalID: 2368380084515096855
+      spriteID: d74431d539fd74050800000000000000
+      internalID: 5784838070395421821
       vertices: []
       indices: 
       edges: []
