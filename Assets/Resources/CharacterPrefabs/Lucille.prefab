@@ -1,52 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &627426513259655184
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2143501546541517363}
-  - component: {fileID: 4901164782347614519}
-  m_Layer: 10
-  m_Name: Reflector
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2143501546541517363
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 627426513259655184}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 6684825320623129584}
-  m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &4901164782347614519
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 627426513259655184}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5
 --- !u!1 &931106938564473131
 GameObject:
   m_ObjectHideFlags: 0
@@ -78,7 +31,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6684825320623129584}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!70 &3968677602314485399
 CapsuleCollider2D:
@@ -110,9 +63,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1016780505216394531}
   playerType: {fileID: 0}
-  isActive: 1
   OverrideData: {fileID: 11400000, guid: bde3c9b8d765a6d43aba3688f402b104, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!58 &2495309577752849972
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -129,6 +82,71 @@ CircleCollider2D:
   m_Offset: {x: -0.07498948, y: 0.36858484}
   serializedVersion: 2
   m_Radius: 0.12386413
+--- !u!1 &1399669029160401552
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5420968785489901138}
+  - component: {fileID: 7859712262237896237}
+  - component: {fileID: 2027308584083928141}
+  m_Layer: 9
+  m_Name: Backward
+  m_TagString: Lucille_Portal_Contact
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5420968785489901138
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1399669029160401552}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8936619961583540242}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7859712262237896237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1399669029160401552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parent: {fileID: 1016780505216394531}
+  playerType: {fileID: 0}
+  OverrideData: {fileID: 11400000, guid: 96f3a467e1d34be4dbc71f327a30b6e0, type: 2}
+  AttackData: {fileID: 0}
+  projectilePriority: -2
+--- !u!58 &2027308584083928141
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1399669029160401552}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!1 &1538771525442498559
 GameObject:
   m_ObjectHideFlags: 0
@@ -159,7 +177,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6684825320623129584}
-  m_RootOrder: 16
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!58 &3583266292178252170
 CircleCollider2D:
@@ -191,11 +209,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1016780505216394531}
   playerType: {fileID: 0}
-  isActive: 1
   OverrideData: {fileID: 11400000, guid: e99c3be6d9b11134693cd3e95210f798, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
   SuccessState: 
   victim: {fileID: 0}
+  cancelable: 1
 --- !u!1 &1984659130060929855
 GameObject:
   m_ObjectHideFlags: 0
@@ -227,7 +246,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6684825320623129584}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!70 &8084563840474274964
 CapsuleCollider2D:
@@ -259,9 +278,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1016780505216394531}
   playerType: {fileID: 0}
-  isActive: 1
   OverrideData: {fileID: 11400000, guid: 19185f65a6c374e42adea4d178e1451f, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!114 &1757599156396431096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -306,7 +325,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6684825320623129584}
-  m_RootOrder: 13
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!70 &1090656880220544819
 CapsuleCollider2D:
@@ -338,9 +357,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1016780505216394531}
   playerType: {fileID: 0}
-  isActive: 1
   OverrideData: {fileID: 11400000, guid: 7397b9f5b26c5824ba3e1752de60bf74, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!1 &2521337173894318894
 GameObject:
   m_ObjectHideFlags: 0
@@ -403,9 +422,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1016780505216394531}
   playerType: {fileID: 0}
-  isActive: 1
   OverrideData: {fileID: 0}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!1 &2599480874147558807
 GameObject:
   m_ObjectHideFlags: 0
@@ -453,9 +472,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1016780505216394531}
   playerType: {fileID: 0}
-  isActive: 1
   OverrideData: {fileID: 11400000, guid: 64c2879e5dec779428f50275e9add7f8, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!70 &5262819790322619266
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -488,6 +507,71 @@ CircleCollider2D:
   m_Offset: {x: 0.21828283, y: 0.4818974}
   serializedVersion: 2
   m_Radius: 0.11875965
+--- !u!1 &2633055041584761636
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6073851940507529036}
+  - component: {fileID: 9191898974551784777}
+  - component: {fileID: 8611019586544154644}
+  m_Layer: 9
+  m_Name: Forward
+  m_TagString: Lucille_Portal_Contact
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6073851940507529036
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2633055041584761636}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8936619961583540242}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9191898974551784777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2633055041584761636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parent: {fileID: 1016780505216394531}
+  playerType: {fileID: 0}
+  OverrideData: {fileID: 11400000, guid: f10e5c46a79e51e43ab81bb4b7c9203e, type: 2}
+  AttackData: {fileID: 0}
+  projectilePriority: -2
+--- !u!58 &8611019586544154644
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2633055041584761636}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!1 &2658436964002993619
 GameObject:
   m_ObjectHideFlags: 0
@@ -518,7 +602,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6684825320623129584}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!70 &6686638836336695457
 CapsuleCollider2D:
@@ -550,9 +634,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1016780505216394531}
   playerType: {fileID: 0}
-  isActive: 1
   OverrideData: {fileID: 0}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!114 &6659673585390523811
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -629,9 +713,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1016780505216394531}
   playerType: {fileID: 0}
-  isActive: 1
   OverrideData: {fileID: 11400000, guid: 17595244b09e98b4c876d08077e14052, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!58 &3285330935848828464
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -710,9 +794,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1016780505216394531}
   playerType: {fileID: 0}
-  isActive: 1
   OverrideData: {fileID: 11400000, guid: 842a61b846b959c4f86fb71f5b259fb6, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!1 &4293394734762300295
 GameObject:
   m_ObjectHideFlags: 0
@@ -722,11 +806,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8936619961583540242}
-  - component: {fileID: 3456216841151344973}
   - component: {fileID: 8636112319358836473}
+  - component: {fileID: 5119545086114383772}
   m_Layer: 9
-  m_Name: Roswell
-  m_TagString: Lucille_Portal_Contact
+  m_Name: W_Side_Grab
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -741,27 +825,14 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 6073851940507529036}
+  - {fileID: 5420968785489901138}
+  - {fileID: 9076914236217650741}
+  - {fileID: 6834337245607299829}
   m_Father: {fileID: 6684825320623129584}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3456216841151344973
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4293394734762300295}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parent: {fileID: 1016780505216394531}
-  playerType: {fileID: 0}
-  isActive: 1
-  OverrideData: {fileID: 11400000, guid: 5c0b2f7b1ffb2d8439d37356a4933dee, type: 2}
-  AttackData: {fileID: 0}
 --- !u!70 &8636112319358836473
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -778,6 +849,91 @@ CapsuleCollider2D:
   m_Offset: {x: 0.163377, y: 0.29411182}
   m_Size: {x: 0.17324601, y: 0.41177636}
   m_Direction: 0
+--- !u!114 &5119545086114383772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4293394734762300295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5628fe228e8be043b618c6647ceb161, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parent: {fileID: 1016780505216394531}
+  playerType: {fileID: 0}
+  OverrideData: {fileID: 11400000, guid: 5c0b2f7b1ffb2d8439d37356a4933dee, type: 2}
+  AttackData: {fileID: 0}
+  projectilePriority: -2
+  SuccessState: W_Side_Success
+  victim: {fileID: 0}
+  cancelable: 0
+--- !u!1 &5414513178597892174
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9076914236217650741}
+  - component: {fileID: 4504863173177060361}
+  - component: {fileID: 425396033668364635}
+  m_Layer: 9
+  m_Name: Up
+  m_TagString: Lucille_Portal_Contact
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9076914236217650741
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5414513178597892174}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8936619961583540242}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4504863173177060361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5414513178597892174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parent: {fileID: 1016780505216394531}
+  playerType: {fileID: 0}
+  OverrideData: {fileID: 11400000, guid: 5b1591ce11926334c9e306337754ccb3, type: 2}
+  AttackData: {fileID: 0}
+  projectilePriority: -2
+--- !u!58 &425396033668364635
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5414513178597892174}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!1 &5598103207612506632
 GameObject:
   m_ObjectHideFlags: 0
@@ -809,7 +965,7 @@ Transform:
   m_Children:
   - {fileID: 8745430946876042620}
   m_Father: {fileID: 6684825320623129584}
-  m_RootOrder: 17
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 45}
 --- !u!70 &6434575574763220051
 CapsuleCollider2D:
@@ -841,11 +997,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1016780505216394531}
   playerType: {fileID: 0}
-  isActive: 1
   OverrideData: {fileID: 11400000, guid: 6e6bf865ac6482c418a56876ad7e4522, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
   SuccessState: Air_Grab_Success
   victim: {fileID: 0}
+  cancelable: 1
 --- !u!1 &6481242988241810244
 GameObject:
   m_ObjectHideFlags: 0
@@ -876,7 +1033,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6684825320623129584}
-  m_RootOrder: 14
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 25}
 --- !u!114 &2694884117981561616
 MonoBehaviour:
@@ -892,11 +1049,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1016780505216394531}
   playerType: {fileID: 0}
-  isActive: 1
   OverrideData: {fileID: 11400000, guid: fe696afe4fa18c24b8210cd207f7c456, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
   SuccessState: Grab_Success
   victim: {fileID: 0}
+  cancelable: 1
 --- !u!70 &8648839510337501001
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -960,9 +1118,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1016780505216394531}
   playerType: {fileID: 0}
-  isActive: 0
   OverrideData: {fileID: 0}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!114 &4554743194611063503
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1055,9 +1213,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1016780505216394531}
   playerType: {fileID: 0}
-  isActive: 1
   OverrideData: {fileID: 11400000, guid: c41638e5b681888469dd2a34a29d341b, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!1 &7341602148812435504
 GameObject:
   m_ObjectHideFlags: 0
@@ -1088,7 +1246,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6684825320623129584}
-  m_RootOrder: 19
+  m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!70 &2370483082271584522
 CapsuleCollider2D:
@@ -1120,9 +1278,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1016780505216394531}
   playerType: {fileID: 0}
-  isActive: 1
   OverrideData: {fileID: 11400000, guid: 90961d8f58df57e4bb7efbedcf036577, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!1 &7356855737826804681
 GameObject:
   m_ObjectHideFlags: 0
@@ -1153,7 +1311,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6684825320623129584}
-  m_RootOrder: 15
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!70 &1535793729675428847
 CapsuleCollider2D:
@@ -1185,9 +1343,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1016780505216394531}
   playerType: {fileID: 0}
-  isActive: 1
   OverrideData: {fileID: 11400000, guid: 5db84aea2e8c1094dbcd134edcc86dad, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!1 &7644345229185873005
 GameObject:
   m_ObjectHideFlags: 0
@@ -1221,7 +1379,7 @@ Transform:
   - {fileID: 453633234627610152}
   - {fileID: 3406067755239631700}
   m_Father: {fileID: 6684825320623129584}
-  m_RootOrder: 18
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3026193531571706559
 MonoBehaviour:
@@ -1237,9 +1395,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1016780505216394531}
   playerType: {fileID: 0}
-  isActive: 1
   OverrideData: {fileID: 11400000, guid: 9236cb711f11e3a439e01f22b2ceac3f, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!70 &5551978776291050127
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -1256,6 +1414,71 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.5, y: 1}
   m_Direction: 0
+--- !u!1 &7866596501625255223
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6834337245607299829}
+  - component: {fileID: 5281450475118455608}
+  - component: {fileID: 5068458955625516899}
+  m_Layer: 9
+  m_Name: Down
+  m_TagString: Lucille_Portal_Contact
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6834337245607299829
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7866596501625255223}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8936619961583540242}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5281450475118455608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7866596501625255223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parent: {fileID: 1016780505216394531}
+  playerType: {fileID: 0}
+  OverrideData: {fileID: 11400000, guid: 5d67d3d7f7128924fbaff60bca4a80e7, type: 2}
+  AttackData: {fileID: 0}
+  projectilePriority: -2
+--- !u!58 &5068458955625516899
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7866596501625255223}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!1 &8028542857373867485
 GameObject:
   m_ObjectHideFlags: 0
@@ -1302,9 +1525,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1016780505216394531}
   playerType: {fileID: 0}
-  isActive: 1
   OverrideData: {fileID: 11400000, guid: 842a61b846b959c4f86fb71f5b259fb6, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!70 &5570561986298529847
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -1367,9 +1590,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1016780505216394531}
   playerType: {fileID: 0}
-  isActive: 1
   OverrideData: {fileID: 11400000, guid: 5b1591ce11926334c9e306337754ccb3, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!70 &5225571035154125188
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -1416,7 +1639,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6684825320623129584}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8014973794747126268
 MonoBehaviour:
@@ -1432,9 +1655,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1016780505216394531}
   playerType: {fileID: 0}
-  isActive: 1
   OverrideData: {fileID: 11400000, guid: 16b97b4663196ad48bdce4e851afc135, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!58 &1588445667251465000
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1966,27 +2189,27 @@ PrefabInstance:
         type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 03006bf76a5e1274aaf3da8b9c69d8f9, type: 3}
---- !u!1 &2666468584675411428 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1853559347, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
-    type: 3}
-  m_PrefabInstance: {fileID: 2666468584035325911}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6684825320623129584 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8774267968347264039, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
     type: 3}
   m_PrefabInstance: {fileID: 2666468584035325911}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &550663097112236038 stripped
+--- !u!1 &2666468584675411428 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 2496518287981053905, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+  m_CorrespondingSourceObject: {fileID: 1853559347, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
     type: 3}
   m_PrefabInstance: {fileID: 2666468584035325911}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1016780505216394531 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3106753082241659636, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+    type: 3}
+  m_PrefabInstance: {fileID: 2666468584035325911}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &550663097112236038 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2496518287981053905, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
     type: 3}
   m_PrefabInstance: {fileID: 2666468584035325911}
   m_PrefabAsset: {fileID: 0}
