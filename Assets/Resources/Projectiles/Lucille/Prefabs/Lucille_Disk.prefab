@@ -62,9 +62,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 3600381117129026696}
   playerType: {fileID: 0}
-  isActive: 1
   OverrideData: {fileID: 11400000, guid: 40beabe01fd40964a9940fb04cd62fac, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!1 &3600381117129026696
 GameObject:
   m_ObjectHideFlags: 0
@@ -314,6 +314,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f454e73311b558a45840f20eb3ed9de9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxPercentage: 30
+  rb: {fileID: 8948976551295060116}
+  healthBar: {fileID: 0}
   drifter: {fileID: 0}
   size: -1
   myPriority: 0

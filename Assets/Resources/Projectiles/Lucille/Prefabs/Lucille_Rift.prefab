@@ -53,6 +53,7 @@ MonoBehaviour:
   playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: f5a71d2c26061374290476d0c64291b8, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!58 &4274317080792823660
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -117,6 +118,7 @@ MonoBehaviour:
   playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: f664d80ba41aa404db1643ad93526ae1, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!58 &2269708550171353491
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -181,6 +183,7 @@ MonoBehaviour:
   playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: 12c4a84644255c94bb9a2470317068c1, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!58 &7878459448905162171
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -245,6 +248,7 @@ MonoBehaviour:
   playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: 4c92bd8a53002904bba9a0d27ea48d9e, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!58 &5908800210028506076
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -284,6 +288,7 @@ GameObject:
   - component: {fileID: 608364487381099413}
   - component: {fileID: 715505985800706039}
   - component: {fileID: 7054183740893206019}
+  - component: {fileID: 4456875718992684001}
   m_Layer: 10
   m_Name: Lucille_Rift
   m_TagString: Lucille_Portal
@@ -479,7 +484,7 @@ CircleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5339743849390282850}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 6200000, guid: ae574f67ab83603489ee7cc1efc1a35f, type: 2}
   m_IsTrigger: 1
@@ -500,10 +505,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f454e73311b558a45840f20eb3ed9de9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxPercentage: 30
+  rb: {fileID: 7429582632382476629}
+  healthBar: {fileID: 0}
   drifter: {fileID: 0}
   size: 1
   myPriority: 0
-  anim: {fileID: 0}
+  anim: {fileID: -1876838739677775689}
 --- !u!114 &608364487381099413
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -541,6 +549,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8275c87f3a6a3b448e6cf19f65e07d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  color: 0
+--- !u!114 &4456875718992684001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5339743849390282850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c303c2a3e41d8ad428934a942403f36f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parent: {fileID: 5339743849390282850}
+  owner: {fileID: 0}
+  capsule: {fileID: 0}
 --- !u!1 &5470282772837983660
 GameObject:
   m_ObjectHideFlags: 0
@@ -666,6 +690,7 @@ MonoBehaviour:
   playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: 55057b0ed929e784db8fc14bd5d54f50, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!1 &8698334532372120181
 GameObject:
   m_ObjectHideFlags: 0
@@ -714,6 +739,7 @@ MonoBehaviour:
   playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: 3acecc03e9f50ec43ad04b9170f17b79, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!58 &5022081905310390291
 CircleCollider2D:
   m_ObjectHideFlags: 0

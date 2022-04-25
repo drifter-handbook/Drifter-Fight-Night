@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class LucillePortal : MonoBehaviour
+public class LucillePortal : NonplayerHurtboxHandler
 {
 
 	public GameObject drifter;
@@ -14,23 +14,46 @@ public class LucillePortal : MonoBehaviour
 	public float myPriority;
 	public SyncAnimatorStateHost anim;
 
-	protected ScreenShake Shake;
+	Collider2D grabPoint;
 
 	bool canMerge  = true;
-	Rigidbody2D rb;
 
 	float speed = 28f;
 
-	void Start()
-	{
-		rb = GetComponent<Rigidbody2D>();
+	new void Start()
+    {
+        base.Start();
 		anim = GetComponent<SyncAnimatorStateHost>();
 		myPriority = size;
 		if(size == -1)
 			canMerge = false;
 
-		Shake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<ScreenShake>();
 	}
+
+	new void FixedUpdate(){
+		base.FixedUpdate();
+
+        if(grabPoint !=null && grabPoint.enabled)
+            transform.position = grabPoint.bounds.center;
+     
+        else
+        	grabPoint = null;
+       
+	}
+
+	public override int RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, DrifterAttackType attackType, SingleAttackData attackData)
+    {
+
+        if (GameController.Instance.IsHost && hurtbox.owner == hitbox.parent && !oldAttacks.ContainsKey(attackID))
+        {
+        	GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.LUCILLE,  Vector3.Lerp(transform.position, hitbox.parent.transform.position, 0.1f), 0, new Vector2(6f, 6f));
+        	grabPoint = hitbox.gameObject.GetComponent<Collider2D>();
+        	return 1; 
+
+        }
+
+        return -3;
+    }
 
 	void OnTriggerEnter2D(Collider2D collider)
 	{
@@ -60,6 +83,8 @@ public class LucillePortal : MonoBehaviour
 			if(hitbox != null && hitbox.parent == drifter && collider.gameObject.tag == "Lucille_Portal_Contact" && size != -1)
 			{
 
+				int direction = ((hitbox.OverrideData.AngleOfImpact > 90 && hitbox.OverrideData.AngleOfImpact < 270) ? -1: 1 ) * hitbox.Facing;
+
 				float verticalMag = Mathf.Sin(hitbox.OverrideData.AngleOfImpact * Mathf.PI/180f);
 				float horizontalMag = Mathf.Cos(hitbox.OverrideData.AngleOfImpact * Mathf.PI/180f);
 
@@ -67,9 +92,9 @@ public class LucillePortal : MonoBehaviour
 				bool moveVertically = verticalMag > .5f || verticalMag < -.5f;
 
 
-				transform.localScale = new Vector2(Mathf.Abs(transform.localScale.x) * hitbox.Facing, Mathf.Abs(transform.localScale.y) * Mathf.Sign(verticalMag));
+				transform.localScale = new Vector2(Mathf.Abs(transform.localScale.x) * direction, Mathf.Abs(transform.localScale.y) * Mathf.Sign(verticalMag));
 
-				rb.velocity = speed * new Vector3((moveHorizontally?hitbox.Facing * .707f:0) + ((!moveHorizontally && verticalMag <0)? .4f * hitbox.Facing:0f), (moveVertically?Mathf.Sign(verticalMag) * .707f:0) * ((!moveHorizontally && verticalMag <0)? 2f:1f),0);
+				rb.velocity = speed * new Vector3((moveHorizontally?direction * .707f:0) + ((!moveHorizontally && verticalMag <0)? .4f * direction:0f), (moveVertically?Mathf.Sign(verticalMag) * .707f:0) * ((!moveHorizontally && verticalMag <0)? 2f:1f),0);
 
 				if(moveHorizontally && moveVertically) anim.SetState("Diagonal_" + size);
 				else if(moveHorizontally)  anim.SetState("Horizontal_" + size);
@@ -81,7 +106,7 @@ public class LucillePortal : MonoBehaviour
 				foreach (HitboxCollision portalHitbox in GetComponentsInChildren<HitboxCollision>(true))
 				{
 					portalHitbox.AttackID -= 3;
-					portalHitbox.Facing = hitbox.Facing;
+					portalHitbox.Facing = direction;
 				}
 
 				GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.LUCILLE,  Vector3.Lerp(transform.position, hitbox.parent.transform.position, 0.1f), 0, new Vector2(6f, 6f));

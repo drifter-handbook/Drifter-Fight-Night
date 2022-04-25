@@ -144,6 +144,8 @@ public class LucilleMasterHit : MasterHit
         rift.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
         rift.GetComponent<LucillePortal>().drifter = drifter.gameObject;
        
+        rift.GetComponent<HurtboxCollision>().owner = drifter.gameObject;
+
         rifts.Enqueue(rift);
     }
 
