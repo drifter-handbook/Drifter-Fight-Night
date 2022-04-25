@@ -16,6 +16,8 @@ public class LucilleMasterHit : MasterHit
 
     GrabHitboxCollision[] grabBoxes;
 
+    Vector2 HeldDirection;
+
     //Coroutine riftDetonation;
 
     void Start()
@@ -41,29 +43,41 @@ public class LucilleMasterHit : MasterHit
         //Handle neutral special attacks
         if(listeningForDirection)
         {
-            movement.move(14f,false);
+            HeldDirection = new Vector2(drifter.input[0].MoveX,drifter.input[0].MoveY);
+
+            if( HeldDirection != Vector2.zero)
+                W_Side_Throw();
         }
     }
 
     public new void returnToIdle()
     {
         base.returnToIdle();
-        cancelListeningForDirection();
+         listeningForDirection = false; 
         foreach(GrabHitboxCollision hitbox in grabBoxes)
             hitbox.victim = null;
 
     }
 
-    public void setListeningForDirection()
+    public void W_Side_Throw()
+    {
+        if(!isHost)return;
+        facing = movement.Facing;
+
+        if(HeldDirection.y < 0)drifter.PlayAnimation("W_Side_Down");
+        else if (HeldDirection.y > 0) drifter.PlayAnimation("W_Side_Up");
+        else if(HeldDirection.x * facing < 0) drifter.PlayAnimation("W_Side_Back");
+        else drifter.PlayAnimation("W_Side_Forward");
+        
+        HeldDirection = Vector2.zero;
+
+        listeningForDirection = false;
+    }
+
+    public void listenForDirection()
     {
        if(!isHost)return;
        listeningForDirection = true; 
-    }
-
-    public void cancelListeningForDirection()
-    {
-       if(!isHost)return;
-       listeningForDirection = false; 
     }
 
 

@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 193b57c47c6e0024ebee715bea3d6f17, type: 3}
+  m_Name: W_Side_Back
+  m_EditorClassIdentifier: 
+  AttackDamage: 5
+  Knockback: 10
+  KnockbackScale: 0.5
+  HitStun: 13
+  ShieldStun: 0
+  HitStop: -1
+  hitType: 0
+  mirrorKnockback: 0
+  AngleOfImpact: 165
+  StatusEffect: 20
+  StatusDuration: 0.1
+  HitFX: {fileID: 11400000, guid: c40ffbef4bd5ad54dbc61660fa4d822a, type: 2}
+  canHitGrounded: 1
+  canHitAerial: 1
+  canHitKnockedDown: 0
+  scalingLowerBound: -1
+  scalingUpperBound: -1
