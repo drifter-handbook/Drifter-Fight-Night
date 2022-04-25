@@ -44,7 +44,7 @@ public class LucillePortal : NonplayerHurtboxHandler
 	public override int RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, DrifterAttackType attackType, SingleAttackData attackData)
     {
 
-        if (GameController.Instance.IsHost && hurtbox.owner == hitbox.parent && !oldAttacks.ContainsKey(attackID))
+        if (GameController.Instance.IsHost && hurtbox.owner == hitbox.parent && !oldAttacks.ContainsKey(attackID) && hitbox.gameObject.tag == "Lucille_Portal_Grab")
         {
         	GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.LUCILLE,  Vector3.Lerp(transform.position, hitbox.parent.transform.position, 0.1f), 0, new Vector2(6f, 6f));
         	grabPoint = hitbox.gameObject.GetComponent<Collider2D>();
@@ -94,7 +94,12 @@ public class LucillePortal : NonplayerHurtboxHandler
 
 				transform.localScale = new Vector2(Mathf.Abs(transform.localScale.x) * direction, Mathf.Abs(transform.localScale.y) * Mathf.Sign(verticalMag));
 
-				rb.velocity = speed * new Vector3((moveHorizontally?direction * .707f:0) + ((!moveHorizontally && verticalMag <0)? .4f * direction:0f), (moveVertically?Mathf.Sign(verticalMag) * .707f:0) * ((!moveHorizontally && verticalMag <0)? 2f:1f),0);
+				rb.velocity = 
+				speed * new Vector3(
+					Mathf.Sign(horizontalMag) * (moveHorizontally? hitbox.Facing * .707f:0) ,
+					Mathf.Sign(verticalMag) * (moveVertically? .707f:0)
+				);
+
 
 				if(moveHorizontally && moveVertically) anim.SetState("Diagonal_" + size);
 				else if(moveHorizontally)  anim.SetState("Horizontal_" + size);
