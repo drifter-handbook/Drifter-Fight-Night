@@ -21,8 +21,11 @@ MonoBehaviour:
   hitType: 1
   mirrorKnockback: 1
   AngleOfImpact: 55
-  StatusEffect: 5
-  StatusDuration: 24
+  StatusEffect: 20
+  StatusDuration: 0
   HitFX: {fileID: 0}
   canHitGrounded: 1
   canHitAerial: 1
+  canHitKnockedDown: 0
+  scalingLowerBound: -1
+  scalingUpperBound: -1
