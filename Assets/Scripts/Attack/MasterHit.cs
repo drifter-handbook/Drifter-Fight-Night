@@ -73,6 +73,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         attackWasCanceled = true;
         //Clear all flags if the character is dead or stunned by an opponent
 
+        //Handles knockdown after bounce
         if(status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN))
         {
             drifter.knockedDown = true;
@@ -81,12 +82,15 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
             if(listeningForGroundedFlag && movement.grounded)
             {
                 status.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,0f);
-                status.ApplyStatusEffect(PlayerStatusEffect.FLATTEN,3f);
+                //status.ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,0f);
+                status.ApplyStatusEffect(PlayerStatusEffect.FLATTEN,status.remainingDuration(PlayerStatusEffect.KNOCKDOWN) - 1f * framerateScalar);
+                rb.velocity = new Vector2(movement.Facing * -10f * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f),rb.velocity.y);
                 BounceParticle();
                 playQueuedState();
                 clearMasterhitVars();
             }
         }
+        //Handles if bounced off stage
         else if(knockdownFlag && !status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN))
         {
             knockdownFlag = false;

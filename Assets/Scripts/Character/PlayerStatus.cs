@@ -107,7 +107,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         {PlayerStatusEffect.HIDDEN,                             new PlayerStatusData("HIDDEN",remove: false)                                        },
         {PlayerStatusEffect.FLATTEN,                            new PlayerStatusData("FLATTEN")                                                     },
         {PlayerStatusEffect.TUMBLE,                             new PlayerStatusData("TUMBLE")                                                      },
-        {PlayerStatusEffect.KNOCKDOWN,                          new PlayerStatusData("KNOCKDOWN", stun: true)                                       },
+        {PlayerStatusEffect.KNOCKDOWN,                          new PlayerStatusData("KNOCKDOWN", icon: 3,stun: true)                               },
     };
 
     // float time = 0f;
@@ -199,6 +199,10 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
                             rb.velocity = delayedVelocity;
                             drifter.SetAnimationSpeed(1f);
                         }
+
+                        if((ef.Key == PlayerStatusEffect.FLATTEN && !HasStatusEffect(PlayerStatusEffect.FLATTEN)))
+                            drifter.PlayAnimation("Jump_End");
+        
 
 
                         //if(ef.Key == PlayerStatusEffect.ORBO && !HasStatusEffect(ef.Key)) 
