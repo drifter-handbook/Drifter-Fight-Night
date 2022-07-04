@@ -395,6 +395,21 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.5, y: 1}
   m_Direction: 0
+--- !u!114 &4482888525294159743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7400929337632025874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99e9f03a6a34c414a83c63e583e37302, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  assetPathName: Ryyke
+  facing: 0
+  tether: {fileID: 7144613492704200374}
 --- !u!1 &5003767269622312760
 GameObject:
   m_ObjectHideFlags: 0
@@ -658,21 +673,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.5, y: 1}
   m_Direction: 0
---- !u!114 &4482888525294159743
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7400929337632025874}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99e9f03a6a34c414a83c63e583e37302, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  assetPathName: Ryyke
-  facing: 0
-  tether: {fileID: 7144613492704200374}
 --- !u!1 &7693040150200749323
 GameObject:
   m_ObjectHideFlags: 0
@@ -1073,7 +1073,7 @@ PrefabInstance:
     - target: {fileID: 3106753082241659641, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: terminalVelocity
-      value: 30
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 3106753082241659641, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
