@@ -62,11 +62,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 7577635449158724588}
   playerType: {fileID: 0}
-  isActive: 1
   OverrideData: {fileID: 11400000, guid: fc463da64cb2c2744bf090b42bd25603, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
   SuccessState: Grab_Throw_2
   victim: {fileID: 0}
+  cancelable: 1
 --- !u!1 &3056375066229082862
 GameObject:
   m_ObjectHideFlags: 0
@@ -114,11 +115,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 7577635449158724588}
   playerType: {fileID: 0}
-  isActive: 1
   OverrideData: {fileID: 11400000, guid: aac995179d1429d40af1af07364bc770, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
   SuccessState: W_Up_Ground_Success
   victim: {fileID: 0}
+  cancelable: 1
 --- !u!70 &5170993568138915188
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -211,9 +213,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 7577635449158724588}
   playerType: {fileID: 0}
-  isActive: 1
   OverrideData: {fileID: 11400000, guid: 03e7d95979f06484c850654c5331a256, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!1001 &4770521729353013528
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -245,32 +247,32 @@ PrefabInstance:
     - target: {fileID: 364774633814311839, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[1].x
-      value: -3.7062168
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 364774633814311839, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[1].y
-      value: -13.130302
+      value: -13
       objectReference: {fileID: 0}
     - target: {fileID: 364774633814311839, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[0].x
-      value: 0.22953033
+      value: -1.5
       objectReference: {fileID: 0}
     - target: {fileID: 364774633814311839, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[0].y
-      value: -13.142762
+      value: -13
       objectReference: {fileID: 0}
     - target: {fileID: 364774633814311839, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[2].x
-      value: -1.8441105
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 364774633814311839, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[2].y
-      value: -15.772655
+      value: -15
       objectReference: {fileID: 0}
     - target: {fileID: 1627984188795609511, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
@@ -310,22 +312,27 @@ PrefabInstance:
     - target: {fileID: 2704295541901204434, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: m_Offset.x
-      value: -1.7978926
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2704295541901204434, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: m_Size.x
-      value: 3.6785984
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2704295541901204434, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: m_Offset.y
-      value: 0.42549753
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2704295541901204434, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: m_Size.y
-      value: 27.288525
+      value: 27
+      objectReference: {fileID: 0}
+    - target: {fileID: 2704295541901204434, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: m_UsedByEffector
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2952663911849027975, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
@@ -380,7 +387,12 @@ PrefabInstance:
     - target: {fileID: 3106753082241659641, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: terminalVelocity
-      value: 30
+      value: 26
+      objectReference: {fileID: 0}
+    - target: {fileID: 3106753082241659641, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: ledgeClimbOffset
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 3106753082241659643, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
