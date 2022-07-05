@@ -226,7 +226,6 @@ GameObject:
   - component: {fileID: 5091464855772898938}
   - component: {fileID: 8084563840474274964}
   - component: {fileID: 5799385108215845446}
-  - component: {fileID: 1757599156396431096}
   m_Layer: 9
   m_Name: Dair_Weak
   m_TagString: Lucille_Portal_Contact
@@ -281,20 +280,6 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: 19185f65a6c374e42adea4d178e1451f, type: 2}
   AttackData: {fileID: 0}
   projectilePriority: -2
---- !u!114 &1757599156396431096
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1984659130060929855}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70581a5454af9484da58e3ebfffb5dca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  drifter: {fileID: 1016780505216394531}
-  StateToPlay: Aerial_Down_Flip
 --- !u!1 &2166231271144079544
 GameObject:
   m_ObjectHideFlags: 0
@@ -651,6 +636,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   assetPathName: Lucille
   facing: 0
+  warpSpeed: 185
 --- !u!70 &1517383763950501945
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -1081,7 +1067,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8745430946876042620}
   - component: {fileID: 4174189481177796682}
-  - component: {fileID: 4554743194611063503}
   - component: {fileID: 1995964523054667879}
   m_Layer: 9
   m_Name: Air_Grab_Portal_Slam
@@ -1121,20 +1106,6 @@ MonoBehaviour:
   OverrideData: {fileID: 0}
   AttackData: {fileID: 0}
   projectilePriority: -2
---- !u!114 &4554743194611063503
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6552541301775502913}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70581a5454af9484da58e3ebfffb5dca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  drifter: {fileID: 1016780505216394531}
-  StateToPlay: Aerial_Down_Flip
 --- !u!58 &1995964523054667879
 CircleCollider2D:
   m_ObjectHideFlags: 0

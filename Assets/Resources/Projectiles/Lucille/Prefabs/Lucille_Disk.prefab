@@ -1,70 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1559104512016411007
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7272587845480022372}
-  - component: {fileID: 2456817977719941808}
-  - component: {fileID: 5850553240490517112}
-  m_Layer: 9
-  m_Name: Hitboxes
-  m_TagString: Projectile
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7272587845480022372
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1559104512016411007}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 9128632362086465274}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &2456817977719941808
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1559104512016411007}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.0143502, y: 0.027264977}
-  serializedVersion: 2
-  m_Radius: 0.27470493
---- !u!114 &5850553240490517112
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1559104512016411007}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 366a1f2c5e90cb041bf397c745ab185b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parent: {fileID: 3600381117129026696}
-  playerType: {fileID: 0}
-  OverrideData: {fileID: 11400000, guid: 40beabe01fd40964a9940fb04cd62fac, type: 2}
-  AttackData: {fileID: 0}
-  projectilePriority: -2
 --- !u!1 &3600381117129026696
 GameObject:
   m_ObjectHideFlags: 0
@@ -84,8 +19,6 @@ GameObject:
   - component: {fileID: 5154128289195000291}
   - component: {fileID: 7590525008111513119}
   - component: {fileID: 4061479013748709255}
-  - component: {fileID: 6559222974483941189}
-  - component: {fileID: 9137542054183814284}
   m_Layer: 10
   m_Name: Lucille_Disk
   m_TagString: Lucille_Portal
@@ -103,8 +36,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 10, y: 10, z: 1}
-  m_Children:
-  - {fileID: 7272587845480022372}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -286,38 +218,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   victim: {fileID: 0}
---- !u!58 &6559222974483941189
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3600381117129026696}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.19
---- !u!114 &9137542054183814284
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3600381117129026696}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f454e73311b558a45840f20eb3ed9de9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxPercentage: 30
-  rb: {fileID: 8948976551295060116}
-  healthBar: {fileID: 0}
-  drifter: {fileID: 0}
-  size: -1
-  myPriority: 0
-  anim: {fileID: 946419931023688955}
