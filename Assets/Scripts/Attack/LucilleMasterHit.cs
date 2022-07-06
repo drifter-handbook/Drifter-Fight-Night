@@ -198,7 +198,7 @@ public class LucilleMasterHit : MasterHit
         else if( orb != null)
         {
             rb.transform.position = orb.transform.position;
-            Destroy(orb);
+            orb.GetComponent<SyncAnimatorStateHost>().SetState("Detonate");
             orb = null;
         }
         else
