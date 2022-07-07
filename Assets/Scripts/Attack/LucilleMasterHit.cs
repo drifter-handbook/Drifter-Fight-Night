@@ -49,7 +49,6 @@ public class LucilleMasterHit : MasterHit
                 HeldDirection = new Vector2(drifter.input[0].MoveX,drifter.input[0].MoveY);
                 if(listeningForThrow)
                 {
-                    if(orb !=null)orb.GetComponent<OrbHurtboxHandler>().setDirection(HeldDirection != Vector2.zero ? HeldDirection : Vector2.right * facing);
                     W_Neutral_Throw();
                 }
             }                
@@ -75,6 +74,8 @@ public class LucilleMasterHit : MasterHit
         else if (HeldDirection.y > 0) drifter.PlayAnimation("W_Side_Up");
         else if(HeldDirection.x * facing < 0) drifter.PlayAnimation("W_Side_Back");
         else drifter.PlayAnimation("W_Side_Forward");
+        
+        if(orb !=null)orb.GetComponent<OrbHurtboxHandler>().setDirection(HeldDirection != Vector2.zero ? HeldDirection : Vector2.right * facing);
 
         HeldDirection = Vector2.zero;
 
