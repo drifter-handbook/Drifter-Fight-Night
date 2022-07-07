@@ -32,6 +32,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
 
     //Registers an attack hit. Returns an integer based on what happened.
+    // -5: hit registered againat an invulnerable enemy
     // -4: Hit was a registered as a counter
     // -3: Hit did not register at all; ID was already present in dict, or target was invulnerable.
     // -2: Hit was registerted, but Parried, dealing no damage
@@ -76,7 +77,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
             oldAttacks[attackID] = Time.time;
 
             //Ignore the collision if invulnerable or You try to grab a planted opponenet
-            if(status.HasStatusEffect(PlayerStatusEffect.INVULN) || (status.HasStatusEffect(PlayerStatusEffect.PLANTED) && attackData.StatusEffect == PlayerStatusEffect.GRABBED))return -3;
+            if(status.HasStatusEffect(PlayerStatusEffect.INVULN)) return -5;
+            if(status.HasStatusEffect(PlayerStatusEffect.PLANTED) && attackData.StatusEffect == PlayerStatusEffect.GRABBED) return -3;
 
 
             Drifter attacker = hitbox.parent.GetComponent<Drifter>();

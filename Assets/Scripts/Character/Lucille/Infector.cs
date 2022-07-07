@@ -8,7 +8,6 @@ public class Infector : MonoBehaviour
 
     public LucilleMasterHit Lucille;
 
-
     public void infectVictim()
     {
         foreach(PuppetGrabHitboxCollision infector in GetComponentsInChildren<PuppetGrabHitboxCollision>(true))

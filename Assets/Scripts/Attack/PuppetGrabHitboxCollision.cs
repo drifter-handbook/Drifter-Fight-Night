@@ -8,6 +8,7 @@ public class PuppetGrabHitboxCollision : HitboxCollision
     public string SuccessState = "";
     public SyncAnimatorStateHost anim = null;
     public GameObject victim;
+    public bool playOnInvuln = false;
 
     void OnTriggerStay2D(Collider2D collider)
     {
@@ -22,13 +23,14 @@ public class PuppetGrabHitboxCollision : HitboxCollision
             if(OverrideData != null)
             {
                 hitResult = hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, -AttackID, AttackType, OverrideData);
-                if((hitResult == 0  || hitResult == 1)  && SuccessState != "" && anim != null)
+                if((hitResult == 0  || hitResult == 1) && SuccessState != "" && anim != null)
                 {
                     victim = hurtbox.parent;
                     anim.SetState(SuccessState);
                 }
+                else if((playOnInvuln && hitResult == -5))
+                    anim.SetState(SuccessState);
                        
-        
             }
             else{
                 hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, AttackData);

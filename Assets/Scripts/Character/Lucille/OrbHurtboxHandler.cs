@@ -12,6 +12,8 @@ public class OrbHurtboxHandler : NonplayerHurtboxHandler
 	new void FixedUpdate(){
 		base.FixedUpdate();
 
+		
+
         if(grabPoint !=null && grabPoint.enabled)
             transform.position = grabPoint.bounds.center;
      
