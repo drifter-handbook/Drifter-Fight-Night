@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 193b57c47c6e0024ebee715bea3d6f17, type: 3}
-  m_Name: Ground_Neutral
+  m_Name: Ground_Side
   m_EditorClassIdentifier: 
-  AttackDamage: 8
-  Knockback: 15
-  KnockbackScale: 0.2
-  HitStun: 22
-  ShieldStun: 10
-  HitStop: 10
+  AttackDamage: 11
+  Knockback: 32
+  KnockbackScale: 0.5
+  HitStun: 25
+  ShieldStun: 20
+  HitStop: 30
   hitType: 0
   mirrorKnockback: 0
-  AngleOfImpact: 60
+  AngleOfImpact: 70
   StatusEffect: 20
   StatusDuration: 0.1
   HitFX: {fileID: 11400000, guid: e007b7ceac776034b9838dfd15059cdd, type: 2}
