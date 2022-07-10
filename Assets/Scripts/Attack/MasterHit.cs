@@ -593,9 +593,10 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         drifter.parrying = false;
     }
 
-    public void BounceParticle()
+    public void BounceParticle(float offset = 0)
     {
         if(!isHost || !movement.grounded)return;
-        movement.spawnJuiceParticle(transform.position, MovementParticleMode.Restitution);
+        facing = movement.Facing;
+        movement.spawnJuiceParticle(transform.position + new Vector3(offset * facing,0,0), MovementParticleMode.Restitution);
     }
 }
