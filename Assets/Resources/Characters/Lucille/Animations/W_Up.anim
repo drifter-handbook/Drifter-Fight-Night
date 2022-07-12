@@ -1226,7 +1226,7 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.083333336
-    functionName: freezeGravity
+    functionName: pauseGravity
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
@@ -1279,6 +1279,13 @@ AnimationClip:
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.6666667
+    functionName: setYVelocity
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 15
     intParameter: 0
     messageOptions: 0
   - time: 1
