@@ -41,8 +41,10 @@ public class NeoParhelionMasterHit : MasterHit
     public void UpWThrow()
     {
     	if(!isHost)return;
-    	if(Up_W_Grab.victim != null)attacks.resetRecovery();
-    	else return;
+    	
+    	if(Up_W_Grab.victim == null)
+    		return;
+
     	if(HeldDirection.y < 0)drifter.PlayAnimation("W_Up_Down");
     	else if(HeldDirection.x != 0)
     	{
