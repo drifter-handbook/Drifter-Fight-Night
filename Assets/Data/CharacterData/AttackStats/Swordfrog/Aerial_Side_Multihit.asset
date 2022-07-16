@@ -15,8 +15,9 @@ MonoBehaviour:
   AttackDamage: 2.5
   Knockback: 17
   KnockbackScale: 0.2
-  hasStaticHitstun: 0
   HitStun: 3
+  ShieldStun: 0
+  HitStop: -1
   hitType: 0
   mirrorKnockback: 0
   AngleOfImpact: -361
@@ -25,3 +26,6 @@ MonoBehaviour:
   HitFX: {fileID: 11400000, guid: c40ffbef4bd5ad54dbc61660fa4d822a, type: 2}
   canHitGrounded: 1
   canHitAerial: 1
+  canHitKnockedDown: 0
+  scalingLowerBound: -1
+  scalingUpperBound: -1
