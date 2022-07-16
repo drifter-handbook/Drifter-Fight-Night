@@ -58,6 +58,7 @@ public class RyykeMasterHit : MasterHit
         	targetStone = nearbyStone;
         	if(drifter.input[0].MoveY  !=0 || drifter.input[0].MoveX != 0)
       		{
+                movement.updateFacing();
         		if(drifter.input[0].MoveY > 0) targetStone = 0;
         		else if(drifter.input[0].MoveY < 0) targetStone = 2;
         		else targetStone = 1;
