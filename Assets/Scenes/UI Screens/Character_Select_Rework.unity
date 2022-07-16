@@ -1181,7 +1181,7 @@ MonoBehaviour:
   - {fileID: 2028133062}
   - {fileID: 888419829}
   - {fileID: 222001568}
-  - {fileID: 1518146353}
+  - {fileID: 0}
   - {fileID: 1332020673}
   - {fileID: 0}
   - {fileID: 0}
@@ -2940,7 +2940,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 864ad6bdb8d928d4fae41b776806b46e,
+      objectReference: {fileID: 21300000, guid: 6d18dae161ec5ee4286e2c036ea5d96d,
         type: 3}
     - target: {fileID: 2680714105630690354, guid: dabd9ec98cf674042ae7f6d74eccf167,
         type: 3}
@@ -3017,12 +3017,6 @@ PrefabInstance:
 --- !u!4 &1518146352 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9113821722326303840, guid: dabd9ec98cf674042ae7f6d74eccf167,
-    type: 3}
-  m_PrefabInstance: {fileID: 1518146351}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1518146353 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7957583111170635559, guid: dabd9ec98cf674042ae7f6d74eccf167,
     type: 3}
   m_PrefabInstance: {fileID: 1518146351}
   m_PrefabAsset: {fileID: 0}
@@ -3231,6 +3225,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5993f2f06724a8e47a67b6f1cfc3fb77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stage: {fileID: 0}
+  flourish: {fileID: 0}
 --- !u!1001 &1638455170
 PrefabInstance:
   m_ObjectHideFlags: 0

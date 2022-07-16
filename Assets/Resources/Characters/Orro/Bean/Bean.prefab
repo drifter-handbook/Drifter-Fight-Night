@@ -62,9 +62,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 6901350577488074765}
   playerType: {fileID: 0}
-  isActive: 1
   OverrideData: {fileID: 11400000, guid: 1bc0483761c00d64ab8fad9f960191df, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!1 &260447122894442862
 GameObject:
   m_ObjectHideFlags: 0
@@ -111,9 +111,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 6901350577488074765}
   playerType: {fileID: 0}
-  isActive: 1
   OverrideData: {fileID: 11400000, guid: 15c885ca532fa3346bc037d1aa1bf9ff, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!70 &2377187875838750318
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -212,9 +212,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 6901350577488074765}
   playerType: {fileID: 0}
-  isActive: 1
   OverrideData: {fileID: 11400000, guid: 93864434b133e88469ae3c86fe3c2677, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!70 &212183810868410064
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -277,9 +277,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 6901350577488074765}
   playerType: {fileID: 0}
-  isActive: 1
   OverrideData: {fileID: 11400000, guid: b90b36aadab679146b664436475e5691, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!58 &8745863818043271206
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -358,9 +358,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 6901350577488074765}
   playerType: {fileID: 0}
-  isActive: 1
   OverrideData: {fileID: 11400000, guid: bbbba33649546c54c87a245f1a1e53f4, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!1 &6482416080623735138
 GameObject:
   m_ObjectHideFlags: 0
@@ -471,9 +471,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 6901350577488074765}
   playerType: {fileID: 0}
-  isActive: 1
   OverrideData: {fileID: 11400000, guid: a80f433e10ba78f439a2e8399e240aca, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!70 &6193118808159990817
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -679,12 +679,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10de8fac05ab59a479e63e3fc8691404, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxPercentage: 25
+  maxPercentage: 35
+  rb: {fileID: 6932556643919112318}
   healthBar: {fileID: 6735839145750309103}
   color: 0
   charge: 0
   returnSpeed: 20
-  rb: {fileID: 6932556643919112318}
+  Bean_Respawn_Delay: 3
   canAct: 1
   alive: 0
 --- !u!50 &6932556643919112318
@@ -732,6 +733,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8275c87f3a6a3b448e6cf19f65e07d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  color: 0
 --- !u!70 &2631632801527225278
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -807,9 +809,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 6901350577488074765}
   playerType: {fileID: 0}
-  isActive: 1
   OverrideData: {fileID: 11400000, guid: 839fc5f3c1ef1bb40ba09e96d492d81b, type: 2}
   AttackData: {fileID: 11400000, guid: 839fc5f3c1ef1bb40ba09e96d492d81b, type: 2}
+  projectilePriority: -2
 --- !u!70 &8494917467362520392
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -985,9 +987,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 6901350577488074765}
   playerType: {fileID: 0}
-  isActive: 1
   OverrideData: {fileID: 11400000, guid: 7238265b7b907b945b931985d799bd62, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!70 &2210185014960550579
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

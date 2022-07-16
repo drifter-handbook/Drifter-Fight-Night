@@ -364,6 +364,8 @@ MonoBehaviour:
   projectilePriority: -2
   SuccessState: W_Up_Throw
   anim: {fileID: 99137103134557838}
+  victim: {fileID: 0}
+  playOnInvuln: 0
 --- !u!1 &5430352776943473637
 GameObject:
   m_ObjectHideFlags: 0
@@ -697,6 +699,8 @@ MonoBehaviour:
   projectilePriority: -1
   SuccessState: W_Side_Hit
   anim: {fileID: 99137103134557838}
+  victim: {fileID: 0}
+  playOnInvuln: 0
 --- !u!1 &9091461624587303316
 GameObject:
   m_ObjectHideFlags: 0
@@ -935,7 +939,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca5f48f99d7209b4a8ab7bbcbb462a6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxPercentage: 20
+  maxPercentage: 30
   rb: {fileID: 0}
   healthBar: {fileID: 5787117527418930293}
   Uses: 3

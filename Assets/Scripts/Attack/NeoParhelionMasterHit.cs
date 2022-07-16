@@ -35,6 +35,7 @@ public class NeoParhelionMasterHit : MasterHit
     public new void returnToIdle()
     {
         base.returnToIdle();
+        Up_W_Grab.victim = null;
         listeningForDirection = false;
     }
 
