@@ -261,5 +261,16 @@ public class Tombstone : NonplayerHurtboxHandler
         return false;
     }
 
+    //Spawns a flame burst effect
+    public void burst(int mode = 0)
+    {
+        if(!GameController.Instance.IsHost)return;
+
+        GameObject burst = GameController.Instance.host.CreateNetworkObject("Zombie_Burst", transform.position , transform.rotation);
+        burst.transform.localScale = new Vector3(facing *10,10,1f);
+
+        burst.GetComponent<SyncAnimatorStateHost>().SetState(mode ==0? "Vertical":"Horizontal");
+    }
+
 
 }
