@@ -89,7 +89,7 @@ public class NeoBojoMasterHit : MasterHit
        
 
             centaur.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
-            UnityEngine.Debug.Log("PLACING CENTAUT");
+            UnityEngine.Debug.Log("PLACING CENTAUR");
             centaur.GetComponent<SyncAnimatorStateHost>().SetState("Centaur_" + power);
             UnityEngine.Debug.Log("Centaur_" + power);
         }
@@ -104,6 +104,12 @@ public class NeoBojoMasterHit : MasterHit
             
         }
         power = 0;
+    }
+
+    public void fireCentaurState()
+    {
+        if(centaur != null)
+            playState("W_Down_Fire");
     }
 
     public void setCentaurPower(int pow)

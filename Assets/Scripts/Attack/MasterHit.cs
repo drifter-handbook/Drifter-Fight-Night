@@ -133,6 +133,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
             status.ApplyStatusEffect(PlayerStatusEffect.INVULN,0);
             unpauseGravity();
             setXVelocity(movement.dashSpeed);
+            movement.updateFacing();
             attacks.useGrab();
             clearMasterhitVars();
 
@@ -142,6 +143,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
             status.ApplyStatusEffect(PlayerStatusEffect.INVULN,0);
             unpauseGravity();
             setXVelocity(movement.dashSpeed);
+            movement.updateFacing();
             attacks.useSpecial();
             clearMasterhitVars();
 
@@ -151,6 +153,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
             status.ApplyStatusEffect(PlayerStatusEffect.INVULN,0);
             unpauseGravity();
             setXVelocity(movement.dashSpeed);
+            movement.updateFacing();
             attacks.useNormal();
             clearMasterhitVars();
 
