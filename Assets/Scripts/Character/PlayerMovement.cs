@@ -473,6 +473,7 @@ public class PlayerMovement : MonoBehaviour
                 else accelerationPercent = 0;
 
                 currentSpeed = walkSpeed * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f: 1f) * (status.HasStatusEffect(PlayerStatusEffect.SPEEDUP) ? 1.5f: 1f) * (drifter.input[0].MoveX > 0 ? 1 : -1);
+                //accelerationPercent = Time.fixedDeltaTime * (groundAccelerationTime * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f: 1f) * (status.HasStatusEffect(PlayerStatusEffect.SPEEDUP) ? 1.5f: 1f));
 
             }
             else
@@ -484,10 +485,11 @@ public class PlayerMovement : MonoBehaviour
                 else accelerationPercent = 0;
 
                 currentSpeed = airSpeed * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f: 1f) * (status.HasStatusEffect(PlayerStatusEffect.SPEEDUP) ? 1.5f: 1f) * (drifter.input[0].MoveX > 0 ? 1 : -1);
-
+                //accelerationPercent = Time.fixedDeltaTime * (airAccelerationTime * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f: 1f) * (status.HasStatusEffect(PlayerStatusEffect.SPEEDUP) ? 1.5f: 1f));
             	
             }
             rb.velocity = new Vector2(Mathf.Lerp(currentSpeed,rb.velocity.x,accelerationPercent), rb.velocity.y);
+            //rb.velocity = new Vector2(Mathf.MoveTowards(currentSpeed,rb.velocity.x,accelerationPercent), rb.velocity.y);
 
         }
 
