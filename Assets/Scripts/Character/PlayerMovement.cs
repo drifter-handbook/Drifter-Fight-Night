@@ -721,8 +721,8 @@ public class PlayerMovement : MonoBehaviour
         drifter.clearGuardFlags();
         ledgeHanging = true;
         rb.gravityScale = 0f;
-        if(strongLedgeGrab)drifter.PlayAnimation(drifter.StrongLedgeGrabStateName);
-        else drifter.PlayAnimation(drifter.WeakLedgeGrabStateName);
+        if(strongLedgeGrab)status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.5f);
+        drifter.PlayAnimation(drifter.WeakLedgeGrabStateName);
 
         setFacing(flipSprite ^ rb.position.x > 0 ? -1 :1);
 
