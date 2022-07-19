@@ -404,6 +404,24 @@ TextureImporter:
   - first:
       213: -2969686211492492555
     second: BojoSheet_109_2
+  - first:
+      213: 8503138035659218334
+    second: BojoSheet_134
+  - first:
+      213: 8433449298311120177
+    second: BojoSheet_135
+  - first:
+      213: -4318860801929233474
+    second: BojoSheet_136
+  - first:
+      213: 4035223652767477472
+    second: BojoSheet_137
+  - first:
+      213: -1037640028718421579
+    second: BojoSheet_138
+  - first:
+      213: -2342455016269224730
+    second: BojoSheet_139
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -1563,8 +1581,8 @@ TextureImporter:
       name: BojoSheet_38
       rect:
         serializedVersion: 2
-        x: 640
-        y: 640
+        x: 448
+        y: 576
         width: 64
         height: 64
       alignment: 7
@@ -2298,10 +2316,10 @@ TextureImporter:
       name: BojoSheet_88
       rect:
         serializedVersion: 2
-        x: 448
+        x: 960
         y: 384
         width: 64
-        height: 64
+        height: 96
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -2319,7 +2337,7 @@ TextureImporter:
       name: BojoSheet_89
       rect:
         serializedVersion: 2
-        x: 512
+        x: 448
         y: 384
         width: 64
         height: 64
@@ -2340,12 +2358,12 @@ TextureImporter:
       name: BojoSheet_90
       rect:
         serializedVersion: 2
-        x: 576
+        x: 512
         y: 384
-        width: 96
+        width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.3333333, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2361,12 +2379,12 @@ TextureImporter:
       name: BojoSheet_91
       rect:
         serializedVersion: 2
-        x: 960
+        x: 896
         y: 384
         width: 64
-        height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        height: 96
+      alignment: 9
+      pivot: {x: 0.66666, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2382,12 +2400,12 @@ TextureImporter:
       name: BojoSheet_92
       rect:
         serializedVersion: 2
-        x: 672
+        x: 576
         y: 384
-        width: 96
+        width: 64
         height: 64
-      alignment: 9
-      pivot: {x: 0.666666, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2403,12 +2421,12 @@ TextureImporter:
       name: BojoSheet_93
       rect:
         serializedVersion: 2
-        x: 768
+        x: 640
         y: 384
-        width: 64
+        width: 96
         height: 96
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.333333, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2424,12 +2442,12 @@ TextureImporter:
       name: BojoSheet_94
       rect:
         serializedVersion: 2
-        x: 832
+        x: 736
         y: 384
-        width: 64
-        height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        width: 96
+        height: 96
+      alignment: 9
+      pivot: {x: 0.66666, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2445,12 +2463,12 @@ TextureImporter:
       name: BojoSheet_95
       rect:
         serializedVersion: 2
-        x: 896
+        x: 832
         y: 384
         width: 64
-        height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        height: 96
+      alignment: 9
+      pivot: {x: 0.75, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3298,6 +3316,132 @@ TextureImporter:
       bones: []
       spriteID: 5fa4d9def1e89c6d0800000000000000
       internalID: -2969686211492492555
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BojoSheet_134
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 640
+        width: 64
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e9d949bedf6310670800000000000000
+      internalID: 8503138035659218334
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BojoSheet_135
+      rect:
+        serializedVersion: 2
+        x: 704
+        y: 640
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.4, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1350a195471a90570800000000000000
+      internalID: 8433449298311120177
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BojoSheet_136
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 640
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.3, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ebb36a2abf25014c0800000000000000
+      internalID: -4318860801929233474
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BojoSheet_137
+      rect:
+        serializedVersion: 2
+        x: 832
+        y: 640
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.3, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0eea57c588efff730800000000000000
+      internalID: 4035223652767477472
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BojoSheet_138
+      rect:
+        serializedVersion: 2
+        x: 896
+        y: 640
+        width: 64
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5b9238b34ef8991f0800000000000000
+      internalID: -1037640028718421579
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BojoSheet_139
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 576
+        width: 64
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6e4e0f4d29ded7fd0800000000000000
+      internalID: -2342455016269224730
       vertices: []
       indices: 
       edges: []
