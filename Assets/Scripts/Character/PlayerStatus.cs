@@ -204,6 +204,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
                         {
                             drifter.knockedDown = false;
                             drifter.PlayAnimation("Jump_End");
+                            ApplyStatusEffect(PlayerStatusEffect.INVULN,10 * framerateScalar);
                         }
         
 

@@ -16,10 +16,12 @@ public class PuppetGrabHitboxCollision : HitboxCollision
         HurtboxCollision hurtbox = collider.GetComponent<HurtboxCollision>();
         HitboxCollision hitbox = collider.GetComponent<HitboxCollision>();
     
+        UnityEngine.Debug.Log("CONTACT");
+
         if (hurtbox != null && AttackType != DrifterAttackType.Null && isActive)
         {
             int hitResult = -3;
-            string player = playerType.NetworkType;
+            //string player = playerType.NetworkType;
             if(OverrideData != null)
             {
                 hitResult = hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, -AttackID, AttackType, OverrideData);
@@ -36,6 +38,8 @@ public class PuppetGrabHitboxCollision : HitboxCollision
                 hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, AttackData);
             }
             if(hitResult == 1) isActive = false;
+
+            UnityEngine.Debug.Log(hitResult);
             
         }
         else if(hitbox != null && projectilePriority >= 0 && hitbox.projectilePriority>=-1)

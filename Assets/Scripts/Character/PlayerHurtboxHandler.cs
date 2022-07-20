@@ -74,10 +74,10 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 (!attackData.canHitKnockedDown && status.HasStatusEffect(PlayerStatusEffect.FLATTEN))
             ) return -3;
 
+            if(status.HasStatusEffect(PlayerStatusEffect.INVULN)) return -3;
             oldAttacks[attackID] = Time.time;
-
             //Ignore the collision if invulnerable or You try to grab a planted opponenet
-            if(status.HasStatusEffect(PlayerStatusEffect.INVULN)) return -5;
+            
             if(status.HasStatusEffect(PlayerStatusEffect.PLANTED) && attackData.StatusEffect == PlayerStatusEffect.GRABBED) return -3;
 
 

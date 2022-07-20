@@ -241,7 +241,7 @@ AnimationClip:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 1.5833334
+        time: 1.25
         value: 0
         inSlope: Infinity
         outSlope: Infinity
@@ -557,7 +557,7 @@ AnimationClip:
     - time: 1.1666666
       value: {fileID: -6614777454209192711, guid: 1537d9bd2ead73d46bec54edcf4fd6b9,
         type: 3}
-    - time: 1.5
+    - time: 1.3333334
       value: {fileID: 9097624464956033965, guid: 1537d9bd2ead73d46bec54edcf4fd6b9,
         type: 3}
     attribute: m_Sprite
@@ -683,7 +683,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 1.75
+    m_StopTime: 1.5
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -923,7 +923,7 @@ AnimationClip:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 1.5833334
+        time: 1.25
         value: 0
         inSlope: Infinity
         outSlope: Infinity
@@ -1234,14 +1234,21 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 1.5
-    functionName: unpauseGravity
+  - time: 1.0833334
+    functionName: setYVelocity
     data: 
     objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
+    floatParameter: 15
     intParameter: 0
     messageOptions: 0
-  - time: 1.75
+  - time: 1.0833334
+    functionName: setXVelocity
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 14
+    intParameter: 0
+    messageOptions: 0
+  - time: 1.5
     functionName: returnToIdle
     data: 
     objectReferenceParameter: {fileID: 0}
