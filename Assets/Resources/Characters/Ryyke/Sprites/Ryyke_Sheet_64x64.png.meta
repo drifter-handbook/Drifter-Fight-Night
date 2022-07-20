@@ -896,6 +896,9 @@ TextureImporter:
   - first:
       213: -5688601442762942470
     second: Ryyke_Sheet_64x64_48_1
+  - first:
+      213: 3574247012517473891
+    second: Ryyke_Sheet_64x64_226
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -955,7 +958,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 4096
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 0
@@ -967,7 +970,7 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: Standalone
-    maxTextureSize: 2048
+    maxTextureSize: 4096
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 0
@@ -4597,7 +4600,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 448
+        y: 2240
         width: 64
         height: 64
       alignment: 7
@@ -4618,7 +4621,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 448
+        y: 2240
         width: 64
         height: 64
       alignment: 7
@@ -4639,7 +4642,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 128
-        y: 448
+        y: 2240
         width: 64
         height: 64
       alignment: 7
@@ -4680,8 +4683,8 @@ TextureImporter:
       name: Ryyke_Sheet_64x64_187
       rect:
         serializedVersion: 2
-        x: 512
-        y: 256
+        x: 0
+        y: 2112
         width: 64
         height: 64
       alignment: 7
@@ -4701,8 +4704,8 @@ TextureImporter:
       name: Ryyke_Sheet_64x64_188
       rect:
         serializedVersion: 2
-        x: 512
-        y: 192
+        x: 64
+        y: 2112
         width: 64
         height: 64
       alignment: 7
@@ -4722,10 +4725,10 @@ TextureImporter:
       name: Ryyke_Sheet_64x64_189
       rect:
         serializedVersion: 2
-        x: 576
-        y: 192
+        x: 128
+        y: 2112
         width: 64
-        height: 96
+        height: 64
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -4743,12 +4746,12 @@ TextureImporter:
       name: Ryyke_Sheet_64x64_190
       rect:
         serializedVersion: 2
-        x: 512
-        y: 128
+        x: 192
+        y: 2112
         width: 64
         height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.75, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4764,12 +4767,12 @@ TextureImporter:
       name: Ryyke_Sheet_64x64_191
       rect:
         serializedVersion: 2
-        x: 576
-        y: 128
-        width: 64
-        height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 256
+        y: 2112
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.25, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -4785,10 +4788,10 @@ TextureImporter:
       name: Ryyke_Sheet_64x64_192
       rect:
         serializedVersion: 2
-        x: 512
-        y: 64
+        x: 384
+        y: 2112
         width: 64
-        height: 64
+        height: 128
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -4806,10 +4809,10 @@ TextureImporter:
       name: Ryyke_Sheet_64x64_193
       rect:
         serializedVersion: 2
-        x: 576
-        y: 64
+        x: 448
+        y: 2112
         width: 64
-        height: 64
+        height: 128
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -5038,7 +5041,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 192
-        y: 448
+        y: 2240
         width: 64
         height: 64
       alignment: 7
@@ -5059,7 +5062,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 256
-        y: 448
+        y: 2240
         width: 64
         height: 64
       alignment: 7
@@ -5080,7 +5083,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 320
-        y: 448
+        y: 2240
         width: 64
         height: 64
       alignment: 7
@@ -5101,7 +5104,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 384
-        y: 448
+        y: 2240
         width: 64
         height: 64
       alignment: 7
@@ -5122,7 +5125,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 448
-        y: 448
+        y: 2240
         width: 64
         height: 64
       alignment: 7
@@ -5142,10 +5145,10 @@ TextureImporter:
       name: Ryyke_Sheet_64x64_181
       rect:
         serializedVersion: 2
-        x: 448
-        y: 512
+        x: 576
+        y: 2240
         width: 64
-        height: 96
+        height: 64
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -5163,10 +5166,10 @@ TextureImporter:
       name: Ryyke_Sheet_64x64_182
       rect:
         serializedVersion: 2
-        x: 512
-        y: 512
+        x: 0
+        y: 2176
         width: 64
-        height: 96
+        height: 64
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -5184,10 +5187,10 @@ TextureImporter:
       name: Ryyke_Sheet_64x64_183
       rect:
         serializedVersion: 2
-        x: 576
-        y: 512
+        x: 64
+        y: 2176
         width: 64
-        height: 96
+        height: 64
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -5206,9 +5209,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 512
-        y: 448
+        y: 2176
         width: 64
-        height: 64
+        height: 128
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -5226,8 +5229,8 @@ TextureImporter:
       name: Ryyke_Sheet_64x64_185
       rect:
         serializedVersion: 2
-        x: 576
-        y: 448
+        x: 128
+        y: 2176
         width: 64
         height: 64
       alignment: 7
@@ -5247,8 +5250,8 @@ TextureImporter:
       name: Ryyke_Sheet_64x64_186
       rect:
         serializedVersion: 2
-        x: 576
-        y: 384
+        x: 192
+        y: 2176
         width: 64
         height: 64
       alignment: 7
