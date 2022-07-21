@@ -97,6 +97,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
             movement.terminalVelocity = terminalVelocity;
             if(!status.HasEnemyStunEffect())
             {
+                drifter.knockedDown = false;
                 status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,3);
                 playState("Jump_End");
             }
