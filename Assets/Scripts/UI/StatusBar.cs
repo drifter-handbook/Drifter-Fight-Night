@@ -17,7 +17,7 @@ public class StatusBar : MonoBehaviour
     float duration;
     PlayerStatusEffect ef;
 
-    void Update()
+    void FixedUpdate()
     {
         if(duration < status.remainingDuration(ef)) duration = status.remainingDuration(ef);
         if(duration == 0) Destroy(gameObject);

@@ -9,6 +9,7 @@ public class PuppetGrabHitboxCollision : HitboxCollision
     public SyncAnimatorStateHost anim = null;
     public GameObject victim;
     public bool playOnInvuln = false;
+    public bool playOnBlock = false;
 
     void OnTriggerStay2D(Collider2D collider)
     {
@@ -31,6 +32,8 @@ public class PuppetGrabHitboxCollision : HitboxCollision
                     anim.SetState(SuccessState);
                 }
                 else if((playOnInvuln && hitResult == -5))
+                    anim.SetState(SuccessState);
+                else if((playOnBlock && (hitResult == -2 || hitResult == -1)))
                     anim.SetState(SuccessState);
                        
             }

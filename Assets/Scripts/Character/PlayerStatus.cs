@@ -194,12 +194,21 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
                             drifter.SetAnimationSpeed(1f);
                         }
 
-                        if((ef.Key == PlayerStatusEffect.FLATTEN && !HasStatusEffect(PlayerStatusEffect.FLATTEN)))
+                        if(ef.Key == PlayerStatusEffect.FLATTEN)
                         {
-                            drifter.knockedDown = false;
-                            drifter.PlayAnimation("Jump_End");
-                            ApplyStatusEffect(PlayerStatusEffect.INVULN,10 * framerateScalar);
+                            //Wakeup if knocked off stage
+                            if(!drifter.movement.grounded)
+                                ApplyStatusEffect(PlayerStatusEffect.FLATTEN,0f);
+
+                            if(!HasStatusEffect(PlayerStatusEffect.FLATTEN))
+                            {
+                                drifter.knockedDown = false;
+                                drifter.movement.hitstun = false;
+                                drifter.PlayAnimation("Jump_End");
+                                ApplyStatusEffect(PlayerStatusEffect.INVULN,10 * framerateScalar);
+                            }
                         }
+                        
 
                         if(!HasStatusEffect(ef.Key))ef.Value.stacks=0f;
 
@@ -380,7 +389,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         if(HasStatusEffect(PlayerStatusEffect.AMBERED))statusDataMap[PlayerStatusEffect.AMBERED].duration-=.4f;
         if(HasStatusEffect(PlayerStatusEffect.PLANTED))statusDataMap[PlayerStatusEffect.PLANTED].duration-=.4f;
         if(HasStatusEffect(PlayerStatusEffect.PARALYZED))statusDataMap[PlayerStatusEffect.PARALYZED].duration-=.4f;
-        if(HasStatusEffect(PlayerStatusEffect.GRABBED))statusDataMap[PlayerStatusEffect.GRABBED].duration-=.4f;
+        // if(HasStatusEffect(PlayerStatusEffect.GRABBED))statusDataMap[PlayerStatusEffect.GRABBED].duration-=.4f;
     }
 
 	//IDK fam. do we want to keep this?

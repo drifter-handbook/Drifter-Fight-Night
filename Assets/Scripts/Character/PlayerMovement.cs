@@ -318,7 +318,7 @@ public class PlayerMovement : MonoBehaviour
             hitstun = true;
         }
 
-        else if(status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN))
+        else if(status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN) || status.HasStatusEffect(PlayerStatusEffect.FLATTEN))
         {
             hitstun = true;
             DropLedge();
@@ -338,7 +338,7 @@ public class PlayerMovement : MonoBehaviour
         }  
         
         //come out of hitstun logic
-        if(hitstun && !status.HasEnemyStunEffect() && !drifter.guarding)
+        if(hitstun && !status.HasEnemyStunEffect() && !drifter.input[0].Guard)
         {
             hitstun = false;
             drifter.guardBreaking = false;
@@ -347,10 +347,11 @@ public class PlayerMovement : MonoBehaviour
             ringTime = 6;
         }
 
-        else if(hitstun && !status.HasEnemyStunEffect() && drifter.guarding)
+        else if(hitstun && !status.HasEnemyStunEffect() && drifter.input[0].Guard)
         {
             hitstun = false;
             drifter.PlayAnimation("Guard");
+            drifter.guarding = true;
         }
 
         //Smoke Trail
@@ -561,7 +562,9 @@ public class PlayerMovement : MonoBehaviour
         if(drifter.input[0].Guard && canGuard && !ledgeHanging)
         {
             //shift is guard
-            if(!drifter.guarding)drifter.PlayAnimation("Guard_Start");
+            if(!drifter.guarding)
+                drifter.PlayAnimation("Guard_Start");
+        
             drifter.guarding = true;
             updateFacing();
         }
@@ -717,6 +720,7 @@ public class PlayerMovement : MonoBehaviour
         cancelJump();
         gravityPaused = false;
         jumping = false;
+        dashing = false;
         attacks.ledgeHanging = true;
         drifter.clearGuardFlags();
         ledgeHanging = true;
@@ -760,6 +764,7 @@ public class PlayerMovement : MonoBehaviour
         if (currentJumps > 0)
         {
             jumping = true;
+            dashing = false;
             if(ledgeHanging)DropLedge();
             //jump
             gravityPaused = false;
@@ -783,10 +788,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if(currentDashes > 0 && !dashing)
         {
-            // drifter.canSpecialCancelFlag = true;
-            // drifter.listenForSpecialCancel = true;
             updateFacing();
-            //status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.25f);
             accelerationPercent = 0;
             dashLock = 1f;
             dashing = true;

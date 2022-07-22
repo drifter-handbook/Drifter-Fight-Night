@@ -71,7 +71,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 //Whiff ground only moves on aerial opponenets
                 (!attackData.canHitAerial && !drifter.movement.grounded) ||
                 //Whiff grabs and command grabs on jumping opponents
-                ((drifter.movement.jumping || status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN)) && attackData.hitType == HitType.GRAB ) || 
+                ((drifter.movement.jumping || drifter.movement.dashing || status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN)) && attackData.hitType == HitType.GRAB ) || 
                 //Whiff non-OTG moves on otg opponents
                 (!attackData.canHitKnockedDown && status.HasStatusEffect(PlayerStatusEffect.FLATTEN))
             ) return -3;
@@ -203,6 +203,9 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 returnCode = 0;
             }
             else if (status != null && (attackData.hitType==HitType.GRAB || !drifter.guarding || crossUp) && !drifter.parrying){
+
+                drifter.knockedDown = false;
+                //drifter.clearGuardFlags();
 
                 if((attackData.hitType==HitType.GRAB || crossUp) && drifter.guarding && attackData.AttackDamage >0f)
                 {

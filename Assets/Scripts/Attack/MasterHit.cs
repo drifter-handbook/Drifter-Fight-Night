@@ -91,17 +91,17 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
             }
         }
         //Handles if bounced off stage
-        else if(knockdownFlag && !status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN))
-        {
-            knockdownFlag = false;
-            movement.terminalVelocity = terminalVelocity;
-            if(!status.HasEnemyStunEffect())
-            {
-                drifter.knockedDown = false;
-                status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,3);
-                playState("Jump_End");
-            }
-        }
+        // else if(knockdownFlag && !status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN))
+        // {
+        //     knockdownFlag = false;
+        //     movement.terminalVelocity = terminalVelocity;
+        //     if(!status.HasEnemyStunEffect())
+        //     {
+        //         drifter.knockedDown = false;
+        //         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,3);
+        //         playState("Jump_End");
+        //     }
+        // }
 
         else if(status.HasEnemyStunEffect() || movement.ledgeHanging)
         {

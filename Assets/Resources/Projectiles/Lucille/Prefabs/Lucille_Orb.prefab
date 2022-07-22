@@ -353,6 +353,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0a34e6597043944988fa26b41e76fd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trainingUI: {fileID: 0}
   maxPercentage: -1
   rb: {fileID: -8545333758685660767}
   healthBar: {fileID: 0}
@@ -492,3 +493,4 @@ MonoBehaviour:
   anim: {fileID: 1333993061242918881}
   victim: {fileID: 0}
   playOnInvuln: 1
+  playOnBlock: 1
