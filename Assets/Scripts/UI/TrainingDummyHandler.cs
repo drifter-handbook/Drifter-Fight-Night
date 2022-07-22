@@ -28,7 +28,6 @@ public class TrainingDummyHandler : MonoBehaviour
     			break;
     		case 1:
     			Dummy.input[0] = new PlayerInputData(){Guard = true};
-    			Dummy.input[1] = new PlayerInputData(){Guard = true};
     			break;
     		case 2:
     			Dummy.input[0] = new PlayerInputData(){Jump = true};

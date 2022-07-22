@@ -310,13 +310,17 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 if(attackData.hitType==HitType.GUARD_CRUSH)drifter.guardBreaking = true;
                 //push both players back on guarrd
                 
-                if(hitbox.gameObject.tag != "Projectile")hitbox.parent.GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(HitstunDuration,.2f,1f) * hitbox.Facing *-15f, hitbox.parent.GetComponent<Rigidbody2D>().velocity.y);
+                if(hitbox.gameObject.tag != "Projectile")
+                     hitbox.parent.GetComponent<Rigidbody2D>().velocity = new Vector2(forceDir.normalized.x * Mathf.Max(-KB,-25f), hitbox.parent.GetComponent<Rigidbody2D>().velocity.y);
+
+                //hitbox.parent.GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(HitstunDuration,.2f,1f) * hitbox.Facing *-15f, hitbox.parent.GetComponent<Rigidbody2D>().velocity.y);
                
                 //No pushback on perfect guard
                 if(!drifter.perfectGuarding)
                 {
                     // Get new particle for prefect guarda
-                    GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(HitstunDuration,.2f,1f) *17f  * hitbox.Facing , GetComponent<Rigidbody2D>().velocity.y);
+                    GetComponent<Rigidbody2D>().velocity = new Vector2(forceDir.normalized.x * Mathf.Min(KB,30f), GetComponent<Rigidbody2D>().velocity.y);
+
                 }
 
                 else drifter.movement.spawnJuiceParticle(hitSparkPos, MovementParticleMode.Parry);
