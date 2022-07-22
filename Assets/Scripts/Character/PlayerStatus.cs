@@ -203,7 +203,6 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
                             if(!HasStatusEffect(PlayerStatusEffect.FLATTEN))
                             {
                                 drifter.knockedDown = false;
-                                drifter.movement.hitstun = false;
                                 drifter.PlayAnimation("Jump_End");
                                 ApplyStatusEffect(PlayerStatusEffect.INVULN,10 * framerateScalar);
                             }

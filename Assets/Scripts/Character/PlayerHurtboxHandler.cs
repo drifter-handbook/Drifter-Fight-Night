@@ -325,7 +325,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                         // status?.calculateFrameAdvantage(HitstunDuration, attacker.getRemainingAttackTime());
                         //6x blockstun on guardcrush
                         status?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, HitstunDuration);
-                        status?.ApplyStatusEffect(PlayerStatusEffect.GUARDCRUSHED, HitstunDuration);
+                        //status?.ApplyStatusEffect(PlayerStatusEffect.GUARDCRUSHED, HitstunDuration);
                 }
 
                 returnCode = -1; 

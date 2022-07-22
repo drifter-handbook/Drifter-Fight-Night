@@ -178,58 +178,28 @@ public class PlayerMovement : MonoBehaviour
                 //kdbounceVelocity = Vector2.Reflect(prevVelocity,normal) *.65f;
             }
 
-
-            // if(techWindowElapsed <= framerateScalar * 2)UnityEngine.Debug.Log("COULD HAVE TECHED");
-            // else UnityEngine.Debug.Log("COULD NOT HAVE TECHED");
-
-            // if(drifter.input[0].Guard && techWindowElapsed <= framerateScalar * 2)
-            // {
-            //     rb.velocity = Vector3.zero;
-            //     status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.01f);
-            //     status.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,.01f);
-        
-            //     hitstun = false;
-                
-            //     drifter.returnToIdle();
-
-            //     techParticle();
-
-            //     //PARTICLE EFFECT HERE
-
-            // }
-            // else
-            // {
-
             else if(prevVelocity.magnitude > 35f)
             {
                 rb.velocity = Vector2.Reflect(prevVelocity,normal) *.8f;
                 spawnJuiceParticle(col.contacts[0].point, MovementParticleMode.Restitution, Quaternion.Euler(0f,0f, ( (rb.velocity.x < 0)?1:-1 ) * Vector3.Angle(Vector3.up,normal)),false);
             }
-            //didnt have enough force to restitute, didnt get knocked down. Return to idle.
-            // else if(!status.hasAdditionalStunEffect() && !status.HasGroundFriction())
-            // {
-            //     UnityEngine.Debug.Log("Restitution Failed, returning to idle. If something was was wierd, this probably caused it.");
-            //     drifter.returnToIdle();
-            //     drifter.knockedDown = false;
-            // }
-
-                    //status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, Mathf.Min(rb.velocity.magnitude * .005f,.3f));
-                
-                //techWindowElapsed = 0;
-            //}
         }
     }
 
-    void FixedUpdate()
+
+    public void UpdateInput()
     {
         if (!GameController.Instance.IsHost || GameController.Instance.IsPaused)
             return;
-
 
         if(dashLock >0)dashLock -= Time.fixedDeltaTime;
         // if(drifter.input[0].Guard) techWindowElapsed += Time.fixedDeltaTime;
         // else if(status.HasGroundFriction()) techWindowElapsed = 0;
 
+        bool jumpPressed = !drifter.input[1].Jump && drifter.input[0].Jump;
+        bool canAct = !status.HasStunEffect() && !drifter.guarding;
+        bool canGuard = !status.HasStunEffect() && !jumping;
+       
         bool moving = drifter.input[0].MoveX != 0;
 
         //Unpause gravity when hit
@@ -349,9 +319,34 @@ public class PlayerMovement : MonoBehaviour
 
         else if(hitstun && !status.HasEnemyStunEffect() && drifter.input[0].Guard)
         {
+            drifter.guardBreaking = false;
+            drifter.knockedDown = false;
             hitstun = false;
-            drifter.PlayAnimation("Guard");
             drifter.guarding = true;
+            drifter.PlayAnimation("Guard");
+            
+        }
+
+        //Guard
+        if(drifter.input[0].Guard && canGuard && !ledgeHanging)
+        {
+            //shift is guard
+            if(!drifter.guarding)
+                drifter.PlayAnimation("Guard_Start");
+        
+            drifter.guarding = true;
+            updateFacing();
+        }
+      
+        //Disable Guarding
+        else if(!drifter.input[0].Guard && !status.HasStunEffect() && drifter.guarding)
+        {
+            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,framerateScalar * 3);
+            drifter.canSpecialCancelFlag = true;
+            drifter.listenForSpecialCancel = true;
+            drifter.guarding = false;
+            drifter.parrying = true;
+            drifter.PlayAnimation("Guard_Drop");
         }
 
         //Smoke Trail
@@ -413,20 +408,10 @@ public class PlayerMovement : MonoBehaviour
         //Saves previpus vleocity for resitution. REMOVE IF NOT NEEDED
         if(rb.velocity != Vector2.zero)prevVelocity = rb.velocity;
 
-    }
+
+        //Update input
 
 
-    public void UpdateInput()
-    {
-        if (!GameController.Instance.IsHost || GameController.Instance.IsPaused)
-            return;
-
-
-        bool jumpPressed = !drifter.input[1].Jump && drifter.input[0].Jump;
-        bool canAct = !status.HasStunEffect() && !drifter.guarding;
-        bool canGuard = !status.HasStunEffect() && !jumping;
-        bool moving = drifter.input[0].MoveX != 0;
-       
        //Platform dropthrough
         if(gameObject.layer != 8 && Time.time - dropThroughTime > framerateScalar *3)
             gameObject.layer = 8;
@@ -494,7 +479,6 @@ public class PlayerMovement : MonoBehaviour
 
         }
 
-
         //Ledgegrabs Stuff
         else if(canAct && ledgeHanging)
         {
@@ -534,7 +518,7 @@ public class PlayerMovement : MonoBehaviour
         //Player is not trying to move, and is not in hitstun
         else if (!moving && status.HasGroundFriction())
         {
-            if(canAct && !jumping)drifter.returnToIdle();
+            if(canAct && !jumping && !drifter.guarding)drifter.returnToIdle();
             //standing ground friction (When button is not held)
             if(!grounded)rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 20f * Time.fixedDeltaTime), rb.velocity.y);
             else rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 80f * Time.fixedDeltaTime), rb.velocity.y);
@@ -555,29 +539,6 @@ public class PlayerMovement : MonoBehaviour
             gameObject.layer = 13;
             rb.velocity = new Vector2(rb.velocity.x,Mathf.Min(-terminalVelocity /2f,rb.velocity.y));
             dropThroughTime = Time.time;
-        }
-
-
-        //Guard
-        if(drifter.input[0].Guard && canGuard && !ledgeHanging)
-        {
-            //shift is guard
-            if(!drifter.guarding)
-                drifter.PlayAnimation("Guard_Start");
-        
-            drifter.guarding = true;
-            updateFacing();
-        }
-      
-        //Disable Guarding
-        else if(!drifter.input[0].Guard && !status.HasStunEffect() && drifter.guarding)
-        {
-            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,framerateScalar * 3);
-            drifter.canSpecialCancelFlag = true;
-            drifter.listenForSpecialCancel = true;
-            drifter.guarding = false;
-            drifter.parrying = true;
-            drifter.PlayAnimation("Guard_Drop");
         }
 
         //Terminal velocity

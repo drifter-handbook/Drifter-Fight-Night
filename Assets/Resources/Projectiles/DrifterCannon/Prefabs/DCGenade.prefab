@@ -330,6 +330,9 @@ MonoBehaviour:
   projectilePriority: 0
   SuccessState: DC_Grenade_Detonate
   anim: {fileID: 419772856163376502}
+  victim: {fileID: 0}
+  playOnInvuln: 0
+  playOnBlock: 1
 --- !u!1 &6980073882341431624
 GameObject:
   m_ObjectHideFlags: 0

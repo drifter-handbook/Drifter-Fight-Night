@@ -127,6 +127,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
             {
                 movement.techParticle();
                 clearMasterhitVars();
+                drifter.clearGuardFlags();
             }            
         }
         else if(dacusCancelFlag && attacks.grabPressed())
@@ -190,6 +191,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
                 clearMasterhitVars();
                 movement.terminalVelocity = terminalVelocity;
                 movement.jump();
+                drifter.clearGuardFlags();
                 unpauseGravity();
             }
             else
@@ -330,6 +332,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         resetTerminalVelocity();
         ledgeDetector.setPreventWalkoff(false);
         dacusCancelFlag= false;
+        //drifter.clearGuardFlags();
         //drifter.knockedDown = false;
         knockdownFlag = false;
     }
@@ -589,6 +592,8 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         if(!isHost)return;
         drifter.perfectGuarding = false;
         if(drifter.guarding)drifter.PlayAnimation("Guard");
+        listenForJumpCancel();
+        listenForMovementCancel();
     }
 
     public void endParry()
