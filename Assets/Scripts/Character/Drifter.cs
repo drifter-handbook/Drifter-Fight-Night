@@ -109,13 +109,25 @@ public class Drifter : MonoBehaviour, INetworkInit
     
     //public bool forceGuard = false;
 
-    [NonSerialized]
-    public bool guarding = false;
+    private bool _guarding;
+
+    //[NonSerialized]
+    public bool guarding 
+    {
+        get{
+            return _guarding;
+        }
+        set{
+            if(_guarding != value) UnityEngine.Debug.Log(value);
+            _guarding = value;
+            //sparkle.SetState(_canSpecialCancel?"ChargeIndicator":"Hide");
+        }
+    }
     [NonSerialized]
     public bool perfectGuarding = false;
     [NonSerialized]
     public bool parrying = false;
-    //[NonSerialized]
+    [NonSerialized]
     public bool guardBreaking = false;
     [NonSerialized]
     public bool canFeint = true;
