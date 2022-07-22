@@ -110,18 +110,14 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         {PlayerStatusEffect.KNOCKDOWN,                          new PlayerStatusData("KNOCKDOWN", icon: 3,stun: true)                               },
     };
 
-    // float time = 0f;
     Rigidbody2D rb;
     Drifter drifter;
     Vector2 delayedVelocity;
 
-    float frameAdvantage = 0;
+    // float frameAdvantage = 0;
     public bool isInCombo;
 
-    int combocount = 0;
-
     public PlayerCard card;
-    public TrainingUIManager trainingUI;
     [SerializeField] private PlayerDamageNumbers damageDisplay;
 
     public Collider2D grabPoint = null;
@@ -158,9 +154,6 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
             delayedVelocity = Vector2.zero;
         }
         
-        // if(time >= .f)
-        // {
-        //     time = 0f;
             //Hitpause pauses all other statuses for its duration
             if(HasStatusEffect(PlayerStatusEffect.HITPAUSE) || HasStatusEffect(PlayerStatusEffect.GRABBED))
             {
@@ -186,6 +179,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
                             continue;
 
                         else ef.Value.duration -= Time.fixedDeltaTime;
+
                         //Damage player if they are on fire
                         if(ef.Key == PlayerStatusEffect.BURNING) drifter.DamageTaken += Time.fixedDeltaTime;
                         
@@ -206,10 +200,6 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
                             drifter.PlayAnimation("Jump_End");
                             ApplyStatusEffect(PlayerStatusEffect.INVULN,10 * framerateScalar);
                         }
-        
-
-
-                        //if(ef.Key == PlayerStatusEffect.ORBO && !HasStatusEffect(ef.Key)) 
 
                         if(!HasStatusEffect(ef.Key))ef.Value.stacks=0f;
 
@@ -217,19 +207,8 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
                 }
             }
             
-        //}
         if(delayedVelocity != Vector2.zero && !(HasStatusEffect(PlayerStatusEffect.HITPAUSE) || HasStatusEffect(PlayerStatusEffect.CRINGE) || HasStatusEffect(PlayerStatusEffect.GRABBED) || HasStatusEffect(PlayerStatusEffect.SLOWMOTION))) delayedVelocity = Vector2.zero;
 
-        //If you are actionable, end combo
-        if(!HasEnemyStunEffect() && combocount >0)
-        {
-        	//UnityEngine.Debug.Log("COMBO DROPPED at :" + combocount);
-        	combocount = 0;
-        	frameAdvantage = 0;
-            isInCombo = false;
-
-        }
-        //time += Time.fixedDeltaTime;
         
     }
 
@@ -388,11 +367,11 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
     }
 
 
-    // //Called by playerHurtboxHandler to calculate frame advantage on hit.
-    public void calculateFrameAdvantage(float defender, float attacker)
-    {
-    	frameAdvantage =  ((defender - attacker ) / framerateScalar);
-    }
+    // // //Called by playerHurtboxHandler to calculate frame advantage on hit.
+    // public void calculateFrameAdvantage(float defender, float attacker)
+    // {
+    // 	frameAdvantage =  ((defender - attacker ) / framerateScalar);
+    // }
 
     //Called once per frame if the player is mashing; Reduces remaining duration of effects
     //TODO make mashable a parameter?
@@ -444,35 +423,6 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
                 statusDuration = duration,
             });
         }
-
-    	//Combo Counter
-    	if(data.isStun && !data.isSelfInflicted)
-    	{
-
-    		if(ef == PlayerStatusEffect.DEAD && combocount > 0)
-    		{
-    			
-    			//UnityEngine.Debug.Log(drifter.drifterType + " got bodied in " + combocount + " hits!");
-    			combocount = 0;
-                isInCombo = false;
-                damageDisplay.Reset();
-    		}
-    		else if(ef == PlayerStatusEffect.DEAD)
-    		{
-    			combocount = 0;
-                isInCombo = false;
-                damageDisplay.Reset();
-    		}
-    		else
-    		{
-    			combocount++;
-    			//UnityEngine.Debug.Log(combocount + " Hit; " + (frameAdvantage > 0 ?"+":"" ) + frameAdvantage.ToString("0.0"));
-                trainingUI.WriteCombo(combocount);
-                trainingUI.WriteFrame((int)frameAdvantage);
-    			frameAdvantage = 0;
-                isInCombo = true;
-    		}
-    	}
 
         //If status effect stacks, add new duration to current duration and return.
         if(data.stacking && HasStatusEffect(ef))

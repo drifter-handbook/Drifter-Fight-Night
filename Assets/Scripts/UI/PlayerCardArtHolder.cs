@@ -53,19 +53,21 @@ public class PlayerCardArtHolder : MonoBehaviour
                 drifters[i].SetColor(drifters[i].myColor);
 
                 drifters[i].status.card = playerCards[i];
-                drifters[i].status.trainingUI = trainingUI;
+                drifters[i].GetComponent<PlayerHurtboxHandler>().trainingUI = trainingUI;
                 
                 playerCards[i].drifterIndex = imageIndex;
 
                 playerCards[i].setImages(stocks[imageIndex]);
                 playerCards[i].addStocks(stockPrefab, 4);
 
+                if(drifters[i].peerID == 8) trainingUI.DummyHandler.Dummy = drifters[i];
+
             }
             //if(mainCamera == null) GameObject.FindGameObjectWithTag("MainCamera");
             mainCamera.GetComponent<ScreenShake>().drifters = drifters;
         }
 
-        //For each drifer, update their card
+        //For each drifter, update their card
         for (int i = 0; i < drifters.Length; i++)
         {
             playerCards[i].setPercent(drifters[i].DamageTaken);

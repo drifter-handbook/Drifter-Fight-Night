@@ -14,6 +14,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
     protected NetworkHost host;
     protected ScreenShake Shake;
 
+    public TrainingUIManager trainingUI;
+
     static protected float framerateScalar = 1f / 60f;
 
     // Start is called before the first frame update
@@ -202,7 +204,6 @@ public class PlayerHurtboxHandler : MonoBehaviour
             }
             else if (status != null && (attackData.hitType==HitType.GRAB || !drifter.guarding || crossUp) && !drifter.parrying){
 
-                //If the player treid to guard a guardbreaker, they loose their shield for 5 seconds (60 frames)
                 if((attackData.hitType==HitType.GRAB || crossUp) && drifter.guarding && attackData.AttackDamage >0f)
                 {
                     //status.ApplyStatusEffect(PlayerStatusEffect.GUARDBROKEN,5f);
@@ -210,7 +211,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                     guardbroken = true;
                     drifter.clearGuardFlags();
                     //drifter.guardBreaking = true;
-                    status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.6f);
+                    //status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,30f* framerateScalar);
                     
                 }
                 else drifter.guardBreaking = false;
@@ -246,14 +247,14 @@ public class PlayerHurtboxHandler : MonoBehaviour
                     //IF there is hitstun to be applied, apply it
                     if(attackData.HitStun != 0)
                     {
-                        status?.calculateFrameAdvantage(HitstunDuration,hitbox.parent.GetComponent<Drifter>().getRemainingAttackTime());
+                        //status?.calculateFrameAdvantage(HitstunDuration,hitbox.parent.GetComponent<Drifter>().getRemainingAttackTime());
                         status?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, HitstunDuration);
                     }
                 }
 
                 if(attackData.StatusEffect != PlayerStatusEffect.PLANTED || drifter.movement.grounded){
 
-                    status?.calculateFrameAdvantage(attackData.StatusDuration* framerateScalar,attacker.getRemainingAttackTime());
+                    //status?.calculateFrameAdvantage(attackData.StatusDuration* framerateScalar,attacker.getRemainingAttackTime());
 
                 	if(attackData.StatusEffect == PlayerStatusEffect.PLANTED && !status.HasStatusEffect(PlayerStatusEffect.PLANTED)) GetComponent<Rigidbody2D>().velocity = Vector3.down*5f;
                 	status.ApplyStatusEffect(attackData.StatusEffect, (attackData.StatusEffect == PlayerStatusEffect.PLANTED || attackData.StatusEffect == PlayerStatusEffect.AMBERED?
@@ -272,7 +273,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
                     }              	
                 }
-                //Pop playewrs out of the ground when they are already grounded
+                //Pop players out of the ground when they are already grounded
                 else if(attackData.StatusEffect == PlayerStatusEffect.PLANTED && !drifter.movement.grounded){
                 	status.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,30f * framerateScalar);
                 }
@@ -294,7 +295,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 if(attackData.HitStop >=0)
                     HitPauseDuration = attackData.HitStop * framerateScalar;
   
-                if(HitPauseDuration>0 && attackData.StatusEffect != PlayerStatusEffect.HITPAUSE )status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(isCritical || status.HasStatusEffect(PlayerStatusEffect.ARMOUR)) ? 25f* framerateScalar:((damageDealt <=2f ? .075f :Mathf.Max(HitPauseDuration*.3f ,10f * framerateScalar)) * (hadSlowmo?2f:1f)));
+                if(HitPauseDuration>0 && attackData.StatusEffect != PlayerStatusEffect.HITPAUSE )status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(isCritical || guardbroken || status.HasStatusEffect(PlayerStatusEffect.ARMOUR)) ? 25f* framerateScalar:((damageDealt <=2f ? .075f :Mathf.Max(HitPauseDuration*.3f ,10f * framerateScalar)) * (hadSlowmo?2f:1f)));
                 StartCoroutine(drifter.GetComponentInChildren<GameObjectShake>().Shake(attackData.StatusEffect != PlayerStatusEffect.CRINGE?HitPauseDuration*.2f:attackData.StatusDuration* framerateScalar,attackData.StatusEffect != PlayerStatusEffect.CRINGE?1.5f:2f));
 
                 returnCode = attackData.StatusEffect == PlayerStatusEffect.GRABBED?1: 0;             
@@ -318,7 +319,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 else drifter.movement.spawnJuiceParticle(hitSparkPos, MovementParticleMode.Parry);
                 //put defender in blockstun
                 if(attackData.HitStun != 0){
-                        status?.calculateFrameAdvantage(HitstunDuration, attacker.getRemainingAttackTime());
+                        // status?.calculateFrameAdvantage(HitstunDuration, attacker.getRemainingAttackTime());
                         //6x blockstun on guardcrush
                         status?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, HitstunDuration);
                         status?.ApplyStatusEffect(PlayerStatusEffect.GUARDCRUSHED, HitstunDuration);
@@ -352,6 +353,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 returnCode = -2;
 
             }
+
+            trainingUI?.readFrameAdvantage(attackerStatus,status);
             
             // create hit sparks
             
@@ -366,7 +369,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
             //apply attacker hitpause
             if (hitbox.gameObject.tag != "Projectile" || isCritical)
-                attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(isCritical || status.HasStatusEffect(PlayerStatusEffect.ARMOUR))? 25f* framerateScalar: (damageDealt <=2f ? .074f : Mathf.Max(HitPauseDuration * .3f,2f * framerateScalar)));
+                attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(isCritical || guardbroken|| status.HasStatusEffect(PlayerStatusEffect.ARMOUR))? 20f* framerateScalar: (damageDealt <=2f ? .074f : Mathf.Max(HitPauseDuration * .3f,2f * framerateScalar)));
 
             
 

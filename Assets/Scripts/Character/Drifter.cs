@@ -317,13 +317,13 @@ public class Drifter : MonoBehaviour, INetworkInit
 
 
 
-    //Returns the remaining time in the current animation in seconds for use in frame data calculations
-    public float getRemainingAttackTime()
-    {
-        AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(animationLayer);
+    // //Returns the remaining time in the current animation in seconds for use in frame data calculations
+    // public float getRemainingAttackTime()
+    // {
+    //     AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(animationLayer);
 
-        return status.HasStatusEffect(PlayerStatusEffect.END_LAG) ? info.length *  (1f - info.normalizedTime +  Mathf.Floor(info.normalizedTime)) : 0;
-    }
+    //     return status.HasStatusEffect(PlayerStatusEffect.END_LAG) ? info.length *  (1f - info.normalizedTime +  Mathf.Floor(info.normalizedTime)) : 0;
+    // }
 
     //Clears all flags associated with guard state
     public void clearGuardFlags()
