@@ -71,13 +71,16 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 //Whiff ground only moves on aerial opponenets
                 (!attackData.canHitAerial && !drifter.movement.grounded) ||
                 //Whiff grabs and command grabs on jumping opponents
-                ((drifter.movement.jumping || drifter.movement.dashing || status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN)) && attackData.hitType == HitType.GRAB ) || 
+                ((drifter.movement.dashing || status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN)) && attackData.hitType == HitType.GRAB ) || 
                 //Whiff non-OTG moves on otg opponents
                 (!attackData.canHitKnockedDown && status.HasStatusEffect(PlayerStatusEffect.FLATTEN))
             ) return -3;
 
             if(status.HasStatusEffect(PlayerStatusEffect.INVULN)) return -3;
             oldAttacks[attackID] = Time.time;
+
+            if((drifter.guarding && status.HasStunEffect()) &&  attackData.hitType == HitType.GRAB) return -1;
+
             //Ignore the collision if invulnerable or You try to grab a planted opponenet
             
             if(status.HasStatusEffect(PlayerStatusEffect.PLANTED) && attackData.StatusEffect == PlayerStatusEffect.GRABBED) return -3;
