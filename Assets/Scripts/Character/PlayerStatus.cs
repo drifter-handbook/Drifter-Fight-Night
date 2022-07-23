@@ -105,9 +105,9 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         {PlayerStatusEffect.STANCE,                             new PlayerStatusData("STANCE",remove: false,self: true)                             },
         {PlayerStatusEffect.SLOWMOTION,                         new PlayerStatusData("SLOWMOTION",icon: 16)                                         },
         {PlayerStatusEffect.HIDDEN,                             new PlayerStatusData("HIDDEN",remove: false)                                        },
-        {PlayerStatusEffect.FLATTEN,                            new PlayerStatusData("FLATTEN")                                                     },
         {PlayerStatusEffect.TUMBLE,                             new PlayerStatusData("TUMBLE")                                                      },
         {PlayerStatusEffect.KNOCKDOWN,                          new PlayerStatusData("KNOCKDOWN", icon: 3,stun: true)                               },
+        {PlayerStatusEffect.FLATTEN,                            new PlayerStatusData("FLATTEN")                                                     },
     };
 
     Rigidbody2D rb;
@@ -196,15 +196,18 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
 
                         if(ef.Key == PlayerStatusEffect.FLATTEN)
                         {
+
                             //Wakeup if knocked off stage
                             if(!drifter.movement.grounded)
                                 ApplyStatusEffect(PlayerStatusEffect.FLATTEN,0f);
 
                             if(!HasStatusEffect(PlayerStatusEffect.FLATTEN))
                             {
+                                ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,8f * framerateScalar);
+                                drifter.movement.hitstun = true;
                                 drifter.knockedDown = false;
                                 drifter.PlayAnimation("Jump_End");
-                                ApplyStatusEffect(PlayerStatusEffect.INVULN,10 * framerateScalar);
+                                ApplyStatusEffect(PlayerStatusEffect.INVULN,10f * framerateScalar);
                             }
                         }
                         
@@ -432,10 +435,10 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
             });
         }
 
-        //If status effect stacks, add new duration to current duration and return.
-        if(data.stacking && HasStatusEffect(ef))
+        // //If duration is 0, always clear the status
+        if(duration <= 0 && HasStatusEffect(ef))
         {
-            data.stacks += duration;
+            data.duration = 0;
             return;
         }
 
@@ -455,7 +458,9 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
     	if((HasStatusEffect(PlayerStatusEffect.INVULN) || HasStatusEffect(PlayerStatusEffect.ARMOUR)) && data.isStun && !data.isSelfInflicted) return;
     
 
-        if((data.isStun && !data.isSelfInflicted && HasStatusEffect(ef)) && ef != PlayerStatusEffect.KNOCKBACK|| (HasStatusEffect(PlayerStatusEffect.PLANTED) && (ef == PlayerStatusEffect.GRABBED))){
+        //Disallow unique stuns on already stunned opponents.
+        //TODO See if this is necessary when plants are reintroduced
+        if((data.isStun && !data.isSelfInflicted && HasStatusEffect(ef)) && ef != PlayerStatusEffect.KNOCKBACK || (HasStatusEffect(PlayerStatusEffect.PLANTED) && (ef == PlayerStatusEffect.GRABBED))){
             
             statusDataMap[PlayerStatusEffect.KNOCKBACK].duration = .55f;
             clearRemoveOnHitStatus();

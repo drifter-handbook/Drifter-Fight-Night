@@ -83,7 +83,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
             {
                 status.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,0f);
                 //status.ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,0f);
-                status.ApplyStatusEffect(PlayerStatusEffect.FLATTEN,status.remainingDuration(PlayerStatusEffect.KNOCKDOWN) - 1f * framerateScalar);
+                status.ApplyStatusEffect(PlayerStatusEffect.FLATTEN,status.remainingDuration(PlayerStatusEffect.KNOCKDOWN));
                 rb.velocity = new Vector2(movement.Facing * -10f * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f),rb.velocity.y);
                 BounceParticle();
                 playQueuedState();
@@ -475,7 +475,6 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         movement.updateFacing();
         if(checkForJumpTap())movement.jump();
         attacks.UpdateInput();
-        //drifter.knockedDown = false;
     }
 
     public void knockdownRecover()

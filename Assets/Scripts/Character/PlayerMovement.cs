@@ -43,8 +43,19 @@ public class PlayerMovement : MonoBehaviour
     public int currentDashes;
     //[NonSerialized]
     public bool grounded = true;
-    [NonSerialized]
-    public bool hitstun = false;
+    //[NonSerialized]
+    private bool _hitstun;
+    public bool hitstun 
+    {
+        get{
+            return _hitstun;
+        }
+        set{
+            if(_hitstun != value) UnityEngine.Debug.Log("Hitstun:" + value);
+            _hitstun= value;
+            //sparkle.SetState(_canSpecialCancel?"ChargeIndicator":"Hide");
+        }
+    }
     [NonSerialized]
     public bool canLandingCancel = false;
     [NonSerialized]
@@ -178,9 +189,12 @@ public class PlayerMovement : MonoBehaviour
                 //kdbounceVelocity = Vector2.Reflect(prevVelocity,normal) *.65f;
             }
 
-            else if(prevVelocity.magnitude > 35f)
+            else if(prevVelocity.magnitude > 35f && !status.canbeKnockedDown())
             {
                 rb.velocity = Vector2.Reflect(prevVelocity,normal) *.8f;
+                // status.saveXVelocity(rb.velocity.x);
+                // status.saveYVelocity(rb.velocity.y);
+                // status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,framerateScalar * 5f);
                 spawnJuiceParticle(col.contacts[0].point, MovementParticleMode.Restitution, Quaternion.Euler(0f,0f, ( (rb.velocity.x < 0)?1:-1 ) * Vector3.Angle(Vector3.up,normal)),false);
             }
         }
@@ -197,7 +211,7 @@ public class PlayerMovement : MonoBehaviour
         // else if(status.HasGroundFriction()) techWindowElapsed = 0;
 
         bool jumpPressed = !drifter.input[1].Jump && drifter.input[0].Jump;
-        bool canAct = !status.HasStunEffect() && !drifter.guarding;
+        bool canAct = !status.HasStunEffect() && !drifter.guarding;// && !drifter.input[0].Guard;
         bool canGuard = !status.HasStunEffect() && !jumping;
        
         bool moving = drifter.input[0].MoveX != 0;
@@ -288,7 +302,7 @@ public class PlayerMovement : MonoBehaviour
             hitstun = true;
         }
 
-        else if(status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN) || status.HasStatusEffect(PlayerStatusEffect.FLATTEN))
+        else if(status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN))
         {
             hitstun = true;
             DropLedge();
@@ -308,46 +322,21 @@ public class PlayerMovement : MonoBehaviour
         }  
         
         //come out of hitstun logic
-        if(hitstun && !status.HasEnemyStunEffect() && !drifter.input[0].Guard)
+        if(hitstun && !status.HasEnemyStunEffect())
         {
-            hitstun = false;
-            drifter.guardBreaking = false;
             drifter.returnToIdle();
             drifter.knockedDown = false;
             ringTime = 6;
         }
 
-        else if(hitstun && !status.HasEnemyStunEffect() && drifter.input[0].Guard)
-        {
-            drifter.guardBreaking = false;
-            drifter.knockedDown = false;
-            hitstun = false;
-            drifter.guarding = true;
-            drifter.PlayAnimation("Guard");
+        // else if(hitstun && !status.HasEnemyStunEffect() && drifter.input[0].Guard)
+        // {
+        //     drifter.knockedDown = false;
+        //     //hitstun = false;
+        //     drifter.guarding = true;
+        //     drifter.PlayAnimation("Guard");
             
-        }
-
-        //Guard
-        if(drifter.input[0].Guard && canGuard && !ledgeHanging)
-        {
-            //shift is guard
-            if(!drifter.guarding)
-                drifter.PlayAnimation("Guard_Start");
-        
-            drifter.guarding = true;
-            updateFacing();
-        }
-      
-        //Disable Guarding
-        else if(!drifter.input[0].Guard && !status.HasStunEffect() && drifter.guarding)
-        {
-            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,framerateScalar * 3);
-            drifter.canSpecialCancelFlag = true;
-            drifter.listenForSpecialCancel = true;
-            drifter.guarding = false;
-            drifter.parrying = true;
-            drifter.PlayAnimation("Guard_Drop");
-        }
+        // }
 
         //Smoke Trail
         if(status.HasStatusEffect(PlayerStatusEffect.KNOCKBACK) && rb.velocity.magnitude > 45f){
@@ -424,10 +413,11 @@ public class PlayerMovement : MonoBehaviour
         drifter.toggleHidden(status.HasStatusEffect(PlayerStatusEffect.HIDDEN));
 
         //Normal walking logic
-        if (moving && canAct && ! ledgeHanging)
+        if (moving && canAct && !ledgeHanging)
         {
 
             updateFacing();
+
 
             //If just started moving or switched directions
             if((rb.velocity.x == 0 || rb.velocity.x * drifter.input[0].MoveX < 0) && IsGrounded())
@@ -477,6 +467,28 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = new Vector2(Mathf.Lerp(currentSpeed,rb.velocity.x,accelerationPercent), rb.velocity.y);
             //rb.velocity = new Vector2(Mathf.MoveTowards(currentSpeed,rb.velocity.x,accelerationPercent), rb.velocity.y);
 
+        }
+
+        //Guard
+        if(drifter.input[0].Guard && canGuard && !ledgeHanging)
+        {
+            //shift is guard
+            if(!drifter.guarding)
+                drifter.PlayAnimation("Guard_Start");
+        
+            drifter.guarding = true;
+            updateFacing();
+        }
+      
+        //Disable Guarding
+        else if(!drifter.input[0].Guard && !status.HasStunEffect() && drifter.guarding)
+        {
+            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,framerateScalar * 3);
+            drifter.canSpecialCancelFlag = true;
+            drifter.listenForSpecialCancel = true;
+            drifter.guarding = false;
+            drifter.parrying = true;
+            drifter.PlayAnimation("Guard_Drop");
         }
 
         //Ledgegrabs Stuff
@@ -726,6 +738,7 @@ public class PlayerMovement : MonoBehaviour
         {
             jumping = true;
             dashing = false;
+            drifter.guarding = false;
             if(ledgeHanging)DropLedge();
             //jump
             gravityPaused = false;

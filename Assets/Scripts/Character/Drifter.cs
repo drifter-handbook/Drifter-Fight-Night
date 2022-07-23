@@ -118,7 +118,7 @@ public class Drifter : MonoBehaviour, INetworkInit
             return _guarding;
         }
         set{
-            if(_guarding != value) UnityEngine.Debug.Log(value);
+            if(_guarding != value) UnityEngine.Debug.Log("Guard:" + value);
             _guarding = value;
             //sparkle.SetState(_canSpecialCancel?"ChargeIndicator":"Hide");
         }
@@ -319,13 +319,20 @@ public class Drifter : MonoBehaviour, INetworkInit
         else animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState(AirIdleStateName,animationLayer);
         if(status.HasStatusEffect(PlayerStatusEffect.END_LAG)) status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
         if(status.HasStatusEffect(PlayerStatusEffect.FLATTEN)) status.ApplyStatusEffect(PlayerStatusEffect.FLATTEN,0f);
-        // if(status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN)) status.ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,0f);
+        if(status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN))  status.ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,0f);
         movement.terminalVelocity = terminalVelocity;
         canSpecialCancelFlag = false;
         listenForSpecialCancel = false;     
         //knockedDown = false;
         knockedDown = false;
         if(transform.position.z != -1) transform.position = new Vector3(transform.position.x,transform.position.y,-1);
+
+        if(input[0].Guard)
+        {
+            guarding = true;
+            PlayAnimation(movement.hitstun?"Guard":"Guard_Start");
+        }
+        movement.hitstun = false;
     }
 
 
