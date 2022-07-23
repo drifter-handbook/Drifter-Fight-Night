@@ -18,7 +18,7 @@ MonoBehaviour:
   HitStun: 70
   ShieldStun: 0
   HitStop: -1
-  hitType: 0
+  hitType: 4
   mirrorKnockback: 1
   AngleOfImpact: 75
   StatusEffect: 26
@@ -27,3 +27,5 @@ MonoBehaviour:
   canHitGrounded: 1
   canHitAerial: 1
   canHitKnockedDown: 0
+  scalingLowerBound: -1
+  scalingUpperBound: -1

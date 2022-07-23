@@ -105,7 +105,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
             bool crossUp = ((hitbox.parent.transform.localPosition.x > transform.localPosition.x  && drifter.movement.Facing < 0) 
                         || (hitbox.parent.transform.localPosition.x < transform.localPosition.x  && drifter.movement.Facing > 0 && attackData.AttackDamage >0f)) 
-                        && Vector3.Distance(hitbox.parent.transform.localPosition,transform.localPosition) > 1.5f;
+                        && Vector3.Distance(hitbox.parent.transform.localPosition,transform.localPosition) > 1.2f;
 
             // apply damage
             if (drifter != null && status != null)
@@ -255,8 +255,10 @@ public class PlayerHurtboxHandler : MonoBehaviour
                     //IF there is hitstun to be applied, apply it
                     if(attackData.HitStun != 0)
                     {
-                        //status?.calculateFrameAdvantage(HitstunDuration,hitbox.parent.GetComponent<Drifter>().getRemainingAttackTime());
-                        status?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, HitstunDuration);
+                        //Apply a minimum hitstun on burst type attacks
+                        if(attackData.hitType != HitType.BURST || HitstunDuration >= status?.remainingDuration(PlayerStatusEffect.KNOCKBACK))
+                            status?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, HitstunDuration);
+                                        
                     }
                 }
 

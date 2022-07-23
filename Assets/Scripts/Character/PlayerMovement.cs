@@ -794,6 +794,7 @@ public class PlayerMovement : MonoBehaviour
             hitstun = false;
             status.clearStunStatus();
             spawnSuperParticle("Hyper_Guard_Burst",1f,8f);
+            status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,framerateScalar);
             status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,10f * framerateScalar);
             drifter.PlayAnimation("Burst");
             pauseGravity();
@@ -808,6 +809,7 @@ public class PlayerMovement : MonoBehaviour
                 spawnSuperParticle("Offensive_Cancel",2f,20f);
                 drifter.PlayAnimation("Burst");
                 pauseGravity();
+                status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,framerateScalar);
                 status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,10f * framerateScalar);
             }
             else if(drifter.canFeint)
@@ -815,6 +817,7 @@ public class PlayerMovement : MonoBehaviour
                 spawnSuperParticle("Feint_Cancel",1f,8f);
                 drifter.PlayAnimation("Burst");
                 pauseGravity();
+                status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,framerateScalar);
                 status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,10f * framerateScalar);
             }
             
@@ -826,6 +829,7 @@ public class PlayerMovement : MonoBehaviour
             animator.enabled = true;
             hitstun = false;
             status.clearStunStatus();
+            status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,framerateScalar);
             status.ApplyStatusEffect(PlayerStatusEffect.INVULN,8f * framerateScalar);
             status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,10f * framerateScalar);
 
@@ -840,6 +844,7 @@ public class PlayerMovement : MonoBehaviour
             spawnSuperParticle("Time_Cancel",1f,8f);
             drifter.PlayAnimation("Burst");
             pauseGravity();
+            status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,framerateScalar);
             status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,10f * framerateScalar);
         }
 

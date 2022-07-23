@@ -9,7 +9,7 @@ public enum HitSpark
 
 public enum HitType
 {
-    NORMAL, GUARD_CRUSH, GRAB,TRANSCENDANT
+    NORMAL, GUARD_CRUSH, GRAB,TRANSCENDANT,BURST
 }
 
 
