@@ -899,6 +899,21 @@ TextureImporter:
   - first:
       213: 3574247012517473891
     second: Ryyke_Sheet_64x64_226
+  - first:
+      213: -428879833220553367
+    second: Ryyke_Sheet_64x64_220
+  - first:
+      213: 4022512401869494799
+    second: Ryyke_Sheet_64x64_221
+  - first:
+      213: -4746830517589087140
+    second: Ryyke_Sheet_64x64_227
+  - first:
+      213: 2177828497648217449
+    second: Ryyke_Sheet_64x64_228
+  - first:
+      213: -2480154712588840212
+    second: Ryyke_Sheet_64x64_229
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -5547,7 +5562,7 @@ TextureImporter:
         x: 448
         y: 1920
         width: 64
-        height: 64
+        height: 96
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -5568,7 +5583,7 @@ TextureImporter:
         x: 512
         y: 1920
         width: 64
-        height: 64
+        height: 96
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -5599,48 +5614,6 @@ TextureImporter:
       bones: []
       spriteID: faeec44d55be10000800000000000000
       internalID: 540228843269807
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Ryyke_Sheet_64x64_220
-      rect:
-        serializedVersion: 2
-        x: 448
-        y: 1984
-        width: 64
-        height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 0f216328e274e0b20800000000000000
-      internalID: 3102495458383500016
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Ryyke_Sheet_64x64_221
-      rect:
-        serializedVersion: 2
-        x: 512
-        y: 1984
-        width: 64
-        height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4391befa71fee7be0800000000000000
-      internalID: -1477480742716237516
       vertices: []
       indices: 
       edges: []
@@ -5725,6 +5698,132 @@ TextureImporter:
       bones: []
       spriteID: af7175790270e01b0800000000000000
       internalID: -5688601442762942470
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ryyke_Sheet_64x64_220
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 2048
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.25, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9656f8160105c0af0800000000000000
+      internalID: -428879833220553367
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ryyke_Sheet_64x64_221
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 2048
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.3, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f0ad802a7b5d2d730800000000000000
+      internalID: 4022512401869494799
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ryyke_Sheet_64x64_226
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 2048
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.4, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 36eea9088b64a9130800000000000000
+      internalID: 3574247012517473891
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ryyke_Sheet_64x64_227
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 2048
+        width: 64
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c5c6e164bcedf1eb0800000000000000
+      internalID: -4746830517589087140
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ryyke_Sheet_64x64_228
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 2176
+        width: 64
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 96d6b00ea73393e10800000000000000
+      internalID: 2177828497648217449
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ryyke_Sheet_64x64_229
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 2112
+        width: 128
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ce29128ed68b49dd0800000000000000
+      internalID: -2480154712588840212
       vertices: []
       indices: 
       edges: []

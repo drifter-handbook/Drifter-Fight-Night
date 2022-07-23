@@ -12,13 +12,9 @@ public class NeoSwordFrogMasterHit : MasterHit
     public int W_Down_Projectiles = 3;
 
     bool listeningForDirection = false;
-    bool floating = false;
+    int delaytime = 0;
 
-    Vector2 HeldDirection = Vector2.zero;
-
-    float floatTime = maxFloatTime;
-    static float maxFloatTime = 1f;
-    
+    Vector2 HeldDirection = Vector2.zero;    
 
     new void FixedUpdate()
     {
@@ -35,65 +31,46 @@ public class NeoSwordFrogMasterHit : MasterHit
 
         if(movement.ledgeHanging || status.HasEnemyStunEffect())
         {
-            clearFloat();
             if(tongue != null)deleteTongue();
         }
 
         //Handle neutral special attacks
-        if(listeningForDirection && !floating)
+        if(listeningForDirection)
         {
+            if(!drifter.input[0].Special) delaytime++;
             HeldDirection += new Vector2(drifter.input[0].MoveX,drifter.input[0].MoveY);
-            if(HeldDirection != Vector2.zero) NeutralSpecialSlash();
+            if(HeldDirection != Vector2.zero || delaytime > 5) NeutralSpecialSlash();
         }
         //Handle floating movement
-        else if(listeningForDirection && floating)
-        {
-            movement.move(11f,false);
-            if(floatTime <=0 && floating)
-            {
-                playState("W_Up_End");
-                clearFloat();
-            }
-            else
-                floatTime -= Time.fixedDeltaTime;
-        }
+        // else if(listeningForDirection && floating)
+        // {
+        //     movement.move(11f,false);
+        //     if(floatTime <=0 && floating)
+        //     {
+        //         playState("W_Up_End");
+        //         clearFloat();
+        //     }
+        //     else
+        //         floatTime -= Time.fixedDeltaTime;
+        // }
     }
 
     public void listenForDirection()
     {
         listeningForDirection = true;
-    }
-
-    public void balloonFloat()
-    {
-        floatTime = maxFloatTime;
-        listeningForDirection = true;
-        floating = true;
-        listenForJumpCancel();
-        setTerminalVelocity(1);
-        setLandingCancel();
-    }
-
-    public void clearFloat()
-    {
-        floating = false;
-        floatTime = maxFloatTime;
-        listeningForDirection = false;
+        delaytime = 0;
     }
 
     public new void clearMasterhitVars()
     {
-        UnityEngine.Debug.Log("SF");
         base.clearMasterhitVars();
         deleteTongue();
-        clearFloat();
     }
 
     public new void returnToIdle()
     {
         base.returnToIdle();
         if(kunaiShoot != null)StopCoroutine(kunaiShoot);
-        clearFloat();
         deleteTongue();
     }
 
@@ -102,10 +79,11 @@ public class NeoSwordFrogMasterHit : MasterHit
         if(!isHost)return;
 
         listeningForDirection = false;
+        movement.updateFacing();
+        facing = movement.Facing;
         if(HeldDirection.y <0 && movement.grounded) playState("W_Neutral_GD");
         else if(HeldDirection.y <0) playState("W_Neutral_D");
         else if(HeldDirection.y >0) playState("W_Neutral_U");
-        else if(HeldDirection.x * movement.Facing <0)playState("W_Neutral_B");
         else playState("W_Neutral_S");
 
         HeldDirection = Vector2.zero;
@@ -118,7 +96,6 @@ public class NeoSwordFrogMasterHit : MasterHit
         if(!isHost)return;
         movement.flipFacing();
     }
-
 
 
 

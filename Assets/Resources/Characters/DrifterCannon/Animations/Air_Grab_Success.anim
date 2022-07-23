@@ -170,7 +170,23 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     path: Hurtboxes/Barrel Hurt
-  m_PositionCurves: []
+  m_PositionCurves:
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: {x: 0, y: 0, z: -2}
+        inSlope: {x: 0, y: 0, z: 0}
+        outSlope: {x: 0, y: 0, z: 0}
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: {x: 0, y: 0.33333334, z: 0.33333334}
+        outWeight: {x: 0, y: 0.33333334, z: 0.33333334}
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    path: Hitboxes/Air_Grab_Start
   m_ScaleCurves: []
   m_FloatCurves:
   - curve:
@@ -224,7 +240,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: -0.23781045
+        value: -0.21
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -279,7 +295,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.66169167
+        value: 0.68
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -289,8 +305,8 @@ AnimationClip:
       - serializedVersion: 3
         time: 0.16666667
         value: 0.66169167
-        inSlope: 0
-        outSlope: 0
+        inSlope: -0.2197001
+        outSlope: -0.2197001
         tangentMode: 136
         weightedMode: 0
         inWeight: 0.33333334
@@ -1368,6 +1384,13 @@ AnimationClip:
       isPPtrCurve: 1
     - serializedVersion: 2
       path: 2934689738
+      attribute: 1
+      script: {fileID: 0}
+      typeID: 4
+      customType: 0
+      isPPtrCurve: 0
+    - serializedVersion: 2
+      path: 2934689738
       attribute: 4
       script: {fileID: 0}
       typeID: 4
@@ -1511,7 +1534,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: -0.23781045
+        value: -0.21
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -1566,7 +1589,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.66169167
+        value: 0.68
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -1576,8 +1599,8 @@ AnimationClip:
       - serializedVersion: 3
         time: 0.16666667
         value: 0.66169167
-        inSlope: 0
-        outSlope: 0
+        inSlope: -0.2197001
+        outSlope: -0.2197001
         tangentMode: 136
         weightedMode: 0
         inWeight: 0.33333334
@@ -2913,6 +2936,63 @@ AnimationClip:
     attribute: m_Offset.y
     path: Hitboxes/Grab_Throw
     classID: 58
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_LocalPosition.x
+    path: Hitboxes/Air_Grab_Start
+    classID: 4
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_LocalPosition.y
+    path: Hitboxes/Air_Grab_Start
+    classID: 4
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: -2
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_LocalPosition.z
+    path: Hitboxes/Air_Grab_Start
+    classID: 4
     script: {fileID: 0}
   m_EulerEditorCurves:
   - curve:

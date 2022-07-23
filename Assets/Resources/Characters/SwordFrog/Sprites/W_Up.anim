@@ -615,44 +615,9 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0
-    functionName: playStateIfGrounded
-    data: W_Up_Ground
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.083333336
-    functionName: balloonFloat
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.083333336
-    functionName: applyArmour
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 12
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.083333336
-    functionName: setTerminalVelocity
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 1
-    intParameter: 0
-    messageOptions: 0
   - time: 0.25
-    functionName: listenForSpecialReleased
-    data: W_Up_End
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.25
-    functionName: playState
-    data: W_Up_Float
+    functionName: returnToIdle
+    data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
