@@ -543,7 +543,7 @@ public class PlayerMovement : MonoBehaviour
 
         //Terminal velocity
 
-        if(rb.velocity.y < -terminalVelocity && !status.HasEnemyStunEffect()){
+        if(rb.velocity.y < -terminalVelocity && (!status.HasEnemyStunEffect() || drifter.guarding || status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN))){
             rb.velocity = new Vector2(rb.velocity.x,-terminalVelocity);
         }
 
