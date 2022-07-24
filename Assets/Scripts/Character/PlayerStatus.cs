@@ -31,7 +31,6 @@ public enum PlayerStatusEffect
 	KNOCKBACK,
 	HITPAUSE,
     GUARDCRUSHED,
-    STANCE,
     SLOWMOTION, 
     HIDDEN,
     FLATTEN,
@@ -102,7 +101,6 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         {PlayerStatusEffect.KNOCKBACK,                          new PlayerStatusData("KNOCKBACK",remove: false, stun: true)                         },
         {PlayerStatusEffect.HITPAUSE,                           new PlayerStatusData("HITPAUSE",stun: true, self:true)                              },
         {PlayerStatusEffect.GUARDCRUSHED,                       new PlayerStatusData("GUARDCRUSHED",icon: 14)                                       },
-        {PlayerStatusEffect.STANCE,                             new PlayerStatusData("STANCE",remove: false,self: true)                             },
         {PlayerStatusEffect.SLOWMOTION,                         new PlayerStatusData("SLOWMOTION",icon: 16)                                         },
         {PlayerStatusEffect.HIDDEN,                             new PlayerStatusData("HIDDEN",remove: false)                                        },
         {PlayerStatusEffect.TUMBLE,                             new PlayerStatusData("TUMBLE")                                                      },
@@ -115,7 +113,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
     Vector2 delayedVelocity;
 
     // float frameAdvantage = 0;
-    public bool isInCombo;
+    public bool isInCombo = false;
 
     public PlayerCard card;
     [SerializeField] private PlayerDamageNumbers damageDisplay;
@@ -175,10 +173,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
                 {
                     if(HasStatusEffect(ef.Key))
                     {
-                        if(ef.Key == PlayerStatusEffect.STANCE)
-                            continue;
-
-                        else ef.Value.duration -= Time.fixedDeltaTime;
+                        ef.Value.duration -= Time.fixedDeltaTime;
 
                         //Damage player if they are on fire
                         if(ef.Key == PlayerStatusEffect.BURNING) drifter.DamageTaken += Time.fixedDeltaTime;
@@ -220,6 +215,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
             
         if(delayedVelocity != Vector2.zero && !(HasStatusEffect(PlayerStatusEffect.HITPAUSE) || HasStatusEffect(PlayerStatusEffect.CRINGE) || HasStatusEffect(PlayerStatusEffect.GRABBED) || HasStatusEffect(PlayerStatusEffect.SLOWMOTION))) delayedVelocity = Vector2.zero;
 
+        if(isInCombo && !HasEnemyStunEffect()) isInCombo = false; 
         
     }
 
@@ -306,8 +302,9 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         
     }
 
-    public void ApplyDamage(float damage, bool isCombo, float hitstun) {
-        damageDisplay.Increment(damage, isCombo, hitstun);
+    public void ApplyDamage(float damage, float hitstun) {
+
+        damageDisplay.Increment(damage, isInCombo, hitstun);
     }
 
     //Clears all removable Status effects
@@ -476,6 +473,8 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         //Slow down animation speed in slowmo
         if(ef == PlayerStatusEffect.SLOWMOTION)
             drifter.SetAnimationSpeed(.4f);
+
+        if(data.isStun && !data.isSelfInflicted) isInCombo = true;
 
     	data.duration = duration;
 

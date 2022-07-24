@@ -117,7 +117,7 @@ public class PlayerAttacks : MonoBehaviour
         if (!GameController.Instance.IsHost || GameController.Instance.IsPaused)
             return;
 
-        bool canAct = !status.HasStunEffect() && !drifter.guarding && !ledgeHanging && !status.HasStatusEffect(PlayerStatusEffect.STANCE);
+        bool canAct = !status.HasStunEffect() && !drifter.guarding && !ledgeHanging;
         bool canSpecial = !status.HasStunEffect() && !ledgeHanging;
 
         if((movement.grounded && !status.HasStatusEffect(PlayerStatusEffect.END_LAG)) || status.HasEnemyStunEffect()) resetRecovery();

@@ -32,6 +32,7 @@ public class NeoSwordFrogMasterHit : MasterHit
         if(movement.ledgeHanging || status.HasEnemyStunEffect())
         {
             if(tongue != null)deleteTongue();
+            listeningForDirection = false;
         }
 
         //Handle neutral special attacks
@@ -41,18 +42,6 @@ public class NeoSwordFrogMasterHit : MasterHit
             HeldDirection += new Vector2(drifter.input[0].MoveX,drifter.input[0].MoveY);
             if(HeldDirection != Vector2.zero || delaytime > 5) NeutralSpecialSlash();
         }
-        //Handle floating movement
-        // else if(listeningForDirection && floating)
-        // {
-        //     movement.move(11f,false);
-        //     if(floatTime <=0 && floating)
-        //     {
-        //         playState("W_Up_End");
-        //         clearFloat();
-        //     }
-        //     else
-        //         floatTime -= Time.fixedDeltaTime;
-        // }
     }
 
     public void listenForDirection()
@@ -64,6 +53,7 @@ public class NeoSwordFrogMasterHit : MasterHit
     public new void clearMasterhitVars()
     {
         base.clearMasterhitVars();
+        listeningForDirection = false;
         deleteTongue();
     }
 

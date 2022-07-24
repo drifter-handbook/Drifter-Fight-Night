@@ -105,7 +105,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
             bool crossUp = ((hitbox.parent.transform.localPosition.x > transform.localPosition.x  && drifter.movement.Facing < 0) 
                         || (hitbox.parent.transform.localPosition.x < transform.localPosition.x  && drifter.movement.Facing > 0 && attackData.AttackDamage >0f)) 
-                        && Vector3.Distance(hitbox.parent.transform.localPosition,transform.localPosition) > 1.2f;
+                        && Mathf.Abs(Mathf.Abs(hitbox.parent.transform.localPosition.x) - Mathf.Abs(transform.localPosition.x)) > 1.4f;
 
             // apply damage
             if (drifter != null && status != null)
@@ -185,8 +185,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
             float HitstunDuration = GetHitStun(drifter, attacker, attackData);
             float HitPauseDuration = HitstunDuration;
             //damage numbers managment
-                if (status != null)
-                    status.ApplyDamage(damageDealt, status.isInCombo, HitstunDuration);
+            
+            status?.ApplyDamage(damageDealt, HitstunDuration);
 
             //Flags a guradbreak for BIGG HITSPARKS
             bool guardbroken = false;
@@ -314,6 +314,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             else if(drifter.guarding && !drifter.parrying)
             {
 
+                drifter.movement.updateFacing();
                 if(attackData.hitType==HitType.GUARD_CRUSH)drifter.guardBreaking = true;
                 //push both players back on guarrd
                 

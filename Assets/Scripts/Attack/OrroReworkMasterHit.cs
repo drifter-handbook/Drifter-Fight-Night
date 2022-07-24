@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class OrroReworkMasterHit : MasterHit
 {
-	public SyncAnimatorStateHost bubble;
- 
     BeanWrangler bean;
     
     GameObject beanObject;
@@ -20,6 +18,12 @@ public class OrroReworkMasterHit : MasterHit
 	static float maxHoverTime = 1.5f;
     
     Vector3 targetPos;
+
+
+    //For Bean Command
+    bool listeningForDirection = false;
+    int delaytime = 0;
+    Vector2 HeldDirection = Vector2.zero;
 
     void Start()
     {
@@ -48,30 +52,23 @@ public class OrroReworkMasterHit : MasterHit
             Empowered = false;
         }
 
-        //Deactivate stance if cerain conditions are met
-        if(status.HasEnemyStunEffect() || movement.ledgeHanging  ||(drifter.input[0].Special && !drifter.input[1].Special &&(drifter.input[0].MoveX !=0 || drifter.input[0].MoveY !=0)))
+        if(bean.alive && bean.canAct)
+            drifter.sparkle.SetState("ChargeIndicator");
+        else
+            drifter.sparkle.SetState("Hide");
+
+        if(status.HasEnemyStunEffect() || movement.ledgeHanging)
         {
-            status.ApplyStatusEffect(PlayerStatusEffect.STANCE,0f);
-            bubble.SetState("Hide");
+            listeningForDirection = false;  
         }
+
         //Otherwise, use a stance move 
-        else if(status.HasStatusEffect(PlayerStatusEffect.STANCE) && drifter.input[0].Light && !drifter.input[1].Light )
+        if(listeningForDirection)
         {
-            movement.updateFacing();
-            applyEndLag(8f);
-            playState("W_Neutral_Command");
 
-            if(drifter.input[0].MoveY >0)
-                BeanUp();
-            else if(drifter.input[0].MoveY <0)
-                BeanDown();
-            else if(drifter.input[0].MoveX !=0)
-                BeanSide();
-            else
-                BeanNeutral();
-
-            bean.setBeanDirection(movement.Facing);
-            //status.ApplyStatusEffect(PlayerStatusEffect.STANCE,0f);
+            if(!drifter.input[0].Special) delaytime++;
+            HeldDirection += new Vector2(drifter.input[0].MoveX,drifter.input[0].MoveY);
+            if(HeldDirection != Vector2.zero || delaytime > 5) beanCommand();
         }
 
         if(listeningForMovement)
@@ -135,6 +132,31 @@ public class OrroReworkMasterHit : MasterHit
 
             Empowered = !beanFollowing || Vector3.Distance(targetPos,bean.rb.position) > 3.8f;
         }
+    }
+
+    public void listenForDirection()
+    {
+        listeningForDirection = true;
+        delaytime = 0;
+        HeldDirection = Vector2.zero;
+    }
+
+    public void beanCommand()
+    {
+         movement.updateFacing();
+         applyEndLag(8f);
+         playState("W_Neutral_Command");
+
+         if(drifter.input[0].MoveY >0)
+            BeanUp();
+         else if(drifter.input[0].MoveY <0)
+            BeanDown();
+         else
+            BeanSide();
+
+        bean.setBeanDirection(movement.Facing);
+
+        listeningForDirection = false;
     }
 
     /*
@@ -230,60 +252,29 @@ public class OrroReworkMasterHit : MasterHit
         specialCharge = 0;
     }       
 
-    /*
-       	Neutral Special Functions
-    */
-
-    public void endCommand()
-    {
-        if(!isHost)return;
-        status.ApplyStatusEffect(PlayerStatusEffect.STANCE,0f);
-    }
-
-    public void awaitCommand()
-    {
-        if(!isHost)return;
-        if(status.HasStatusEffect(PlayerStatusEffect.STANCE))
-        {
-        	status.ApplyStatusEffect(PlayerStatusEffect.STANCE,0f);
-        	bubble.SetState("Hide");
-        }
-        else
-        {
-        	status.ApplyStatusEffect(PlayerStatusEffect.STANCE,1f);
-        	bubble.SetState("Wait");
-        }
-        
-    }
-
-
     //Tells the current bean object to preform certain actions
     public void BeanSide()
     {
         if(!isHost)return;
         refreshBeanHitboxes();
-        bubble.SetState("Side");
         bean.playState("Bean_Side");
     }
     public void BeanDown()
     {
         if(!isHost)return;
         refreshBeanHitboxes();
-        bubble.SetState("Down");
         bean.playState("Bean_Down");
     }
     public void BeanUp()
     {
         if(!isHost)return;
         refreshBeanHitboxes();
-        bubble.SetState("Up");
         bean.playState("Bean_Up");
     }
     public void BeanNeutral()
     {
         if(!isHost)return;
         refreshBeanHitboxes();
-        bubble.SetState("Neutral");
         bean.playState("Bean_Neutral");
     }
 
@@ -435,12 +426,14 @@ public class OrroReworkMasterHit : MasterHit
         deletePlatform();
         specialCharge = 0;
         listeningForMovement = false;
+        listeningForDirection = false;
     }
 
     public new void clearMasterhitVars()
     {
     	base.clearMasterhitVars();
         listeningForMovement = false;
+        listeningForDirection = false;
     	if(platform != null)
         {
             Destroy(platform);

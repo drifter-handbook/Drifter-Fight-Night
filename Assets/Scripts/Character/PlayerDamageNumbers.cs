@@ -19,13 +19,13 @@ public class PlayerDamageNumbers : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (GameController.Instance.IsPaused)
             return;
             
         if (persistTick > 0) {
-            persistTick -= Time.deltaTime;
+            persistTick -= Time.fixedDeltaTime;
             if (persistTick <= 0) {
                 GameObject floaterClone = Instantiate(floater, gameObject.transform.position, gameObject.transform.rotation);
                 floaterClone.GetComponent<PlayerDamageFloater>().InitializeValues(accumilatedDamage, isTrue);
