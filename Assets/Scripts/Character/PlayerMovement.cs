@@ -51,7 +51,7 @@ public class PlayerMovement : MonoBehaviour
             return _hitstun;
         }
         set{
-            if(_hitstun != value) UnityEngine.Debug.Log("Hitstun:" + value);
+            //if(_hitstun != value) UnityEngine.Debug.Log("Hitstun:" + value);
             _hitstun= value;
             //sparkle.SetState(_canSpecialCancel?"ChargeIndicator":"Hide");
         }

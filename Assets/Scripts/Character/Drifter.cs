@@ -118,7 +118,7 @@ public class Drifter : MonoBehaviour, INetworkInit
             return _guarding;
         }
         set{
-            if(_guarding != value) UnityEngine.Debug.Log("Guard:" + value);
+            //if(_guarding != value) UnityEngine.Debug.Log("Guard:" + value);
             _guarding = value;
             //sparkle.SetState(_canSpecialCancel?"ChargeIndicator":"Hide");
         }
