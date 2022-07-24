@@ -14,6 +14,7 @@ public class LucilleMasterHit : MasterHit
 
     bool listeningForDirection = false;
     bool listeningForThrow = false;
+    int delaytime = 0;
 
     GameObject mark;
     GameObject orb;
@@ -44,9 +45,13 @@ public class LucilleMasterHit : MasterHit
         //Handle neutral special attacks
         if(listeningForDirection)
         {
+            if(!drifter.input[0].Special) delaytime++;
+            if(delaytime >5 && listeningForThrow) W_Neutral_Throw();
+
             if(drifter.input[0].MoveX != 0 || drifter.input[0].MoveY!= 0)
             {
                 HeldDirection = new Vector2(drifter.input[0].MoveX,drifter.input[0].MoveY);
+
                 if(listeningForThrow)
                 {
                     W_Neutral_Throw();
@@ -92,6 +97,7 @@ public class LucilleMasterHit : MasterHit
     {
        if(!isHost)return;
        listenForDirection();
+       delaytime = 0;
        listeningForThrow = true; 
     }
 
@@ -211,82 +217,4 @@ public class LucilleMasterHit : MasterHit
         }
         
     }
-
-
-    // public void SpawnRift()
-    // {
-    //     if(!isHost || drifter.superCharge < 1)return;
-
-    //     SpawnRift(transform.position + new Vector3(0,3.5f,0));
-    //     drifter.superCharge -= 1f;
-        
-    // }
-
-
-    // public void SpawnRift(Vector3 pos)
-    // {
-
-    //     if(!isHost)return;
-
-    //     facing = movement.Facing;
-       
-    //     GameObject rift = GameController.Instance.host.CreateNetworkObject("Lucille_Rift", pos, transform.rotation);
-
-    //     foreach (HitboxCollision hitbox in rift.GetComponentsInChildren<HitboxCollision>(true))
-    //     {
-    //         hitbox.parent = drifter.gameObject;
-    //         hitbox.AttackID = attacks.AttackID;
-    //         hitbox.AttackType = attacks.AttackType;
-    //         hitbox.Facing = facing;
-            
-    //     }
-    //     rift.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
-    //     rift.GetComponent<LucillePortal>().drifter = drifter.gameObject;
-       
-    //     rift.GetComponent<HurtboxCollision>().owner = drifter.gameObject;
-
-    //     rifts.Enqueue(rift);
-    // }
-
-    
-
-    // public void breakRift(GameObject self,bool pauseOnHit = false)
-    // {
-    //     rifts = new Queue<GameObject>(rifts.Where<GameObject>(x => x != self));
-
-    //     if(pauseOnHit)status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.1f * self.GetComponent<LucillePortal>().size + .1f);
-    // }
-
-
-    // public void collapseAllPortals(int explosiveDelete = 1)
-    // {
-    //     if(!isHost)return;
-    //     GameObject rift;
-    //     facing = movement.Facing;
-    //     while(rifts.Count >0)
-    //     {
-    //         rift = rifts.Dequeue();
-
-    //         if(rift == null)continue;
-
-    //         //Gain half of the meter value of the portal back when all are collapsed
-    //         drifter.gainSuperMeter(.33f * rift.GetComponent<LucillePortal>().size);
-    //         foreach (HitboxCollision hitbox in rift.GetComponentsInChildren<HitboxCollision>(true))
-    //         {
-    //             hitbox.AttackID -=3;
-    //             hitbox.Facing = facing;
-    //         }
-    //         if(explosiveDelete != 0)rift.GetComponent<LucillePortal>().detonate();
-    //         else rift.GetComponent<LucillePortal>().decay();
-    //     }
-    //     rifts = new Queue<GameObject>();
-    // }
-
-    // //Can gain 1 extra jump by bouncing on a portal. Only works once per airtime.
-    // public void grantJump()
-    // {
-    //     if(!isHost || movement.currentJumps >= movement.numberOfJumps - 1 || jumpGranted)return;
-    //     movement.currentJumps++;
-    //     jumpGranted = true;
-    // }
 }
