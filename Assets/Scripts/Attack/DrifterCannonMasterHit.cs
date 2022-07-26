@@ -40,9 +40,15 @@ public class DrifterCannonMasterHit : MasterHit
         {
             movement.updateFacing();
             movement.move(10f);
-            rb.velocity = new Vector2(rb.velocity.x,(drifter.input[0].MoveY >0?Mathf.Lerp(25f,rb.velocity.y,.45f):rb.velocity.y));
+            rb.velocity = new Vector2(rb.velocity.x,(drifter.input[0].MoveY >0?Mathf.Lerp(20f,rb.velocity.y,.45f):rb.velocity.y));
 
-            if(drifter.input[0].MoveY > 0)
+            if(attacks.lightPressed())
+            {
+                attacks.useNormal();
+                listeningForDirection = false;
+            }
+
+            else if(drifter.input[0].MoveY > 0)
             {
                 drifter.PlayAnimation("W_Up_Loop");
                 boostTime --;
