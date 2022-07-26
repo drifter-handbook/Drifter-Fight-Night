@@ -130,21 +130,6 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: 7331573e54e3c174abef342dd2a55a51, type: 2}
   AttackData: {fileID: 0}
   projectilePriority: -2
---- !u!114 &5066608592034762774
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3134779245167919302}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7e88fd47cb91d04eb171277aff04743, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  assetPathName: Lady Parhelion
-  facing: 0
-  Up_W_Grab: {fileID: 7796416782928153442}
 --- !u!1 &1004488967453599332
 GameObject:
   m_ObjectHideFlags: 0
@@ -350,6 +335,21 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: 22bcd3058ae29a14f820d236c823e669, type: 2}
   AttackData: {fileID: 0}
   projectilePriority: -2
+--- !u!114 &5066608592034762774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3134779245167919302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7e88fd47cb91d04eb171277aff04743, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  assetPathName: Lady Parhelion
+  facing: 0
+  Up_W_Grab: {fileID: 7796416782928153442}
 --- !u!1 &3451955293568421525
 GameObject:
   m_ObjectHideFlags: 0
@@ -1088,6 +1088,11 @@ PrefabInstance:
         type: 3}
       propertyPath: dacusSpeed
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3106753082241659641, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: fullhopFrames
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3106753082241659643, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}

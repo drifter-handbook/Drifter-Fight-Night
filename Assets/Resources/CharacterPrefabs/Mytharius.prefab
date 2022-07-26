@@ -308,6 +308,20 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.5, y: 1}
   m_Direction: 0
+--- !u!114 &1094349577917796889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6282715789183443632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c87719c6d15a4504a8d92f379790991f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  assetPathName: Mytharius
+  facing: 0
 --- !u!1 &6299704708043736858
 GameObject:
   m_ObjectHideFlags: 0
@@ -569,20 +583,6 @@ CapsuleCollider2D:
   m_Offset: {x: -0.09023781, y: 0.5015534}
   m_Size: {x: 0.68047565, y: 0.92864865}
   m_Direction: 0
---- !u!114 &1094349577917796889
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6282715789183443632}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c87719c6d15a4504a8d92f379790991f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  assetPathName: Mytharius
-  facing: 0
 --- !u!1001 &8472918650224174433
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -790,6 +790,11 @@ PrefabInstance:
         type: 3}
       propertyPath: jumpTime
       value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3106753082241659641, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: fullhopFrames
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3106753082241659643, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}

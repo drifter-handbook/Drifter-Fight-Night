@@ -31,12 +31,9 @@ public class OrroReworkMasterHit : MasterHit
         Empowered = false;
     }
 
-    new void FixedUpdate()
+    new void UpdateMasterHit()
     {
-
-    	if(!isHost)return;
-
-        base.FixedUpdate();
+        base.UpdateMasterHit();
 
         //Refresh hover values when you land
         if(movement.grounded)
@@ -73,35 +70,35 @@ public class OrroReworkMasterHit : MasterHit
 
         if(listeningForMovement)
         {
-        	if(hoverTime <=0)
-        	{
-        		//movement.updateFacing();
-        		playState("W_Down_Ground");
-        		listeningForMovement = false;
-        		canHover = false;
-  			}
-  			else
-  			{
+            if(hoverTime <=0)
+            {
+                //movement.updateFacing();
+                playState("W_Down_Ground");
+                listeningForMovement = false;
+                canHover = false;
+            }
+            else
+            {
                 hoverTime-= Time.fixedDeltaTime;
-  				rb.velocity = new Vector2(Mathf.Lerp((drifter.input[0].MoveX * 12f),rb.velocity.x,movement.accelerationPercent),rb.velocity.y);
-  			}
+                rb.velocity = new Vector2(Mathf.Lerp((drifter.input[0].MoveX * 12f),rb.velocity.x,movement.accelerationPercent),rb.velocity.y);
+            }
 
-        	if(drifter.input[0].Light)
-        	{
-        		movement.updateFacing();
-        		clearMasterhitVars();
-        		if(drifter.input[0].MoveY >0)
-        			attacks.StartAttack(DrifterAttackType.Ground_Q_Up);
-        		else if(drifter.input[0].MoveY <0)
-        			attacks.StartAttack(DrifterAttackType.Ground_Q_Down);
-        		else if(drifter.input[0].MoveX !=0)
-        			attacks.StartAttack(DrifterAttackType.Ground_Q_Side);
-        		else
-        			attacks.StartAttack(DrifterAttackType.Ground_Q_Neutral);
+            if(drifter.input[0].Light)
+            {
+                movement.updateFacing();
+                clearMasterhitVars();
+                if(drifter.input[0].MoveY >0)
+                    attacks.StartAttack(DrifterAttackType.Ground_Q_Up);
+                else if(drifter.input[0].MoveY <0)
+                    attacks.StartAttack(DrifterAttackType.Ground_Q_Down);
+                else if(drifter.input[0].MoveX !=0)
+                    attacks.StartAttack(DrifterAttackType.Ground_Q_Side);
+                else
+                    attacks.StartAttack(DrifterAttackType.Ground_Q_Neutral);
 
-        		listeningForMovement = false;
-        		canHover = false;
-        	}
+                listeningForMovement = false;
+                canHover = false;
+            }
         }
 
         //If orro cancels, or is hit out of a move where bean charges, cancel that move
@@ -132,6 +129,7 @@ public class OrroReworkMasterHit : MasterHit
 
             Empowered = !beanFollowing || Vector3.Distance(targetPos,bean.rb.position) > 3.8f;
         }
+
     }
 
     public void listenForDirection()

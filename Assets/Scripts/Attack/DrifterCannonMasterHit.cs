@@ -9,27 +9,24 @@ public class DrifterCannonMasterHit : MasterHit
     bool jumpGranted = false;
     int charge = 1;
     bool listeningForWallbounce = false;
-    
 
-    new void FixedUpdate()
+    new void UpdateMasterHit()
     {
-    	if(!isHost)return;
+        base.UpdateMasterHit();
 
-    	base.FixedUpdate();
-
-    	if(status.HasStatusEffect(PlayerStatusEffect.DEAD))
-    	{
-    		Empowered = false;
+        if(status.HasStatusEffect(PlayerStatusEffect.DEAD))
+        {
+            Empowered = false;
             drifter.sparkle.SetState("Hide");
             jumpGranted = false;
-    		SetCharge(1);
-    	}
+            SetCharge(1);
+        }
 
         if(jumpGranted && movement.grounded)jumpGranted = false;
 
         if(movement.wallSliding != Vector3.zero && listeningForWallbounce)
         {
-        	listeningForWallbounce = false;
+            listeningForWallbounce = false;
             drifter.PlayAnimation("W_Side_End_Early");
             rb.velocity = new Vector2(movement.Facing * -15f,30f);
             if(!jumpGranted && movement.currentJumps <= movement.numberOfJumps -1) movement.currentJumps++;
@@ -37,6 +34,7 @@ public class DrifterCannonMasterHit : MasterHit
             GraphicalEffectManager.Instance.CreateMovementParticle(MovementParticleMode.Restitution,rb.position + new Vector2(facing * .5f,0), (facing > 0)?90:-90,Vector3.one);
             unpauseGravity();
         }
+
     }
 
     public void SairExplosion()

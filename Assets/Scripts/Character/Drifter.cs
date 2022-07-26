@@ -59,14 +59,10 @@ public class Drifter : MonoBehaviour, INetworkInit
         get { return (float)sync["damageTaken"]; }
         set { sync["damageTaken"] = value; }
     }
-
-    //REMOVE THIS
-    //int Charge = 0;
-
+    
     float terminalVelocity;
 
 
-    public float superCharge = 2f;
     
     public int myColor;
 
@@ -81,7 +77,7 @@ public class Drifter : MonoBehaviour, INetworkInit
 
     bool isHost;
 
-    //
+    //Rework DC to use overrides instead
     [NonSerialized]
     public string GroundIdleStateName = "Idle";
     [NonSerialized]
@@ -103,26 +99,12 @@ public class Drifter : MonoBehaviour, INetworkInit
     [NonSerialized]
     public string LedgeRollStateName = "Ledge_Roll";
 
+    //Serializeable values
     public int animationLayer = 0;
     public float animationSpeed = 1;
     
-    
-    //public bool forceGuard = false;
-
-    private bool _guarding;
-
-    //[NonSerialized]
-    public bool guarding 
-    {
-        get{
-            return _guarding;
-        }
-        set{
-            //if(_guarding != value) UnityEngine.Debug.Log("Guard:" + value);
-            _guarding = value;
-            //sparkle.SetState(_canSpecialCancel?"ChargeIndicator":"Hide");
-        }
-    }
+    [NonSerialized]
+    public bool guarding = false;
     [NonSerialized]
     public bool perfectGuarding = false;
     [NonSerialized]
@@ -133,15 +115,18 @@ public class Drifter : MonoBehaviour, INetworkInit
     public bool canFeint = true;
     [NonSerialized]
     public bool canSuper = true;
-
-    //[NonSerialized]
-    public bool knockedDown = false;
-
     [NonSerialized]
-    //True when a move has connected but the player has not yet canceled their move
-    public bool canSpecialCancelFlag = false;
+    public bool knockedDown = false;
+    [NonSerialized]
+    public bool canSpecialCancelFlag = false; //True when a move has connected but the player has not yet canceled their move
+    [NonSerialized]
+    public bool hiddenFlag = false;
+    [NonSerialized]
+    public float superCharge = 2f;
 
-    bool hiddenFlag = false;
+    private float cancelTimer = 0f;
+
+    private bool _canSpecialCancel = false;
 
     //Cancel Normals into Specials Logic
     public bool listenForSpecialCancel
@@ -156,8 +141,7 @@ public class Drifter : MonoBehaviour, INetworkInit
         }
     }
 
-    private float cancelTimer = 0f;
-    private bool _canSpecialCancel = false;
+    
 
     public void OnNetworkInit()
     {

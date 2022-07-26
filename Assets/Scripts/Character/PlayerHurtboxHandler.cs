@@ -24,12 +24,17 @@ public class PlayerHurtboxHandler : MonoBehaviour
         host = GameController.Instance.host;
         Shake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<ScreenShake>();
 
-        StartCoroutine(CleanupOldAttacks());
+        // StartCoroutine(CleanupOldAttacks());
     }
 
     public bool CanHit(int attackID)
     {
         return !oldAttacks.ContainsKey(attackID);
+    }
+
+    void FixedUpdate()
+    {
+        CleanupOldAttacks();        
     }
 
 
@@ -94,7 +99,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             //Freezefame if hit a counter
             if(hurtbox.gameObject.name == "Counter" &&  attackData.AttackDamage >0f && attackData.hitType!=HitType.GRAB)
             {
-                Shake?.startDarkenCoroutine(25f * framerateScalar);
+                Shake?.Darken(25);
                 GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.STAR, hitSparkPos,0, new Vector2(10f, 10f));
                 attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,30f * framerateScalar);
                 drifter.PlayAnimation("Counter_Success");
@@ -233,7 +238,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
                     //Cause the screen to shake slightly on hit, as long as the move has knockback
                     if(Shake != null && attackData.Knockback !=0){
-                        Shake.startShakeCoroutine((willCollideWithBlastZone(GetComponent<Rigidbody2D>(), HitstunDuration)?0.3f:0.15f),Mathf.Clamp((((attackData.Knockback - 10)/100f + (damageDealt-10)/44f)) * attackData.KnockbackScale,.1f,.8f));
+                        Shake.Shake((willCollideWithBlastZone(GetComponent<Rigidbody2D>(), HitstunDuration)?18:9),Mathf.Clamp((((attackData.Knockback - 10)/100f + (damageDealt-10)/44f)) * attackData.KnockbackScale,.25f,.8f));
 
                         //Shake.startShakeCoroutine(.3f,2f);
                     }
@@ -298,7 +303,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 
                 
                 if(status.HasStatusEffect(PlayerStatusEffect.ARMOUR) && attackData.hitType!=HitType.GRAB)
-                    Shake?.startDarkenCoroutine(25f * framerateScalar);
+                    Shake?.Darken(25);
 
                 //apply defender hitpause
                 //If hitstop is scaled, and one is proviced, sum the hitstun duuration and the hitpause duration
@@ -306,7 +311,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                     HitPauseDuration = attackData.HitStop * framerateScalar;
   
                 if(HitPauseDuration>0 && attackData.StatusEffect != PlayerStatusEffect.HITPAUSE )status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(isCritical || guardbroken || status.HasStatusEffect(PlayerStatusEffect.ARMOUR)) ? 25f* framerateScalar:((damageDealt <=2f ? .075f :Mathf.Max(HitPauseDuration*.3f ,10f * framerateScalar)) * (hadSlowmo?2f:1f)));
-                StartCoroutine(drifter.GetComponentInChildren<GameObjectShake>().Shake(attackData.StatusEffect != PlayerStatusEffect.CRINGE?HitPauseDuration*.2f:attackData.StatusDuration* framerateScalar,attackData.StatusEffect != PlayerStatusEffect.CRINGE?1.5f:2f));
+                drifter.GetComponentInChildren<GameObjectShake>().Shake(attackData.StatusEffect != PlayerStatusEffect.CRINGE?(int)attackData.HitStop:(int)attackData.StatusDuration,attackData.StatusEffect != PlayerStatusEffect.CRINGE?1.5f:2f);
 
                 returnCode = attackData.StatusEffect == PlayerStatusEffect.GRABBED?1: 0;             
             }
@@ -363,7 +368,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
                 attackerStatus.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,1f);
                 attackerStatus.ApplyStatusEffect(PlayerStatusEffect.CRINGE,1f);
-                StartCoroutine(Shake.zoomEffect(.6f,Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),false));
+                Shake.zoomEffect(36,Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),false);
                 attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.6f);
                 returnCode = -2;
 
@@ -404,11 +409,11 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.CRIT, hitSparkPos, 0, new Vector2(facingDir * 10f, 10f));
 
                 if(drifter.Stocks <= 1 && willCollideWithBlastZoneAccurate(GetComponent<Rigidbody2D>(), HitstunDuration))
-                    StartCoroutine(Shake.zoomEffect(HitstunDuration*.25f,hitSparkPos,true));
+                    Shake.zoomEffect(30,hitSparkPos,true);
             }
 
             if (isCritical)
-                Shake.startDarkenCoroutine(30f * framerateScalar);
+                Shake.Darken(30);
 
             // Ancillary Hitsparks
             if (drifter != null && damageDealt >0f && attackFX != null)
@@ -451,26 +456,22 @@ public class PlayerHurtboxHandler : MonoBehaviour
         return returnCode;
     }
 
-    IEnumerator CleanupOldAttacks()
+    void CleanupOldAttacks()
     {
-        while (true)
+        List<int> toRemove = new List<int>();
+        foreach (int attackID in oldAttacks.Keys)
         {
-            yield return new WaitForSeconds(1);
-            // find old attackIDs
-            List<int> toRemove = new List<int>();
-            foreach (int attackID in oldAttacks.Keys)
+            if (Time.time - oldAttacks[attackID] > MAX_ATTACK_DURATION)
             {
-                if (Time.time - oldAttacks[attackID] > MAX_ATTACK_DURATION)
-                {
-                    toRemove.Add(attackID);
-                }
-            }
-            // delete old attackIDs
-            foreach (int attackID in toRemove)
-            {
-                oldAttacks.Remove(attackID);
+                toRemove.Add(attackID);
             }
         }
+        // delete old attackIDs
+        foreach (int attackID in toRemove)
+        {
+            oldAttacks.Remove(attackID);
+        }
+
     }
 
     protected IEnumerator delayHitsparks(AttackFXSystem attackFX, Vector3 position, float angle,float damage, float duration)

@@ -149,8 +149,8 @@ public class PlayerCard : MonoBehaviour
     {
         if(previousPercent  < sentPercent)
         {
-            StartCoroutine(TopShake.Shake(.3f,(sentPercent - previousPercent)/2f));
-            StartCoroutine(BottomShake.Shake(.3f,(sentPercent - previousPercent)/2f));
+            TopShake.Shake(18,(sentPercent - previousPercent)/2f);
+            BottomShake.Shake(18,(sentPercent - previousPercent)/2f);
         }
         previousPercent = sentPercent;
 

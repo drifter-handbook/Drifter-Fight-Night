@@ -83,8 +83,8 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
             if (!drifter.status.HasStatusEffect(PlayerStatusEffect.DEAD))
             {   
 
-                Shake?.startShakeCoroutine(.3f, 1.5f);
-                Shake?.startDarkenCoroutine(.1f);
+                Shake?.Shake(18, 1.5f);
+                Shake?.Darken(6);
 
                 drifter.Stocks--;
                 drifter.DamageTaken = 0f;

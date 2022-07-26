@@ -198,20 +198,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.5, y: 1}
   m_Direction: 0
---- !u!114 &8069485142519709846
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7961112140161951898}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74fd9abae7f8eb64989c13a38320cf31, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  assetPathName: Bojo
-  facing: 0
 --- !u!1 &6210333189731979638
 GameObject:
   m_ObjectHideFlags: 0
@@ -345,6 +331,20 @@ MonoBehaviour:
   SuccessState: Grab_Ground_Success
   victim: {fileID: 0}
   cancelable: 1
+--- !u!114 &8069485142519709846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7961112140161951898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74fd9abae7f8eb64989c13a38320cf31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  assetPathName: Bojo
+  facing: 0
 --- !u!1001 &5539119026263273291
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -573,6 +573,11 @@ PrefabInstance:
         type: 3}
       propertyPath: ledgeClimbOffset
       value: -0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3106753082241659641, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: fullhopFrames
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3106753082241659643, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}

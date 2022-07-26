@@ -22,9 +22,7 @@ public class PlayerMovement : MonoBehaviour
     public float ledgeOffset = 1f;
     public float ledgeClimbOffset = 0f;
     public Vector3 particleOffset =  Vector3.zero;
-    public float varyJumpHeightDuration = 0.5f;
-    public float varyJumpHeightForce = 10f;
-
+    public float fullhopFrames = 10f;
 
     protected static float framerateScalar =.0833333333f;
 
@@ -78,6 +76,8 @@ public class PlayerMovement : MonoBehaviour
     public float accelerationPercent = .9f;
     [NonSerialized]
     public float dashLock = 0;
+    [NonSerialized]
+    public float jumpTimer = 30f;
 
     //Access to main camera for screen darkening
     ScreenShake mainCamera;
@@ -163,7 +163,7 @@ public class PlayerMovement : MonoBehaviour
                     terminalVelocity = 2f;
                     drifter.PlayAnimation("Knockdown_Bounce");
 
-                    mainCamera.startShakeCoroutine(.1f,.33f);
+                    mainCamera.Shake(6,.33f);
 
                     //If the victim is in hitpause, set their delayed velocity instead
                     // if(kdbounceVelocity.magnitude >15f)
@@ -229,7 +229,7 @@ public class PlayerMovement : MonoBehaviour
             if(drifter.guardBreaking && status.HasEnemyStunEffect())
             {
                 drifter.PlayAnimation("Guard_Break");
-                StartCoroutine(shake.Shake(.3f,.7f));
+                shake.Shake(12,.7f);
             }
             else if(status.HasStatusEffect(PlayerStatusEffect.FLATTEN))
             {
@@ -238,13 +238,13 @@ public class PlayerMovement : MonoBehaviour
             else if(status.HasEnemyStunEffect() && !drifter.guarding)
             {
                 drifter.PlayAnimation("HitStun");
-                StartCoroutine(shake.Shake(.2f,.7f));
+                shake.Shake(12,.7f);
             }
 
             else if(status.HasEnemyStunEffect())
             {
                 drifter.PlayAnimation("BlockStun");
-                StartCoroutine(shake.Shake(.1f,.7f));
+                shake.Shake(6,.7f);
             }
             else{
                 animator.enabled = false;
@@ -270,6 +270,28 @@ public class PlayerMovement : MonoBehaviour
             //Remove armour on landing 
             //TODO determine if there are more things that need to be removed on actionable landing
             if(status.HasStatusEffect(PlayerStatusEffect.ARMOUR))status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0f);
+        }
+
+        //Handle Jump
+        if(jumpTimer < fullhopFrames)
+        {
+            float prevJumpTimer = jumpTimer;
+            jumpTimer += (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f);
+
+            //Shorthop
+            if(jumpTimer >= 0 && prevJumpTimer <0 && (!drifter.input[0].Jump || status.HasStatusEffect(PlayerStatusEffect.END_LAG)))
+            {
+                jumpTimer = fullhopFrames;
+                rb.velocity = new Vector2(rb.velocity.x, jumpSpeed * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f));
+                if(status.HasStatusEffect(PlayerStatusEffect.END_LAG)) UnityEngine.Debug.Log("JUMP QUEUED A MOVE");
+            }
+            //fullhop
+            else if(jumpTimer >= 0)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, jumpSpeed * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f));
+                if(status.HasStatusEffect(PlayerStatusEffect.END_LAG)) jumpTimer = fullhopFrames;
+            }
+
         }
 
         //Handles jumps
@@ -579,7 +601,7 @@ public class PlayerMovement : MonoBehaviour
         if((status.HasStatusEffect(PlayerStatusEffect.PLANTED) || status.HasStatusEffect(PlayerStatusEffect.AMBERED) || status.HasStatusEffect(PlayerStatusEffect.PARALYZED)) && drifter.input[1].MoveX != drifter.input[0].MoveX){
             status.mashOut();
 
-            StartCoroutine(shake.Shake(.2f,.7f));
+            shake.Shake(12,.7f);
 
             spawnJuiceParticle( transform.position + particleOffset + new Vector3(.5f,UnityEngine.Random.Range(1f,3f),0), MovementParticleMode.Mash);
         }
@@ -653,8 +675,7 @@ public class PlayerMovement : MonoBehaviour
     //Kills jump coroutines if they exist, for paused gravity attacks
     public void cancelJump()
     {
-        if(jumpCoroutine!= null)StopCoroutine(jumpCoroutine);
-        if(varyJumpHeight!= null)StopCoroutine(varyJumpHeight);
+        jumpTimer = fullhopFrames;
     }
 
     public void updatePosition (Vector3 position){
@@ -758,7 +779,9 @@ public class PlayerMovement : MonoBehaviour
             
             //jump needs a little delay so character animations can spend
             //a frame of two preparing to jump
-            jumpCoroutine = StartCoroutine(DelayedJump());
+            //jumpCoroutine = StartCoroutine(DelayedJump());
+
+            jumpTimer = -5f;
         }
     }
 
@@ -810,7 +833,7 @@ public class PlayerMovement : MonoBehaviour
             animator.enabled = true;
             hitstun = false;
             status.clearStunStatus();
-            spawnSuperParticle("Hyper_Guard_Burst",1f,8f);
+            spawnSuperParticle("Hyper_Guard_Burst",1f,8);
             status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,framerateScalar);
             status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,10f * framerateScalar);
             drifter.PlayAnimation("Burst");
@@ -823,7 +846,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if(drifter.superCharge >= 2f && !drifter.canFeint)
             {
-                spawnSuperParticle("Offensive_Cancel",2f,20f);
+                spawnSuperParticle("Offensive_Cancel",2f,20);
                 drifter.PlayAnimation("Burst");
                 pauseGravity();
                 status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,framerateScalar);
@@ -831,7 +854,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else if(drifter.canFeint)
             {
-                spawnSuperParticle("Feint_Cancel",1f,8f);
+                spawnSuperParticle("Feint_Cancel",1f,8);
                 drifter.PlayAnimation("Burst");
                 pauseGravity();
                 status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,framerateScalar);
@@ -850,7 +873,7 @@ public class PlayerMovement : MonoBehaviour
             status.ApplyStatusEffect(PlayerStatusEffect.INVULN,8f * framerateScalar);
             status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,10f * framerateScalar);
 
-            spawnSuperParticle("Defensive_Cancel",2f,8f);
+            spawnSuperParticle("Defensive_Cancel",2f,8);
             if(currentJumps+1 < numberOfJumps) currentJumps++;
             drifter.PlayAnimation("Burst");
             pauseGravity();
@@ -858,7 +881,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (!drifter.guarding && drifter.superCharge >= 1f && !status.HasStunEffect())
         {
-            spawnSuperParticle("Time_Cancel",1f,8f);
+            spawnSuperParticle("Time_Cancel",1f,8);
             drifter.PlayAnimation("Burst");
             pauseGravity();
             status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,framerateScalar);
@@ -867,11 +890,11 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    private void spawnSuperParticle(string mode,float cost,float darkentime)
+    private void spawnSuperParticle(string mode,float cost,int darkentime)
     {
 
         canLandingCancel = false;
-        mainCamera.startDarkenCoroutine(darkentime * framerateScalar);
+        mainCamera.Darken(darkentime);
         drifter.canSuper = false;
         attacks.SetupAttackID(DrifterAttackType.Super_Cancel);
         Vector3 flip = new Vector3(Facing * 10f, 10f, 0f);
@@ -892,38 +915,38 @@ public class PlayerMovement : MonoBehaviour
         
     }
 
-    //delays jump to allow for jump squant and move queuing
-    private IEnumerator DelayedJump()
-    {
-        if (varyJumpHeight != null)
-        {
-            StopCoroutine(varyJumpHeight);
-        }
-        rb.velocity = new Vector2(rb.velocity.x, 0f);
-        float time = 0;
-        while (time <= delayedJumpDuration / (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .3f : 1f))
-        {
-            time += Time.fixedDeltaTime;
-            yield return null;
-        }
-        rb.velocity = new Vector2(rb.velocity.x, jumpSpeed * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f));
-        varyJumpHeight = StartCoroutine(VaryJumpHeight());
-    }
+    // //delays jump to allow for jump squant and move queuing
+    // private IEnumerator DelayedJump()
+    // {
+    //     if (varyJumpHeight != null)
+    //     {
+    //         StopCoroutine(varyJumpHeight);
+    //     }
+    //     rb.velocity = new Vector2(rb.velocity.x, 0f);
+    //     float time = 0;
+    //     while (time <= delayedJumpDuration / (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .3f : 1f))
+    //     {
+    //         time += Time.fixedDeltaTime;
+    //         yield return null;
+    //     }
+    //     rb.velocity = new Vector2(rb.velocity.x, jumpSpeed * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f));
+    //     varyJumpHeight = StartCoroutine(VaryJumpHeight());
+    // }
 
-    //Varries the jup heing based on how long the button is held
-    private IEnumerator VaryJumpHeight()
-    {
-        float time = 0f;
-        while (time < varyJumpHeightDuration / (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .3f : 1f))
-        {
-            yield return new WaitForFixedUpdate();
-            time += Time.fixedDeltaTime;
-            if (!status.HasStunEffect() && drifter.input[0].Jump)
-            {
-                //rb.AddForce(Vector2.up * -Physics2D.gravity * varyJumpHeightForce);
-                rb.velocity = new Vector2(rb.velocity.x, jumpSpeed * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f));
-            }
-        }
-        varyJumpHeight = null;
-    }
+    // //Varries the jup heing based on how long the button is held
+    // private IEnumerator VaryJumpHeight()
+    // {
+    //     float time = 0f;
+    //     while (time < varyJumpHeightDuration / (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .3f : 1f))
+    //     {
+    //         yield return new WaitForFixedUpdate();
+    //         time += Time.fixedDeltaTime;
+    //         if (!status.HasStunEffect() && drifter.input[0].Jump)
+    //         {
+    //             //rb.AddForce(Vector2.up * -Physics2D.gravity * varyJumpHeightForce);
+    //             rb.velocity = new Vector2(rb.velocity.x, jumpSpeed * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f));
+    //         }
+    //     }
+    //     varyJumpHeight = null;
+    // }
 }

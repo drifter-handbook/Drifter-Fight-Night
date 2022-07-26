@@ -31,11 +31,9 @@ public class LucilleMasterHit : MasterHit
         grabBoxes = drifter.GetComponentsInChildren<GrabHitboxCollision>(true);
     }
 
-    new void FixedUpdate()
+    new void UpdateMasterHit()
     {
-        if(!isHost)return;
-
-        base.FixedUpdate();
+        base.UpdateMasterHit();
 
         if(movement.terminalVelocity !=  terminalVelocity && (movement.ledgeHanging || status.HasEnemyStunEffect()))
         {
@@ -58,6 +56,7 @@ public class LucilleMasterHit : MasterHit
                 }
             }                
         }
+
     }
 
     public new void returnToIdle()

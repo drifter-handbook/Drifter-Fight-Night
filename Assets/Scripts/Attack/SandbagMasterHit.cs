@@ -7,10 +7,12 @@ public class SandbagMasterHit : MasterHit
 	bool dust = false;
 	GameObject sandblast;
 	int dustCount = 7;
-	new void FixedUpdate()
-	{
-		base.FixedUpdate();
-		if(status.HasEnemyStunEffect() || movement.ledgeHanging)
+
+	new void UpdateMasterHit()
+    {
+        base.UpdateMasterHit();
+
+        if(status.HasEnemyStunEffect() || movement.ledgeHanging)
 			dust = false;
 		else if(dust)
 		{
@@ -21,7 +23,8 @@ public class SandbagMasterHit : MasterHit
 			}
         	dustCount +=1;
 		}
-	}
+
+    }
 
 	public void Setdust()
 	{

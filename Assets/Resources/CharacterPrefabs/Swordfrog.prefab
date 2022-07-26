@@ -46,10 +46,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1529639735558506143}
   playerType: {fileID: 0}
-  isActive: 1
-  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 29576565b8802aa4f9563461155c1319, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!70 &8566005374848877752
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -128,10 +127,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1529639735558506143}
   playerType: {fileID: 0}
-  isActive: 1
-  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 2db7829c949c56e49a073c7f8a264a1a, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
+--- !u!114 &2251526824488714663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2054295004346856378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b37eee839ce107439115fce96e58636, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  assetPathName: SwordFrog
+  facing: 0
+  W_Down_Projectiles: 3
 --- !u!1 &2747170511321268442
 GameObject:
   m_ObjectHideFlags: 0
@@ -229,10 +242,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1529639735558506143}
   playerType: {fileID: 0}
-  isActive: 1
-  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 901ad01b25c60c54e9c1cf2e1544bf2a, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!1 &3865943257399037262
 GameObject:
   m_ObjectHideFlags: 0
@@ -295,10 +307,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1529639735558506143}
   playerType: {fileID: 0}
-  isActive: 1
-  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 1391cfd47cbf5c24caee6f40a0bac65b, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
   SuccessState: Grab_Ground_Success
   victim: {fileID: 0}
   cancelable: 1
@@ -364,10 +375,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1529639735558506143}
   playerType: {fileID: 0}
-  isActive: 1
-  destroyParentOnHit: 0
   OverrideData: {fileID: 0}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!1 &4132256652347617111
 GameObject:
   m_ObjectHideFlags: 0
@@ -430,10 +440,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1529639735558506143}
   playerType: {fileID: 0}
-  isActive: 1
-  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: b80957aebb9bfba4aa9b4bd1aae027d3, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!1 &4310407241929829709
 GameObject:
   m_ObjectHideFlags: 0
@@ -480,10 +489,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1529639735558506143}
   playerType: {fileID: 0}
-  isActive: 1
-  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 69b23d18bc4fe79409c3d2317ab87702, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!58 &1795239558532739777
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -500,21 +508,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &2251526824488714663
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2054295004346856378}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b37eee839ce107439115fce96e58636, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  assetPathName: SwordFrog
-  facing: 0
-  W_Down_Projectiles: 3
 --- !u!1 &4819292497155786830
 GameObject:
   m_ObjectHideFlags: 0
@@ -577,10 +570,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1529639735558506143}
   playerType: {fileID: 0}
-  isActive: 1
-  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 5957a49b76214454da789f2f7df30a70, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!1 &4958860365626917445
 GameObject:
   m_ObjectHideFlags: 0
@@ -643,10 +635,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1529639735558506143}
   playerType: {fileID: 0}
-  isActive: 1
-  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 0dbbea018df4b8c48bb8c667aeb295ab, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!1 &6423110134256161442
 GameObject:
   m_ObjectHideFlags: 0
@@ -709,10 +700,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1529639735558506143}
   playerType: {fileID: 0}
-  isActive: 1
-  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 8099fee01f4e8a24b8111d7ff51035b2, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!1 &7392062597308714465
 GameObject:
   m_ObjectHideFlags: 0
@@ -759,10 +749,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1529639735558506143}
   playerType: {fileID: 0}
-  isActive: 1
-  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 507e00187e05dbb4f89c951a2d4d9364, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
   SuccessState: Grab_Air_Success
   victim: {fileID: 0}
   cancelable: 1
@@ -828,10 +817,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parent: {fileID: 1529639735558506143}
   playerType: {fileID: 0}
-  isActive: 1
-  destroyParentOnHit: 0
   OverrideData: {fileID: 11400000, guid: 45a955ab58dd13441aa664369eca3036, type: 2}
   AttackData: {fileID: 0}
+  projectilePriority: -2
 --- !u!70 &363259347589699710
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -1091,6 +1079,11 @@ PrefabInstance:
         type: 3}
       propertyPath: dacusSpeed
       value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 3106753082241659641, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: fullhopFrames
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3106753082241659643, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}

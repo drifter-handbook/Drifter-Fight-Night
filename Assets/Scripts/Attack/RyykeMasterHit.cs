@@ -33,12 +33,9 @@ public class RyykeMasterHit : MasterHit
     int targetStone = -1;
 
 
-
-	new void FixedUpdate()
+    new void UpdateMasterHit()
     {
-        if(!isHost)return;
-
-        base.FixedUpdate();
+        base.UpdateMasterHit();
 
         //Remove the arm if it is not needed
         if(arm!= null &&(movement.ledgeHanging || status.HasEnemyStunEffect())) deleteArm();
@@ -46,43 +43,43 @@ public class RyykeMasterHit : MasterHit
         //remove all tombstones on death
         if(status.HasStatusEffect(PlayerStatusEffect.DEAD))
         {
-       		for(int i = 0; i <3; i++)
-       			if(tombstones[i] != null)
-       				Destroy(tombstones[i].gameObject);
+            for(int i = 0; i <3; i++)
+                if(tombstones[i] != null)
+                    Destroy(tombstones[i].gameObject);
         }
 
 
         //Listen for a directional input in empowered down special
         if(listeningForDirection)
         {
-        	targetStone = nearbyStone;
-        	if(drifter.input[0].MoveY  !=0 || drifter.input[0].MoveX != 0)
-      		{
+            targetStone = nearbyStone;
+            if(drifter.input[0].MoveY  !=0 || drifter.input[0].MoveX != 0)
+            {
                 movement.updateFacing();
-        		if(drifter.input[0].MoveY > 0) targetStone = 0;
-        		else if(drifter.input[0].MoveY < 0) targetStone = 2;
-        		else targetStone = 1;
-        		playState("W_Down_Emerge_Empowered");
-        	}
-        	
+                if(drifter.input[0].MoveY > 0) targetStone = 0;
+                else if(drifter.input[0].MoveY < 0) targetStone = 2;
+                else targetStone = 1;
+                playState("W_Down_Emerge_Empowered");
+            }
+            
         }
         else
-        	targetStone = -1;
+            targetStone = -1;
 
         //Listen for movement commands in unempowered down special
         if(listeningForMovement)
         {
-        	movement.move(14f);
-        	if((!drifter.input[1].Jump && drifter.input[0].Jump) || burrowTime <=0)
-        	{
-        		attacks.SetupAttackID(DrifterAttackType.W_Down);
-        		playState("W_Down_Emerge");
-        		listeningForMovement = false;
-        	}
-        	else if(drifter.input[0].MoveX !=0)
-        		playState("W_Down_Move");
-        	else
-        		playState("W_Down_Idle");
+            movement.move(14f);
+            if((!drifter.input[1].Jump && drifter.input[0].Jump) || burrowTime <=0)
+            {
+                attacks.SetupAttackID(DrifterAttackType.W_Down);
+                playState("W_Down_Emerge");
+                listeningForMovement = false;
+            }
+            else if(drifter.input[0].MoveX !=0)
+                playState("W_Down_Move");
+            else
+                playState("W_Down_Idle");
 
         }
 
@@ -93,6 +90,7 @@ public class RyykeMasterHit : MasterHit
         }
 
         isNearStone();
+
     }
 
     public void playStateByStone(string state)

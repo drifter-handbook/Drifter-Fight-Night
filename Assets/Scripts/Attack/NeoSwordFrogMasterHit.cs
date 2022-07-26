@@ -16,11 +16,9 @@ public class NeoSwordFrogMasterHit : MasterHit
 
     Vector2 HeldDirection = Vector2.zero;    
 
-    new void FixedUpdate()
+    new void UpdateMasterHit()
     {
-        if(!isHost)return;
-
-        base.FixedUpdate();
+        base.UpdateMasterHit();
 
         if(status.HasStatusEffect(PlayerStatusEffect.DEAD))
         {
@@ -42,6 +40,7 @@ public class NeoSwordFrogMasterHit : MasterHit
             HeldDirection += new Vector2(drifter.input[0].MoveX,drifter.input[0].MoveY);
             if(HeldDirection != Vector2.zero || delaytime > 5) NeutralSpecialSlash();
         }
+
     }
 
     public void listenForDirection()

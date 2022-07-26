@@ -69,7 +69,11 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     //Every frame, listen for a given event if the flag is active
     protected void FixedUpdate()
     {
-        if(!isHost)return;
+        UpdateMasterHit();
+    }
+
+    protected void UpdateMasterHit()
+    {
         attackWasCanceled = true;
         //Clear all flags if the character is dead or stunned by an opponent
 
@@ -90,18 +94,6 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
                 clearMasterhitVars();
             }
         }
-        //Handles if bounced off stage
-        // else if(knockdownFlag && !status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN))
-        // {
-        //     knockdownFlag = false;
-        //     movement.terminalVelocity = terminalVelocity;
-        //     if(!status.HasEnemyStunEffect())
-        //     {
-        //         drifter.knockedDown = false;
-        //         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,3);
-        //         playState("Jump_End");
-        //     }
-        // }
 
         else if(status.HasEnemyStunEffect() || movement.ledgeHanging)
         {
@@ -222,6 +214,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         }
         else
             attackWasCanceled = false;
+
     }
 
     //Flag the character to begin listen for a given event

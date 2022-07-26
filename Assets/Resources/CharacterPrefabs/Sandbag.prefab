@@ -198,6 +198,20 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: 018a84f61a0bfaa40996634f967982c5, type: 2}
   AttackData: {fileID: 0}
   projectilePriority: -2
+--- !u!114 &7166794766402292572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5042137962990405991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64e2f60dc2428f54da6a61524f968914, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  assetPathName: 
+  facing: 0
 --- !u!1 &5126908284875591264
 GameObject:
   m_ObjectHideFlags: 0
@@ -462,20 +476,6 @@ CapsuleCollider2D:
   m_Offset: {x: -0.00495739, y: 0.42050764}
   m_Size: {x: 0.29575196, y: 0.8056154}
   m_Direction: 0
---- !u!114 &7166794766402292572
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5042137962990405991}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64e2f60dc2428f54da6a61524f968914, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  assetPathName: 
-  facing: 0
 --- !u!1 &8987977859378671239
 GameObject:
   m_ObjectHideFlags: 0
@@ -804,6 +804,11 @@ PrefabInstance:
         type: 3}
       propertyPath: dashSpeed
       value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 3106753082241659641, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: fullhopFrames
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3106753082241659643, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}

@@ -146,7 +146,7 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
 
             //Cause the screen to shake slightly on hit, as long as the move has knockback
             if(Shake != null && attackData.Knockback !=0){
-                Shake.startShakeCoroutine((willCollideWithBlastZone(GetComponent<Rigidbody2D>(), HitstunDuration)?0.3f:0.1f),Mathf.Clamp((((attackData.Knockback - 10)/100f + (attackData.AttackDamage -10)/44f)) * attackData.KnockbackScale,.07f,.8f));
+                Shake.Shake((willCollideWithBlastZone(GetComponent<Rigidbody2D>(), HitstunDuration)?18:6),Mathf.Clamp((((attackData.Knockback - 10)/100f + (attackData.AttackDamage -10)/44f)) * attackData.KnockbackScale,.07f,.8f));
             }
 
             //If the defender is grounded, use the absolute value of the y component of the velocity

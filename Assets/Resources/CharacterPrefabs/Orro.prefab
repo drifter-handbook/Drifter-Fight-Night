@@ -130,6 +130,20 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.5, y: 1}
   m_Direction: 1
+--- !u!114 &8581932991194475550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1964909639717915068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9eb60ad8c3b2e04ba3115bb2193156e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  assetPathName: Orro
+  facing: 0
 --- !u!1 &3822571255742426186
 GameObject:
   m_ObjectHideFlags: 0
@@ -263,21 +277,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.5, y: 1}
   m_Direction: 0
---- !u!114 &8581932991194475550
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1964909639717915068}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9eb60ad8c3b2e04ba3115bb2193156e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  assetPathName: Orro
-  facing: 0
-  bubble: {fileID: 0}
 --- !u!1001 &4170800340175687277
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -486,6 +485,11 @@ PrefabInstance:
         type: 3}
       propertyPath: dacusSpeed
       value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 3106753082241659641, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: fullhopFrames
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3106753082241659643, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
