@@ -427,7 +427,7 @@ public class OrroReworkMasterHit : MasterHit
         listeningForDirection = false;
     }
 
-    public new void clearMasterhitVars()
+    public override void clearMasterhitVars()
     {
     	base.clearMasterhitVars();
         listeningForMovement = false;

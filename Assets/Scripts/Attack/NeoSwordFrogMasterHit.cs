@@ -49,7 +49,7 @@ public class NeoSwordFrogMasterHit : MasterHit
         delaytime = 0;
     }
 
-    public new void clearMasterhitVars()
+    public override void clearMasterhitVars()
     {
         base.clearMasterhitVars();
         listeningForDirection = false;

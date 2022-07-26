@@ -5,7 +5,7 @@ using UnityEngine;
 public class DrifterCannonMasterHit : MasterHit
 {
 
-    int boostTime = 90;
+    int boostTime = 70;
     bool jumpGranted = false;
     int charge = 1;
     protected bool listeningForWallbounce = false;
@@ -39,7 +39,8 @@ public class DrifterCannonMasterHit : MasterHit
         if(listeningForDirection)
         {
             movement.updateFacing();
-            rb.velocity = new Vector2(Mathf.Lerp((!status.HasStatusEffect(PlayerStatusEffect.SLOWED)? drifter.input[0].MoveX * 20f:(.6f*20f)),rb.velocity.x,.75f),(drifter.input[0].MoveY >0?Mathf.Lerp(35f,rb.velocity.y,.45f):rb.velocity.y));
+            movement.move(10f);
+            rb.velocity = new Vector2(rb.velocity.x,(drifter.input[0].MoveY >0?Mathf.Lerp(25f,rb.velocity.y,.45f):rb.velocity.y));
 
             if(drifter.input[0].MoveY > 0)
             {
@@ -135,7 +136,7 @@ public class DrifterCannonMasterHit : MasterHit
         listeningForWallbounce = true;
     }
 
-    public new void clearMasterhitVars()
+    public override void clearMasterhitVars()
     {
         base.clearMasterhitVars();
         listeningForWallbounce = false;

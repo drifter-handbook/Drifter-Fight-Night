@@ -308,7 +308,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
 
     //Clear all flags
-    public void clearMasterhitVars()
+    public virtual void clearMasterhitVars()
     {
         if(!isHost)return;
         specialTappedFlag = false;

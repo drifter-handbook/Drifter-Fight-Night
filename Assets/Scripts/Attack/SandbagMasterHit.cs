@@ -45,7 +45,7 @@ public class SandbagMasterHit : MasterHit
         dust = false;
     }
 
-	new public void clearMasterhitVars()
+	public override void clearMasterhitVars()
 	{
 		base.clearMasterhitVars();
 		dust = false;
