@@ -519,7 +519,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
         int adv = attackData.HitStun;
         if (defender != null && defender.guarding)
             adv = attackData.ShieldStun;
-        return attacker.GetCurrentAnimationRemainder() + adv * framerateScalar;
+        return adv * framerateScalar;
     }
 
     protected bool willCollideWithBlastZone(Rigidbody2D rigidbody, float hitstun)
