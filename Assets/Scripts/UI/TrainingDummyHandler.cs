@@ -63,36 +63,6 @@ public class TrainingDummyHandler : MonoBehaviour
     void FixedUpdate()
     {
 
-        // if(onWakeup && Dummy.knockedDown)
-        // {
-        //     switch(wakeupMode)
-        //     {
-        //         case 0:
-        //             Dummy.input[0] = new PlayerInputData(){MoveX = Dummy.movement.Facing};
-        //             Dummy.input[2] = new PlayerInputData(){MoveX = Dummy.movement.Facing};
-        //             break;
-        //         case 1:
-        //             Dummy.input[0] = new PlayerInputData(){Jump = true};
-        //             break;
-        //         case -1:
-        //         default:
-        //             break;
-        //     }
-        // }
-        // if(onBlock && Dummy.status.HasEnemyStunEffect() && Dummy.guarding)
-        // {
-        //     Dummy.input[0] = new PlayerInputData(){MoveX = Dummy.movement.Facing};
-        //     Dummy.input[2] = new PlayerInputData(){MoveX = Dummy.movement.Facing};
-        // }
-
-
-        // if((Dummy.movement.dashing || Dummy.movement.jumping ))
-        // {
-        //     Dummy.input[0] = new PlayerInputData() {Guard = onHit};
-        //     Dummy.input[1] = new PlayerInputData();
-        //     Dummy.input[2] = new PlayerInputData();
-        // }
-
         if(onWakeup && Dummy.knockedDown)
         {
             if(resetFlag)setDummyInput(reactionState);
@@ -241,5 +211,10 @@ public class TrainingDummyHandler : MonoBehaviour
         {
             Dummy.input[i] = p_input[i];
         }
+    }
+
+    void controlDummy()
+    {
+        
     }
 }

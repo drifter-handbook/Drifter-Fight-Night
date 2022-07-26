@@ -19,6 +19,7 @@ public class StatusBar : MonoBehaviour
 
     void FixedUpdate()
     {
+        if(status == null) Destroy(gameObject);
         if(duration < status.remainingDuration(ef)) duration = status.remainingDuration(ef);
         if(duration == 0) Destroy(gameObject);
         bar.fillAmount = status.remainingDuration(ef)/duration;
