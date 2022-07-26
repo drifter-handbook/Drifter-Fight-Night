@@ -31,7 +31,7 @@ public class LucilleMasterHit : MasterHit
         grabBoxes = drifter.GetComponentsInChildren<GrabHitboxCollision>(true);
     }
 
-    new void UpdateMasterHit()
+    override protected void UpdateMasterHit()
     {
         base.UpdateMasterHit();
 

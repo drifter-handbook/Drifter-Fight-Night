@@ -8,7 +8,7 @@ public class SandbagMasterHit : MasterHit
 	GameObject sandblast;
 	int dustCount = 7;
 
-	new void UpdateMasterHit()
+	override protected void UpdateMasterHit()
     {
         base.UpdateMasterHit();
 

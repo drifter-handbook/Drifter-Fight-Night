@@ -12,7 +12,7 @@ public class NeoParhelionMasterHit : MasterHit
     bool listeningForDirection = false;
 
 
-    new void UpdateMasterHit()
+    override protected void UpdateMasterHit()
     {
         base.UpdateMasterHit();
 

@@ -5,12 +5,13 @@ using UnityEngine;
 public class DrifterCannonMasterHit : MasterHit
 {
 
-    float boostTime = 2.6f;
+    int boostTime = 90;
     bool jumpGranted = false;
     int charge = 1;
-    bool listeningForWallbounce = false;
+    protected bool listeningForWallbounce = false;
+    protected bool listeningForDirection = false;
 
-    new void UpdateMasterHit()
+    override protected void UpdateMasterHit()
     {
         base.UpdateMasterHit();
 
@@ -35,7 +36,61 @@ public class DrifterCannonMasterHit : MasterHit
             unpauseGravity();
         }
 
+        if(listeningForDirection)
+        {
+            movement.updateFacing();
+            rb.velocity = new Vector2(Mathf.Lerp((!status.HasStatusEffect(PlayerStatusEffect.SLOWED)? drifter.input[0].MoveX * 20f:(.6f*20f)),rb.velocity.x,.75f),(drifter.input[0].MoveY >0?Mathf.Lerp(35f,rb.velocity.y,.45f):rb.velocity.y));
+
+            if(drifter.input[0].MoveY > 0)
+            {
+                drifter.PlayAnimation("W_Up_Loop");
+                boostTime --;
+            }
+            else
+            {
+                drifter.PlayAnimation("W_Up_Idle");
+            }
+            if(boostTime <=0)
+            {
+                listeningForDirection = false;
+                drifter.PlayAnimation("W_Up_End");
+            }
+        }
+
     }
+
+    public void listenForDirection()
+    {
+        listeningForDirection = true;
+        boostTime = 90;
+        listenForGrounded("Jump_End");
+    }
+
+    public void cancelWUp()
+    {
+        listeningForDirection = false;
+    }
+
+
+    // //Fix this shit
+    // public void upWGlide()
+    // {
+    //     if(!isHost)return;
+
+    //     movement.updateFacing();
+    //     rb.velocity = new Vector2(Mathf.Lerp((!status.HasStatusEffect(PlayerStatusEffect.SLOWED)? drifter.input[0].MoveX * 20f:(.6f*20f)),rb.velocity.x,.75f),(drifter.input[0].MoveY >0?Mathf.Lerp(35f,rb.velocity.y,.45f):rb.velocity.y));
+    //     if(drifter.input[0].MoveY > 0 && activeCancelFlag)
+    //     {
+    //         drifter.PlayAnimation("W_Up_Loop");
+    //         boostTime -= .1f;
+    //     } 
+    //     else if(activeCancelFlag) drifter.PlayAnimation("W_Up_Idle");
+    //     if(boostTime <=0)drifter.PlayAnimation("W_Up_End");
+        
+    // }
+
+
+
 
     public void SairExplosion()
     {
@@ -84,6 +139,7 @@ public class DrifterCannonMasterHit : MasterHit
     {
         base.clearMasterhitVars();
         listeningForWallbounce = false;
+        listeningForDirection = false;
     } 
 
     public void UpAirExplosion()
@@ -122,29 +178,6 @@ public class DrifterCannonMasterHit : MasterHit
             hitbox.AttackType = attacks.AttackType;
             hitbox.Facing = facing;
        }
-    }
-
-    public void applyLandingLag()
-    {
-        movement.canLandingCancel = true;
-        boostTime = 2.6f;
-    }
-
-    //Fix this shit
-    public void upWGlide()
-    {
-        if(!isHost)return;
-
-        movement.updateFacing();
-        rb.velocity = new Vector2(Mathf.Lerp((!status.HasStatusEffect(PlayerStatusEffect.SLOWED)? drifter.input[0].MoveX * 20f:(.6f*20f)),rb.velocity.x,.75f),(drifter.input[0].MoveY >0?Mathf.Lerp(35f,rb.velocity.y,.45f):rb.velocity.y));
-        if(drifter.input[0].MoveY > 0 && activeCancelFlag)
-        {
-            drifter.PlayAnimation("W_Up_Loop");
-            boostTime -= .1f;
-        } 
-        else if(activeCancelFlag) drifter.PlayAnimation("W_Up_Idle");
-        if(boostTime <=0)drifter.PlayAnimation("W_Up_End");
-        
     }
 
     //W_Neutral

@@ -33,7 +33,7 @@ public class RyykeMasterHit : MasterHit
     int targetStone = -1;
 
 
-    new void UpdateMasterHit()
+    override protected void UpdateMasterHit()
     {
         base.UpdateMasterHit();
 

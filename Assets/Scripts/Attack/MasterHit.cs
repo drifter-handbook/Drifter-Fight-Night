@@ -72,7 +72,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         UpdateMasterHit();
     }
 
-    protected void UpdateMasterHit()
+    protected virtual void UpdateMasterHit()
     {
         attackWasCanceled = true;
         //Clear all flags if the character is dead or stunned by an opponent

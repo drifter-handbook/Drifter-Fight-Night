@@ -97,11 +97,6 @@ public class PlayerMovement : MonoBehaviour
     Drifter drifter;
     GameObjectShake shake;
 
-    
-    //Jump Coroutines
-    Coroutine jumpCoroutine;
-    Coroutine varyJumpHeight;
-
     //Situational Iteration variables
     float dropThroughTime;
     int ringTime = 6;
@@ -279,7 +274,7 @@ public class PlayerMovement : MonoBehaviour
             jumpTimer += (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f);
 
             //Shorthop
-            if(jumpTimer >= 0 && prevJumpTimer <0 && (!drifter.input[0].Jump || status.HasStatusEffect(PlayerStatusEffect.END_LAG)))
+            if(jumpTimer >= 0 && grounded && prevJumpTimer <0 && (!drifter.input[0].Jump || status.HasStatusEffect(PlayerStatusEffect.END_LAG)))
             {
                 jumpTimer = fullhopFrames;
                 rb.velocity = new Vector2(rb.velocity.x, jumpSpeed * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f));

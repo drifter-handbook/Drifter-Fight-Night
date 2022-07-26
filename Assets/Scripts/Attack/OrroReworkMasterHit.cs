@@ -31,7 +31,7 @@ public class OrroReworkMasterHit : MasterHit
         Empowered = false;
     }
 
-    new void UpdateMasterHit()
+    override protected void UpdateMasterHit()
     {
         base.UpdateMasterHit();
 

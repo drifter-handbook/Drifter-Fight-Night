@@ -16,7 +16,7 @@ public class NeoSwordFrogMasterHit : MasterHit
 
     Vector2 HeldDirection = Vector2.zero;    
 
-    new void UpdateMasterHit()
+    override protected void UpdateMasterHit()
     {
         base.UpdateMasterHit();
 
