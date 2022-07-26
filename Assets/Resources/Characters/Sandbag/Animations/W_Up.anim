@@ -762,10 +762,10 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0
-    functionName: applyArmour
+    functionName: blockFastFalling
     data: 
     objectReferenceParameter: {fileID: 0}
-    floatParameter: 6
+    floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.25

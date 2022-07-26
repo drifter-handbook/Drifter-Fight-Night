@@ -58,6 +58,9 @@ public class PlayerMovement : MonoBehaviour
     }
     [NonSerialized]
     public bool canLandingCancel = false;
+
+    [NonSerialized]
+    public bool canFastFall = true;
     [NonSerialized]
     public bool jumping = false;
     [NonSerialized]
@@ -545,9 +548,9 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //Drop through platforms && fastfall
-        if(drifter.doubleTappedY() && drifter.input[0].MoveY < 0 && !gravityPaused)
+        if(drifter.doubleTappedY() && drifter.input[0].MoveY < 0 && !gravityPaused && canFastFall)
         {
-            canLandingCancel = true;
+            //canLandingCancel = true;
             gameObject.layer = 13;
             rb.velocity = new Vector2(rb.velocity.x,Mathf.Min(-terminalVelocity /2f,rb.velocity.y));
             dropThroughTime = Time.time;
@@ -837,7 +840,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //Burst/Defensive Cancel
-        else if(!drifter.guarding && drifter.superCharge >= 2f && status.HasEnemyStunEffect() && !status.HasStatusEffect(PlayerStatusEffect.GRABBED && !status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN))
+        else if(!drifter.guarding && drifter.superCharge >= 2f && status.HasEnemyStunEffect() && !status.HasStatusEffect(PlayerStatusEffect.GRABBED) && !status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN))
         {
             animator.enabled = true;
             hitstun = false;

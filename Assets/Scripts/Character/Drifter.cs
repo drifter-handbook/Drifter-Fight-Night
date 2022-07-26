@@ -312,6 +312,7 @@ public class Drifter : MonoBehaviour, INetworkInit
         movement.canLandingCancel = false;
         movement.jumping = false;
         movement.dashing = false;
+        movement.canFastFall = true;
         canFeint = true;
         canSuper = true;
         clearGuardFlags();

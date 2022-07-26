@@ -607,4 +607,9 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         facing = movement.Facing;
         movement.spawnJuiceParticle(transform.position + new Vector3(offset * facing,0,0), MovementParticleMode.Restitution);
     }
+
+    public void blockFastFalling()
+    {
+        movement.canFastFall = false;
+    }
 }
