@@ -16,6 +16,8 @@ public class TrainingDummyHandler : MonoBehaviour
 
     int wakeupMode = -1;
 
+    bool onHit = false;
+
 	int option;
 
 	void Start()
@@ -45,10 +47,16 @@ public class TrainingDummyHandler : MonoBehaviour
                     break;
             }
         }
-
-        if(wakeupMode >=0 &&(Dummy.movement.dashing || Dummy.movement.jumping ))
+        if(onHit && Dummy.status.HasEnemyStunEffect() && Dummy.guarding)
         {
-            Dummy.input[0] = new PlayerInputData();
+            Dummy.input[0] = new PlayerInputData(){MoveX = Dummy.movement.Facing};
+            Dummy.input[2] = new PlayerInputData(){MoveX = Dummy.movement.Facing};
+        }
+
+
+        if((wakeupMode >=0 || onHit)&&(Dummy.movement.dashing || Dummy.movement.jumping ))
+        {
+            Dummy.input[0] = new PlayerInputData() {Guard = onHit};
             Dummy.input[1] = new PlayerInputData();
             Dummy.input[2] = new PlayerInputData();
         }
@@ -59,6 +67,7 @@ public class TrainingDummyHandler : MonoBehaviour
     void DropdownValueChanged(Dropdown change)
     {
         wakeupMode = -1;
+        onHit = false;
     	switch(change.value)
     	{
     		case 0:
@@ -77,8 +86,10 @@ public class TrainingDummyHandler : MonoBehaviour
                 wakeupMode = 1;
                 break;
     		case 5:
-
+                Dummy.input[0] = new PlayerInputData(){Guard = true};
+                onHit = true;
     			break;
+            case 6:
     		default:
     			break;
     	};
