@@ -62,7 +62,7 @@ public class GameController : MonoBehaviour
     //* Prefabs
     public GameObject characterCardPrefab;
 
-    public GameObject escapeMenu;
+    //public GameObject escapeMenu;
 
     //* Variables
     string SceneName { get; set; }
