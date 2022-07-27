@@ -18,7 +18,7 @@ public class DrifterCannonMasterHit : MasterHit
         if(status.HasStatusEffect(PlayerStatusEffect.DEAD))
         {
             Empowered = false;
-            drifter.sparkle.SetState("Hide");
+            drifter.Sparkle(false);
             jumpGranted = false;
             SetCharge(1);
         }
@@ -186,8 +186,7 @@ public class DrifterCannonMasterHit : MasterHit
     	this.charge = charge;
     	Empowered = (charge == 3);
 
-        if(Empowered)drifter.sparkle.SetState("ChargeIndicator");
-        else drifter.sparkle.SetState("Hide");
+        drifter.Sparkle(Empowered);
 
         drifter.SetAnimationOverride(Empowered?1:0);
 

@@ -25,7 +25,7 @@ public class NeoSwordFrogMasterHit : MasterHit
         if(status.HasStatusEffect(PlayerStatusEffect.DEAD))
         {
             Empowered = false;
-            drifter.sparkle.SetState("Hide");
+            drifter.Sparkle(false);
             projnum = 0;
         }
 

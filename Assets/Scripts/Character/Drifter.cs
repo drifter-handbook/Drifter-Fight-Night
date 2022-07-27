@@ -35,43 +35,75 @@ public enum DrifterType
 
 }
 
+public class DrifterRollbackFrame: INetworkData, ICloneable
+{
+    public string Type { get; set; }
+    public PlayerInputData[] InputBuffer;
+    
+    public bool Guarding;
+    public bool PerfectGuarding;
+    public bool Parrying;
+    public bool GuardBreaking;
+    public bool CanFeint;
+    public bool CanSuper;
+    public bool KnockedDown;
+    public bool CanSpecialCancel; 
+    public bool Hidden;
+    public float SuperCharge;
+    public int Stocks;
+    public float DamageTaken;
+    
+    public int CancelTimer;
+    public bool ListenForSpecialCancel;
+    public bool SparkleMode;
+
+    public int AnimationOverrideIndex; 
+    public float AnimationSpeed;
+    public int AnimationClip;
+    public float AnimationTime;
+    public bool AnimatorEnabled;
+
+    public MovementRollbackFrame MovementFrame;
+
+    public MasterhitRollbackFrame MasterhitFrame;
+
+    public object Clone()
+    {
+        return new MovementRollbackFrame()
+        {};
+    }
+}
+
 
 
 /** 
  * This is the class that will be put into a prefab and instantiated 
  */
 [RequireComponent(typeof(PlayerMovement))]
-public class Drifter : MonoBehaviour, INetworkInit
+public class Drifter : MonoBehaviour
 {
     //Static values durring gameplay
     public PlayerMovement movement;
+    public PlayerStatus status;
+    public PlayerAttacks attacks;
+    
     public Animator animator;
-
-    NetworkSync sync;
-    public int Stocks {
-        get { return (int)sync["stocks"]; }
-        set { sync["stocks"] = value; }
-    }
-    public float DamageTaken {
-        get { return (float)sync["damageTaken"]; }
-        set { sync["damageTaken"] = value; }
-    }
 
     public AnimatorOverrideController[] animOverrides;
     public int myColor;
     public DrifterType drifterType;
     public int peerID;
-    public PlayerStatus status;
-    public SyncAnimatorStateHost sparkle;
+    
+    public Animator sparkle;
     public PlayerInput playerInputController;
 
-    bool isHost;
-
     //Serializeable values
-    public float animationSpeed = 1;
+    
     //Input Buffer
     public PlayerInputData[] input;
-    
+
+    // [NonSerialized]
+    // public float animationSpeed = 1;
     [NonSerialized]
     public bool guarding = false;
     [NonSerialized]
@@ -92,15 +124,17 @@ public class Drifter : MonoBehaviour, INetworkInit
     public bool hiddenFlag = false;
     [NonSerialized]
     public float superCharge = 2f;
+    [NonSerialized]
+    public bool sparkleMode = false;
+
+    public int Stocks;
+    public float DamageTaken;
     
     private int overrideIndex = 0; 
     private int cancelTimer = 0;
     private bool _canSpecialCancel = false;
-    private int animatorClipHash;
-    private float animatorTime;
-
-
-
+    //private int animatorClipHash;
+    //private float animatorTime;
 
     //Cancel Normals into Specials Logic
     public bool listenForSpecialCancel
@@ -117,23 +151,22 @@ public class Drifter : MonoBehaviour, INetworkInit
 
     
 
-    public void OnNetworkInit()
-    {
-        NetworkUtils.RegisterChildObject("PlayerAnimator", transform.Find("Sprite").gameObject);
-        NetworkUtils.RegisterChildObject("PlayerNumberIndicator", transform.Find("PlayerIndicator").gameObject);
-    }
+    // public void OnNetworkInit()
+    // {
+    //     NetworkUtils.RegisterChildObject("PlayerAnimator", transform.Find("Sprite").gameObject);
+    //     NetworkUtils.RegisterChildObject("PlayerNumberIndicator", transform.Find("PlayerIndicator").gameObject);
+    // }
 
-    public void Awake()
-    {
-        isHost = GameController.Instance.IsHost;
-        sync = GetComponent<NetworkSync>();
-        status = GetComponent<PlayerStatus>();
-    }
+    // public void Awake()
+    // {
+    //     isHost = GameController.Instance.IsHost;
+    //     sync = GetComponent<NetworkSync>();
+    //     status = GetComponent<PlayerStatus>();
+    // }
 
     public void Start()
     {
-        Stocks = !GameController.Instance.IsTraining ? 4:999;
-        //if(drifterType==DrifterType.Sandbag)SetColor(8);
+        Stocks = !GameController.Instance.IsTraining ? 4:9999;
         DamageTaken = 0f;
 
         if(animOverrides != null && animOverrides.Length > 0)animOverrides[0] = new AnimatorOverrideController(animator.runtimeAnimatorController);
@@ -169,14 +202,13 @@ public class Drifter : MonoBehaviour, INetworkInit
     public void SetCharge(float newCharge)
     { 
         if(superCharge != newCharge) superCharge=newCharge;
-        if(isHost) gameObject.GetComponent<SyncChargeHost>().setCharge(superCharge);
+        //gameObject.GetComponent<SyncChargeHost>().setCharge(superCharge);
     }
 
     //Grants the character additonal charge for their super meter, up to the cap of 5 bars
     public void gainSuperMeter(float charge)
     {
-        if(isHost)
-            superCharge = Mathf.Min(charge + superCharge,5f);
+        superCharge = Mathf.Min(charge + superCharge,5f);
     }
 
 
@@ -191,10 +223,8 @@ public class Drifter : MonoBehaviour, INetworkInit
         myColor = (colorID>=0?colorID:0);
         transform.GetChild(0).GetComponent<SpriteRenderer>().color = CharacterMenu.ColorFromEnum[(PlayerColor)myColor];
         transform.GetChild(2).GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)myColor]);
-        if(isHost){
-            transform.GetChild(0).GetComponent<SyncAnimatorStateHost>().SetState( (colorID < 8)?"P" + (colorID + 1):"P9");
-            gameObject.GetComponent<SyncColorDataHost>().setColor(myColor);
-        }
+        gameObject.GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)myColor]);
+        transform.GetChild(0).GetComponent<Animator>().Play( (colorID < 8)?"P" + (colorID + 1):"P9");
     }
 
     public void toggleHidden(bool hidden)
@@ -213,6 +243,15 @@ public class Drifter : MonoBehaviour, INetworkInit
     {
         transform.GetChild(0).localScale = new Vector2(Mathf.Abs(transform.GetChild(0).localScale.x) * facing,transform.GetChild(0).localScale.y);
         transform.GetChild(3).localScale = new Vector2(Mathf.Abs(transform.GetChild(3).localScale.x) * facing,transform.GetChild(3).localScale.y);
+    }
+
+
+    public void Sparkle(bool p_mode)
+    {
+        if(sparkleMode ==p_mode) return;
+
+        sparkleMode = p_mode;
+        sparkle.Play(p_mode?"ChargeIndicator":"Hide");
     }
 
     //Replaces the animator state transition function
@@ -236,8 +275,8 @@ public class Drifter : MonoBehaviour, INetworkInit
     private void PlayAnimation(int p_state, float p_normalizedTime)
     {
         animator.Play(p_state,-1,p_normalizedTime);
-        animatorClipHash = p_state;
-        animatorTime = p_normalizedTime;
+        // animatorClipHash = p_state;
+        // animatorTime = p_normalizedTime;
     }
 
 
@@ -253,14 +292,17 @@ public class Drifter : MonoBehaviour, INetworkInit
         overrideIndex = p_index;
     }
 
-    public void SetAnimationSpeed(float speed)
+    public void SetAnimationSpeed(float p_speed)
     {
-        animationSpeed = speed;
-       
-        if(!isHost)return;
-        animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetSpeed(speed);
-
+        animator.speed = p_speed;
     }
+
+    public void ToggleAnimator(bool p_mode)
+    {
+        animator.enabled = p_mode;
+    }
+
+
 
     //Return to idle is called anytime the player regains control
     public void returnToIdle()
@@ -273,8 +315,8 @@ public class Drifter : MonoBehaviour, INetworkInit
         canFeint = true;
         canSuper = true;
         clearGuardFlags();
-        if(movement.grounded)animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState("Idle");
-        else animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState("Hang");
+        if(movement.grounded)PlayAnimation("Idle");
+        else PlayAnimation("Hang");
         if(status.HasStatusEffect(PlayerStatusEffect.END_LAG)) status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0);
         if(status.HasStatusEffect(PlayerStatusEffect.FLATTEN)) status.ApplyStatusEffect(PlayerStatusEffect.FLATTEN,0);
         if(status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN))  status.ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,0);

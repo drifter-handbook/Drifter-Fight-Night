@@ -49,10 +49,7 @@ public class OrroReworkMasterHit : MasterHit
             Empowered = false;
         }
 
-        if(bean.alive && bean.canAct)
-            drifter.sparkle.SetState("ChargeIndicator");
-        else
-            drifter.sparkle.SetState("Hide");
+        drifter.Sparkle(bean.alive && bean.canAct);
 
         if(status.HasEnemyStunEffect() || movement.ledgeHanging)
         {

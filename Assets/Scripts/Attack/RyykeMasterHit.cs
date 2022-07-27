@@ -230,14 +230,14 @@ public class RyykeMasterHit : MasterHit
         if(nearbyStone >=0 && tombstones[nearbyStone].active && !Empowered && tombstones[nearbyStone].canAct)
         {
             //Show the empowered sparkle
-            drifter.sparkle.SetState("ChargeIndicator");
+            drifter.Sparkle(true);
             Empowered = true;
         }
 
         //If the reset flag is set, de-empower Ryyke and hide the sparkle.
     	if(reset)
     	{
-    		if(Empowered)drifter.sparkle.SetState("Hide");
+    		if(Empowered)drifter.Sparkle(false);
     		Empowered = false;
     		nearbyStone = -1;
     	}

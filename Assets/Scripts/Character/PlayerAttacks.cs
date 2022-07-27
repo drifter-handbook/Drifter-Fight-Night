@@ -43,9 +43,9 @@ public class PlayerAttacks : MonoBehaviour
         { DrifterAttackType.Super_Cancel, "Super_Cancel" },
     };
 
-    static int nextID = 0;
+    
     // get a new attack ID
-    public static int NextID { get { nextID++;if(nextID>100)nextID=0; return nextID; } }
+    
 
     // current attack ID and Type, used for outgoing attacks
     public int AttackID { get; private set; }
@@ -63,6 +63,10 @@ public class PlayerAttacks : MonoBehaviour
 
     public bool shareRecoveries = false;
 
+
+    static int nextID = 0;
+
+    public static int NextID { get { nextID++;if(nextID>100)nextID=0; return nextID; } set{ nextID = value;}}
     [NonSerialized]
     public int currentUpRecoveries;
     [NonSerialized]
@@ -72,16 +76,8 @@ public class PlayerAttacks : MonoBehaviour
     [NonSerialized]
     public int currentNeutralRecoveries;
 
-    [NonSerialized]
-    public bool ledgeHanging = false;
-    [NonSerialized]
-    public int Facing = 0;
-
     Drifter drifter;
-    PlayerStatus status;
-    Animator animator;
     IMasterHit hit;
-    PlayerMovement movement;
 
     NetworkSync sync;
 
@@ -99,9 +95,6 @@ public class PlayerAttacks : MonoBehaviour
     void Start()
     {
         drifter = GetComponent<Drifter>();
-        animator = drifter.animator;
-        status = GetComponent<PlayerStatus>();
-        movement = GetComponent<PlayerMovement>();
         hit = GetComponentInChildren<IMasterHit>();
         sync = GetComponent<NetworkSync>();
         currentUpRecoveries = maxRecoveries;
@@ -117,12 +110,12 @@ public class PlayerAttacks : MonoBehaviour
         if (!GameController.Instance.IsHost || GameController.Instance.IsPaused)
             return;
 
-        bool canAct = !status.HasStunEffect() && !drifter.guarding && !ledgeHanging;
-        bool canSpecial = !status.HasStunEffect() && !ledgeHanging;
+        bool canAct = !drifter.status.HasStunEffect() && !drifter.guarding && !drifter.movement.ledgeHanging;
+        bool canSpecial = !drifter.status.HasStunEffect() && !drifter.movement.ledgeHanging;
 
-        if((movement.grounded && !status.HasStatusEffect(PlayerStatusEffect.END_LAG)) || status.HasEnemyStunEffect()) resetRecovery();
+        if((drifter.movement.grounded && !drifter.status.HasStatusEffect(PlayerStatusEffect.END_LAG)) || drifter.status.HasEnemyStunEffect()) resetRecovery();
         
-        if(superPressed())  movement.superCancel();
+        if(superPressed())  drifter.movement.superCancel();
         
         else if (grabPressed() && canAct) useGrab();
 
@@ -133,7 +126,7 @@ public class PlayerAttacks : MonoBehaviour
 
     public void useSpecial()
     {
-        movement.canLandingCancel = false;
+        drifter.movement.canLandingCancel = false;
         if(drifter.input[0].MoveY > 0 && currentUpRecoveries > 0)
             {
                 StartAttack(DrifterAttackType.W_Up);
@@ -176,7 +169,7 @@ public class PlayerAttacks : MonoBehaviour
     {
         drifter.canSpecialCancelFlag = true;
 
-        if (movement.grounded)
+        if (drifter.movement.grounded)
         {
             if(drifter.input[0].MoveY > 0)StartAttack(DrifterAttackType.Ground_Q_Up);
             else if(drifter.input[0].MoveY < 0)StartAttack(DrifterAttackType.Ground_Q_Down);
@@ -185,7 +178,7 @@ public class PlayerAttacks : MonoBehaviour
         }
         else
         {   
-            movement.canLandingCancel = true;    
+            drifter.movement.canLandingCancel = true;    
             if(drifter.input[0].MoveY > 0)StartAttack(DrifterAttackType.Aerial_Q_Up);
             else if(drifter.input[0].MoveY < 0)StartAttack(DrifterAttackType.Aerial_Q_Down);
             else if(drifter.input[0].MoveX!=0)StartAttack(DrifterAttackType.Aerial_Q_Side);
@@ -195,10 +188,10 @@ public class PlayerAttacks : MonoBehaviour
 
     public void useGrab()
     {
-        if (movement.grounded)StartAttack(DrifterAttackType.E_Side);
+        if (drifter.movement.grounded)StartAttack(DrifterAttackType.E_Side);
         else
         {
-            movement.canLandingCancel = true;
+            drifter.movement.canLandingCancel = true;
             StartAttack(DrifterAttackType.E_Air);  
         } 
     }
@@ -261,12 +254,12 @@ public class PlayerAttacks : MonoBehaviour
     public void StartAttack(DrifterAttackType attackType)
     {
         drifter.gainSuperMeter(.05f);
-        movement.jumping = false;
+        drifter.movement.jumping = false;
         SetHitboxesActive(false);
-        status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,480);
+        drifter.status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,480);
         if(!AttackVariants[attackType])
             drifter.PlayAnimation(AnimatorStates[attackType]);
-        else if(movement.grounded)
+        else if(drifter.movement.grounded)
             drifter.PlayAnimation(AnimatorStates[attackType] + "_Ground");
         else
             drifter.PlayAnimation(AnimatorStates[attackType] + "_Air");
@@ -292,7 +285,7 @@ public class PlayerAttacks : MonoBehaviour
             hitbox.AttackType = AttackType;
             hitbox.AttackData = Attacks[AttackType];
             hitbox.isActive = true;
-            hitbox.Facing = Facing;
+            hitbox.Facing = drifter.movement.Facing;
         }
     }
     // called by hitboxes during attack animation

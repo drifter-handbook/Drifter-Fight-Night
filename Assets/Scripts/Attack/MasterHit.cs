@@ -1,6 +1,18 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+public class MasterhitRollbackFrame: INetworkData, ICloneable
+{
+    public string Type { get; set; }
+
+    public object Clone()
+    {
+        return new MasterhitRollbackFrame()
+        {};
+    }
+}
 
 public abstract class MasterHit : MonoBehaviour, IMasterHit
 {
