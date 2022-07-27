@@ -545,7 +545,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
 
 
-        if (xVel * hitstun/60f >= xDel || yVel * hitstun/60f >= yDel)
+        if (xVel * hitstun >= xDel || yVel * hitstun >= yDel)
             return true;
 
         return false;
@@ -591,7 +591,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
         }
        
 
-        if (xVel * hitstun/60f >= xDel || yVel * hitstun + (0.5 * g * hitstun/60f * hitstun) >= yDel)
+        if (xVel * hitstun >= xDel || yVel * hitstun + (0.5 * g * hitstun * hitstun) >= yDel)
             return true;
 
         return false;
