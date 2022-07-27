@@ -209,7 +209,7 @@ public class PlayerMovement : MonoBehaviour
 
         bool jumpPressed = !drifter.input[1].Jump && drifter.input[0].Jump;
         bool canAct = !status.HasStunEffect() && !drifter.guarding;// && !drifter.input[0].Guard;
-        bool canGuard = !status.HasStunEffect() && !jumping;
+        bool canGuard = !status.HasStunEffect() && !jumping && !ledgeHanging;
        
         bool moving = drifter.input[0].MoveX != 0;
 
@@ -783,6 +783,7 @@ public class PlayerMovement : MonoBehaviour
             spawnJuiceParticle(BodyCollider.bounds.center + new Vector3(Facing * (flipSprite?-1:1)* 1.5f,0), MovementParticleMode.Dash_Ring, Quaternion.Euler(0f,0f,0f), false);
             status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,480);
             drifter.PlayAnimation("Dash");
+            drifter.status.ApplyStatusEffect(PlayerStatusEffect.INVULN,10);
             jumping = false;
             currentDashes--;
             return true;
