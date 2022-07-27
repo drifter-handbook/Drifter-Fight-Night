@@ -25,7 +25,7 @@ public class PlayerDamageNumbers : MonoBehaviour
             return;
             
         if (persistTick > 0) {
-            persistTick -= Time.fixedDeltaTime;
+            persistTick--;
             if (persistTick <= 0) {
                 GameObject floaterClone = Instantiate(floater, gameObject.transform.position, gameObject.transform.rotation);
                 floaterClone.GetComponent<PlayerDamageFloater>().InitializeValues(accumilatedDamage, isTrue);
@@ -34,7 +34,7 @@ public class PlayerDamageNumbers : MonoBehaviour
         }
     }
 
-    public void Increment(float damage, bool isCombo, float hitstun) {
+    public void Increment(float damage, bool isCombo, int hitstun) {
         if(!GameController.Instance.IsTraining || damage <=0)return;
         gameObject.SetActive(true);
         if (persistTick > 0) {
@@ -51,7 +51,7 @@ public class PlayerDamageNumbers : MonoBehaviour
             DamageDisplayText.faceColor = Color.red;
             accumilatedDamage = damage;
         }
-        persistTick = 1 + hitstun;
+        persistTick = 60 + hitstun;
         DamageDisplayText.text = accumilatedDamage.ToString();
     }
 

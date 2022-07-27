@@ -14,6 +14,8 @@ public class NeoSwordFrogMasterHit : MasterHit
     bool listeningForDirection = false;
     int delaytime = 0;
 
+    int projnum;
+
     Vector2 HeldDirection = Vector2.zero;    
 
     override protected void UpdateMasterHit()
@@ -24,13 +26,14 @@ public class NeoSwordFrogMasterHit : MasterHit
         {
             Empowered = false;
             drifter.sparkle.SetState("Hide");
-            if(kunaiShoot != null)StopCoroutine(kunaiShoot);
+            projnum = 0;
         }
 
         if(movement.ledgeHanging || status.HasEnemyStunEffect())
         {
             if(tongue != null)deleteTongue();
             listeningForDirection = false;
+            projnum = 0;
         }
 
         //Handle neutral special attacks
@@ -40,6 +43,11 @@ public class NeoSwordFrogMasterHit : MasterHit
             HeldDirection += new Vector2(drifter.input[0].MoveX,drifter.input[0].MoveY);
             if(HeldDirection != Vector2.zero || delaytime > 5) NeutralSpecialSlash();
         }
+
+        if(projnum >0)
+            fireKunaiGroundLine();
+        else if(projnum <0)
+            fireKunaiAirLine();
 
     }
 
@@ -53,13 +61,14 @@ public class NeoSwordFrogMasterHit : MasterHit
     {
         base.clearMasterhitVars();
         listeningForDirection = false;
+        projnum = 0;
         deleteTongue();
     }
 
     public new void returnToIdle()
     {
         base.returnToIdle();
-        if(kunaiShoot != null)StopCoroutine(kunaiShoot);
+        projnum = 0;
         deleteTongue();
     }
 
@@ -137,7 +146,7 @@ public class NeoSwordFrogMasterHit : MasterHit
         if(!isHost)return;
         facing = movement.Facing;
         //Fire an arrow if Swordfrog has a charge
-        kunaiShoot = StartCoroutine(fireKunaiGroundLine());
+        projnum = W_Down_Projectiles;
 
     }
 
@@ -146,85 +155,71 @@ public class NeoSwordFrogMasterHit : MasterHit
         if(!isHost)return;
         facing = movement.Facing;
         //Fire an arrow if Swordfrog has a charge
-        kunaiShoot = StartCoroutine(fireKunaiAirLine());
+        projnum = -1 * W_Down_Projectiles;
 
     }
 
-    IEnumerator fireKunaiGroundLine()
+    void fireKunaiGroundLine()
     {
-        int projnum = W_Down_Projectiles;
+        
 
         Vector3 size = new Vector3(10f * facing, 10f, 1f);
         Vector3 pos = new Vector3(.2f * facing, 2.7f, 1f);
 
-        while(projnum > 0)
+
+        GameObject arrowA = host.CreateNetworkObject("Kunai", transform.position + new Vector3(1.5f * facing, 1.5f + W_Down_Projectiles/5f + (W_Down_Projectiles - projnum) * .6f, 0), transform.rotation);
+
+        arrowA.transform.localScale = size;
+        arrowA.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + 50f * facing, 0);
+
+        foreach (HitboxCollision hitbox in arrowA.GetComponentsInChildren<HitboxCollision>(true))
         {
-            yield return new WaitForSeconds(framerateScalar/3f);
-
-            GameObject arrowA = host.CreateNetworkObject("Kunai", transform.position + new Vector3(1.5f * facing, 1.5f + W_Down_Projectiles/5f + (W_Down_Projectiles - projnum) * .6f, 0), transform.rotation);
-
-            arrowA.transform.localScale = size;
-            arrowA.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + 50f * facing, 0);
-
-            foreach (HitboxCollision hitbox in arrowA.GetComponentsInChildren<HitboxCollision>(true))
-            {
-                hitbox.parent = drifter.gameObject;
-                hitbox.AttackID = attacks.AttackID;
-                hitbox.AttackType = attacks.AttackType;
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
                 
-                hitbox.Facing = facing;
-            }
-
-            projnum--;
-
-            refreshHitboxID();
-
+            hitbox.Facing = facing;
         }
+
+        projnum--;
+
+        refreshHitboxID();
 
     }
 
 
-    IEnumerator fireKunaiAirLine()
+    void fireKunaiAirLine()
     {
-        int projnum = W_Down_Projectiles;
 
         Vector3 size = new Vector3(10f, 10f, 1f);
         Vector3 pos = new Vector3(.2f * facing, 2.7f, 1f);
 
-        while(projnum > 0)
-        {
+    
+        float degreesA = facing >0 ? (335f  + projnum * 4f) : (215f  - projnum * 4f);
+        float radiansA = degreesA * Mathf.PI/180f;
+        float posDegrees = (facing >0 ? 335f  : 215f);
+        float posRadians = posDegrees * Mathf.PI/180f;
 
-            float degreesA = facing >0 ? (335f  - projnum * 4f) : (215f  + projnum * 4f);
-            float radiansA = degreesA * Mathf.PI/180f;
-            float posDegrees = (facing >0 ? 335f  : 215f);
-            float posRadians = posDegrees * Mathf.PI/180f;
-
-            yield return new WaitForSeconds(framerateScalar/3f);
-
-            GameObject arrowA = host.CreateNetworkObject("Kunai", transform.position + new Vector3(facing * (-.5f + projnum/2f), projnum/2f -.9f)
+        GameObject arrowA = host.CreateNetworkObject("Kunai", transform.position + new Vector3(facing * (-.5f - projnum/2f), projnum/-2f -.9f)
                                                                  + pos, 
                                                                  Quaternion.Euler(0,0,posDegrees));
 
 
-            arrowA.transform.localScale = size;
-            arrowA.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + (Mathf.Cos(posRadians) *50f), Mathf.Sin(posRadians)*50f);
+        arrowA.transform.localScale = size;
+        arrowA.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + (Mathf.Cos(posRadians) *50f), Mathf.Sin(posRadians)*50f);
 
-            foreach (HitboxCollision hitbox in arrowA.GetComponentsInChildren<HitboxCollision>(true))
-            {
-                hitbox.parent = drifter.gameObject;
-                hitbox.AttackID = attacks.AttackID;
-                hitbox.AttackType = attacks.AttackType;
+        foreach (HitboxCollision hitbox in arrowA.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.AttackType = attacks.AttackType;
                 
                 hitbox.Facing = facing;
-            }
-
-            projnum--;
-
-            refreshHitboxID();
-
         }
 
+        projnum++;
 
+        refreshHitboxID();
     }
 
 }

@@ -44,7 +44,7 @@ public class MaryamMasterHit : MasterHit
         
         //if(isHost) attacks.currentRecoveries = (Empowered && hasSGRecovery) || (!Empowered && hasUmbrellaRecovery)? 1:0;
 
-        drifter.SetAnimationLayer(Empowered?1:0);
+        //drifter.SetAnimationLayer(Empowered?1:0);
     }
 
     public void shinestall()

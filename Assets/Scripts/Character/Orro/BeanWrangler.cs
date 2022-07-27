@@ -12,7 +12,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
 
     public float returnSpeed = 25f;
 
-    public float Bean_Respawn_Delay = 3f;
+    public int Bean_Respawn_Delay = 180;
 
     SyncAnimatorStateHost anim;
     PlayerAttacks attacks;
@@ -309,7 +309,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
                     alive = false;
                     canAct = false;
                     anim.SetState("Bean_Death");
-                    HitstunDuration = 0f;
+                    HitstunDuration = 0;
                     //Delay before bean begins recharging
                     HitPauseDuration = Bean_Respawn_Delay;
                     rb.velocity = Vector3.zero;

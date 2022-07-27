@@ -142,7 +142,7 @@ public class OrroReworkMasterHit : MasterHit
     public void beanCommand()
     {
          movement.updateFacing();
-         applyEndLag(8f);
+         applyEndLag(480);
          playState("W_Neutral_Command");
 
          if(drifter.input[0].MoveY >0)

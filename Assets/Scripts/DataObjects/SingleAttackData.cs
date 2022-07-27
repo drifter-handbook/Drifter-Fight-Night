@@ -56,7 +56,7 @@ public class SingleAttackData : ScriptableObject
     
     
     public PlayerStatusEffect StatusEffect = PlayerStatusEffect.HIT;
-    public float StatusDuration = .1f;
+    public int StatusDuration = 1;
     public AttackFXSystem HitFX = null;
 
     public bool canHitGrounded = true;
@@ -131,7 +131,7 @@ public class SingleAttackData : ScriptableObject
                     data.HitStop = EditorGUILayout.IntField("Hitstop", data.HitStop);
                     EditorGUILayout.BeginHorizontal();
                         data.StatusEffect = (PlayerStatusEffect)EditorGUILayout.EnumPopup("Status Effect", data.StatusEffect);
-                        data.StatusDuration = EditorGUILayout.FloatField("Duration", data.StatusDuration);
+                        data.StatusDuration = EditorGUILayout.IntField("Duration", data.StatusDuration);
                     EditorGUILayout.EndHorizontal();
                     EditorGUILayout.BeginHorizontal();
                         EditorGUILayout.LabelField("Hits Grounded", GUILayout.MaxWidth(90));

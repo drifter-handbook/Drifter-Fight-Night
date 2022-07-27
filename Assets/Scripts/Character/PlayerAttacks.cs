@@ -263,7 +263,7 @@ public class PlayerAttacks : MonoBehaviour
         drifter.gainSuperMeter(.05f);
         movement.jumping = false;
         SetHitboxesActive(false);
-        status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,8f);
+        status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,480);
         if(!AttackVariants[attackType])
             drifter.PlayAnimation(AnimatorStates[attackType]);
         else if(movement.grounded)
