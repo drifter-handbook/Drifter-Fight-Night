@@ -215,45 +215,31 @@ public class Drifter : MonoBehaviour, INetworkInit
         transform.GetChild(3).localScale = new Vector2(Mathf.Abs(transform.GetChild(3).localScale.x) * facing,transform.GetChild(3).localScale.y);
     }
 
-    // //Replaces the animator state transition function
-    // public void PlayAnimation(string p_state, float p_normalizedTime = -1)
-    // {
-    //     // if(!isHost)return;
-    //     if(Animator.StringToHash(p_state) == animator.GetCurrentAnimatorStateInfo(-1).fullPathHash && p_normalizedTime == -1)
-    //         UnityEngine.Debug.Log("DUPLICATE STATE CALL MADE: " + p_state);
-        
-    //     else
-    //         PlayAnimation(Animator.StringToHash(p_state),p_normalizedTime < 0 ? 0: p_normalizedTime);
-        
-
-    //     // animator.Play(p_state,,-1,p_normalizedTime);
-    //     // animatorClipHash = animator.GetCurrentAnimatorStateInfo(animationLayer).fullPathHash;
-    //     // animatorTime = p_normalizedTime;
-
-        
-    // }
-
-    // private void PlayAnimation(int p_state, float p_normalizedTime)
-    // {
-    //     animator.Play(p_state,-1,p_normalizedTime);
-    //     animatorClipHash = p_state;
-    //     animatorTime = p_normalizedTime;
-    // }
-
-
-    public void PlayAnimation(string state)
+    //Replaces the animator state transition function
+    public void PlayAnimation(string p_state, float p_normalizedTime = -1)
     {
-        if(!isHost)return;
-        if(Animator.StringToHash(state) != animator.GetCurrentAnimatorStateInfo(0).fullPathHash)
-        {
-            animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState(state,0);
-        }
+        // if(!isHost)return;
+        if(Animator.StringToHash(p_state) == animator.GetCurrentAnimatorStateInfo(-1).fullPathHash && p_normalizedTime == -1)
+            UnityEngine.Debug.Log("DUPLICATE STATE CALL MADE: " + p_state);
         
         else
-        {
-            UnityEngine.Debug.Log("FAILED TO PLAY STATE; STATE IS ALREADY PLAYING: " + state);
-        }
+            PlayAnimation(Animator.StringToHash(p_state),p_normalizedTime < 0 ? 0: p_normalizedTime);
+        
+
+        // animator.Play(p_state,,-1,p_normalizedTime);
+        // animatorClipHash = animator.GetCurrentAnimatorStateInfo(animationLayer).fullPathHash;
+        // animatorTime = p_normalizedTime;
+
+        
     }
+
+    private void PlayAnimation(int p_state, float p_normalizedTime)
+    {
+        animator.Play(p_state,-1,p_normalizedTime);
+        animatorClipHash = p_state;
+        animatorTime = p_normalizedTime;
+    }
+
 
 
     public void SetAnimationOverride(int p_index)
