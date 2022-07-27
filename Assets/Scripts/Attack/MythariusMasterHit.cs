@@ -23,7 +23,6 @@ public class MythariusMasterHit : MasterHit
 
     public void ring()
     {
-        facing = movement.Facing;
         GameObject ring = GameController.Instance.host.CreateNetworkObject("LaunchRing", transform.position + new Vector3(0,1.4f),  transform.rotation);
     }
 
@@ -35,19 +34,19 @@ public class MythariusMasterHit : MasterHit
         {
             Destroy(bird);
         }
-        facing = movement.Facing;
-        bird = host.CreateNetworkObject("Mytharius_Bird", transform.position + new Vector3(facing * 1.4f,3f), transform.rotation);
-        bird.transform.localScale = new Vector3(10f * facing, 10f , 1f);
+        
+        bird = host.CreateNetworkObject("Mytharius_Bird", transform.position + new Vector3(movement.Facing * 1.4f,3f), transform.rotation);
+        bird.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in bird.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
-            hitbox.Facing = facing;
+            hitbox.Facing = movement.Facing;
        }
 
        bird.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
-       bird.GetComponent<Bird_Wrangler>().setup(drifter.gameObject,attacks,facing,drifter.GetColor());
+       bird.GetComponent<Bird_Wrangler>().setup(drifter.gameObject,attacks,movement.Facing,drifter.GetColor());
 
     }
 

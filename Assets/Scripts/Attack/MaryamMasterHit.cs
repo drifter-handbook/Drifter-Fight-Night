@@ -18,10 +18,10 @@ public class MaryamMasterHit : MasterHit
     {
         if(!isHost)return;
 
-        if(movement.terminalVelocity != terminalVelocity  && (movement.ledgeHanging || status.HasEnemyStunEffect()))
-        {
-            resetTerminal();
-        }
+        // if(movement.terminalVelocity != terminalVelocity  && (movement.ledgeHanging || status.HasEnemyStunEffect()))
+        // {
+        //     resetTerminal();
+        // }
 
         if((!hasUmbrellaRecovery || !hasSGRecovery) &&( movement.grounded || status.HasEnemyStunEffect() || movement.ledgeHanging)){
             hasSGRecovery = true;
@@ -29,7 +29,7 @@ public class MaryamMasterHit : MasterHit
         }
     }
 
-    //Flips the direction the charactr is facing mid move)
+    //Flips the direction the charactr is movement.Facing mid move)
     public void invertDirection()
     {
         if(!isHost)return;
@@ -84,83 +84,76 @@ public class MaryamMasterHit : MasterHit
         
     }
 
-    //Resests terminal velocity to normal value after is has been altered by a move
-    public void resetTerminal()
-    {
-        if(!isHost)return;
-        movement.terminalVelocity = terminalVelocity;
-    }
-
     //Shotgun explosion projectiles
     public void SGJabExplosion()
     {
         if(!isHost)return;
-        facing = movement.Facing;
-        Vector3 pos = new Vector3(1.8f * facing,2.5f,0);
+        
+        Vector3 pos = new Vector3(1.8f * movement.Facing,2.5f,0);
         
         GameObject explosion = host.CreateNetworkObject("ExplosionSide", transform.position + pos, transform.rotation);
-        explosion.transform.localScale = new Vector3(10f * facing, 10f , 1f);
+        explosion.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in explosion.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             hitbox.AttackData = attacks.Attacks[attacks.AttackType];
-            hitbox.Facing = facing;
+            hitbox.Facing = movement.Facing;
        }
     }
 
     public void SGUTiltExplosion()
     {
         if(!isHost)return;
-        facing = movement.Facing;
-        Vector3 pos = new Vector3(0f * facing,3.3f,0);
+        
+        Vector3 pos = new Vector3(0f * movement.Facing,3.3f,0);
         
         GameObject explosion = host.CreateNetworkObject("Explosion_Diagonal", transform.position + pos, transform.rotation);
-        explosion.transform.localScale = new Vector3(10f * facing, 10f , 1f);
+        explosion.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in explosion.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             hitbox.AttackData = attacks.Attacks[attacks.AttackType];
-            hitbox.Facing = facing;
+            hitbox.Facing = movement.Facing;
        }
     }
 
     public void SGUAirFirstExplosion()
     {
         if(!isHost)return;
-        facing = movement.Facing;
-        Vector3 pos = new Vector3(0f * facing,3f,0);
+        
+        Vector3 pos = new Vector3(0f * movement.Facing,3f,0);
         
         GameObject explosion = host.CreateNetworkObject("Explosion_Diagonal_Uair", transform.position + pos, transform.rotation);
-        explosion.transform.localScale = new Vector3(10f * facing, 10f , 1f);
+        explosion.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in explosion.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             hitbox.AttackData = attacks.Attacks[DrifterAttackType.W_Down];
-            hitbox.Facing = facing;
+            hitbox.Facing = movement.Facing;
        }
     }
 
     public void SGUAirVerticalExplosion()
     {
         if(!isHost)return;
-        facing = movement.Facing;
-        Vector3 pos = new Vector3(-.5f * facing,3.6f,0);
+        
+        Vector3 pos = new Vector3(-.5f * movement.Facing,3.6f,0);
         
         GameObject explosion = host.CreateNetworkObject("UairExplosion_Maryam", transform.position + pos, transform.rotation);
-        explosion.transform.localScale = new Vector3(-10f * facing, 10f , 1f);
+        explosion.transform.localScale = new Vector3(-10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in explosion.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             hitbox.AttackData = attacks.Attacks[DrifterAttackType.Roll];
-            hitbox.Facing = facing;
+            hitbox.Facing = movement.Facing;
        }
     }
 
@@ -168,54 +161,54 @@ public class MaryamMasterHit : MasterHit
     public void SGUAirLauncherExplosion()
     {
         if(!isHost)return;
-        facing = movement.Facing;
-        Vector3 pos = new Vector3(-1f * facing,3f,0);
+        
+        Vector3 pos = new Vector3(-1f * movement.Facing,3f,0);
         
         GameObject explosion = host.CreateNetworkObject("Explosion_Diagonal_Uair", transform.position + pos, transform.rotation);
-        explosion.transform.localScale = new Vector3(-10f * facing, 10f , 1f);
+        explosion.transform.localScale = new Vector3(-10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in explosion.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             hitbox.AttackData = attacks.Attacks[DrifterAttackType.Aerial_Q_Neutral];
-            hitbox.Facing = facing;
+            hitbox.Facing = movement.Facing;
        }
     }
 
     public void SGJSairExplosion()
     {
         if(!isHost)return;
-        facing = movement.Facing;
-        Vector3 pos = new Vector3(2.5f * facing,4f,0);
+        
+        Vector3 pos = new Vector3(2.5f * movement.Facing,4f,0);
         
         GameObject explosion = host.CreateNetworkObject("ExplosionSide", transform.position + pos, transform.rotation);
-        explosion.transform.localScale = new Vector3(10f * facing, 10f , 1f);
+        explosion.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in explosion.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             hitbox.AttackData = attacks.Attacks[attacks.AttackType];
-            hitbox.Facing = facing;
+            hitbox.Facing = movement.Facing;
        }
     }
 
     public void SGUWExplosion()
     {
         if(!isHost)return;
-        facing = movement.Facing;
-        Vector3 pos = new Vector3(.5f * facing,1f,0);
+        
+        Vector3 pos = new Vector3(.5f * movement.Facing,1f,0);
         
         GameObject explosion = host.CreateNetworkObject("ExplosionDiagonalDown", transform.position + pos, transform.rotation);
-        explosion.transform.localScale = new Vector3(10f * facing, 10f , 1f);
+        explosion.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in explosion.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             hitbox.AttackData = attacks.Attacks[attacks.AttackType];
-            hitbox.Facing = facing;
+            hitbox.Facing = movement.Facing;
        }
     }
 }

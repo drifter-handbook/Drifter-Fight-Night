@@ -32,7 +32,7 @@ public class DrifterCannonMasterHit : MasterHit
             rb.velocity = new Vector2(movement.Facing * -15f,30f);
             if(!jumpGranted && movement.currentJumps <= movement.numberOfJumps -1) movement.currentJumps++;
             jumpGranted = true;
-            GraphicalEffectManager.Instance.CreateMovementParticle(MovementParticleMode.Restitution,rb.position + new Vector2(facing * .5f,0), (facing > 0)?90:-90,Vector3.one);
+            GraphicalEffectManager.Instance.CreateMovementParticle(MovementParticleMode.Restitution,rb.position + new Vector2(movement.Facing * .5f,0), (movement.Facing > 0)?90:-90,Vector3.one);
             unpauseGravity();
         }
 
@@ -81,18 +81,18 @@ public class DrifterCannonMasterHit : MasterHit
     public void SairExplosion()
     {
         if(!isHost)return;
-        facing = movement.Facing;
-        Vector3 pos = new Vector3(1.9f * facing,3.3f,0);
+        
+        Vector3 pos = new Vector3(1.9f * movement.Facing,3.3f,0);
         
         GameObject explosion = host.CreateNetworkObject("ExplosionSide", transform.position + pos, transform.rotation);
-        explosion.transform.localScale = new Vector3(10f * facing, 10f , 1f);
+        explosion.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in explosion.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             hitbox.AttackData = attacks.Attacks[attacks.AttackType];
-            hitbox.Facing = facing;
+            hitbox.Facing = movement.Facing;
        }
     }
 
@@ -100,18 +100,18 @@ public class DrifterCannonMasterHit : MasterHit
     public void SideWExplosion()
     {
         if(!isHost)return;
-        facing = movement.Facing;
-        Vector3 pos = new Vector3(-1.5f * facing,2.7f,0);
+        
+        Vector3 pos = new Vector3(-1.5f * movement.Facing,2.7f,0);
         
         GameObject explosion = host.CreateNetworkObject("ExplosionSide", transform.position + pos, transform.rotation);
-        explosion.transform.localScale = new Vector3(-10f * facing, 10f , 1f);
+        explosion.transform.localScale = new Vector3(-10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in explosion.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             hitbox.AttackData = attacks.Attacks[attacks.AttackType];
-            hitbox.Facing = facing;
+            hitbox.Facing = movement.Facing;
        }
     }
 
@@ -131,38 +131,38 @@ public class DrifterCannonMasterHit : MasterHit
     public void UpAirExplosion()
     {
         if(!isHost)return;
-        facing = movement.Facing;
-        Vector3 pos = new Vector3(-.4f* facing,2f,0);
+        
+        Vector3 pos = new Vector3(-.4f* movement.Facing,2f,0);
         
         GameObject explosion = host.CreateNetworkObject("UairExplosion", transform.position + pos, transform.rotation);
-        explosion.transform.localScale = new Vector3(10f* facing, 10f, 1f);
+        explosion.transform.localScale = new Vector3(10f* movement.Facing, 10f, 1f);
         foreach (HitboxCollision hitbox in explosion.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             hitbox.AttackData = attacks.Attacks[attacks.AttackType];
-            hitbox.Facing = facing;
+            hitbox.Facing = movement.Facing;
        }
     }
 
     public void DownSpecialBomb()
     {
         if(!isHost)return;
-        facing = movement.Facing;
-        Vector3 pos = new Vector3(-.5f * facing,2.7f,0);
+        
+        Vector3 pos = new Vector3(-.5f * movement.Facing,2.7f,0);
         
         GameObject grenade = host.CreateNetworkObject("DCGenade", transform.position + pos, transform.rotation);
-        grenade.transform.localScale = new Vector3(10f * facing, 10f , 1f);
+        grenade.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
 
-        grenade.GetComponent<Rigidbody2D>().velocity = new Vector2(20* facing,25);
+        grenade.GetComponent<Rigidbody2D>().velocity = new Vector2(20* movement.Facing,25);
 
         foreach (HitboxCollision hitbox in grenade.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
-            hitbox.Facing = facing;
+            hitbox.Facing = movement.Facing;
        }
     }
 
@@ -196,15 +196,15 @@ public class DrifterCannonMasterHit : MasterHit
     public void FireRanchProjectile()
     {
         if(!isHost)return;
-        facing = movement.Facing;
-        Vector3 pos = new Vector3(1f * facing,2.7f,0);
+        
+        Vector3 pos = new Vector3(1f * movement.Facing,2.7f,0);
         
         GameObject ranch = host.CreateNetworkObject("Ranch" + charge, transform.position + pos, transform.rotation);
-        ranch.transform.localScale = new Vector3(10f * facing, 10f , 1f);
+        ranch.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
 
-        rb.velocity = new Vector2((charge - 1) * -15f* facing,0);
+        rb.velocity = new Vector2((charge - 1) * -15f* movement.Facing,0);
         
-        if(charge < 3)ranch.GetComponent<Rigidbody2D>().velocity = new Vector2((charge == 1?55f:25f)* facing,0);
+        if(charge < 3)ranch.GetComponent<Rigidbody2D>().velocity = new Vector2((charge == 1?55f:25f)* movement.Facing,0);
 
         SetCharge(1);
 
@@ -213,7 +213,7 @@ public class DrifterCannonMasterHit : MasterHit
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
-            hitbox.Facing = facing;
+            hitbox.Facing = movement.Facing;
        }
     }
 }

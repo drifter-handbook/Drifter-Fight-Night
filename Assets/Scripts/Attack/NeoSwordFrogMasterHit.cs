@@ -78,7 +78,7 @@ public class NeoSwordFrogMasterHit : MasterHit
 
         listeningForDirection = false;
         movement.updateFacing();
-        facing = movement.Facing;
+        
         if(HeldDirection.y <0 && movement.grounded) playState("W_Neutral_GD");
         else if(HeldDirection.y <0) playState("W_Neutral_D");
         else if(HeldDirection.y >0) playState("W_Neutral_U");
@@ -88,7 +88,7 @@ public class NeoSwordFrogMasterHit : MasterHit
 
     }
 
-     //Flips the direction the charactr is facing mid move)
+     //Flips the direction the charactr is movement.Facing mid move)
     public void invertDirection()
     {
         if(!isHost)return;
@@ -101,19 +101,19 @@ public class NeoSwordFrogMasterHit : MasterHit
     public void SpawnTongue()
     {
         if(!isHost)return;
-        facing = movement.Facing;
+        
 
         if(tongue != null)deleteTongue();
 
-        tongue = host.CreateNetworkObject("SF_Tongue", transform.position + new Vector3(2.3f * facing,1.6f), transform.rotation);
-        tongue.transform.localScale = new Vector3(10f * facing, 10f , 1f);
+        tongue = host.CreateNetworkObject("SF_Tongue", transform.position + new Vector3(2.3f * movement.Facing,1.6f), transform.rotation);
+        tongue.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in tongue.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             
-            hitbox.Facing = facing;
+            hitbox.Facing = movement.Facing;
         }
         tongue.transform.SetParent(drifter.gameObject.transform);
         tongue.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
@@ -144,7 +144,7 @@ public class NeoSwordFrogMasterHit : MasterHit
     public void downSpecialProjectile()
     {
         if(!isHost)return;
-        facing = movement.Facing;
+        
         //Fire an arrow if Swordfrog has a charge
         projnum = W_Down_Projectiles;
 
@@ -153,7 +153,7 @@ public class NeoSwordFrogMasterHit : MasterHit
     public void downSpecialProjectileAir()
     {
         if(!isHost)return;
-        facing = movement.Facing;
+        
         //Fire an arrow if Swordfrog has a charge
         projnum = -1 * W_Down_Projectiles;
 
@@ -163,14 +163,14 @@ public class NeoSwordFrogMasterHit : MasterHit
     {
         
 
-        Vector3 size = new Vector3(10f * facing, 10f, 1f);
-        Vector3 pos = new Vector3(.2f * facing, 2.7f, 1f);
+        Vector3 size = new Vector3(10f * movement.Facing, 10f, 1f);
+        Vector3 pos = new Vector3(.2f * movement.Facing, 2.7f, 1f);
 
 
-        GameObject arrowA = host.CreateNetworkObject("Kunai", transform.position + new Vector3(1.5f * facing, 1.5f + W_Down_Projectiles/5f + (W_Down_Projectiles - projnum) * .6f, 0), transform.rotation);
+        GameObject arrowA = host.CreateNetworkObject("Kunai", transform.position + new Vector3(1.5f * movement.Facing, 1.5f + W_Down_Projectiles/5f + (W_Down_Projectiles - projnum) * .6f, 0), transform.rotation);
 
         arrowA.transform.localScale = size;
-        arrowA.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + 50f * facing, 0);
+        arrowA.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + 50f * movement.Facing, 0);
 
         foreach (HitboxCollision hitbox in arrowA.GetComponentsInChildren<HitboxCollision>(true))
         {
@@ -178,7 +178,7 @@ public class NeoSwordFrogMasterHit : MasterHit
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
                 
-            hitbox.Facing = facing;
+            hitbox.Facing = movement.Facing;
         }
 
         projnum--;
@@ -192,15 +192,15 @@ public class NeoSwordFrogMasterHit : MasterHit
     {
 
         Vector3 size = new Vector3(10f, 10f, 1f);
-        Vector3 pos = new Vector3(.2f * facing, 2.7f, 1f);
+        Vector3 pos = new Vector3(.2f * movement.Facing, 2.7f, 1f);
 
     
-        float degreesA = facing >0 ? (335f  + projnum * 4f) : (215f  - projnum * 4f);
+        float degreesA = movement.Facing >0 ? (335f  + projnum * 4f) : (215f  - projnum * 4f);
         float radiansA = degreesA * Mathf.PI/180f;
-        float posDegrees = (facing >0 ? 335f  : 215f);
+        float posDegrees = (movement.Facing >0 ? 335f  : 215f);
         float posRadians = posDegrees * Mathf.PI/180f;
 
-        GameObject arrowA = host.CreateNetworkObject("Kunai", transform.position + new Vector3(facing * (-.5f - projnum/2f), projnum/-2f -.9f)
+        GameObject arrowA = host.CreateNetworkObject("Kunai", transform.position + new Vector3(movement.Facing * (-.5f - projnum/2f), projnum/-2f -.9f)
                                                                  + pos, 
                                                                  Quaternion.Euler(0,0,posDegrees));
 
@@ -214,7 +214,7 @@ public class NeoSwordFrogMasterHit : MasterHit
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
                 
-                hitbox.Facing = facing;
+                hitbox.Facing = movement.Facing;
         }
 
         projnum++;

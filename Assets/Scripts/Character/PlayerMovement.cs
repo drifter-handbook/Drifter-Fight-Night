@@ -29,7 +29,9 @@ public class PlayerMovement : MonoBehaviour
     //Calculated character properties
     float jumpSpeed;
     float baseGravity;
-    float baseTerminalVelocity;
+
+    [NonSerialized]
+    public float baseTerminalVelocity;
 
     //Animator State Fields
     public int Facing { get; set; } = 1;
@@ -201,7 +203,7 @@ public class PlayerMovement : MonoBehaviour
         if (!GameController.Instance.IsHost || GameController.Instance.IsPaused)
             return;
 
-        if(dashLock >0)dashLock -= Time.fixedDeltaTime;
+        if(dashLock >0)dashLock --;
         // if(drifter.input[0].Guard) techWindowElapsed += Time.fixedDeltaTime;
         // else if(status.HasGroundFriction()) techWindowElapsed = 0;
 
@@ -407,8 +409,8 @@ public class PlayerMovement : MonoBehaviour
         //makes sure gavity is always reset after using a move
         //TODO make sure this is still necessary
         else if((!status.HasStatusEffect(PlayerStatusEffect.END_LAG) || !gravityPaused) && !ledgeHanging){
-            rb.gravityScale = baseGravity;
-            if(!status.HasStatusEffect(PlayerStatusEffect.END_LAG))terminalVelocity = baseTerminalVelocity;
+            resetGravity();
+            if(!status.HasStatusEffect(PlayerStatusEffect.END_LAG))resetTerminalVelocity();
         }
 
         //Saves previpus vleocity for resitution. REMOVE IF NOT NEEDED
@@ -725,7 +727,7 @@ public class PlayerMovement : MonoBehaviour
     //Manages all the things that need to happen when a ledge is released
     public void DropLedge(){
         ledgeHanging = false;
-        rb.gravityScale = baseGravity;
+        resetGravity();
         strongLedgeGrab = false;
         attacks.ledgeHanging = false;
     }
@@ -776,7 +778,7 @@ public class PlayerMovement : MonoBehaviour
         {
             updateFacing();
             accelerationPercent = 0;
-            dashLock = 1f;
+            dashLock = 60;
             dashing = true;
             spawnJuiceParticle(BodyCollider.bounds.center + new Vector3(Facing * (flipSprite?-1:1)* 1.5f,0), MovementParticleMode.Dash_Ring, Quaternion.Euler(0f,0f,0f), false);
             status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,480);
@@ -871,6 +873,16 @@ public class PlayerMovement : MonoBehaviour
             status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,10);
         }
 
+    }
+
+    public void resetTerminalVelocity()
+    {
+        terminalVelocity = baseTerminalVelocity;
+    }
+
+    public void resetGravity()
+    {
+        rb.gravityScale = baseGravity;
     }
 
     private void spawnSuperParticle(string mode,float cost,int darkentime)

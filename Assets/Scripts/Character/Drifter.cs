@@ -43,11 +43,8 @@ public enum DrifterType
 [RequireComponent(typeof(PlayerMovement))]
 public class Drifter : MonoBehaviour, INetworkInit
 {
+    //Static values durring gameplay
     public PlayerMovement movement;
-
-    //Input Buffer
-    public PlayerInputData[] input;
-
     public Animator animator;
 
     NetworkSync sync;
@@ -60,26 +57,20 @@ public class Drifter : MonoBehaviour, INetworkInit
         set { sync["damageTaken"] = value; }
     }
 
-    float terminalVelocity;
-
     public AnimatorOverrideController[] animOverrides;
-    
     public int myColor;
-
     public DrifterType drifterType;
-
     public int peerID;
-
     public PlayerStatus status;
     public SyncAnimatorStateHost sparkle;
-
     public PlayerInput playerInputController;
 
     bool isHost;
 
     //Serializeable values
-    public int animationLayer = 0;
     public float animationSpeed = 1;
+    //Input Buffer
+    public PlayerInputData[] input;
     
     [NonSerialized]
     public bool guarding = false;
@@ -101,12 +92,13 @@ public class Drifter : MonoBehaviour, INetworkInit
     public bool hiddenFlag = false;
     [NonSerialized]
     public float superCharge = 2f;
-    [NonSerialized]
-    public int overrideIndex = 0; 
-
-    private float cancelTimer = 0f;
-
+    
+    private int overrideIndex = 0; 
+    private int cancelTimer = 0;
     private bool _canSpecialCancel = false;
+    private int animatorClipHash;
+    private float animatorTime;
+
 
 
 
@@ -118,7 +110,7 @@ public class Drifter : MonoBehaviour, INetworkInit
         }
         set{
             _canSpecialCancel = value;
-            cancelTimer = _canSpecialCancel ? 3f *.0833333333f:0f;
+            cancelTimer = _canSpecialCancel ? 18:0;
             //sparkle.SetState(_canSpecialCancel?"ChargeIndicator":"Hide");
         }
     }
@@ -144,7 +136,6 @@ public class Drifter : MonoBehaviour, INetworkInit
         //if(drifterType==DrifterType.Sandbag)SetColor(8);
         DamageTaken = 0f;
 
-        terminalVelocity = movement.terminalVelocity;
         if(animOverrides != null && animOverrides.Length > 0)animOverrides[0] = new AnimatorOverrideController(animator.runtimeAnimatorController);
     }
 
@@ -152,7 +143,7 @@ public class Drifter : MonoBehaviour, INetworkInit
     {
         if(cancelTimer >0)
         {
-            cancelTimer -= Time.fixedDeltaTime;
+            cancelTimer--;
             if(cancelTimer <=0)
             {
                 cancelTimer = 0;
@@ -165,7 +156,7 @@ public class Drifter : MonoBehaviour, INetworkInit
 
     public bool canSpecialCancel()
     {
-        return (canSpecialCancelFlag && listenForSpecialCancel && cancelTimer >0f);
+        return (canSpecialCancelFlag && listenForSpecialCancel && cancelTimer > 0);
     }
 
     //Returns the character's outline color as an int
@@ -224,14 +215,40 @@ public class Drifter : MonoBehaviour, INetworkInit
         transform.GetChild(3).localScale = new Vector2(Mathf.Abs(transform.GetChild(3).localScale.x) * facing,transform.GetChild(3).localScale.y);
     }
 
-    //Replaces the animator state transition function
+    // //Replaces the animator state transition function
+    // public void PlayAnimation(string p_state, float p_normalizedTime = -1)
+    // {
+    //     // if(!isHost)return;
+    //     if(Animator.StringToHash(p_state) == animator.GetCurrentAnimatorStateInfo(-1).fullPathHash && p_normalizedTime == -1)
+    //         UnityEngine.Debug.Log("DUPLICATE STATE CALL MADE: " + p_state);
+        
+    //     else
+    //         PlayAnimation(Animator.StringToHash(p_state),p_normalizedTime < 0 ? 0: p_normalizedTime);
+        
+
+    //     // animator.Play(p_state,,-1,p_normalizedTime);
+    //     // animatorClipHash = animator.GetCurrentAnimatorStateInfo(animationLayer).fullPathHash;
+    //     // animatorTime = p_normalizedTime;
+
+        
+    // }
+
+    // private void PlayAnimation(int p_state, float p_normalizedTime)
+    // {
+    //     animator.Play(p_state,-1,p_normalizedTime);
+    //     animatorClipHash = p_state;
+    //     animatorTime = p_normalizedTime;
+    // }
+
+
     public void PlayAnimation(string state)
     {
         if(!isHost)return;
-        if(Animator.StringToHash(state) != animator.GetCurrentAnimatorStateInfo(animationLayer).fullPathHash)
+        if(Animator.StringToHash(state) != animator.GetCurrentAnimatorStateInfo(0).fullPathHash)
         {
-            animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState(state,animationLayer);
+            animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState(state,0);
         }
+        
         else
         {
             UnityEngine.Debug.Log("FAILED TO PLAY STATE; STATE IS ALREADY PLAYING: " + state);
@@ -270,12 +287,12 @@ public class Drifter : MonoBehaviour, INetworkInit
         canFeint = true;
         canSuper = true;
         clearGuardFlags();
-        if(movement.grounded)animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState("Idle",animationLayer);
-        else animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState("Hang",animationLayer);
+        if(movement.grounded)animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState("Idle");
+        else animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState("Hang");
         if(status.HasStatusEffect(PlayerStatusEffect.END_LAG)) status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0);
         if(status.HasStatusEffect(PlayerStatusEffect.FLATTEN)) status.ApplyStatusEffect(PlayerStatusEffect.FLATTEN,0);
         if(status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN))  status.ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,0);
-        movement.terminalVelocity = terminalVelocity;
+        movement.resetTerminalVelocity();
         canSpecialCancelFlag = false;
         listenForSpecialCancel = false;     
         //knockedDown = false;
@@ -366,10 +383,10 @@ public class Drifter : MonoBehaviour, INetworkInit
         return false;
     }
 
-    public float GetCurrentAnimationRemainder() {
-        AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(animationLayer);
-        return (1 - (info.normalizedTime - (int)info.normalizedTime)) * info.length;
-    }
+    // public float GetCurrentAnimationRemainder() {
+    //     AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(animationLayer);
+    //     return (1 - (info.normalizedTime - (int)info.normalizedTime)) * info.length;
+    // }
 
   
     // public DrifterType GetDrifterType(){
