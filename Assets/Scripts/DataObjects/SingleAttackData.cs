@@ -141,7 +141,7 @@ public class SingleAttackData : ScriptableObject
                         EditorGUILayout.LabelField("Hits OTG", GUILayout.MaxWidth(70));
                         data.canHitKnockedDown = EditorGUILayout.Toggle(data.canHitKnockedDown);
                     EditorGUILayout.EndHorizontal();
-                    data.HitFX = (AttackFXSystem)EditorGUILayout.ObjectField("Status Effect", data.HitFX, typeof(AttackFXSystem), false);
+                    data.HitFX = (AttackFXSystem)EditorGUILayout.ObjectField("FX system", data.HitFX, typeof(AttackFXSystem), false);
             }
         }
     #endif

@@ -254,7 +254,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                     }
                                         
                     //IF there is hitstun to be applied, apply it
-                    if(attackData.HitStun != 0)
+                    if(HitstunDuration > 0)
                     {
                         //Apply a minimum hitstun on burst type attacks
                         if(attackData.hitType != HitType.BURST || HitstunDuration >= status?.remainingDuration(PlayerStatusEffect.KNOCKBACK))
@@ -314,7 +314,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 //push both players back on guarrd
                 
                 if(hitbox.gameObject.tag != "Projectile")
-                     hitbox.parent.GetComponent<Rigidbody2D>().velocity = new Vector2(forceDir.normalized.x * Mathf.Max(-KB,-25f), hitbox.parent.GetComponent<Rigidbody2D>().velocity.y);
+                     hitbox.parent.GetComponent<Rigidbody2D>().velocity = new Vector2(-Mathf.Sign(forceDir.normalized.x) * attackData.pushBlock, hitbox.parent.GetComponent<Rigidbody2D>().velocity.y);
 
                 //hitbox.parent.GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(HitstunDuration,.2f,1f) * hitbox.Facing *-15f, hitbox.parent.GetComponent<Rigidbody2D>().velocity.y);
                
@@ -322,13 +322,13 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 if(!drifter.perfectGuarding)
                 {
                     // Get new particle for prefect guarda
-                    GetComponent<Rigidbody2D>().velocity = new Vector2(forceDir.normalized.x * Mathf.Min(KB,30f), GetComponent<Rigidbody2D>().velocity.y);
+                    GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Sign(forceDir.normalized.x) * attackData.pushBlock, GetComponent<Rigidbody2D>().velocity.y);
 
                 }
 
                 else drifter.movement.spawnJuiceParticle(hitSparkPos, MovementParticleMode.Parry);
                 //put defender in blockstun
-                if(attackData.HitStun != 0){
+                if(HitstunDuration > 0){
                         // status?.calculateFrameAdvantage(HitstunDuration, attacker.getRemainingAttackTime());
                         //6x blockstun on guardcrush
                         status?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, HitstunDuration);
