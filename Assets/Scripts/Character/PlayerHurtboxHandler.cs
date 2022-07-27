@@ -299,7 +299,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 if(attackData.HitStop >=0)
                     HitPauseDuration = attackData.HitStop;
   
-                if(HitPauseDuration>0 && attackData.StatusEffect != PlayerStatusEffect.HITPAUSE )status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(isCritical || guardbroken || status.HasStatusEffect(PlayerStatusEffect.ARMOUR)) ? 25:((damageDealt <=2f ? 2 :(int)Mathf.Max(HitPauseDuration*.3f ,10)) * (hadSlowmo?2:1)));
+                if(HitPauseDuration>0 && attackData.StatusEffect != PlayerStatusEffect.HITPAUSE )status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(isCritical || guardbroken || status.HasStatusEffect(PlayerStatusEffect.ARMOUR)) ? 25:((damageDealt <=2f ? 2 :(int)Mathf.Max(HitPauseDuration, 2)) * (hadSlowmo?2:1)));
                 
                 drifter.GetComponentInChildren<GameObjectShake>().Shake(attackData.StatusEffect != PlayerStatusEffect.CRINGE?attackData.HitStop:attackData.StatusDuration,attackData.StatusEffect != PlayerStatusEffect.CRINGE?1.5f:2f);
 
@@ -381,8 +381,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
             //apply attacker hitpause
             if (hitbox.gameObject.tag != "Projectile" || isCritical)
-                attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(isCritical || guardbroken|| status.HasStatusEffect(PlayerStatusEffect.ARMOUR))? 20 : 
-                    (damageDealt <=2f ? 2 : (int)Mathf.Max(HitPauseDuration * .3f,2)));
+                attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(isCritical || guardbroken|| status.HasStatusEffect(PlayerStatusEffect.ARMOUR))? 25 : 
+                    (damageDealt <=2f ? 2 : (int)Mathf.Max(HitPauseDuration, 2)));
 
             
 
