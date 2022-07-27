@@ -186,7 +186,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
             //Calculate hitstun duration
             int HitstunDuration = GetHitStun(drifter, attacker, attackData);
-            int HitPauseDuration = HitstunDuration;
+            int HitPauseDuration = attackData.HitStop >=0 ? attackData.HitStop : HitstunDuration;
+
             //damage numbers managment
             
             status?.ApplyDamage(damageDealt, HitstunDuration);
@@ -294,13 +295,20 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 if(status.HasStatusEffect(PlayerStatusEffect.ARMOUR) && attackData.hitType!=HitType.GRAB)
                     Shake?.Darken(25);
 
-                //apply defender hitpause
-                //If hitstop is scaled, and one is proviced, sum the hitstun duuration and the hitpause duration
-                if(attackData.HitStop >=0)
-                    HitPauseDuration = attackData.HitStop;
-  
-                if(HitPauseDuration>0 && attackData.StatusEffect != PlayerStatusEffect.HITPAUSE )status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(isCritical || guardbroken || status.HasStatusEffect(PlayerStatusEffect.ARMOUR)) ? 25:((damageDealt <=2f ? 2 :(int)Mathf.Max(HitPauseDuration, 2)) * (hadSlowmo?2:1)));
                 
+                //If hitstop is scaled, and one is proviced, sum the hitstun duuration and the hitpause duration
+                 
+                HitPauseDuration = (guardbroken || status.HasStatusEffect(PlayerStatusEffect.ARMOUR)) ? 30 : HitPauseDuration;
+
+                //Apply defender hitpause
+                if(HitPauseDuration >0 && attackData.StatusEffect != PlayerStatusEffect.HITPAUSE )
+                    status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, HitPauseDuration * (hadSlowmo?2:1));
+                
+                //apply attacker hitpause
+                if (HitPauseDuration >0 && hitbox.gameObject.tag != "Projectile")
+                    attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,HitPauseDuration);
+
+
                 drifter.GetComponentInChildren<GameObjectShake>().Shake(attackData.StatusEffect != PlayerStatusEffect.CRINGE?attackData.HitStop:attackData.StatusDuration,attackData.StatusEffect != PlayerStatusEffect.CRINGE?1.5f:2f);
 
                 returnCode = attackData.StatusEffect == PlayerStatusEffect.GRABBED?1: 0;             
@@ -334,6 +342,14 @@ public class PlayerHurtboxHandler : MonoBehaviour
                         status?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, HitstunDuration);
                         //status?.ApplyStatusEffect(PlayerStatusEffect.GUARDCRUSHED, HitstunDuration);
                 }
+
+                 //Apply defender hitpause
+                if(HitPauseDuration >0 && attackData.StatusEffect != PlayerStatusEffect.HITPAUSE )
+                    status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, HitPauseDuration * (hadSlowmo?2:1));
+                
+                //apply attacker hitpause
+                if (HitPauseDuration >0 && hitbox.gameObject.tag != "Projectile")
+                    attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,HitPauseDuration);
 
                 returnCode = -1; 
 
@@ -372,19 +388,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
             
 
             //When Guardbroken, play the crit animation
-            if(guardbroken) 
-                isCritical = true;
-            //If a move is guarded successfully, play the relevant block hitspark
-            //TODO: update for parries
-            else if (drifter != null && drifter.guarding && attackData.hitType!=HitType.GRAB && !isCritical && attackData.AttackDamage >0f)
-                isBlocked = true;
-
-            //apply attacker hitpause
-            if (hitbox.gameObject.tag != "Projectile" || isCritical)
-                attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(isCritical || guardbroken|| status.HasStatusEffect(PlayerStatusEffect.ARMOUR))? 25 : 
-                    (damageDealt <=2f ? 2 : (int)Mathf.Max(HitPauseDuration, 2)));
-
-            
+            isCritical = guardbroken || crossUp;
+            isBlocked = drifter != null && drifter.guarding && attackData.hitType!=HitType.GRAB && !isCritical && attackData.AttackDamage >0f;
 
             float hitSparkAngle = attackData.AngleOfImpact;
             
@@ -545,7 +550,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
 
 
-        if (xVel * hitstun >= xDel || yVel * hitstun >= yDel)
+        if (xVel * hitstun/60f >= xDel || yVel * hitstun/60f >= yDel)
             return true;
 
         return false;
@@ -591,7 +596,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
         }
        
 
-        if (xVel * hitstun >= xDel || yVel * hitstun + (0.5 * g * hitstun * hitstun) >= yDel)
+        if (xVel * hitstun/60f >= xDel || yVel * hitstun + (0.5 * g * hitstun * hitstun/60f) >= yDel)
             return true;
 
         return false;
