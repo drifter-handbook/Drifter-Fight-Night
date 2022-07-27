@@ -31,13 +31,11 @@ public class LucilleMasterHit : MasterHit
         grabBoxes = drifter.GetComponentsInChildren<GrabHitboxCollision>(true);
     }
 
-    new void FixedUpdate()
+    override protected void UpdateMasterHit()
     {
-        if(!isHost)return;
+        base.UpdateMasterHit();
 
-        base.FixedUpdate();
-
-        if(movement.terminalVelocity !=  terminalVelocity && (movement.ledgeHanging || status.HasEnemyStunEffect()))
+        if(movement.ledgeHanging || status.HasEnemyStunEffect())
         {
             resetTerminalVelocity();
         }
@@ -58,6 +56,7 @@ public class LucilleMasterHit : MasterHit
                 }
             }                
         }
+
     }
 
     public new void returnToIdle()
@@ -73,14 +72,14 @@ public class LucilleMasterHit : MasterHit
     public void W_Neutral_Throw()
     {
         if(!isHost)return;
-        facing = movement.Facing;
+        
 
         if(HeldDirection.y < 0)drifter.PlayAnimation("W_Side_Down");
         else if (HeldDirection.y > 0) drifter.PlayAnimation("W_Side_Up");
-        else if(HeldDirection.x * facing < 0) drifter.PlayAnimation("W_Side_Back");
+        else if(HeldDirection.x * movement.Facing < 0) drifter.PlayAnimation("W_Side_Back");
         else drifter.PlayAnimation("W_Side_Forward");
         
-        if(orb !=null)orb.GetComponent<OrbHurtboxHandler>().setDirection(HeldDirection != Vector2.zero ? HeldDirection : Vector2.right * facing);
+        if(orb !=null)orb.GetComponent<OrbHurtboxHandler>().setDirection(HeldDirection != Vector2.zero ? HeldDirection : Vector2.right * movement.Facing);
 
         HeldDirection = Vector2.zero;
 
@@ -119,7 +118,7 @@ public class LucilleMasterHit : MasterHit
     public void infect(GameObject victim)
     {
         if(!isHost)return;
-        facing = movement.Facing;
+        
 
         if(mark != null)
         {
@@ -135,7 +134,7 @@ public class LucilleMasterHit : MasterHit
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
-            hitbox.Facing = facing;
+            hitbox.Facing = movement.Facing;
         }
         mark.GetComponent<StickToTarget>().victim = victim;
 
@@ -145,7 +144,7 @@ public class LucilleMasterHit : MasterHit
     public void spawnOrb()
     {
         if(!isHost)return;
-        facing = movement.Facing;
+        
 
         if(orb != null)
         {
@@ -153,14 +152,14 @@ public class LucilleMasterHit : MasterHit
             orb = null;
         }
 
-        orb = GameController.Instance.host.CreateNetworkObject("Lucille_Orb", transform.position + new Vector3(facing * 1f,1.5f,0), transform.rotation);
-        orb.transform.localScale = new Vector3(10f * facing, 10f , 1f);
+        orb = GameController.Instance.host.CreateNetworkObject("Lucille_Orb", transform.position + new Vector3(movement.Facing * 1f,1.5f,0), transform.rotation);
+        orb.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in orb.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
-            hitbox.Facing = facing;
+            hitbox.Facing = movement.Facing;
         }
         orb.GetComponent<Infector>().Lucille = this;
         orb.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
@@ -174,17 +173,17 @@ public class LucilleMasterHit : MasterHit
     public void spawnWave()
     {
         if(!isHost)return;
-        facing = movement.Facing;
+        
 
-        wave = GameController.Instance.host.CreateNetworkObject("Lucille_Wave", transform.position + new Vector3(facing * 1f,3.5f,0), transform.rotation);
-        wave.GetComponent<Rigidbody2D>().velocity = new Vector3(facing*45f,0f);
-        wave.transform.localScale = new Vector3(10f * facing, 10f , 1f);
+        wave = GameController.Instance.host.CreateNetworkObject("Lucille_Wave", transform.position + new Vector3(movement.Facing * 1f,3.5f,0), transform.rotation);
+        wave.GetComponent<Rigidbody2D>().velocity = new Vector3(movement.Facing*45f,0f);
+        wave.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in wave.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
-            hitbox.Facing = facing;
+            hitbox.Facing = movement.Facing;
         }
         wave.GetComponent<Infector>().Lucille = this;
         wave.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());

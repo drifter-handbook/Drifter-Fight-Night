@@ -12,11 +12,9 @@ public class NeoParhelionMasterHit : MasterHit
     bool listeningForDirection = false;
 
 
-    new void FixedUpdate()
+    override protected void UpdateMasterHit()
     {
-        if(!isHost)return;
-
-        base.FixedUpdate();
+        base.UpdateMasterHit();
 
         if(listeningForDirection)
         {
@@ -60,13 +58,6 @@ public class NeoParhelionMasterHit : MasterHit
     	HeldDirection = Vector2.zero;
     	Up_W_Grab.victim = null;
         listeningForDirection = false;
-    }
-
-    //Causes a non-aerial move to cancle on htiing the ground
-    public void cancelSideQ()
-    {
-        if(!isHost)return;
-        movement.canLandingCancel = true;
     }
 
     //Flips the direction the charactr is facing mid move)

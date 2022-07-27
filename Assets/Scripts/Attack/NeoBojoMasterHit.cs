@@ -12,19 +12,19 @@ public class NeoBojoMasterHit : MasterHit
     public void SpawnDownTiltWave()
     {
         if(!isHost)return;
-        facing = movement.Facing;
-        //Vector3 pos = new Vector3(2f * facing,2.7f,0);
+        
+        //Vector3 pos = new Vector3(2f * movement.Facing,2.7f,0);
         
         GameObject wave = host.CreateNetworkObject("BojoDTiltWave", transform.position , transform.rotation);
-        wave.transform.localScale = new Vector3(10f * facing, 10f , 1f);
+        wave.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
 
-        wave.GetComponent<Rigidbody2D>().velocity = new Vector3(facing * 33,-22);
+        wave.GetComponent<Rigidbody2D>().velocity = new Vector3(movement.Facing * 33,-22);
         foreach (HitboxCollision hitbox in wave.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = -attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
-            hitbox.Facing = facing;
+            hitbox.Facing = movement.Facing;
        }
 
        wave.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
@@ -41,24 +41,24 @@ public class NeoBojoMasterHit : MasterHit
     {
         if(!isHost)return;
 
-        facing = movement.Facing;
+        
         if(soundwave!= null) 
         {
                 //Detonate here;
             return;
         }
         soundwave = host.CreateNetworkObject("Bojo_Note", transform.position + new Vector3(1.5f * movement.Facing, 4f), transform.rotation);
-        soundwave.transform.localScale = new Vector3(10f * facing, 10f , 1f);
+        soundwave.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in soundwave.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             
-            hitbox.Facing = facing;
+            hitbox.Facing = movement.Facing;
         }
         soundwave.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
-        soundwave.GetComponent<Rigidbody2D>().velocity = new Vector3(facing * 18f,0,0);
+        soundwave.GetComponent<Rigidbody2D>().velocity = new Vector3(movement.Facing * 18f,0,0);
     }
 
 
@@ -68,20 +68,20 @@ public class NeoBojoMasterHit : MasterHit
 
         if(centaur == null)
         {
-            facing = movement.Facing;
-                //Vector3 pos = new Vector3(2f * facing,2.7f,0);
+            
+                //Vector3 pos = new Vector3(2f * movement.Facing,2.7f,0);
         
             centaur = host.CreateNetworkObject("Centaur", transform.position , transform.rotation);
-            centaur.transform.localScale = new Vector3(10f * facing, 10f , 1f);
+            centaur.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
 
 
-            centaur.GetComponent<Rigidbody2D>().velocity = new Vector3(facing * 15,0);
+            centaur.GetComponent<Rigidbody2D>().velocity = new Vector3(movement.Facing * 15,0);
             foreach (HitboxCollision hitbox in centaur.GetComponentsInChildren<HitboxCollision>(true))
             {
                     hitbox.parent = drifter.gameObject;
                     hitbox.AttackID = -attacks.AttackID;
                     hitbox.AttackType = attacks.AttackType;
-                    hitbox.Facing = facing;
+                    hitbox.Facing = movement.Facing;
             }
 
             foreach (HurtboxCollision hurtbox in centaur.GetComponentsInChildren<HurtboxCollision>(true))

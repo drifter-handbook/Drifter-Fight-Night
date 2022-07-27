@@ -8,7 +8,7 @@ public class ScreenShake : MonoBehaviour , INetworkInit
 
    Camera self;
    float baseZoom;
-   Vector3 basePos;
+   Vector3 origPos;
    bool killing = false;
    bool isHost;
    bool DynamicCamera;
@@ -17,6 +17,11 @@ public class ScreenShake : MonoBehaviour , INetworkInit
    Coroutine CurrentShake;
    Coroutine CurrentDarken;
 
+   int zoomDurr = 0;
+   int shakeDurr = 0;
+   int darkenDurr = 0;
+   float magnitude = 0f;
+
    public Drifter[] drifters;
    List<GameObject> paralaxLayers;
 
@@ -24,7 +29,7 @@ public class ScreenShake : MonoBehaviour , INetworkInit
    {
       isHost = GameController.Instance.IsHost;
       self = GetComponent<Camera>();
-      basePos = gameObject.transform.localPosition;
+      origPos = gameObject.transform.localPosition;
       baseZoom = self.orthographicSize;
       DynamicCamera = PlayerPrefs.GetInt("dynamicCamera") != 0;
    }
@@ -42,6 +47,11 @@ public class ScreenShake : MonoBehaviour , INetworkInit
          paralaxLayers.Add(GameObject.Find("Paralax_" + i));
    }
 
+   void FixedUpdate()
+   {
+      UpdateShake();
+      UpdateDarken();
+   }
 
    void Update()
    {
@@ -62,67 +72,66 @@ public class ScreenShake : MonoBehaviour , INetworkInit
 
       if(!killing) self.orthographicSize = CalculateZoom();
 
-   }
-
-   public void startShakeCoroutine(float duration, float magnitude)
-   {
-          //if(!isHost || killing)return;
-      if(CurrentShake != null)
-      {
-         StopCoroutine(CurrentShake);
-         CurrentShake = null;
-      } 
-      CurrentShake = StartCoroutine(Shake(duration,magnitude));
+      UpdateDarken();
+      UpdateShake();
 
    }
 
-   public void startDarkenCoroutine(float duration)
+   public void Shake(int p_duration, float p_magnitude)
    {
-        //if(!isHost || killing)return;
-      if(CurrentDarken != null)
-      {
-         StopCoroutine(CurrentDarken);
-         CurrentDarken = null;
-      } 
-      CurrentDarken = StartCoroutine(darkenScreen(duration));
-
-
+      shakeDurr = p_duration;
+      magnitude = p_magnitude;
    }
 
-   static bool isNotNull(Object n)
+   public void Darken(int p_duration)
    {
-      return n != null;
+      if(killing)return;
+      darkenDurr = p_duration;
+      GetComponentInChildren<SyncAnimatorStateHost>().SetState("Darken"); 
    }
 
-   IEnumerator Shake(float duration, float magnitude)
+   // static bool isNotNull(Object n)
+   // {
+   //    return n != null;
+   // }
+
+   void UpdateShake()
    {
-         //if(!isHost)yield break;
-   		Vector3 origPos = (killing||!DynamicCamera)?transform.localPosition:CalculateCenter();
-   		float elapsed = 0f;
+         if(shakeDurr > 0)
+         {
+            Vector3 origPos = (killing||!DynamicCamera)?transform.localPosition:CalculateCenter();
+      
+            transform.localPosition = origPos;
+            float x = origPos.x + Random.Range(-1f,1f) * magnitude * self.orthographicSize/15f;
+            float y = origPos.y + Random.Range(-.5f,.5f) * magnitude * self.orthographicSize/15f;
 
-   		while(elapsed < duration)
-   		{
-   			transform.localPosition = origPos;
-   			float x = origPos.x + Random.Range(-1f,1f) * magnitude * self.orthographicSize/15f;
-   			float y = origPos.y + Random.Range(-.5f,.5f) * magnitude * self.orthographicSize/15f;
-
-   			transform.localPosition = new Vector3(x,y,origPos.z);
+            transform.localPosition = new Vector3(x,y,origPos.z);
             // self.orthographicSize += Random.Range(-2f,2f) * magnitude;
+            shakeDurr--;
+            if(shakeDurr <=0)
+               transform.localPosition = origPos;
 
-   			elapsed += Time.deltaTime;
-
-   			yield return null;
-
-   		}
-
-   		if(!DynamicCamera) transform.localPosition = basePos;
-
-         //StopCoroutine(CurrentShake);
-         CurrentShake = null;
-
-         yield break;
+            //if(!DynamicCamera) transform.localPosition = origPos;
+         }
+   		
 
    }
+
+   void UpdateDarken()
+   {
+      if(darkenDurr > -50)
+      {
+         int prevDurr = darkenDurr;
+         darkenDurr--;
+         if(darkenDurr <=0 && prevDurr >0)
+            GetComponentInChildren<SyncAnimatorStateHost>().SetState("Lighten");
+         else if(darkenDurr <=-50)
+            GetComponentInChildren<SyncAnimatorStateHost>().SetState("Hidden");
+      }
+      
+   }
+
+
 
    private Vector3 CalculateCenter()
    {
@@ -166,75 +175,72 @@ public class ScreenShake : MonoBehaviour , INetworkInit
       return Mathf.Lerp(self.orthographicSize,Mathf.Clamp(scaledZoom *1.7f,15f,30f),Time.deltaTime * 3f);
    }
 
-
-   public IEnumerator zoomEffect(float duration, Vector3 position, bool finalKill)
+   public void zoomEffect(int p_duration, Vector3 p_position, bool p_finalKill)
    {
-      //Killing is a flag that indicates if a zoom effect is happening
-      //This disallows many other screen effects from occuring that may cause zooms to jank out
-      if(killing){
-         yield break;
-      }
-      else{
-         killing = true;
-      }
-
-      //Stops the current screenshake process, if one is active
-      if(CurrentShake != null)
-      {
-         StopCoroutine(CurrentShake);
-         CurrentShake = null;
-      }
-
-      //Saves Starting position
-      //Vector3 origPos = transform.localPosition;
-
-      //Enables the zoom background
-      GetComponentInChildren<SyncAnimatorStateHost>().SetState(finalKill?"Final_Kill":"Critical_Attack"); 
-
-      //Zoom in
-      for(float i = 0f; i <= 1f;i+=.05f)
-      {
-            transform.localPosition = Vector3.Lerp(transform.localPosition,position,i);
-            self.orthographicSize = Mathf.Lerp(self.orthographicSize,13f,i);
-            yield return null;
-      }
+      // if(killing) return;
       
-      CurrentShake = StartCoroutine(Shake(duration,.9f));
-      yield return new WaitForSeconds(duration);
-      GetComponentInChildren<SyncAnimatorStateHost>().SetState("Hidden"); 
+      // else
+      //    killing = true;
+
+      // //Stops the current screenshake process, if one is active
+      // shakeDurr = 0;
+
+      // zoomDurr = p_duration;
+
+      // GetComponentInChildren<SyncAnimatorStateHost>().SetState(finalKill?"Final_Kill":"Critical_Attack"); 
+      UnityEngine.Debug.Log("Reimplement Me");
+   }
+
+   public void UpdateZoom()
+   {
+
+      // //Enables the zoom background
+      
+
+      // //Zoom in
+      // for(float i = 0f; i <= 1f;i+=.05f)
+      // {
+      //       transform.localPosition = Vector3.Lerp(transform.localPosition,position,i);
+      //       self.orthographicSize = Mathf.Lerp(self.orthographicSize,13f,i);
+      //       yield return null;
+      // }
+      
+      // Shake(duration,.9f);
+      // yield return new WaitForSeconds(duration);
+      // GetComponentInChildren<SyncAnimatorStateHost>().SetState("Hidden"); 
        
-      //transform.localPosition = origPos;
+      // //transform.localPosition = origPos;
 
-      //Zoom Out
+      // //Zoom Out
 
-      for(float i = 0f; i <= 1f;i+=(DynamicCamera ? .5f : .01f))
-      {
-            transform.localPosition = Vector3.Lerp(transform.localPosition,DynamicCamera?CalculateCenter():basePos,i);
-            self.orthographicSize = Mathf.Lerp(self.orthographicSize,DynamicCamera?CalculateZoom():baseZoom,i);
-            yield return null;
-      }
+      // for(float i = 0f; i <= 1f;i+=(DynamicCamera ? .5f : .01f))
+      // {
+      //       transform.localPosition = Vector3.Lerp(transform.localPosition,DynamicCamera?CalculateCenter():origPos,i);
+      //       self.orthographicSize = Mathf.Lerp(self.orthographicSize,DynamicCamera?CalculateZoom():baseZoom,i);
+      //       yield return null;
+      // }
 
-      if(!DynamicCamera)
-      {
-         transform.localPosition = basePos;
-         self.orthographicSize = baseZoom;
-      }
+      // if(!DynamicCamera)
+      // {
+      //    transform.localPosition = origPos;
+      //    self.orthographicSize = baseZoom;
+      // }
 
-      killing = false;
+      // killing = false;
       
    }
 
-   public IEnumerator darkenScreen(float duration)
-   {
-      if(killing){
-         yield break;
-      }
-      GetComponentInChildren<SyncAnimatorStateHost>().SetState("Darken"); 
-      yield return new WaitForSeconds(duration);
-      GetComponentInChildren<SyncAnimatorStateHost>().SetState("Lighten");
-      yield return new WaitForSeconds(.84f);
-      GetComponentInChildren<SyncAnimatorStateHost>().SetState("Hidden");
-      yield break;
-   }
+   // public IEnumerator darkenScreen(float duration)
+   // {
+   //    if(killing){
+   //       yield break;
+   //    }
+   //    GetComponentInChildren<SyncAnimatorStateHost>().SetState("Darken"); 
+   //    yield return new WaitForSeconds(duration);
+   //    GetComponentInChildren<SyncAnimatorStateHost>().SetState("Lighten");
+   //    yield return new WaitForSeconds(.84f);
+   //    GetComponentInChildren<SyncAnimatorStateHost>().SetState("Hidden");
+   //    yield break;
+   // }
 
 }

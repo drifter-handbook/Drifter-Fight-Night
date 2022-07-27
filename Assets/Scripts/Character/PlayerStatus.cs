@@ -48,12 +48,10 @@ class PlayerStatusData
     public bool isSelfInflicted = false;
     public int channel = 0;
     public GameObject statusBar = null;
-    public float duration = 0;
-    public bool stacking = false;
-    public float stacks = 1f;
+    public int duration = 0;
     //public bool isMashable = false;
 
-    public PlayerStatusData(string statusName, int icon = -1 ,bool remove = true,bool stun = false, bool self = false, int channel = 0, bool stacking = false) //, bool mashable = false)
+    public PlayerStatusData(string statusName, int icon = -1 ,bool remove = true,bool stun = false, bool self = false, int channel = 0) //, bool mashable = false)
     { 
         name = statusName;
         iconIndex = icon;
@@ -61,7 +59,6 @@ class PlayerStatusData
         isStun = stun;
         isSelfInflicted = self;
         this.channel = channel;
-        this.stacking = stacking;
 
         //isMashable = mashable;
     }
@@ -69,9 +66,6 @@ class PlayerStatusData
 
 public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
 {
-
-	static float framerateScalar = 1f / 60f;
-
 	NetworkSync sync;
 
     Dictionary<PlayerStatusEffect,PlayerStatusData> statusDataMap = new Dictionary<PlayerStatusEffect,PlayerStatusData>()
@@ -84,7 +78,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         {PlayerStatusEffect.GRABBED,                            new PlayerStatusData("GRABBED",icon:  3,stun: true)                                 },
         {PlayerStatusEffect.CRINGE,                             new PlayerStatusData("CRINGE",icon: 3,stun: true)                                   },
         {PlayerStatusEffect.DEAD ,                              new PlayerStatusData("DEAD",icon:  7,remove: false,stun: true)                      },
-        {PlayerStatusEffect.POISONED,                           new PlayerStatusData("POISONED",icon:  0,remove: false,stacking:true)               },
+        {PlayerStatusEffect.POISONED,                           new PlayerStatusData("POISONED",icon:  0,remove: false)                             },
         {PlayerStatusEffect.BURNING,                            new PlayerStatusData("BURNING",icon: 1,remove: false)                               },
         {PlayerStatusEffect.REVERSED,                           new PlayerStatusData("REVERSED",icon: 4)                                            },
         {PlayerStatusEffect.FLIGHT,                             new PlayerStatusData("FLIGHT",icon: 12, self: true)                                 },
@@ -123,7 +117,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
     public Collider2D grabPoint = null;
 
     PlayerStatusEffect delayedEffect;
-    float delayedEffectDuration;
+    int delayedEffectDuration;
 
     // Start is called before the first frame update
     void Start()
@@ -131,7 +125,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
     	sync = GetComponent<NetworkSync>();
         rb = GetComponent<Rigidbody2D>();
         drifter = GetComponent<Drifter>();
-        if(!GameController.Instance.IsTraining)ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,1.85f);
+        if(!GameController.Instance.IsTraining)ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,111);
     }
  
     // Update is called once per frame
@@ -157,7 +151,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
             //Hitpause pauses all other statuses for its duration
             if(HasStatusEffect(PlayerStatusEffect.HITPAUSE) || HasStatusEffect(PlayerStatusEffect.GRABBED))
             {
-                statusDataMap[PlayerStatusEffect.HITPAUSE].duration-= Time.fixedDeltaTime;
+                statusDataMap[PlayerStatusEffect.HITPAUSE].duration--;
                 if(!HasStatusEffect(PlayerStatusEffect.HITPAUSE) && !HasStatusEffect(PlayerStatusEffect.SLOWMOTION))
                 {
                     if(delayedVelocity != Vector2.zero)rb.velocity = delayedVelocity;
@@ -175,7 +169,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
                 {
                     if(HasStatusEffect(ef.Key))
                     {
-                        ef.Value.duration -= Time.fixedDeltaTime;
+                        ef.Value.duration--;
 
                         //Damage player if they are on fire
                         if(ef.Key == PlayerStatusEffect.BURNING) drifter.DamageTaken += Time.fixedDeltaTime;
@@ -196,20 +190,17 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
 
                             //Wakeup if knocked off stage
                             if(!drifter.movement.grounded)
-                                ApplyStatusEffect(PlayerStatusEffect.FLATTEN,0f);
+                                ApplyStatusEffect(PlayerStatusEffect.FLATTEN,0);
 
                             if(!HasStatusEffect(PlayerStatusEffect.FLATTEN))
                             {
-                                ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,8f * framerateScalar);
+                                ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,8);
                                 drifter.movement.hitstun = true;
                                 drifter.knockedDown = false;
                                 drifter.PlayAnimation("Jump_End");
-                                ApplyStatusEffect(PlayerStatusEffect.INVULN,5f * framerateScalar);
+                                ApplyStatusEffect(PlayerStatusEffect.INVULN,5);
                             }
                         }
-                        
-
-                        if(!HasStatusEffect(ef.Key))ef.Value.stacks=0f;
 
                     }
                 }
@@ -288,12 +279,12 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         return !HasStatusEffect(PlayerStatusEffect.KNOCKBACK);
     }
 
-    public void ApplyStatusEffect(PlayerStatusEffect ef, float duration)
+    public void ApplyStatusEffect(PlayerStatusEffect ef, int duration)
     {
         ApplyStatusEffectFor(ef, duration);
     }
 
-    public void ApplyDelayedStatusEffect(PlayerStatusEffect p_ef, float p_duration)
+    public void ApplyDelayedStatusEffect(PlayerStatusEffect p_ef, int p_duration)
     {
         if(!HasStatusEffect(PlayerStatusEffect.HITPAUSE) && !HasStatusEffect(PlayerStatusEffect.SLOWMOTION))ApplyStatusEffectFor(p_ef, p_duration);
         else
@@ -304,7 +295,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         
     }
 
-    public void ApplyDamage(float damage, float hitstun) {
+    public void ApplyDamage(float damage, int hitstun) {
 
         damageDisplay.Increment(damage, isInCombo, hitstun);
     }
@@ -363,7 +354,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
     }
 
     //Gets the remaining duration for a given stats effect
-    public float remainingDuration(PlayerStatusEffect ef)
+    public int remainingDuration(PlayerStatusEffect ef)
     {
     	return statusDataMap[ef].duration;
     }
@@ -372,25 +363,8 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
     public void bounce()
     {
         if(HasStatusEffect(PlayerStatusEffect.KNOCKBACK)){
-            statusDataMap[PlayerStatusEffect.KNOCKBACK].duration *= .8f;
+            statusDataMap[PlayerStatusEffect.KNOCKBACK].duration = (int)(statusDataMap[PlayerStatusEffect.KNOCKBACK].duration * .8f);
         }
-    }
-
-
-    // // //Called by playerHurtboxHandler to calculate frame advantage on hit.
-    // public void calculateFrameAdvantage(float defender, float attacker)
-    // {
-    // 	frameAdvantage =  ((defender - attacker ) / framerateScalar);
-    // }
-
-    //Called once per frame if the player is mashing; Reduces remaining duration of effects
-    //TODO make mashable a parameter?
-    public void mashOut(){
-        //Adjust these numbers to make it easier or harder to mash out
-        if(HasStatusEffect(PlayerStatusEffect.AMBERED))statusDataMap[PlayerStatusEffect.AMBERED].duration-=.4f;
-        if(HasStatusEffect(PlayerStatusEffect.PLANTED))statusDataMap[PlayerStatusEffect.PLANTED].duration-=.4f;
-        if(HasStatusEffect(PlayerStatusEffect.PARALYZED))statusDataMap[PlayerStatusEffect.PARALYZED].duration-=.4f;
-        // if(HasStatusEffect(PlayerStatusEffect.GRABBED))statusDataMap[PlayerStatusEffect.GRABBED].duration-=.4f;
     }
 
 	//IDK fam. do we want to keep this?
@@ -411,7 +385,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
     }
 
     //initialize a status bar on the players summary card.
-    GameObject addStatusBar(PlayerStatusEffect ef, float duration)
+    GameObject addStatusBar(PlayerStatusEffect ef, int duration)
     {
     	if(card==null)return null;
 
@@ -420,7 +394,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
 
 
     //God this bullshit...
-    void ApplyStatusEffectFor(PlayerStatusEffect ef, float duration)
+    void ApplyStatusEffectFor(PlayerStatusEffect ef, int duration)
     {
 
     	PlayerStatusData data = statusDataMap[ef];
@@ -461,7 +435,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         //TODO See if this is necessary when plants are reintroduced
         if((data.isStun && !data.isSelfInflicted && HasStatusEffect(ef)) && ef != PlayerStatusEffect.KNOCKBACK || (HasStatusEffect(PlayerStatusEffect.PLANTED) && (ef == PlayerStatusEffect.GRABBED))){
             
-            statusDataMap[PlayerStatusEffect.KNOCKBACK].duration = .55f;
+            statusDataMap[PlayerStatusEffect.KNOCKBACK].duration = 30;
             clearRemoveOnHitStatus();
             return;
         }
@@ -496,7 +470,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
 	{
     	public string Type { get; set; }
     	public PlayerStatusEffect effect;
-    	public float statusDuration;
+    	public int statusDuration;
 	}
 
 

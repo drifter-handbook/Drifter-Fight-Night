@@ -16,20 +16,23 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
     public TrainingUIManager trainingUI;
 
-    static protected float framerateScalar = 1f / 60f;
-
     // Start is called before the first frame update
     protected void Start()
     {
         host = GameController.Instance.host;
         Shake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<ScreenShake>();
 
-        StartCoroutine(CleanupOldAttacks());
+        // StartCoroutine(CleanupOldAttacks());
     }
 
     public bool CanHit(int attackID)
     {
         return !oldAttacks.ContainsKey(attackID);
+    }
+
+    void FixedUpdate()
+    {
+        CleanupOldAttacks();        
     }
 
 
@@ -94,11 +97,11 @@ public class PlayerHurtboxHandler : MonoBehaviour
             //Freezefame if hit a counter
             if(hurtbox.gameObject.name == "Counter" &&  attackData.AttackDamage >0f && attackData.hitType!=HitType.GRAB)
             {
-                Shake?.startDarkenCoroutine(25f * framerateScalar);
+                Shake?.Darken(25);
                 GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.STAR, hitSparkPos,0, new Vector2(10f, 10f));
-                attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,30f * framerateScalar);
+                attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,30);
                 drifter.PlayAnimation("Counter_Success");
-                status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,15f * framerateScalar);
+                status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,15);
                 return -4;
             }
 
@@ -182,8 +185,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
             }
 
             //Calculate hitstun duration
-            float HitstunDuration = GetHitStun(drifter, attacker, attackData);
-            float HitPauseDuration = HitstunDuration;
+            int HitstunDuration = GetHitStun(drifter, attacker, attackData);
+            int HitPauseDuration = HitstunDuration;
             //damage numbers managment
             
             status?.ApplyDamage(damageDealt, HitstunDuration);
@@ -215,25 +218,23 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 if((attackData.hitType==HitType.GRAB || crossUp) && drifter.guarding && attackData.AttackDamage >0f)
                 {
                     //status.ApplyStatusEffect(PlayerStatusEffect.GUARDBROKEN,5f);
-                    HitstunDuration = 1f;
+                    HitstunDuration = 60;
                     guardbroken = true;
                     drifter.clearGuardFlags();
-                    //drifter.guardBreaking = true;
-                    //status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,30f* framerateScalar);
                     
                 }
                 else drifter.guardBreaking = false;
 
                 //As long as the defender isnt in superarmour, or they are being grabbed, apply knockback velocity
-                if(!status.HasStatusEffect(PlayerStatusEffect.ARMOUR) || attackData.hitType==HitType.GRAB || crossUp){
+                if(!status.HasStatusEffect(PlayerStatusEffect.ARMOUR) || attackData.hitType==HitType.GRAB || (crossUp && drifter.guarding) ){
 
-                    status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0f);
+                    status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0);
                     
                     if(damageDealt >0)drifter.movement.setFacing((int)(facingDir *-1) * ((attackData.AngleOfImpact > 90 && attackData.AngleOfImpact <= 270)?-1:1));
 
                     //Cause the screen to shake slightly on hit, as long as the move has knockback
                     if(Shake != null && attackData.Knockback !=0){
-                        Shake.startShakeCoroutine((willCollideWithBlastZone(GetComponent<Rigidbody2D>(), HitstunDuration)?0.3f:0.15f),Mathf.Clamp((((attackData.Knockback - 10)/100f + (damageDealt-10)/44f)) * attackData.KnockbackScale,.1f,.8f));
+                        Shake.Shake((willCollideWithBlastZone(GetComponent<Rigidbody2D>(), HitstunDuration)?18:9),Mathf.Clamp((((attackData.Knockback - 10)/100f + (damageDealt-10)/44f)) * attackData.KnockbackScale,.25f,.8f));
 
                         //Shake.startShakeCoroutine(.3f,2f);
                     }
@@ -253,7 +254,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                     }
                                         
                     //IF there is hitstun to be applied, apply it
-                    if(attackData.HitStun != 0)
+                    if(HitstunDuration > 0)
                     {
                         //Apply a minimum hitstun on burst type attacks
                         if(attackData.hitType != HitType.BURST || HitstunDuration >= status?.remainingDuration(PlayerStatusEffect.KNOCKBACK))
@@ -264,49 +265,43 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
                 if(attackData.StatusEffect != PlayerStatusEffect.PLANTED || drifter.movement.grounded){
 
-                    //status?.calculateFrameAdvantage(attackData.StatusDuration* framerateScalar,attacker.getRemainingAttackTime());
 
-                	if(attackData.StatusEffect == PlayerStatusEffect.PLANTED && !status.HasStatusEffect(PlayerStatusEffect.PLANTED)) GetComponent<Rigidbody2D>().velocity = Vector3.down*5f;
-                	status.ApplyStatusEffect(attackData.StatusEffect, (attackData.StatusEffect == PlayerStatusEffect.PLANTED || attackData.StatusEffect == PlayerStatusEffect.AMBERED?
-                                                                    attackData.StatusDuration * 4f/(1f+Mathf.Exp(-0.03f * (drifter.DamageTaken -80f))):
-                                                                    attackData.StatusDuration));
-
-                    // if(attackData.StatusEffect == PlayerStatusEffect.ORBO)
-                    //     SpawnOrboHandler(hitbox.parent,hurtbox.parent,(int)attackData.StatusDuration);
-
+                    if(attackData.StatusEffect == PlayerStatusEffect.PLANTED && !status.HasStatusEffect(PlayerStatusEffect.PLANTED)) GetComponent<Rigidbody2D>().velocity = Vector3.down*5f;
+                    status.ApplyStatusEffect(attackData.StatusEffect, attackData.StatusDuration);
 
                     //Attatch Defender to attacker's hitbox for grab moves.
                     if(attackData.StatusEffect == PlayerStatusEffect.GRABBED)
                     {
                         status.grabPoint = hitbox.gameObject.GetComponent<Collider2D>();
-                        attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,5f * framerateScalar);
+                        attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,5);
 
-                    }              	
+                    }               
                 }
                 //Pop players out of the ground when they are already grounded
-                else if(attackData.StatusEffect == PlayerStatusEffect.PLANTED && !drifter.movement.grounded){
-                	status.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,30f * framerateScalar);
-                }
+                else if(attackData.StatusEffect == PlayerStatusEffect.PLANTED && !drifter.movement.grounded)
+                    status.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,30);
+
 
                 //Extend hitpause on kill
                 if (willCollideWithBlastZoneAccurate(GetComponent<Rigidbody2D>(), HitstunDuration) && drifter.Stocks <= 1 && NetworkPlayers.Instance.players.Values.Where(x => x != null).ToList().Count <=2)
                 {
-                    HitstunDuration = 3f;
+                    HitstunDuration = 180;
                     //drifter.movement.techWindowElapsed = 2f;
                 } 
-                else if (willCollideWithBlastZone(GetComponent<Rigidbody2D>() , HitstunDuration) ) Mathf.Min(HitstunDuration*=2f,3f);
+                else if (willCollideWithBlastZone(GetComponent<Rigidbody2D>() , HitstunDuration) ) Mathf.Min(HitstunDuration*=2,3f);
                 
                 
                 if(status.HasStatusEffect(PlayerStatusEffect.ARMOUR) && attackData.hitType!=HitType.GRAB)
-                    Shake?.startDarkenCoroutine(25f * framerateScalar);
+                    Shake?.Darken(25);
 
                 //apply defender hitpause
                 //If hitstop is scaled, and one is proviced, sum the hitstun duuration and the hitpause duration
                 if(attackData.HitStop >=0)
-                    HitPauseDuration = attackData.HitStop * framerateScalar;
+                    HitPauseDuration = attackData.HitStop;
   
-                if(HitPauseDuration>0 && attackData.StatusEffect != PlayerStatusEffect.HITPAUSE )status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(isCritical || guardbroken || status.HasStatusEffect(PlayerStatusEffect.ARMOUR)) ? 25f* framerateScalar:((damageDealt <=2f ? .075f :Mathf.Max(HitPauseDuration*.3f ,10f * framerateScalar)) * (hadSlowmo?2f:1f)));
-                StartCoroutine(drifter.GetComponentInChildren<GameObjectShake>().Shake(attackData.StatusEffect != PlayerStatusEffect.CRINGE?HitPauseDuration*.2f:attackData.StatusDuration* framerateScalar,attackData.StatusEffect != PlayerStatusEffect.CRINGE?1.5f:2f));
+                if(HitPauseDuration>0 && attackData.StatusEffect != PlayerStatusEffect.HITPAUSE )status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(isCritical || guardbroken || status.HasStatusEffect(PlayerStatusEffect.ARMOUR)) ? 25:((damageDealt <=2f ? 2 :(int)Mathf.Max(HitPauseDuration, 2)) * (hadSlowmo?2:1)));
+                
+                drifter.GetComponentInChildren<GameObjectShake>().Shake(attackData.StatusEffect != PlayerStatusEffect.CRINGE?attackData.HitStop:attackData.StatusDuration,attackData.StatusEffect != PlayerStatusEffect.CRINGE?1.5f:2f);
 
                 returnCode = attackData.StatusEffect == PlayerStatusEffect.GRABBED?1: 0;             
             }
@@ -319,7 +314,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 //push both players back on guarrd
                 
                 if(hitbox.gameObject.tag != "Projectile")
-                     hitbox.parent.GetComponent<Rigidbody2D>().velocity = new Vector2(forceDir.normalized.x * Mathf.Max(-KB,-25f), hitbox.parent.GetComponent<Rigidbody2D>().velocity.y);
+                     hitbox.parent.GetComponent<Rigidbody2D>().velocity = new Vector2(-Mathf.Sign(forceDir.normalized.x) * attackData.pushBlock, hitbox.parent.GetComponent<Rigidbody2D>().velocity.y);
 
                 //hitbox.parent.GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(HitstunDuration,.2f,1f) * hitbox.Facing *-15f, hitbox.parent.GetComponent<Rigidbody2D>().velocity.y);
                
@@ -327,13 +322,13 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 if(!drifter.perfectGuarding)
                 {
                     // Get new particle for prefect guarda
-                    GetComponent<Rigidbody2D>().velocity = new Vector2(forceDir.normalized.x * Mathf.Min(KB,30f), GetComponent<Rigidbody2D>().velocity.y);
+                    GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Sign(forceDir.normalized.x) * attackData.pushBlock, GetComponent<Rigidbody2D>().velocity.y);
 
                 }
 
                 else drifter.movement.spawnJuiceParticle(hitSparkPos, MovementParticleMode.Parry);
                 //put defender in blockstun
-                if(attackData.HitStun != 0){
+                if(HitstunDuration > 0){
                         // status?.calculateFrameAdvantage(HitstunDuration, attacker.getRemainingAttackTime());
                         //6x blockstun on guardcrush
                         status?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, HitstunDuration);
@@ -358,13 +353,15 @@ public class PlayerHurtboxHandler : MonoBehaviour
             else if(drifter.parrying && hitbox.gameObject.tag != "Projectile")
             {
                 //TODO Shit out more paricles
+                //TODO Make this work better in air
 
                 drifter.movement.spawnJuiceParticle(hitSparkPos, MovementParticleMode.Parry);
 
-                attackerStatus.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,1f);
-                attackerStatus.ApplyStatusEffect(PlayerStatusEffect.CRINGE,1f);
-                StartCoroutine(Shake.zoomEffect(.6f,Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),false));
-                attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.6f);
+                attackerStatus.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,60);
+                attackerStatus.ApplyStatusEffect(PlayerStatusEffect.CRINGE,60);
+                Shake.zoomEffect(36,Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),false);
+                attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,36);
+                drifter.movement.pauseGravity();
                 returnCode = -2;
 
             }
@@ -384,7 +381,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
             //apply attacker hitpause
             if (hitbox.gameObject.tag != "Projectile" || isCritical)
-                attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(isCritical || guardbroken|| status.HasStatusEffect(PlayerStatusEffect.ARMOUR))? 20f* framerateScalar: (damageDealt <=2f ? .074f : Mathf.Max(HitPauseDuration * .3f,2f * framerateScalar)));
+                attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(isCritical || guardbroken|| status.HasStatusEffect(PlayerStatusEffect.ARMOUR))? 25 : 
+                    (damageDealt <=2f ? 2 : (int)Mathf.Max(HitPauseDuration, 2)));
 
             
 
@@ -404,11 +402,11 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.CRIT, hitSparkPos, 0, new Vector2(facingDir * 10f, 10f));
 
                 if(drifter.Stocks <= 1 && willCollideWithBlastZoneAccurate(GetComponent<Rigidbody2D>(), HitstunDuration))
-                    StartCoroutine(Shake.zoomEffect(HitstunDuration*.25f,hitSparkPos,true));
+                    Shake.zoomEffect(30,hitSparkPos,true);
             }
 
             if (isCritical)
-                Shake.startDarkenCoroutine(30f * framerateScalar);
+                Shake.Darken(30);
 
             // Ancillary Hitsparks
             if (drifter != null && damageDealt >0f && attackFX != null)
@@ -451,30 +449,27 @@ public class PlayerHurtboxHandler : MonoBehaviour
         return returnCode;
     }
 
-    IEnumerator CleanupOldAttacks()
+    void CleanupOldAttacks()
     {
-        while (true)
+        List<int> toRemove = new List<int>();
+        foreach (int attackID in oldAttacks.Keys)
         {
-            yield return new WaitForSeconds(1);
-            // find old attackIDs
-            List<int> toRemove = new List<int>();
-            foreach (int attackID in oldAttacks.Keys)
+            if (Time.time - oldAttacks[attackID] > MAX_ATTACK_DURATION)
             {
-                if (Time.time - oldAttacks[attackID] > MAX_ATTACK_DURATION)
-                {
-                    toRemove.Add(attackID);
-                }
-            }
-            // delete old attackIDs
-            foreach (int attackID in toRemove)
-            {
-                oldAttacks.Remove(attackID);
+                toRemove.Add(attackID);
             }
         }
+        // delete old attackIDs
+        foreach (int attackID in toRemove)
+        {
+            oldAttacks.Remove(attackID);
+        }
+
     }
 
-    protected IEnumerator delayHitsparks(AttackFXSystem attackFX, Vector3 position, float angle,float damage, float duration)
+    protected IEnumerator delayHitsparks(AttackFXSystem attackFX, Vector3 position, float angle,float damage, float p_duration)
     {
+        float duration = p_duration/60f;
         Vector3 hitSparkPos = position;
         float angleT;
         float stepSize = duration / ((damage + 2 )/3);
@@ -515,14 +510,18 @@ public class PlayerHurtboxHandler : MonoBehaviour
                          (strong?1.5f:1)) * attackData.KnockbackScale + attackData.Knockback);
     }
 
-    protected float GetHitStun(Drifter defender, Drifter attacker, SingleAttackData attackData) {
+    protected int GetHitStun(Drifter defender, Drifter attacker, SingleAttackData attackData) {
         int adv = attackData.HitStun;
         if (defender != null && defender.guarding)
             adv = attackData.ShieldStun;
-        return attacker.GetCurrentAnimationRemainder() + adv * framerateScalar;
+        
+        if (attackData.dynamicStun)
+            adv += attackData.finalFrame - attackData.firstActiveFrame;
+
+        return adv;
     }
 
-    protected bool willCollideWithBlastZone(Rigidbody2D rigidbody, float hitstun)
+    protected bool willCollideWithBlastZone(Rigidbody2D rigidbody, int hitstun)
     {
         float xDel, yDel;
         float xVel, yVel;
@@ -552,7 +551,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
         return false;
     }
 
-    protected bool willCollideWithBlastZoneAccurate(Rigidbody2D rigidbody, float hitstun)
+    protected bool willCollideWithBlastZoneAccurate(Rigidbody2D rigidbody, int hitstun)
     {
         float xDel, yDel;
         float xVel, yVel;

@@ -33,12 +33,9 @@ public class RyykeMasterHit : MasterHit
     int targetStone = -1;
 
 
-
-	new void FixedUpdate()
+    override protected void UpdateMasterHit()
     {
-        if(!isHost)return;
-
-        base.FixedUpdate();
+        base.UpdateMasterHit();
 
         //Remove the arm if it is not needed
         if(arm!= null &&(movement.ledgeHanging || status.HasEnemyStunEffect())) deleteArm();
@@ -46,43 +43,43 @@ public class RyykeMasterHit : MasterHit
         //remove all tombstones on death
         if(status.HasStatusEffect(PlayerStatusEffect.DEAD))
         {
-       		for(int i = 0; i <3; i++)
-       			if(tombstones[i] != null)
-       				Destroy(tombstones[i].gameObject);
+            for(int i = 0; i <3; i++)
+                if(tombstones[i] != null)
+                    Destroy(tombstones[i].gameObject);
         }
 
 
         //Listen for a directional input in empowered down special
         if(listeningForDirection)
         {
-        	targetStone = nearbyStone;
-        	if(drifter.input[0].MoveY  !=0 || drifter.input[0].MoveX != 0)
-      		{
+            targetStone = nearbyStone;
+            if(drifter.input[0].MoveY  !=0 || drifter.input[0].MoveX != 0)
+            {
                 movement.updateFacing();
-        		if(drifter.input[0].MoveY > 0) targetStone = 0;
-        		else if(drifter.input[0].MoveY < 0) targetStone = 2;
-        		else targetStone = 1;
-        		playState("W_Down_Emerge_Empowered");
-        	}
-        	
+                if(drifter.input[0].MoveY > 0) targetStone = 0;
+                else if(drifter.input[0].MoveY < 0) targetStone = 2;
+                else targetStone = 1;
+                playState("W_Down_Emerge_Empowered");
+            }
+            
         }
         else
-        	targetStone = -1;
+            targetStone = -1;
 
         //Listen for movement commands in unempowered down special
         if(listeningForMovement)
         {
-        	movement.move(14f);
-        	if((!drifter.input[1].Jump && drifter.input[0].Jump) || burrowTime <=0)
-        	{
-        		attacks.SetupAttackID(DrifterAttackType.W_Down);
-        		playState("W_Down_Emerge");
-        		listeningForMovement = false;
-        	}
-        	else if(drifter.input[0].MoveX !=0)
-        		playState("W_Down_Move");
-        	else
-        		playState("W_Down_Idle");
+            movement.move(14f);
+            if((!drifter.input[1].Jump && drifter.input[0].Jump) || burrowTime <=0)
+            {
+                attacks.SetupAttackID(DrifterAttackType.W_Down);
+                playState("W_Down_Emerge");
+                listeningForMovement = false;
+            }
+            else if(drifter.input[0].MoveX !=0)
+                playState("W_Down_Move");
+            else
+                playState("W_Down_Idle");
 
         }
 
@@ -93,6 +90,7 @@ public class RyykeMasterHit : MasterHit
         }
 
         isNearStone();
+
     }
 
     public void playStateByStone(string state)
@@ -125,18 +123,18 @@ public class RyykeMasterHit : MasterHit
     public void SpawnTombstone(int mode = 0)
     {
         if(!isHost)return;
-        facing = movement.Facing;
+        
 
         bool stonesFull = true;
         
-        GameObject stone = host.CreateNetworkObject("Tombstone", transform.position + new Vector3(1 * facing,.5f,0), transform.rotation);
-        stone.transform.localScale = new Vector3(10f * facing, 10f , 1f);
+        GameObject stone = host.CreateNetworkObject("Tombstone", transform.position + new Vector3(1 * movement.Facing,.5f,0), transform.rotation);
+        stone.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in stone.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
-            hitbox.Facing = facing;
+            hitbox.Facing = movement.Facing;
        }
 
        foreach (HurtboxCollision hurtbox in stone.GetComponentsInChildren<HurtboxCollision>(true))
@@ -162,7 +160,7 @@ public class RyykeMasterHit : MasterHit
 
        //stone.GetComponent<SyncAnimatorStateHost>().SetState(tombstoneIndex + "_Spin");
        stone.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
-       tombstones[tombstoneIndex] = stone.GetComponent<Tombstone>().setup(tombstoneIndex,facing,attacks,drifter.gameObject,zombieRadius);
+       tombstones[tombstoneIndex] = stone.GetComponent<Tombstone>().setup(tombstoneIndex,movement.Facing,attacks,drifter.gameObject,zombieRadius);
        tombstones[tombstoneIndex].throwStone(mode);
     }
 
@@ -251,12 +249,12 @@ public class RyykeMasterHit : MasterHit
     public void SpawnTether()
     {
         if(!isHost)return;
-        facing = movement.Facing;
+        
 
-        float angle = 55f  * facing;
+        float angle = 55f  * movement.Facing;
         float len = 1.28f;
                 
-        Vector3 pos = new Vector3(1.5f * facing,3.7f,0);
+        Vector3 pos = new Vector3(1.5f * movement.Facing,3.7f,0);
 
         if(arm != null)deleteArm();
         bool targetLedge = false;
@@ -267,7 +265,7 @@ public class RyykeMasterHit : MasterHit
             //angle = Vector2.Angle(tether.TetherPoint,transform.position + pos);
             float deltay = TetherPoint.y- (transform.position + pos).y;
             float deltax = TetherPoint.x- (transform.position + pos).x;
-            angle = Mathf.Atan2(deltay, deltax)*180 / Mathf.PI + (facing < 0 ?180:0);
+            angle = Mathf.Atan2(deltay, deltax)*180 / Mathf.PI + (movement.Facing < 0 ?180:0);
 
 
             len = Vector2.Distance(transform.position + pos,TetherPoint) /10f;
@@ -279,13 +277,13 @@ public class RyykeMasterHit : MasterHit
             TetherPoint = Vector3.zero;
 
         arm = host.CreateNetworkObject("Ryyke_Arm", transform.position + pos, Quaternion.Euler(0,0,angle));
-        arm.transform.localScale = new Vector3(10f * facing, 10f , 1f);
+        arm.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in arm.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
-            hitbox.Facing = facing;
+            hitbox.Facing = movement.Facing;
         }
         arm.transform.SetParent(drifter.gameObject.transform);
         arm.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
@@ -335,7 +333,7 @@ public class RyykeMasterHit : MasterHit
         armTether.togglehitbox(0);
     }
 
-    //Flips the direction the character is facing mid move)
+    //Flips the direction the character is movement.Facing mid move)
     public void invertDirection()
     {
         if(!isHost)return;

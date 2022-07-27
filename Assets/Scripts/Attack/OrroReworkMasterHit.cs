@@ -31,12 +31,9 @@ public class OrroReworkMasterHit : MasterHit
         Empowered = false;
     }
 
-    new void FixedUpdate()
+    override protected void UpdateMasterHit()
     {
-
-    	if(!isHost)return;
-
-        base.FixedUpdate();
+        base.UpdateMasterHit();
 
         //Refresh hover values when you land
         if(movement.grounded)
@@ -73,35 +70,35 @@ public class OrroReworkMasterHit : MasterHit
 
         if(listeningForMovement)
         {
-        	if(hoverTime <=0)
-        	{
-        		//movement.updateFacing();
-        		playState("W_Down_Ground");
-        		listeningForMovement = false;
-        		canHover = false;
-  			}
-  			else
-  			{
+            if(hoverTime <=0)
+            {
+                //movement.updateFacing();
+                playState("W_Down_Ground");
+                listeningForMovement = false;
+                canHover = false;
+            }
+            else
+            {
                 hoverTime-= Time.fixedDeltaTime;
-  				rb.velocity = new Vector2(Mathf.Lerp((drifter.input[0].MoveX * 12f),rb.velocity.x,movement.accelerationPercent),rb.velocity.y);
-  			}
+                rb.velocity = new Vector2(Mathf.Lerp((drifter.input[0].MoveX * 12f),rb.velocity.x,movement.accelerationPercent),rb.velocity.y);
+            }
 
-        	if(drifter.input[0].Light)
-        	{
-        		movement.updateFacing();
-        		clearMasterhitVars();
-        		if(drifter.input[0].MoveY >0)
-        			attacks.StartAttack(DrifterAttackType.Ground_Q_Up);
-        		else if(drifter.input[0].MoveY <0)
-        			attacks.StartAttack(DrifterAttackType.Ground_Q_Down);
-        		else if(drifter.input[0].MoveX !=0)
-        			attacks.StartAttack(DrifterAttackType.Ground_Q_Side);
-        		else
-        			attacks.StartAttack(DrifterAttackType.Ground_Q_Neutral);
+            if(drifter.input[0].Light)
+            {
+                movement.updateFacing();
+                clearMasterhitVars();
+                if(drifter.input[0].MoveY >0)
+                    attacks.StartAttack(DrifterAttackType.Ground_Q_Up);
+                else if(drifter.input[0].MoveY <0)
+                    attacks.StartAttack(DrifterAttackType.Ground_Q_Down);
+                else if(drifter.input[0].MoveX !=0)
+                    attacks.StartAttack(DrifterAttackType.Ground_Q_Side);
+                else
+                    attacks.StartAttack(DrifterAttackType.Ground_Q_Neutral);
 
-        		listeningForMovement = false;
-        		canHover = false;
-        	}
+                listeningForMovement = false;
+                canHover = false;
+            }
         }
 
         //If orro cancels, or is hit out of a move where bean charges, cancel that move
@@ -132,6 +129,7 @@ public class OrroReworkMasterHit : MasterHit
 
             Empowered = !beanFollowing || Vector3.Distance(targetPos,bean.rb.position) > 3.8f;
         }
+
     }
 
     public void listenForDirection()
@@ -144,7 +142,7 @@ public class OrroReworkMasterHit : MasterHit
     public void beanCommand()
     {
          movement.updateFacing();
-         applyEndLag(8f);
+         applyEndLag(480);
          playState("W_Neutral_Command");
 
          if(drifter.input[0].MoveY >0)
@@ -176,10 +174,10 @@ public class OrroReworkMasterHit : MasterHit
     public void spawnPlatform()
     {
     	if(!isHost)return;
-        facing = movement.Facing;
+        
     	deletePlatform();
     	platform = host.CreateNetworkObject("orro_w_down_platform", transform.position, transform.rotation);
-        platform.transform.localScale = new Vector3(10f * facing, 10f , 1f);
+        platform.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
     	platform.transform.SetParent(drifter.gameObject.transform);
     	platform.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
 
@@ -295,7 +293,7 @@ public class OrroReworkMasterHit : MasterHit
     public void spawnBean()
     {
         if(!isHost)return;
-        facing = movement.Facing;
+        
         Empowered = false;
 
         beanObject = host.CreateNetworkObject("Bean", transform.position - new Vector3(-1f * movement.Facing, 1f), transform.rotation);
@@ -305,7 +303,7 @@ public class OrroReworkMasterHit : MasterHit
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
             hitbox.isActive = true;
-            hitbox.Facing = facing;
+            hitbox.Facing = movement.Facing;
         }
 
         bean = beanObject.GetComponent<BeanWrangler>();
@@ -313,7 +311,7 @@ public class OrroReworkMasterHit : MasterHit
         foreach (HurtboxCollision hurtbox in beanObject.GetComponentsInChildren<HurtboxCollision>(true))
             hurtbox.owner = drifter.gameObject;
         
-        bean.facing = facing;
+        bean.facing = movement.Facing;
         bean.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
         bean.color = drifter.GetColor();
 
@@ -331,17 +329,17 @@ public class OrroReworkMasterHit : MasterHit
     {
         if(!isHost)return;
 
-        facing = movement.Facing;
-        Vector3 pos = new Vector3(7f * facing,2.7f,0);
+        
+        Vector3 pos = new Vector3(7f * movement.Facing,2.7f,0);
         
         GameObject scratch = host.CreateNetworkObject("Orro_Sair_Proj", transform.position + pos, transform.rotation);
-        scratch.transform.localScale = new Vector3(10f * facing, 10f , 1f);
+        scratch.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in scratch.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
-            hitbox.Facing = facing;
+            hitbox.Facing = movement.Facing;
        }
 
        scratch.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
@@ -353,20 +351,20 @@ public class OrroReworkMasterHit : MasterHit
         if(!isHost)return;
 
 
-        RaycastHit2D ray = Physics2D.Raycast(transform.position+ new Vector3(0,1f),new Vector3(facing * 7f/5f,-5f/5f,0),5f,1);
+        RaycastHit2D ray = Physics2D.Raycast(transform.position+ new Vector3(0,1f),new Vector3(movement.Facing * 7f/5f,-5f/5f,0),5f,1);
 
-        facing = movement.Facing;
-        Vector3 pos = new Vector3((ray.distance +1) * facing,-1* ray.distance +1f,0);
-        if(ray.distance ==0)pos = new Vector3(8* facing,-4,0);
+        
+        Vector3 pos = new Vector3((ray.distance +1) * movement.Facing,-1* ray.distance +1f,0);
+        if(ray.distance ==0)pos = new Vector3(8* movement.Facing,-4,0);
         
         GameObject scratch = host.CreateNetworkObject("Orro_Nair_Proj", transform.position + pos, transform.rotation);
-        scratch.transform.localScale = new Vector3(10f * facing, 10f , 1f);
+        scratch.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in scratch.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
             hitbox.AttackType = attacks.AttackType;
-            hitbox.Facing = facing;
+            hitbox.Facing = movement.Facing;
        }
 
        scratch.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
@@ -377,8 +375,8 @@ public class OrroReworkMasterHit : MasterHit
     private void refreshBeanHitboxes(){
         if(!isHost)return;
 
-        facing = movement.Facing;
-        bean.facing = facing;
+        
+        bean.facing = movement.Facing;
 
         foreach (HitboxCollision hitbox in beanObject.GetComponentsInChildren<HitboxCollision>(true))
         {
@@ -406,8 +404,8 @@ public class OrroReworkMasterHit : MasterHit
     public void pageFlip()
     {
         if(!isHost)return;
-        facing = movement.Facing;
-        movement.spawnJuiceParticle(transform.position + new Vector3(facing * 1.5f,1,0),MovementParticleMode.Orro_Page, true);
+        
+        movement.spawnJuiceParticle(transform.position + new Vector3(movement.Facing * 1.5f,1,0),MovementParticleMode.Orro_Page, true);
     }
 
     //Spawns a boost ring particle for orros up special
@@ -429,7 +427,7 @@ public class OrroReworkMasterHit : MasterHit
         listeningForDirection = false;
     }
 
-    public new void clearMasterhitVars()
+    public override void clearMasterhitVars()
     {
     	base.clearMasterhitVars();
         listeningForMovement = false;

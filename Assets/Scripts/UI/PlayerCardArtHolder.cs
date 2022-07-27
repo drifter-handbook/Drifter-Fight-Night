@@ -16,11 +16,6 @@ public class PlayerCardArtHolder : MonoBehaviour
 
     public GameObject mainCamera;
 
-    // void Awake()
-    // {
-    //     mainCamera  = GameObject.FindGameObjectWithTag("MainCamera");
-    // }
-
     private void Update()
     {
         if (drifters == null || drifters.Length == 0)

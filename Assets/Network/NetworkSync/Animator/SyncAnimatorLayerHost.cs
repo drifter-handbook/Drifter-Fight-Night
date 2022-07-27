@@ -25,7 +25,7 @@ public class SyncAnimatorLayerHost : MonoBehaviour, ISyncHost
         sync["animator_layer"] = 
         new SyncAnimatorLayer
         {
-            layer = drifter.GetAnimationLayer()
+            //layer = drifter.GetAnimationLayer()
         };
     }
 

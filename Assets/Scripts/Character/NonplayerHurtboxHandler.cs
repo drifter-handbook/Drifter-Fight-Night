@@ -33,8 +33,8 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
         }
     }
 
-    protected float HitstunDuration = 0;
-    protected float HitPauseDuration = 0;
+    protected int HitstunDuration = 0;
+    protected int HitPauseDuration = 0;
     protected Vector3 delayedVelocity = Vector3.zero;
     public Rigidbody2D rb;
 
@@ -53,7 +53,7 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
 
         if(HitPauseDuration > 0)
         {
-            HitPauseDuration -= Time.deltaTime;
+            HitPauseDuration--;
             if(takesKnockback && delayedVelocity != Vector3.zero && HitPauseDuration <=0)
             {
                 rb.velocity = delayedVelocity;
@@ -63,7 +63,7 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
 
         else if(HitstunDuration > 0)
         {
-            HitstunDuration -= Time.deltaTime;
+            HitstunDuration--;
             if(HitstunDuration < 0) HitstunDuration = 0;
         }
 
@@ -88,7 +88,7 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
             if(hurtbox.gameObject.name == "Counter" &&  attackData.AttackDamage >0f && attackData.hitType!=HitType.GRAB)
             {
                 GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.STAR, hitSparkPos,0, new Vector2(10f, 10f));
-                attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.7f);
+                attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,48);
                 gameObject.GetComponent<SyncAnimatorStateHost>().SetState("Counter_Success");
                 return -4;
             }
@@ -134,19 +134,19 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
             Vector2 hitSparkScale =  new Vector2(facingDir *10f, 10f);
 
             //apply attacker hitpause
-            HitPauseDuration = HitstunDuration *.3f;
+            HitPauseDuration = (int)(HitstunDuration *.3f);
             if(attackData.HitStop >=0)
-                HitPauseDuration += attackData.HitStop * framerateScalar;
+                HitPauseDuration += attackData.HitStop;
 
 
             if (hitbox.gameObject.tag != "Projectile")
-                attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(attackData.AttackDamage <=2f ? .074f : Mathf.Max(HitPauseDuration,2f * framerateScalar)));
+                attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(attackData.AttackDamage <=2f ? 1 : Mathf.Max(HitPauseDuration,2)));
 
 
 
             //Cause the screen to shake slightly on hit, as long as the move has knockback
             if(Shake != null && attackData.Knockback !=0){
-                Shake.startShakeCoroutine((willCollideWithBlastZone(GetComponent<Rigidbody2D>(), HitstunDuration)?0.3f:0.1f),Mathf.Clamp((((attackData.Knockback - 10)/100f + (attackData.AttackDamage -10)/44f)) * attackData.KnockbackScale,.07f,.8f));
+                Shake.Shake((willCollideWithBlastZone(GetComponent<Rigidbody2D>(), HitstunDuration)?18:6),Mathf.Clamp((((attackData.Knockback - 10)/100f + (attackData.AttackDamage -10)/44f)) * attackData.KnockbackScale,.07f,.8f));
             }
 
             //If the defender is grounded, use the absolute value of the y component of the velocity

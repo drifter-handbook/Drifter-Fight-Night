@@ -12,28 +12,23 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     protected Rigidbody2D rb;
     protected PlayerMovement movement;
     protected PlayerStatus status;
-    protected float gravityScale;
     protected PlayerAttacks attacks;
     protected Animator anim;
     protected WalkOff ledgeDetector;
 
-    protected float framerateScalar =.0833333333f;
-
-
-    public int facing;
-
     protected bool isHost = false;
+
+    
+    //protected float terminalVelocity;
+
+
+    //Listener Bools
 
     protected bool Empowered = false;
 
     protected Vector3 savedVelocity;
 
     protected bool savingVelocity = false;
-
-    protected float terminalVelocity;
-
-
-    //Listener Bools
 
     protected bool specialTappedFlag = false;
 
@@ -69,7 +64,11 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     //Every frame, listen for a given event if the flag is active
     protected void FixedUpdate()
     {
-        if(!isHost)return;
+        UpdateMasterHit();
+    }
+
+    protected virtual void UpdateMasterHit()
+    {
         attackWasCanceled = true;
         //Clear all flags if the character is dead or stunned by an opponent
 
@@ -78,10 +77,10 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         {
             drifter.knockedDown = true;
             knockdownFlag = true;
-            movement.terminalVelocity = terminalVelocity;
+            resetTerminalVelocity();
             if(listeningForGroundedFlag && movement.grounded)
             {
-                status.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,0f);
+                status.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,0);
                 //status.ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,0f);
                 status.ApplyStatusEffect(PlayerStatusEffect.FLATTEN,status.remainingDuration(PlayerStatusEffect.KNOCKDOWN));
                 rb.velocity = new Vector2(movement.Facing * -10f * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f),rb.velocity.y);
@@ -90,23 +89,11 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
                 clearMasterhitVars();
             }
         }
-        //Handles if bounced off stage
-        // else if(knockdownFlag && !status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN))
-        // {
-        //     knockdownFlag = false;
-        //     movement.terminalVelocity = terminalVelocity;
-        //     if(!status.HasEnemyStunEffect())
-        //     {
-        //         drifter.knockedDown = false;
-        //         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,3);
-        //         playState("Jump_End");
-        //     }
-        // }
 
         else if(status.HasEnemyStunEffect() || movement.ledgeHanging)
         {
             clearMasterhitVars();
-            movement.terminalVelocity = terminalVelocity;
+            resetTerminalVelocity();
         }
         else if(
             (listeningForGroundedFlag && movement.grounded)||
@@ -169,10 +156,10 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         else if(activeCancelFlag && drifter.input[0].Guard && !drifter.input[1].Guard)
         {
             movement.techParticle();
-            status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0f);
-            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
+            status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0);
+            status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0);
             clearMasterhitVars();
-            movement.terminalVelocity = terminalVelocity;
+            resetTerminalVelocity();
             playState("Guard");
             drifter.guarding = true;
             movement.jumping = false;
@@ -186,10 +173,10 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
             {
                 movement.jumping = false;
                 movement.techParticle();
-                status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0f);
-                status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
+                status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0);
+                status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0);
                 clearMasterhitVars();
-                movement.terminalVelocity = terminalVelocity;
+                resetTerminalVelocity();
                 movement.jump();
                 drifter.clearGuardFlags();
                 unpauseGravity();
@@ -213,7 +200,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         {
             int dir = (int)checkForDirection(8);
             attacks.useSpecial();
-            status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, 2f *.0833333333f);
+            status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, 2);
             movement.setFacingDelayed(dir);
             clearMasterhitVars();
             drifter.canFeint = true;
@@ -222,6 +209,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         }
         else
             attackWasCanceled = false;
+
     }
 
     //Flag the character to begin listen for a given event
@@ -309,13 +297,13 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     {
         if(!isHost)return;
         setXVelocity(movement.dashSpeed);
-        if(movement.dashLock <=0)status.ApplyStatusEffect(PlayerStatusEffect.INVULN,3f*framerateScalar);
+        if(movement.dashLock <=0)status.ApplyStatusEffect(PlayerStatusEffect.INVULN,3);
         dacusCancelFlag = true;
     }
 
 
     //Clear all flags
-    public void clearMasterhitVars()
+    public virtual void clearMasterhitVars()
     {
         if(!isHost)return;
         specialTappedFlag = false;
@@ -358,9 +346,6 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         anim = drifter.GetComponent<Animator>();
         ledgeDetector = GetComponentInChildren<WalkOff>();
         ledgeDetector.rb = rb;
-
-        terminalVelocity = movement.terminalVelocity;
-        gravityScale = rb.gravityScale;
     }
 
     public void setYVelocity(float y)
@@ -395,16 +380,16 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         status.saveXVelocity(rb.velocity.x);
     }
 
-    public void applyEndLag(float statusDuration)
+    public void applyEndLag(int statusDuration)
     {
         if(!isHost)return;
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,statusDuration);
     }
 
-    public void applyArmour(float statusDuration)
+    public void applyArmour(int statusDuration)
     {
         if(!isHost)return;
-        status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,statusDuration * framerateScalar);
+        status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,statusDuration);
     }
 
     public void setLandingCancel()
@@ -436,7 +421,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         if(!isHost)return;
         if(savingVelocity)rb.velocity = savedVelocity;
         savingVelocity = false;
-        if(rb.gravityScale != gravityScale) rb.gravityScale=gravityScale;
+        movement.resetGravity();
         movement.gravityPaused= false;
     }
 
@@ -453,7 +438,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     
     public void resetTerminalVelocity()
     {
-        movement.terminalVelocity = terminalVelocity;
+        movement.resetTerminalVelocity();
     }
 
     //Dynamically adjust walk speed to match walk cycle animations
@@ -469,7 +454,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 		movement.jumping = false;
 		unpauseGravity();
         status.clearVelocity();
-        movement.terminalVelocity = terminalVelocity * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f);
+        movement.terminalVelocity = movement.baseTerminalVelocity * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f);
         clearMasterhitVars();
     	drifter.returnToIdle();
         movement.updateFacing();
@@ -479,7 +464,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
     public void knockdownRecover()
     {
-        if(status.HasStatusEffect(PlayerStatusEffect.FLATTEN)) status.ApplyStatusEffect(PlayerStatusEffect.FLATTEN,0f);
+        if(status.HasStatusEffect(PlayerStatusEffect.FLATTEN)) status.ApplyStatusEffect(PlayerStatusEffect.FLATTEN,0);
         if(status.HasEnemyStunEffect())status.clearStunStatus();
         movement.techParticle();
     }
@@ -537,13 +522,11 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     public float checkForDirection(int frames = 8)
     {
         float dir = 0;
-        facing = movement.Facing;
-        if(!isHost)return facing;
         for(int i = 0; i < frames; i++)
         {
             dir += drifter.input[i].MoveX;
         }
-        return dir !=0 ?dir:facing;
+        return dir !=0 ?dir:movement.Facing;
     }
 
     public bool checkForSpecialTap(int frames = 8)
@@ -574,7 +557,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     public void triggerQueuedState()
     {
         if(!isHost || queuedState.Equals("") || !queuedStateTrigger)return;
-        applyEndLag(8);
+        applyEndLag(480);
         playState(queuedState);
         clearMasterhitVars();
     }
@@ -582,7 +565,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     public void beginGuard()
     {
         if(!isHost)return;
-        applyEndLag(2f * .0833333333f);
+        applyEndLag(10);
         drifter.perfectGuarding = true;
     }
 
@@ -604,8 +587,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     public void BounceParticle(float offset = 0)
     {
         if(!isHost || !movement.grounded)return;
-        facing = movement.Facing;
-        movement.spawnJuiceParticle(transform.position + new Vector3(offset * facing,0,0), MovementParticleMode.Restitution);
+        movement.spawnJuiceParticle(transform.position + new Vector3(offset * movement.Facing,0,0), MovementParticleMode.Restitution);
     }
 
     public void blockFastFalling()

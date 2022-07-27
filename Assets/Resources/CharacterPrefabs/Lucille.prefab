@@ -1,5 +1,20 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &6659673585390523811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 550663097112236038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ebc20e5aa5a0eb4b94f12fc2f6f7fac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  assetPathName: Lucille
+  facing: 0
+  warpSpeed: 185
 --- !u!1 &1399669029160401552
 GameObject:
   m_ObjectHideFlags: 0
@@ -393,21 +408,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &6659673585390523811
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 550663097112236038}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ebc20e5aa5a0eb4b94f12fc2f6f7fac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  assetPathName: Lucille
-  facing: 0
-  warpSpeed: 185
 --- !u!1 &2735055757875441262
 GameObject:
   m_ObjectHideFlags: 0
@@ -1387,6 +1387,11 @@ PrefabInstance:
         type: 3}
       propertyPath: dacusSpeed
       value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 3106753082241659641, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: fullhopFrames
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 3106753082241659643, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}

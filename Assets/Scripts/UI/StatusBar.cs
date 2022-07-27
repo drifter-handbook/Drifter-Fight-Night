@@ -27,7 +27,7 @@ public class StatusBar : MonoBehaviour
 
     } 
 
-    public void initialize(PlayerStatusEffect statusEffect,int index, float duration)
+    public void initialize(PlayerStatusEffect statusEffect,int index, int duration)
     {
         if(duration == 0) Destroy(gameObject);
         ef = statusEffect;
