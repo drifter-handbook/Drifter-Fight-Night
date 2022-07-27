@@ -59,10 +59,10 @@ public class Drifter : MonoBehaviour, INetworkInit
         get { return (float)sync["damageTaken"]; }
         set { sync["damageTaken"] = value; }
     }
-    
+
     float terminalVelocity;
 
-
+    public AnimatorOverrideController[] animOverrides;
     
     public int myColor;
 
@@ -76,28 +76,6 @@ public class Drifter : MonoBehaviour, INetworkInit
     public PlayerInput playerInputController;
 
     bool isHost;
-
-    //Rework DC to use overrides instead
-    [NonSerialized]
-    public string GroundIdleStateName = "Idle";
-    [NonSerialized]
-    public string AirIdleStateName = "Hang";
-    [NonSerialized]
-    public string GuardStateName = "Guard";
-    [NonSerialized]
-    public string WalkStateName = "Walk";
-    [NonSerialized]
-    public string JumpStartStateName = "Jump_Start";
-    [NonSerialized]
-    public string JumpEndStateName = "Jump_End";
-    [NonSerialized]
-    public string WeakLedgeGrabStateName = "Ledge_Grab_Weak";
-    [NonSerialized]
-    public string StrongLedgeGrabStateName = "Ledge_Grab_Strong";
-    [NonSerialized]
-    public string LedgeClimbStateName = "Ledge_Climb";
-    [NonSerialized]
-    public string LedgeRollStateName = "Ledge_Roll";
 
     //Serializeable values
     public int animationLayer = 0;
@@ -163,6 +141,7 @@ public class Drifter : MonoBehaviour, INetworkInit
         DamageTaken = 0f;
 
         terminalVelocity = movement.terminalVelocity;
+        if(animOverrides != null && animOverrides.Length > 0)animOverrides[0] = new AnimatorOverrideController(animator.runtimeAnimatorController);
     }
 
     void FixedUpdate()
@@ -265,6 +244,7 @@ public class Drifter : MonoBehaviour, INetworkInit
     }
 
     //Switches animation layer for use in stance charactrs
+    //TODO Deprecate this
     public void SetAnimationLayer(int layer)
     {
         animationLayer = layer;
@@ -278,6 +258,16 @@ public class Drifter : MonoBehaviour, INetworkInit
         if(!isHost)return;
         animator.gameObject.GetComponent<SyncAnimatorLayerHost>().SetLayer(layer);
 
+    }
+
+    public void SetAnimationOverride(int index)
+    {
+        if(animOverrides.Length == null || animOverrides.Length < index+1)
+        {
+            UnityEngine.Debug.LogWarning("No animation override set for index: " + index);
+            return;
+        }
+        animator.runtimeAnimatorController = animOverrides[index];
     }
 
     public void SetAnimationSpeed(float speed)
@@ -300,8 +290,8 @@ public class Drifter : MonoBehaviour, INetworkInit
         canFeint = true;
         canSuper = true;
         clearGuardFlags();
-        if(movement.grounded)animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState(GroundIdleStateName,animationLayer);
-        else animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState(AirIdleStateName,animationLayer);
+        if(movement.grounded)animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState("Idle",animationLayer);
+        else animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState("Hang",animationLayer);
         if(status.HasStatusEffect(PlayerStatusEffect.END_LAG)) status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0f);
         if(status.HasStatusEffect(PlayerStatusEffect.FLATTEN)) status.ApplyStatusEffect(PlayerStatusEffect.FLATTEN,0f);
         if(status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN))  status.ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,0f);

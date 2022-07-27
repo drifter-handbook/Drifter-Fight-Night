@@ -78,27 +78,6 @@ public class DrifterCannonMasterHit : MasterHit
         listeningForDirection = false;
     }
 
-
-    // //Fix this shit
-    // public void upWGlide()
-    // {
-    //     if(!isHost)return;
-
-    //     movement.updateFacing();
-    //     rb.velocity = new Vector2(Mathf.Lerp((!status.HasStatusEffect(PlayerStatusEffect.SLOWED)? drifter.input[0].MoveX * 20f:(.6f*20f)),rb.velocity.x,.75f),(drifter.input[0].MoveY >0?Mathf.Lerp(35f,rb.velocity.y,.45f):rb.velocity.y));
-    //     if(drifter.input[0].MoveY > 0 && activeCancelFlag)
-    //     {
-    //         drifter.PlayAnimation("W_Up_Loop");
-    //         boostTime -= .1f;
-    //     } 
-    //     else if(activeCancelFlag) drifter.PlayAnimation("W_Up_Idle");
-    //     if(boostTime <=0)drifter.PlayAnimation("W_Up_End");
-        
-    // }
-
-
-
-
     public void SairExplosion()
     {
         if(!isHost)return;
@@ -210,10 +189,8 @@ public class DrifterCannonMasterHit : MasterHit
         if(Empowered)drifter.sparkle.SetState("ChargeIndicator");
         else drifter.sparkle.SetState("Hide");
 
-    	drifter.WalkStateName = Empowered?"Walk_Ranch":"Walk";
-        drifter.GroundIdleStateName = Empowered?"Idle_Ranch":"Idle";
-        drifter.JumpStartStateName = Empowered?"Jump_Start_Ranch":"Jump_Start";
-        drifter.AirIdleStateName = Empowered?"Hang_Ranch":"Hang";
+        drifter.SetAnimationOverride(Empowered?1:0);
+
     }
 
     public void FireRanchProjectile()

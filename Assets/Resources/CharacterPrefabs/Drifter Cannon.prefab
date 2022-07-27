@@ -346,6 +346,20 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.5, y: 1}
   m_Direction: 1
+--- !u!114 &8155356959851736624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3477634812443016192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 481aecd73d8ea1648ac8489e0fada35c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  assetPathName: DrifterCannon
+  facing: 0
 --- !u!1 &2761749334045009472
 GameObject:
   m_ObjectHideFlags: 0
@@ -547,20 +561,6 @@ MonoBehaviour:
   SuccessState: W_Side_End_Early
   victim: {fileID: 0}
   cancelable: 1
---- !u!114 &8155356959851736624
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3477634812443016192}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 481aecd73d8ea1648ac8489e0fada35c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  assetPathName: DrifterCannon
-  facing: 0
 --- !u!1 &4580088116423016764
 GameObject:
   m_ObjectHideFlags: 0
@@ -1410,9 +1410,25 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5578303729342035337, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
+      propertyPath: animOverrides.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5578303729342035337, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
       propertyPath: drifterType
       value: 14
       objectReference: {fileID: 0}
+    - target: {fileID: 5578303729342035337, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: animOverrides.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5578303729342035337, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: animOverrides.Array.data[1]
+      value: 
+      objectReference: {fileID: 22100000, guid: 8ad9f3ae06c73ad47a7be535fcfca47e,
+        type: 2}
     - target: {fileID: 5604989354107847522, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: m_RootOrder

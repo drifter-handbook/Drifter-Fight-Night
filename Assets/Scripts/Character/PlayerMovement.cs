@@ -261,7 +261,7 @@ public class PlayerMovement : MonoBehaviour
         //Cancel aerials on landing + landing animation
         if(!grounded && IsGrounded() && !status.HasEnemyStunEffect() && !drifter.guarding && !drifter.guardBreaking && (!status.HasStatusEffect(PlayerStatusEffect.END_LAG) || canLandingCancel))
         {
-            drifter.PlayAnimation(drifter.JumpEndStateName);
+            drifter.PlayAnimation("Jump_End");
             //Remove armour on landing 
             //TODO determine if there are more things that need to be removed on actionable landing
             if(status.HasStatusEffect(PlayerStatusEffect.ARMOUR))status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0f);
@@ -450,7 +450,7 @@ public class PlayerMovement : MonoBehaviour
 
                 if(!jumping)
                 {
-                    drifter.PlayAnimation(drifter.WalkStateName);
+                    drifter.PlayAnimation("Walk");
                     //status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0);
                     if(groundFrictionPosition)
                     {
@@ -474,7 +474,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
-                if(!jumping)drifter.PlayAnimation(drifter.AirIdleStateName);
+                if(!jumping)drifter.PlayAnimation("Hang");
                 //status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0);
 
                 if(accelerationPercent >0) accelerationPercent -= Time.fixedDeltaTime/airAccelerationTime * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f: 1f);
@@ -534,7 +534,7 @@ public class PlayerMovement : MonoBehaviour
             else if((drifter.input[0].MoveX * (flipSprite?-1:1) * Facing > 0)  || drifter.input[0].MoveY > 0){
                 DropLedge();
                 status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,framerateScalar * 2);
-                drifter.PlayAnimation(drifter.LedgeClimbStateName);
+                drifter.PlayAnimation("Ledge_Climb");
 
                 rb.position = new Vector3(rb.position.x + (rb.position.x > 0 ? -1 :1) *2f, rb.position.y + 5f - ledgeClimbOffset);
             }
@@ -719,7 +719,7 @@ public class PlayerMovement : MonoBehaviour
         ledgeHanging = true;
         rb.gravityScale = 0f;
         if(strongLedgeGrab)status.ApplyStatusEffect(PlayerStatusEffect.INVULN,.5f);
-        drifter.PlayAnimation(drifter.WeakLedgeGrabStateName);
+        drifter.PlayAnimation("Ledge_Grab");
 
         setFacing(flipSprite ^ rb.position.x > 0 ? -1 :1);
 
@@ -764,7 +764,7 @@ public class PlayerMovement : MonoBehaviour
             gravityPaused = false;
             currentJumps--;
             if(!grounded)drifter.PlayAnimation("Air_Jump_Start");
-            else drifter.PlayAnimation(drifter.JumpStartStateName);
+            else drifter.PlayAnimation("Jump_Start");
             //Particles
             if(IsGrounded())
                 spawnJuiceParticle(transform.position + particleOffset + new Vector3(0,-1,0), MovementParticleMode.Jump);
