@@ -7,6 +7,25 @@ public class MasterhitRollbackFrame: INetworkData, ICloneable
 {
     public string Type { get; set; }
 
+    public bool Empowered;
+    public Vector3 SavedVelocity;
+    public bool SavingVelocity ;
+    public bool SpecialTappedFlag;
+    public bool SpecialReleasedFlag;
+    public bool LightTappedFlag;
+    public bool VerticalCancelFlag;
+    public bool MovementCancelFlag;
+    public bool ActiveCancelFlag;
+    public bool ListeningForGroundedFlag;
+    public bool QueuedStateTrigger;
+    public bool JumpFlag;
+    public int SpecialCharge;
+    public int SpecialLimit;
+    public string QueuedState;
+    public bool AttackWasCanceled;
+    public bool DacusCancelFlag;
+    public bool KnockdownFlag;
+
     public object Clone()
     {
         return new MasterhitRollbackFrame()

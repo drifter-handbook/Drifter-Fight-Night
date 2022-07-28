@@ -64,7 +64,7 @@ public class DrifterRollbackFrame: INetworkData, ICloneable
     public bool AnimatorEnabled;
 
     public MovementRollbackFrame MovementFrame;
-
+    public AttackRollbackFrame AttackFrame;
     public MasterhitRollbackFrame MasterhitFrame;
 
     public object Clone()

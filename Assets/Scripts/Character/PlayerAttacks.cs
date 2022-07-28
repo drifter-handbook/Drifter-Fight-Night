@@ -21,6 +21,17 @@ public class SingleAttack
     public bool hasAirVariant;
 }
 
+public class AttackRollbackFrame: INetworkData, ICloneable
+{
+    public string Type { get; set; }
+
+    public object Clone()
+    {
+        return new AttackRollbackFrame()
+        {};
+    }
+}
+
 public class PlayerAttacks : MonoBehaviour
 {
     public static Dictionary<DrifterAttackType, string> AnimatorStates = new Dictionary<DrifterAttackType, string>()
