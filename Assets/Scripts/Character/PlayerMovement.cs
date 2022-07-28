@@ -490,7 +490,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //Guard
-        if(drifter.input[0].Guard && canGuard && !ledgeHanging)
+        if(drifter.input[0].Guard && canGuard)
         {
             //shift is guard
             if(!drifter.guarding)
