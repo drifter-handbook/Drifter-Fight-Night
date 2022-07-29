@@ -4,20 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-
-public class HurtboxRollbackFrame: INetworkData, ICloneable
-{
-    public string Type { get; set; }
-    public int[] OldAttacks;
-    public int FramesSinceCleaned;
-
-    public object Clone()
-    {
-        return new HurtboxRollbackFrame()
-        {};
-    }
-}
-
 public class PlayerHurtboxHandler : MonoBehaviour
 {
     // keep track of what attacks we've already processed
@@ -59,12 +45,11 @@ public class PlayerHurtboxHandler : MonoBehaviour
         framesSinceCleaned = 0;
     }
 
-    void FixedUpdate()
+    public void UpdateFrame()
     {
         framesSinceCleaned++;
         if(framesSinceCleaned > MAX_ATTACK_DURATION)CleanupOldAttacks(); 
     }
-
 
     //Registers an attack hit. Returns an integer based on what happened.
     // -5: hit registered againat an invulnerable enemy
@@ -482,24 +467,6 @@ public class PlayerHurtboxHandler : MonoBehaviour
         return returnCode;
     }
 
-    // void CleanupOldAttacks()
-    // {
-    //     List<int> toRemove = new List<int>();
-    //     foreach (int attackID in oldAttacks.Keys)
-    //     {
-    //         if (Time.time - oldAttacks[attackID] > MAX_ATTACK_DURATION)
-    //         {
-    //             toRemove.Add(attackID);
-    //         }
-    //     }
-    //     // delete old attackIDs
-    //     foreach (int attackID in toRemove)
-    //     {
-    //         oldAttacks.Remove(attackID);
-    //     }
-
-    // }
-
     protected IEnumerator delayHitsparks(AttackFXSystem attackFX, Vector3 position, float angle,float damage, float p_duration)
     {
         float duration = p_duration/60f;
@@ -628,5 +595,35 @@ public class PlayerHurtboxHandler : MonoBehaviour
             return true;
 
         return false;
+    }
+
+    //Takes a snapshot of the current frame to rollback to
+    public HurtboxRollbackFrame SerializeFrame()
+    {
+        return new HurtboxRollbackFrame()
+        {
+            OldAttacks = oldAttacks,
+            FramesSinceCleaned = framesSinceCleaned,
+        };
+    }
+
+    //Rolls back the entity to a given frame state
+    public  void DeserializeFrame(HurtboxRollbackFrame p_frame)
+    {
+            oldAttacks = p_frame.OldAttacks;
+            framesSinceCleaned = p_frame.FramesSinceCleaned;
+    }
+}
+
+public class HurtboxRollbackFrame: INetworkData, ICloneable
+{
+    public string Type { get; set; }
+    public int[] OldAttacks;
+    public int FramesSinceCleaned;
+
+    public object Clone()
+    {
+        return new HurtboxRollbackFrame()
+        {};
     }
 }

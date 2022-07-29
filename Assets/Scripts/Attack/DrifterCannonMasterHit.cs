@@ -11,9 +11,22 @@ public class DrifterCannonMasterHit : MasterHit
     protected bool listeningForWallbounce = false;
     protected bool listeningForDirection = false;
 
-    override protected void UpdateMasterHit()
+    //Takes a snapshot of the current frame to rollback to
+    public override MasterhitRollbackFrame SerializeFrame()
     {
-        base.UpdateMasterHit();
+        MasterhitRollbackFrame baseFrame = SerializeBaseFrame();
+        return baseFrame;
+    }
+
+    //Rolls back the entity to a given frame state
+    public override void DeserializeFrame(MasterhitRollbackFrame p_frame)
+    {
+        DeserializeBaseFrame(p_frame);
+    }
+
+    override public void UpdateFrame()
+    {
+        base.UpdateFrame();
 
         if(status.HasStatusEffect(PlayerStatusEffect.DEAD))
         {
@@ -50,12 +63,12 @@ public class DrifterCannonMasterHit : MasterHit
 
             else if(drifter.input[0].MoveY > 0)
             {
-                drifter.PlayAnimation("W_Up_Loop");
+                drifter.PlayAnimation("W_Up_Loop",0,true);
                 boostTime --;
             }
             else
             {
-                drifter.PlayAnimation("W_Up_Idle");
+                drifter.PlayAnimation("W_Up_Idle",0,true);
             }
             if(boostTime <=0)
             {

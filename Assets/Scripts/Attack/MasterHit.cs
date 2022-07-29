@@ -3,14 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IMasterhitRollbackFrame : INetworkData, ICloneable
+public interface ICharacterRollbackFrame : INetworkData, ICloneable
 {
-    string Type { get; set; }
-    object Clone();
 
 }
 
-public class MasterhitRollbackFrame: IMasterhitRollbackFrame
+public class MasterhitRollbackFrame: INetworkData, ICloneable
 {
     public string Type { get; set; }
 
@@ -32,6 +30,8 @@ public class MasterhitRollbackFrame: IMasterhitRollbackFrame
     public bool AttackWasCanceled;
     public bool DacusCancelFlag;
     public bool KnockdownFlag;
+
+    public ICharacterRollbackFrame CharacterFrame = null;
 
     public object Clone()
     {
@@ -94,67 +94,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     protected bool knockdownFlag = false;
 
 
-    //Takes a snapshot of the current frame to rollback to
-    public MasterhitRollbackFrame SerializeBaseFrame()
-    {
-
-        return new MasterhitRollbackFrame() 
-        {
-            Empowered = this.Empowered,
-            SavedVelocity = savedVelocity,
-            SavingVelocity = savingVelocity, 
-            SpecialTappedFlag = specialTappedFlag,
-            SpecialReleasedFlag = specialReleasedFlag,
-            LightTappedFlag = lightTappedFlag,
-            VerticalCancelFlag = verticalCancelFlag,
-            MovementCancelFlag = movementCancelFlag,
-            ActiveCancelFlag = activeCancelFlag,
-            ListeningForGroundedFlag = listeningForGroundedFlag,
-            QueuedStateTrigger = queuedStateTrigger,
-            JumpFlag = jumpFlag,
-            SpecialCharge = specialCharge,
-            SpecialLimit = specialLimit,
-            QueuedState = queuedState,
-            AttackWasCanceled = attackWasCanceled,
-            DacusCancelFlag = dacusCancelFlag,
-            KnockdownFlag = knockdownFlag,
-            
-        };
-    }
-
-    //Rolls back the entity to a given frame state
-    public void DeserializeBaseFrame(MasterhitRollbackFrame p_frame)
-    {
-
-        Empowered = p_frame.Empowered; 
-        savedVelocity = p_frame.SavedVelocity; 
-        savingVelocity = p_frame.SavingVelocity; 
-        specialTappedFlag = p_frame.SpecialTappedFlag; 
-        specialReleasedFlag = p_frame.SpecialReleasedFlag; 
-        lightTappedFlag = p_frame.LightTappedFlag; 
-        verticalCancelFlag = p_frame.VerticalCancelFlag; 
-        movementCancelFlag = p_frame.MovementCancelFlag; 
-        activeCancelFlag = p_frame.ActiveCancelFlag; 
-        listeningForGroundedFlag = p_frame.ListeningForGroundedFlag; 
-        queuedStateTrigger = p_frame.QueuedStateTrigger; 
-        jumpFlag = p_frame.JumpFlag; 
-        specialCharge = p_frame.SpecialCharge; 
-        specialLimit = p_frame.SpecialLimit; 
-        queuedState = p_frame.QueuedState;
-        attackWasCanceled = p_frame.AttackWasCanceled; 
-        dacusCancelFlag = p_frame.DacusCancelFlag; 
-        knockdownFlag = p_frame.KnockdownFlag; 
-
-    }
-
-
-    //Every frame, listen for a given event if the flag is active
-    protected void FixedUpdate()
-    {
-        UpdateMasterHit();
-    }
-
-    protected virtual void UpdateMasterHit()
+    public virtual void UpdateFrame()
     {
         attackWasCanceled = true;
         //Clear all flags if the character is dead or stunned by an opponent
@@ -514,7 +454,8 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     	drifter.returnToIdle();
         movement.updateFacing();
         if(checkForJumpTap())movement.jump();
-        attacks.UpdateInput();
+        //Still needed?
+        attacks.UpdateFrame();
     }
 
     public void knockdownRecover()
@@ -637,5 +578,65 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     public void blockFastFalling()
     {
         movement.canFastFall = false;
+    }
+
+
+    //Rollback
+    //============================
+
+    public abstract MasterhitRollbackFrame SerializeFrame();
+    public abstract void DeserializeFrame(MasterhitRollbackFrame p_frame);
+
+    //Takes a snapshot of the current frame to rollback to
+    protected MasterhitRollbackFrame SerializeBaseFrame()
+    {
+
+        return new MasterhitRollbackFrame() 
+        {
+            Empowered = this.Empowered,
+            SavedVelocity = savedVelocity,
+            SavingVelocity = savingVelocity, 
+            SpecialTappedFlag = specialTappedFlag,
+            SpecialReleasedFlag = specialReleasedFlag,
+            LightTappedFlag = lightTappedFlag,
+            VerticalCancelFlag = verticalCancelFlag,
+            MovementCancelFlag = movementCancelFlag,
+            ActiveCancelFlag = activeCancelFlag,
+            ListeningForGroundedFlag = listeningForGroundedFlag,
+            QueuedStateTrigger = queuedStateTrigger,
+            JumpFlag = jumpFlag,
+            SpecialCharge = specialCharge,
+            SpecialLimit = specialLimit,
+            QueuedState = queuedState,
+            AttackWasCanceled = attackWasCanceled,
+            DacusCancelFlag = dacusCancelFlag,
+            KnockdownFlag = knockdownFlag,
+            
+        };
+    }
+
+    //Rolls back the entity to a given frame state
+    protected void DeserializeBaseFrame(MasterhitRollbackFrame p_frame)
+    {
+
+        Empowered = p_frame.Empowered; 
+        savedVelocity = p_frame.SavedVelocity; 
+        savingVelocity = p_frame.SavingVelocity; 
+        specialTappedFlag = p_frame.SpecialTappedFlag; 
+        specialReleasedFlag = p_frame.SpecialReleasedFlag; 
+        lightTappedFlag = p_frame.LightTappedFlag; 
+        verticalCancelFlag = p_frame.VerticalCancelFlag; 
+        movementCancelFlag = p_frame.MovementCancelFlag; 
+        activeCancelFlag = p_frame.ActiveCancelFlag; 
+        listeningForGroundedFlag = p_frame.ListeningForGroundedFlag; 
+        queuedStateTrigger = p_frame.QueuedStateTrigger; 
+        jumpFlag = p_frame.JumpFlag; 
+        specialCharge = p_frame.SpecialCharge; 
+        specialLimit = p_frame.SpecialLimit; 
+        queuedState = p_frame.QueuedState;
+        attackWasCanceled = p_frame.AttackWasCanceled; 
+        dacusCancelFlag = p_frame.DacusCancelFlag; 
+        knockdownFlag = p_frame.KnockdownFlag; 
+
     }
 }

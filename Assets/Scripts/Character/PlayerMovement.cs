@@ -3,45 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MovementRollbackFrame: INetworkData, ICloneable
-{
-    public string Type { get; set; }
-
-    public Vector2 Velocity;
-    public float Gravity;
-    public Vector2 Position;
-
-    public int Facing;
-    public float TerminalVelocity;
-    public int CurrentJumps;
-    public int CurrentDashes;
-    public bool Grounded;
-    public bool Hitstun;
-    public bool CanLandingCancel;
-    public bool CanFastFall;
-    public bool Jumping;
-    public bool Dashing;
-    public bool GravityPaused;
-    public bool LedgeHanging;
-    // public Vector3 WallSliding;
-    public bool StrongLedgeGrab;
-    public float AccelerationPercent;
-    public float DashLock;
-    public float JumpTimer;
-    public int DropThroughTime;
-    public float WalkTime;
-    public Vector2 PrevVelocity;
-    public float CurrentSpeed;
-    public bool DelayedFacingFlip;
-
-    public object Clone()
-    {
-        return new MovementRollbackFrame()
-        {};
-    }
-
-}
-
 public class PlayerMovement : MonoBehaviour
 {
     //Character Properties
@@ -94,8 +55,7 @@ public class PlayerMovement : MonoBehaviour
     public bool gravityPaused = false;
     [NonSerialized]
     public bool ledgeHanging = false;
-    // [NonSerialized]
-    // public bool wallSliding = false;
+
     [NonSerialized]
     public bool strongLedgeGrab = true;
     [NonSerialized]
@@ -220,9 +180,9 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
-    public void UpdateInput()
+    public void UpdateFrame()
     {
-        if (!GameController.Instance.IsHost || GameController.Instance.IsPaused)
+        if(GameController.Instance.IsPaused)
             return;
 
         if(dashLock >0)dashLock --;
@@ -496,7 +456,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
-                if(!jumping && drifter.input[0].MoveX !=0 && drifter.input[1].MoveX == 0)drifter.PlayAnimation("Hang");
+                if(!jumping)drifter.PlayAnimation("Hang");
                 //drifter.status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0);
 
                 if(accelerationPercent >0) accelerationPercent -= Time.fixedDeltaTime/airAccelerationTime * (drifter.status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f: 1f);
@@ -572,7 +532,8 @@ public class PlayerMovement : MonoBehaviour
         //Player is not trying to move, and is not in hitstun
         else if (!moving && drifter.status.HasGroundFriction())
         {
-            if(drifter.input[1].MoveX !=0 && drifter.input[0].MoveX == 0 && canAct && !jumping && !drifter.guarding)drifter.returnToIdle();
+            if(drifter.input[1].MoveX !=0 && drifter.input[0].MoveX == 0 && canAct && !jumping && !drifter.guarding)
+                drifter.returnToIdle();
             //standing ground friction (When button is not held)
             if(!grounded)rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 20f * Time.fixedDeltaTime), rb.velocity.y);
             else rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 80f * Time.fixedDeltaTime), rb.velocity.y);
@@ -924,4 +885,112 @@ public class PlayerMovement : MonoBehaviour
         cancel.GetComponent<SyncAnimatorStateHost>().SetState(mode);
         
     }
+
+    //Rollback
+    //====================================
+    
+    //Takes a snapshot of the current frame to rollback to
+    public MovementRollbackFrame SerializeFrame()
+    {
+        return new MovementRollbackFrame()
+        {
+            //Rigid body
+            Velocity = rb.velocity,
+            Gravity = rb.gravityScale,
+            Position = rb.position,
+
+            //Flags
+            Facing = this.Facing,
+            TerminalVelocity = terminalVelocity,
+            CurrentJumps = currentJumps,
+            CurrentDashes = currentDashes,
+            Grounded = grounded,
+            Hitstun = hitstun,
+            CanLandingCancel = canLandingCancel,
+            CanFastFall = canFastFall,
+            Jumping = jumping,
+            Dashing = dashing,
+            GravityPaused = gravityPaused,
+            LedgeHanging = ledgeHanging,
+            StrongLedgeGrab = strongLedgeGrab,
+            AccelerationPercent = accelerationPercent,
+            DashLock = dashLock,
+            JumpTimer = jumpTimer,
+            DropThroughTime = dropThroughTime,
+            PrevVelocity = prevVelocity,
+            CurrentSpeed = currentSpeed,
+            DelayedFacingFlip = delayedFacingFlip,
+
+        };
+    }
+
+    //Rolls back the entity to a given frame state
+    public  void DeserializeFrame(MovementRollbackFrame p_frame)
+    {
+        //Rigid body
+        rb.velocity = p_frame.Velocity;
+        rb.gravityScale = p_frame.Gravity;
+        rb.position = p_frame.Position;
+
+        //Flags
+        Facing = p_frame.Facing;
+        terminalVelocity = p_frame.TerminalVelocity;
+        currentJumps = p_frame.CurrentJumps;
+        currentDashes = p_frame.CurrentDashes;
+        grounded = p_frame.Grounded;
+        hitstun = p_frame.Hitstun;
+        canLandingCancel = p_frame.CanLandingCancel;
+        canFastFall = p_frame.CanFastFall;
+        jumping = p_frame.Jumping;
+        dashing = p_frame.Dashing;
+        gravityPaused = p_frame.GravityPaused;
+        ledgeHanging = p_frame.LedgeHanging;
+        strongLedgeGrab = p_frame.StrongLedgeGrab;
+        accelerationPercent = p_frame.AccelerationPercent;
+        dashLock = p_frame.DashLock;
+        jumpTimer = p_frame.JumpTimer;
+        dropThroughTime = p_frame.DropThroughTime;
+        prevVelocity = p_frame.PrevVelocity;
+        currentSpeed = p_frame.CurrentSpeed;
+        delayedFacingFlip = p_frame.DelayedFacingFlip;
+
+    }
+}
+
+public class MovementRollbackFrame: INetworkData, ICloneable
+{
+    public string Type { get; set; }
+
+    public Vector2 Velocity;
+    public float Gravity;
+    public Vector2 Position;
+
+    public int Facing;
+    public float TerminalVelocity;
+    public int CurrentJumps;
+    public int CurrentDashes;
+    public bool Grounded;
+    public bool Hitstun;
+    public bool CanLandingCancel;
+    public bool CanFastFall;
+    public bool Jumping;
+    public bool Dashing;
+    public bool GravityPaused;
+    public bool LedgeHanging;
+    public bool StrongLedgeGrab;
+    public float AccelerationPercent;
+    public float DashLock;
+    public float JumpTimer;
+    public int DropThroughTime;
+    public float WalkTime;
+    public Vector2 PrevVelocity;
+    public float CurrentSpeed;
+    public bool DelayedFacingFlip;
+
+    public object Clone()
+    {
+        return new MovementRollbackFrame()
+        {};
+    }
+
 }

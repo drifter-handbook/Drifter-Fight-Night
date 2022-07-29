@@ -37,9 +37,22 @@ public class RyykeMasterHit : MasterHit
     int targetStone = -1;
 
 
-    override protected void UpdateMasterHit()
+    //Takes a snapshot of the current frame to rollback to
+    public override MasterhitRollbackFrame SerializeFrame()
     {
-        base.UpdateMasterHit();
+        MasterhitRollbackFrame baseFrame = SerializeBaseFrame();
+        return baseFrame;
+    }
+
+    //Rolls back the entity to a given frame state
+    public override void DeserializeFrame(MasterhitRollbackFrame p_frame)
+    {
+        DeserializeBaseFrame(p_frame);
+    }
+
+    override public void UpdateFrame()
+    {
+        base.UpdateFrame();
 
         //Remove the arm if it is not needed
         if(arm!= null &&(movement.ledgeHanging || status.HasEnemyStunEffect())) deleteArm();

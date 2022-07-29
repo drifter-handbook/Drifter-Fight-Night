@@ -31,9 +31,22 @@ public class OrroReworkMasterHit : MasterHit
         Empowered = false;
     }
 
-    override protected void UpdateMasterHit()
+    //Takes a snapshot of the current frame to rollback to
+    public override MasterhitRollbackFrame SerializeFrame()
     {
-        base.UpdateMasterHit();
+        MasterhitRollbackFrame baseFrame = SerializeBaseFrame();
+        return baseFrame;
+    }
+
+    //Rolls back the entity to a given frame state
+    public override void DeserializeFrame(MasterhitRollbackFrame p_frame)
+    {
+        DeserializeBaseFrame(p_frame);
+    }
+
+    override public void UpdateFrame()
+    {
+        base.UpdateFrame();
 
         //Refresh hover values when you land
         if(movement.grounded)

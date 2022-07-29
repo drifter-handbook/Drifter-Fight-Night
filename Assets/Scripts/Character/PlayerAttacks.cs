@@ -110,10 +110,10 @@ public class PlayerAttacks : MonoBehaviour
     }
 
     // Update is called once per frame
-    public void UpdateInput()
+    public void UpdateFrame()
     {
 
-        if (!GameController.Instance.IsHost || GameController.Instance.IsPaused)
+        if (GameController.Instance.IsPaused)
             return;
 
         bool canAct = !drifter.status.HasStunEffect() && !drifter.guarding && !drifter.movement.ledgeHanging;

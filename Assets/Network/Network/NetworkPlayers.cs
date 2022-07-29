@@ -94,16 +94,14 @@ public class NetworkPlayers : MonoBehaviour
         }
 
         playerDrifter.input[0] = input;
-        player.GetComponent<PlayerMovement>().UpdateInput();
-        player.GetComponent<PlayerAttacks>().UpdateInput();
+        playerDrifter.UpdateFrame();
 
     }
 
     public static void UpdateInput(GameObject player)
     {
         if(player == null)return;
-        player?.GetComponent<PlayerMovement>().UpdateInput();
-        player?.GetComponent<PlayerAttacks>().UpdateInput();
+        player.GetComponent<Drifter>().UpdateFrame();
     }
 
     public static PlayerInputData GetInput(PlayerInput playerInput)

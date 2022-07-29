@@ -2,16 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SandbagRollbackFrame: MasterhitRollbackFrame
-{
-	public BasicProjectileRollbackFrame Sandblast;
-	public BasicProjectileRollbackFrame Sandspear1;
-	public BasicProjectileRollbackFrame Sandspear2;
-	public MasterhitRollbackFrame MasterHitFrame;
-}
-
-
-
 public class SandbagMasterHit : MasterHit
 {
 	bool dust = false;
@@ -26,9 +16,9 @@ public class SandbagMasterHit : MasterHit
 	int dustCount = 7;
 
 
-	override protected void UpdateMasterHit()
+	override public void UpdateFrame()
     {
-        base.UpdateMasterHit();
+        base.UpdateFrame();
 
         if(status.HasEnemyStunEffect() || movement.ledgeHanging)
 			dust = false;
@@ -41,34 +31,6 @@ public class SandbagMasterHit : MasterHit
 			}
         	dustCount +=1;
 		}
-
-    }
-
-    //Takes a snapshot of the current frame to rollback to
-    public SandbagRollbackFrame SerializeFrame()
-    {
-        return new SandbagRollbackFrame() 
-        {
-            MasterHitFrame = SerializeBaseFrame(),
-            Sandblast = g_Sandblast != null ? sandblast.SerializeFrame(): null,
-			Sandspear1 = g_Sandspear1 != null ? sandspear1.SerializeFrame(): null,
-			Sandspear2 = g_Sandspear2 != null ? sandspear2.SerializeFrame(): null,     
-        };
-    }
-
-    //Rolls back the entity to a given frame state
-    public void DeserializeFrame(SandbagRollbackFrame p_frame)
-    {
-    	DeserializeBaseFrame(p_frame.MasterHitFrame);
-    	if(p_frame.Sandblast == null)
-    	{
-    		Destroy(g_Sandblast);
-    		sandblast = null;
-    	}
-    	else if(g_Sandblast == null)
-    	{
-
-    	}
 
     }
 
@@ -149,4 +111,53 @@ public class SandbagMasterHit : MasterHit
 		sandspear2 = g_Sandspear2.GetComponent<InstantiatedEntityCleanup>();
 	}
 
+	//Rollback
+	//=========================================
+
+	//Takes a snapshot of the current frame to rollback to
+    public override MasterhitRollbackFrame SerializeFrame()
+    {
+    	MasterhitRollbackFrame baseFrame = SerializeBaseFrame();
+    	baseFrame.CharacterFrame= new SandbagRollbackFrame() 
+        {
+            Sandblast = g_Sandblast != null ? sandblast.SerializeFrame(): null,
+			Sandspear1 = g_Sandspear1 != null ? sandspear1.SerializeFrame(): null,
+			Sandspear2 = g_Sandspear2 != null ? sandspear2.SerializeFrame(): null,     
+        };
+
+        return baseFrame;
+    }
+
+    //Rolls back the entity to a given frame state
+    public override void DeserializeFrame(MasterhitRollbackFrame p_frame)
+    {
+    	DeserializeBaseFrame(p_frame);
+
+    	SandbagRollbackFrame sb_frame = (SandbagRollbackFrame)p_frame.CharacterFrame;
+    	// if(sb_frame.Sandblast == null)
+    	// {
+    	// 	Destroy(g_Sandblast);
+    	// 	sandblast = null;
+    	// }
+    	// else if(g_Sandblast == null)
+    	// {
+
+    	// }
+
+    }
+
+}
+
+public class SandbagRollbackFrame: ICharacterRollbackFrame
+{
+	public string Type { get; set; }
+    
+	public BasicProjectileRollbackFrame Sandblast;
+	public BasicProjectileRollbackFrame Sandspear1;
+	public BasicProjectileRollbackFrame Sandspear2;
+
+	public object Clone()
+	{
+		return new SandbagRollbackFrame();
+	}
 }
