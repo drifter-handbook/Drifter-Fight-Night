@@ -25,7 +25,7 @@ public class DrifterCannonMasterHit : MasterHit
 
         if(jumpGranted && movement.grounded)jumpGranted = false;
 
-        if(movement.wallSliding != Vector3.zero && listeningForWallbounce)
+        if(listeningForWallbounce && movement.IsWallSliding())
         {
             listeningForWallbounce = false;
             drifter.PlayAnimation("W_Side_End_Early");
@@ -80,11 +80,10 @@ public class DrifterCannonMasterHit : MasterHit
 
     public void SairExplosion()
     {
-        if(!isHost)return;
         
         Vector3 pos = new Vector3(1.9f * movement.Facing,3.3f,0);
         
-        GameObject explosion = host.CreateNetworkObject("ExplosionSide", transform.position + pos, transform.rotation);
+        GameObject explosion = GameController.Instance.CreatePrefab("ExplosionSide", transform.position + pos, transform.rotation);
         explosion.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in explosion.GetComponentsInChildren<HitboxCollision>(true))
         {
@@ -99,11 +98,10 @@ public class DrifterCannonMasterHit : MasterHit
 
     public void SideWExplosion()
     {
-        if(!isHost)return;
         
         Vector3 pos = new Vector3(-1.5f * movement.Facing,2.7f,0);
         
-        GameObject explosion = host.CreateNetworkObject("ExplosionSide", transform.position + pos, transform.rotation);
+        GameObject explosion = GameController.Instance.CreatePrefab("ExplosionSide", transform.position + pos, transform.rotation);
         explosion.transform.localScale = new Vector3(-10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in explosion.GetComponentsInChildren<HitboxCollision>(true))
         {
@@ -117,7 +115,6 @@ public class DrifterCannonMasterHit : MasterHit
 
     public void listenForWallBounce()
     {
-        if(!isHost)return;
         listeningForWallbounce = true;
     }
 
@@ -130,11 +127,10 @@ public class DrifterCannonMasterHit : MasterHit
 
     public void UpAirExplosion()
     {
-        if(!isHost)return;
         
         Vector3 pos = new Vector3(-.4f* movement.Facing,2f,0);
         
-        GameObject explosion = host.CreateNetworkObject("UairExplosion", transform.position + pos, transform.rotation);
+        GameObject explosion = GameController.Instance.CreatePrefab("UairExplosion", transform.position + pos, transform.rotation);
         explosion.transform.localScale = new Vector3(10f* movement.Facing, 10f, 1f);
         foreach (HitboxCollision hitbox in explosion.GetComponentsInChildren<HitboxCollision>(true))
         {
@@ -148,11 +144,10 @@ public class DrifterCannonMasterHit : MasterHit
 
     public void DownSpecialBomb()
     {
-        if(!isHost)return;
         
         Vector3 pos = new Vector3(-.5f * movement.Facing,2.7f,0);
         
-        GameObject grenade = host.CreateNetworkObject("DCGenade", transform.position + pos, transform.rotation);
+        GameObject grenade = GameController.Instance.CreatePrefab("DCGenade", transform.position + pos, transform.rotation);
         grenade.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
 
         grenade.GetComponent<Rigidbody2D>().velocity = new Vector2(20* movement.Facing,25);
@@ -170,7 +165,6 @@ public class DrifterCannonMasterHit : MasterHit
 
     public void handleRanchStartup()
     {
-    	if(!isHost)return;
     	//sets all special inputs to true to "clear" it
 
     	foreach(PlayerInputData input in drifter.input)
@@ -182,7 +176,6 @@ public class DrifterCannonMasterHit : MasterHit
 
     public void SetCharge(int charge)
     {
-    	if(!isHost)return;
     	this.charge = charge;
     	Empowered = (charge == 3);
 
@@ -194,11 +187,10 @@ public class DrifterCannonMasterHit : MasterHit
 
     public void FireRanchProjectile()
     {
-        if(!isHost)return;
         
         Vector3 pos = new Vector3(1f * movement.Facing,2.7f,0);
         
-        GameObject ranch = host.CreateNetworkObject("Ranch" + charge, transform.position + pos, transform.rotation);
+        GameObject ranch = GameController.Instance.CreatePrefab("Ranch" + charge, transform.position + pos, transform.rotation);
         ranch.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
 
         rb.velocity = new Vector2((charge - 1) * -15f* movement.Facing,0);

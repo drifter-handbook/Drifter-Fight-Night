@@ -10,13 +10,11 @@ public class MaryamMasterHit : MasterHit
 
     public void StanceChange()
     {
-        if(!isHost)return;
         SetStance(Empowered?1:0);
     }
 
     void Update()
     {
-        if(!isHost)return;
 
         // if(movement.terminalVelocity != terminalVelocity  && (movement.ledgeHanging || status.HasEnemyStunEffect()))
         // {
@@ -32,14 +30,12 @@ public class MaryamMasterHit : MasterHit
     //Flips the direction the charactr is movement.Facing mid move)
     public void invertDirection()
     {
-        if(!isHost)return;
         movement.flipFacing();
     }
 
     // Swaps between two movesents by changing the animation layer being used
     public void SetStance(int stance)
     {
-        //if(!isHost)return;
         Empowered = (stance==0);
         
         //if(isHost) attacks.currentRecoveries = (Empowered && hasSGRecovery) || (!Empowered && hasUmbrellaRecovery)? 1:0;
@@ -49,14 +45,12 @@ public class MaryamMasterHit : MasterHit
 
     public void shinestall()
     {
-        if(!isHost)return;
         if(rb.velocity.y <=0)setYVelocity(0);
     }
 
     //Causes a non-aerial move to cancle on htiing the ground
     public void cancelSideQ()
     {
-        if(!isHost)return;
         movement.canLandingCancel = true;
     }
 
@@ -75,7 +69,6 @@ public class MaryamMasterHit : MasterHit
     //Slows fall speed after umbrella up special
     public void upWGlide()
     {
-        if(!isHost)return;
 
         movement.updateFacing();
         rb.velocity = new Vector2(Mathf.Lerp((!status.HasStatusEffect(PlayerStatusEffect.SLOWED)? drifter.input[0].MoveX * 23f:(.6f*23f)),rb.velocity.x,.75f),rb.velocity.y);
@@ -87,11 +80,10 @@ public class MaryamMasterHit : MasterHit
     //Shotgun explosion projectiles
     public void SGJabExplosion()
     {
-        if(!isHost)return;
         
         Vector3 pos = new Vector3(1.8f * movement.Facing,2.5f,0);
         
-        GameObject explosion = host.CreateNetworkObject("ExplosionSide", transform.position + pos, transform.rotation);
+        GameObject explosion = GameController.Instance.CreatePrefab("ExplosionSide", transform.position + pos, transform.rotation);
         explosion.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in explosion.GetComponentsInChildren<HitboxCollision>(true))
         {
@@ -105,11 +97,10 @@ public class MaryamMasterHit : MasterHit
 
     public void SGUTiltExplosion()
     {
-        if(!isHost)return;
         
         Vector3 pos = new Vector3(0f * movement.Facing,3.3f,0);
         
-        GameObject explosion = host.CreateNetworkObject("Explosion_Diagonal", transform.position + pos, transform.rotation);
+        GameObject explosion = GameController.Instance.CreatePrefab("Explosion_Diagonal", transform.position + pos, transform.rotation);
         explosion.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in explosion.GetComponentsInChildren<HitboxCollision>(true))
         {
@@ -123,11 +114,10 @@ public class MaryamMasterHit : MasterHit
 
     public void SGUAirFirstExplosion()
     {
-        if(!isHost)return;
         
         Vector3 pos = new Vector3(0f * movement.Facing,3f,0);
         
-        GameObject explosion = host.CreateNetworkObject("Explosion_Diagonal_Uair", transform.position + pos, transform.rotation);
+        GameObject explosion = GameController.Instance.CreatePrefab("Explosion_Diagonal_Uair", transform.position + pos, transform.rotation);
         explosion.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in explosion.GetComponentsInChildren<HitboxCollision>(true))
         {
@@ -141,11 +131,10 @@ public class MaryamMasterHit : MasterHit
 
     public void SGUAirVerticalExplosion()
     {
-        if(!isHost)return;
         
         Vector3 pos = new Vector3(-.5f * movement.Facing,3.6f,0);
         
-        GameObject explosion = host.CreateNetworkObject("UairExplosion_Maryam", transform.position + pos, transform.rotation);
+        GameObject explosion = GameController.Instance.CreatePrefab("UairExplosion_Maryam", transform.position + pos, transform.rotation);
         explosion.transform.localScale = new Vector3(-10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in explosion.GetComponentsInChildren<HitboxCollision>(true))
         {
@@ -160,11 +149,10 @@ public class MaryamMasterHit : MasterHit
 
     public void SGUAirLauncherExplosion()
     {
-        if(!isHost)return;
         
         Vector3 pos = new Vector3(-1f * movement.Facing,3f,0);
         
-        GameObject explosion = host.CreateNetworkObject("Explosion_Diagonal_Uair", transform.position + pos, transform.rotation);
+        GameObject explosion = GameController.Instance.CreatePrefab("Explosion_Diagonal_Uair", transform.position + pos, transform.rotation);
         explosion.transform.localScale = new Vector3(-10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in explosion.GetComponentsInChildren<HitboxCollision>(true))
         {
@@ -178,11 +166,10 @@ public class MaryamMasterHit : MasterHit
 
     public void SGJSairExplosion()
     {
-        if(!isHost)return;
         
         Vector3 pos = new Vector3(2.5f * movement.Facing,4f,0);
         
-        GameObject explosion = host.CreateNetworkObject("ExplosionSide", transform.position + pos, transform.rotation);
+        GameObject explosion = GameController.Instance.CreatePrefab("ExplosionSide", transform.position + pos, transform.rotation);
         explosion.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in explosion.GetComponentsInChildren<HitboxCollision>(true))
         {
@@ -196,11 +183,10 @@ public class MaryamMasterHit : MasterHit
 
     public void SGUWExplosion()
     {
-        if(!isHost)return;
         
         Vector3 pos = new Vector3(.5f * movement.Facing,1f,0);
         
-        GameObject explosion = host.CreateNetworkObject("ExplosionDiagonalDown", transform.position + pos, transform.rotation);
+        GameObject explosion = GameController.Instance.CreatePrefab("ExplosionDiagonalDown", transform.position + pos, transform.rotation);
         explosion.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in explosion.GetComponentsInChildren<HitboxCollision>(true))
         {

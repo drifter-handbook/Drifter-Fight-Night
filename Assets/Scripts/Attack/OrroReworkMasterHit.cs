@@ -161,7 +161,6 @@ public class OrroReworkMasterHit : MasterHit
     //Handles orros float timer if he uses the move while it is depleted
     public void WDownStateSelect()
     {
-    	if(!isHost)return;
     	if(movement.grounded || !canHover)drifter.PlayAnimation("W_Down_Ground");
     	else
     		spawnPlatform();
@@ -170,10 +169,9 @@ public class OrroReworkMasterHit : MasterHit
     // Creates a platform to represent orro's float state
     public void spawnPlatform()
     {
-    	if(!isHost)return;
         
     	deletePlatform();
-    	platform = host.CreateNetworkObject("orro_w_down_platform", transform.position, transform.rotation);
+    	platform = GameController.Instance.CreatePrefab("orro_w_down_platform", transform.position, transform.rotation);
         platform.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
     	platform.transform.SetParent(drifter.gameObject.transform);
     	platform.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
@@ -183,7 +181,6 @@ public class OrroReworkMasterHit : MasterHit
     //Deletes orro's floatstate platform
     public void deletePlatform()
     {
-    	if(!isHost)return;
     	if(platform != null)
     	{
     		platform.GetComponent<SyncAnimatorStateHost>().SetState("W_Down_Platform_Decay");
@@ -194,7 +191,6 @@ public class OrroReworkMasterHit : MasterHit
 
     public void hover()
     {
-        if(!isHost)return;
         if(!listeningForMovement)
         {
         	movement.gravityPaused = true;
@@ -215,7 +211,6 @@ public class OrroReworkMasterHit : MasterHit
     //Enables all relevant flags for orro's neutral special
     public void BeginWSide()
     {
-        if(!isHost)return;
         specialReleasedFlag = true;
         movementCancelFlag = true;
         activeCancelFlag = true;
@@ -228,7 +223,6 @@ public class OrroReworkMasterHit : MasterHit
     //Fires bean or recalls him for neutral W
     public void WSideFire()
     {
-        if(!isHost)return;
 
         clearMasterhitVars();
         if(Vector3.Distance(targetPos,bean.rb.position) <= 3.8f && beanFollowing)
@@ -250,50 +244,43 @@ public class OrroReworkMasterHit : MasterHit
     //Tells the current bean object to preform certain actions
     public void BeanSide()
     {
-        if(!isHost)return;
         refreshBeanHitboxes();
         bean.playState("Bean_Side");
     }
     public void BeanDown()
     {
-        if(!isHost)return;
         refreshBeanHitboxes();
         bean.playState("Bean_Down");
     }
     public void BeanUp()
     {
-        if(!isHost)return;
         refreshBeanHitboxes();
         bean.playState("Bean_Up");
     }
     public void BeanNeutral()
     {
-        if(!isHost)return;
         refreshBeanHitboxes();
         bean.playState("Bean_Neutral");
     }
 
     public void BeanSideSpecial()
     {
-        if(!isHost)return;
         refreshBeanHitboxes();
         bean.playChargeState("Bean_Side_Special");
     }
 
     public void BeanReset()
     {
-        if(!isHost)return;
         bean.playFollowState("Bean_Idle");
     }
 
     //Creates a bean follower
     public void spawnBean()
     {
-        if(!isHost)return;
         
         Empowered = false;
 
-        beanObject = host.CreateNetworkObject("Bean", transform.position - new Vector3(-1f * movement.Facing, 1f), transform.rotation);
+        beanObject = GameController.Instance.CreatePrefab("Bean", transform.position - new Vector3(-1f * movement.Facing, 1f), transform.rotation);
         foreach (HitboxCollision hitbox in beanObject.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
@@ -324,12 +311,11 @@ public class OrroReworkMasterHit : MasterHit
     //Creates a side air projectile
     public void SpawnSideAir()
     {
-        if(!isHost)return;
 
         
         Vector3 pos = new Vector3(7f * movement.Facing,2.7f,0);
         
-        GameObject scratch = host.CreateNetworkObject("Orro_Sair_Proj", transform.position + pos, transform.rotation);
+        GameObject scratch = GameController.Instance.CreatePrefab("Orro_Sair_Proj", transform.position + pos, transform.rotation);
         scratch.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in scratch.GetComponentsInChildren<HitboxCollision>(true))
         {
@@ -345,7 +331,6 @@ public class OrroReworkMasterHit : MasterHit
     //Creates a side air projectile
     public void SpawnNeutralAir()
     {
-        if(!isHost)return;
 
 
         RaycastHit2D ray = Physics2D.Raycast(transform.position+ new Vector3(0,1f),new Vector3(movement.Facing * 7f/5f,-5f/5f,0),5f,1);
@@ -354,7 +339,7 @@ public class OrroReworkMasterHit : MasterHit
         Vector3 pos = new Vector3((ray.distance +1) * movement.Facing,-1* ray.distance +1f,0);
         if(ray.distance ==0)pos = new Vector3(8* movement.Facing,-4,0);
         
-        GameObject scratch = host.CreateNetworkObject("Orro_Nair_Proj", transform.position + pos, transform.rotation);
+        GameObject scratch = GameController.Instance.CreatePrefab("Orro_Nair_Proj", transform.position + pos, transform.rotation);
         scratch.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in scratch.GetComponentsInChildren<HitboxCollision>(true))
         {
@@ -370,7 +355,6 @@ public class OrroReworkMasterHit : MasterHit
 
     //Refreshes each of beans hitbox ids so he can keep doing damage
     private void refreshBeanHitboxes(){
-        if(!isHost)return;
 
         
         bean.facing = movement.Facing;
@@ -392,7 +376,6 @@ public class OrroReworkMasterHit : MasterHit
     //Spawns a page particle behind orro
     public void page()
     {
-        if(!isHost)return;
 
         movement.spawnJuiceParticle(transform.position + new Vector3(0,1,0),MovementParticleMode.Orro_Page, false);
     }
@@ -400,7 +383,6 @@ public class OrroReworkMasterHit : MasterHit
     //Spawns a page particle in front of orro
     public void pageFlip()
     {
-        if(!isHost)return;
         
         movement.spawnJuiceParticle(transform.position + new Vector3(movement.Facing * 1.5f,1,0),MovementParticleMode.Orro_Page, true);
     }
@@ -408,7 +390,6 @@ public class OrroReworkMasterHit : MasterHit
     //Spawns a boost ring particle for orros up special
     public void boost()
     {
-        if(!isHost)return;
 
         movement.spawnJuiceParticle(transform.position + new Vector3(0,2,0),MovementParticleMode.Orro_Boost, false);
     }

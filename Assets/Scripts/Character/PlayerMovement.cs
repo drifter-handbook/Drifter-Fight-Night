@@ -11,6 +11,29 @@ public class MovementRollbackFrame: INetworkData, ICloneable
     public float Gravity;
     public Vector2 Position;
 
+    public int Facing;
+    public float TerminalVelocity;
+    public int CurrentJumps;
+    public int CurrentDashes;
+    public bool Grounded;
+    public bool Hitstun;
+    public bool CanLandingCancel;
+    public bool CanFastFall;
+    public bool Jumping;
+    public bool Dashing;
+    public bool GravityPaused;
+    public bool LedgeHanging;
+    // public Vector3 WallSliding;
+    public bool StrongLedgeGrab;
+    public float AccelerationPercent;
+    public float DashLock;
+    public float JumpTimer;
+    public int DropThroughTime;
+    public float WalkTime;
+    public Vector2 PrevVelocity;
+    public float CurrentSpeed;
+    public bool DelayedFacingFlip;
+
     public object Clone()
     {
         return new MovementRollbackFrame()
@@ -37,28 +60,24 @@ public class PlayerMovement : MonoBehaviour
     public float ledgeClimbOffset = 0f;
     public Vector3 particleOffset =  Vector3.zero;
     public float fullhopFrames = 10f;
-
+    public float walkSpeed = 15f;
     
 
     //Calculated character properties
     protected float jumpSpeed;
     protected float baseGravity;
-    protected float baseWalkSpeed= 0;
     [NonSerialized]
     public float baseTerminalVelocity;
 
 
     //Animator State Fields
     public int Facing { get; set; } = 1;
-
     public float terminalVelocity = 25f;
 
     [NonSerialized]
     public int currentJumps;
     [NonSerialized]
-    public int currentDashes;
-
-    public float walkSpeed = 15f;
+    public int currentDashes;  
     [NonSerialized]
     public bool grounded = true;
     [NonSerialized]
@@ -75,8 +94,8 @@ public class PlayerMovement : MonoBehaviour
     public bool gravityPaused = false;
     [NonSerialized]
     public bool ledgeHanging = false;
-    [NonSerialized]
-    public Vector3 wallSliding = Vector3.zero;
+    // [NonSerialized]
+    // public bool wallSliding = false;
     [NonSerialized]
     public bool strongLedgeGrab = true;
     [NonSerialized]
@@ -107,7 +126,8 @@ public class PlayerMovement : MonoBehaviour
 
 
     //Component Fields
-    Rigidbody2D rb;
+    [NonSerialized]
+    public Rigidbody2D rb;
     Drifter drifter;
     GameObjectShake shake;
 
@@ -131,7 +151,6 @@ public class PlayerMovement : MonoBehaviour
         frictionCollider = GetComponent<PolygonCollider2D>();
 
         baseTerminalVelocity = terminalVelocity;
-        baseWalkSpeed = walkSpeed;
         
     }
     void Start(){
@@ -312,7 +331,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         grounded = IsGrounded();
-        wallSliding = IsWallSliding();
+        //wallSliding = IsWallSliding();
 
         //if(drifter.status.HasStatusEffect(PlayerStatusEffect.PLANTED) && !grounded)drifter.status.ApplyStatusEffect(PlayerStatusEffect.PLANTED,0f);
        
@@ -453,7 +472,7 @@ public class PlayerMovement : MonoBehaviour
 
                 if(!jumping)
                 {
-                    drifter.PlayAnimation("Walk");
+                    if(drifter.input[0].MoveX !=0 && drifter.input[1].MoveX == 0)drifter.PlayAnimation("Walk");
                     //drifter.status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0);
                     if(groundFrictionPosition)
                     {
@@ -477,7 +496,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
-                if(!jumping)drifter.PlayAnimation("Hang");
+                if(!jumping && drifter.input[0].MoveX !=0 && drifter.input[1].MoveX == 0)drifter.PlayAnimation("Hang");
                 //drifter.status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0);
 
                 if(accelerationPercent >0) accelerationPercent -= Time.fixedDeltaTime/airAccelerationTime * (drifter.status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f: 1f);
@@ -553,7 +572,7 @@ public class PlayerMovement : MonoBehaviour
         //Player is not trying to move, and is not in hitstun
         else if (!moving && drifter.status.HasGroundFriction())
         {
-            if(canAct && !jumping && !drifter.guarding)drifter.returnToIdle();
+            if(drifter.input[1].MoveX !=0 && drifter.input[0].MoveX == 0 && canAct && !jumping && !drifter.guarding)drifter.returnToIdle();
             //standing ground friction (When button is not held)
             if(!grounded)rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 20f * Time.fixedDeltaTime), rb.velocity.y);
             else rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, 80f * Time.fixedDeltaTime), rb.velocity.y);
@@ -675,14 +694,15 @@ public class PlayerMovement : MonoBehaviour
         return false;
     }
 
-    RaycastHit2D[] wallHits = new RaycastHit2D[10];
-    private Vector3 IsWallSliding()
+    
+    public bool IsWallSliding()
     {
+        RaycastHit2D[] wallHits = new RaycastHit2D[10];
         int count = Physics2D.RaycastNonAlloc(BodyCollider.bounds.center + new Vector3( BodyCollider.bounds.extents.x * ((Facing > 0)?1:-1),BodyCollider.bounds.extents.y,0), ((Facing > 0)?Vector3.right:Vector3.left),wallHits, 0.35f);
 
-        for (int i = 0; i < count; i++)if (wallHits[i].collider.gameObject.tag == "Ground" && drifter.status.HasGroundFriction())return wallHits[i].normal;
+        for (int i = 0; i < count; i++)if (wallHits[i].collider.gameObject.tag == "Ground" && drifter.status.HasGroundFriction())return true;
 
-        return Vector3.zero;
+        return false;
     }
 
     public void pauseGravity()
@@ -817,7 +837,7 @@ public class PlayerMovement : MonoBehaviour
             drifter.status.clearStunStatus();
             spawnSuperParticle("Hyper_Guard_Burst",1f,8);
             drifter.status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,1);
-            drifter.status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,10);
+            drifter.status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,480);
             drifter.PlayAnimation("Burst");
             pauseGravity();
         }
@@ -831,7 +851,7 @@ public class PlayerMovement : MonoBehaviour
                 drifter.PlayAnimation("Burst");
                 pauseGravity();
                 drifter.status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,1);
-                drifter.status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,10);
+                drifter.status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,480);
             }
             else if(drifter.canFeint)
             {
@@ -839,7 +859,7 @@ public class PlayerMovement : MonoBehaviour
                 drifter.PlayAnimation("Burst");
                 pauseGravity();
                 drifter.status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,1);
-                drifter.status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,10);
+                drifter.status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,480);
             }
             
         }
@@ -852,7 +872,7 @@ public class PlayerMovement : MonoBehaviour
             drifter.status.clearStunStatus();
             drifter.status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,1);
             drifter.status.ApplyStatusEffect(PlayerStatusEffect.INVULN,8);
-            drifter.status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,10);
+            drifter.status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,480);
 
             spawnSuperParticle("Defensive_Cancel",2f,8);
             if(currentJumps+1 < numberOfJumps) currentJumps++;
@@ -865,7 +885,7 @@ public class PlayerMovement : MonoBehaviour
             drifter.PlayAnimation("Burst");
             pauseGravity();
             drifter.status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,1);
-            drifter.status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,10);
+            drifter.status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,480);
         }
 
     }

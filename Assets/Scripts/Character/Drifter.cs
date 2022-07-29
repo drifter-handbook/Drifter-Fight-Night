@@ -65,39 +65,44 @@ public class DrifterRollbackFrame: INetworkData, ICloneable
 
     public MovementRollbackFrame MovementFrame;
     public AttackRollbackFrame AttackFrame;
-    public MasterhitRollbackFrame MasterhitFrame;
+    public IMasterhitRollbackFrame MasterhitFrame;
+    public StatusRollbackFrame StatusFrame;
+    public HurtboxRollbackFrame HurtboxhitFrame;
 
     public object Clone()
     {
-        return new MovementRollbackFrame()
+        return new DrifterRollbackFrame()
         {};
     }
 }
-
-
 
 /** 
  * This is the class that will be put into a prefab and instantiated 
  */
 [RequireComponent(typeof(PlayerMovement))]
+[RequireComponent(typeof(PlayerStatus))]
+[RequireComponent(typeof(PlayerAttacks))]
 public class Drifter : MonoBehaviour
 {
     //Static values durring gameplay
     public PlayerMovement movement;
     public PlayerStatus status;
     public PlayerAttacks attacks;
+    public MasterHit masterhit;
+    public PlayerHurtboxHandler hurtbox;
     
     public Animator animator;
-
     public AnimatorOverrideController[] animOverrides;
-    public int myColor;
-    public DrifterType drifterType;
-    public int peerID;
-    
     public Animator sparkle;
     public PlayerInput playerInputController;
 
-    //Serializeable values
+
+    public DrifterType drifterType;
+
+    [NonSerialized]
+    public int myColor;
+    [NonSerialized]
+    public int peerID;
     
     //Input Buffer
     public PlayerInputData[] input;
@@ -170,6 +175,9 @@ public class Drifter : MonoBehaviour
         DamageTaken = 0f;
 
         if(animOverrides != null && animOverrides.Length > 0)animOverrides[0] = new AnimatorOverrideController(animator.runtimeAnimatorController);
+        masterhit = GetComponentInChildren<MasterHit>();
+
+        masterhit.SerializeBaseFrame();
     }
 
     void FixedUpdate()
@@ -223,7 +231,7 @@ public class Drifter : MonoBehaviour
         myColor = (colorID>=0?colorID:0);
         transform.GetChild(0).GetComponent<SpriteRenderer>().color = CharacterMenu.ColorFromEnum[(PlayerColor)myColor];
         transform.GetChild(2).GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)myColor]);
-        gameObject.GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)myColor]);
+        //gameObject.GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)myColor]);
         transform.GetChild(0).GetComponent<Animator>().Play( (colorID < 8)?"P" + (colorID + 1):"P9");
     }
 
@@ -255,30 +263,15 @@ public class Drifter : MonoBehaviour
     }
 
     //Replaces the animator state transition function
-    public void PlayAnimation(string p_state, float p_normalizedTime = -1)
+    public void PlayAnimation(string p_state, float p_normalizedTime = -1, bool p_gate = false)
     {
-        // if(!isHost)return;
-        if(Animator.StringToHash(p_state) == animator.GetCurrentAnimatorStateInfo(-1).fullPathHash && p_normalizedTime == -1)
-            UnityEngine.Debug.Log("DUPLICATE STATE CALL MADE: " + p_state);
-        
+        if(p_gate && Animator.StringToHash(p_state) == animator.GetCurrentAnimatorStateInfo(0).shortNameHash)
+        {
+            UnityEngine.Debug.Log("Animation state " +p_state + " was gated!");
+        }
         else
-            PlayAnimation(Animator.StringToHash(p_state),p_normalizedTime < 0 ? 0: p_normalizedTime);
-        
-
-        // animator.Play(p_state,,-1,p_normalizedTime);
-        // animatorClipHash = animator.GetCurrentAnimatorStateInfo(animationLayer).fullPathHash;
-        // animatorTime = p_normalizedTime;
-
-        
+            animator.Play(Animator.StringToHash(p_state),0,p_normalizedTime < 0 ? 0: p_normalizedTime);
     }
-
-    private void PlayAnimation(int p_state, float p_normalizedTime)
-    {
-        animator.Play(p_state,-1,p_normalizedTime);
-        // animatorClipHash = p_state;
-        // animatorTime = p_normalizedTime;
-    }
-
 
 
     public void SetAnimationOverride(int p_index)
@@ -315,7 +308,8 @@ public class Drifter : MonoBehaviour
         canFeint = true;
         canSuper = true;
         clearGuardFlags();
-        if(movement.grounded)PlayAnimation("Idle");
+        if(movement.grounded && input[0].MoveX !=0)PlayAnimation("Walk");
+        else if(movement.grounded)PlayAnimation("Idle");
         else PlayAnimation("Hang");
         if(status.HasStatusEffect(PlayerStatusEffect.END_LAG)) status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0);
         if(status.HasStatusEffect(PlayerStatusEffect.FLATTEN)) status.ApplyStatusEffect(PlayerStatusEffect.FLATTEN,0);

@@ -74,11 +74,11 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
 	public override int RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, DrifterAttackType attackType, SingleAttackData attackData)
     {
 
-        if (GameController.Instance.IsHost && hitbox.parent != hurtbox.parent && hurtbox.owner != hitbox.parent && !oldAttacks.ContainsKey(attackID))
+        if (GameController.Instance.IsHost && hitbox.parent != hurtbox.parent && hurtbox.owner != hitbox.parent && CanHit(attackID))
         {
             
             // register new attack
-            oldAttacks[attackID] = Time.time;
+            oldAttacks[attackID] = MAX_ATTACK_DURATION;
 
             Vector3 hitSparkPos = hurtbox.capsule.ClosestPoint(hitbox.parent.transform.position);
 

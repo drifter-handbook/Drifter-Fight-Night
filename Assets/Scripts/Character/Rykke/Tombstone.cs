@@ -6,61 +6,50 @@ using UnityEngine;
 public class Tombstone : NonplayerHurtboxHandler
 {
 
-	public int Uses = 3;
-	
-	
+
 	public bool canAct = false;
 	public bool active = false;
     public bool projectile = true;
     public bool attacking = false;
-	public WalkOff ledgeDetector;
-    bool dealyGrounding = true;
+    public bool listeningForGrounded = true;
 
-	PlayerAttacks attacks;
-	int tombstoneType = 0;
+
+	public WalkOff ledgeDetector;
+
+    int tombstoneType = 0;
 	
 	GameObject drifter;
 
-
-	float zombieRadius = 4.5f;
-
-	bool isHost;
-
 	Collider2D physicsCollider; 
+	Animator animator;
 
-	SyncAnimatorStateHost anim;
-
-	public bool listeningForGrounded = true;
 	float distanceFromParent = 0;
 
-	//Const Vector offset
-	Vector2 offset = new Vector2(0,2);
+	//Const Vector OFFSET
+	Vector2 OFFSET = new Vector2(0,2);
+    float ZOMBIE_RADIUS = 4.5f;
 
 	// Start is called before the first frame update
     void Awake()
     {
-    	isHost = GameController.Instance.IsHost;
         rb = GetComponent<Rigidbody2D>();
-        anim = GetComponent<SyncAnimatorStateHost>();
+        animator = GetComponent<Animator>();
         physicsCollider = GetComponentInChildren<PolygonCollider2D>();
     }
 
     // // Update is called once per frame
     new void FixedUpdate()
     {
-    	if(!isHost)return;
         base.FixedUpdate();
-    	if(Uses <=0 && canAct)Destroy(gameObject);
 
-        if(dealyGrounding)
-            dealyGrounding = false;
-    	else if(listeningForGrounded && IsGrounded())
+
+    	if(listeningForGrounded && IsGrounded())
     	{
     		listeningForGrounded = false;
     		if(projectile) returnToIdle();
     		else 
     		{
-    			anim.SetState("Land");
+    			PlayAnimation("Land");
     			canAct = false;
     		}
 
@@ -69,17 +58,16 @@ public class Tombstone : NonplayerHurtboxHandler
 
     new void Start()
     {
-    	playAnimationEvent(tombstoneType + "_Spin");
+    	PlayAnimationEvent(tombstoneType + "_Spin");
     }
 
     //sets necessary fields to make spawning cleaner
-    public Tombstone setup(int p_tombstoneIndex, int p_facing,PlayerAttacks p_attacks,GameObject p_drifter,float p_radius)
+    public Tombstone setup(int p_tombstoneIndex, int p_facing,GameObject p_drifter,float p_radius)
     {
        tombstoneType = p_tombstoneIndex;
        facing = p_facing;
-       attacks = p_attacks;
        drifter = p_drifter;
-       zombieRadius = p_radius;
+       ZOMBIE_RADIUS = p_radius;
        return this;
     }
 
@@ -92,9 +80,11 @@ public class Tombstone : NonplayerHurtboxHandler
 
         if(takesKnockback)takesKnockback = false;
 
-        if(GameController.Instance.IsHost && hitbox.parent != hurtbox.parent && hurtbox.owner != hitbox.parent && !oldAttacks.ContainsKey(attackID))
+        if(hitbox.parent != hurtbox.parent && hurtbox.owner != hitbox.parent && CanHit(attackID))
         {
    			returnCode =  base.RegisterAttackHit(hitbox,hurtbox,attackID,attackType,attackData);
+
+            oldAttacks[attackID] = MAX_ATTACK_DURATION;
 
             if(percentage >= maxPercentage)Destroy(gameObject);
             
@@ -106,8 +96,6 @@ public class Tombstone : NonplayerHurtboxHandler
 
     void OnTriggerEnter2D(Collider2D collider)
 	{
-		if(!GameController.Instance.IsHost)return;
-
 		if(collider.gameObject.tag == "BounceObject" && collider.GetComponent<Tombstone>().drifter == drifter)
 			if(projectile)
             {
@@ -124,28 +112,30 @@ public class Tombstone : NonplayerHurtboxHandler
             }
 			//else if(!active && ! canAct)rb.velocity = new Vector3(collider.gameObject.transform.position.x > transform.position.x ? -5f:5f,0);
 	}	
+
+    private void PlayAnimation(string p_state, float p_normalizedTime = -1)
+    {
+        animator.Play(Animator.StringToHash(p_state),0,p_normalizedTime < 0 ? 0: p_normalizedTime);
+    }
 			
 
-    public void playAnimation(string state, bool actionable = false, bool gated = false)
+    public void PlayConditionalAnimation(string p_state, bool p_actionable = false, bool p_gated = false,float p_normalizedTime = -1)
     {
-    	if(!isHost || (!canAct && gated))return;
-    	canAct = actionable;
-    	anim.SetState(state);
+    	if(!canAct && p_gated)return;
 
+    	canAct = p_actionable;
+        PlayAnimation(p_state,p_normalizedTime);
     }
 
-    public void playAnimationEvent(string state)
+    public void PlayAnimationEvent(string p_state)
     {
-    	if(!isHost)return;
     	canAct = false;
-    	anim.SetState(state);
-
+        PlayAnimation(p_state);
     }
 
     //Sets the "Active" flag
     public void activate()
     {
-    	if(!isHost)return;
     	active = true;
     }
 
@@ -153,7 +143,6 @@ public class Tombstone : NonplayerHurtboxHandler
     //Launches stone with set velocity from an external object
     public void throwStone(int mode)
     {
-    	if(!isHost)return;
     	//canAct = false;
     	switch(mode)
     	{
@@ -179,7 +168,6 @@ public class Tombstone : NonplayerHurtboxHandler
     //Switches the direction the object is facing when recieving a command;
     public void updateDirection(int p_facing)
     {
-    	if(!isHost)return;
     	facing = p_facing;
     	transform.localScale = new Vector3(facing * Mathf.Abs(transform.localScale.x),
         transform.localScale.y, transform.localScale.z);
@@ -189,16 +177,14 @@ public class Tombstone : NonplayerHurtboxHandler
     //Returns to the idle state and resets most flags
     public void returnToIdle()
     {
-    	if(!isHost)return;
-
     	if(projectile)
-    		anim.SetState(tombstoneType + "_Idle");
-    	else if(active && distanceFromParent < zombieRadius)
-			anim.SetState(IsGrounded() ? "Active_Idle" : "Hang");
+    		PlayAnimation(tombstoneType + "_Idle");
+    	else if(active && distanceFromParent < ZOMBIE_RADIUS)
+			PlayAnimation(IsGrounded() ? "Active_Idle" : "Hang");
 		else if(!canAct && !active)
-			anim.SetState(IsGrounded() ? "Deactivate" : "Hang");
+			PlayAnimation(IsGrounded() ? "Deactivate" : "Hang");
 		else
-			anim.SetState(tombstoneType + "_Idle");
+			PlayAnimation(tombstoneType + "_Idle");
 
 		//else
 			
@@ -220,31 +206,26 @@ public class Tombstone : NonplayerHurtboxHandler
         canAct = false;
         active = false;
         projectile = true;
-        dealyGrounding = true;
         listeningForGrounded = true;
-        playAnimationEvent(tombstoneType + "_Spin");
+        PlayAnimationEvent(tombstoneType + "_Spin");
         throwStone(3);
     }
 
 
     public void listenForGrounded()
     {
-    	if(!isHost)return;
     	listeningForGrounded = true;
     }
 
     public void listenForLedge()
     {
-    	if(!isHost)return;
 
     	ledgeDetector.togglePreventWalkoff();
     }
     
     public float getDistance(Vector3 parent)
     {
-    	if(!isHost) return 99;
-
-    	distanceFromParent = Vector3.Distance(parent,rb.position + offset);
+    	distanceFromParent = Vector3.Distance(parent,rb.position + OFFSET);
 
     	return distanceFromParent;
     }
@@ -264,12 +245,10 @@ public class Tombstone : NonplayerHurtboxHandler
     //Spawns a flame burst effect
     public void burst(int mode = 0)
     {
-        if(!GameController.Instance.IsHost)return;
-
-        GameObject burst = GameController.Instance.host.CreateNetworkObject("Zombie_Burst", transform.position , transform.rotation);
+        GameObject burst = GameController.Instance.CreatePrefab("Zombie_Burst", transform.position , transform.rotation);
         burst.transform.localScale = new Vector3(facing *10,10,1f);
 
-        burst.GetComponent<SyncAnimatorStateHost>().SetState(mode ==0? "Vertical":"Horizontal");
+        burst.GetComponent<Animator>().Play(mode ==0? "Vertical":"Horizontal");
     }
 
 

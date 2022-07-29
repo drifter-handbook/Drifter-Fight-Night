@@ -1,7 +1,20 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+public class StatusRollbackFrame: INetworkData, ICloneable
+{
+    public string Type { get; set; }
+
+
+    public object Clone()
+    {
+        return new StatusRollbackFrame()
+        {};
+    }
+}
 
 public enum PlayerStatusEffect
 {
@@ -64,9 +77,8 @@ class PlayerStatusData
     }
 }
 
-public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
+public class PlayerStatus : MonoBehaviour
 {
-	NetworkSync sync;
 
     Dictionary<PlayerStatusEffect,PlayerStatusData> statusDataMap = new Dictionary<PlayerStatusEffect,PlayerStatusData>()
     {
@@ -104,39 +116,46 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         {PlayerStatusEffect.FLATTEN,                            new PlayerStatusData("FLATTEN")                                                     },
     };
 
-    Rigidbody2D rb;
-    Drifter drifter;
+    
+
+
     Vector2 delayedVelocity;
-
-    // float frameAdvantage = 0;
-    public bool isInCombo = false;
-
-    public PlayerCard card;
-    [SerializeField] private PlayerDamageNumbers damageDisplay;
-
-    public Collider2D grabPoint = null;
-
     PlayerStatusEffect delayedEffect;
     int delayedEffectDuration;
+
+    [NonSerialized]
+    public Collider2D grabPoint = null;
+    
+
+    [NonSerialized]
+    public PlayerCard card;
+    [NonSerialized]
+    public bool isInCombo = false;
+    [SerializeField]
+    private PlayerDamageNumbers damageDisplay;
+    Drifter drifter;
 
     // Start is called before the first frame update
     void Start()
     {
-    	sync = GetComponent<NetworkSync>();
-        rb = GetComponent<Rigidbody2D>();
         drifter = GetComponent<Drifter>();
         if(!GameController.Instance.IsTraining)ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,111);
     }
- 
-    // Update is called once per frame
+
     void FixedUpdate()
+    {
+        UpdateStatus();
+    }
+    
+    // Update is called once per frame
+    void UpdateStatus()
     {
         if(GameController.Instance.IsPaused)
             return;
 
         if(grabPoint!=null && HasStatusEffect(PlayerStatusEffect.GRABBED) && grabPoint.enabled)
         {
-            //rb.position = grabPoint.bounds.center;
+            //drifter.movement.rb.position = grabPoint.bounds.center;
             drifter.transform.position = grabPoint.bounds.center;
         }
 
@@ -144,7 +163,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         {
             grabPoint=null;
             statusDataMap[PlayerStatusEffect.GRABBED].duration = 0;
-            rb.velocity = delayedVelocity;
+            drifter.movement.rb.velocity = delayedVelocity;
             delayedVelocity = Vector2.zero;
         }
         
@@ -154,7 +173,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
                 statusDataMap[PlayerStatusEffect.HITPAUSE].duration--;
                 if(!HasStatusEffect(PlayerStatusEffect.HITPAUSE) && !HasStatusEffect(PlayerStatusEffect.SLOWMOTION))
                 {
-                    if(delayedVelocity != Vector2.zero)rb.velocity = delayedVelocity;
+                    if(delayedVelocity != Vector2.zero)drifter.movement.rb.velocity = delayedVelocity;
                     if(delayedEffect != PlayerStatusEffect.HIT)
                     {
                         ApplyStatusEffect(delayedEffect,delayedEffectDuration);
@@ -176,12 +195,12 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
                         
                         //Re-apply the saved velocity if the player just lost cringe
                         
-                        if(ef.Key == PlayerStatusEffect.SLOWMOTION && HasEnemyStunEffect())rb.velocity = delayedVelocity * .2f;
+                        if(ef.Key == PlayerStatusEffect.SLOWMOTION && HasEnemyStunEffect())drifter.movement.rb.velocity = delayedVelocity * .2f;
 
 
                         if((ef.Key == PlayerStatusEffect.CRINGE && !HasStatusEffect(PlayerStatusEffect.CRINGE)) || (ef.Key == PlayerStatusEffect.SLOWMOTION && !HasStatusEffect(PlayerStatusEffect.SLOWMOTION)))
                         {
-                            rb.velocity = delayedVelocity;
+                            drifter.movement.rb.velocity = delayedVelocity;
                             drifter.SetAnimationSpeed(1f);
                         }
 
@@ -399,14 +418,14 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
 
     	PlayerStatusData data = statusDataMap[ef];
 
-    	if(GameController.Instance.IsHost && !(data.iconIndex < 0))
-        {
-        	sync.SendNetworkMessage(new PlayerStatusPacket()
-            {
-                effect = ef,
-                statusDuration = duration,
-            });
-        }
+    	// if(GameController.Instance.IsHost && !(data.iconIndex < 0))
+     //    {
+     //    	sync.SendNetworkMessage(new PlayerStatusPacket()
+     //        {
+     //            effect = ef,
+     //            statusDuration = duration,
+     //        });
+     //    }
 
         // //If duration is 0, always clear the status
         if(duration <= 0 && HasStatusEffect(ef))
@@ -426,7 +445,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
 
         if(data.channel != 0)clearStatusChannel(data.channel);
 
-        if(ef == PlayerStatusEffect.PARALYZED)rb.velocity = new Vector2(0,15f);
+        if(ef == PlayerStatusEffect.PARALYZED)drifter.movement.rb.velocity = new Vector2(0,15f);
 
     	if((HasStatusEffect(PlayerStatusEffect.INVULN) || HasStatusEffect(PlayerStatusEffect.ARMOUR)) && data.isStun && !data.isSelfInflicted) return;
     
@@ -444,7 +463,7 @@ public class PlayerStatus : MonoBehaviour, INetworkMessageReceiver
         if((ef == PlayerStatusEffect.KNOCKBACK || data.isStun && !data.isSelfInflicted) && duration >0)clearRemoveOnHitStatus();        
         
         //save delayed velocity
-        if((ef == PlayerStatusEffect.HITPAUSE || ef == PlayerStatusEffect.CRINGE || ef == PlayerStatusEffect.GRABBED || ef == PlayerStatusEffect.SLOWMOTION ||(ef == PlayerStatusEffect.KNOCKBACK &&  HasStatusEffect(PlayerStatusEffect.SLOWMOTION)))&& rb.velocity != Vector2.zero) delayedVelocity = rb.velocity;
+        if((ef == PlayerStatusEffect.HITPAUSE || ef == PlayerStatusEffect.CRINGE || ef == PlayerStatusEffect.GRABBED || ef == PlayerStatusEffect.SLOWMOTION ||(ef == PlayerStatusEffect.KNOCKBACK &&  HasStatusEffect(PlayerStatusEffect.SLOWMOTION)))&& drifter.movement.rb.velocity != Vector2.zero) delayedVelocity = drifter.movement.rb.velocity;
 
         //Slow down animation speed in slowmo
         if(ef == PlayerStatusEffect.SLOWMOTION)

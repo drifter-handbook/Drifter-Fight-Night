@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8584037417074550998}
   - component: {fileID: 3405403819724867481}
-  - component: {fileID: 4671133594197795931}
+  - component: {fileID: 2112072638064609575}
   m_Layer: 9
   m_Name: Hitbox
   m_TagString: Projectile
@@ -48,7 +48,7 @@ CircleCollider2D:
   m_Offset: {x: -0.03599301, y: 0}
   serializedVersion: 2
   m_Radius: 0.1213536
---- !u!114 &4671133594197795931
+--- !u!114 &2112072638064609575
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -57,15 +57,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 83554484007641018}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
+  m_Script: {fileID: 11500000, guid: 65c4d126f18c9ca47b80033f0cb0d909, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 6393105525490921081}
   playerType: {fileID: 0}
-  destroyParentOnHit: 1
   OverrideData: {fileID: 11400000, guid: 1f29ecafbdf0aee47be5fb9066123809, type: 2}
   AttackData: {fileID: 0}
   projectilePriority: 2
+  SuccessState: 
+  animator: {fileID: 6438198135666115965}
+  victim: {fileID: 0}
+  playOnInvuln: 1
+  playOnBlock: 1
 --- !u!1 &6393105525490921081
 GameObject:
   m_ObjectHideFlags: 0
@@ -77,11 +81,6 @@ GameObject:
   - component: {fileID: 4638777815392889998}
   - component: {fileID: 1778631399794743391}
   - component: {fileID: 6438198135666115965}
-  - component: {fileID: 2328475876887399745}
-  - component: {fileID: 7678780397199594851}
-  - component: {fileID: 6781233728534022915}
-  - component: {fileID: 2933228154459335860}
-  - component: {fileID: 3243298868798099931}
   - component: {fileID: 5078160392277462324}
   - component: {fileID: 6764413425641248834}
   m_Layer: 0
@@ -176,68 +175,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &2328475876887399745
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6393105525490921081}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c20a1139a9eaca438c79855ebb3b13b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  NetworkType: 
---- !u!114 &7678780397199594851
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6393105525490921081}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 306e0bcc2a374b04ca99fe6fc7a7d042, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &6781233728534022915
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6393105525490921081}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1925752a4980314891b5dbe83f9cfac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2933228154459335860
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6393105525490921081}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ca38b1f1c46c2f40957000898a92e37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3243298868798099931
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6393105525490921081}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8275c87f3a6a3b448e6cf19f65e07d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  color: 0
 --- !u!114 &5078160392277462324
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -250,7 +187,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ef945a1776594438c7a9223e2d7bb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  duration: 1.5
+  duration: 60
+  rb: {fileID: 6764413425641248834}
+  animator: {fileID: 6438198135666115965}
 --- !u!50 &6764413425641248834
 Rigidbody2D:
   serializedVersion: 4

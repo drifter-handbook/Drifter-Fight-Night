@@ -71,7 +71,6 @@ public class LucilleMasterHit : MasterHit
 
     public void W_Neutral_Throw()
     {
-        if(!isHost)return;
         
 
         if(HeldDirection.y < 0)drifter.PlayAnimation("W_Side_Down");
@@ -88,13 +87,11 @@ public class LucilleMasterHit : MasterHit
 
     public void listenForDirection()
     {
-       if(!isHost)return;
        listeningForDirection = true; 
     }
 
     public void listenForThrow()
     {
-       if(!isHost)return;
        listenForDirection();
        delaytime = 0;
        listeningForThrow = true; 
@@ -117,7 +114,6 @@ public class LucilleMasterHit : MasterHit
 
     public void infect(GameObject victim)
     {
-        if(!isHost)return;
         
 
         if(mark != null)
@@ -143,7 +139,6 @@ public class LucilleMasterHit : MasterHit
 
     public void spawnOrb()
     {
-        if(!isHost)return;
         
 
         if(orb != null)
@@ -172,7 +167,6 @@ public class LucilleMasterHit : MasterHit
 
     public void spawnWave()
     {
-        if(!isHost)return;
         
 
         wave = GameController.Instance.host.CreateNetworkObject("Lucille_Wave", transform.position + new Vector3(movement.Facing * 1f,3.5f,0), transform.rotation);
@@ -193,7 +187,6 @@ public class LucilleMasterHit : MasterHit
 
     public void warpToNearestRift()
     {
-        if(!isHost)return;
         if( mark != null)
         {
             rb.transform.position = mark.transform.position;

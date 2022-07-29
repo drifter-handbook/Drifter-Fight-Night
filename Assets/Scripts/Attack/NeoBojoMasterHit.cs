@@ -11,11 +11,10 @@ public class NeoBojoMasterHit : MasterHit
 
     public void SpawnDownTiltWave()
     {
-        if(!isHost)return;
         
         //Vector3 pos = new Vector3(2f * movement.Facing,2.7f,0);
         
-        GameObject wave = host.CreateNetworkObject("BojoDTiltWave", transform.position , transform.rotation);
+        GameObject wave = GameController.Instance.CreatePrefab("BojoDTiltWave", transform.position , transform.rotation);
         wave.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
 
         wave.GetComponent<Rigidbody2D>().velocity = new Vector3(movement.Facing * 33,-22);
@@ -32,14 +31,12 @@ public class NeoBojoMasterHit : MasterHit
 
     public void whirl()
     {
-        if(!isHost)return;
 
         movement.spawnJuiceParticle(transform.position ,MovementParticleMode.Bojo_Whirl, false);
     }
 
     public void Neutral_Special()
     {
-        if(!isHost)return;
 
         
         if(soundwave!= null) 
@@ -47,7 +44,7 @@ public class NeoBojoMasterHit : MasterHit
                 //Detonate here;
             return;
         }
-        soundwave = host.CreateNetworkObject("Bojo_Note", transform.position + new Vector3(1.5f * movement.Facing, 4f), transform.rotation);
+        soundwave = GameController.Instance.CreatePrefab("Bojo_Note", transform.position + new Vector3(1.5f * movement.Facing, 4f), transform.rotation);
         soundwave.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in soundwave.GetComponentsInChildren<HitboxCollision>(true))
         {
@@ -64,14 +61,13 @@ public class NeoBojoMasterHit : MasterHit
 
     public void SpawnCentaur()
     {
-        if(!isHost)return;
 
         if(centaur == null)
         {
             
                 //Vector3 pos = new Vector3(2f * movement.Facing,2.7f,0);
         
-            centaur = host.CreateNetworkObject("Centaur", transform.position , transform.rotation);
+            centaur = GameController.Instance.CreatePrefab("Centaur", transform.position , transform.rotation);
             centaur.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
 
 
@@ -114,7 +110,6 @@ public class NeoBojoMasterHit : MasterHit
 
     public void setCentaurPower(int pow)
     {
-        if(!isHost)return;
         power = pow; 
         
     }

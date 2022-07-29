@@ -1,25 +1,44 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+
+
+public class HurtboxRollbackFrame: INetworkData, ICloneable
+{
+    public string Type { get; set; }
+    public int[] OldAttacks;
+    public int FramesSinceCleaned;
+
+    public object Clone()
+    {
+        return new HurtboxRollbackFrame()
+        {};
+    }
+}
 
 public class PlayerHurtboxHandler : MonoBehaviour
 {
     // keep track of what attacks we've already processed
     // AttackID -> Timestamp
-    public Dictionary<int, float> oldAttacks = new Dictionary<int, float>();
-    const float MAX_ATTACK_DURATION = 7f;
+    public int[] oldAttacks = new int[128];
+    public int framesSinceCleaned = 0; 
+
+
+    protected const int MAX_ATTACK_DURATION = 240;
 
     // for creating hitsparks
-    protected NetworkHost host;
+
     protected ScreenShake Shake;
 
+    [NonSerialized]
     public TrainingUIManager trainingUI;
 
     // Start is called before the first frame update
     protected void Start()
     {
-        host = GameController.Instance.host;
+
         Shake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<ScreenShake>();
 
         // StartCoroutine(CleanupOldAttacks());
@@ -27,12 +46,23 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
     public bool CanHit(int attackID)
     {
-        return !oldAttacks.ContainsKey(attackID);
+        CleanupOldAttacks();
+        return oldAttacks[attackID] == 0;
+    }
+
+    void CleanupOldAttacks()
+    {
+        for(int i = 0; i < oldAttacks.Length; i++)
+        {
+            if(oldAttacks[i] != 0 ) oldAttacks[i] = Mathf.Max(0,oldAttacks[i] - framesSinceCleaned);
+        }
+        framesSinceCleaned = 0;
     }
 
     void FixedUpdate()
     {
-        CleanupOldAttacks();        
+        framesSinceCleaned++;
+        if(framesSinceCleaned > MAX_ATTACK_DURATION)CleanupOldAttacks(); 
     }
 
 
@@ -51,7 +81,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
         //UnityEngine.Debug.Log(attackID);
         // only host processes hits, don't hit ourself, and ignore previously registered attacks
         int returnCode = -3;
-        if (GameController.Instance.IsHost && hitbox.parent != hurtbox.parent && !oldAttacks.ContainsKey(attackID))
+        if (hitbox.parent != hurtbox.parent && CanHit(attackID))
         {
             
             // register new attack
@@ -60,9 +90,10 @@ public class PlayerHurtboxHandler : MonoBehaviour
             hitbox.parent.GetComponent<PlayerAttacks>().Hit(attackType, attackID, hurtbox.parent);
 
             Drifter drifter = GetComponent<Drifter>();
-
             PlayerStatus status = drifter.status;
-            PlayerStatus attackerStatus = hitbox.parent.GetComponent<PlayerStatus>();
+
+            Drifter attacker = hitbox.parent.GetComponent<Drifter>();
+            PlayerStatus attackerStatus = attacker.status;
 
             float damageDealt = 0f;
 
@@ -80,7 +111,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             ) return -3;
 
             if(status.HasStatusEffect(PlayerStatusEffect.INVULN)) return -3;
-            oldAttacks[attackID] = Time.time;
+            oldAttacks[attackID] = MAX_ATTACK_DURATION;
 
             if((drifter.guarding && status.HasStunEffect()) &&  attackData.hitType == HitType.GRAB) return -1;
 
@@ -88,8 +119,6 @@ public class PlayerHurtboxHandler : MonoBehaviour
             
             if(status.HasStatusEffect(PlayerStatusEffect.PLANTED) && attackData.StatusEffect == PlayerStatusEffect.GRABBED) return -3;
 
-
-            Drifter attacker = hitbox.parent.GetComponent<Drifter>();
             attacker.canFeint = false;
 
             Vector3 hitSparkPos = hurtbox.capsule.ClosestPoint(hitbox.parent.transform.position);
@@ -308,7 +337,6 @@ public class PlayerHurtboxHandler : MonoBehaviour
                 if (HitPauseDuration >0 && hitbox.gameObject.tag != "Projectile")
                     attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,HitPauseDuration);
 
-
                 drifter.GetComponentInChildren<GameObjectShake>().Shake(attackData.StatusEffect != PlayerStatusEffect.CRINGE?attackData.HitStop:attackData.StatusDuration,attackData.StatusEffect != PlayerStatusEffect.CRINGE?1.5f:2f);
 
                 returnCode = attackData.StatusEffect == PlayerStatusEffect.GRABBED?1: 0;             
@@ -454,23 +482,23 @@ public class PlayerHurtboxHandler : MonoBehaviour
         return returnCode;
     }
 
-    void CleanupOldAttacks()
-    {
-        List<int> toRemove = new List<int>();
-        foreach (int attackID in oldAttacks.Keys)
-        {
-            if (Time.time - oldAttacks[attackID] > MAX_ATTACK_DURATION)
-            {
-                toRemove.Add(attackID);
-            }
-        }
-        // delete old attackIDs
-        foreach (int attackID in toRemove)
-        {
-            oldAttacks.Remove(attackID);
-        }
+    // void CleanupOldAttacks()
+    // {
+    //     List<int> toRemove = new List<int>();
+    //     foreach (int attackID in oldAttacks.Keys)
+    //     {
+    //         if (Time.time - oldAttacks[attackID] > MAX_ATTACK_DURATION)
+    //         {
+    //             toRemove.Add(attackID);
+    //         }
+    //     }
+    //     // delete old attackIDs
+    //     foreach (int attackID in toRemove)
+    //     {
+    //         oldAttacks.Remove(attackID);
+    //     }
 
-    }
+    // }
 
     protected IEnumerator delayHitsparks(AttackFXSystem attackFX, Vector3 position, float angle,float damage, float p_duration)
     {
@@ -481,13 +509,13 @@ public class PlayerHurtboxHandler : MonoBehaviour
         
         for (int i = 0; i < (damage + 2 )/3 ; i++)
         {
-            angleT = angle + Random.Range(-45, 45);
-            hitSparkPos += Quaternion.Euler(0, 0, angleT) * new Vector3(-Random.Range(1, 4), 0, 0);
+            angleT = angle + UnityEngine.Random.Range(-45, 45);
+            hitSparkPos += Quaternion.Euler(0, 0, angleT) * new Vector3(-UnityEngine.Random.Range(1, 4), 0, 0);
             GraphicalEffectManager.Instance.CreateHitSparks(attackFX.GetSpark(), position, angleT, new Vector2(10f, 10f));
 
             angleT += 180;
 
-            hitSparkPos += Quaternion.Euler(0, 0, angleT) * new Vector3(-Random.Range(1, 4), 0, 0);
+            hitSparkPos += Quaternion.Euler(0, 0, angleT) * new Vector3(-UnityEngine.Random.Range(1, 4), 0, 0);
             GraphicalEffectManager.Instance.CreateHitSparks(attackFX.GetSpark(), hitSparkPos, angleT, new Vector2(10f, 10f));
 
             yield return new WaitForSeconds(stepSize);

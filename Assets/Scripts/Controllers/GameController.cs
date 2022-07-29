@@ -98,6 +98,10 @@ public class GameController : MonoBehaviour
     string cachedRoomCode ="";
     bool clearingPeers = false;
 
+
+
+    public List<GameObject> NetworkTypePrefabs = new List<GameObject>();
+
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -130,6 +134,8 @@ public class GameController : MonoBehaviour
             NatPunchServer = new IPEndPoint(address, NatPunchServer.Port);
             MatchmakingServer = new IPEndPoint(address, MatchmakingServer.Port);
         }
+
+        aggregatePrefabs("Assets/Resources/");
 
         //AssignInputAssest();
         
@@ -332,5 +338,34 @@ public class GameController : MonoBehaviour
         IsHost = false;
         IsOnline = false;
         endingGame = null;
+    }
+
+    //Populates the Network Prefabs list in Lucille Johnson
+    private void aggregatePrefabs(string basePath)
+    {
+
+        //string[] networkPrefabs = Directory.GetFiles(basePath,"*.prefab",SearchOption.AllDirectories);
+
+        UnityEngine.Object[] networkPrefabs = Resources.LoadAll("", typeof(GameObject));
+
+        for(int i = 0; i < networkPrefabs.Length; i++)
+
+           NetworkTypePrefabs.Add((GameObject)networkPrefabs[i]);
+
+        UnityEngine.Debug.Log("Added " + NetworkTypePrefabs.Count + " Prefabs to the Network Prefab List");
+
+    }
+
+    public GameObject CreatePrefab(string networkType)
+    {
+        GameObject obj = Instantiate(NetworkTypePrefabs.Find(x => x.name == networkType));
+        return obj;
+    }
+
+    public GameObject CreatePrefab(string networkType, Vector3 position, Quaternion rotation)
+    {
+        GameObject obj = Instantiate(NetworkTypePrefabs.Find(x => x.name == networkType),position,rotation);
+        
+        return obj;
     }
 }

@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class NetworkPlayers : MonoBehaviour, ISyncHost
+public class NetworkPlayers : MonoBehaviour
 {
+
     NetworkSyncToHost syncFromClients;
 
     public List<GameObject> spawnPoints;
@@ -22,7 +23,7 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
     // Start is called before the first frame update
     void Start()
     {
-        GameController.Instance.host.CreateNetworkObject(GameController.Instance.selectedStage);
+        GameController.Instance.CreatePrefab(GameController.Instance.selectedStage);
 
         //populate spawn points
         spawnPoints = new List<GameObject>();
@@ -69,7 +70,7 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
         }
 
         //Same here
-        GameObject obj = GameController.Instance.host.CreateNetworkObject(drifter.ToString().Replace("_", " "),
+        GameObject obj = GameController.Instance.CreatePrefab(drifter.ToString().Replace("_", " "),
             spawnPoints[(peerID +1) % spawnPoints.Count].transform.position, Quaternion.identity);
         obj.GetComponent<Drifter>().SetColor((peerID +1));
 

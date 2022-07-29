@@ -14,13 +14,9 @@ public class PuppetHitboxCollision : HitboxCollision
         int hitResult = -3;
         if (hurtbox != null && AttackType != DrifterAttackType.Null && isActive)
         {
-            string player = playerType.NetworkType;
-            if(OverrideData != null){
-                hitResult = hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, -AttackID, AttackType, OverrideData);
-            }
-            else{
-                hitResult = hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, AttackData);
-            }
+            //string player = playerType.NetworkType;
+            hitResult = hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID + 64, AttackType, OverrideData != null?OverrideData:AttackData);
+     
             if(hitResult == 1) isActive = false;
             
         }

@@ -2,11 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public class SandbagRollbackFrame: MasterhitRollbackFrame
+{
+	public BasicProjectileRollbackFrame Sandblast;
+	public BasicProjectileRollbackFrame Sandspear1;
+	public BasicProjectileRollbackFrame Sandspear2;
+	public MasterhitRollbackFrame MasterHitFrame;
+}
+
+
+
 public class SandbagMasterHit : MasterHit
 {
 	bool dust = false;
-	GameObject sandblast;
+	InstantiatedEntityCleanup sandblast;
+	InstantiatedEntityCleanup sandspear1;
+	InstantiatedEntityCleanup sandspear2;
+
+	GameObject g_Sandblast;
+	GameObject g_Sandspear1;
+	GameObject g_Sandspear2;
+
 	int dustCount = 7;
+
 
 	override protected void UpdateMasterHit()
     {
@@ -26,11 +44,40 @@ public class SandbagMasterHit : MasterHit
 
     }
 
+    //Takes a snapshot of the current frame to rollback to
+    public SandbagRollbackFrame SerializeFrame()
+    {
+        return new SandbagRollbackFrame() 
+        {
+            MasterHitFrame = SerializeBaseFrame(),
+            Sandblast = g_Sandblast != null ? sandblast.SerializeFrame(): null,
+			Sandspear1 = g_Sandspear1 != null ? sandspear1.SerializeFrame(): null,
+			Sandspear2 = g_Sandspear2 != null ? sandspear2.SerializeFrame(): null,     
+        };
+    }
+
+    //Rolls back the entity to a given frame state
+    public void DeserializeFrame(SandbagRollbackFrame p_frame)
+    {
+    	DeserializeBaseFrame(p_frame.MasterHitFrame);
+    	if(p_frame.Sandblast == null)
+    	{
+    		Destroy(g_Sandblast);
+    		sandblast = null;
+    	}
+    	else if(g_Sandblast == null)
+    	{
+
+    	}
+
+    }
+
+    //Particle system
 	public void Setdust()
 	{
 		dust = true;
 		
-		GameObject ring = GameController.Instance.host.CreateNetworkObject("LaunchRing", transform.position,  transform.rotation);
+		GameObject ring = GameController.Instance.CreatePrefab("LaunchRing", transform.position,  transform.rotation);
 		ring.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
 		dustCount = 3;
 	}
@@ -53,13 +100,11 @@ public class SandbagMasterHit : MasterHit
 
 	public void Neutral_Special()
 	{
-		if(!isHost)return;
 
-		
-		if(sandblast!= null) Destroy(sandblast);
-		sandblast = host.CreateNetworkObject("Sandblast", transform.position + new Vector3(1.5f * movement.Facing, 2.5f), transform.rotation);
-		sandblast.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
-        foreach (HitboxCollision hitbox in sandblast.GetComponentsInChildren<HitboxCollision>(true))
+		if(g_Sandblast!= null) Destroy(g_Sandblast);
+		g_Sandblast = GameController.Instance.CreatePrefab("Sandblast", transform.position + new Vector3(1.5f * movement.Facing, 2.5f), transform.rotation);
+		g_Sandblast.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
+        foreach (HitboxCollision hitbox in g_Sandblast.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
@@ -67,21 +112,19 @@ public class SandbagMasterHit : MasterHit
             
             hitbox.Facing = movement.Facing;
         }
-		sandblast.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
-		sandblast.GetComponent<Rigidbody2D>().velocity = new Vector3(movement.Facing * 25f,0,0);
+		g_Sandblast.GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)drifter.GetColor()]);
+		g_Sandblast.GetComponent<Rigidbody2D>().velocity = new Vector3(movement.Facing * 25f,0,0);
+		sandblast = g_Sandblast.GetComponent<InstantiatedEntityCleanup>();
 	}
 
 	public void Ground_Down()
 	{
-		if(!isHost)return;
 
-		
-
-		GameObject sandspear1 = host.CreateNetworkObject("Sandspear", transform.position + new Vector3(1.2f * movement.Facing, 1.3f,1), transform.rotation);
-		GameObject sandspear2 = host.CreateNetworkObject("Sandspear", transform.position + new Vector3(-1.5f * movement.Facing, 1.3f,-1), transform.rotation);
-		sandspear1.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
-		sandspear2.transform.localScale = new Vector3(-10f * movement.Facing, 10f , 1f);
-        foreach (HitboxCollision hitbox in sandspear1.GetComponentsInChildren<HitboxCollision>(true))
+		GameObject g_Sandspear1 = GameController.Instance.CreatePrefab("Sandspear", transform.position + new Vector3(1.2f * movement.Facing, 1.3f,1), transform.rotation);
+		GameObject g_Sandspear2 = GameController.Instance.CreatePrefab("Sandspear", transform.position + new Vector3(-1.5f * movement.Facing, 1.3f,-1), transform.rotation);
+		g_Sandspear1.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
+		g_Sandspear2.transform.localScale = new Vector3(-10f * movement.Facing, 10f , 1f);
+        foreach (HitboxCollision hitbox in g_Sandspear1.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
@@ -89,7 +132,7 @@ public class SandbagMasterHit : MasterHit
             
             hitbox.Facing = movement.Facing;
         }
-        foreach (HitboxCollision hitbox in sandspear2.GetComponentsInChildren<HitboxCollision>(true))
+        foreach (HitboxCollision hitbox in g_Sandspear2.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
@@ -97,10 +140,13 @@ public class SandbagMasterHit : MasterHit
             
             hitbox.Facing = movement.Facing;
         }
-		sandspear1.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
-		sandspear2.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
-		sandspear1.transform.SetParent(drifter.gameObject.transform);
-		sandspear2.transform.SetParent(drifter.gameObject.transform);
+		g_Sandspear1.GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)drifter.GetColor()]);
+		g_Sandspear1.GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)drifter.GetColor()]);
+		g_Sandspear1.transform.SetParent(drifter.gameObject.transform);
+		g_Sandspear2.transform.SetParent(drifter.gameObject.transform);
+
+		sandspear1 = g_Sandspear1.GetComponent<InstantiatedEntityCleanup>();
+		sandspear2 = g_Sandspear2.GetComponent<InstantiatedEntityCleanup>();
 	}
 
 }

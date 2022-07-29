@@ -36,7 +36,7 @@ public class GrabHitboxCollision : HitboxCollision
                 	victim = hurtbox.parent;
                     if(SuccessState != ""){
                         parent.GetComponent<Drifter>().movement.canLandingCancel = false;
-                        parent.GetComponent<Drifter>().PlayAnimation(SuccessState);
+                        parent.GetComponent<Drifter>().PlayAnimation(SuccessState,-1,true);
                     }
 
                 }

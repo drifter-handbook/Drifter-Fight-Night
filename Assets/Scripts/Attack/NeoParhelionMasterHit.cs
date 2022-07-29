@@ -39,7 +39,6 @@ public class NeoParhelionMasterHit : MasterHit
 
     public void UpWThrow()
     {
-    	if(!isHost)return;
     	
     	if(Up_W_Grab.victim == null)
     		return;
@@ -63,13 +62,11 @@ public class NeoParhelionMasterHit : MasterHit
     //Flips the direction the charactr is facing mid move)
     public void invertDirection()
     {
-        if(!isHost)return;
         movement.flipFacing();
     }
 
     public void dust()
     {
-        if(!isHost)return;
 
         if(movement.grounded)movement.spawnJuiceParticle(transform.position + new Vector3(4f * movement.Facing,0,0),MovementParticleMode.Dash_Cloud, true);
     }

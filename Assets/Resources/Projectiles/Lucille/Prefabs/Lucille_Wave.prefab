@@ -51,7 +51,7 @@ MonoBehaviour:
   AttackData: {fileID: 0}
   projectilePriority: -2
   SuccessState: Detonate
-  anim: {fileID: 8491726645859137784}
+  animator: {fileID: 5491719698375561685}
   victim: {fileID: 0}
   playOnInvuln: 1
   playOnBlock: 1
@@ -83,16 +83,9 @@ GameObject:
   - component: {fileID: 3791468674504860749}
   - component: {fileID: 5491719698375561685}
   - component: {fileID: 2659401967268843559}
-  - component: {fileID: 6111856200383282572}
-  - component: {fileID: 8491726645859137784}
-  - component: {fileID: 1065251732153353095}
-  - component: {fileID: 1570827687639124326}
-  - component: {fileID: 7440422244923549680}
   - component: {fileID: 8574760229836622842}
   - component: {fileID: 6645095189577792978}
   - component: {fileID: 1922365728788052020}
-  - component: {fileID: 7533885470829355259}
-  - component: {fileID: 8073097549141304087}
   m_Layer: 0
   m_Name: Lucille_Wave
   m_TagString: Untagged
@@ -198,67 +191,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   duration: -1
---- !u!114 &6111856200383282572
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4353936540636771071}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c20a1139a9eaca438c79855ebb3b13b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  NetworkType: 
---- !u!114 &8491726645859137784
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4353936540636771071}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4133822f74fe7224ea726bb338e62949, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1065251732153353095
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4353936540636771071}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cda61db25d2ac7b48a171625f4fc23c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1570827687639124326
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4353936540636771071}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1925752a4980314891b5dbe83f9cfac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &7440422244923549680
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4353936540636771071}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 306e0bcc2a374b04ca99fe6fc7a7d042, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!50 &8574760229836622842
 Rigidbody2D:
   serializedVersion: 4
@@ -305,31 +237,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7b12ef163997554cbbdbc51e4f062ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7533885470829355259
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4353936540636771071}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ca38b1f1c46c2f40957000898a92e37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &8073097549141304087
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4353936540636771071}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8275c87f3a6a3b448e6cf19f65e07d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  color: 0
 --- !u!1 &5899136151088430188
 GameObject:
   m_ObjectHideFlags: 0

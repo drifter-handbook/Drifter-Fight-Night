@@ -74,7 +74,6 @@ public class NeoSwordFrogMasterHit : MasterHit
 
     public void NeutralSpecialSlash()
     {
-        if(!isHost)return;
 
         listeningForDirection = false;
         movement.updateFacing();
@@ -91,21 +90,15 @@ public class NeoSwordFrogMasterHit : MasterHit
      //Flips the direction the charactr is movement.Facing mid move)
     public void invertDirection()
     {
-        if(!isHost)return;
         movement.flipFacing();
     }
-
-
 
     //Grab Methods
     public void SpawnTongue()
     {
-        if(!isHost)return;
-        
-
         if(tongue != null)deleteTongue();
 
-        tongue = host.CreateNetworkObject("SF_Tongue", transform.position + new Vector3(2.3f * movement.Facing,1.6f), transform.rotation);
+        tongue = GameController.Instance.CreatePrefab("SF_Tongue", transform.position + new Vector3(2.3f * movement.Facing,1.6f), transform.rotation);
         tongue.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in tongue.GetComponentsInChildren<HitboxCollision>(true))
         {
@@ -131,32 +124,24 @@ public class NeoSwordFrogMasterHit : MasterHit
 
     public void setTongueLen(float len)
     {
-        if(!isHost || tongue == null)return;
+        if(tongue == null)return;
         tongueTether.setTargetLength(len);
     }
 
     public void freezeTether()
     {
-        if(!isHost || tongue == null)return;
+        if(tongue == null)return;
         tongueTether.freezeLen();
     }
 
     public void downSpecialProjectile()
     {
-        if(!isHost)return;
-        
-        //Fire an arrow if Swordfrog has a charge
         projnum = W_Down_Projectiles;
-
     }
 
     public void downSpecialProjectileAir()
     {
-        if(!isHost)return;
-        
-        //Fire an arrow if Swordfrog has a charge
         projnum = -1 * W_Down_Projectiles;
-
     }
 
     void fireKunaiGroundLine()
@@ -167,7 +152,7 @@ public class NeoSwordFrogMasterHit : MasterHit
         Vector3 pos = new Vector3(.2f * movement.Facing, 2.7f, 1f);
 
 
-        GameObject arrowA = host.CreateNetworkObject("Kunai", transform.position + new Vector3(1.5f * movement.Facing, 1.5f + W_Down_Projectiles/5f + (W_Down_Projectiles - projnum) * .6f, 0), transform.rotation);
+        GameObject arrowA = GameController.Instance.CreatePrefab("Kunai", transform.position + new Vector3(1.5f * movement.Facing, 1.5f + W_Down_Projectiles/5f + (W_Down_Projectiles - projnum) * .6f, 0), transform.rotation);
 
         arrowA.transform.localScale = size;
         arrowA.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + 50f * movement.Facing, 0);
@@ -200,7 +185,7 @@ public class NeoSwordFrogMasterHit : MasterHit
         float posDegrees = (movement.Facing >0 ? 335f  : 215f);
         float posRadians = posDegrees * Mathf.PI/180f;
 
-        GameObject arrowA = host.CreateNetworkObject("Kunai", transform.position + new Vector3(movement.Facing * (-.5f - projnum/2f), projnum/-2f -.9f)
+        GameObject arrowA = GameController.Instance.CreatePrefab("Kunai", transform.position + new Vector3(movement.Facing * (-.5f - projnum/2f), projnum/-2f -.9f)
                                                                  + pos, 
                                                                  Quaternion.Euler(0,0,posDegrees));
 

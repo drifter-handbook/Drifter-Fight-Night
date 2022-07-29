@@ -6,7 +6,7 @@ public class PuppetGrabHitboxCollision : HitboxCollision
 {
 
     public string SuccessState = "";
-    public SyncAnimatorStateHost anim = null;
+    public Animator animator = null;
     public GameObject victim;
     public bool playOnInvuln = false;
     public bool playOnBlock = false;
@@ -16,8 +16,6 @@ public class PuppetGrabHitboxCollision : HitboxCollision
         //Debug.Log("name " + name + " " + (gameObject.activeSelf || gameObject.activeInHierarchy));
         HurtboxCollision hurtbox = collider.GetComponent<HurtboxCollision>();
         HitboxCollision hitbox = collider.GetComponent<HitboxCollision>();
-    
-        UnityEngine.Debug.Log("CONTACT");
 
         if (hurtbox != null && AttackType != DrifterAttackType.Null && isActive)
         {
@@ -25,25 +23,22 @@ public class PuppetGrabHitboxCollision : HitboxCollision
             //string player = playerType.NetworkType;
             if(OverrideData != null)
             {
-                hitResult = hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, -AttackID, AttackType, OverrideData);
-                if((hitResult == 0  || hitResult == 1) && SuccessState != "" && anim != null)
+                hitResult = hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID + 64, AttackType, OverrideData);
+                if((hitResult == 0  || hitResult == 1) && SuccessState != "" && animator != null)
                 {
                     victim = hurtbox.parent;
-                    anim.SetState(SuccessState);
+                    animator.Play(SuccessState);
                 }
                 else if((playOnInvuln && hitResult == -5))
-                    anim.SetState(SuccessState);
+                    animator.Play(SuccessState);
                 else if((playOnBlock && (hitResult == -2 || hitResult == -1)))
-                    anim.SetState(SuccessState);
+                    animator.Play(SuccessState);
                        
             }
             else{
                 hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, AttackType, AttackData);
             }
-            if(hitResult == 1) isActive = false;
-
-            UnityEngine.Debug.Log(hitResult);
-            
+            if(hitResult == 1) isActive = false;            
         }
         else if(hitbox != null && projectilePriority >= 0 && hitbox.projectilePriority>=-1)
         {

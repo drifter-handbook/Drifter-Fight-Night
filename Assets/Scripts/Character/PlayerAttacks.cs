@@ -77,7 +77,7 @@ public class PlayerAttacks : MonoBehaviour
 
     static int nextID = 0;
 
-    public static int NextID { get { nextID++;if(nextID>100)nextID=0; return nextID; } set{ nextID = value;}}
+    public static int NextID { get { nextID++;if(nextID>63)nextID=0; return nextID; } set{ nextID = value;}}
     [NonSerialized]
     public int currentUpRecoveries;
     [NonSerialized]
@@ -88,9 +88,6 @@ public class PlayerAttacks : MonoBehaviour
     public int currentNeutralRecoveries;
 
     Drifter drifter;
-    IMasterHit hit;
-
-    NetworkSync sync;
 
     void Awake()
     {
@@ -106,8 +103,6 @@ public class PlayerAttacks : MonoBehaviour
     void Start()
     {
         drifter = GetComponent<Drifter>();
-        hit = GetComponentInChildren<IMasterHit>();
-        sync = GetComponent<NetworkSync>();
         currentUpRecoveries = maxRecoveries;
         currentDownRecoveries = maxRecoveries;
         currentSideRecoveries = maxRecoveries;
