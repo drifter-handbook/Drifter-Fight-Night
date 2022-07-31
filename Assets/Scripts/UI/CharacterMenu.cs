@@ -84,6 +84,8 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
     public static Dictionary<int,CharacterSelectState> charSelStates;
 
+    public DrifterType Trainee = DrifterType.Sandbag;
+
     public static CharacterMenu Instance => GameObject.FindGameObjectWithTag("CharacterMenu")?.GetComponent<CharacterMenu>();
     //public static CharacterSelectSyncData CharSelData = new CharSelData;
     
@@ -160,7 +162,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         // for(int i = -1; i < GameController.Instance.controls.Count-1; i++)
         //     AddCharSelState(i);
 
-        if(GameController.Instance.IsTraining) AddCharSelState(8,DrifterType.Sandbag);
+        if(GameController.Instance.IsTraining) AddCharSelState(8,Trainee);
 
     }
     IEnumerator delayJoining()
