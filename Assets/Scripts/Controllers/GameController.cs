@@ -58,10 +58,6 @@ public class GameController : MonoBehaviour
         get{ return inputManager.maxPlayerCount;}
     }
 
-    //TODO move this elsewhere
-    //* Prefabs
-    public GameObject characterCardPrefab;
-
     //public GameObject escapeMenu;
 
     //* Variables

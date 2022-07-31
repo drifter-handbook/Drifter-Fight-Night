@@ -20,16 +20,9 @@ public class LucilleMasterHit : MasterHit
     GameObject orb;
     GameObject wave;
 
-    GrabHitboxCollision[] grabBoxes;
-
     Vector2 HeldDirection;
 
     //Coroutine riftDetonation;
-
-    void Start()
-    {
-        grabBoxes = drifter.GetComponentsInChildren<GrabHitboxCollision>(true);
-    }
 
     //Takes a snapshot of the current frame to rollback to
     public override MasterhitRollbackFrame SerializeFrame()

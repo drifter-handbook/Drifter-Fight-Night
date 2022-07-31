@@ -350,6 +350,12 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         ledgeDetector = GetComponentInChildren<WalkOff>();
     }
 
+    //Populates hitbox array
+    void Start()
+    {
+
+    }
+
     public void setYVelocity(float y)
     {
         rb.velocity = new Vector2(rb.velocity.x,y * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f));
