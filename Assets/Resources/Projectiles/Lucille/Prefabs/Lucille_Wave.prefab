@@ -45,10 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65c4d126f18c9ca47b80033f0cb0d909, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parent: {fileID: 966714710402252556}
-  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: d4ccea64f7f19424883328f55de00130, type: 2}
-  AttackData: {fileID: 0}
+  parent: {fileID: 4353936540636771071}
   projectilePriority: -2
   SuccessState: Detonate
   animator: {fileID: 5491719698375561685}
@@ -191,6 +189,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   duration: -1
+  rb: {fileID: 0}
+  animator: {fileID: 0}
 --- !u!50 &8574760229836622842
 Rigidbody2D:
   serializedVersion: 4
@@ -297,8 +297,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parent: {fileID: 966714710402252556}
-  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: e580a6b546c80dc4098f3a54a124f8e9, type: 2}
-  AttackData: {fileID: 0}
+  parent: {fileID: 4353936540636771071}
   projectilePriority: -2

@@ -878,7 +878,6 @@ public class PlayerMovement : MonoBehaviour
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = drifter.attacks.AttackID;
-            hitbox.AttackType = drifter.attacks.AttackType;
             hitbox.isActive = true;
             hitbox.Facing = Facing;
         }
@@ -957,7 +956,7 @@ public class PlayerMovement : MonoBehaviour
     }
 }
 
-public class MovementRollbackFrame: INetworkData, ICloneable
+public class MovementRollbackFrame: INetworkData
 {
     public string Type { get; set; }
 
@@ -986,11 +985,5 @@ public class MovementRollbackFrame: INetworkData, ICloneable
     public Vector2 PrevVelocity;
     public float CurrentSpeed;
     public bool DelayedFacingFlip;
-
-    public object Clone()
-    {
-        return new MovementRollbackFrame()
-        {};
-    }
 
 }

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BasicProjectileRollbackFrame: INetworkData, ICloneable
+public class BasicProjectileRollbackFrame: INetworkData
 {
     public string Type { get; set; }
 
@@ -13,12 +13,7 @@ public class BasicProjectileRollbackFrame: INetworkData, ICloneable
 
     public int AnimatorState;
     public float AnimatorTime;
-
-    public object Clone()
-    {
-        return new BasicProjectileRollbackFrame()
-        {};
-    }
+    
 }
 
 public class InstantiatedEntityCleanup : MonoBehaviour

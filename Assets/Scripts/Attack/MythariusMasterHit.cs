@@ -52,7 +52,6 @@ public class MythariusMasterHit : MasterHit
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
             hitbox.Facing = movement.Facing;
        }
 

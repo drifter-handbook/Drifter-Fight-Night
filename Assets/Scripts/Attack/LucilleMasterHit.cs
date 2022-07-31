@@ -125,7 +125,7 @@ public class LucilleMasterHit : MasterHit
     }
 
 
-    public void infect(GameObject victim)
+    public void infect(HurtboxCollision victim)
     {
         
 
@@ -137,15 +137,14 @@ public class LucilleMasterHit : MasterHit
             mark = null;
         }
 
-        mark = GameController.Instance.host.CreateNetworkObject("Lucille_Disk", victim.GetComponent<Rigidbody2D>().position, transform.rotation);
+        mark = GameController.Instance.CreatePrefab("Lucille_Disk", victim.owner.GetComponent<Rigidbody2D>().position, transform.rotation);
         foreach (HitboxCollision hitbox in mark.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
             hitbox.Facing = movement.Facing;
         }
-        mark.GetComponent<StickToTarget>().victim = victim;
+        mark.GetComponent<StickToTarget>().victim = victim.owner;
 
     }
 
@@ -156,21 +155,20 @@ public class LucilleMasterHit : MasterHit
 
         if(orb != null)
         {
-            orb.GetComponent<SyncAnimatorStateHost>().SetState("Detonate");
+            orb.GetComponent<Animator>().Play("Detonate");
             orb = null;
         }
 
-        orb = GameController.Instance.host.CreateNetworkObject("Lucille_Orb", transform.position + new Vector3(movement.Facing * 1f,1.5f,0), transform.rotation);
+        orb = GameController.Instance.CreatePrefab("Lucille_Orb", transform.position + new Vector3(movement.Facing * 1f,1.5f,0), transform.rotation);
         orb.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in orb.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
             hitbox.Facing = movement.Facing;
         }
         orb.GetComponent<Infector>().Lucille = this;
-        orb.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
+        orb.GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)drifter.GetColor()]);
 
         foreach (HurtboxCollision hurtbox in orb.GetComponentsInChildren<HurtboxCollision>(true))
             hurtbox.owner = drifter.gameObject;
@@ -182,18 +180,17 @@ public class LucilleMasterHit : MasterHit
     {
         
 
-        wave = GameController.Instance.host.CreateNetworkObject("Lucille_Wave", transform.position + new Vector3(movement.Facing * 1f,3.5f,0), transform.rotation);
+        wave = GameController.Instance.CreatePrefab("Lucille_Wave", transform.position + new Vector3(movement.Facing * 1f,3.5f,0), transform.rotation);
         wave.GetComponent<Rigidbody2D>().velocity = new Vector3(movement.Facing*45f,0f);
         wave.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in wave.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
             hitbox.Facing = movement.Facing;
         }
         wave.GetComponent<Infector>().Lucille = this;
-        wave.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
+        wave.GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)drifter.GetColor()]);
         return;
     }
     

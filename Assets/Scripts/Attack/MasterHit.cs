@@ -3,12 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface ICharacterRollbackFrame : INetworkData, ICloneable
+public interface ICharacterRollbackFrame : INetworkData
 {
 
 }
 
-public class MasterhitRollbackFrame: INetworkData, ICloneable
+public class MasterhitRollbackFrame: INetworkData
 {
     public string Type { get; set; }
 
@@ -32,12 +32,7 @@ public class MasterhitRollbackFrame: INetworkData, ICloneable
     public bool KnockdownFlag;
 
     public ICharacterRollbackFrame CharacterFrame = null;
-
-    public object Clone()
-    {
-        return new MasterhitRollbackFrame()
-        {};
-    }
+    
 }
 
 public abstract class MasterHit : MonoBehaviour, IMasterHit

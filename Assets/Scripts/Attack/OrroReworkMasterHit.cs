@@ -298,8 +298,6 @@ public class OrroReworkMasterHit : MasterHit
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
-            hitbox.isActive = true;
             hitbox.Facing = movement.Facing;
         }
 
@@ -334,7 +332,6 @@ public class OrroReworkMasterHit : MasterHit
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
             hitbox.Facing = movement.Facing;
        }
 
@@ -358,7 +355,6 @@ public class OrroReworkMasterHit : MasterHit
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
             hitbox.Facing = movement.Facing;
        }
 
@@ -376,8 +372,6 @@ public class OrroReworkMasterHit : MasterHit
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = DrifterAttackType.W_Neutral;
-            hitbox.isActive = true;
             hitbox.Facing = bean.facing;
         }
     }

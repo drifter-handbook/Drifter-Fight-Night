@@ -117,8 +117,6 @@ public class NeoSwordFrogMasterHit : MasterHit
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
-            
             hitbox.Facing = movement.Facing;
         }
         tongue.transform.SetParent(drifter.gameObject.transform);
@@ -173,9 +171,7 @@ public class NeoSwordFrogMasterHit : MasterHit
         foreach (HitboxCollision hitbox in arrowA.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
-            hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
-                
+            hitbox.AttackID = attacks.AttackID;              
             hitbox.Facing = movement.Facing;
         }
 
@@ -210,9 +206,7 @@ public class NeoSwordFrogMasterHit : MasterHit
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
-                
-                hitbox.Facing = movement.Facing;
+            hitbox.Facing = movement.Facing;
         }
 
         projnum++;

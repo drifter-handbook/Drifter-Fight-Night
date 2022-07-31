@@ -53,11 +53,12 @@ public class BeanWrangler : NonplayerHurtboxHandler
 
     }
 
-    new void FixedUpdate()
+    public override void UpdateFrame()
     {
 
+        base.UpdateFrame();
         prevHitstunDuration = HitstunDuration;
-        base.FixedUpdate();
+        
         if(HitstunDuration >0) 
             return;
         else if(prevHitstunDuration != HitstunDuration && HitstunDuration <=0 && alive)
@@ -193,7 +194,6 @@ public class BeanWrangler : NonplayerHurtboxHandler
         {
                 hitbox.parent = Orro;
                 hitbox.AttackID = attacks.AttackID;
-                hitbox.AttackType = attacks.AttackType;
                 hitbox.Facing = facing;
         }
 
@@ -215,9 +215,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
         {
             hitbox.parent = Orro;
             hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
             hitbox.Facing = facing;
-            hitbox.OverrideData.StatusDuration = Mathf.Max((charge-3)/3,1);
        }
 
        rip.GetComponent<SyncProjectileColorDataHost>().setColor(color);
@@ -286,7 +284,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
 
     //Registers a hit on bean, and handles his counter.
     //If bean has taken over 40%, he becomes inactive untill he can heal
-    public override int RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, DrifterAttackType attackType, SingleAttackData attackData)
+    public override int RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, SingleAttackData attackData)
     {
 
         int returnCode = -3;
@@ -295,7 +293,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
         {
             if(following && Vector3.Distance(rb.position,targetPos.Pos) <= 3.8f) return -3;
 
-                returnCode =  base.RegisterAttackHit(hitbox,hurtbox,attackID,attackType,attackData);
+                returnCode =  base.RegisterAttackHit(hitbox,hurtbox,attackID,attackData);
                 oldAttacks[attackID] = MAX_ATTACK_DURATION;
 
                 if(returnCode >= 0)PlayAnimation("Hitstun");

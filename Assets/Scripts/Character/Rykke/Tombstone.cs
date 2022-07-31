@@ -38,10 +38,9 @@ public class Tombstone : NonplayerHurtboxHandler
     }
 
     // // Update is called once per frame
-    new void FixedUpdate()
+    public override void UpdateFrame()
     {
-        base.FixedUpdate();
-
+        base.UpdateFrame();
 
     	if(listeningForGrounded && IsGrounded())
     	{
@@ -73,7 +72,7 @@ public class Tombstone : NonplayerHurtboxHandler
 
     //Registers a hit on the stone, and handles his counter.
     //
-    public override int RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, DrifterAttackType attackType, SingleAttackData attackData)
+    public override int RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, SingleAttackData attackData)
     {
 
         int returnCode = -3;
@@ -82,7 +81,7 @@ public class Tombstone : NonplayerHurtboxHandler
 
         if(hitbox.parent != hurtbox.parent && hurtbox.owner != hitbox.parent && CanHit(attackID))
         {
-   			returnCode =  base.RegisterAttackHit(hitbox,hurtbox,attackID,attackType,attackData);
+   			returnCode =  base.RegisterAttackHit(hitbox,hurtbox,attackID,attackData);
 
             oldAttacks[attackID] = MAX_ATTACK_DURATION;
 

@@ -460,7 +460,7 @@ public class Drifter : MonoBehaviour
     }
 }
 
-public class DrifterRollbackFrame: INetworkData, ICloneable
+public class DrifterRollbackFrame: INetworkData
 {
     public string Type { get; set; }
     public PlayerInputData[] InputBuffer;
@@ -492,10 +492,5 @@ public class DrifterRollbackFrame: INetworkData, ICloneable
     public MasterhitRollbackFrame MasterhitFrame;
     public StatusRollbackFrame StatusFrame;
     public HurtboxRollbackFrame HurtboxhitFrame;
-
-    public object Clone()
-    {
-        return new DrifterRollbackFrame()
-        {};
-    }
+    
 }

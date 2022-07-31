@@ -487,7 +487,7 @@ public class PlayerStatus : MonoBehaviour
 
 }
 
-public class StatusRollbackFrame: INetworkData, ICloneable
+public class StatusRollbackFrame: INetworkData
 {
     public string Type { get; set; }
 
@@ -498,9 +498,4 @@ public class StatusRollbackFrame: INetworkData, ICloneable
 
     public PlayerStatusData[] StatusList;
 
-    public object Clone()
-    {
-        return new StatusRollbackFrame()
-        {};
-    }
 }

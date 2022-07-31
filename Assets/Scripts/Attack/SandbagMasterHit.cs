@@ -70,8 +70,6 @@ public class SandbagMasterHit : MasterHit
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
-            
             hitbox.Facing = movement.Facing;
         }
 		g_Sandblast.GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)drifter.GetColor()]);
@@ -90,16 +88,12 @@ public class SandbagMasterHit : MasterHit
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
-            
             hitbox.Facing = movement.Facing;
         }
         foreach (HitboxCollision hitbox in g_Sandspear2.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
-            
             hitbox.Facing = movement.Facing;
         }
 		g_Sandspear1.GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)drifter.GetColor()]);
@@ -155,9 +149,5 @@ public class SandbagRollbackFrame: ICharacterRollbackFrame
 	public BasicProjectileRollbackFrame Sandblast;
 	public BasicProjectileRollbackFrame Sandspear1;
 	public BasicProjectileRollbackFrame Sandspear2;
-
-	public object Clone()
-	{
-		return new SandbagRollbackFrame();
-	}
+	
 }

@@ -102,8 +102,6 @@ public class DrifterCannonMasterHit : MasterHit
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
-            hitbox.AttackData = attacks.Attacks[attacks.AttackType];
             hitbox.Facing = movement.Facing;
        }
     }
@@ -120,8 +118,6 @@ public class DrifterCannonMasterHit : MasterHit
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
-            hitbox.AttackData = attacks.Attacks[attacks.AttackType];
             hitbox.Facing = movement.Facing;
        }
     }
@@ -149,8 +145,6 @@ public class DrifterCannonMasterHit : MasterHit
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
-            hitbox.AttackData = attacks.Attacks[attacks.AttackType];
             hitbox.Facing = movement.Facing;
        }
     }
@@ -169,7 +163,6 @@ public class DrifterCannonMasterHit : MasterHit
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
             hitbox.Facing = movement.Facing;
        }
     }
@@ -216,7 +209,6 @@ public class DrifterCannonMasterHit : MasterHit
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
             hitbox.Facing = movement.Facing;
        }
     }

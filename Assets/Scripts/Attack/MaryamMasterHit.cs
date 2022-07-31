@@ -102,8 +102,6 @@ public class MaryamMasterHit : MasterHit
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
-            hitbox.AttackData = attacks.Attacks[attacks.AttackType];
             hitbox.Facing = movement.Facing;
        }
     }
@@ -119,8 +117,6 @@ public class MaryamMasterHit : MasterHit
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
-            hitbox.AttackData = attacks.Attacks[attacks.AttackType];
             hitbox.Facing = movement.Facing;
        }
     }
@@ -136,8 +132,6 @@ public class MaryamMasterHit : MasterHit
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
-            hitbox.AttackData = attacks.Attacks[DrifterAttackType.W_Down];
             hitbox.Facing = movement.Facing;
        }
     }
@@ -153,8 +147,6 @@ public class MaryamMasterHit : MasterHit
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
-            hitbox.AttackData = attacks.Attacks[DrifterAttackType.Roll];
             hitbox.Facing = movement.Facing;
        }
     }
@@ -171,8 +163,6 @@ public class MaryamMasterHit : MasterHit
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
-            hitbox.AttackData = attacks.Attacks[DrifterAttackType.Aerial_Q_Neutral];
             hitbox.Facing = movement.Facing;
        }
     }
@@ -188,8 +178,6 @@ public class MaryamMasterHit : MasterHit
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
-            hitbox.AttackData = attacks.Attacks[attacks.AttackType];
             hitbox.Facing = movement.Facing;
        }
     }
@@ -205,8 +193,6 @@ public class MaryamMasterHit : MasterHit
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
-            hitbox.AttackData = attacks.Attacks[attacks.AttackType];
             hitbox.Facing = movement.Facing;
        }
     }

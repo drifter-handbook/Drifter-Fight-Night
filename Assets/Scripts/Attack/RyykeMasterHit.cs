@@ -148,7 +148,6 @@ public class RyykeMasterHit : MasterHit
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
             hitbox.Facing = movement.Facing;
        }
 
@@ -296,7 +295,6 @@ public class RyykeMasterHit : MasterHit
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
             hitbox.Facing = movement.Facing;
         }
         arm.transform.SetParent(drifter.gameObject.transform);
@@ -387,7 +385,6 @@ public class RyykeMasterHit : MasterHit
         foreach (HitboxCollision hitbox in stone.gameObject.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
             hitbox.Facing = stone.facing;
             hitbox.isActive = true;
         }

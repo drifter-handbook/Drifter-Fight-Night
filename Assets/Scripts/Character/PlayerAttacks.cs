@@ -62,6 +62,7 @@ public class PlayerAttacks : MonoBehaviour
     public int AttackID { get; private set; }
     public DrifterAttackType AttackType { get; private set; }
     public List<SingleAttack> AttackMap = new List<SingleAttack>();
+
     public Dictionary<DrifterAttackType,SingleAttackData> Attacks = new Dictionary<DrifterAttackType,SingleAttackData>();
     public Dictionary<DrifterAttackType,bool> AttackVariants = new Dictionary<DrifterAttackType,bool>();
    
@@ -261,7 +262,6 @@ public class PlayerAttacks : MonoBehaviour
     {
         drifter.gainSuperMeter(.05f);
         drifter.movement.jumping = false;
-        SetHitboxesActive(false);
         drifter.status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,480);
         if(!AttackVariants[attackType])
             drifter.PlayAnimation(AnimatorStates[attackType]);
@@ -275,9 +275,9 @@ public class PlayerAttacks : MonoBehaviour
 
     }
 
-    public void Hit(DrifterAttackType attackType, int attackID, GameObject target)
+    public SingleAttackData GetCurrentAttackData()
     {
-        //UnityEngine.Debug.Log("HIT DETECTED IN PLAYER ATTACKS");
+        return Attacks[AttackType];
     }
 
     public void SetupAttackID(DrifterAttackType attackType)
@@ -286,10 +286,7 @@ public class PlayerAttacks : MonoBehaviour
         AttackID = NextID;
         foreach (HitboxCollision hitbox in GetComponentsInChildren<HitboxCollision>(true))
         {
-            hitbox.GetComponent<Collider2D>().enabled = false;
             hitbox.AttackID = AttackID;
-            hitbox.AttackType = AttackType;
-            hitbox.AttackData = Attacks[AttackType];
             hitbox.isActive = true;
             hitbox.Facing = drifter.movement.Facing;
         }
@@ -303,14 +300,6 @@ public class PlayerAttacks : MonoBehaviour
         {
             hitbox.AttackID = AttackID;
             hitbox.isActive = true;
-        }
-    }
-    // set hitboxes
-    public void SetHitboxesActive(bool active)
-    {
-        foreach (HitboxCollision hitbox in GetComponentsInChildren<HitboxCollision>(true))
-        {
-            hitbox.isActive = active;
         }
     }
 }

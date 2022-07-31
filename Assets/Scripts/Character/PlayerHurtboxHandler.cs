@@ -45,7 +45,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
         framesSinceCleaned = 0;
     }
 
-    public void UpdateFrame()
+    public virtual void UpdateFrame()
     {
         framesSinceCleaned++;
         if(framesSinceCleaned > MAX_ATTACK_DURATION)CleanupOldAttacks(); 
@@ -61,7 +61,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
     // 1: Hit was registered normally and has attatched the opponent to the players hitbox
     // 2: hit was against a non-player object
 
-    public virtual int RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, DrifterAttackType attackType, SingleAttackData attackData)
+    public virtual int RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID,  SingleAttackData attackData)
     {
         //UnityEngine.Debug.Log(attackID);
         // only host processes hits, don't hit ourself, and ignore previously registered attacks
@@ -70,9 +70,6 @@ public class PlayerHurtboxHandler : MonoBehaviour
         {
             
             // register new attack
-            
-            // apply hit effects
-            hitbox.parent.GetComponent<PlayerAttacks>().Hit(attackType, attackID, hurtbox.parent);
 
             Drifter drifter = GetComponent<Drifter>();
             PlayerStatus status = drifter.status;
