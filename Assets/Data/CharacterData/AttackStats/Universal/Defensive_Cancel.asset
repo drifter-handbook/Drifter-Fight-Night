@@ -13,16 +13,20 @@ MonoBehaviour:
   m_Name: Defensive_Cancel
   m_EditorClassIdentifier: 
   AttackDamage: 0
-  Knockback: 38
-  KnockbackScale: 0.01
+  Knockback: 70
+  KnockbackScale: 0
+  pushBlock: 0
+  dynamicStun: 0
+  firstActiveFrame: 0
+  finalFrame: 0
   HitStun: 30
-  ShieldStun: 20
-  HitStop: -1
-  hitType: 4
+  ShieldStun: 5
+  HitStop: 30
+  hitType: 0
   mirrorKnockback: 1
-  AngleOfImpact: 50
-  StatusEffect: 23
-  StatusDuration: 0.25
+  AngleOfImpact: 45
+  StatusEffect: 20
+  StatusDuration: 0
   HitFX: {fileID: 0}
   canHitGrounded: 1
   canHitAerial: 1
