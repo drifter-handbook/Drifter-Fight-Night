@@ -1,17 +1,20 @@
 {
   "dependencies": {
+    "com.houraiteahouse.backroll": "0.1.1",
     "com.unity.2d.animation": "3.2.5",
     "com.unity.2d.pixel-perfect": "2.0.4",
     "com.unity.2d.psdimporter": "2.1.6",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.2d.spriteshape": "3.0.14",
     "com.unity.2d.tilemap": "1.0.0",
+    "com.unity.burst": "1.4.3",
     "com.unity.collab-proxy": "1.2.16",
+    "com.unity.collections": "0.9.0-preview.6",
+    "com.unity.entities": "0.11.2-preview.1",
     "com.unity.ide.rider": "1.1.4",
     "com.unity.ide.vscode": "1.2.3",
     "com.unity.inputsystem": "1.0.2",
     "com.unity.render-pipelines.universal": "7.3.1",
-    "com.unity.test-framework": "1.1.18",
     "com.unity.textmeshpro": "2.0.1",
     "com.unity.timeline": "1.2.14",
     "com.unity.ugui": "1.0.0",
@@ -45,15 +48,17 @@
     "com.unity.modules.video": "1.0.0",
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
-    "com.unity.modules.xr": "1.0.0",
-    "com.houraiteahouse.backroll": "0.1.1"
+    "com.unity.modules.xr": "1.0.0"
   },
   "scopedRegistries": [
     {
       "name": "Hourai Teahouse",
       "url": "https://upm.houraiteahouse.net",
-      "scopes": ["com.houraiteahouse", "com.discord","com.facepunch"]
+      "scopes": [
+        "com.houraiteahouse",
+        "com.discord",
+        "com.facepunch"
+      ]
     }
-
   ]
 }
