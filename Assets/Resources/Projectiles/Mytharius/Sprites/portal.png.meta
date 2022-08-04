@@ -1,67 +1,55 @@
 fileFormatVersion: 2
-guid: d767160d21efe3c43b0a81bee0594b3b
+guid: 8adf854fd5e66b74299648dcda487772
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8530926378599228763
-    second: myth_nspecial_0
+      213: -5816642994671486895
+    second: portal_0
   - first:
-      213: -4121548330085594824
-    second: myth_nspecial_1
+      213: 2720290072527178061
+    second: portal_1
   - first:
-      213: -558376331894979608
-    second: myth_nspecial_2
+      213: -68809774801260167
+    second: portal_2
   - first:
-      213: -3291932323128986363
-    second: myth_nspecial_3
+      213: -4604820735629425415
+    second: portal_3
   - first:
-      213: -3652690833463895986
-    second: myth_nspecial_4
+      213: -6538954407832343249
+    second: portal_4
   - first:
-      213: -4131794546143240950
-    second: myth_nspecial_5
+      213: 7305771432161720801
+    second: portal_5
   - first:
-      213: 2676081854193696429
-    second: myth_nspecial_6
+      213: 6485356823907138318
+    second: portal_6
   - first:
-      213: 1431754153038059757
-    second: myth_nspecial_7
+      213: -1369078418111764407
+    second: portal_7
   - first:
-      213: -7920965551630099253
-    second: myth_nspecial_8
+      213: -4035011333216693777
+    second: portal_0
   - first:
-      213: 4100714346584939098
-    second: myth_nspecial_9
+      213: 2073829601909670055
+    second: portal_1
   - first:
-      213: -1915346954891698664
-    second: myth_nspecial_0
+      213: 9220151119582674081
+    second: portal_2
   - first:
-      213: 5754528902574238162
-    second: myth_nspecial_1
+      213: 7793047605323295582
+    second: portal_3
   - first:
-      213: -2823662602420955371
-    second: myth_nspecial_2
+      213: 6933739839781344221
+    second: portal_4
   - first:
-      213: 5541695768662619865
-    second: myth_nspecial_3
+      213: 3454338212119704193
+    second: portal_5
   - first:
-      213: 8937985883358374753
-    second: myth_nspecial_4
+      213: -5195750336904478912
+    second: portal_6
   - first:
-      213: 3523268449048215684
-    second: myth_nspecial_5
-  - first:
-      213: -1215311365470165839
-    second: myth_nspecial_6
-  - first:
-      213: 4265861501708867780
-    second: myth_nspecial_7
-  - first:
-      213: 2754798447513509329
-    second: myth_nspecial_8
-  - first:
-      213: -2609090296546574156
-    second: myth_nspecial_9
+      213: 3052448992432297273
+    second: portal_7
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -143,16 +131,40 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: myth_nspecial_0
+      name: portal_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 96
+        width: 64
         height: 64
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -161,19 +173,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b55aa61b750f36670800000000000000
-      internalID: 8530926378599228763
+      spriteID: fe191f22292c008c0800000000000000
+      internalID: -4035011333216693777
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: myth_nspecial_1
+      name: portal_1
       rect:
         serializedVersion: 2
-        x: 96
+        x: 64
         y: 0
-        width: 96
+        width: 64
         height: 64
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -182,19 +194,40 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 839c4a471a15dc6c0800000000000000
-      internalID: -4121548330085594824
+      spriteID: 7a0048a0909b7cc10800000000000000
+      internalID: 2073829601909670055
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: myth_nspecial_2
+      name: portal_2
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 64
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1ac3522c79e84ff70800000000000000
+      internalID: 9220151119582674081
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: portal_3
       rect:
         serializedVersion: 2
         x: 192
         y: 0
-        width: 96
+        width: 64
         height: 64
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -203,19 +236,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8e30a6e3faf3048f0800000000000000
-      internalID: -558376331894979608
+      spriteID: e5be009f187762c60800000000000000
+      internalID: 7793047605323295582
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: myth_nspecial_3
+      name: portal_4
       rect:
         serializedVersion: 2
-        x: 288
+        x: 256
         y: 0
-        width: 96
+        width: 64
         height: 64
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -224,19 +257,40 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 50535475ef4b052d0800000000000000
-      internalID: -3291932323128986363
+      spriteID: dd31423d5a7993060800000000000000
+      internalID: 6933739839781344221
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: myth_nspecial_4
+      name: portal_5
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 0
+        width: 64
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 182f3735d4640ff20800000000000000
+      internalID: 3454338212119704193
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: portal_6
       rect:
         serializedVersion: 2
         x: 384
         y: 0
-        width: 96
+        width: 64
         height: 64
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -245,19 +299,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e481f0d2a090f4dc0800000000000000
-      internalID: -3652690833463895986
+      spriteID: 04f313bc89cf4e7b0800000000000000
+      internalID: -5195750336904478912
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: myth_nspecial_5
+      name: portal_7
       rect:
         serializedVersion: 2
-        x: 480
+        x: 448
         y: 0
-        width: 96
+        width: 64
         height: 64
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -266,8 +320,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a0d5c3060cae8a6c0800000000000000
-      internalID: -4131794546143240950
+      spriteID: 9351de0af2a7c5a20800000000000000
+      internalID: 3052448992432297273
       vertices: []
       indices: 
       edges: []
