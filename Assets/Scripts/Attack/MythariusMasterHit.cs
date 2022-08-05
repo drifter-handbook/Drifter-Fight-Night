@@ -5,7 +5,45 @@ using UnityEngine;
 public class MythariusMasterHit : MasterHit
 {
 
+    bool listeningForDirection = false;
+    int delaytime = 0;
+    Vector2 HeldDirection = Vector2.zero;
+
     GameObject bird;
+
+
+    override protected void UpdateMasterHit()
+    {
+        base.UpdateMasterHit();
+
+        //Handle neutral special attacks
+        if(listeningForDirection)
+        {
+            if(!drifter.input[0].Special) delaytime++;
+            HeldDirection += new Vector2(drifter.input[0].MoveX,drifter.input[0].MoveY);
+            if(HeldDirection != Vector2.zero || delaytime > 5) NeutralSpecialPortal();
+        }
+
+    }
+
+    public void listenForDirection()
+    {
+        listeningForDirection = true;
+        delaytime = 0;
+    }
+
+    public void NeutralSpecialPortal()
+    {
+        listeningForDirection = false;
+        movement.updateFacing();
+        
+        if(HeldDirection.y <0) playState("W_Neutral_D");
+        else if(HeldDirection.y >0) playState("W_Neutral_U");
+        else playState("W_Neutral_S");
+
+        HeldDirection = Vector2.zero;
+
+    }
 
     public void warpStart()
     {
