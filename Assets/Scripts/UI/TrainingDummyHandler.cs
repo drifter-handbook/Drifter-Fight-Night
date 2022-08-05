@@ -197,6 +197,7 @@ public class TrainingDummyHandler : MonoBehaviour
             case 5:
                 reactionState[0] = new PlayerInputData(){MoveX = Dummy.movement.Facing};
                 reactionState[2] = new PlayerInputData(){MoveX = Dummy.movement.Facing};
+                resetFrames = 10;
                 break;
 
             case 0:
