@@ -11,7 +11,7 @@ public class HitSparks : MonoBehaviour
     void Start()
     {
         anim = GetComponent<Animator>();
-        StartCoroutine(DestroyAfter(.3f));
+        StartCoroutine(DestroyAfter(.5f));
         //StartCoroutine(GetComponent<CameraShake>().Shake(.3f,.1f));
     }
 
