@@ -393,11 +393,11 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
             float hitSparkAngle = attackData.AngleOfImpact;
             
-            if (attackFX != null)
+            if (attackFX != null && !isBlocked)
                 attackFX.TriggerFXSystem(attackData.AttackDamage, HitstunDuration, hitSparkPos, attackData.AngleOfImpact * facingDir, adjustedAngle, hitSparkScale);
             
             if (isBlocked)
-                GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.GUARD_STRONG, hitSparkPos, hitSparkAngle, hitSparkScale);
+                GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.GUARD_STRONG, hitSparkPos, 0, -1 * hitSparkScale);
             else if (isCritical)
                 GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.CRIT, hitSparkPos, hitSparkAngle, hitSparkScale);
 
