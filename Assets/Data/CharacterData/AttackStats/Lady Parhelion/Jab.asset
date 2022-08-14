@@ -13,12 +13,23 @@ MonoBehaviour:
   m_Name: Jab
   m_EditorClassIdentifier: 
   AttackDamage: 9
-  Knockback: 33
-  KnockbackScale: 0.4
-  hasStaticHitstun: 0
-  HitStun: -1
-  isGrab: 0
+  Knockback: 45
+  KnockbackScale: 0
+  pushBlock: 10
+  dynamicStun: 1
+  firstActiveFrame: 7
+  finalFrame: 25
+  HitStun: 15
+  ShieldStun: 5
+  HitStop: 10
+  hitType: 0
+  mirrorKnockback: 0
   AngleOfImpact: 80
   StatusEffect: 20
-  StatusDuration: 0.1
-  HitVisual: 2
+  StatusDuration: 0
+  HitFX: {fileID: 11400000, guid: e007b7ceac776034b9838dfd15059cdd, type: 2}
+  canHitGrounded: 1
+  canHitAerial: 1
+  canHitKnockedDown: 0
+  scalingLowerBound: -1
+  scalingUpperBound: -1
