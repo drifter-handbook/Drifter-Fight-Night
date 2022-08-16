@@ -15,9 +15,13 @@ MonoBehaviour:
   AttackDamage: 6
   Knockback: 25
   KnockbackScale: 0.1
-  HitStun: 4
+  pushBlock: 20
+  dynamicStun: 1
+  firstActiveFrame: 15
+  finalFrame: 40
+  HitStun: 5
   ShieldStun: 0
-  HitStop: -1
+  HitStop: 10
   hitType: 0
   mirrorKnockback: 0
   AngleOfImpact: 320
@@ -27,3 +31,5 @@ MonoBehaviour:
   canHitGrounded: 0
   canHitAerial: 1
   canHitKnockedDown: 0
+  scalingLowerBound: -1
+  scalingUpperBound: -1
