@@ -59,6 +59,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -68,8 +70,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -90,9 +92,12 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
@@ -138,7 +143,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 76c62032be3335d40800000000000000
-      internalID: 5571854248985128039
+      internalID: 834085076303431504
       vertices: []
       indices: 
       edges: []
@@ -159,7 +164,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 311ef03887c3d7b70800000000000000
-      internalID: 8898334927046566163
+      internalID: -8512420810167085484
       vertices: []
       indices: 
       edges: []
@@ -180,7 +185,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: cc9d7280de97a1c80800000000000000
-      internalID: -8351228500054124084
+      internalID: 5932101556985085698
       vertices: []
       indices: 
       edges: []
@@ -201,7 +206,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 3e21eb9f66452de60800000000000000
-      internalID: 7985537890534691555
+      internalID: -8726794948281407462
       vertices: []
       indices: 
       edges: []
@@ -300,6 +305,15 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      DownTiltWave_2: 5932101556985085698
+      DownTiltWave_1: -8512420810167085484
+      DownTiltWave_5: 2160514612876633177
+      DownTiltWave_3: -8726794948281407462
+      DownTiltWave_6: 1306090681445550127
+      DownTiltWave_0: 834085076303431504
+      DownTiltWave_4: -1501361267327691907
+      DownTiltWave_7: -8153642293305006073
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

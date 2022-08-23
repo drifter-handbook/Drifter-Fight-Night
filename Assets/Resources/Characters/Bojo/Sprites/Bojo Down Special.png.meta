@@ -101,6 +101,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -110,8 +112,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -132,9 +134,12 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
@@ -489,6 +494,22 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Bojo Down Special_9: 3082251292718099602
+      Bojo Down Special_4: 1562856767633813617
+      Bojo Down Special_7: 7361847061875340491
+      Bojo Down Special_14: -4223272493227528419
+      Bojo Down Special_16: -6957369195242344134
+      Bojo Down Special_15: -2055893491231885286
+      Bojo Down Special_20: 6213893650358615160
+      Bojo Down Special_22: -2030161514574633085
+      Bojo Down Special_2: 6616443434502623412
+      Bojo Down Special_17: -7637615291825153964
+      Bojo Down Special_24: 1340172010147855335
+      Bojo Down Special_3: -7257985373048771555
+      Bojo Down Special_6: -7914846508011252761
+      Bojo Down Special_19: 4364824686205640577
+      Bojo Down Special_5: 822540933878092947
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

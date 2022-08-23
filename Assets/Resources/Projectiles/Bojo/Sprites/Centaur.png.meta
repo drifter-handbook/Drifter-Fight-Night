@@ -89,6 +89,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -98,8 +100,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -120,9 +122,12 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
@@ -624,6 +629,29 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Centaur_15: 3956734993548804097
+      Centaur_13: -5919111969249698168
+      Centaur_0: -3151532704864698956
+      Centaur_5: -8203932175508745453
+      Centaur_6: 1569798253999510534
+      Centaur_12: 5943190175119774166
+      Centaur_7: 4302960186787977179
+      Centaur_18: 4055224229199066045
+      Centaur_8: 779807251030258574
+      Centaur_1: -2139794886147192724
+      Centaur_11: -95586779127804795
+      Centaur_16: -702079756055860216
+      Centaur_19: -2840286501473905418
+      Centaur_14: 1568413503964880059
+      Centaur_10: 7372248845794729222
+      Centaur_2: -5557985321512562254
+      Centaur_3: -2934298804745539901
+      Centaur_17: -4194443394465481790
+      Centaur_20: 3819069939555113909
+      Centaur_4: 4825062926145832633
+      Centaur_9: -6684006678144505100
+      Centaur_21: -4933952343650324128
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

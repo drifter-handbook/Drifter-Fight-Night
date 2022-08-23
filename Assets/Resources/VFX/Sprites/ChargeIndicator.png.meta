@@ -47,6 +47,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -56,8 +58,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -78,9 +80,12 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
@@ -126,7 +131,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 17a89d4cfbb4caf20800000000000000
-      internalID: 3435203902790273649
+      internalID: 1255485695368485301
       vertices: []
       indices: 
       edges: []
@@ -147,7 +152,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: d8ce3ed5a24fd8f60800000000000000
-      internalID: 8038349372727225485
+      internalID: 4456582896973717063
       vertices: []
       indices: 
       edges: []
@@ -168,7 +173,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: a72299315f303fc50800000000000000
-      internalID: 6697701421960733306
+      internalID: 2062272665524599327
       vertices: []
       indices: 
       edges: []
@@ -189,7 +194,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 3262878dcd073a5e0800000000000000
-      internalID: -1899550523993348573
+      internalID: 2075949061917473133
       vertices: []
       indices: 
       edges: []
@@ -204,6 +209,11 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      ChargeIndicator_0: 1255485695368485301
+      ChargeIndicator_3: 2075949061917473133
+      ChargeIndicator_2: 2062272665524599327
+      ChargeIndicator_1: 4456582896973717063
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

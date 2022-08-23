@@ -389,7 +389,7 @@ public class Drifter : MonoBehaviour
 
             //Components
             MovementFrame = movement.SerializeFrame(),
-            // AttackFrame = attacks.SerializeFrame(),
+            AttackFrame = attacks.SerializeFrame(),
             MasterhitFrame =  masterhit.SerializeFrame(),
             StatusFrame = status.SerializeFrame(),
             HurtboxhitFrame = hurtbox.SerializeFrame(),
@@ -428,7 +428,7 @@ public class Drifter : MonoBehaviour
         
         //Components
         movement.DeserializeFrame(p_frame.MovementFrame);
-        // attacks.DeserializeFrame(p_frame.AttackFrame);
+        attacks.DeserializeFrame(p_frame.AttackFrame);
         masterhit.DeserializeFrame(p_frame.MasterhitFrame);
         status.DeserializeFrame(p_frame.StatusFrame);
         hurtbox.DeserializeFrame(p_frame.HurtboxhitFrame);
@@ -455,7 +455,7 @@ public class Drifter : MonoBehaviour
 
 
         //Serialize frame
-        //SerializeFrame();
+        SerializeFrame();
         
     }
 }

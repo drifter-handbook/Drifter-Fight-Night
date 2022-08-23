@@ -47,7 +47,6 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     protected PlayerAttacks attacks;
     protected Animator anim;
     protected WalkOff ledgeDetector;
-    //protected float terminalVelocity;
 
 
     //Listener Bools
@@ -353,7 +352,8 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     //Populates hitbox array
     void Start()
     {
-
+        HitboxCollision[] Hitboxes;
+        //grabBoxes = drifter.GetComponentsInChildren<HitboxCollision>(true);
     }
 
     public void setYVelocity(float y)

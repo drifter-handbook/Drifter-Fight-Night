@@ -131,6 +131,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -140,8 +142,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -162,9 +164,12 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
@@ -939,6 +944,42 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      nero_grab_12: 6643066276370031784
+      nero_grab_4: 5331178816972243508
+      nero_grab_21: -4090626740475882887
+      nero_grab_33: 5877974607764986229
+      nero_grab_8: 1942600985305981924
+      nero_grab_29: 3297049595683282432
+      nero_grab_9: -2961473105919944224
+      nero_grab_11: 7867793152674761024
+      nero_grab_5: 4071814723494807432
+      nero_grab_7: -9190582395705771155
+      nero_grab_27: 5561250762364114794
+      nero_grab_10: 2494347804528020322
+      nero_grab_34: 1710972776528449609
+      nero_grab_3: -397219177034303754
+      nero_grab_20: 3236298105980713210
+      nero_grab_18: 1525917472853397564
+      nero_grab_22: 7615889974841968080
+      nero_grab_32: 5526721336410221424
+      nero_grab_25: -1939064970024979767
+      nero_grab_13: 1401113225815005572
+      nero_grab_1: 4802306136659378802
+      nero_grab_0: 3614417587821684678
+      nero_grab_16: -7411271017962463897
+      nero_grab_15: -2675484170911454363
+      nero_grab_30: 3324110271654450396
+      nero_grab_19: 6850906157298394039
+      nero_grab_26: -8011348359722851691
+      nero_grab_24: 1020568883434199399
+      nero_grab_17: 8210600544357989241
+      nero_grab_6: 5457718423954902237
+      nero_grab_2: -1745293675271715461
+      nero_grab_14: -7215138415694567400
+      nero_grab_23: -5010014767188029214
+      nero_grab_35: -8244865074902278816
+      nero_grab_31: 7523594788670586741
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

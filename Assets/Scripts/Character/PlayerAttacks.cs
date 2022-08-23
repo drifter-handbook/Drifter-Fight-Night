@@ -21,15 +21,17 @@ public class SingleAttack
     public bool hasAirVariant;
 }
 
-public class AttackRollbackFrame: INetworkData, ICloneable
+public class AttackRollbackFrame: INetworkData
 {
     public string Type { get; set; }
-
-    public object Clone()
-    {
-        return new AttackRollbackFrame()
-        {};
-    }
+    public int AttackID;
+    public int nextID;
+    public DrifterAttackType AttackType;
+    public int CurrentUpRecoveries;
+    public int CurrentDownRecoveries;
+    public int CurrentSideRecoveries;
+    public int CurrentNeutralRecoveries;
+    public HitboxRollbackFrame[] Hitboxes;
 }
 
 public class PlayerAttacks : MonoBehaviour
@@ -57,10 +59,12 @@ public class PlayerAttacks : MonoBehaviour
     
     // get a new attack ID
     
+    HitboxCollision[] hitboxes;
+
 
     // current attack ID and Type, used for outgoing attacks
-    public int AttackID { get; private set; }
-    public DrifterAttackType AttackType { get; private set; }
+    public int AttackID { get;  set; }
+    public DrifterAttackType AttackType { get;  set; }
     public List<SingleAttack> AttackMap = new List<SingleAttack>();
 
     public Dictionary<DrifterAttackType,SingleAttackData> Attacks = new Dictionary<DrifterAttackType,SingleAttackData>();
@@ -75,10 +79,10 @@ public class PlayerAttacks : MonoBehaviour
 
     public bool shareRecoveries = false;
 
+    [NonSerialized]
+    public int nextID = 0;
 
-    static int nextID = 0;
-
-    public static int NextID { get { nextID++;if(nextID>63)nextID=0; return nextID; } set{ nextID = value;}}
+    public int NextID { get { nextID++;if(nextID>63)nextID=0; return nextID; } set{ nextID = value;}}
     [NonSerialized]
     public int currentUpRecoveries;
     [NonSerialized]
@@ -108,6 +112,8 @@ public class PlayerAttacks : MonoBehaviour
         currentDownRecoveries = maxRecoveries;
         currentSideRecoveries = maxRecoveries;
         currentNeutralRecoveries = maxRecoveries;
+
+        hitboxes = GetComponentsInChildren<HitboxCollision>();
     }
 
     // Update is called once per frame
@@ -301,5 +307,46 @@ public class PlayerAttacks : MonoBehaviour
             hitbox.AttackID = AttackID;
             hitbox.isActive = true;
         }
+    }
+
+    public AttackRollbackFrame SerializeFrame()
+    {
+        HitboxRollbackFrame[] HitboxFrames = new HitboxRollbackFrame[hitboxes.Length];
+        //Searialize each hitbox
+        for(int i = 0; i < hitboxes.Length; i++)
+        {
+            HitboxFrames[i] = hitboxes[i].SerializeFrame();
+        }
+
+        return new AttackRollbackFrame()
+        {
+            AttackID = this.AttackID,
+            nextID = this.nextID,
+            AttackType = this.AttackType,
+            CurrentUpRecoveries = currentUpRecoveries,
+            CurrentDownRecoveries = currentDownRecoveries,
+            CurrentSideRecoveries = currentSideRecoveries,
+            CurrentNeutralRecoveries = currentNeutralRecoveries,
+            Hitboxes = HitboxFrames
+        };
+    }
+
+    //Rolls back the entity to a given frame state
+    public  void DeserializeFrame(AttackRollbackFrame p_frame)
+    {
+            AttackID = p_frame.AttackID;
+            nextID = p_frame.nextID;
+            AttackType = p_frame.AttackType;
+            currentUpRecoveries = p_frame.CurrentUpRecoveries;
+            currentDownRecoveries = p_frame.CurrentDownRecoveries;
+            currentSideRecoveries = p_frame.CurrentSideRecoveries;
+            currentNeutralRecoveries = p_frame.CurrentNeutralRecoveries;
+
+            for(int i = 0; i < p_frame.Hitboxes.Length; i++)
+            {
+                hitboxes[i].DeserializeFrame(p_frame.Hitboxes[i]);
+            }
+
+
     }
 }

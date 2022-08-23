@@ -350,6 +350,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -359,8 +361,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -381,9 +383,12 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
@@ -744,7 +749,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: d1a1018c61e01b460800000000000000
-      internalID: 7255595965679147549
+      internalID: -8658196397232067947
       vertices: []
       indices: 
       edges: []
@@ -765,7 +770,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: b3b3d96839ec15dd0800000000000000
-      internalID: -2498989185199948997
+      internalID: -5085697943774108692
       vertices: []
       indices: 
       edges: []
@@ -786,7 +791,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 6c598a5af4ab4fe90800000000000000
-      internalID: -6992759470155065914
+      internalID: -2496926601609651605
       vertices: []
       indices: 
       edges: []
@@ -807,7 +812,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 28640a7ab7f131f10800000000000000
-      internalID: 2239168055687005826
+      internalID: 1767243059716995972
       vertices: []
       indices: 
       edges: []
@@ -828,7 +833,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: be81db69e8f8d6cd0800000000000000
-      internalID: -2563234770326841109
+      internalID: -7701623800850375177
       vertices: []
       indices: 
       edges: []
@@ -849,7 +854,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 3eb87e434b6b01ae0800000000000000
-      internalID: -1580562584109085725
+      internalID: -6795461200778159996
       vertices: []
       indices: 
       edges: []
@@ -870,7 +875,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 221d791903735a000800000000000000
-      internalID: 46504052897861922
+      internalID: -1162488335859156334
       vertices: []
       indices: 
       edges: []
@@ -1773,7 +1778,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: ec0aeee912f4b5fa0800000000000000
-      internalID: -5810963888372539186
+      internalID: 2427702819261676214
       vertices: []
       indices: 
       edges: []
@@ -1794,7 +1799,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 92d3860ddf81b8a80800000000000000
-      internalID: -8463643596310430423
+      internalID: 2134733874985101852
       vertices: []
       indices: 
       edges: []
@@ -1815,7 +1820,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 2a81d3977a5d88800800000000000000
-      internalID: 614976264406374562
+      internalID: 7661726185063372079
       vertices: []
       indices: 
       edges: []
@@ -1836,7 +1841,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: f63b9840dc3c7dc20800000000000000
-      internalID: 3231266542973465455
+      internalID: 6724430075606196468
       vertices: []
       indices: 
       edges: []
@@ -1857,7 +1862,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 84850044d97451500800000000000000
-      internalID: 366277685476874312
+      internalID: 5119430136661046993
       vertices: []
       indices: 
       edges: []
@@ -1878,7 +1883,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: f872c8013e9190d90800000000000000
-      internalID: -7131140071938578545
+      internalID: -5646453885339698435
       vertices: []
       indices: 
       edges: []
@@ -1899,7 +1904,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 39ba69ea191d2c6d0800000000000000
-      internalID: -2971582380481533037
+      internalID: -3495117322115352087
       vertices: []
       indices: 
       edges: []
@@ -1920,7 +1925,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: cc8e29d29a96ded50800000000000000
-      internalID: 6768181990342715596
+      internalID: 7568525718912258398
       vertices: []
       indices: 
       edges: []
@@ -1941,7 +1946,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 77f7bbdb9ab6d1260800000000000000
-      internalID: 7069925366818373495
+      internalID: 4369867357723652396
       vertices: []
       indices: 
       edges: []
@@ -1962,7 +1967,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 228d5b4698943dc50800000000000000
-      internalID: 6688770726024304674
+      internalID: -1773549254517669713
       vertices: []
       indices: 
       edges: []
@@ -1983,7 +1988,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 7da3531342dd89920800000000000000
-      internalID: 2997388699529198295
+      internalID: -8875485359886258691
       vertices: []
       indices: 
       edges: []
@@ -2025,7 +2030,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 13f92f59afb421000800000000000000
-      internalID: 5150089210404657
+      internalID: 1110070540871616540
       vertices: []
       indices: 
       edges: []
@@ -2292,6 +2297,96 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      LadyP2_75: 7661726185063372079
+      LadyP2_86: 5270333526319740973
+      LadyP2_67: -1970848975105835986
+      LadyP2_64: 8998412677632231071
+      LadyP2_2: -1505308723740293963
+      LadyP2_65: 5333162424083922065
+      LadyP2_28: 5875600046758813072
+      LadyP2_73: 2427702819261676214
+      LadyP2_49: 6816705318956210196
+      LadyP2_13: 8234614394976429541
+      LadyP2_42: -1934658594363715892
+      LadyP2_62: 6524111596403406373
+      LadyP2_3: -717725158882415945
+      LadyP2_54: 7568525718912258398
+      LadyP2_24: -3723994634475217403
+      LadyP2_40: -5476421624656029190
+      LadyP2_29: -6802705370770623160
+      LadyP2_88: -4102257956833225452
+      LadyP2_66: 3587200648143162248
+      LadyP2_32: -7402020002888167444
+      LadyP2_69: -7913892553875825838
+      LadyP2_12: 1379973047819104651
+      LadyP2_76: 6724430075606196468
+      LadyP2_80: -29424511524980292
+      LadyP2_25: 4559981114181437940
+      LadyP2_60: -749200485436465101
+      LadyP2_82: -32894395572754992
+      LadyP2_6: -3902498592477940959
+      LadyP2_37: 3688670466289369052
+      LadyP2_57: -8875485359886258691
+      LadyP2_63: -1403900394121684807
+      LadyP2_55: 4369867357723652396
+      LadyP2_78: -7624112947563195817
+      LadyP2_1: 2857596375206597329
+      LadyP2_26: -700495889692618614
+      LadyP2_81: 1064274418774818021
+      LadyP2_61: -5747774344181040853
+      LadyP2_77: 5119430136661046993
+      LadyP2_74: 2134733874985101852
+      LadyP2_22: 7874383907494306641
+      LadyP2_33: -2064309878511905503
+      LadyP2_21: -1162488335859156334
+      LadyP2_8: -492781485694854948
+      LadyP2_83: -3045374008729360469
+      LadyP2_84: 3021859793189312220
+      LadyP2_27: -5667710623842440609
+      LadyP2_31: 8650523062044933023
+      LadyP2_68: -1130443746728927792
+      LadyP2_70: 1464880628816695017
+      LadyP2_35: -2088607782160923218
+      LadyP2_39: 1212667282396397490
+      LadyP2_36: 6740179587938065807
+      LadyP2_11: -8523551252608707418
+      LadyP2_53: -3495117322115352087
+      LadyP2_52: -5646453885339698435
+      LadyP2_30: 2422976071947682474
+      LadyP2_51: 6231334222227374852
+      LadyP2_23: -3731835877077059466
+      LadyP2_20: -6795461200778159996
+      LadyP2_14: -995740127393242217
+      LadyP2_45: 2301275720988304248
+      LadyP2_58: 3896189272204849368
+      LadyP2_16: -5085697943774108692
+      LadyP2_4: 124624027185360780
+      LadyP2_87: -1268966809129652633
+      LadyP2_17: -2496926601609651605
+      LadyP2_10: 1352870933445258487
+      LadyP2_47: 5314698193426103946
+      LadyP2_5: -1507471941383833209
+      LadyP2_18: 1767243059716995972
+      LadyP2_50: -8986149972823209310
+      LadyP2_19: -7701623800850375177
+      LadyP2_9: 8009016134093167597
+      LadyP2_85: -2420825791443744970
+      LadyP2_41: -6223035674479887962
+      LadyP2_56: -1773549254517669713
+      LadyP2_59: 1110070540871616540
+      LadyP2_72: 3036532072240606062
+      LadyP2_0: -6704392739180118420
+      LadyP2_71: -5355461461237031429
+      LadyP2_43: 1300808921528318684
+      LadyP2_34: 3473332968755665582
+      LadyP2_38: -7809857799985292385
+      LadyP2_48: 3585963497609475616
+      LadyP2_44: -7721975059901153395
+      LadyP2_15: -8658196397232067947
+      LadyP2_79: -5620674266577118416
+      LadyP2_7: 6857252685617822857
+      LadyP2_46: 4120341090302544389
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -50,6 +50,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -59,8 +61,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -81,9 +83,12 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
@@ -312,6 +317,16 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Virtua_Drifter_Banner_5: -4908074578283597759
+      Virtua_Drifter_Banner_0: 5129451589502431624
+      Virtua_Drifter_Banner_6: 5154161017543265956
+      Virtua_Drifter_Banner_2: 3266271452127748052
+      Virtua_Drifter_Banner_8: -2521925684313554094
+      Virtua_Drifter_Banner_1: 3667128089410613418
+      Virtua_Drifter_Banner_7: 2499276732458580639
+      Virtua_Drifter_Banner_3: 9186892922238949754
+      Virtua_Drifter_Banner_4: -944571380553197741
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

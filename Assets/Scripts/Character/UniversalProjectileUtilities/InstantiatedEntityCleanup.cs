@@ -13,6 +13,7 @@ public class BasicProjectileRollbackFrame: INetworkData
 
     public int AnimatorState;
     public float AnimatorTime;
+    public HitboxRollbackFrame[] Hitboxes;
     
 }
 
@@ -22,6 +23,8 @@ public class InstantiatedEntityCleanup : MonoBehaviour
 	// Start is called before the first frame update
 	public Rigidbody2D rb;
 	public Animator animator;
+
+    HitboxCollision[] hitboxes;
 
 	void FixedUpdate()
 	{
@@ -53,6 +56,13 @@ public class InstantiatedEntityCleanup : MonoBehaviour
     public BasicProjectileRollbackFrame SerializeFrame()
     {
 
+        HitboxRollbackFrame[] HitboxFrames = new HitboxRollbackFrame[hitboxes.Length];
+        //Searialize each hitbox
+        for(int i = 0; i < hitboxes.Length; i++)
+        {
+            HitboxFrames[i] = hitboxes[i].SerializeFrame();
+        }
+
     	return new BasicProjectileRollbackFrame() 
     	{
     		Duration = duration,
@@ -61,6 +71,7 @@ public class InstantiatedEntityCleanup : MonoBehaviour
     		Position = rb !=null ? rb.position: Vector2.zero,
     		AnimatorState = animator !=null ?animator.GetCurrentAnimatorStateInfo(0).shortNameHash : -1,
     		AnimatorTime = animator !=null ? animator.GetCurrentAnimatorStateInfo(0).normalizedTime : -1,
+            Hitboxes = HitboxFrames
     	};
     }
 
@@ -79,6 +90,11 @@ public class InstantiatedEntityCleanup : MonoBehaviour
     	{
     		animator.Play(p_frame.AnimatorState,0,p_frame.AnimatorTime);
     	}
+
+        for(int i = 0; i < p_frame.Hitboxes.Length; i++)
+        {
+            hitboxes[i].DeserializeFrame(p_frame.Hitboxes[i]);
+        }
 
     }
 

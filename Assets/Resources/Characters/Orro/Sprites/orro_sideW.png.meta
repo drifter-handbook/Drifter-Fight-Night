@@ -101,6 +101,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -110,8 +112,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -132,9 +134,12 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
@@ -180,7 +185,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 3f2c6330eaa988990800000000000000
-      internalID: -7383481516905020685
+      internalID: 6250985971926607482
       vertices: []
       indices: 
       edges: []
@@ -201,7 +206,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: f4b6c29bb7c02bf90800000000000000
-      internalID: -6939470350297306289
+      internalID: 5982911538861388604
       vertices: []
       indices: 
       edges: []
@@ -222,7 +227,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: bb1b666af89e496e0800000000000000
-      internalID: -1831582345251606085
+      internalID: 6358286446244446793
       vertices: []
       indices: 
       edges: []
@@ -243,7 +248,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 72a59555a316f2950800000000000000
-      internalID: 6426462096448903719
+      internalID: 2580130728057494559
       vertices: []
       indices: 
       edges: []
@@ -264,7 +269,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 18744b598c58b4520800000000000000
-      internalID: 2687388699208206209
+      internalID: 3620986621128002066
       vertices: []
       indices: 
       edges: []
@@ -285,7 +290,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: bf6fb847dbe3cd680800000000000000
-      internalID: -8729032994325793029
+      internalID: 4674804729091751065
       vertices: []
       indices: 
       edges: []
@@ -306,7 +311,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 7569f5b728768ddc0800000000000000
-      internalID: -3614024890851551657
+      internalID: 5015945761887831678
       vertices: []
       indices: 
       edges: []
@@ -327,7 +332,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 76ccda2c2656e9800800000000000000
-      internalID: 621045273471077479
+      internalID: -5670076010223476506
       vertices: []
       indices: 
       edges: []
@@ -348,7 +353,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: b19bf39b78b9f13c0800000000000000
-      internalID: -4386616504804722405
+      internalID: 6834430415100287019
       vertices: []
       indices: 
       edges: []
@@ -369,7 +374,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 636b768fa1ec651e0800000000000000
-      internalID: -2209351951946631626
+      internalID: 5586156241909042925
       vertices: []
       indices: 
       edges: []
@@ -390,7 +395,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: f9e3fd6ca3eab5330800000000000000
-      internalID: 3700743086282849951
+      internalID: 6719839220841438730
       vertices: []
       indices: 
       edges: []
@@ -411,7 +416,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: d772cee88fee093c0800000000000000
-      internalID: -4354718088350128259
+      internalID: 6323828424815617479
       vertices: []
       indices: 
       edges: []
@@ -468,6 +473,21 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      orro_sideW_6: 5015945761887831678
+      orro_sideW_11: 6323828424815617479
+      orro_sideW_12: -6848476339407719400
+      orro_sideW_1: 5982911538861388604
+      orro_sideW_3: 2580130728057494559
+      orro_sideW_5: 4674804729091751065
+      orro_sideW_8: 6834430415100287019
+      orro_sideW_4: 3620986621128002066
+      orro_sideW_0: 6250985971926607482
+      orro_sideW_7: -5670076010223476506
+      orro_sideW_9: 5586156241909042925
+      orro_sideW_13: 3900692709853880235
+      orro_sideW_10: 6719839220841438730
+      orro_sideW_2: 6358286446244446793
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

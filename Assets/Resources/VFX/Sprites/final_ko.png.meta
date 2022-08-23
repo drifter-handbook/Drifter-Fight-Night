@@ -143,6 +143,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -152,8 +154,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -174,9 +176,12 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
@@ -1056,6 +1061,47 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      final_ko_34: -7251233310838741003
+      final_ko_37: 4069412192709394519
+      final_ko_26: 258182636636765922
+      final_ko_13: -1574621668280918558
+      final_ko_19: 545856872332041534
+      final_ko_15: -8209804305730025055
+      final_ko_39: 4950685165398346088
+      final_ko_28: -6838534566209866941
+      final_ko_30: 7169601146407307789
+      final_ko_12: -8717686505394243993
+      final_ko_18: 2976130348656302512
+      final_ko_20: -4279811923534699775
+      final_ko_21: 8384317051769149188
+      final_ko_6: 7897810131911200711
+      final_ko_4: 1904789111227747016
+      final_ko_32: -4111631364956623495
+      final_ko_0: 6753020911287696571
+      final_ko_10: 6518885035420427436
+      final_ko_35: -2114242055482060980
+      final_ko_11: -3273279773411859392
+      final_ko_22: 171566046351039659
+      final_ko_23: 6642889642410222224
+      final_ko_3: -8764201024950011295
+      final_ko_25: 3734667899590057659
+      final_ko_7: 7622383017090920723
+      final_ko_14: -4517561123396591124
+      final_ko_16: -5297841077351268972
+      final_ko_8: -8645858313513140206
+      final_ko_5: -1418270462297475153
+      final_ko_38: -6928424368302828190
+      final_ko_29: 8789817054111974954
+      final_ko_27: -7007222638022019282
+      final_ko_33: 3917501511072285802
+      final_ko_2: -3372286853528656333
+      final_ko_31: -8952534331239351923
+      final_ko_36: 4019152353846072832
+      final_ko_1: -8979407468642063780
+      final_ko_17: 262592059481314103
+      final_ko_9: -3607071297138101722
+      final_ko_24: -267372745286258127
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

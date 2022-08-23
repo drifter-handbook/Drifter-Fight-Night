@@ -5,9 +5,6 @@ using UnityEngine;
 public class SandbagMasterHit : MasterHit
 {
 	bool dust = false;
-	InstantiatedEntityCleanup sandblast;
-	InstantiatedEntityCleanup sandspear1;
-	InstantiatedEntityCleanup sandspear2;
 
 	GameObject g_Sandblast;
 	GameObject g_Sandspear1;
@@ -64,6 +61,11 @@ public class SandbagMasterHit : MasterHit
 	{
 
 		if(g_Sandblast!= null) Destroy(g_Sandblast);
+		CreateSandblast();
+	}
+
+	void CreateSandblast()
+	{
 		g_Sandblast = GameController.Instance.CreatePrefab("Sandblast", transform.position + new Vector3(1.5f * movement.Facing, 2.5f), transform.rotation);
 		g_Sandblast.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in g_Sandblast.GetComponentsInChildren<HitboxCollision>(true))
@@ -74,12 +76,19 @@ public class SandbagMasterHit : MasterHit
         }
 		g_Sandblast.GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)drifter.GetColor()]);
 		g_Sandblast.GetComponent<Rigidbody2D>().velocity = new Vector3(movement.Facing * 25f,0,0);
-		sandblast = g_Sandblast.GetComponent<InstantiatedEntityCleanup>();
 	}
 
 	public void Ground_Down()
 	{
 
+		CreateSandSpears();
+
+		//sandspear1 = g_Sandspear1.GetComponent<InstantiatedEntityCleanup>();
+		//sandspear2 = g_Sandspear2.GetComponent<InstantiatedEntityCleanup>();
+	}
+
+	void CreateSandSpears()
+	{
 		GameObject g_Sandspear1 = GameController.Instance.CreatePrefab("Sandspear", transform.position + new Vector3(1.2f * movement.Facing, 1.3f,1), transform.rotation);
 		GameObject g_Sandspear2 = GameController.Instance.CreatePrefab("Sandspear", transform.position + new Vector3(-1.5f * movement.Facing, 1.3f,-1), transform.rotation);
 		g_Sandspear1.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
@@ -97,12 +106,9 @@ public class SandbagMasterHit : MasterHit
             hitbox.Facing = movement.Facing;
         }
 		g_Sandspear1.GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)drifter.GetColor()]);
-		g_Sandspear1.GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)drifter.GetColor()]);
+		g_Sandspear2.GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)drifter.GetColor()]);
 		g_Sandspear1.transform.SetParent(drifter.gameObject.transform);
 		g_Sandspear2.transform.SetParent(drifter.gameObject.transform);
-
-		sandspear1 = g_Sandspear1.GetComponent<InstantiatedEntityCleanup>();
-		sandspear2 = g_Sandspear2.GetComponent<InstantiatedEntityCleanup>();
 	}
 
 	//Rollback
@@ -114,9 +120,9 @@ public class SandbagMasterHit : MasterHit
     	MasterhitRollbackFrame baseFrame = SerializeBaseFrame();
     	baseFrame.CharacterFrame= new SandbagRollbackFrame() 
         {
-            Sandblast = g_Sandblast != null ? sandblast.SerializeFrame(): null,
-			Sandspear1 = g_Sandspear1 != null ? sandspear1.SerializeFrame(): null,
-			Sandspear2 = g_Sandspear2 != null ? sandspear2.SerializeFrame(): null,     
+            Sandblast = g_Sandblast != null ? g_Sandblast.GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null,
+			Sandspear1 = g_Sandspear1 != null ? g_Sandspear1.GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null,
+			Sandspear2 = g_Sandspear2 != null ? g_Sandspear2.GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null,     
         };
 
         return baseFrame;
@@ -128,15 +134,36 @@ public class SandbagMasterHit : MasterHit
     	DeserializeBaseFrame(p_frame);
 
     	SandbagRollbackFrame sb_frame = (SandbagRollbackFrame)p_frame.CharacterFrame;
-    	// if(sb_frame.Sandblast == null)
-    	// {
-    	// 	Destroy(g_Sandblast);
-    	// 	sandblast = null;
-    	// }
-    	// else if(g_Sandblast == null)
-    	// {
 
-    	// }
+    	//Sandblast reset
+    	if(sb_frame.Sandblast != null)
+    	{
+    		if(g_Sandblast == null)CreateSandblast();
+    		g_Sandblast.GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(sb_frame.Sandblast);
+    	}
+    	//Projectile does not exist in rollback frame
+    	else if(sb_frame.Sandblast == null)
+    	{
+    		Destroy(g_Sandblast);
+    		g_Sandblast = null;
+    	}  
+
+    	//Sandspears reset
+    	if(sb_frame.Sandspear1 != null)
+    	{
+    		if(g_Sandspear1 == null)CreateSandblast();
+    		g_Sandspear1.GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(sb_frame.Sandspear1);
+    		g_Sandspear2.GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(sb_frame.Sandspear2);
+
+    	}
+    	//Projectile does not exist in rollback frame
+    	else if(sb_frame.Sandspear1 == null)
+    	{
+    		Destroy(g_Sandspear1);
+    		Destroy(g_Sandspear2);
+    		g_Sandspear1 = null;
+    		g_Sandspear2 = null;
+    	}  
 
     }
 

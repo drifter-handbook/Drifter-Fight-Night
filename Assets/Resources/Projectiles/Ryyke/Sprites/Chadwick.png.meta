@@ -224,6 +224,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -233,8 +235,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -255,9 +257,12 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
@@ -1704,6 +1709,74 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Chadwick_25: 2590965454021428001
+      Chadwick_27: 7506862315397251290
+      Chadwick_30: -1460678250594452694
+      Chadwick_6: -1675736560701544788
+      Chadwick_54: -7770749193498005633
+      Chadwick_11: -1729966879529005974
+      Chadwick_19: 2478669761107465577
+      Chadwick_1: -7832065585379431861
+      Chadwick_23: -4761751656518710045
+      Chadwick_35: -8329072518784252887
+      Chadwick_38: 434900382982707767
+      Chadwick_52: -5026457151525707535
+      Chadwick_40: 7781860243972565438
+      Chadwick_51: 8900525303037882724
+      Chadwick_21: 1668801993540087644
+      Chadwick_49: 7544598910683842060
+      Chadwick_44: 7374158747689143273
+      Chadwick_29: -8446841419292806553
+      Chadwick_55: -8982442204776684188
+      Chadwick_46: 3254853210501783877
+      Chadwick_34: -3698079866221618831
+      Chadwick_41: -3788600199986077814
+      Chadwick_13: -1295906347015694052
+      Chadwick_7: 2062476136272648636
+      Chadwick_4: -6229903581510054676
+      Chadwick_3: -2035203963897777983
+      Chadwick_18: 2706395688849393365
+      Chadwick_47: -7620016793217290336
+      Chadwick_9: -3542974375575981225
+      Chadwick_28: 5968141449333419916
+      Chadwick_36: -4367605071916145283
+      Chadwick_17: 1184919199078061546
+      Chadwick_53: 3354776285435904460
+      Chadwick_10: 1264164593780785731
+      Chadwick_15: 5816045317954385989
+      Chadwick_39: -730096248098094912
+      Chadwick_32: 6270757180770481277
+      Chadwick_48: -3894139340571025798
+      Chadwick_16: 4027674896743070039
+      Chadwick_0: -6715930497347251330
+      Chadwick_31: -8661616432703575881
+      Chadwick_63: -6292737040451810797
+      Chadwick_33: -8144636393415034934
+      Chadwick_57: -1708757987720876649
+      Chadwick_60: -9127229472863720854
+      Chadwick_8: 6096044107438418252
+      Chadwick_22: -6265496646228014385
+      Chadwick_14: 6733323553503932
+      Chadwick_26: -8716692650057965330
+      Chadwick_61: -789308265471059681
+      Chadwick_2: 6505144288804950426
+      Chadwick_42: -8015009983807504564
+      Chadwick_58: 3747605034760219343
+      Chadwick_20: -1526247027219024595
+      Chadwick_50: 8493644945354530446
+      Chadwick_37: 1944747686010479196
+      Chadwick_56: 4629158040742885523
+      Chadwick_45: -3481659083545366094
+      Chadwick_12: 8500043693896526667
+      Chadwick_66: 6548976045244355824
+      Chadwick_65: 8085060471517074866
+      Chadwick_43: 93859290711870063
+      Chadwick_5: -7733861047164416352
+      Chadwick_24: 2182102881823405107
+      Chadwick_62: -6283146447867816788
+      Chadwick_59: -3147805722501335460
+      Chadwick_64: 5342702082112514441
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

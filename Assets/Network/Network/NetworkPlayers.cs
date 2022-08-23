@@ -4,8 +4,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+using HouraiTeahouse.Backroll;
+
 public class NetworkPlayers : MonoBehaviour
 {
+
+    //GGPO
+    //BackrollSession ggpo;
+    //BackrollErrorCode result;
+    //BackrollSessionCallbacks cb;
 
     NetworkSyncToHost syncFromClients;
 
@@ -35,6 +42,20 @@ public class NetworkPlayers : MonoBehaviour
         // create players
         foreach (CharacterSelectState charSel in CharacterMenu.charSelStates.Values)
             CreatePlayer(charSel.PeerID);
+
+
+        /* fill in all callback functions */
+        // cb.SaveGameStateCallback = 
+        // cb.LoadGameStateCallback = 
+        // cb.FreeBuffer = 
+        // cb.AdvanceFrame = 
+
+        /* Start a new session */
+
+        //BackrollSessionConfig config = new BackrollSessionConfig();
+        //result = Backroll.StartSession(); 
+
+
     }
 
     // Update is called once per frame
@@ -56,8 +77,9 @@ public class NetworkPlayers : MonoBehaviour
             else
                 UpdateInput(players[charSel.PeerID]);
 
-
         }
+        
+        Physics2D.Simulate(1f/60f);
     }
 
     GameObject CreatePlayer(int peerID)
@@ -95,6 +117,8 @@ public class NetworkPlayers : MonoBehaviour
 
         playerDrifter.input[0] = input;
         playerDrifter.UpdateFrame();
+
+        playerDrifter.SerializeFrame();
 
     }
 

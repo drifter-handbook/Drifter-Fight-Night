@@ -449,6 +449,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -458,8 +460,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -480,9 +482,12 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
@@ -1179,7 +1184,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 3b89ce8f625651990800000000000000
-      internalID: -7415909993336235853
+      internalID: 3843609001238700063
       vertices: []
       indices: 
       edges: []
@@ -1200,7 +1205,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: c8dfaa76ef09d5ab0800000000000000
-      internalID: -5017694987485512308
+      internalID: 6580417049925759001
       vertices: []
       indices: 
       edges: []
@@ -1221,7 +1226,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 0245916dd16165020800000000000000
-      internalID: 2330074174612657184
+      internalID: 6395929234047761009
       vertices: []
       indices: 
       edges: []
@@ -1242,7 +1247,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 1954ce6e199e86cd0800000000000000
-      internalID: -2564543174933723759
+      internalID: 4492278247291543650
       vertices: []
       indices: 
       edges: []
@@ -1263,7 +1268,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 98bb7bd7484dd7f80800000000000000
-      internalID: -8107090088687060087
+      internalID: -2883743909070249786
       vertices: []
       indices: 
       edges: []
@@ -1284,7 +1289,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 95b32b4272f44c360800000000000000
-      internalID: 7188957934728133465
+      internalID: 5244433794702036242
       vertices: []
       indices: 
       edges: []
@@ -1704,7 +1709,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 86f19abbd30fb5d20800000000000000
-      internalID: 3268470102519521128
+      internalID: -1418622355530712833
       vertices: []
       indices: 
       edges: []
@@ -1788,7 +1793,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 3e0dd5ce8c6155110800000000000000
-      internalID: 1248929523880022243
+      internalID: 6315957161785145753
       vertices: []
       indices: 
       edges: []
@@ -3252,6 +3257,137 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      SF_Sheet_54: 7045984030500427278
+      SF_Sheet_49: 520815968064787218
+      SF_Sheet_40: 2582166499393426545
+      SF_Sheet_68: 5848212748603408411
+      SF_Sheet_64: 5320348729467388921
+      SF_Sheet_127: 7309529133107048059
+      SF_Sheet_7: 8361737653838380734
+      SF_Sheet_115: 9166741232447418778
+      SF_Sheet_3: -3682927333080544115
+      SF_Sheet_45: -2882178039893155061
+      SF_Sheet_93: 8198262693833316542
+      SF_Sheet_66: 3164494622665962967
+      SF_Sheet_108: -5267802216951983052
+      SF_Sheet_33: 6319418337278090665
+      SF_Sheet_96: 6837890938066483549
+      SF_Sheet_111: 4549204682192421378
+      SF_Sheet_53: -5723325255632482329
+      SF_Sheet_112: 8773414340063863497
+      SF_Sheet_91: -5286456980833474017
+      SF_Sheet_125: -5383214145048299078
+      SF_Sheet_86: 1648166774613469591
+      SF_Sheet_19: -2883743909070249786
+      SF_Sheet_100: -1072737714520861513
+      SF_Sheet_75: 2990639315565390151
+      SF_Sheet_85: 509185650766064647
+      SF_Sheet_18: 4492278247291543650
+      SF_Sheet_80: 8672521863826901230
+      SF_Sheet_62: -2595938334485530997
+      SF_Sheet_17: 6395929234047761009
+      SF_Sheet_129: -8227914948221270455
+      SF_Sheet_28: 6247660526030053159
+      SF_Sheet_11: -4882415796988707888
+      SF_Sheet_120: 6884185363227700213
+      SF_Sheet_71: 6844748196802918729
+      SF_Sheet_36: -6730318331321317180
+      SF_Sheet_29: 4452300911083981169
+      SF_Sheet_87: -7455394209380760587
+      SF_Sheet_109: 3603703975994399093
+      SF_Sheet_39: -1391064046844450633
+      SF_Sheet_4: -3238346812902371135
+      SF_Sheet_38: -9190643553223645660
+      SF_Sheet_126: -5662084611423670458
+      SF_Sheet_56: 3151804881635432628
+      SF_Sheet_44: -4762637182732774057
+      SF_Sheet_2: -8079521052429702548
+      SF_Sheet_37: -1477473596618660561
+      SF_Sheet_94: 4627032237708994845
+      SF_Sheet_78: 6770462973724967581
+      SF_Sheet_95: -1200664414006447824
+      SF_Sheet_128: -2379306590225127425
+      SF_Sheet_55: -73871616449246143
+      SF_Sheet_113: 2254748486445095217
+      SF_Sheet_16: 6580417049925759001
+      SF_Sheet_22: 8433438194166487094
+      SF_Sheet_25: 5585366383389321897
+      SF_Sheet_27: -7555056619125701583
+      SF_Sheet_67: -5685208802815207225
+      SF_Sheet_26: -1435956536181874884
+      SF_Sheet_51: -8244697586590224364
+      SF_Sheet_102: 3752712330843527091
+      SF_Sheet_122: -1639209197508586876
+      SF_Sheet_119: 6820785122493159793
+      SF_Sheet_99: -415596787841340012
+      SF_Sheet_90: 6610716080933484567
+      SF_Sheet_8: 9067019634958501177
+      SF_Sheet_42: -822187357161275866
+      SF_Sheet_77: -6548521249221857761
+      SF_Sheet_10: -5643194815995048726
+      SF_Sheet_46: 6315957161785145753
+      SF_Sheet_35: -1735343005376862373
+      SF_Sheet_82: -5631433498844270712
+      SF_Sheet_52: -7315661686407449722
+      SF_Sheet_103: 3949342592779473481
+      SF_Sheet_69: 1075933677556462852
+      SF_Sheet_65: -1440234561620658400
+      SF_Sheet_60: -5296759151596812752
+      SF_Sheet_70: -1418622355530712833
+      SF_Sheet_1: -7099418608154688372
+      SF_Sheet_84: 8046525499869315048
+      SF_Sheet_14: -3991865031820666309
+      SF_Sheet_21: 3725659986346704286
+      SF_Sheet_24: -2441470241527233953
+      SF_Sheet_88: 6950092191613857553
+      SF_Sheet_32: 1839326338609723005
+      SF_Sheet_98: 1821389351254032703
+      SF_Sheet_92: -355365892832392704
+      SF_Sheet_106: 3360519767956478896
+      SF_Sheet_76: -4090084204218726666
+      SF_Sheet_0: 9040469485871485469
+      SF_Sheet_74: -8605328684838091792
+      SF_Sheet_5: -5874179917806695280
+      SF_Sheet_59: 8874635088808633116
+      SF_Sheet_73: 1158400643514245206
+      SF_Sheet_61: 8835358866292673009
+      SF_Sheet_118: -7089315672206142165
+      SF_Sheet_63: 7526778114519712658
+      SF_Sheet_79: -5476654823733974854
+      SF_Sheet_116: 4958718792673138538
+      SF_Sheet_83: 311420930143171571
+      SF_Sheet_104: -1366376745621886408
+      SF_Sheet_117: 8537952555761323550
+      SF_Sheet_12: -2096129562829252711
+      SF_Sheet_47: -2025857422285319833
+      SF_Sheet_105: 4402903927815034930
+      SF_Sheet_31: 7960250658170498860
+      SF_Sheet_41: 6042050103953083651
+      SF_Sheet_121: -7585052472852318615
+      SF_Sheet_15: 3843609001238700063
+      SF_Sheet_101: -7656064018301513781
+      SF_Sheet_43: 1352647059391608585
+      SF_Sheet_23: -7093951453764002658
+      SF_Sheet_57: 7287207675794294099
+      SF_Sheet_81: 7262883323387604358
+      SF_Sheet_20: 5244433794702036242
+      SF_Sheet_50: 6163245773620197656
+      SF_Sheet_107: -9107728444992531569
+      SF_Sheet_110: 7359503998427726707
+      SF_Sheet_9: 497467841182384940
+      SF_Sheet_97: -8933273157184618122
+      SF_Sheet_114: -2012429609524956911
+      SF_Sheet_124: 5905468173069509387
+      SF_Sheet_123: -5128202496169146438
+      SF_Sheet_72: -2989458319798831312
+      SF_Sheet_48: 3967773283921181370
+      SF_Sheet_6: -1737666294562409967
+      SF_Sheet_58: -1425838896048394337
+      SF_Sheet_34: 5944611606580762092
+      SF_Sheet_13: -1197787389732806900
+      SF_Sheet_89: -8545437896764387420
+      SF_Sheet_30: 5912868560460278579
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

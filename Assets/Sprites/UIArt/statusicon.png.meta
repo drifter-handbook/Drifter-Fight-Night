@@ -80,6 +80,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -89,8 +91,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -111,9 +113,12 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
@@ -489,6 +494,23 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      statusicon_11: -7202844064604426847
+      statusicon_15: 4778986010118132335
+      statusicon_6: 296200226844643670
+      statusicon_8: -4773599266179785803
+      statusicon_12: -6817545415939477988
+      statusicon_5: 7360120285661155265
+      statusicon_9: 495111014166522671
+      statusicon_13: -2257374644814367589
+      statusicon_3: 6908487316614699068
+      statusicon_0: -5093945488372192336
+      statusicon_14: 6845028986115758909
+      statusicon_1: -8936618717453600528
+      statusicon_10: -7939005531215695065
+      statusicon_7: -8669013207032231206
+      statusicon_4: -6852026428305589574
+      statusicon_2: 5747022126019581723
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
