@@ -13,20 +13,20 @@ MonoBehaviour:
   m_Name: W_Neutral_Side
   m_EditorClassIdentifier: 
   AttackDamage: 5
-  Knockback: 20
-  KnockbackScale: 0.5
-  pushBlock: 25
+  Knockback: 30
+  KnockbackScale: 0
+  pushBlock: 15
   dynamicStun: 1
   firstActiveFrame: 5
   finalFrame: 22
   HitStun: 15
-  ShieldStun: -5
-  HitStop: 10
+  ShieldStun: -12
+  HitStop: 20
   hitType: 0
   mirrorKnockback: 0
-  AngleOfImpact: 45
-  StatusEffect: 20
-  StatusDuration: 1
+  AngleOfImpact: 15
+  StatusEffect: 29
+  StatusDuration: 60
   HitFX: {fileID: 11400000, guid: e007b7ceac776034b9838dfd15059cdd, type: 2}
   canHitGrounded: 1
   canHitAerial: 1
