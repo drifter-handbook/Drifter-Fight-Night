@@ -20,6 +20,8 @@ public class NetworkPlayers : MonoBehaviour
 
     public GameObject playerInputPrefab;
 
+    DrifterRollbackFrame[,] rollbackTest = new DrifterRollbackFrame[5,2];
+
     //Dictionary<int, GameObject> clientPlayers = new Dictionary<int, GameObject>();
 
     [NonSerialized]
@@ -64,21 +66,37 @@ public class NetworkPlayers : MonoBehaviour
 
         PlayerInputData input;
 
+        int q = 0;
+
+        DrifterRollbackFrame[] rollback2 = new DrifterRollbackFrame[CharacterMenu.charSelStates.Values.Count];
+
         foreach (CharacterSelectState charSel in CharacterMenu.charSelStates.Values)
         {
             //Link inputs to peer ids
             input = NetworkUtils.GetNetworkData<PlayerInputData>(syncFromClients["input", charSel.PeerID]);
             if (input != null)
-                UpdateInput(players[charSel.PeerID], input);
+                rollback2[q] = UpdateInput(players[charSel.PeerID], input);
 
             else if(GameController.Instance.controls.ContainsKey(charSel.PeerID))
-                UpdateInput(players[charSel.PeerID], GetInput(GameController.Instance.controls[charSel.PeerID]));
+                 rollback2[q] = UpdateInput(players[charSel.PeerID], GetInput(GameController.Instance.controls[charSel.PeerID]));
                 
             else
-                UpdateInput(players[charSel.PeerID]);
+                 rollback2[q] = UpdateInput(players[charSel.PeerID]);
+
+            q++;
 
         }
-        
+
+        for (int i = 3; i >= 0; i--)
+        {
+            rollbackTest[i + 1,0] = rollbackTest[i,0];
+            rollbackTest[i + 1,1] = rollbackTest[i,1];
+
+        }
+
+        rollbackTest[0,0] = rollback2[0];
+        rollbackTest[0,1] = rollback2[1];
+
         Physics2D.Simulate(1f/60f);
     }
 
@@ -103,10 +121,10 @@ public class NetworkPlayers : MonoBehaviour
         return obj;
     }
 
-    public static void UpdateInput(GameObject player, PlayerInputData input)
+    public static DrifterRollbackFrame UpdateInput(GameObject player, PlayerInputData input)
     {
         if (player == null)
-            return;
+            return null;
 
         Drifter playerDrifter = player.GetComponent<Drifter>();
 
@@ -118,14 +136,16 @@ public class NetworkPlayers : MonoBehaviour
         playerDrifter.input[0] = input;
         playerDrifter.UpdateFrame();
 
-        playerDrifter.SerializeFrame();
+        return playerDrifter.SerializeFrame();
 
     }
 
-    public static void UpdateInput(GameObject player)
+    public static DrifterRollbackFrame UpdateInput(GameObject player)
     {
-        if(player == null)return;
+        if(player == null)return null;
         player.GetComponent<Drifter>().UpdateFrame();
+
+         return player.GetComponent<Drifter>().SerializeFrame();
     }
 
     public static PlayerInputData GetInput(PlayerInput playerInput)
@@ -149,6 +169,20 @@ public class NetworkPlayers : MonoBehaviour
 
         return input;
     }
+
+    public void rollemback()
+    {
+        int z = 0;
+        foreach (CharacterSelectState charSel in CharacterMenu.charSelStates.Values){
+        
+            players[charSel.PeerID].GetComponent<Drifter>().DeserializeFrame(rollbackTest[4,z]);
+            rollbackTest[0,z] = rollbackTest[4,z];
+            z++;
+        }
+
+    }
+
+    
 }
 
 

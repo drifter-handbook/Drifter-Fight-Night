@@ -65,6 +65,8 @@ public class PlayerMovement : MonoBehaviour
     [NonSerialized]
     public float jumpTimer = 30f;
 
+    GameObject SuperCancel;
+
     //Situational Iteration variables
     int dropThroughTime = 18;
     int ringTime = 6;
@@ -863,6 +865,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void spawnSuperParticle(string mode,float cost,int darkentime)
     {
+        if(SuperCancel!= null)
+            Destroy(SuperCancel);
 
         canLandingCancel = false;
         mainCamera.Darken(darkentime);
@@ -873,15 +877,15 @@ public class PlayerMovement : MonoBehaviour
         
         drifter.superCharge -= cost;
 
-        GameObject cancel = GameController.Instance.host.CreateNetworkObject("SuperEffect", transform.position , transform.rotation);
-        foreach (HitboxCollision hitbox in cancel.GetComponentsInChildren<HitboxCollision>(true))
+        SuperCancel = GameController.Instance.host.CreateNetworkObject("SuperEffect", transform.position , transform.rotation);
+        foreach (HitboxCollision hitbox in SuperCancel.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = drifter.attacks.AttackID;
             hitbox.isActive = true;
             hitbox.Facing = Facing;
         }
-        cancel.GetComponent<SyncAnimatorStateHost>().SetState(mode);
+        SuperCancel.GetComponent<SyncAnimatorStateHost>().SetState(mode);
         
     }
 
@@ -919,12 +923,13 @@ public class PlayerMovement : MonoBehaviour
             PrevVelocity = prevVelocity,
             CurrentSpeed = currentSpeed,
             DelayedFacingFlip = delayedFacingFlip,
+            SuperCancel = this.SuperCancel != null ? SuperCancel.GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null,
 
         };
     }
 
     //Rolls back the entity to a given frame state
-    public  void DeserializeFrame(MovementRollbackFrame p_frame)
+    public void DeserializeFrame(MovementRollbackFrame p_frame)
     {
         //Rigid body
         rb.velocity = p_frame.Velocity;
@@ -952,6 +957,20 @@ public class PlayerMovement : MonoBehaviour
         prevVelocity = p_frame.PrevVelocity;
         currentSpeed = p_frame.CurrentSpeed;
         delayedFacingFlip = p_frame.DelayedFacingFlip;
+
+        //Super Particle reset
+        if(p_frame.SuperCancel != null)
+        {
+            //TODO FIX THIS
+            if(SuperCancel == null)spawnSuperParticle("Feint_Cancel",1f,8);
+            SuperCancel.GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(p_frame.SuperCancel);
+        }
+        //Projectile does not exist in rollback frame
+        else if(p_frame.SuperCancel == null)
+        {
+            Destroy(SuperCancel);
+            SuperCancel = null;
+        }
 
     }
 }
@@ -985,5 +1004,6 @@ public class MovementRollbackFrame: INetworkData
     public Vector2 PrevVelocity;
     public float CurrentSpeed;
     public bool DelayedFacingFlip;
+    public BasicProjectileRollbackFrame SuperCancel;
 
 }

@@ -11,7 +11,7 @@ public class Tether : MonoBehaviour
 	private float speed = 2f;
 	public Collider2D hitbox;
 
-	float extendPercent = 0;
+	int extendPercent = 0;
 	SpriteRenderer sprite;
     // Start is called before the first frame update
     void Start()
@@ -21,12 +21,12 @@ public class Tether : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void UpdateFrame()
     {
         sprite.size = Vector2.MoveTowards(sprite.size,target,extendPercent);
         hitbox.offset = Vector2.MoveTowards(hitbox.offset,targetOffset,extendPercent);
 
-        if(extendPercent < 1f) extendPercent+= Time.fixedDeltaTime/(speed * framerateScalar);
+        if(extendPercent < 100) extendPercent =  (int)Mathf.Min(extendPercent + speed,100);
     }
 
     public void setTargetLength(float len)
@@ -45,16 +45,11 @@ public class Tether : MonoBehaviour
     {
     	target = sprite.size;
     	targetOffset = hitbox.offset;
-    	extendPercent = 1;
+    	extendPercent = 100;
     }
 
     public void togglehitbox(int active)
     {
     	hitbox.enabled = (active != 0);
     }
-
-    // void OnTriggerEnter2D(Collider2D col)
-    // {
-    // 	if(col.gameObject.layer==10)freezeLen();
-    // }
 }

@@ -123,6 +123,8 @@ public class PlayerAttacks : MonoBehaviour
         if (GameController.Instance.IsPaused)
             return;
 
+        if(drifter.input[0].Pause && ! drifter.input[1].Pause) NetworkPlayers.Instance.rollemback();
+
         bool canAct = !drifter.status.HasStunEffect() && !drifter.guarding && !drifter.movement.ledgeHanging;
         bool canSpecial = !drifter.status.HasStunEffect() && !drifter.movement.ledgeHanging;
 

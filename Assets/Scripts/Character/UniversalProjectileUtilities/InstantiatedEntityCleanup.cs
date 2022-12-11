@@ -41,6 +41,11 @@ public class InstantiatedEntityCleanup : MonoBehaviour
 		}
 	}
 
+    void Start()
+    {
+        hitboxes = GetComponentsInChildren<HitboxCollision>();
+    }
+
 	void OnTriggerExit2D(Collider2D other)
 	{
 		if(other.gameObject.tag == "Killzone")

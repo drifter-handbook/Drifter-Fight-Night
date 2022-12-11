@@ -209,7 +209,7 @@ public class Drifter : MonoBehaviour
     {
         if(animOverrides.Length == null || animOverrides.Length < p_index+1)
         {
-            UnityEngine.Debug.LogWarning("No animation override set for index: " + p_index);
+            //UnityEngine.Debug.LogWarning("No animation override set for index: " + p_index);
             return;
         }
         animator.runtimeAnimatorController = animOverrides[p_index];
@@ -452,10 +452,6 @@ public class Drifter : MonoBehaviour
         masterhit.UpdateFrame();
         status.UpdateFrame();
         hurtbox.UpdateFrame();
-
-
-        //Serialize frame
-        SerializeFrame();
         
     }
 }

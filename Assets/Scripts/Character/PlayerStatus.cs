@@ -461,14 +461,18 @@ public class PlayerStatus : MonoBehaviour
     //Takes a snapshot of the current frame to rollback to
     public StatusRollbackFrame SerializeFrame()
     {
+        int[] statusList = new int[statusDataMap.Length];
+        for(int i = 0; i < statusDataMap.Length;i++)
+            statusList[i] = statusDataMap[i].duration;
+
         return new StatusRollbackFrame()
         {
-
-            StatusList = statusDataMap,
+            StatusList = statusList,
             DelayedVelocity = delayedVelocity,
             DelayedEffect = delayedEffect,
             DelayedEffectDuration = delayedEffectDuration,
             GrabPoint = grabPoint,
+            
 
         };
     }
@@ -477,11 +481,12 @@ public class PlayerStatus : MonoBehaviour
     public  void DeserializeFrame(StatusRollbackFrame p_frame)
     {
 
-        statusDataMap = p_frame.StatusList;
         delayedVelocity = p_frame.DelayedVelocity;
         delayedEffect = (PlayerStatusEffect)p_frame.DelayedEffect;
         delayedEffectDuration = p_frame.DelayedEffectDuration;
         grabPoint = p_frame.GrabPoint;
+        for(int i = 0; i < statusDataMap.Length;i++)
+            statusDataMap[i].duration = p_frame.StatusList[i];
 
     }
 
@@ -496,6 +501,6 @@ public class StatusRollbackFrame: INetworkData
     public int DelayedEffectDuration;
     public Collider2D GrabPoint = null;
 
-    public PlayerStatusData[] StatusList;
+    public int[] StatusList;
 
 }

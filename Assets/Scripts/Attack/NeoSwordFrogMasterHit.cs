@@ -4,19 +4,18 @@ using UnityEngine;
 
 public class NeoSwordFrogMasterHit : MasterHit
 {
-    Coroutine kunaiShoot;
-
-    GameObject tongue;
-    Tether tongueTether;
-
     public int W_Down_Projectiles = 3;
+    Tether tongueTether;
+    Vector2 HeldDirection = Vector2.zero; 
+
+
+    GameObject g_tongue;
+    GameObject[] kunais = new GameObject[3];
 
     bool listeningForDirection = false;
     int delaytime = 0;
-
     int projnum;
-
-    Vector2 HeldDirection = Vector2.zero;    
+       
 
     override public void UpdateFrame()
     {
@@ -31,7 +30,7 @@ public class NeoSwordFrogMasterHit : MasterHit
 
         if(movement.ledgeHanging || status.HasEnemyStunEffect())
         {
-            if(tongue != null)deleteTongue();
+            if(g_tongue != null)deleteTongue();
             listeningForDirection = false;
             projnum = 0;
         }
@@ -49,19 +48,6 @@ public class NeoSwordFrogMasterHit : MasterHit
         else if(projnum <0)
             fireKunaiAirLine();
 
-    }
-
-    //Takes a snapshot of the current frame to rollback to
-    public override MasterhitRollbackFrame SerializeFrame()
-    {
-        MasterhitRollbackFrame baseFrame = SerializeBaseFrame();
-        return baseFrame;
-    }
-
-    //Rolls back the entity to a given frame state
-    public override void DeserializeFrame(MasterhitRollbackFrame p_frame)
-    {
-        DeserializeBaseFrame(p_frame);
     }
 
     public void listenForDirection()
@@ -109,39 +95,39 @@ public class NeoSwordFrogMasterHit : MasterHit
     //Grab Methods
     public void SpawnTongue()
     {
-        if(tongue != null)deleteTongue();
+        if(g_tongue != null)deleteTongue();
 
-        tongue = GameController.Instance.CreatePrefab("SF_Tongue", transform.position + new Vector3(2.3f * movement.Facing,1.6f), transform.rotation);
-        tongue.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
-        foreach (HitboxCollision hitbox in tongue.GetComponentsInChildren<HitboxCollision>(true))
+        g_tongue = GameController.Instance.CreatePrefab("SF_Tongue", transform.position + new Vector3(2.3f * movement.Facing,1.6f), transform.rotation);
+        g_tongue.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
+        foreach (HitboxCollision hitbox in g_tongue.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
             hitbox.Facing = movement.Facing;
         }
-        tongue.transform.SetParent(drifter.gameObject.transform);
-        tongue.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
+        g_tongue.transform.SetParent(drifter.gameObject.transform);
+        g_tongue.GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)drifter.GetColor()]);
 
-        tongueTether = tongue.GetComponentInChildren<Tether>();
+        tongueTether = g_tongue.GetComponentInChildren<Tether>();
         tongueTether.setTargetLength(.64f);
         tongueTether.setSpeed(4f);
     }
 
-     public void deleteTongue()
+    public void deleteTongue()
     {
-        if(tongue != null)Destroy(tongue);
-        tongue = null;
+        if(g_tongue != null)Destroy(g_tongue);
+        g_tongue = null;
     }
 
     public void setTongueLen(float len)
     {
-        if(tongue == null)return;
+        if(g_tongue == null)return;
         tongueTether.setTargetLength(len);
     }
 
     public void freezeTether()
     {
-        if(tongue == null)return;
+        if(g_tongue == null)return;
         tongueTether.freezeLen();
     }
 
@@ -214,6 +200,60 @@ public class NeoSwordFrogMasterHit : MasterHit
         refreshHitboxID();
     }
 
+    //Rollback
+    //=========================================
+
+    //Takes a snapshot of the current frame to rollback to
+    public override MasterhitRollbackFrame SerializeFrame()
+    {
+        MasterhitRollbackFrame baseFrame = SerializeBaseFrame();
+
+        BasicProjectileRollbackFrame[] kunaiList = new BasicProjectileRollbackFrame[3];
+
+        for(int i = 0; i < kunaiList.Length; i++)// (GameObject kunai in kunais)
+            kunaiList[i] = kunais[i] != null ? kunais[i].GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null;
+
+        baseFrame.CharacterFrame = new SwordfrogRollbackFrame() 
+        {
+            ListeningForDirection = listeningForDirection,
+            Delaytime = delaytime,
+            Projnum = projnum,
+            Kunais = kunaiList,
+            Tongue = g_tongue != null ? g_tongue.GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null,
+
+        };
+
+        return baseFrame;
+    }
+
+    //Rolls back the entity to a given frame state
+    public override void DeserializeFrame(MasterhitRollbackFrame p_frame)
+    {
+        DeserializeBaseFrame(p_frame);
+        SwordfrogRollbackFrame sf_frame = ((SwordfrogRollbackFrame)p_frame.CharacterFrame);
+
+        listeningForDirection = sf_frame.ListeningForDirection;
+        delaytime = sf_frame.Delaytime;
+        projnum = sf_frame.Projnum;
+
+        // for(int i = 0; i <3; i)
+
+
+        // foreach(GameObject kunai in kunais)
+
+    }
+
 }
 
+public class SwordfrogRollbackFrame: ICharacterRollbackFrame
+{
+    public string Type { get; set; }
+    public bool ListeningForDirection;
+    public int Delaytime;
+    public int Projnum;
 
+    public BasicProjectileRollbackFrame Tongue;
+
+    public BasicProjectileRollbackFrame[] Kunais;
+}
+    

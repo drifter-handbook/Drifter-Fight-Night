@@ -57,6 +57,15 @@ public class SandbagMasterHit : MasterHit
 		dust = false;
 	}
 
+	public void clear()
+	{
+		Destroy(g_Sandspear1);
+		Destroy(g_Sandspear2);
+		g_Sandspear1 = null;
+		g_Sandspear2 = null;
+		dust = false;
+	}
+
 	public void Neutral_Special()
 	{
 
