@@ -9,6 +9,7 @@ public class BasicProjectileRollbackFrame: INetworkData
 
     public Vector2 Velocity;
     public Vector2 Position;
+    public float Rotation;
     public int Duration;
 
     public int AnimatorState;
@@ -74,6 +75,7 @@ public class InstantiatedEntityCleanup : MonoBehaviour
 
     		Velocity = rb !=null ? rb.velocity: Vector2.zero,
     		Position = rb !=null ? rb.position: Vector2.zero,
+            Rotation = rb !=null ? rb.rotation: 0,
     		AnimatorState = animator !=null ?animator.GetCurrentAnimatorStateInfo(0).shortNameHash : -1,
     		AnimatorTime = animator !=null ? animator.GetCurrentAnimatorStateInfo(0).normalizedTime : -1,
             Hitboxes = HitboxFrames
@@ -89,6 +91,7 @@ public class InstantiatedEntityCleanup : MonoBehaviour
     	{
     		rb.velocity = p_frame.Velocity;
     		rb.position = p_frame.Position;
+            rb.rotation = p_frame.Rotation;
     	}
     	
     	if(animator != null)

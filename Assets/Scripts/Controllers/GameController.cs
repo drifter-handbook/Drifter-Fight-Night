@@ -95,7 +95,6 @@ public class GameController : MonoBehaviour
     bool clearingPeers = false;
 
 
-
     public List<GameObject> NetworkTypePrefabs = new List<GameObject>();
 
     void Awake()

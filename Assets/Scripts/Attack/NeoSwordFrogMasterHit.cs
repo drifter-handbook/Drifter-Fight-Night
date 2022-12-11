@@ -44,9 +44,15 @@ public class NeoSwordFrogMasterHit : MasterHit
         }
 
         if(projnum >0)
-            fireKunaiGroundLine();
+        {
+            fireKunaiGroundLine(projnum); 
+            projnum--;
+        }
         else if(projnum <0)
-            fireKunaiAirLine();
+        {
+            fireKunaiAirLine(projnum);
+            projnum++;
+        }
 
     }
 
@@ -141,7 +147,7 @@ public class NeoSwordFrogMasterHit : MasterHit
         projnum = -1 * W_Down_Projectiles;
     }
 
-    void fireKunaiGroundLine()
+    void fireKunaiGroundLine(int index)
     {
         
 
@@ -149,56 +155,71 @@ public class NeoSwordFrogMasterHit : MasterHit
         Vector3 pos = new Vector3(.2f * movement.Facing, 2.7f, 1f);
 
 
-        GameObject arrowA = GameController.Instance.CreatePrefab("Kunai", transform.position + new Vector3(1.5f * movement.Facing, 1.5f + W_Down_Projectiles/5f + (W_Down_Projectiles - projnum) * .6f, 0), transform.rotation);
+        GameObject kunai = GameController.Instance.CreatePrefab("Kunai", transform.position + new Vector3(1.5f * movement.Facing, 1.5f + W_Down_Projectiles/5f + (W_Down_Projectiles - index) * .6f, 0), transform.rotation);
 
-        arrowA.transform.localScale = size;
-        arrowA.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + 50f * movement.Facing, 0);
+        kunai.transform.localScale = size;
+        kunai.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + 50f * movement.Facing, 0);
 
-        foreach (HitboxCollision hitbox in arrowA.GetComponentsInChildren<HitboxCollision>(true))
+        foreach (HitboxCollision hitbox in kunai.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;              
             hitbox.Facing = movement.Facing;
         }
 
-        projnum--;
-
         refreshHitboxID();
+        kunais[Mathf.Abs(index) - 1] = kunai;
 
     }
 
 
-    void fireKunaiAirLine()
+    void fireKunaiAirLine(int index)
     {
 
         Vector3 size = new Vector3(10f, 10f, 1f);
         Vector3 pos = new Vector3(.2f * movement.Facing, 2.7f, 1f);
 
     
-        float degreesA = movement.Facing >0 ? (335f  + projnum * 4f) : (215f  - projnum * 4f);
+        float degreesA = movement.Facing >0 ? (335f  + index * 4f) : (215f  - index * 4f);
         float radiansA = degreesA * Mathf.PI/180f;
         float posDegrees = (movement.Facing >0 ? 335f  : 215f);
         float posRadians = posDegrees * Mathf.PI/180f;
 
-        GameObject arrowA = GameController.Instance.CreatePrefab("Kunai", transform.position + new Vector3(movement.Facing * (-.5f - projnum/2f), projnum/-2f -.9f)
+        GameObject kunai = GameController.Instance.CreatePrefab("Kunai", transform.position + new Vector3(movement.Facing * (-.5f - index/2f), index/-2f -.9f)
                                                                  + pos, 
                                                                  Quaternion.Euler(0,0,posDegrees));
 
 
-        arrowA.transform.localScale = size;
-        arrowA.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + (Mathf.Cos(posRadians) *50f), Mathf.Sin(posRadians)*50f);
+        kunai.transform.localScale = size;
+        kunai.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + (Mathf.Cos(posRadians) *50f), Mathf.Sin(posRadians)*50f);
 
-        foreach (HitboxCollision hitbox in arrowA.GetComponentsInChildren<HitboxCollision>(true))
+        foreach (HitboxCollision hitbox in kunai.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
             hitbox.Facing = movement.Facing;
         }
 
-        projnum++;
+        refreshHitboxID();
+        kunais[Mathf.Abs(index) - 1] = kunai;
+    }
+
+    GameObject createKunai()
+    {
+        GameObject kunai = GameController.Instance.CreatePrefab("Kunai", transform.position,transform.rotation);
+        kunai.transform.localScale = new Vector3(10f, 10f, 1f);
+
+        foreach (HitboxCollision hitbox in kunai.GetComponentsInChildren<HitboxCollision>(true))
+        {
+            hitbox.parent = drifter.gameObject;
+            hitbox.AttackID = attacks.AttackID;
+            hitbox.Facing = movement.Facing;
+        }
 
         refreshHitboxID();
+        return kunai;
     }
+
 
     //Rollback
     //=========================================
@@ -211,7 +232,7 @@ public class NeoSwordFrogMasterHit : MasterHit
         BasicProjectileRollbackFrame[] kunaiList = new BasicProjectileRollbackFrame[3];
 
         for(int i = 0; i < kunaiList.Length; i++)// (GameObject kunai in kunais)
-            kunaiList[i] = kunais[i] != null ? kunais[i].GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null;
+            kunaiList[i] = (kunais[i] != null ? kunais[i].GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null);
 
         baseFrame.CharacterFrame = new SwordfrogRollbackFrame() 
         {
@@ -236,11 +257,22 @@ public class NeoSwordFrogMasterHit : MasterHit
         delaytime = sf_frame.Delaytime;
         projnum = sf_frame.Projnum;
 
-        // for(int i = 0; i <3; i)
 
 
-        // foreach(GameObject kunai in kunais)
-
+        for(int i = 0; i <3; i++)
+        {
+            if(sf_frame.Kunais[i] != null){
+                if(kunais[i] == null)kunais[i] = createKunai();
+                kunais[i].GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(sf_frame.Kunais[i]);
+            }
+        
+            //Projectile does not exist in rollback frame
+            else if(sf_frame.Kunais[i] == null)
+            {
+                Destroy(kunais[i]);
+                kunais[i] = null;
+            }  
+        }
     }
 
 }

@@ -9,11 +9,6 @@ using HouraiTeahouse.Backroll;
 public class NetworkPlayers : MonoBehaviour
 {
 
-    //GGPO
-    //BackrollSession ggpo;
-    //BackrollErrorCode result;
-    //BackrollSessionCallbacks cb;
-
     NetworkSyncToHost syncFromClients;
 
     public List<GameObject> spawnPoints;
@@ -44,19 +39,11 @@ public class NetworkPlayers : MonoBehaviour
         // create players
         foreach (CharacterSelectState charSel in CharacterMenu.charSelStates.Values)
             CreatePlayer(charSel.PeerID);
+    }
 
 
-        /* fill in all callback functions */
-        // cb.SaveGameStateCallback = 
-        // cb.LoadGameStateCallback = 
-        // cb.FreeBuffer = 
-        // cb.AdvanceFrame = 
-
-        /* Start a new session */
-
-        //BackrollSessionConfig config = new BackrollSessionConfig();
-        //result = Backroll.StartSession(); 
-
+    void free_buffer(IntPtr input)
+    {
 
     }
 

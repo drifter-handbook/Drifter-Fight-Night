@@ -98,8 +98,8 @@ public class SandbagMasterHit : MasterHit
 
 	void CreateSandSpears()
 	{
-		GameObject g_Sandspear1 = GameController.Instance.CreatePrefab("Sandspear", transform.position + new Vector3(1.2f * movement.Facing, 1.3f,1), transform.rotation);
-		GameObject g_Sandspear2 = GameController.Instance.CreatePrefab("Sandspear", transform.position + new Vector3(-1.5f * movement.Facing, 1.3f,-1), transform.rotation);
+		g_Sandspear1 = GameController.Instance.CreatePrefab("Sandspear", transform.position + new Vector3(1.2f * movement.Facing, 1.3f,1), transform.rotation);
+		g_Sandspear2 = GameController.Instance.CreatePrefab("Sandspear", transform.position + new Vector3(-1.5f * movement.Facing, 1.3f,-1), transform.rotation);
 		g_Sandspear1.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
 		g_Sandspear2.transform.localScale = new Vector3(-10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in g_Sandspear1.GetComponentsInChildren<HitboxCollision>(true))
