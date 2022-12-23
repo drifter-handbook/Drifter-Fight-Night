@@ -66,6 +66,7 @@ public class PlayerMovement : MonoBehaviour
     public float jumpTimer = 30f;
 
     GameObject SuperCancel;
+    string canceltype = "Feint_Cancel";
 
     //Situational Iteration variables
     int dropThroughTime = 18;
@@ -799,6 +800,7 @@ public class PlayerMovement : MonoBehaviour
             hitstun = false;
             drifter.status.clearStunStatus();
             spawnSuperParticle("Hyper_Guard_Burst",1f,8);
+            canceltype = "Hyper_Guard_Burst";
             drifter.status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,1);
             drifter.status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,480);
             drifter.PlayAnimation("Burst");
@@ -811,6 +813,7 @@ public class PlayerMovement : MonoBehaviour
             if(drifter.superCharge >= 2f && !drifter.canFeint)
             {
                 spawnSuperParticle("Offensive_Cancel",2f,20);
+                canceltype = "Offensive_Cancel";
                 drifter.PlayAnimation("Burst");
                 pauseGravity();
                 drifter.status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,1);
@@ -819,6 +822,7 @@ public class PlayerMovement : MonoBehaviour
             else if(drifter.canFeint)
             {
                 spawnSuperParticle("Feint_Cancel",1f,8);
+                canceltype = "Feint_Cancel";
                 drifter.PlayAnimation("Burst");
                 pauseGravity();
                 drifter.status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,1);
@@ -838,6 +842,7 @@ public class PlayerMovement : MonoBehaviour
             drifter.status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,480);
 
             spawnSuperParticle("Defensive_Cancel",2f,8);
+            canceltype = "Defensive_Cancel";
             if(currentJumps+1 < numberOfJumps) currentJumps++;
             drifter.PlayAnimation("Burst");
             pauseGravity();
@@ -845,6 +850,7 @@ public class PlayerMovement : MonoBehaviour
         else if (!drifter.guarding && drifter.superCharge >= 1f && !drifter.status.HasStunEffect())
         {
             spawnSuperParticle("Time_Cancel",1f,8);
+            canceltype = "Time_Cancel";
             drifter.PlayAnimation("Burst");
             pauseGravity();
             drifter.status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,1);
@@ -924,6 +930,7 @@ public class PlayerMovement : MonoBehaviour
             CurrentSpeed = currentSpeed,
             DelayedFacingFlip = delayedFacingFlip,
             SuperCancel = this.SuperCancel != null ? SuperCancel.GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null,
+            CancelType = canceltype
 
         };
     }
@@ -957,12 +964,12 @@ public class PlayerMovement : MonoBehaviour
         prevVelocity = p_frame.PrevVelocity;
         currentSpeed = p_frame.CurrentSpeed;
         delayedFacingFlip = p_frame.DelayedFacingFlip;
+        canceltype = p_frame.CancelType;
 
         //Super Particle reset
         if(p_frame.SuperCancel != null)
         {
-            //TODO FIX THIS
-            if(SuperCancel == null)spawnSuperParticle("Feint_Cancel",1f,8);
+            if(SuperCancel == null)spawnSuperParticle(canceltype,1f,8);
             SuperCancel.GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(p_frame.SuperCancel);
         }
         //Projectile does not exist in rollback frame
@@ -1005,5 +1012,6 @@ public class MovementRollbackFrame: INetworkData
     public float CurrentSpeed;
     public bool DelayedFacingFlip;
     public BasicProjectileRollbackFrame SuperCancel;
+    public string CancelType;
 
 }

@@ -54,6 +54,14 @@ public class NeoSwordFrogMasterHit : MasterHit
             projnum++;
         }
 
+
+        //Update Child Frames
+        foreach(GameObject kunai in kunais)
+            if(kunai != null)
+                kunai.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
+
+        if(g_tongue != null) g_tongue.GetComponent<Tether>().UpdateFrame();
+    
     }
 
     public void listenForDirection()
@@ -150,7 +158,6 @@ public class NeoSwordFrogMasterHit : MasterHit
     void fireKunaiGroundLine(int index)
     {
         
-
         Vector3 size = new Vector3(10f * movement.Facing, 10f, 1f);
         Vector3 pos = new Vector3(.2f * movement.Facing, 2.7f, 1f);
 
@@ -240,7 +247,7 @@ public class NeoSwordFrogMasterHit : MasterHit
             Delaytime = delaytime,
             Projnum = projnum,
             Kunais = kunaiList,
-            Tongue = g_tongue != null ? g_tongue.GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null,
+            Tongue = g_tongue != null ? g_tongue.GetComponent<Tether>().SerializeFrame(): null,
 
         };
 
@@ -258,21 +265,28 @@ public class NeoSwordFrogMasterHit : MasterHit
         projnum = sf_frame.Projnum;
 
 
-
         for(int i = 0; i <3; i++)
         {
             if(sf_frame.Kunais[i] != null){
                 if(kunais[i] == null)kunais[i] = createKunai();
                 kunais[i].GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(sf_frame.Kunais[i]);
             }
-        
-            //Projectile does not exist in rollback frame
-            else if(sf_frame.Kunais[i] == null)
+            else
             {
                 Destroy(kunais[i]);
                 kunais[i] = null;
             }  
         }
+
+        if(sf_frame.Tongue != null){
+            if(g_tongue== null) SpawnTongue();
+            g_tongue.GetComponent<Tether>().DeserializeFrame(sf_frame.Tongue);
+        }
+        else
+        {
+            Destroy(g_tongue);
+            g_tongue = null;
+        }  
     }
 
 }
@@ -284,7 +298,7 @@ public class SwordfrogRollbackFrame: ICharacterRollbackFrame
     public int Delaytime;
     public int Projnum;
 
-    public BasicProjectileRollbackFrame Tongue;
+    public TetherRollbackFrame Tongue;
 
     public BasicProjectileRollbackFrame[] Kunais;
 }

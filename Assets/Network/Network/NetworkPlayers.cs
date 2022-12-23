@@ -15,6 +15,8 @@ public class NetworkPlayers : MonoBehaviour
 
     public GameObject playerInputPrefab;
 
+    BackrollController br = new BackrollController();
+
     DrifterRollbackFrame[,] rollbackTest = new DrifterRollbackFrame[5,2];
 
     //Dictionary<int, GameObject> clientPlayers = new Dictionary<int, GameObject>();
@@ -39,12 +41,8 @@ public class NetworkPlayers : MonoBehaviour
         // create players
         foreach (CharacterSelectState charSel in CharacterMenu.charSelStates.Values)
             CreatePlayer(charSel.PeerID);
-    }
 
-
-    void free_buffer(IntPtr input)
-    {
-
+        br.makeLobby();//InitializeRollbackSession();
     }
 
     // Update is called once per frame
@@ -146,8 +144,8 @@ public class NetworkPlayers : MonoBehaviour
         input.Special = playerInputAction.FindAction("Special").ReadValue<float>() > 0;
         input.Super = playerInputAction.FindAction("Super").ReadValue<float>() > 0;
         input.Guard = playerInputAction.FindAction("Guard 1").ReadValue<float>() > 0;
-        input.MoveX = playerInputAction.FindAction("Horizontal").ReadValue<float>();
-        input.MoveY = playerInputAction.FindAction("Vertical").ReadValue<float>();
+        input.MoveX = (int)playerInputAction.FindAction("Horizontal").ReadValue<float>();
+        input.MoveY = (int)playerInputAction.FindAction("Vertical").ReadValue<float>();
         input.Grab = playerInputAction.FindAction("Grab").ReadValue<float>() > 0;
 
         input.Pause = playerInputAction.FindAction("Start").ReadValue<float>()>0;
@@ -174,11 +172,11 @@ public class NetworkPlayers : MonoBehaviour
 
 
 [Serializable]
-public class PlayerInputData : INetworkData, ICloneable
+public class PlayerInputData :INetworkData, ICloneable
 {
     public string Type { get; set; }
-    public float MoveX;
-    public float MoveY;
+    public int MoveX;
+    public int MoveY;
     public bool Jump;
     public bool Light;
     public bool Special;

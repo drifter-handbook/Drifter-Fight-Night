@@ -14,8 +14,7 @@ public class BasicProjectileRollbackFrame: INetworkData
 
     public int AnimatorState;
     public float AnimatorTime;
-    public HitboxRollbackFrame[] Hitboxes;
-    
+    public HitboxRollbackFrame[] Hitboxes;    
 }
 
 public class InstantiatedEntityCleanup : MonoBehaviour
@@ -27,12 +26,10 @@ public class InstantiatedEntityCleanup : MonoBehaviour
 
     HitboxCollision[] hitboxes;
 
-	void FixedUpdate()
-	{
-		UpdateFrame();
-	}
+    //Remove Me
+    public bool updateSelf = false;
 
-	void UpdateFrame()
+	public void UpdateFrame()
 	{
 		if(duration >0)
 		{
@@ -42,7 +39,12 @@ public class InstantiatedEntityCleanup : MonoBehaviour
 		}
 	}
 
-    void Start()
+    void FixedUpdate()
+    {
+        if(updateSelf)UpdateFrame();
+    }
+
+    void Awake()
     {
         hitboxes = GetComponentsInChildren<HitboxCollision>();
     }
@@ -61,7 +63,6 @@ public class InstantiatedEntityCleanup : MonoBehaviour
     //Takes a snapshot of the current frame to rollback to
     public BasicProjectileRollbackFrame SerializeFrame()
     {
-
         HitboxRollbackFrame[] HitboxFrames = new HitboxRollbackFrame[hitboxes.Length];
         //Searialize each hitbox
         for(int i = 0; i < hitboxes.Length; i++)

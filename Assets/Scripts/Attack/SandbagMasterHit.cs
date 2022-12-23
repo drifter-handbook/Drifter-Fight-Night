@@ -12,7 +12,6 @@ public class SandbagMasterHit : MasterHit
 
 	int dustCount = 7;
 
-
 	override public void UpdateFrame()
     {
         base.UpdateFrame();
@@ -28,6 +27,10 @@ public class SandbagMasterHit : MasterHit
 			}
         	dustCount +=1;
 		}
+
+		if(g_Sandblast != null) g_Sandblast.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
+		if(g_Sandblast != null) g_Sandspear1.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
+		if(g_Sandblast != null) g_Sandspear2.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
 
     }
 
@@ -151,7 +154,7 @@ public class SandbagMasterHit : MasterHit
     		g_Sandblast.GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(sb_frame.Sandblast);
     	}
     	//Projectile does not exist in rollback frame
-    	else if(sb_frame.Sandblast == null)
+    	else
     	{
     		Destroy(g_Sandblast);
     		g_Sandblast = null;
@@ -166,7 +169,7 @@ public class SandbagMasterHit : MasterHit
 
     	}
     	//Projectile does not exist in rollback frame
-    	else if(sb_frame.Sandspear1 == null)
+    	else
     	{
     		Destroy(g_Sandspear1);
     		Destroy(g_Sandspear2);

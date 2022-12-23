@@ -38,7 +38,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
 
     GameObject CreateExplosion(Collider2D other, int playerIndex)
     {
-        GameObject deathExplosion = host.CreateNetworkObject("DeathExplosion", other.transform.position, Quaternion.identity);
+        GameObject deathExplosion = GameController.Instance.CreatePrefab("DeathExplosion", other.transform.position, Quaternion.identity);
         deathExplosion.transform.position =
             ClampObjectToScreenSpace.FindPosition(deathExplosion.transform);
         deathExplosion.transform.eulerAngles = new Vector3(0,0,((other.gameObject.GetComponent<Rigidbody2D>().velocity.y>0)?1:-1) * Vector3.Angle(other.gameObject.GetComponent<Rigidbody2D>().velocity, new Vector3(1f,0,0)));
@@ -48,7 +48,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
 
     void CreateHalo()
     {
-        GameObject halo = host.CreateNetworkObject("HaloPlatform",
+        GameObject halo = GameController.Instance.CreatePrefab("HaloPlatform",
             new Vector2(0, 23),
             Quaternion.identity
         );

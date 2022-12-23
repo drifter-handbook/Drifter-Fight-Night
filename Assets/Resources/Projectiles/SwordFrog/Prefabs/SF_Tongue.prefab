@@ -101,7 +101,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: a6134cb89240ec142baa4881a65b1c4e, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 1
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
@@ -121,6 +121,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 731e47c0d855dee4585ada17eeb71abd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isActive: 1
+  sprite: {fileID: 6050475167655189216}
   hitbox: {fileID: 4165270843129469797}
 --- !u!114 &2098644914915770409
 MonoBehaviour:
