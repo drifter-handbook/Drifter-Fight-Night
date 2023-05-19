@@ -29,6 +29,8 @@ public class GameController : MonoBehaviour
     public bool IsOnline;
     public bool IsTraining;
 
+    public DrifterType Trainee = DrifterType.Sandbag;
+
     //public const int MAX_PLAYERS = 4;
 
     // Evans's horrid hack, please help me fix this Lyn

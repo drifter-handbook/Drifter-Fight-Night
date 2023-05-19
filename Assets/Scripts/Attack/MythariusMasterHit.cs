@@ -5,6 +5,10 @@ using UnityEngine;
 public class MythariusMasterHit : MasterHit
 {
 
+    bool listeningForDirection = false;
+    int delaytime = 0;
+    Vector2 HeldDirection = Vector2.zero;
+
     GameObject bird;
 
     //Takes a snapshot of the current frame to rollback to

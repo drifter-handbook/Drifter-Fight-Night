@@ -475,7 +475,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //Guard
-        if(drifter.input[0].Guard && canGuard && !ledgeHanging)
+        if(drifter.input[0].Guard && canGuard)
         {
             //shift is guard
             if(!drifter.guarding)
@@ -762,6 +762,7 @@ public class PlayerMovement : MonoBehaviour
             spawnJuiceParticle(BodyCollider.bounds.center + new Vector3(Facing * 1.5f,0), MovementParticleMode.Dash_Ring, Quaternion.Euler(0f,0f,0f), false);
             drifter.status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,480);
             drifter.PlayAnimation("Dash");
+            drifter.status.ApplyStatusEffect(PlayerStatusEffect.INVULN,10);
             jumping = false;
             currentDashes--;
             return true;

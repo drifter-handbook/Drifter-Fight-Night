@@ -10,19 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 193b57c47c6e0024ebee715bea3d6f17, type: 3}
-  m_Name: Up_Tilt
+  m_Name: W_Neutral_Side
   m_EditorClassIdentifier: 
-  AttackDamage: 15
-  Knockback: 20
-  KnockbackScale: 0.6
-  HitStun: 25
-  ShieldStun: 0
-  HitStop: -1
-  hitType: 1
+  AttackDamage: 5
+  Knockback: 30
+  KnockbackScale: 0
+  pushBlock: 20
+  dynamicStun: 1
+  firstActiveFrame: 5
+  finalFrame: 27
+  HitStun: 15
+  ShieldStun: -17
+  HitStop: 20
+  hitType: 0
   mirrorKnockback: 0
-  AngleOfImpact: 75
-  StatusEffect: 20
-  StatusDuration: 0.1
+  AngleOfImpact: 15
+  StatusEffect: 29
+  StatusDuration: 60
   HitFX: {fileID: 11400000, guid: e007b7ceac776034b9838dfd15059cdd, type: 2}
   canHitGrounded: 1
   canHitAerial: 1

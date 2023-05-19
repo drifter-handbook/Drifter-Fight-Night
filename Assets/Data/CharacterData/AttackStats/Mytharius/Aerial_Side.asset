@@ -15,15 +15,19 @@ MonoBehaviour:
   AttackDamage: 7
   Knockback: 22
   KnockbackScale: 0.2
-  HitStun: 6
+  pushBlock: 10
+  dynamicStun: 1
+  firstActiveFrame: 5
+  finalFrame: 40
+  HitStun: 0
   ShieldStun: 0
-  HitStop: -1
+  HitStop: 10
   hitType: 0
   mirrorKnockback: 0
   AngleOfImpact: 55
   StatusEffect: 20
-  StatusDuration: 0.1
-  HitFX: {fileID: 11400000, guid: c40ffbef4bd5ad54dbc61660fa4d822a, type: 2}
+  StatusDuration: 0
+  HitFX: {fileID: 11400000, guid: e007b7ceac776034b9838dfd15059cdd, type: 2}
   canHitGrounded: 1
   canHitAerial: 1
   canHitKnockedDown: 0

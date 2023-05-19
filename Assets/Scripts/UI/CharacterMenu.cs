@@ -160,7 +160,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         // for(int i = -1; i < GameController.Instance.controls.Count-1; i++)
         //     AddCharSelState(i);
 
-        if(GameController.Instance.IsTraining) AddCharSelState(8,DrifterType.Sandbag);
+        if(GameController.Instance.IsTraining) AddCharSelState(8,GameController.Instance.Trainee);
 
     }
     IEnumerator delayJoining()

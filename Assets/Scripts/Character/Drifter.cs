@@ -252,7 +252,7 @@ public class Drifter : MonoBehaviour
         knockedDown = false;
         if(transform.position.z != -1) transform.position = new Vector3(transform.position.x,transform.position.y,-1);
 
-        if(input[0].Guard)
+        if(input[0].Guard && !movement.ledgeHanging)
         {
             guarding = true;
             PlayAnimation(movement.hitstun?"Guard":"Guard_Start");

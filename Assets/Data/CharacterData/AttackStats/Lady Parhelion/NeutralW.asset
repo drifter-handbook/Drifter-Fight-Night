@@ -12,16 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 193b57c47c6e0024ebee715bea3d6f17, type: 3}
   m_Name: NeutralW
   m_EditorClassIdentifier: 
-  AttackDamage: 24
+  AttackDamage: 17
   Knockback: 28
-  KnockbackScale: 1.2
-  hasStaticHitstun: 0
-  HitStun: 8
-  hitType: 1
+  KnockbackScale: 0.9
+  pushBlock: 30
+  dynamicStun: 1
+  firstActiveFrame: 30
+  finalFrame: 60
+  HitStun: 20
+  ShieldStun: 20
+  HitStop: 30
+  hitType: 0
   mirrorKnockback: 0
   AngleOfImpact: 60
   StatusEffect: 20
-  StatusDuration: 0.1
-  HitFX: {fileID: 0}
+  StatusDuration: 0
+  HitFX: {fileID: 11400000, guid: e007b7ceac776034b9838dfd15059cdd, type: 2}
   canHitGrounded: 1
   canHitAerial: 1
+  canHitKnockedDown: 0
+  scalingLowerBound: -1
+  scalingUpperBound: -1
