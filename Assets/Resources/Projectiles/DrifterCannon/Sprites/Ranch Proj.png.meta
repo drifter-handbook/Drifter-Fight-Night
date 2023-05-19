@@ -80,6 +80,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -89,8 +91,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -111,9 +113,12 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
@@ -159,7 +164,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 48e7dad21f6a53840800000000000000
-      internalID: 5203248499280150148
+      internalID: 3610683630129850731
       vertices: []
       indices: 
       edges: []
@@ -180,7 +185,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: b19e7a86868d173c0800000000000000
-      internalID: -4363468621001266917
+      internalID: 9160270168477197872
       vertices: []
       indices: 
       edges: []
@@ -201,7 +206,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: d4e388cc2975bd760800000000000000
-      internalID: 7483671493814533709
+      internalID: 4069235956708621015
       vertices: []
       indices: 
       edges: []
@@ -426,6 +431,20 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Ranch Proj_7: 7902679918256320263
+      Ranch Proj_6: -4787601614159193112
+      Ranch Proj_0: 3610683630129850731
+      Ranch Proj_2: 4069235956708621015
+      Ranch Proj_5: 6802247894070802807
+      Ranch Proj_3: -5971580984471922808
+      Ranch Proj_4: 2425454129527600286
+      Ranch Proj_8: 6016387968386385607
+      Ranch Proj_1: 9160270168477197872
+      Ranch Proj_9: -8662404505362714649
+      Ranch Proj_12: -7380710873408659611
+      Ranch Proj_11: 3797923274781914740
+      Ranch Proj_10: -8024200732921182335
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

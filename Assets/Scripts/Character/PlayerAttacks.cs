@@ -21,6 +21,19 @@ public class SingleAttack
     public bool hasAirVariant;
 }
 
+public class AttackRollbackFrame: INetworkData
+{
+    public string Type { get; set; }
+    public int AttackID;
+    public int nextID;
+    public DrifterAttackType AttackType;
+    public int CurrentUpRecoveries;
+    public int CurrentDownRecoveries;
+    public int CurrentSideRecoveries;
+    public int CurrentNeutralRecoveries;
+    public HitboxRollbackFrame[] Hitboxes;
+}
+
 public class PlayerAttacks : MonoBehaviour
 {
     public static Dictionary<DrifterAttackType, string> AnimatorStates = new Dictionary<DrifterAttackType, string>()
@@ -43,14 +56,17 @@ public class PlayerAttacks : MonoBehaviour
         { DrifterAttackType.Super_Cancel, "Super_Cancel" },
     };
 
-    static int nextID = 0;
+    
     // get a new attack ID
-    public static int NextID { get { nextID++;if(nextID>100)nextID=0; return nextID; } }
+    
+    HitboxCollision[] hitboxes;
+
 
     // current attack ID and Type, used for outgoing attacks
-    public int AttackID { get; private set; }
-    public DrifterAttackType AttackType { get; private set; }
+    public int AttackID { get;  set; }
+    public DrifterAttackType AttackType { get;  set; }
     public List<SingleAttack> AttackMap = new List<SingleAttack>();
+
     public Dictionary<DrifterAttackType,SingleAttackData> Attacks = new Dictionary<DrifterAttackType,SingleAttackData>();
     public Dictionary<DrifterAttackType,bool> AttackVariants = new Dictionary<DrifterAttackType,bool>();
    
@@ -64,6 +80,10 @@ public class PlayerAttacks : MonoBehaviour
     public bool shareRecoveries = false;
 
     [NonSerialized]
+    public int nextID = 0;
+
+    public int NextID { get { nextID++;if(nextID>63)nextID=0; return nextID; } set{ nextID = value;}}
+    [NonSerialized]
     public int currentUpRecoveries;
     [NonSerialized]
     public int currentDownRecoveries;
@@ -72,18 +92,7 @@ public class PlayerAttacks : MonoBehaviour
     [NonSerialized]
     public int currentNeutralRecoveries;
 
-    [NonSerialized]
-    public bool ledgeHanging = false;
-    [NonSerialized]
-    public int Facing = 0;
-
     Drifter drifter;
-    PlayerStatus status;
-    Animator animator;
-    IMasterHit hit;
-    PlayerMovement movement;
-
-    NetworkSync sync;
 
     void Awake()
     {
@@ -99,30 +108,29 @@ public class PlayerAttacks : MonoBehaviour
     void Start()
     {
         drifter = GetComponent<Drifter>();
-        animator = drifter.animator;
-        status = GetComponent<PlayerStatus>();
-        movement = GetComponent<PlayerMovement>();
-        hit = GetComponentInChildren<IMasterHit>();
-        sync = GetComponent<NetworkSync>();
         currentUpRecoveries = maxRecoveries;
         currentDownRecoveries = maxRecoveries;
         currentSideRecoveries = maxRecoveries;
         currentNeutralRecoveries = maxRecoveries;
+
+        hitboxes = GetComponentsInChildren<HitboxCollision>();
     }
 
     // Update is called once per frame
-    public void UpdateInput()
+    public void UpdateFrame()
     {
 
-        if (!GameController.Instance.IsHost || GameController.Instance.IsPaused)
+        if (GameController.Instance.IsPaused)
             return;
 
-        bool canAct = !status.HasStunEffect() && !drifter.guarding && !ledgeHanging;
-        bool canSpecial = !status.HasStunEffect() && !ledgeHanging;
+        if(drifter.input[0].Pause && ! drifter.input[1].Pause) NetworkPlayers.Instance.rollemback();
 
-        if((movement.grounded && !status.HasStatusEffect(PlayerStatusEffect.END_LAG)) || status.HasEnemyStunEffect()) resetRecovery();
+        bool canAct = !drifter.status.HasStunEffect() && !drifter.guarding && !drifter.movement.ledgeHanging;
+        bool canSpecial = !drifter.status.HasStunEffect() && !drifter.movement.ledgeHanging;
+
+        if((drifter.movement.grounded && !drifter.status.HasStatusEffect(PlayerStatusEffect.END_LAG)) || drifter.status.HasEnemyStunEffect()) resetRecovery();
         
-        if(superPressed())  movement.superCancel();
+        if(superPressed())  drifter.movement.superCancel();
         
         else if (grabPressed() && canAct) useGrab();
 
@@ -133,7 +141,7 @@ public class PlayerAttacks : MonoBehaviour
 
     public void useSpecial()
     {
-        movement.canLandingCancel = false;
+        drifter.movement.canLandingCancel = false;
         if(drifter.input[0].MoveY > 0 && currentUpRecoveries > 0)
             {
                 StartAttack(DrifterAttackType.W_Up);
@@ -176,7 +184,7 @@ public class PlayerAttacks : MonoBehaviour
     {
         drifter.canSpecialCancelFlag = true;
 
-        if (movement.grounded)
+        if (drifter.movement.grounded)
         {
             if(drifter.input[0].MoveY > 0)StartAttack(DrifterAttackType.Ground_Q_Up);
             else if(drifter.input[0].MoveY < 0)StartAttack(DrifterAttackType.Ground_Q_Down);
@@ -185,7 +193,7 @@ public class PlayerAttacks : MonoBehaviour
         }
         else
         {   
-            movement.canLandingCancel = true;    
+            drifter.movement.canLandingCancel = true;    
             if(drifter.input[0].MoveY > 0)StartAttack(DrifterAttackType.Aerial_Q_Up);
             else if(drifter.input[0].MoveY < 0)StartAttack(DrifterAttackType.Aerial_Q_Down);
             else if(drifter.input[0].MoveX!=0)StartAttack(DrifterAttackType.Aerial_Q_Side);
@@ -195,10 +203,10 @@ public class PlayerAttacks : MonoBehaviour
 
     public void useGrab()
     {
-        if (movement.grounded)StartAttack(DrifterAttackType.E_Side);
+        if (drifter.movement.grounded)StartAttack(DrifterAttackType.E_Side);
         else
         {
-            movement.canLandingCancel = true;
+            drifter.movement.canLandingCancel = true;
             StartAttack(DrifterAttackType.E_Air);  
         } 
     }
@@ -261,12 +269,11 @@ public class PlayerAttacks : MonoBehaviour
     public void StartAttack(DrifterAttackType attackType)
     {
         drifter.gainSuperMeter(.05f);
-        movement.jumping = false;
-        SetHitboxesActive(false);
-        status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,480);
+        drifter.movement.jumping = false;
+        drifter.status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,480);
         if(!AttackVariants[attackType])
             drifter.PlayAnimation(AnimatorStates[attackType]);
-        else if(movement.grounded)
+        else if(drifter.movement.grounded)
             drifter.PlayAnimation(AnimatorStates[attackType] + "_Ground");
         else
             drifter.PlayAnimation(AnimatorStates[attackType] + "_Air");
@@ -276,9 +283,9 @@ public class PlayerAttacks : MonoBehaviour
 
     }
 
-    public void Hit(DrifterAttackType attackType, int attackID, GameObject target)
+    public SingleAttackData GetCurrentAttackData()
     {
-        //UnityEngine.Debug.Log("HIT DETECTED IN PLAYER ATTACKS");
+        return Attacks[AttackType];
     }
 
     public void SetupAttackID(DrifterAttackType attackType)
@@ -287,12 +294,9 @@ public class PlayerAttacks : MonoBehaviour
         AttackID = NextID;
         foreach (HitboxCollision hitbox in GetComponentsInChildren<HitboxCollision>(true))
         {
-            hitbox.GetComponent<Collider2D>().enabled = false;
             hitbox.AttackID = AttackID;
-            hitbox.AttackType = AttackType;
-            hitbox.AttackData = Attacks[AttackType];
             hitbox.isActive = true;
-            hitbox.Facing = Facing;
+            hitbox.Facing = drifter.movement.Facing;
         }
     }
     // called by hitboxes during attack animation
@@ -306,12 +310,45 @@ public class PlayerAttacks : MonoBehaviour
             hitbox.isActive = true;
         }
     }
-    // set hitboxes
-    public void SetHitboxesActive(bool active)
+
+    public AttackRollbackFrame SerializeFrame()
     {
-        foreach (HitboxCollision hitbox in GetComponentsInChildren<HitboxCollision>(true))
+        HitboxRollbackFrame[] HitboxFrames = new HitboxRollbackFrame[hitboxes.Length];
+        //Searialize each hitbox
+        for(int i = 0; i < hitboxes.Length; i++)
         {
-            hitbox.isActive = active;
+            HitboxFrames[i] = hitboxes[i].SerializeFrame();
         }
+
+        return new AttackRollbackFrame()
+        {
+            AttackID = this.AttackID,
+            nextID = this.nextID,
+            AttackType = this.AttackType,
+            CurrentUpRecoveries = currentUpRecoveries,
+            CurrentDownRecoveries = currentDownRecoveries,
+            CurrentSideRecoveries = currentSideRecoveries,
+            CurrentNeutralRecoveries = currentNeutralRecoveries,
+            Hitboxes = HitboxFrames
+        };
+    }
+
+    //Rolls back the entity to a given frame state
+    public  void DeserializeFrame(AttackRollbackFrame p_frame)
+    {
+            AttackID = p_frame.AttackID;
+            nextID = p_frame.nextID;
+            AttackType = p_frame.AttackType;
+            currentUpRecoveries = p_frame.CurrentUpRecoveries;
+            currentDownRecoveries = p_frame.CurrentDownRecoveries;
+            currentSideRecoveries = p_frame.CurrentSideRecoveries;
+            currentNeutralRecoveries = p_frame.CurrentNeutralRecoveries;
+
+            for(int i = 0; i < p_frame.Hitboxes.Length; i++)
+            {
+                hitboxes[i].DeserializeFrame(p_frame.Hitboxes[i]);
+            }
+
+
     }
 }

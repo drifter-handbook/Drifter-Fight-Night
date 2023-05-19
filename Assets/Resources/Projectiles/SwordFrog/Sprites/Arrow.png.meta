@@ -53,6 +53,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -62,8 +64,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -84,9 +86,12 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
@@ -132,7 +137,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: d214ca465ec6f9b50800000000000000
-      internalID: 6602115311240757549
+      internalID: -4346244404228752641
       vertices: []
       indices: 
       edges: []
@@ -153,7 +158,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 792e5368b4ee75880800000000000000
-      internalID: -8622160953435889001
+      internalID: -6662812116773042688
       vertices: []
       indices: 
       edges: []
@@ -294,6 +299,15 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Arrow_6: -7742078795318259045
+      Arrow_0: -4346244404228752641
+      Arrow_5: -7017944715137372645
+      Arrow_7: 7160053665899228399
+      Arrow_4: 4428292855295335941
+      Arrow_2: -2292719611878453243
+      Arrow_3: 5946551882310926714
+      Arrow_1: -6662812116773042688
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

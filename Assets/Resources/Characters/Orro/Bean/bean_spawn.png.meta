@@ -65,6 +65,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -74,8 +76,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -96,9 +98,12 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
@@ -432,6 +437,21 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      bean_spawn_6: -4298117220886109739
+      bean_spawn_2: -1121036325987216676
+      bean_spawn_4: 8365810114229449311
+      bean_spawn_1: -2741567813497659065
+      bean_spawn_0: 2275705896603085592
+      bean_spawn_12: 8986126883048757761
+      bean_spawn_9: -6788252027384421090
+      bean_spawn_5: 3167171873750924436
+      bean_spawn_13: -5209925842367378922
+      bean_spawn_11: -6266003858979705613
+      bean_spawn_8: -8088017324532212176
+      bean_spawn_7: -3583105693320906483
+      bean_spawn_3: 8257171665293206569
+      bean_spawn_10: -4070042674745003707
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

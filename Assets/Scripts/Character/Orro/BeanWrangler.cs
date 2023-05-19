@@ -14,7 +14,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
 
     public int Bean_Respawn_Delay = 180;
 
-    SyncAnimatorStateHost anim;
+    Animator animator;
     PlayerAttacks attacks;
     GameObject Orro;
     BeanState targetPos;
@@ -44,10 +44,8 @@ public class BeanWrangler : NonplayerHurtboxHandler
     new void Start()
     {
 
-        if(!GameController.Instance.IsHost)return;
         base.Start();
-
-        anim = GetComponent<SyncAnimatorStateHost>();
+        animator = GetComponent<Animator>();
         //Movement Stuff
         targetPos = new BeanState(rb.position, facing);
         Orro = gameObject.GetComponentInChildren<HitboxCollision>().parent;
@@ -55,12 +53,12 @@ public class BeanWrangler : NonplayerHurtboxHandler
 
     }
 
-    new void FixedUpdate()
+    public override void UpdateFrame()
     {
 
-        if(!GameController.Instance.IsHost)return;
+        base.UpdateFrame();
         prevHitstunDuration = HitstunDuration;
-        base.FixedUpdate();
+        
         if(HitstunDuration >0) 
             return;
         else if(prevHitstunDuration != HitstunDuration && HitstunDuration <=0 && alive)
@@ -85,7 +83,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
                     {
                         percentage = 0;
                         alive = true;
-                        anim.SetState("Bean_Spawn");
+                        PlayAnimation("Bean_Spawn");
                     }
                 }
 
@@ -124,18 +122,21 @@ public class BeanWrangler : NonplayerHurtboxHandler
         }
     }
 
+    public void PlayAnimation(string p_state, float p_normalizedTime = -1)
+    {
+        animator.Play(Animator.StringToHash(p_state),0,p_normalizedTime < 0 ? 0: p_normalizedTime);
+    }
+
 
     //Enqueus a state for bean to mimic after a short delay
     public void addBeanState(Vector3 pos,int facingDir)
     {
-        if(!GameController.Instance.IsHost)return;
         state = new BeanState(pos,facingDir);
     }
 
     //Enqueus a state for bean to mimic after a short delay
     public void setBeanDirection(int facingDir)
     {
-        if(!GameController.Instance.IsHost)return;
         facing = facingDir;
         transform.localScale = new Vector3(facing * Mathf.Abs(transform.localScale.x),
                         transform.localScale.y, transform.localScale.z); 
@@ -144,7 +145,6 @@ public class BeanWrangler : NonplayerHurtboxHandler
     //Tells bean to start returning to orro. 
     public void recallBean(Vector3 pos,int facingDir)
     {
-        if(!GameController.Instance.IsHost)return;
 
         if(!following)
         {
@@ -168,7 +168,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
         canAct = false;
         alive = false;
         rb.velocity = Vector3.zero;
-        anim.SetState("Bean_True_Death");
+        PlayAnimation("Bean_True_Death");
     }
 
     //Sends bean out at a set speed.
@@ -186,16 +186,14 @@ public class BeanWrangler : NonplayerHurtboxHandler
     //Spawns a mutlihit razor projectile for Orro's jab
     public void bean_ground_Neutral()
     {
-        if(!GameController.Instance.IsHost)return;
 
-        GameObject razor = GameController.Instance.host.CreateNetworkObject("SpaceRazor", transform.position , transform.rotation);
+        GameObject razor = GameController.Instance.CreatePrefab("SpaceRazor", transform.position , transform.rotation);
         razor.transform.localScale = new Vector3(facing *10,10,1f);
         attacks.SetMultiHitAttackID();
         foreach (HitboxCollision hitbox in razor.GetComponentsInChildren<HitboxCollision>(true))
         {
                 hitbox.parent = Orro;
                 hitbox.AttackID = attacks.AttackID;
-                hitbox.AttackType = attacks.AttackType;
                 hitbox.Facing = facing;
         }
 
@@ -211,15 +209,13 @@ public class BeanWrangler : NonplayerHurtboxHandler
 
         multihit();
 
-        GameObject rip = host.CreateNetworkObject("BeanWSide", transform.position + pos, transform.rotation);
+        GameObject rip = GameController.Instance.CreatePrefab("BeanWSide", transform.position + pos, transform.rotation);
         rip.transform.localScale = new Vector3(10f * facing, 10f , 1f);
         foreach (HitboxCollision hitbox in rip.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = Orro;
             hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
             hitbox.Facing = facing;
-            hitbox.OverrideData.StatusDuration = Mathf.Max((charge-3)/3,1);
        }
 
        rip.GetComponent<SyncProjectileColorDataHost>().setColor(color);
@@ -229,17 +225,15 @@ public class BeanWrangler : NonplayerHurtboxHandler
     //Returns bean to his neutral state, clearing all previous states and variables.
     public void returnToNeutral()
     {
-        if(!GameController.Instance.IsHost)return;
         state = null;
         canAct = true;
-        anim.SetState("Bean_Idle");
+        PlayAnimation("Bean_Idle");
     }
 
 
     //Use this at the end of beans death animation
     public void setCanAct()
     {
-        if(!GameController.Instance.IsHost)return;
         state = null;
         rb.position = targetPos.Pos;
         canAct = true;
@@ -255,7 +249,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
         canAct = false;
         transform.localScale = new Vector3(targetPos.Facing * Mathf.Abs(transform.localScale.x),
                     transform.localScale.y, transform.localScale.z); 
-        anim.SetState(stateName);
+        PlayAnimation(stateName);
     }
 
 
@@ -268,7 +262,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
 
         transform.localScale = new Vector3(targetPos.Facing * Mathf.Abs(transform.localScale.x),
                     transform.localScale.y, transform.localScale.z); 
-        anim.SetState(stateName);
+        PlayAnimation(stateName);
     }
 
 
@@ -279,36 +273,36 @@ public class BeanWrangler : NonplayerHurtboxHandler
 
         transform.localScale = new Vector3(targetPos.Facing * Mathf.Abs(transform.localScale.x),
                     transform.localScale.y, transform.localScale.z); 
-        anim.SetState(stateName);
+        PlayAnimation(stateName);
     }
  
     //Refreshes beans hitboxes so he can multihit
     public void multihit()
     {
-        if(!GameController.Instance.IsHost)return;
         attacks.SetMultiHitAttackID();
     }
 
     //Registers a hit on bean, and handles his counter.
     //If bean has taken over 40%, he becomes inactive untill he can heal
-    public override int RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, DrifterAttackType attackType, SingleAttackData attackData)
+    public override int RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, SingleAttackData attackData)
     {
 
         int returnCode = -3;
 
-        if(GameController.Instance.IsHost && hitbox.parent != hurtbox.parent && hurtbox.owner != hitbox.parent && !oldAttacks.ContainsKey(attackID))
+        if(GameController.Instance.IsHost && hitbox.parent != hurtbox.parent && hurtbox.owner != hitbox.parent && CanHit(attackID))
         {
             if(following && Vector3.Distance(rb.position,targetPos.Pos) <= 3.8f) return -3;
 
-                returnCode =  base.RegisterAttackHit(hitbox,hurtbox,attackID,attackType,attackData);
+                returnCode =  base.RegisterAttackHit(hitbox,hurtbox,attackID,attackData);
+                oldAttacks[attackID] = MAX_ATTACK_DURATION;
 
-                if(returnCode >= 0)anim.SetState("Hitstun");
+                if(returnCode >= 0)PlayAnimation("Hitstun");
 
             if(percentage > maxPercentage)
             {
                     alive = false;
                     canAct = false;
-                    anim.SetState("Bean_Death");
+                    PlayAnimation("Bean_Death");
                     HitstunDuration = 0;
                     //Delay before bean begins recharging
                     HitPauseDuration = Bean_Respawn_Delay;

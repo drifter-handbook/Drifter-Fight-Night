@@ -71,6 +71,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -80,8 +82,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -102,9 +104,12 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
@@ -480,6 +485,23 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      DCGrenade_3: -8643224648996088526
+      DCGrenade_9: -7645760135564348578
+      DCGrenade_15: 3944874426214598995
+      DCGrenade_5: 8133393925072864767
+      DCGrenade_12: -2950151590391415588
+      DCGrenade_4: 2368854343715746765
+      DCGrenade_6: 4617970546464297558
+      DCGrenade_0: 8785446382458785794
+      DCGrenade_11: -6708357545032394959
+      DCGrenade_1: 3666991601137145749
+      DCGrenade_8: 5598410211024922685
+      DCGrenade_7: 8240716857230647916
+      DCGrenade_13: -8652359251250251766
+      DCGrenade_2: -4389450869893391050
+      DCGrenade_10: 5296686018881044875
+      DCGrenade_14: -7010324467191422113
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

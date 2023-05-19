@@ -98,6 +98,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -107,8 +109,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -129,9 +131,12 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
@@ -177,7 +182,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 0598fbe9540228e40800000000000000
-      internalID: 5657119565318949200
+      internalID: -7489009585814028084
       vertices: []
       indices: 
       edges: []
@@ -198,7 +203,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 39fc256ff17eb1ea0800000000000000
-      internalID: -5900868762276278381
+      internalID: -2744358775435010289
       vertices: []
       indices: 
       edges: []
@@ -219,7 +224,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 1537efe7d617ba2f0800000000000000
-      internalID: -960549380417490095
+      internalID: -5153887947103641378
       vertices: []
       indices: 
       edges: []
@@ -240,7 +245,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: f89a09d9e0a3f9ae0800000000000000
-      internalID: -1540448713089963633
+      internalID: -8982794913058672227
       vertices: []
       indices: 
       edges: []
@@ -261,7 +266,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: d54be8df47d91b440800000000000000
-      internalID: 4949910591252640861
+      internalID: 5488592883487553432
       vertices: []
       indices: 
       edges: []
@@ -282,7 +287,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 745f246deddd8c1f0800000000000000
-      internalID: -1024324966079597241
+      internalID: 557664573850983712
       vertices: []
       indices: 
       edges: []
@@ -303,7 +308,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: b759f9ae7fd104cd0800000000000000
-      internalID: -2576026036225469061
+      internalID: 6658647036973315434
       vertices: []
       indices: 
       edges: []
@@ -324,7 +329,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 921d073e0da4f3f60800000000000000
-      internalID: 8016208122772246825
+      internalID: 7730529781676058050
       vertices: []
       indices: 
       edges: []
@@ -345,7 +350,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 3499938c61eb4f4e0800000000000000
-      internalID: -1948723733686806205
+      internalID: 3091321580915974233
       vertices: []
       indices: 
       edges: []
@@ -366,7 +371,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 057b860b87ff12140800000000000000
-      internalID: 4693313180517578576
+      internalID: -726120035530492026
       vertices: []
       indices: 
       edges: []
@@ -387,7 +392,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 593c3ac50053b3c70800000000000000
-      internalID: 8951806959999501205
+      internalID: -6287576867095923083
       vertices: []
       indices: 
       edges: []
@@ -408,7 +413,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 7ddf2b2dc8c5c56c0800000000000000
-      internalID: -4153342996442317353
+      internalID: -7231043759077203965
       vertices: []
       indices: 
       edges: []
@@ -444,6 +449,20 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      bomb2_7: 7730529781676058050
+      bomb2_5: 557664573850983712
+      bomb2_8: 3091321580915974233
+      bomb2_6: 6658647036973315434
+      bomb2_3: -8982794913058672227
+      bomb2_12: 3630122347434932483
+      bomb2_1: -2744358775435010289
+      bomb2_0: -7489009585814028084
+      bomb2_11: -7231043759077203965
+      bomb2_10: -6287576867095923083
+      bomb2_4: 5488592883487553432
+      bomb2_9: -726120035530492026
+      bomb2_2: -5153887947103641378
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

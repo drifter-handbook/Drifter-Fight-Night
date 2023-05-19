@@ -113,6 +113,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -122,8 +124,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -144,9 +146,12 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
@@ -816,6 +821,37 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      MaxPortal_1: -8721166501920489130
+      MaxPortal_11: 6308571048254492241
+      MaxPortal_8: 8064728561708197404
+      MaxPortal_0: -6403282008339435064
+      MaxPortal_19: 2008193940970260460
+      MaxPortal_21: -3766461778542486466
+      MaxPortal_6: -741701202466436175
+      MaxPortal_4: -6915022472170450650
+      MaxPortal_9: -4040898292789340094
+      MaxPortal_24: 8654461713045880880
+      MaxPortal_2: -6969616416503196121
+      MaxPortal_23: -1567809964175044769
+      MaxPortal_10: -1207921498408304768
+      MaxPortal_17: -4151787295195143201
+      MaxPortal_18: 1511842226670438764
+      MaxPortal_26: 5108030319697660478
+      MaxPortal_22: 6006527123279957089
+      MaxPortal_13: 7107632651067767231
+      MaxPortal_15: 7036391179546762165
+      MaxPortal_7: -3887396498432700531
+      MaxPortal_16: 4599543034395626289
+      MaxPortal_28: -4786040672241757520
+      MaxPortal_29: 5755887310862388454
+      MaxPortal_5: 4943370904114269451
+      MaxPortal_12: -2731864438878252342
+      MaxPortal_27: 5352223438794059928
+      MaxPortal_25: 906890717806600173
+      MaxPortal_14: 9191375923390275568
+      MaxPortal_20: 647468155119096031
+      MaxPortal_3: -4478625021040069419
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

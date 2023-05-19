@@ -11,75 +11,51 @@ public class MythariusMasterHit : MasterHit
 
     GameObject bird;
 
-
-    override protected void UpdateMasterHit()
+    //Takes a snapshot of the current frame to rollback to
+    public override MasterhitRollbackFrame SerializeFrame()
     {
-        base.UpdateMasterHit();
-
-        //Handle neutral special attacks
-        if(listeningForDirection)
-        {
-            if(!drifter.input[0].Special) delaytime++;
-            HeldDirection += new Vector2(drifter.input[0].MoveX,drifter.input[0].MoveY);
-            if(HeldDirection != Vector2.zero || delaytime > 5) NeutralSpecialPortal();
-        }
-
+        MasterhitRollbackFrame baseFrame = SerializeBaseFrame();
+        return baseFrame;
     }
 
-    public void listenForDirection()
+    //Rolls back the entity to a given frame state
+    public override void DeserializeFrame(MasterhitRollbackFrame p_frame)
     {
-        listeningForDirection = true;
-        delaytime = 0;
-    }
-
-    public void NeutralSpecialPortal()
-    {
-        listeningForDirection = false;
-        movement.updateFacing();
-        
-        if(HeldDirection.y <0) playState("W_Neutral_D");
-        else if(HeldDirection.y >0) playState("W_Neutral_U");
-        else playState("W_Neutral_S");
-
-        HeldDirection = Vector2.zero;
-
+        DeserializeBaseFrame(p_frame);
     }
 
     public void warpStart()
     {
-        if(!isHost)return;
 
         movement.spawnJuiceParticle(transform.position ,MovementParticleMode.Myth_Warp_Start,false);
     }
 
     public void warpEnd()
     {
-        if(!isHost)return;
 
         movement.spawnJuiceParticle(transform.position ,MovementParticleMode.Myth_Warp_End,false);
     }
 
+    //Move to particle system
     public void ring()
     {
-        GameObject ring = GameController.Instance.host.CreateNetworkObject("LaunchRing", transform.position + new Vector3(0,1.4f),  transform.rotation);
+        GameObject ring = GameController.Instance.CreatePrefab("LaunchRing", transform.position + new Vector3(0,1.4f),  transform.rotation);
     }
 
     public void Spawn_Bird()
     {
-        if(!isHost)return;
 
         if(bird != null)
         {
             Destroy(bird);
         }
         
-        bird = host.CreateNetworkObject("Mytharius_Bird", transform.position + new Vector3(movement.Facing * 1.4f,3f), transform.rotation);
+        bird = GameController.Instance.CreatePrefab("Mytharius_Bird", transform.position + new Vector3(movement.Facing * 1.4f,3f), transform.rotation);
         bird.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in bird.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
             hitbox.Facing = movement.Facing;
        }
 

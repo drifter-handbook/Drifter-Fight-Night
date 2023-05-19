@@ -80,6 +80,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -89,8 +91,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -111,9 +113,12 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
@@ -159,7 +164,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: fe397ecc896343060800000000000000
-      internalID: 6932225756330693615
+      internalID: 2211268301720011747
       vertices: []
       indices: 
       edges: []
@@ -180,7 +185,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 74c6b4bcb566dd2f0800000000000000
-      internalID: -946487802239161273
+      internalID: -3830239230466968763
       vertices: []
       indices: 
       edges: []
@@ -201,7 +206,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 34df1e5b69835ecc0800000000000000
-      internalID: -3682474900357776061
+      internalID: 8159631063961377383
       vertices: []
       indices: 
       edges: []
@@ -222,7 +227,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 339d4211368fc7da0800000000000000
-      internalID: -5945604303662819021
+      internalID: 4391625899786574290
       vertices: []
       indices: 
       edges: []
@@ -342,6 +347,16 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      CharacterCursor_3: -4188927184863576850
+      CharacterCursor_5: 8159631063961377383
+      CharacterCursor_4: -3830239230466968763
+      CharacterCursor_6: 4391625899786574290
+      CharacterCursor_0: -8748971234737906783
+      CharacterCursor_2: -5813001481299282753
+      CharacterCursor_7: 6208731722387438714
+      CharacterCursor_1: 2493187267541795780
+      CharacterCursor_8: 2211268301720011747
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

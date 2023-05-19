@@ -71,6 +71,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -80,8 +82,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -102,9 +104,12 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
@@ -438,6 +443,21 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      SF_Ground_Grab_13: 2738508396270885286
+      SF_Ground_Grab_5: 3321818608136560766
+      SF_Ground_Grab_14: -657325499536104553
+      SF_Ground_Grab_2: 546647609608757405
+      SF_Ground_Grab_8: 4107533604770970597
+      SF_Ground_Grab_7: -2220896717804227159
+      SF_Ground_Grab_1: -9140045047227485251
+      SF_Ground_Grab_15: -1378882910406856083
+      SF_Ground_Grab_0: -5569222316086070819
+      SF_Ground_Grab_3: -7126404093510236916
+      SF_Ground_Grab_12: -8247594112046753968
+      SF_Ground_Grab_6: -1704211455033887379
+      SF_Ground_Grab_9: 6488164768662166864
+      SF_Ground_Grab_4: 1005991653135661380
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

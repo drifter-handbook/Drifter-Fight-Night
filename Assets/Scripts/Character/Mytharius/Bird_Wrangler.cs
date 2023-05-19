@@ -36,7 +36,6 @@ public class Bird_Wrangler : MonoBehaviour
         {
             hitbox.parent = Mytharius;
             hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
             hitbox.Facing = facing;
         }
 

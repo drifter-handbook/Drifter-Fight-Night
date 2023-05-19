@@ -59,6 +59,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -68,8 +70,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -90,9 +92,12 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
@@ -384,6 +389,19 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      megurin_jab_11: -556572165486912848
+      megurin_jab_6: 9180817061433240378
+      megurin_jab_4: 3594415580832291424
+      megurin_jab_3: -4815568027279139893
+      megurin_jab_2: -4127132495555067934
+      megurin_jab_8: 4796776630198911252
+      megurin_jab_9: 2425266374339873758
+      megurin_jab_0: 2768261127883299819
+      megurin_jab_5: 4216534334698705623
+      megurin_jab_7: -8449215685536329953
+      megurin_jab_10: -1012324615358737285
+      megurin_jab_1: 2423015636319383888
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

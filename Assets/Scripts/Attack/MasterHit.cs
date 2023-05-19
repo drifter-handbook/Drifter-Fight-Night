@@ -1,6 +1,39 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+public interface ICharacterRollbackFrame : INetworkData
+{
+
+}
+
+public class MasterhitRollbackFrame: INetworkData
+{
+    public string Type { get; set; }
+
+    public bool Empowered;
+    public Vector3 SavedVelocity;
+    public bool SavingVelocity ;
+    public bool SpecialTappedFlag;
+    public bool SpecialReleasedFlag;
+    public bool LightTappedFlag;
+    public bool VerticalCancelFlag;
+    public bool MovementCancelFlag;
+    public bool ActiveCancelFlag;
+    public bool ListeningForGroundedFlag;
+    public bool QueuedStateTrigger;
+    public bool JumpFlag;
+    public int SpecialCharge;
+    public int SpecialLimit;
+    public string QueuedState;
+    public bool AttackWasCanceled;
+    public bool DacusCancelFlag;
+    public bool KnockdownFlag;
+
+    public ICharacterRollbackFrame CharacterFrame = null;
+    
+}
 
 public abstract class MasterHit : MonoBehaviour, IMasterHit
 {
@@ -8,18 +41,12 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     public string assetPathName;
 
     protected Drifter drifter;
-    protected NetworkHost host;
     protected Rigidbody2D rb;
     protected PlayerMovement movement;
     protected PlayerStatus status;
     protected PlayerAttacks attacks;
     protected Animator anim;
     protected WalkOff ledgeDetector;
-
-    protected bool isHost = false;
-
-    
-    //protected float terminalVelocity;
 
 
     //Listener Bools
@@ -61,13 +88,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     protected bool knockdownFlag = false;
 
 
-    //Every frame, listen for a given event if the flag is active
-    protected void FixedUpdate()
-    {
-        UpdateMasterHit();
-    }
-
-    protected virtual void UpdateMasterHit()
+    public virtual void UpdateFrame()
     {
         attackWasCanceled = true;
         //Clear all flags if the character is dead or stunned by an opponent
@@ -215,73 +236,62 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     //Flag the character to begin listen for a given event
     public void listenForGrounded(string stateName)
     {
-        if(!isHost)return;
         queueState(stateName);
         listeningForGroundedFlag = true;
     }
 
     public void listenForSpecialTapped(string stateName)
     {
-        if(!isHost)return;
         queueState(stateName);
         specialTappedFlag = true;
     }
 
      public void listenForLightTapped(string stateName)
     {
-        if(!isHost)return;
         queueState(stateName);
         lightTappedFlag = true;
     }
 
     public void listenForSpecialReleased(string stateName)
     {
-        if(!isHost)return;
         queueState(stateName);
         specialReleasedFlag = true;
     }
 
     public void listenForMovementCancel()
     {
-        if(!isHost)return;
         movementCancelFlag = true;
     }
     public void listenForVerticalCancel(string stateName)
     {
-        if(!isHost)return;
         queueState(stateName);
         verticalCancelFlag = true;
     }
 
     public void listenForActiveCancel()
     {
-        if(!isHost)return;
         activeCancelFlag = true;
     }
 
     public void listenForJumpCancel()
     {
-        if(!isHost)return;
         jumpFlag = true;
     }
 
 
     public void addCharge(int charge =1)
     {
-        if(!isHost)return;
         specialCharge += charge;
     }
 
     public void listenForLedge()
     {
-        if(!isHost)return;
 
         ledgeDetector.togglePreventWalkoff();
     }
 
     public void listenForLedge(bool toggle)
     {
-        if(!isHost)return;
 
         ledgeDetector.setPreventWalkoff(toggle);
     }
@@ -289,13 +299,11 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     //Allow for a special cancel on a move that would normally not be canceleable
     public void listenForSpecial()
     {
-        if(!isHost)return;
         drifter.canSpecialCancelFlag = true;
     }
 
     public void listenForDacus()
     {
-        if(!isHost)return;
         setXVelocity(movement.dashSpeed);
         if(movement.dashLock <=0)status.ApplyStatusEffect(PlayerStatusEffect.INVULN,3);
         dacusCancelFlag = true;
@@ -305,7 +313,6 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     //Clear all flags
     public virtual void clearMasterhitVars()
     {
-        if(!isHost)return;
         specialTappedFlag = false;
         specialReleasedFlag = false;
         lightTappedFlag = false;
@@ -320,8 +327,6 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         resetTerminalVelocity();
         ledgeDetector.setPreventWalkoff(false);
         dacusCancelFlag= false;
-        //drifter.clearGuardFlags();
-        //drifter.knockedDown = false;
         knockdownFlag = false;
     }
 
@@ -329,42 +334,43 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     // Start is called before the first frame update
     void Awake()
     {
-        //Is Host
-        isHost = GameController.Instance.IsHost;
-
         Resources.LoadAll("/Characters/" + assetPathName);
         Resources.LoadAll("/Projectiles/" + assetPathName);
 
-        if(!isHost)return;
-        host = GameController.Instance.host;
         //Parent Components
+
         drifter = transform.parent.gameObject.GetComponent<Drifter>();
-        rb = drifter.GetComponent<Rigidbody2D>();
-        movement = drifter.GetComponent<PlayerMovement>();
-        attacks = drifter.GetComponent<PlayerAttacks>();
-        status = drifter.GetComponent<PlayerStatus>();
-        anim = drifter.GetComponent<Animator>();
+        
+        movement = drifter.movement;
+        attacks = drifter.attacks;
+        status = drifter.status;
+        anim = drifter.animator;
+        rb = movement.rb;
         ledgeDetector = GetComponentInChildren<WalkOff>();
-        ledgeDetector.rb = rb;
+    }
+
+    //Populates hitbox array
+    void Start()
+    {
+        HitboxCollision[] Hitboxes;
+        //grabBoxes = drifter.GetComponentsInChildren<HitboxCollision>(true);
     }
 
     public void setYVelocity(float y)
     {
-        if(!isHost)return;
         rb.velocity = new Vector2(rb.velocity.x,y * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f));
         status.saveYVelocity(y);
     }
 
     public void setYVelocityIfGrounded(float y)
     {
-        if(!isHost || !movement.grounded)return;
+        if(!movement.grounded)return;
         setYVelocity(y);
     }
 
 
     public void setXVelocity(float x)
     {
-        if(!isHost)return;
 
         if(movement.grounded && x >0) movement.spawnKickoffDust();
         rb.velocity = new Vector2(movement.Facing * x * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f),rb.velocity.y);
@@ -373,7 +379,6 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
     public void setXVelocityMin(float x)
     {
-        if(!isHost)return;
 
         if(movement.grounded && x >0) movement.spawnKickoffDust();
         rb.velocity = new Vector2(movement.Facing * Mathf.Max(x,Mathf.Abs(rb.velocity.x)) * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f),rb.velocity.y);
@@ -382,32 +387,27 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
     public void applyEndLag(int statusDuration)
     {
-        if(!isHost)return;
         status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,statusDuration);
     }
 
     public void applyArmour(int statusDuration)
     {
-        if(!isHost)return;
         status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,statusDuration);
     }
 
     public void setLandingCancel()
     {
-        if(!isHost)return;
         movement.canLandingCancel = true;
     }
 
     public void pauseGravity()
     {
-        if(!isHost)return;
         savingVelocity = false;
         movement.pauseGravity();
     }
 
     public void freezeGravity()
     {
-        if(!isHost)return;
         savedVelocity = new Vector3(Mathf.Clamp(rb.velocity.x,-45f,45f), Mathf.Clamp(rb.velocity.y,-45f,45f));
         savingVelocity = true;
         movement.cancelJump();
@@ -418,7 +418,6 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
     public void unpauseGravity()
     {
-        if(!isHost)return;
         if(savingVelocity)rb.velocity = savedVelocity;
         savingVelocity = false;
         movement.resetGravity();
@@ -427,7 +426,6 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
     public void refreshHitboxID()
     {
-        if(!isHost)return;
         attacks.SetMultiHitAttackID();
     }
 
@@ -444,13 +442,11 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     //Dynamically adjust walk speed to match walk cycle animations
     public void walkCycleSpeedSync(float speed)
     {
-        if(!isHost)return;
         movement.walkSpeed = speed;
     }
 
     public void returnToIdle()
 	{
-        if(!isHost)return;
 		movement.jumping = false;
 		unpauseGravity();
         status.clearVelocity();
@@ -459,7 +455,8 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
     	drifter.returnToIdle();
         movement.updateFacing();
         if(checkForJumpTap())movement.jump();
-        attacks.UpdateInput();
+        //Still needed?
+        attacks.UpdateFrame();
     }
 
     public void knockdownRecover()
@@ -471,32 +468,27 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
     public void playState(string state)
     {
-        if(!isHost)return;
     	drifter.PlayAnimation(state);
     }
 
     public void playStateIfEmpowered(string state)
     {
-        if(!isHost)return;
         if(Empowered)drifter.PlayAnimation(state);
     }
 
     public void playStateIfGrounded(string state)
     {
-        if(!isHost)return;
         if(movement.grounded)drifter.PlayAnimation(state);
     }
 
     public void playStateIfEmpoweredOrRetunToIdle(string state)
     {
-        if(!isHost)return;
         if(Empowered)drifter.PlayAnimation(state);
         else returnToIdle();
     }
 
     public bool checkForLightTap()
     {
-        if(!isHost)return false;
         int state = 0;
         for(int i = 0; i < 8; i++)
         {
@@ -508,7 +500,6 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
     public bool checkForJumpTap()
     {
-        if(!isHost)return false;
         int state = 0;
         for(int i = 0; i < 15; i++)
         {
@@ -531,7 +522,6 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
     public bool checkForSpecialTap(int frames = 8)
     {
-        if(!isHost)return false;
         int state = 0;
         for(int i = 0; i < frames; i++)
         {
@@ -544,19 +534,18 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
     public void queueState(string stateName)
     {
-        if(!isHost)return;
         queuedState = stateName;
     }
 
     public void playQueuedState()
     {
-        if(!isHost || queuedState.Equals(""))return;
+        if(queuedState.Equals(""))return;
         playState(queuedState);
     }
 
     public void triggerQueuedState()
     {
-        if(!isHost || queuedState.Equals("") || !queuedStateTrigger)return;
+        if(queuedState.Equals("") || !queuedStateTrigger)return;
         applyEndLag(480);
         playState(queuedState);
         clearMasterhitVars();
@@ -564,14 +553,12 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
     public void beginGuard()
     {
-        if(!isHost)return;
         applyEndLag(10);
         drifter.perfectGuarding = true;
     }
 
     public void endPerfectGuard()
     {
-        if(!isHost)return;
         drifter.perfectGuarding = false;
         if(drifter.guarding)drifter.PlayAnimation("Guard");
         listenForJumpCancel();
@@ -580,18 +567,77 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
     public void endParry()
     {
-        if(!isHost)return;
         drifter.parrying = false;
     }
 
     public void BounceParticle(float offset = 0)
     {
-        if(!isHost || !movement.grounded)return;
+        if(!movement.grounded)return;
         movement.spawnJuiceParticle(transform.position + new Vector3(offset * movement.Facing,0,0), MovementParticleMode.Restitution);
     }
 
     public void blockFastFalling()
     {
         movement.canFastFall = false;
+    }
+
+
+    //Rollback
+    //============================
+
+    public abstract MasterhitRollbackFrame SerializeFrame();
+    public abstract void DeserializeFrame(MasterhitRollbackFrame p_frame);
+
+    //Takes a snapshot of the current frame to rollback to
+    protected MasterhitRollbackFrame SerializeBaseFrame()
+    {
+
+        return new MasterhitRollbackFrame() 
+        {
+            Empowered = this.Empowered,
+            SavedVelocity = savedVelocity,
+            SavingVelocity = savingVelocity, 
+            SpecialTappedFlag = specialTappedFlag,
+            SpecialReleasedFlag = specialReleasedFlag,
+            LightTappedFlag = lightTappedFlag,
+            VerticalCancelFlag = verticalCancelFlag,
+            MovementCancelFlag = movementCancelFlag,
+            ActiveCancelFlag = activeCancelFlag,
+            ListeningForGroundedFlag = listeningForGroundedFlag,
+            QueuedStateTrigger = queuedStateTrigger,
+            JumpFlag = jumpFlag,
+            SpecialCharge = specialCharge,
+            SpecialLimit = specialLimit,
+            QueuedState = queuedState,
+            AttackWasCanceled = attackWasCanceled,
+            DacusCancelFlag = dacusCancelFlag,
+            KnockdownFlag = knockdownFlag,
+            
+        };
+    }
+
+    //Rolls back the entity to a given frame state
+    protected void DeserializeBaseFrame(MasterhitRollbackFrame p_frame)
+    {
+
+        Empowered = p_frame.Empowered; 
+        savedVelocity = p_frame.SavedVelocity; 
+        savingVelocity = p_frame.SavingVelocity; 
+        specialTappedFlag = p_frame.SpecialTappedFlag; 
+        specialReleasedFlag = p_frame.SpecialReleasedFlag; 
+        lightTappedFlag = p_frame.LightTappedFlag; 
+        verticalCancelFlag = p_frame.VerticalCancelFlag; 
+        movementCancelFlag = p_frame.MovementCancelFlag; 
+        activeCancelFlag = p_frame.ActiveCancelFlag; 
+        listeningForGroundedFlag = p_frame.ListeningForGroundedFlag; 
+        queuedStateTrigger = p_frame.QueuedStateTrigger; 
+        jumpFlag = p_frame.JumpFlag; 
+        specialCharge = p_frame.SpecialCharge; 
+        specialLimit = p_frame.SpecialLimit; 
+        queuedState = p_frame.QueuedState;
+        attackWasCanceled = p_frame.AttackWasCanceled; 
+        dacusCancelFlag = p_frame.DacusCancelFlag; 
+        knockdownFlag = p_frame.KnockdownFlag; 
+
     }
 }

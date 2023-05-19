@@ -47,6 +47,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -56,8 +58,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -78,9 +80,12 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
@@ -126,7 +131,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 89b88fd209bfefe20800000000000000
-      internalID: 3386420566494317464
+      internalID: -2295598453352507679
       vertices: []
       indices: 
       edges: []
@@ -147,7 +152,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: a630576eaf4779dc0800000000000000
-      internalID: -3632305953493941398
+      internalID: 5021866938649445157
       vertices: []
       indices: 
       edges: []
@@ -168,7 +173,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: e56b007f52b5a9240800000000000000
-      internalID: 4799248571532621406
+      internalID: 4985781697087406029
       vertices: []
       indices: 
       edges: []
@@ -189,7 +194,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 0be8cc19d98ad54e0800000000000000
-      internalID: -1991250065518457168
+      internalID: -8457287822418587907
       vertices: []
       indices: 
       edges: []
@@ -204,6 +209,11 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      invincible_1: 5021866938649445157
+      invincible_0: -2295598453352507679
+      invincible_3: -8457287822418587907
+      invincible_2: 4985781697087406029
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

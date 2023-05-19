@@ -107,6 +107,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -116,8 +118,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -138,9 +140,12 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
@@ -768,6 +773,35 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      SF_Sheet_2_14: 9137124939695165102
+      SF_Sheet_2_8: 7874531584495963445
+      SF_Sheet_2_7: 4236141773134797526
+      SF_Sheet_2_15: -5601897587314051003
+      SF_Sheet_2_9: 6964672406788190190
+      SF_Sheet_2_26: 8388681928458781222
+      SF_Sheet_2_12: 2561342915349875762
+      SF_Sheet_2_3: -5863423093291416222
+      SF_Sheet_2_16: -614659731996344735
+      SF_Sheet_2_21: 3305738746438887536
+      SF_Sheet_2_0: -603689269902328556
+      SF_Sheet_2_2: -9077963431752144849
+      SF_Sheet_2_5: 186628698321505969
+      SF_Sheet_2_17: -1720789761035101338
+      SF_Sheet_2_19: 6336828822711071370
+      SF_Sheet_2_27: -7365885669298967892
+      SF_Sheet_2_18: -8946587256646981794
+      SF_Sheet_2_25: 8836003279188020153
+      SF_Sheet_2_20: -7924659627762910000
+      SF_Sheet_2_4: -2119185297978742479
+      SF_Sheet_2_6: 5374648521653551994
+      SF_Sheet_2_11: 3320998505989305408
+      SF_Sheet_2_13: 6116914653657048738
+      SF_Sheet_2_10: 3858512359878899515
+      SF_Sheet_2_22: 1100696611431919684
+      SF_Sheet_2_1: 1008417481210529943
+      SF_Sheet_2_24: -6853849424358940448
+      SF_Sheet_2_23: -5510806781922910699
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

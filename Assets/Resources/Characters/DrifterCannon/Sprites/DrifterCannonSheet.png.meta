@@ -677,6 +677,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -686,8 +688,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -708,9 +710,12 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
@@ -756,7 +761,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 46da636cefed53d40800000000000000
-      internalID: 5563598100514647396
+      internalID: -7466194421607966724
       vertices: []
       indices: 
       edges: []
@@ -777,7 +782,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 6389dba1d567151c0800000000000000
-      internalID: -4516698809023227850
+      internalID: -6485773077982455821
       vertices: []
       indices: 
       edges: []
@@ -798,7 +803,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 927555404a024c4e0800000000000000
-      internalID: -1962407648807266519
+      internalID: 1447536887476626091
       vertices: []
       indices: 
       edges: []
@@ -819,7 +824,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 53a6bcc3835e04330800000000000000
-      internalID: 3693203724144699957
+      internalID: 3015207636581518762
       vertices: []
       indices: 
       edges: []
@@ -945,7 +950,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 04c87681fecc63e50800000000000000
-      internalID: 6788838815586290752
+      internalID: 9108657101459186546
       vertices: []
       indices: 
       edges: []
@@ -966,7 +971,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 2327ee531746b2f40800000000000000
-      internalID: 5704763790393766450
+      internalID: -656962529496865713
       vertices: []
       indices: 
       edges: []
@@ -987,7 +992,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: c15bc5dd9874a6b10800000000000000
-      internalID: 1975470044005315868
+      internalID: 1730262548408258564
       vertices: []
       indices: 
       edges: []
@@ -1008,7 +1013,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 3407f4d735280ca00800000000000000
-      internalID: 774762431003979843
+      internalID: -5875213133369594227
       vertices: []
       indices: 
       edges: []
@@ -1029,7 +1034,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: e0a8c060320cb2cc0800000000000000
-      internalID: -3734680209315821042
+      internalID: -5469611951915518089
       vertices: []
       indices: 
       edges: []
@@ -1050,7 +1055,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 266e4099323a36f70800000000000000
-      internalID: 9179359838797620834
+      internalID: 6740658087919013927
       vertices: []
       indices: 
       edges: []
@@ -1071,7 +1076,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 08703104d55eb4640800000000000000
-      internalID: 5065394394577962880
+      internalID: 4740545203745180201
       vertices: []
       indices: 
       edges: []
@@ -1848,7 +1853,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 36db22f09c85ab100800000000000000
-      internalID: 124509560271715683
+      internalID: 3863916197789135556
       vertices: []
       indices: 
       edges: []
@@ -1869,7 +1874,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: c474317dd83fbb2f0800000000000000
-      internalID: -955902705361795252
+      internalID: -996262685578674710
       vertices: []
       indices: 
       edges: []
@@ -2814,7 +2819,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 59b6365884b8c4a60800000000000000
-      internalID: 7659650209842162581
+      internalID: 7968407047422282958
       vertices: []
       indices: 
       edges: []
@@ -2835,7 +2840,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 16d988564612e22a0800000000000000
-      internalID: -6760429275552637599
+      internalID: -4893698825339923580
       vertices: []
       indices: 
       edges: []
@@ -2856,7 +2861,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 595646ec5278ef110800000000000000
-      internalID: 1296622339175507349
+      internalID: 1495654574406351077
       vertices: []
       indices: 
       edges: []
@@ -2877,7 +2882,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: cb387e0afcb5e0a20800000000000000
-      internalID: 3030460546582807484
+      internalID: -2950284697485167957
       vertices: []
       indices: 
       edges: []
@@ -2898,7 +2903,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 79bb3458ff42b3050800000000000000
-      internalID: 5781255226531232663
+      internalID: -3903877233013831535
       vertices: []
       indices: 
       edges: []
@@ -2919,7 +2924,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 5166be8c9140dc700800000000000000
-      internalID: 562110037282743829
+      internalID: -1650312652816288938
       vertices: []
       indices: 
       edges: []
@@ -4116,7 +4121,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: e68a28fe9a0e563d0800000000000000
-      internalID: -3213915738586568594
+      internalID: -2893389210473439254
       vertices: []
       indices: 
       edges: []
@@ -4137,7 +4142,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: e24678269ba402810800000000000000
-      internalID: 1738471616247456814
+      internalID: 9206166117584847543
       vertices: []
       indices: 
       edges: []
@@ -4173,6 +4178,170 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      DrifterCannonSheet_61: -6171699859436873106
+      DrifterCannonSheet_57: 1665082052158354011
+      DrifterCannonSheet_107: -3399331047228850182
+      DrifterCannonSheet_28: 1236529603358414023
+      DrifterCannonSheet_64: -2017140240759265900
+      DrifterCannonSheet_136: -3368751633949732163
+      DrifterCannonSheet_138: -3951757763732338875
+      DrifterCannonSheet_70: -2553203479472041389
+      DrifterCannonSheet_27: 3809120857819647777
+      DrifterCannonSheet_112: 2843053636245268324
+      DrifterCannonSheet_120: -9017466746611372846
+      DrifterCannonSheet_39: -3644837942240727983
+      DrifterCannonSheet_84: 2955714099352904191
+      DrifterCannonSheet_80: 5688076249406687277
+      DrifterCannonSheet_106: -1650312652816288938
+      DrifterCannonSheet_170: -4080486450346308959
+      DrifterCannonSheet_0: -7466194421607966724
+      DrifterCannonSheet_101: 7968407047422282958
+      DrifterCannonSheet_19: -6882579959639498666
+      DrifterCannonSheet_24: 132133578968279458
+      DrifterCannonSheet_116: -2090022222028961236
+      DrifterCannonSheet_42: -2051001732325357932
+      DrifterCannonSheet_94: -6617535259516250051
+      DrifterCannonSheet_16: 6786724293170713470
+      DrifterCannonSheet_137: -1736109083928598539
+      DrifterCannonSheet_169: -5932942030785935017
+      DrifterCannonSheet_102: -4893698825339923580
+      DrifterCannonSheet_48: 6508104110540990684
+      DrifterCannonSheet_50: 4814441335527305174
+      DrifterCannonSheet_29: 4327865541624419420
+      DrifterCannonSheet_45: -5226758763150063878
+      DrifterCannonSheet_97: 8693564679542704031
+      DrifterCannonSheet_7: -1755477733532328989
+      DrifterCannonSheet_105: -3903877233013831535
+      DrifterCannonSheet_109: -5334240120894022596
+      DrifterCannonSheet_36: -2893389210473439254
+      DrifterCannonSheet_167: 8818931363137281752
+      DrifterCannonSheet_81: -5027254828351117755
+      DrifterCannonSheet_9: 9108657101459186546
+      DrifterCannonSheet_113: -7836486844551022740
+      DrifterCannonSheet_146: -451045019269904324
+      DrifterCannonSheet_31: 8921364129870517469
+      DrifterCannonSheet_15: 4740545203745180201
+      DrifterCannonSheet_133: -839375623413339488
+      DrifterCannonSheet_47: -6691230642117248188
+      DrifterCannonSheet_95: -5613506542331027961
+      DrifterCannonSheet_111: -8343942400642238551
+      DrifterCannonSheet_56: -996262685578674710
+      DrifterCannonSheet_3: 3015207636581518762
+      DrifterCannonSheet_1: -6485773077982455821
+      DrifterCannonSheet_10: -656962529496865713
+      DrifterCannonSheet_35: -2740771503339029163
+      DrifterCannonSheet_143: -7799975667590223987
+      DrifterCannonSheet_145: 2297295137534820895
+      DrifterCannonSheet_141: 7926359541830730066
+      DrifterCannonSheet_46: 7686519901640340266
+      DrifterCannonSheet_150: -6273137915508683817
+      DrifterCannonSheet_147: 8604110229575400450
+      DrifterCannonSheet_125: -5091562972298917055
+      DrifterCannonSheet_51: 7092732282650635703
+      DrifterCannonSheet_69: -5930334684891393566
+      DrifterCannonSheet_79: 4979872176050265450
+      DrifterCannonSheet_123: -97381865223177870
+      DrifterCannonSheet_59: -770533633881782739
+      DrifterCannonSheet_140: 896821210146556744
+      DrifterCannonSheet_76: -5777451167695373475
+      DrifterCannonSheet_72: -6255467001205861431
+      DrifterCannonSheet_65: 751546751816423338
+      DrifterCannonSheet_119: 3041355269540256824
+      DrifterCannonSheet_129: 8868422104271907910
+      DrifterCannonSheet_135: -8797868243748285482
+      DrifterCannonSheet_148: 372117145052890193
+      DrifterCannonSheet_144: -2678891483791760959
+      DrifterCannonSheet_52: -205491600393998104
+      DrifterCannonSheet_130: -1064404952269194734
+      DrifterCannonSheet_78: 5288046767809724011
+      DrifterCannonSheet_82: -1284092950673622366
+      DrifterCannonSheet_85: 6689580057274083017
+      DrifterCannonSheet_153: -1263510581353383340
+      DrifterCannonSheet_30: -7956145544992028808
+      DrifterCannonSheet_73: -2018687649861552437
+      DrifterCannonSheet_99: 4732580781554226207
+      DrifterCannonSheet_14: 6740658087919013927
+      DrifterCannonSheet_162: 5402349343328592119
+      DrifterCannonSheet_134: 6794618219894731993
+      DrifterCannonSheet_114: -4802627382552192624
+      DrifterCannonSheet_90: 100953056569759578
+      DrifterCannonSheet_110: -1178577017576207180
+      DrifterCannonSheet_86: -7523733286808670136
+      DrifterCannonSheet_5: -2170299639093099281
+      DrifterCannonSheet_12: -5875213133369594227
+      DrifterCannonSheet_131: -1472614128021993353
+      DrifterCannonSheet_165: 5048683844756478452
+      DrifterCannonSheet_100: -1687613464667691568
+      DrifterCannonSheet_20: 1379816643043572759
+      DrifterCannonSheet_54: 2006308825549154491
+      DrifterCannonSheet_6: 3625027405796087394
+      DrifterCannonSheet_40: -8523766411639327181
+      DrifterCannonSheet_33: 1403058019162553842
+      DrifterCannonSheet_17: 1795815589926827426
+      DrifterCannonSheet_83: 4182172644039230905
+      DrifterCannonSheet_25: 6562025873598341274
+      DrifterCannonSheet_128: -7977060322769039285
+      DrifterCannonSheet_155: -318372313863256509
+      DrifterCannonSheet_49: 6617959177135057009
+      DrifterCannonSheet_96: -1429076009216460531
+      DrifterCannonSheet_67: -2309918565304013301
+      DrifterCannonSheet_13: -5469611951915518089
+      DrifterCannonSheet_32: 2451762893622757794
+      DrifterCannonSheet_41: 918942829727387727
+      DrifterCannonSheet_75: 1903213202753141860
+      DrifterCannonSheet_122: 6622277889541659017
+      DrifterCannonSheet_62: 6882203952096414818
+      DrifterCannonSheet_121: -7343014734140035770
+      DrifterCannonSheet_8: 416588395756357627
+      DrifterCannonSheet_154: -2721328995826608572
+      DrifterCannonSheet_127: 5975695368226763912
+      DrifterCannonSheet_115: -3494183257799375662
+      DrifterCannonSheet_124: 7344546011755169526
+      DrifterCannonSheet_142: 7812143548522637201
+      DrifterCannonSheet_77: -314999443234122835
+      DrifterCannonSheet_21: 8591500372726945442
+      DrifterCannonSheet_88: 5253260148345318553
+      DrifterCannonSheet_151: 7259513082473472448
+      DrifterCannonSheet_22: 1907454106065377058
+      DrifterCannonSheet_132: -8615696159428477359
+      DrifterCannonSheet_108: 1267036366123727018
+      DrifterCannonSheet_164: 477625693838533165
+      DrifterCannonSheet_161: -1835560495375470358
+      DrifterCannonSheet_117: -4764221324200776736
+      DrifterCannonSheet_55: 3863916197789135556
+      DrifterCannonSheet_152: -8961266156097174699
+      DrifterCannonSheet_68: -1008607223109676391
+      DrifterCannonSheet_92: -3393030047562875094
+      DrifterCannonSheet_4: -3674088459472579278
+      DrifterCannonSheet_37: -427169746457510239
+      DrifterCannonSheet_58: -3829532863320501778
+      DrifterCannonSheet_66: -1831588635738572287
+      DrifterCannonSheet_74: -5802953055694666298
+      DrifterCannonSheet_118: -4250778884130609712
+      DrifterCannonSheet_104: -2950284697485167957
+      DrifterCannonSheet_26: 1055894751493111754
+      DrifterCannonSheet_34: 7658724024372313633
+      DrifterCannonSheet_89: -8754361556671941773
+      DrifterCannonSheet_44: 8204295866449606601
+      DrifterCannonSheet_53: -3821319351088527892
+      DrifterCannonSheet_18: -6761178356679555952
+      DrifterCannonSheet_91: -6048890867413742664
+      DrifterCannonSheet_43: -6363767015883546676
+      DrifterCannonSheet_71: 6726763611517093024
+      DrifterCannonSheet_98: 1681549983068637749
+      DrifterCannonSheet_149: -9022922238093789033
+      DrifterCannonSheet_11: 1730262548408258564
+      DrifterCannonSheet_60: -3361111319892986390
+      DrifterCannonSheet_63: 9161454562137459542
+      DrifterCannonSheet_139: 4234774402430646702
+      DrifterCannonSheet_126: 364036313255331571
+      DrifterCannonSheet_2: 1447536887476626091
+      DrifterCannonSheet_23: 8479790558050368290
+      DrifterCannonSheet_87: -8264992658831291305
+      DrifterCannonSheet_93: 1829902633866916848
+      DrifterCannonSheet_103: 1495654574406351077
+      DrifterCannonSheet_38: 9206166117584847543
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -4,13 +4,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class NetworkPlayers : MonoBehaviour, ISyncHost
+using HouraiTeahouse.Backroll;
+
+public class NetworkPlayers : MonoBehaviour
 {
+
     NetworkSyncToHost syncFromClients;
 
     public List<GameObject> spawnPoints;
 
     public GameObject playerInputPrefab;
+
+    BackrollController br = new BackrollController();
+
+    DrifterRollbackFrame[,] rollbackTest = new DrifterRollbackFrame[5,2];
 
     //Dictionary<int, GameObject> clientPlayers = new Dictionary<int, GameObject>();
 
@@ -22,7 +29,7 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
     // Start is called before the first frame update
     void Start()
     {
-        GameController.Instance.host.CreateNetworkObject(GameController.Instance.selectedStage);
+        GameController.Instance.CreatePrefab(GameController.Instance.selectedStage);
 
         //populate spawn points
         spawnPoints = new List<GameObject>();
@@ -34,6 +41,8 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
         // create players
         foreach (CharacterSelectState charSel in CharacterMenu.charSelStates.Values)
             CreatePlayer(charSel.PeerID);
+
+        br.makeLobby();//InitializeRollbackSession();
     }
 
     // Update is called once per frame
@@ -42,21 +51,38 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
 
         PlayerInputData input;
 
+        int q = 0;
+
+        DrifterRollbackFrame[] rollback2 = new DrifterRollbackFrame[CharacterMenu.charSelStates.Values.Count];
+
         foreach (CharacterSelectState charSel in CharacterMenu.charSelStates.Values)
         {
             //Link inputs to peer ids
             input = NetworkUtils.GetNetworkData<PlayerInputData>(syncFromClients["input", charSel.PeerID]);
             if (input != null)
-                UpdateInput(players[charSel.PeerID], input);
+                rollback2[q] = UpdateInput(players[charSel.PeerID], input);
 
             else if(GameController.Instance.controls.ContainsKey(charSel.PeerID))
-                UpdateInput(players[charSel.PeerID], GetInput(GameController.Instance.controls[charSel.PeerID]));
+                 rollback2[q] = UpdateInput(players[charSel.PeerID], GetInput(GameController.Instance.controls[charSel.PeerID]));
                 
             else
-                UpdateInput(players[charSel.PeerID]);
+                 rollback2[q] = UpdateInput(players[charSel.PeerID]);
 
+            q++;
 
         }
+
+        for (int i = 3; i >= 0; i--)
+        {
+            rollbackTest[i + 1,0] = rollbackTest[i,0];
+            rollbackTest[i + 1,1] = rollbackTest[i,1];
+
+        }
+
+        rollbackTest[0,0] = rollback2[0];
+        rollbackTest[0,1] = rollback2[1];
+
+        Physics2D.Simulate(1f/60f);
     }
 
     GameObject CreatePlayer(int peerID)
@@ -69,7 +95,7 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
         }
 
         //Same here
-        GameObject obj = GameController.Instance.host.CreateNetworkObject(drifter.ToString().Replace("_", " "),
+        GameObject obj = GameController.Instance.CreatePrefab(drifter.ToString().Replace("_", " "),
             spawnPoints[(peerID +1) % spawnPoints.Count].transform.position, Quaternion.identity);
         obj.GetComponent<Drifter>().SetColor((peerID +1));
 
@@ -80,10 +106,10 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
         return obj;
     }
 
-    public static void UpdateInput(GameObject player, PlayerInputData input)
+    public static DrifterRollbackFrame UpdateInput(GameObject player, PlayerInputData input)
     {
         if (player == null)
-            return;
+            return null;
 
         Drifter playerDrifter = player.GetComponent<Drifter>();
 
@@ -93,16 +119,18 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
         }
 
         playerDrifter.input[0] = input;
-        player.GetComponent<PlayerMovement>().UpdateInput();
-        player.GetComponent<PlayerAttacks>().UpdateInput();
+        playerDrifter.UpdateFrame();
+
+        return playerDrifter.SerializeFrame();
 
     }
 
-    public static void UpdateInput(GameObject player)
+    public static DrifterRollbackFrame UpdateInput(GameObject player)
     {
-        if(player == null)return;
-        player?.GetComponent<PlayerMovement>().UpdateInput();
-        player?.GetComponent<PlayerAttacks>().UpdateInput();
+        if(player == null)return null;
+        player.GetComponent<Drifter>().UpdateFrame();
+
+         return player.GetComponent<Drifter>().SerializeFrame();
     }
 
     public static PlayerInputData GetInput(PlayerInput playerInput)
@@ -116,8 +144,8 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
         input.Special = playerInputAction.FindAction("Special").ReadValue<float>() > 0;
         input.Super = playerInputAction.FindAction("Super").ReadValue<float>() > 0;
         input.Guard = playerInputAction.FindAction("Guard 1").ReadValue<float>() > 0;
-        input.MoveX = playerInputAction.FindAction("Horizontal").ReadValue<float>();
-        input.MoveY = playerInputAction.FindAction("Vertical").ReadValue<float>();
+        input.MoveX = (int)playerInputAction.FindAction("Horizontal").ReadValue<float>();
+        input.MoveY = (int)playerInputAction.FindAction("Vertical").ReadValue<float>();
         input.Grab = playerInputAction.FindAction("Grab").ReadValue<float>() > 0;
 
         input.Pause = playerInputAction.FindAction("Start").ReadValue<float>()>0;
@@ -126,15 +154,29 @@ public class NetworkPlayers : MonoBehaviour, ISyncHost
 
         return input;
     }
+
+    public void rollemback()
+    {
+        int z = 0;
+        foreach (CharacterSelectState charSel in CharacterMenu.charSelStates.Values){
+        
+            players[charSel.PeerID].GetComponent<Drifter>().DeserializeFrame(rollbackTest[4,z]);
+            rollbackTest[0,z] = rollbackTest[4,z];
+            z++;
+        }
+
+    }
+
+    
 }
 
 
 [Serializable]
-public class PlayerInputData : INetworkData, ICloneable
+public class PlayerInputData :INetworkData, ICloneable
 {
     public string Type { get; set; }
-    public float MoveX;
-    public float MoveY;
+    public int MoveX;
+    public int MoveY;
     public bool Jump;
     public bool Light;
     public bool Special;

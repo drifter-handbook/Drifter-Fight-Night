@@ -59,6 +59,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -68,8 +70,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -90,9 +92,12 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
@@ -363,6 +368,18 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Dendro_Down_2: 1912343301604146560
+      Dendro_Down_1: 5301634260941424314
+      Dendro_Down_8: 7567248092573956917
+      Dendro_Down_10: -4127902956507343899
+      Dendro_Down_3: 1182977594464740135
+      Dendro_Down_4: -7087687770190773976
+      Dendro_Down_9: 1080932248449486791
+      Dendro_Down_5: -3396530325631784582
+      Dendro_Down_11: 7562522204876633314
+      Dendro_Down_6: 4256563859773878934
+      Dendro_Down_7: 1042916232047294144
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -290,6 +290,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -299,8 +301,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -321,9 +323,12 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
@@ -1188,7 +1193,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 6b84babbdc887eff0800000000000000
-      internalID: -6886457219528522
+      internalID: 2490537766113474251
       vertices: []
       indices: 
       edges: []
@@ -1461,7 +1466,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 3e1dc17833c758930800000000000000
-      internalID: 4144855592816398819
+      internalID: -3752176842629554413
       vertices: []
       indices: 
       edges: []
@@ -1503,7 +1508,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: dfdb9415929a6e300800000000000000
-      internalID: 281098021679775229
+      internalID: 2553998330963655725
       vertices: []
       indices: 
       edges: []
@@ -1524,7 +1529,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 6e0c6e8fc00a46c80800000000000000
-      internalID: -8330357433152651034
+      internalID: -4073406221344431893
       vertices: []
       indices: 
       edges: []
@@ -2148,6 +2153,92 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Rift_Full_3: 6498945907095483903
+      Rift_Full_25: 2423219074970971633
+      Rift_Full_19: -5322948794083141310
+      Rift_Full_38: -7515228154457502686
+      Rift_Full_42: 7614012431250595895
+      Rift_Full_10: -6021554071315500297
+      Rift_Full_48: -3038427267104793978
+      Rift_Full_64: 2865723374728301100
+      Rift_Full_71: -5905795039564381018
+      Rift_Full_49: 5180423982830425894
+      Rift_Full_83: -5654091659073567161
+      Rift_Full_61: 5791079056604418875
+      Rift_Full_80: 52641961983123690
+      Rift_Full_35: -4181926618398103153
+      Rift_Full_78: 8635744272611202543
+      Rift_Full_84: -7384021964871889800
+      Rift_Full_6: -4918303158943999825
+      Rift_Full_59: 1147076899453859997
+      Rift_Full_0: -492678146245675785
+      Rift_Full_32: 331215403699480325
+      Rift_Full_82: -3269862412494822209
+      Rift_Full_7: 4744308042729868298
+      Rift_Full_29: 6496065302222512559
+      Rift_Full_72: 5477832074272680233
+      Rift_Full_41: 3639965287921497490
+      Rift_Full_28: -5812083467977306665
+      Rift_Full_1: 6331739087008548513
+      Rift_Full_26: -3516951935933432862
+      Rift_Full_44: -3752176842629554413
+      Rift_Full_27: 2818492755316865802
+      Rift_Full_33: 6534578006110029449
+      Rift_Full_21: -7829890239635315091
+      Rift_Full_52: -816912653167817013
+      Rift_Full_46: 2553998330963655725
+      Rift_Full_5: -5145923776789230734
+      Rift_Full_77: -3254122982741462413
+      Rift_Full_43: 4827390282862467668
+      Rift_Full_55: -1193063422716383363
+      Rift_Full_74: 4399316200706177749
+      Rift_Full_9: -6878496374945772432
+      Rift_Full_8: -5082978451624360740
+      Rift_Full_13: -3743634076642178622
+      Rift_Full_40: -2624616712921304579
+      Rift_Full_22: 2496172636174003216
+      Rift_Full_39: 2490537766113474251
+      Rift_Full_12: -385794173796432179
+      Rift_Full_14: 7685655088260916173
+      Rift_Full_57: -5576233699970993816
+      Rift_Full_30: -6547091439186716625
+      Rift_Full_51: -4073406221344431893
+      Rift_Full_17: 3398792290746840088
+      Rift_Full_23: -1273520505675040427
+      Rift_Full_56: -4038824918752936052
+      Rift_Full_54: 6399168469645980077
+      Rift_Full_50: 7323419590451601535
+      Rift_Full_15: -8060129239671226550
+      Rift_Full_18: 9026162289921964783
+      Rift_Full_2: -3671394882113848428
+      Rift_Full_37: -4424532113434346152
+      Rift_Full_20: -7852375395986904430
+      Rift_Full_31: -2154897564278328858
+      Rift_Full_47: 6944197934341495204
+      Rift_Full_16: 8717226234601681269
+      Rift_Full_81: 6500579461568348192
+      Rift_Full_65: 8168772833883379090
+      Rift_Full_58: 6483754793383119809
+      Rift_Full_60: 8232017475924465796
+      Rift_Full_66: 12463222861206863
+      Rift_Full_62: -726465004846376807
+      Rift_Full_67: 1563470367836299316
+      Rift_Full_34: -1563937230650848963
+      Rift_Full_11: 3277610876053241023
+      Rift_Full_53: -5542373067868010701
+      Rift_Full_45: 9191027474134415273
+      Rift_Full_75: -2568428032552157573
+      Rift_Full_79: 5371005256707109478
+      Rift_Full_68: 1424368890844698341
+      Rift_Full_63: -6900803313683847627
+      Rift_Full_69: 6108803285513384239
+      Rift_Full_76: -7842567329986928922
+      Rift_Full_4: 7129683925146142356
+      Rift_Full_73: -514403529009049982
+      Rift_Full_70: -4509990090482509396
+      Rift_Full_36: 5852759243349709368
+      Rift_Full_24: 861724248815216842
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -143,6 +143,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -152,8 +154,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -174,9 +176,12 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
@@ -1056,6 +1061,47 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Critical_Attack_25: 6398104934350535703
+      Critical_Attack_8: 4844162113834102689
+      Critical_Attack_9: -4697130905085528453
+      Critical_Attack_28: -1924859751801136430
+      Critical_Attack_21: -6375964341153819158
+      Critical_Attack_30: -4402409897667200038
+      Critical_Attack_27: 1452958667411521886
+      Critical_Attack_10: 7043284822905944216
+      Critical_Attack_1: -3185531602163060200
+      Critical_Attack_14: -3276920352543939493
+      Critical_Attack_31: 8402367086616777724
+      Critical_Attack_11: 3362355934112873309
+      Critical_Attack_17: -4020014246392380883
+      Critical_Attack_33: -6992571891018711683
+      Critical_Attack_36: -6518407945287302933
+      Critical_Attack_0: 6531799189152103273
+      Critical_Attack_35: -217826865995271182
+      Critical_Attack_3: -8728934945989909710
+      Critical_Attack_7: -7501377205604424436
+      Critical_Attack_12: 753647654714808351
+      Critical_Attack_2: 3155139300012383496
+      Critical_Attack_37: 7802443721203267599
+      Critical_Attack_15: 2935933874362010555
+      Critical_Attack_16: -2500135722177573434
+      Critical_Attack_19: 4178357515154282024
+      Critical_Attack_23: 8734910953066985567
+      Critical_Attack_34: 4792792646327684951
+      Critical_Attack_13: 6480356732789850797
+      Critical_Attack_22: 7092563185136959432
+      Critical_Attack_5: -5294476550148224472
+      Critical_Attack_4: 5010110548161179666
+      Critical_Attack_29: -2184063466341978588
+      Critical_Attack_39: 2796406955921663152
+      Critical_Attack_6: 7275945010717012913
+      Critical_Attack_26: 7524967563536520932
+      Critical_Attack_32: 2307788391341936147
+      Critical_Attack_24: -719080696703102020
+      Critical_Attack_18: 223979433018689955
+      Critical_Attack_20: -1490365259174126056
+      Critical_Attack_38: 7398292688338743821
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -107,6 +107,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -116,8 +118,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -138,9 +140,12 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
@@ -684,6 +689,31 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      SF_W_N_Sheet_14: -2733113924585209300
+      SF_W_N_Sheet_24: -1932090697720418632
+      SF_W_N_Sheet_27: 2467971512848942306
+      SF_W_N_Sheet_10: -8923444054275260232
+      SF_W_N_Sheet_15: 990658071228884067
+      SF_W_N_Sheet_13: -8586328932167156306
+      SF_W_N_Sheet_1: -291901695659601172
+      SF_W_N_Sheet_6: 5640639447666258033
+      SF_W_N_Sheet_8: -2239361924923547220
+      SF_W_N_Sheet_26: 6569652593683862446
+      SF_W_N_Sheet_2: 240731802663219143
+      SF_W_N_Sheet_4: 322908933291370845
+      SF_W_N_Sheet_19: -1881881501272810474
+      SF_W_N_Sheet_11: 8482590866121452644
+      SF_W_N_Sheet_12: -7555559130440067530
+      SF_W_N_Sheet_16: 6113888330140712409
+      SF_W_N_Sheet_23: -3842235025405824416
+      SF_W_N_Sheet_18: 2816141698767208672
+      SF_W_N_Sheet_5: -1587472558730688180
+      SF_W_N_Sheet_7: 4111916375125757475
+      SF_W_N_Sheet_3: 7620101016094256618
+      SF_W_N_Sheet_17: 7969764152243553466
+      SF_W_N_Sheet_0: -8174031829851739513
+      SF_W_N_Sheet_9: 7309607228359499039
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

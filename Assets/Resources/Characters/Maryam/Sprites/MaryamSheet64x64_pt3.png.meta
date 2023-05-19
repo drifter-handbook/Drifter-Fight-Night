@@ -278,6 +278,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -287,8 +289,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -309,9 +311,12 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
@@ -1176,7 +1181,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: d1ee1b7e979f3ff10800000000000000
-      internalID: 2302458136490012189
+      internalID: -5023208077829532398
       vertices: []
       indices: 
       edges: []
@@ -2115,6 +2120,91 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      MaryamSheet64x64_pt3_22: -3985532946100102316
+      MaryamSheet64x64_pt3_71: 6430041454629103495
+      MaryamSheet64x64_pt3_49: -6939947159337643210
+      MaryamSheet64x64_pt3_77: 3297297929016279442
+      MaryamSheet64x64_pt3_82: -1473203156081583517
+      MaryamSheet64x64_pt3_19: 5402034516110370033
+      MaryamSheet64x64_pt3_16: -3896726424445813286
+      MaryamSheet64x64_pt3_20: -7838304141497213345
+      MaryamSheet64x64_pt3_6: -3420354925367682094
+      MaryamSheet64x64_pt3_35: 1415269195489384496
+      MaryamSheet64x64_pt3_24: 9193708812549885501
+      MaryamSheet64x64_pt3_31: 2125580345547098053
+      MaryamSheet64x64_pt3_39: -5023208077829532398
+      MaryamSheet64x64_pt3_7: -4505176066390159857
+      MaryamSheet64x64_pt3_13: -761458103788568082
+      MaryamSheet64x64_pt3_58: -1087828059912475582
+      MaryamSheet64x64_pt3_25: 5242714290421885292
+      MaryamSheet64x64_pt3_29: -929372065820390847
+      MaryamSheet64x64_pt3_21: 169723876716727964
+      MaryamSheet64x64_pt3_76: 3764695515763543181
+      MaryamSheet64x64_pt3_3: -3548261734290203062
+      MaryamSheet64x64_pt3_67: 3788328755154976918
+      MaryamSheet64x64_pt3_36: 1655328056929233650
+      MaryamSheet64x64_pt3_14: 6704957774631968493
+      MaryamSheet64x64_pt3_23: 7192595030944474645
+      MaryamSheet64x64_pt3_63: 4901127900977387107
+      MaryamSheet64x64_pt3_53: -5710955987501071229
+      MaryamSheet64x64_pt3_50: -6329635782892735613
+      MaryamSheet64x64_pt3_10: 671650984925325128
+      MaryamSheet64x64_pt3_52: -4892670800767630598
+      MaryamSheet64x64_pt3_75: -8792609053476297530
+      MaryamSheet64x64_pt3_69: 2648349767473237354
+      MaryamSheet64x64_pt3_64: -7436710294391092171
+      MaryamSheet64x64_pt3_74: -7320424922854108194
+      MaryamSheet64x64_pt3_61: -5679764726720625688
+      MaryamSheet64x64_pt3_60: 2402852354079574378
+      MaryamSheet64x64_pt3_45: 2244154184020027713
+      MaryamSheet64x64_pt3_40: 6777213264488113478
+      MaryamSheet64x64_pt3_55: 9042060431082258756
+      MaryamSheet64x64_pt3_42: -1785220430844077001
+      MaryamSheet64x64_pt3_83: 2208842156086543663
+      MaryamSheet64x64_pt3_27: 3163378974302262790
+      MaryamSheet64x64_pt3_30: 2589239308932193711
+      MaryamSheet64x64_pt3_15: 6822845767180328277
+      MaryamSheet64x64_pt3_26: 8472897905086633806
+      MaryamSheet64x64_pt3_65: 3898516806551397164
+      MaryamSheet64x64_pt3_62: 2911760764707614123
+      MaryamSheet64x64_pt3_66: -5969178278118405697
+      MaryamSheet64x64_pt3_2: -5624509638688392484
+      MaryamSheet64x64_pt3_78: 8578558852402054305
+      MaryamSheet64x64_pt3_34: -6754682768340267490
+      MaryamSheet64x64_pt3_38: 125746461320008054
+      MaryamSheet64x64_pt3_79: 8756520032487495014
+      MaryamSheet64x64_pt3_54: -8045689464210696068
+      MaryamSheet64x64_pt3_8: 215675238083731713
+      MaryamSheet64x64_pt3_18: -694964400320526643
+      MaryamSheet64x64_pt3_46: 1273772955964836859
+      MaryamSheet64x64_pt3_59: 1726808259391187802
+      MaryamSheet64x64_pt3_4: -7684957697628285726
+      MaryamSheet64x64_pt3_11: -4464832670768721568
+      MaryamSheet64x64_pt3_72: -4366412351437886210
+      MaryamSheet64x64_pt3_44: 516807576452815862
+      MaryamSheet64x64_pt3_80: -7129324153542531997
+      MaryamSheet64x64_pt3_41: -888098780510353851
+      MaryamSheet64x64_pt3_68: -1365727760248669772
+      MaryamSheet64x64_pt3_70: -6186181771515854668
+      MaryamSheet64x64_pt3_47: 2473025099888444418
+      MaryamSheet64x64_pt3_51: -8701538375732468387
+      MaryamSheet64x64_pt3_37: -5003603535492714153
+      MaryamSheet64x64_pt3_43: 2897552706761967052
+      MaryamSheet64x64_pt3_56: 415820859072560559
+      MaryamSheet64x64_pt3_28: -8015455284561338793
+      MaryamSheet64x64_pt3_17: -7662625314758280078
+      MaryamSheet64x64_pt3_81: -7000910924957287217
+      MaryamSheet64x64_pt3_9: 5607549299976678642
+      MaryamSheet64x64_pt3_32: 6372240107654076718
+      MaryamSheet64x64_pt3_73: -8632751981000635559
+      MaryamSheet64x64_pt3_33: -7757140855863890553
+      MaryamSheet64x64_pt3_57: 1996441927580616357
+      MaryamSheet64x64_pt3_12: -1553364723761204833
+      MaryamSheet64x64_pt3_0: 1349861543611135731
+      MaryamSheet64x64_pt3_48: 9125316119207474619
+      MaryamSheet64x64_pt3_1: -119336104736557732
+      MaryamSheet64x64_pt3_5: 8539166699836684214
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

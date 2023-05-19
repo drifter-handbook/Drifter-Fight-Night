@@ -11,9 +11,16 @@ public class RyykeMasterHit : MasterHit
     //Tether References
     //Tether Recovery Range object
     public TetherRange tether;
-    Vector3 TetherPoint = Vector3.zero;
-    GameObject arm;
+    
     Tether armTether;
+    
+    //Gameobjects to sync separately
+    //0 Up stone
+    //1 Side Stone
+    //2 Down Stone
+    Tombstone[] tombstones = new Tombstone[] {null,null,null};
+    
+    GameObject arm;
 
 
 	//Gamestate sync
@@ -21,10 +28,7 @@ public class RyykeMasterHit : MasterHit
     bool listeningForMovement = false;
     bool burrowing = false;
     float burrowTime = maxBurrowTime;
-    //0 Up stone
-    //1 Side Stone
-    //2 Down Stone
-    Tombstone[] tombstones = new Tombstone[] {null,null,null};
+    Vector3 TetherPoint = Vector3.zero;
     //Index of the next stone to place
     int tombstoneIndex = 0;
     //The current closest active stone
@@ -33,9 +37,22 @@ public class RyykeMasterHit : MasterHit
     int targetStone = -1;
 
 
-    override protected void UpdateMasterHit()
+    //Takes a snapshot of the current frame to rollback to
+    public override MasterhitRollbackFrame SerializeFrame()
     {
-        base.UpdateMasterHit();
+        MasterhitRollbackFrame baseFrame = SerializeBaseFrame();
+        return baseFrame;
+    }
+
+    //Rolls back the entity to a given frame state
+    public override void DeserializeFrame(MasterhitRollbackFrame p_frame)
+    {
+        DeserializeBaseFrame(p_frame);
+    }
+
+    override public void UpdateFrame()
+    {
+        base.UpdateFrame();
 
         //Remove the arm if it is not needed
         if(arm!= null &&(movement.ledgeHanging || status.HasEnemyStunEffect())) deleteArm();
@@ -95,7 +112,6 @@ public class RyykeMasterHit : MasterHit
 
     public void playStateByStone(string state)
     {
-    	if(!isHost)return;
 
     	int index = tombstoneIndex;
     	bool stonesFull = true;
@@ -122,18 +138,16 @@ public class RyykeMasterHit : MasterHit
 	//Creates a tombstone projectile
     public void SpawnTombstone(int mode = 0)
     {
-        if(!isHost)return;
         
 
         bool stonesFull = true;
         
-        GameObject stone = host.CreateNetworkObject("Tombstone", transform.position + new Vector3(1 * movement.Facing,.5f,0), transform.rotation);
+        GameObject stone = GameController.Instance.CreatePrefab("Tombstone", transform.position + new Vector3(1 * movement.Facing,.5f,0), transform.rotation);
         stone.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in stone.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
             hitbox.Facing = movement.Facing;
        }
 
@@ -159,8 +173,8 @@ public class RyykeMasterHit : MasterHit
        }
 
        //stone.GetComponent<SyncAnimatorStateHost>().SetState(tombstoneIndex + "_Spin");
-       stone.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
-       tombstones[tombstoneIndex] = stone.GetComponent<Tombstone>().setup(tombstoneIndex,movement.Facing,attacks,drifter.gameObject,zombieRadius);
+       stone.GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)drifter.GetColor()]);
+       tombstones[tombstoneIndex] = stone.GetComponent<Tombstone>().setup(tombstoneIndex,movement.Facing,drifter.gameObject,zombieRadius);
        tombstones[tombstoneIndex].throwStone(mode);
     }
 
@@ -188,7 +202,7 @@ public class RyykeMasterHit : MasterHit
 	        			nearbyStone = i;
 	        			bestDistance = distance;
 	        		}
-	        		//if(!tombstones[i].active)tombstones[i].playAnimation("Activate",true,true);
+	        		//if(!tombstones[i].active)tombstones[i].PlayConditionalAnimation("Activate",true,true);
 	        		
 
 	        		// if(tombstones[i].active)
@@ -202,7 +216,7 @@ public class RyykeMasterHit : MasterHit
 	        	else if((distance >= zombieRadius  || burrowing || status.HasStunEffect()) && !tombstones[i].attacking)
 	        	{
 	        		//Deactivate tombstones that are not nearby
-	        		if(tombstones[i].active)tombstones[i].playAnimation("Deactivate",true,true);
+	        		if(tombstones[i].active)tombstones[i].PlayConditionalAnimation("Deactivate",true,true);
 	        		tombstones[i].active = false;
 	        		
 	        	}
@@ -212,14 +226,14 @@ public class RyykeMasterHit : MasterHit
         //After the closest stone is found, Activate it
         if(nearbyStone >=0 && !tombstones[nearbyStone].active)
         {
-            tombstones[nearbyStone].playAnimation("Activate",true,true);
+            tombstones[nearbyStone].PlayConditionalAnimation("Activate",true,true);
 
             //Deactivate all other active stones, so only one zombie is active at a time
             for(int i = 0; i <3; i++)
             {
                 if(tombstones[i] != null && i != nearbyStone && tombstones[i].active && !tombstones[i].attacking)
                 {
-                    tombstones[i].playAnimation("Deactivate",true,true);
+                    tombstones[i].PlayConditionalAnimation("Deactivate",true,true);
                     tombstones[i].active = false;
                 }
 
@@ -230,14 +244,14 @@ public class RyykeMasterHit : MasterHit
         if(nearbyStone >=0 && tombstones[nearbyStone].active && !Empowered && tombstones[nearbyStone].canAct)
         {
             //Show the empowered sparkle
-            drifter.sparkle.SetState("ChargeIndicator");
+            drifter.Sparkle(true);
             Empowered = true;
         }
 
         //If the reset flag is set, de-empower Ryyke and hide the sparkle.
     	if(reset)
     	{
-    		if(Empowered)drifter.sparkle.SetState("Hide");
+    		if(Empowered)drifter.Sparkle(false);
     		Empowered = false;
     		nearbyStone = -1;
     	}
@@ -248,7 +262,6 @@ public class RyykeMasterHit : MasterHit
     //W Up Methods
     public void SpawnTether()
     {
-        if(!isHost)return;
         
 
         float angle = 55f  * movement.Facing;
@@ -276,13 +289,12 @@ public class RyykeMasterHit : MasterHit
         else
             TetherPoint = Vector3.zero;
 
-        arm = host.CreateNetworkObject("Ryyke_Arm", transform.position + pos, Quaternion.Euler(0,0,angle));
+        arm = GameController.Instance.CreatePrefab("Ryyke_Arm", transform.position + pos, Quaternion.Euler(0,0,angle));
         arm.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in arm.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
             hitbox.Facing = movement.Facing;
         }
         arm.transform.SetParent(drifter.gameObject.transform);
@@ -297,20 +309,19 @@ public class RyykeMasterHit : MasterHit
 
     public void setArmLen(float len)
     {
-        if(!isHost || arm == null)return;
+        if( arm == null)return;
         armTether.setTargetLength(len);
     }
 
     public void freezeTether()
     {
-        if(!isHost || arm == null)return;
+        if( arm == null)return;
         armTether.freezeLen();
     }
 
 
     public void pullToLedge()
     {
-        if(!isHost)return;
         if(TetherPoint!=Vector3.zero)
         {
             Vector3 dir = TetherPoint - new Vector3(rb.position.x,rb.position.y);
@@ -336,7 +347,6 @@ public class RyykeMasterHit : MasterHit
     //Flips the direction the character is movement.Facing mid move)
     public void invertDirection()
     {
-        if(!isHost)return;
         movement.flipFacing();
     }
 
@@ -344,7 +354,6 @@ public class RyykeMasterHit : MasterHit
     //Particles
     public void dust()
     {
-        if(!isHost)return;
 
         if(movement.grounded)movement.spawnJuiceParticle(transform.position + new Vector3(3.5f * movement.Facing,0,0),MovementParticleMode.Dash_Cloud, true);
     }
@@ -353,17 +362,16 @@ public class RyykeMasterHit : MasterHit
 
     public void decrementStoneUses()
     {
-    	if(tombstones[nearbyStone] !=  null && Empowered && nearbyStone >=0)tombstones[nearbyStone].Uses--;
+        UnityEngine.Debug.Log("REMOVE ME");
     }
 
 
     public void Command(string state)
     {
-    	if(!isHost)return;
     	if(nearbyStone >=0 && tombstones[nearbyStone] != null && tombstones[nearbyStone].active && tombstones[nearbyStone].canAct)
     	{
     		refeshStoneHitboxes(tombstones[nearbyStone]);
-    		tombstones[nearbyStone].playAnimation(state,false,true);
+    		tombstones[nearbyStone].PlayConditionalAnimation(state,false,true);
             tombstones[nearbyStone].attacking = true;
     		//decrementStoneUses();
     	}
@@ -371,14 +379,12 @@ public class RyykeMasterHit : MasterHit
 
     public void refeshStoneHitboxes(Tombstone stone)
     {
-    	if(!isHost)return;
 
         stone.updateDirection(movement.Facing);
 
         foreach (HitboxCollision hitbox in stone.gameObject.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.AttackID = attacks.AttackID;
-            hitbox.AttackType = attacks.AttackType;
             hitbox.Facing = stone.facing;
             hitbox.isActive = true;
         }
@@ -390,14 +396,12 @@ public class RyykeMasterHit : MasterHit
     //Up Special empowered
     public void listenForDirection()
     {
-        if(!isHost)return;
         listeningForDirection = true;
         isNearStone();
     }
 
     public void burrow()
     {
-        if(!isHost)return;
         burrowing = true;
         burrowTime = maxBurrowTime;
         listenForLedge(true);
@@ -407,13 +411,11 @@ public class RyykeMasterHit : MasterHit
 
     public void moveWhileBurrowed(int moveFlag)
     {
-        if(!isHost)return;
         listeningForMovement = (moveFlag != 0);
     }
 
     public void warpToStone()
     {
-    	if(!isHost)return;
     	if(targetStone != -1 && tombstones[targetStone] != null && tombstones[targetStone].canAct)
     			rb.position = tombstones[targetStone].gameObject.transform.position + new Vector3(0,2f);
 

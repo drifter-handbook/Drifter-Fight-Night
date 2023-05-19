@@ -28,6 +28,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 30559202277466150}
   m_RootOrder: 3
@@ -60,10 +61,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parent: {fileID: 2434124643158957358}
-  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: ec72abe154cb53e429ea8d326cbd5a2d, type: 2}
-  AttackData: {fileID: 0}
+  parent: {fileID: 2434124643158957358}
   projectilePriority: -2
 --- !u!1 &277852493484010370
 GameObject:
@@ -93,6 +92,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 30559202277466150}
   m_RootOrder: 0
@@ -109,10 +109,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parent: {fileID: 2434124643158957358}
-  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: 5e947b487db012541a39b5c24172baff, type: 2}
-  AttackData: {fileID: 0}
+  parent: {fileID: 2434124643158957358}
   projectilePriority: -2
 --- !u!58 &3193968564853509515
 CircleCollider2D:
@@ -158,6 +156,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 30559202277466150}
   m_RootOrder: 1
@@ -190,10 +189,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parent: {fileID: 2434124643158957358}
-  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: 605e8d7b44080d64ea7191211470738f, type: 2}
-  AttackData: {fileID: 0}
+  parent: {fileID: 2434124643158957358}
   projectilePriority: -2
 --- !u!1 &2434124643158957358
 GameObject:
@@ -212,7 +209,7 @@ GameObject:
   - component: {fileID: 1354026590027931518}
   - component: {fileID: 5807732775549559144}
   - component: {fileID: 4704084469118033853}
-  - component: {fileID: 6232277379314521775}
+  - component: {fileID: 6187845524770775536}
   m_Layer: 0
   m_Name: SuperEffect
   m_TagString: Untagged
@@ -230,6 +227,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 10, y: 10, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 30559202277466150}
   m_Father: {fileID: 0}
@@ -246,10 +244,12 @@ SpriteRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -287,7 +287,7 @@ SpriteRenderer:
   m_SpriteSortPoint: 0
 --- !u!95 &315034053413878420
 Animator:
-  serializedVersion: 3
+  serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -300,6 +300,7 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -378,18 +379,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   duration: -1
---- !u!114 &6232277379314521775
-MonoBehaviour:
+  rb: {fileID: 6187845524770775536}
+  animator: {fileID: 315034053413878420}
+--- !u!50 &6187845524770775536
+Rigidbody2D:
+  serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2434124643158957358}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9fa41060c8e88848bc207d9557175ee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 0
+  m_CollisionDetection: 0
+  m_Constraints: 7
 --- !u!1 &4308614647085636330
 GameObject:
   m_ObjectHideFlags: 0
@@ -418,6 +430,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 30559202277466150}
   m_RootOrder: 4
@@ -434,10 +447,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 366a1f2c5e90cb041bf397c745ab185b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parent: {fileID: 2434124643158957358}
-  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: ef5e0f446fddd6a4a923145e600b4eb9, type: 2}
-  AttackData: {fileID: 0}
+  parent: {fileID: 2434124643158957358}
   projectilePriority: -2
 --- !u!58 &5791997422331262283
 CircleCollider2D:
@@ -481,6 +492,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 454210263216847067}
   - {fileID: 6207187310862230799}
@@ -519,6 +531,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 30559202277466150}
   m_RootOrder: 2
@@ -551,10 +564,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parent: {fileID: 2434124643158957358}
-  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: 7008142f1b42c8c408a43bb206e3c56a, type: 2}
-  AttackData: {fileID: 0}
+  parent: {fileID: 2434124643158957358}
   projectilePriority: -2
 --- !u!1 &7582039505749631521
 GameObject:
@@ -584,6 +595,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 30559202277466150}
   m_RootOrder: 5
@@ -600,10 +612,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parent: {fileID: 0}
-  playerType: {fileID: 0}
   OverrideData: {fileID: 11400000, guid: fc9bd58f7571e604ca2e4b67ccd6a8be, type: 2}
-  AttackData: {fileID: 0}
+  parent: {fileID: 0}
   projectilePriority: -2
 --- !u!58 &8196047902433758703
 CircleCollider2D:

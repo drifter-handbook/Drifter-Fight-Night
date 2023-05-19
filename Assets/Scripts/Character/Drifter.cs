@@ -35,43 +35,39 @@ public enum DrifterType
 
 }
 
-
-
 /** 
  * This is the class that will be put into a prefab and instantiated 
  */
 [RequireComponent(typeof(PlayerMovement))]
-public class Drifter : MonoBehaviour, INetworkInit
+[RequireComponent(typeof(PlayerStatus))]
+[RequireComponent(typeof(PlayerAttacks))]
+public class Drifter : MonoBehaviour
 {
     //Static values durring gameplay
     public PlayerMovement movement;
-    public Animator animator;
-
-    NetworkSync sync;
-    public int Stocks {
-        get { return (int)sync["stocks"]; }
-        set { sync["stocks"] = value; }
-    }
-    public float DamageTaken {
-        get { return (float)sync["damageTaken"]; }
-        set { sync["damageTaken"] = value; }
-    }
-
-    public AnimatorOverrideController[] animOverrides;
-    public int myColor;
-    public DrifterType drifterType;
-    public int peerID;
     public PlayerStatus status;
-    public SyncAnimatorStateHost sparkle;
+    public PlayerAttacks attacks;
+    public MasterHit masterhit;
+    public PlayerHurtboxHandler hurtbox;
+    
+    public Animator animator;
+    public AnimatorOverrideController[] animOverrides;
+    public Animator sparkle;
     public PlayerInput playerInputController;
 
-    bool isHost;
 
-    //Serializeable values
-    public float animationSpeed = 1;
+    public DrifterType drifterType;
+
+    [NonSerialized]
+    public int myColor;
+    [NonSerialized]
+    public int peerID;
+    
     //Input Buffer
     public PlayerInputData[] input;
-    
+
+    // [NonSerialized]
+    // public float animationSpeed = 1;
     [NonSerialized]
     public bool guarding = false;
     [NonSerialized]
@@ -92,15 +88,17 @@ public class Drifter : MonoBehaviour, INetworkInit
     public bool hiddenFlag = false;
     [NonSerialized]
     public float superCharge = 2f;
+    [NonSerialized]
+    public bool sparkleMode = false;
+
+    public int Stocks;
+    public float DamageTaken;
     
     private int overrideIndex = 0; 
     private int cancelTimer = 0;
     private bool _canSpecialCancel = false;
-    private int animatorClipHash;
-    private float animatorTime;
-
-
-
+    //private int animatorClipHash;
+    //private float animatorTime;
 
     //Cancel Normals into Specials Logic
     public bool listenForSpecialCancel
@@ -115,43 +113,15 @@ public class Drifter : MonoBehaviour, INetworkInit
         }
     }
 
-    
-
-    public void OnNetworkInit()
-    {
-        NetworkUtils.RegisterChildObject("PlayerAnimator", transform.Find("Sprite").gameObject);
-        NetworkUtils.RegisterChildObject("PlayerNumberIndicator", transform.Find("PlayerIndicator").gameObject);
-    }
-
-    public void Awake()
-    {
-        isHost = GameController.Instance.IsHost;
-        sync = GetComponent<NetworkSync>();
-        status = GetComponent<PlayerStatus>();
-    }
 
     public void Start()
     {
-        Stocks = !GameController.Instance.IsTraining ? 4:999;
-        //if(drifterType==DrifterType.Sandbag)SetColor(8);
+        Stocks = !GameController.Instance.IsTraining ? 4:9999;
         DamageTaken = 0f;
 
         if(animOverrides != null && animOverrides.Length > 0)animOverrides[0] = new AnimatorOverrideController(animator.runtimeAnimatorController);
-    }
+        masterhit = GetComponentInChildren<MasterHit>();
 
-    void FixedUpdate()
-    {
-        if(cancelTimer >0)
-        {
-            cancelTimer--;
-            if(cancelTimer <=0)
-            {
-                cancelTimer = 0;
-                listenForSpecialCancel = false;
-                canSpecialCancelFlag = false;
-            }
-        }
-        
     }
 
     public bool canSpecialCancel()
@@ -169,14 +139,13 @@ public class Drifter : MonoBehaviour, INetworkInit
     public void SetCharge(float newCharge)
     { 
         if(superCharge != newCharge) superCharge=newCharge;
-        if(isHost) gameObject.GetComponent<SyncChargeHost>().setCharge(superCharge);
+        //gameObject.GetComponent<SyncChargeHost>().setCharge(superCharge);
     }
 
     //Grants the character additonal charge for their super meter, up to the cap of 5 bars
     public void gainSuperMeter(float charge)
     {
-        if(isHost)
-            superCharge = Mathf.Min(charge + superCharge,5f);
+        superCharge = Mathf.Min(charge + superCharge,5f);
     }
 
 
@@ -191,10 +160,8 @@ public class Drifter : MonoBehaviour, INetworkInit
         myColor = (colorID>=0?colorID:0);
         transform.GetChild(0).GetComponent<SpriteRenderer>().color = CharacterMenu.ColorFromEnum[(PlayerColor)myColor];
         transform.GetChild(2).GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)myColor]);
-        if(isHost){
-            transform.GetChild(0).GetComponent<SyncAnimatorStateHost>().SetState( (colorID < 8)?"P" + (colorID + 1):"P9");
-            gameObject.GetComponent<SyncColorDataHost>().setColor(myColor);
-        }
+        //gameObject.GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)myColor]);
+        transform.GetChild(0).GetComponent<Animator>().Play( (colorID < 8)?"P" + (colorID + 1):"P9");
     }
 
     public void toggleHidden(bool hidden)
@@ -215,43 +182,25 @@ public class Drifter : MonoBehaviour, INetworkInit
         transform.GetChild(3).localScale = new Vector2(Mathf.Abs(transform.GetChild(3).localScale.x) * facing,transform.GetChild(3).localScale.y);
     }
 
-    // //Replaces the animator state transition function
-    // public void PlayAnimation(string p_state, float p_normalizedTime = -1)
-    // {
-    //     // if(!isHost)return;
-    //     if(Animator.StringToHash(p_state) == animator.GetCurrentAnimatorStateInfo(-1).fullPathHash && p_normalizedTime == -1)
-    //         UnityEngine.Debug.Log("DUPLICATE STATE CALL MADE: " + p_state);
-        
-    //     else
-    //         PlayAnimation(Animator.StringToHash(p_state),p_normalizedTime < 0 ? 0: p_normalizedTime);
-        
 
-    //     // animator.Play(p_state,,-1,p_normalizedTime);
-    //     // animatorClipHash = animator.GetCurrentAnimatorStateInfo(animationLayer).fullPathHash;
-    //     // animatorTime = p_normalizedTime;
-
-        
-    // }
-
-    // private void PlayAnimation(int p_state, float p_normalizedTime)
-    // {
-    //     animator.Play(p_state,-1,p_normalizedTime);
-    //     animatorClipHash = p_state;
-    //     animatorTime = p_normalizedTime;
-    // }
-
-
-    public void PlayAnimation(string state)
+    public void Sparkle(bool p_mode)
     {
-        if(!isHost)return;
-        if(Animator.StringToHash(state) != animator.GetCurrentAnimatorStateInfo(0).fullPathHash)
+        if(sparkleMode ==p_mode) return;
+
+        sparkleMode = p_mode;
+        sparkle.Play(p_mode?"ChargeIndicator":"Hide");
+    }
+
+    //Replaces the animator state transition function
+    public void PlayAnimation(string p_state, float p_normalizedTime = -1, bool p_gate = false)
+    {
+        if(p_gate && Animator.StringToHash(p_state) == animator.GetCurrentAnimatorStateInfo(0).shortNameHash)
         {
-            animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState(state,0);
+            UnityEngine.Debug.Log("Animation state " +p_state + " was gated!");
         }
-        
         else
         {
-            UnityEngine.Debug.Log("FAILED TO PLAY STATE; STATE IS ALREADY PLAYING: " + state);
+            animator.Play(Animator.StringToHash(p_state),0,p_normalizedTime < 0 ? 0: p_normalizedTime);
         }
     }
 
@@ -260,21 +209,24 @@ public class Drifter : MonoBehaviour, INetworkInit
     {
         if(animOverrides.Length == null || animOverrides.Length < p_index+1)
         {
-            UnityEngine.Debug.LogWarning("No animation override set for index: " + p_index);
+            //UnityEngine.Debug.LogWarning("No animation override set for index: " + p_index);
             return;
         }
         animator.runtimeAnimatorController = animOverrides[p_index];
         overrideIndex = p_index;
     }
 
-    public void SetAnimationSpeed(float speed)
+    public void SetAnimationSpeed(float p_speed)
     {
-        animationSpeed = speed;
-       
-        if(!isHost)return;
-        animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetSpeed(speed);
-
+        animator.speed = p_speed;
     }
+
+    public void ToggleAnimator(bool p_mode)
+    {
+        animator.enabled = p_mode;
+    }
+
+
 
     //Return to idle is called anytime the player regains control
     public void returnToIdle()
@@ -287,8 +239,9 @@ public class Drifter : MonoBehaviour, INetworkInit
         canFeint = true;
         canSuper = true;
         clearGuardFlags();
-        if(movement.grounded)animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState("Idle");
-        else animator.gameObject.GetComponent<SyncAnimatorStateHost>().SetState("Hang");
+        if(movement.grounded && input[0].MoveX !=0)PlayAnimation("Walk");
+        else if(movement.grounded)PlayAnimation("Idle");
+        else PlayAnimation("Hang");
         if(status.HasStatusEffect(PlayerStatusEffect.END_LAG)) status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0);
         if(status.HasStatusEffect(PlayerStatusEffect.FLATTEN)) status.ApplyStatusEffect(PlayerStatusEffect.FLATTEN,0);
         if(status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN))  status.ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,0);
@@ -396,4 +349,144 @@ public class Drifter : MonoBehaviour, INetworkInit
     public static DrifterType DrifterTypeFromString(String drfiterString){
         return (DrifterType)Enum.Parse(typeof(DrifterType), drfiterString.Replace(" ", "_"));
     }
+
+
+    //Rollback
+    //====================================
+
+    //Takes a snapshot of the current frame to rollback to
+    public DrifterRollbackFrame SerializeFrame()
+    {
+        return new DrifterRollbackFrame()
+        {
+
+            //Input buffer
+            InputBuffer = input,
+
+            //Character State
+            Guarding = guarding,
+            PerfectGuarding = perfectGuarding,
+            Parrying = parrying,
+            GuardBreaking = guardBreaking,
+            CanFeint = canFeint,
+            CanSuper = canSuper,
+            KnockedDown = knockedDown,
+            CanSpecialCancel = _canSpecialCancel, 
+            Hidden = hiddenFlag,
+            SuperCharge = superCharge,
+            Stocks = this.Stocks,
+            DamageTaken = this.DamageTaken,
+            CancelTimer = cancelTimer,
+            ListenForSpecialCancel = listenForSpecialCancel,
+            SparkleMode = sparkleMode,
+
+            //Animation
+            AnimationOverrideIndex = overrideIndex,
+            AnimationSpeed = animator.speed,
+            AnimationClip = animator.GetCurrentAnimatorStateInfo(0).shortNameHash,
+            AnimationTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime,
+            AnimatorEnabled = animator.enabled,
+
+            //Components
+            MovementFrame = movement.SerializeFrame(),
+            AttackFrame = attacks.SerializeFrame(),
+            MasterhitFrame =  masterhit.SerializeFrame(),
+            StatusFrame = status.SerializeFrame(),
+            HurtboxhitFrame = hurtbox.SerializeFrame(),
+        };
+    }
+
+    //Rolls back the entity to a given frame state
+    public  void DeserializeFrame(DrifterRollbackFrame p_frame)
+    {
+
+        //Input buffer
+        input = p_frame.InputBuffer;
+
+        //Character State
+        guarding = p_frame.Guarding;
+        perfectGuarding = p_frame.PerfectGuarding;
+        parrying = p_frame.Parrying;
+        guardBreaking = p_frame.GuardBreaking;
+        canFeint = p_frame.CanFeint;
+        canSuper = p_frame.CanSuper;
+        knockedDown = p_frame.KnockedDown;
+        _canSpecialCancel = p_frame.CanSpecialCancel; 
+        hiddenFlag = p_frame.Hidden;
+        superCharge = p_frame.SuperCharge;
+        Stocks = p_frame.Stocks;
+        DamageTaken = p_frame.DamageTaken;
+        cancelTimer = p_frame.CancelTimer;
+        listenForSpecialCancel = p_frame.ListenForSpecialCancel;
+        sparkleMode = p_frame.SparkleMode;
+
+        //Animation
+        animator.enabled = p_frame.AnimatorEnabled;
+        SetAnimationOverride(p_frame.AnimationOverrideIndex); 
+        animator.speed = p_frame.AnimationSpeed;
+        animator.Play(p_frame.AnimationClip,0,p_frame.AnimationTime);
+        
+        //Components
+        movement.DeserializeFrame(p_frame.MovementFrame);
+        attacks.DeserializeFrame(p_frame.AttackFrame);
+        masterhit.DeserializeFrame(p_frame.MasterhitFrame);
+        status.DeserializeFrame(p_frame.StatusFrame);
+        hurtbox.DeserializeFrame(p_frame.HurtboxhitFrame);
+
+    }
+
+    public void UpdateFrame()
+    {
+        if(cancelTimer >0)
+        {
+            cancelTimer--;
+            if(cancelTimer <=0)
+            {
+                cancelTimer = 0;
+                listenForSpecialCancel = false;
+                canSpecialCancelFlag = false;
+            }
+        }
+        movement.UpdateFrame();
+        attacks.UpdateFrame();
+        masterhit.UpdateFrame();
+        status.UpdateFrame();
+        hurtbox.UpdateFrame();
+        
+    }
+}
+
+public class DrifterRollbackFrame: INetworkData
+{
+    public string Type { get; set; }
+    public PlayerInputData[] InputBuffer;
+    
+    public bool Guarding;
+    public bool PerfectGuarding;
+    public bool Parrying;
+    public bool GuardBreaking;
+    public bool CanFeint;
+    public bool CanSuper;
+    public bool KnockedDown;
+    public bool CanSpecialCancel; 
+    public bool Hidden;
+    public float SuperCharge;
+    public int Stocks;
+    public float DamageTaken;
+    public int CancelTimer;
+    public bool ListenForSpecialCancel;
+    public bool SparkleMode;
+
+    public int AnimationOverrideIndex; 
+    public float AnimationSpeed;
+    public int AnimationClip;
+    public float AnimationTime;
+    public bool AnimatorEnabled;
+
+    public MovementRollbackFrame MovementFrame;
+    public AttackRollbackFrame AttackFrame;
+    public MasterhitRollbackFrame MasterhitFrame;
+    public StatusRollbackFrame StatusFrame;
+    public HurtboxRollbackFrame HurtboxhitFrame;
+    
 }

@@ -326,6 +326,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -335,8 +337,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -357,9 +359,12 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
@@ -447,7 +452,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 20915e4a7774cc0d0800000000000000
-      internalID: -3401265039378409214
+      internalID: -2861572842222391660
       vertices: []
       indices: 
       edges: []
@@ -468,7 +473,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 01ca9601dfaf4bfd0800000000000000
-      internalID: -2326959142634673136
+      internalID: 1556520441179612973
       vertices: []
       indices: 
       edges: []
@@ -489,7 +494,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: c1f12b22a80997600800000000000000
-      internalID: 466562959371542300
+      internalID: 5919159155254220725
       vertices: []
       indices: 
       edges: []
@@ -510,7 +515,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 4c2085bb168f3a780800000000000000
-      internalID: -8672815358746819900
+      internalID: -2562762015022719006
       vertices: []
       indices: 
       edges: []
@@ -531,7 +536,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: b5a3d7e432f5a0ca0800000000000000
-      internalID: -6049918544173516197
+      internalID: -7655987416884342023
       vertices: []
       indices: 
       edges: []
@@ -552,7 +557,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 71652c4b029cc64d0800000000000000
-      internalID: -3139913697875306985
+      internalID: -59001407043725718
       vertices: []
       indices: 
       edges: []
@@ -573,7 +578,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 44de980abe18b9cc0800000000000000
-      internalID: -3703223419571409596
+      internalID: 7712127404190398535
       vertices: []
       indices: 
       edges: []
@@ -594,7 +599,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 6dae27d07e7697e40800000000000000
-      internalID: 5654665049201109718
+      internalID: 8235089464277720903
       vertices: []
       indices: 
       edges: []
@@ -2331,6 +2336,99 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Ladyp_19: -6330543610177191933
+      Ladyp_61: -5531236900140959743
+      Ladyp_73: 4041491970905484595
+      Ladyp_29: -5190075194153027995
+      Ladyp_23: -7105323741926835016
+      Ladyp_76: -2821402687414613933
+      Ladyp_12: -3850953141624073220
+      Ladyp_22: 6220491144604070869
+      Ladyp_42: 5458545529521250663
+      Ladyp_43: -6149666402989174623
+      Ladyp_24: 5396843739438763305
+      Ladyp_66: -906797501663664804
+      Ladyp_72: 5133472368423627091
+      Ladyp_0: -5358565576426106179
+      Ladyp_33: 4797148140236493076
+      Ladyp_40: 616172793744855466
+      Ladyp_91: 8711820248124203564
+      Ladyp_65: -1338868726727287318
+      Ladyp_54: -3194730247568042493
+      Ladyp_1: 4638148605062807183
+      Ladyp_74: -5792090584626978406
+      Ladyp_88: 7902669221299696529
+      Ladyp_39: 1442068658191448903
+      Ladyp_26: 3543845469492147159
+      Ladyp_28: 150830388653141286
+      Ladyp_32: 165325888816308183
+      Ladyp_67: 1424923255438346831
+      Ladyp_80: 4247369573103192292
+      Ladyp_52: -6939517794459602932
+      Ladyp_51: 7081077086015249456
+      Ladyp_27: -815756408532126736
+      Ladyp_11: 1359910208400679166
+      Ladyp_21: 6862673841973606055
+      Ladyp_86: 4440043537252130893
+      Ladyp_37: 8937701990072231099
+      Ladyp_71: 854181731537135237
+      Ladyp_48: -8283821505858007159
+      Ladyp_35: 8045591254537533222
+      Ladyp_77: -3069044435195778743
+      Ladyp_87: -473401700601820311
+      Ladyp_64: 5816016034809048200
+      Ladyp_41: -105163584684158281
+      Ladyp_46: -4286100003322615818
+      Ladyp_18: 1606800736853490093
+      Ladyp_78: -6642091532684668098
+      Ladyp_84: -5897575526645748517
+      Ladyp_20: 5561666507977514618
+      Ladyp_14: 6561180882578244341
+      Ladyp_38: 3536255923422009247
+      Ladyp_16: 2234792134205310553
+      Ladyp_34: 6505294195930960698
+      Ladyp_13: -6655866202273135759
+      Ladyp_85: -5725993415416484326
+      Ladyp_2: -2861572842222391660
+      Ladyp_3: 1556520441179612973
+      Ladyp_36: -7838911091679755825
+      Ladyp_82: 7035791060584347070
+      Ladyp_10: 51065212254486076
+      Ladyp_50: -6036802436359110488
+      Ladyp_75: -3828091427884709611
+      Ladyp_7: -59001407043725718
+      Ladyp_70: 4483744212466179068
+      Ladyp_92: 1986672592267461526
+      Ladyp_9: 8235089464277720903
+      Ladyp_69: 8741227251575100046
+      Ladyp_90: 3504523801554363655
+      Ladyp_44: 3852364366735669348
+      Ladyp_49: 5601861856028722107
+      Ladyp_6: -7655987416884342023
+      Ladyp_47: -6959395722507903517
+      Ladyp_45: -9085739650045544460
+      Ladyp_68: 1701940172157736546
+      Ladyp_4: 5919159155254220725
+      Ladyp_83: -4636158977974253313
+      Ladyp_53: 9202109794122766614
+      Ladyp_58: 8974560974140142573
+      Ladyp_79: -4981341040797990482
+      Ladyp_57: 874042143761916808
+      Ladyp_63: -712717311547105717
+      Ladyp_30: 6715254229884235021
+      Ladyp_8: 7712127404190398535
+      Ladyp_31: 3085274782466808754
+      Ladyp_56: 5117576769609664137
+      Ladyp_55: 6335742897950047048
+      Ladyp_62: 7738486430048434709
+      Ladyp_60: 8575304820511025242
+      Ladyp_17: 1179911362015102075
+      Ladyp_81: 5379474971429898307
+      Ladyp_59: -5460869815994578424
+      Ladyp_15: -6632695508611622904
+      Ladyp_25: 660205034727340475
+      Ladyp_5: -2562762015022719006
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
