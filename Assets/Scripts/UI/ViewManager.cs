@@ -213,7 +213,7 @@ public class ViewManager : MonoBehaviour
         {
             UnityEngine.Debug.Log("Update toggles");
             UpdateToggles();
-            if(!mouse)EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Settings"));
+            if(!mouse)EventSystem.current.SetSelectedGameObject(GameObject.Find("IPToggle"));
         }
     }
 
