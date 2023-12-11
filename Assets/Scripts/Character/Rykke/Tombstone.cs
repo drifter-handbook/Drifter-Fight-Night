@@ -253,23 +253,47 @@ public class Tombstone : NonplayerHurtboxHandler
     //=========================================
 
     //Takes a snapshot of the current frame to rollback to
-    // public TombstoneRollbackFrame SerializeFrame()
-    // {
-    //     TombstoneRollbackFrame baseFrame = SerializeBaseFrame();
-    
-    //     return baseFrame;
-    // }
+    public TombstoneRollbackFrame SerializeFrame()
+    {
+        return new TombstoneRollbackFrame()
+        {
+            NPCFrame = base.SerializeFrame(),
+            CanAct = canAct,
+            Active = active,
+            Projectile = projectile,
+            Attacking = attacking,
+            ListeningForGrounded = listeningForGrounded,
+            Hitboxes = GetComponent<InstantiatedEntityCleanup>().SerializeFrame()
+        };
+    }
 
-    // //Rolls back the entity to a given frame state
-    // public void DeserializeFrame(TombstoneRollbackFrame p_frame)
-    // {
-    //     DeserializeBaseFrame(p_frame);
-    // }
+    //Rolls back the entity to a given frame state
+    public void DeserializeFrame(TombstoneRollbackFrame p_frame)
+    {
+
+        DeserializeFrame(p_frame.NPCFrame);
+        canAct = p_frame.CanAct;
+        active = p_frame.Active;
+        projectile = p_frame.Projectile;
+        attacking = p_frame.Attacking;
+        listeningForGrounded = p_frame.ListeningForGrounded;
+        GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(p_frame.Hitboxes);
+    }
 
 }
 
-// public class TombstoneRollbackFrame: ICharacterRollbackFrame
-// {
-//     public string Type { get; set; }
+public class TombstoneRollbackFrame: INetworkData
+{
+
+    public NPCHurtboxRollbackFrame NPCFrame;
+    public BasicProjectileRollbackFrame Hitboxes;
+
+    public bool CanAct;
+    public bool Active;
+    public bool Projectile;
+    public bool Attacking;
+    public bool ListeningForGrounded;
+
+    public string Type { get; set; }
     
-// }
+}

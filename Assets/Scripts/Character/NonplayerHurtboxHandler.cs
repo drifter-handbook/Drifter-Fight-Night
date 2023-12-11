@@ -8,7 +8,7 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
 
     protected bool takesKnockback = true;
     public float maxPercentage = 30f;
-    float _percentage = 0f;
+    public float _percentage = 0f;
 	public float percentage
     {
         get{ return _percentage;}
@@ -36,6 +36,7 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
     protected int HitstunDuration = 0;
     protected int HitPauseDuration = 0;
     protected Vector3 delayedVelocity = Vector3.zero;
+
     public Rigidbody2D rb;
 
     public SummonHealthbarHandler healthBar;
@@ -174,5 +175,47 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
     	return 2;
 
     }
+
+    //Takes a snapshot of the current frame to rollback to
+    public NPCHurtboxRollbackFrame SerializeFrame()
+    {
+        return new NPCHurtboxRollbackFrame()
+        {
+            HurtboxFrame = base.SerializeFrame(),
+            TakesKnockback = takesKnockback,
+            Percentage = percentage,
+            Facing = facing,
+            HitstunDuration = this.HitstunDuration,
+            HitPauseDuration = this.HitstunDuration,
+            DelayedVelocity = delayedVelocity
+        };
+    }
+
+    //Rolls back the entity to a given frame state
+    public  void DeserializeFrame(NPCHurtboxRollbackFrame p_frame)
+    {
+            base.DeserializeFrame(p_frame.HurtboxFrame);
+            takesKnockback = p_frame.TakesKnockback;
+            percentage = p_frame.Percentage;
+            facing =p_frame.Facing;
+            HitstunDuration = p_frame.HitstunDuration;
+            HitPauseDuration = p_frame.HitPauseDuration;
+            delayedVelocity = p_frame.DelayedVelocity;
+            
+    }
+}
+
+public class NPCHurtboxRollbackFrame: INetworkData
+{
+    public HurtboxRollbackFrame HurtboxFrame;
+
+    public bool TakesKnockback;
+    public float Percentage;  
+    public int HitstunDuration;
+    public int HitPauseDuration;
+    public Vector3 DelayedVelocity;
+    public int Facing;
+
+    public string Type { get; set; }
 
 }

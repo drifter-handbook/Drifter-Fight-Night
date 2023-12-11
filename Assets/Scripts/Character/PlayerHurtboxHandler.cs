@@ -612,15 +612,10 @@ public class PlayerHurtboxHandler : MonoBehaviour
     }
 }
 
-public class HurtboxRollbackFrame: INetworkData, ICloneable
+public class HurtboxRollbackFrame: INetworkData
 {
     public string Type { get; set; }
     public int[] OldAttacks;
     public int FramesSinceCleaned;
 
-    public object Clone()
-    {
-        return new HurtboxRollbackFrame()
-        {};
-    }
 }

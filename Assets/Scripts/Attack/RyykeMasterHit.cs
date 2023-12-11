@@ -6,7 +6,7 @@ public class RyykeMasterHit : MasterHit
 {
     //Static values
     static int maxBurrowTime = 120;
-    static int zombieRadius = 4;
+    static float zombieRadius = 3.5f;
 
     //Tether References
     //Tether Recovery Range object
@@ -27,7 +27,7 @@ public class RyykeMasterHit : MasterHit
     bool listeningForDirection = false;
     bool listeningForMovement = false;
     bool burrowing = false;
-    float burrowTime = maxBurrowTime;
+    int burrowTime = maxBurrowTime;
     Vector3 tetherPoint = Vector3.zero;
     //Index of the next stone to place
     int tombstoneIndex = 0;
@@ -94,6 +94,8 @@ public class RyykeMasterHit : MasterHit
 
         isNearStone();
 
+         for(int i = 0; i <3; i++)
+             if(tombstones[i] != null) tombstones[i].GetComponent<Tombstone>().UpdateFrame();
     }
 
     public void playStateByStone(string state)
@@ -125,7 +127,6 @@ public class RyykeMasterHit : MasterHit
     public void SpawnTombstone(int mode = 0)
     {
         
-
         bool stonesFull = true;
         
         GameObject stone = GameController.Instance.CreatePrefab("Tombstone", transform.position + new Vector3(1 * movement.Facing,.5f,0), transform.rotation);
@@ -430,12 +431,22 @@ public class RyykeMasterHit : MasterHit
     public override MasterhitRollbackFrame SerializeFrame()
     {
         MasterhitRollbackFrame baseFrame = SerializeBaseFrame();
-    //     baseFrame.CharacterFrame = new RyykeRollbackFrame() 
-    //     {
-    //         Sandblast = g_Sandblast != null ? g_Sandblast.GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null,
-    //         Sandspear1 = g_Sandspear1 != null ? g_Sandspear1.GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null,
-    //         Sandspear2 = g_Sandspear2 != null ? g_Sandspear2.GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null,     
-    //     };
+
+        TombstoneRollbackFrame[] p_Tombstones = new TombstoneRollbackFrame[] {null,null,null};
+
+        for(int i = 0; i <3; i++)
+             p_Tombstones[i] = tombstones[i] != null ? tombstones[i].GetComponent<Tombstone>().SerializeFrame(): null;
+
+        baseFrame.CharacterFrame = new RyykeRollbackFrame()
+        {
+            Tombstones = p_Tombstones,
+            ListeningForDirection = listeningForDirection, 
+            ListeningForMovement = listeningForMovement,
+            Burrowing = burrowing,
+            BurrowTime = burrowTime, 
+            TetherPoint = this.tetherPoint,
+            TombstoneIndex = tombstoneIndex
+        };
 
          return baseFrame;
     }
@@ -445,37 +456,25 @@ public class RyykeMasterHit : MasterHit
     {
         DeserializeBaseFrame(p_frame);
 
-        RyykeRollbackFrame sb_frame = (RyykeRollbackFrame)p_frame.CharacterFrame;
+        RyykeRollbackFrame ryyke_frame = (RyykeRollbackFrame)p_frame.CharacterFrame;
 
-        //Sandblast reset
-        // if(sb_frame.Sandblast != null)
-        // {
-        //     if(g_Sandblast == null)CreateSandblast();
-        //     g_Sandblast.GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(sb_frame.Sandblast);
-        // }
-        // //Projectile does not exist in rollback frame
-        // else
-        // {
-        //     Destroy(g_Sandblast);
-        //     g_Sandblast = null;
-        // }  
 
-        // //Sandspears reset
-        // if(sb_frame.Sandspear1 != null)
-        // {
-        //     if(g_Sandspear1 == null)CreateSandblast();
-        //     g_Sandspear1.GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(sb_frame.Sandspear1);
-        //     g_Sandspear2.GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(sb_frame.Sandspear2);
-
-        // }
-        // //Projectile does not exist in rollback frame
-        // else
-        // {
-        //     Destroy(g_Sandspear1);
-        //     Destroy(g_Sandspear2);
-        //     g_Sandspear1 = null;
-        //     g_Sandspear2 = null;
-        // }  
+        //Tombstone reset
+        for(int i = 0; i <3; i++)
+        {
+            if(ryyke_frame.Tombstones[i] != null)
+            {
+                if(tombstones[i] == null) SpawnTombstone(i);
+                tombstones[i].GetComponent<Tombstone>().DeserializeFrame(ryyke_frame.Tombstones[i]);
+            }
+            //Projectile does not exist in rollback frame
+            else
+            {
+                Destroy(tombstones[i].gameObject);
+                tombstones[i] = null;
+            }  
+        }
+        
 
     }
 
@@ -488,9 +487,7 @@ public class RyykeRollbackFrame: ICharacterRollbackFrame
     public bool ListeningForMovement;
     public bool Burrowing;
     public int BurrowTime;
-    public Vector3 tetherPoint;
+    public Vector3 TetherPoint;
     public int TombstoneIndex;
-    // public TombstoneRollbackFrame Tombstone0;
-    // public TombstoneRollbackFrame Tombstone1;
-    // public TombstoneRollbackFrame Tombstone2;
+    public TombstoneRollbackFrame[] Tombstones;
 }
