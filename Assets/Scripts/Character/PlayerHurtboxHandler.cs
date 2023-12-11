@@ -68,8 +68,6 @@ public class PlayerHurtboxHandler : MonoBehaviour
         int returnCode = -3;
         if (hitbox.parent != hurtbox.parent && CanHit(attackID))
         {
-
-            Debug.Log(attackID);
             
             // register new attack
 

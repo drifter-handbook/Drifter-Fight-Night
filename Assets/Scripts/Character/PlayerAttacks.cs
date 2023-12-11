@@ -67,6 +67,8 @@ public class PlayerAttacks : MonoBehaviour
     public DrifterAttackType AttackType { get;  set; }
     public List<SingleAttack> AttackMap = new List<SingleAttack>();
 
+    public int AttackFrameDelay = 0;
+
     public Dictionary<DrifterAttackType,SingleAttackData> Attacks = new Dictionary<DrifterAttackType,SingleAttackData>();
     public Dictionary<DrifterAttackType,bool> AttackVariants = new Dictionary<DrifterAttackType,bool>();
    
@@ -124,6 +126,15 @@ public class PlayerAttacks : MonoBehaviour
             return;
 
         if(drifter.input[0].Pause && ! drifter.input[1].Pause) NetworkPlayers.Instance.rollemback();
+
+        if(AttackFrameDelay > 0 )
+        {
+            AttackFrameDelay--;
+            if(AttackFrameDelay == 0)
+            {
+                SetupAttackID(AttackType);
+            }
+        }
 
         bool canAct = !drifter.status.HasStunEffect() && !drifter.guarding && !drifter.movement.ledgeHanging;
         bool canSpecial = !drifter.status.HasStunEffect() && !drifter.movement.ledgeHanging;
@@ -277,9 +288,11 @@ public class PlayerAttacks : MonoBehaviour
             drifter.PlayAnimation(AnimatorStates[attackType] + "_Ground");
         else
             drifter.PlayAnimation(AnimatorStates[attackType] + "_Air");
-        SetupAttackID(attackType);
+        //Delay setting Attack key for 3 frames for specvial cancels
+        AttackFrameDelay = 3;
+        AttackType = attackType;
+        //SetupAttackID(attackType);
         //UnityEngine.Debug.Log("STARTING ATTACK: " + attackType.ToString() + "  With attackID: " + AttackID);
-
 
     }
 
@@ -290,7 +303,7 @@ public class PlayerAttacks : MonoBehaviour
 
     public void SetupAttackID(DrifterAttackType attackType)
     {
-        AttackType = attackType;
+        //AttackType = attackType;
         AttackID = NextID;
         foreach (HitboxCollision hitbox in GetComponentsInChildren<HitboxCollision>(true))
         {
