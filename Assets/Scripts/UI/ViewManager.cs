@@ -164,7 +164,14 @@ public class ViewManager : MonoBehaviour
 
          if (name == "Local Menu" && !mouse)
         {
-            EventSystem.current.SetSelectedGameObject(GameObject.Find("Training"));
+            if(Debug.isDebugBuild)
+            {
+                EventSystem.current.SetSelectedGameObject(GameObject.Find("Training"));
+            }
+            else
+            {
+                EventSystem.current.SetSelectedGameObject(GameObject.Find("Fight Night"));
+            }
         }
 
         if (name == "Online Menu" && !mouse)
