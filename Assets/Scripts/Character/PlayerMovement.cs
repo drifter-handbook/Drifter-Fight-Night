@@ -188,6 +188,8 @@ public class PlayerMovement : MonoBehaviour
         if(GameController.Instance.IsPaused)
             return;
 
+        if(SuperCancel != null) SuperCancel.GetComponentInChildren<InstantiatedEntityCleanup>().UpdateFrame();
+
         if(dashLock >0)dashLock --;
         // if(drifter.input[0].Guard) techWindowElapsed += Time.fixedDeltaTime;
         // else if(drifter.status.HasGroundFriction()) techWindowElapsed = 0;
@@ -884,15 +886,15 @@ public class PlayerMovement : MonoBehaviour
         
         drifter.superCharge -= cost;
 
-        SuperCancel = GameController.Instance.host.CreateNetworkObject("SuperEffect", transform.position , transform.rotation);
+        SuperCancel = GameController.Instance.CreatePrefab("SuperEffect", transform.position , transform.rotation);
         foreach (HitboxCollision hitbox in SuperCancel.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
-            hitbox.AttackID = drifter.attacks.AttackID;
+            hitbox.AttackID = drifter.attacks.NextID;
             hitbox.isActive = true;
             hitbox.Facing = Facing;
         }
-        SuperCancel.GetComponent<SyncAnimatorStateHost>().SetState(mode);
+        SuperCancel.GetComponent<InstantiatedEntityCleanup>().animator.Play(mode);
         
     }
 

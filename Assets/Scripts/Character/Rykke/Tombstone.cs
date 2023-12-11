@@ -262,8 +262,7 @@ public class Tombstone : NonplayerHurtboxHandler
             Active = active,
             Projectile = projectile,
             Attacking = attacking,
-            ListeningForGrounded = listeningForGrounded,
-            Hitboxes = GetComponent<InstantiatedEntityCleanup>().SerializeFrame()
+            ListeningForGrounded = listeningForGrounded
         };
     }
 
@@ -277,7 +276,6 @@ public class Tombstone : NonplayerHurtboxHandler
         projectile = p_frame.Projectile;
         attacking = p_frame.Attacking;
         listeningForGrounded = p_frame.ListeningForGrounded;
-        GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(p_frame.Hitboxes);
     }
 
 }
@@ -286,7 +284,6 @@ public class TombstoneRollbackFrame: INetworkData
 {
 
     public NPCHurtboxRollbackFrame NPCFrame;
-    public BasicProjectileRollbackFrame Hitboxes;
 
     public bool CanAct;
     public bool Active;

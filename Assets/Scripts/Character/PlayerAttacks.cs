@@ -132,7 +132,8 @@ public class PlayerAttacks : MonoBehaviour
             AttackFrameDelay--;
             if(AttackFrameDelay == 0)
             {
-                SetupAttackID(AttackType);
+                foreach (HitboxCollision hitbox in GetComponentsInChildren<HitboxCollision>(true))
+                    hitbox.isActive = true;
             }
         }
 
@@ -291,7 +292,7 @@ public class PlayerAttacks : MonoBehaviour
         //Delay setting Attack key for 3 frames for specvial cancels
         AttackFrameDelay = 3;
         AttackType = attackType;
-        //SetupAttackID(attackType);
+        SetupAttackID(attackType);
         //UnityEngine.Debug.Log("STARTING ATTACK: " + attackType.ToString() + "  With attackID: " + AttackID);
 
     }
@@ -308,7 +309,7 @@ public class PlayerAttacks : MonoBehaviour
         foreach (HitboxCollision hitbox in GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.AttackID = AttackID;
-            hitbox.isActive = true;
+            hitbox.isActive = false;
             hitbox.Facing = drifter.movement.Facing;
         }
     }

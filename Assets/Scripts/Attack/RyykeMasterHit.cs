@@ -12,7 +12,7 @@ public class RyykeMasterHit : MasterHit
     //Tether Recovery Range object
     public TetherRange tether;
     
-    Tether armTether;
+    //Tether armTether;
     
     //Gameobjects to sync separately
     //0 Up stone
@@ -20,7 +20,7 @@ public class RyykeMasterHit : MasterHit
     //2 Down Stone
     Tombstone[] tombstones = new Tombstone[] {null,null,null};
     
-    GameObject arm;
+    GameObject g_arm;
 
 
 	//Gamestate sync
@@ -41,7 +41,7 @@ public class RyykeMasterHit : MasterHit
         base.UpdateFrame();
 
         //Remove the arm if it is not needed
-        if(arm!= null &&(movement.ledgeHanging || status.HasEnemyStunEffect())) deleteArm();
+        //if(g_arm!= null &&(movement.ledgeHanging || status.HasEnemyStunEffect())) deleteArm();
 
         //remove all tombstones on death
         if(status.HasStatusEffect(PlayerStatusEffect.DEAD))
@@ -96,6 +96,8 @@ public class RyykeMasterHit : MasterHit
 
          for(int i = 0; i <3; i++)
              if(tombstones[i] != null) tombstones[i].GetComponent<Tombstone>().UpdateFrame();
+
+        if(g_arm != null) g_arm.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
     }
 
     public void playStateByStone(string state)
@@ -250,59 +252,71 @@ public class RyykeMasterHit : MasterHit
     public void SpawnTether()
     {
 
-        float angle = 55f  * movement.Facing;
-        float len = 1.28f;
-                
-        Vector3 pos = new Vector3(1.5f * movement.Facing,3.7f,0);
-
-        if(arm != null)deleteArm();
-        bool targetLedge = false;
-        if(tether.TetherPoint != Vector3.zero)
-        {
-
-            tetherPoint = tether.TetherPoint;
-            //angle = Vector2.Angle(tether.tetherPoint,transform.position + pos);
-            float deltay = tetherPoint.y- (transform.position + pos).y;
-            float deltax = tetherPoint.x- (transform.position + pos).x;
-            angle = Mathf.Atan2(deltay, deltax)*180 / Mathf.PI + (movement.Facing < 0 ?180:0);
-
-
-            len = Vector2.Distance(transform.position + pos,tetherPoint) /10f;
-            targetLedge = true;
-            playState("W_Up_Ledge");
-
-        }
-        else
-            tetherPoint = Vector3.zero;
-
-        arm = GameController.Instance.CreatePrefab("Ryyke_Arm", transform.position + pos, Quaternion.Euler(0,0,angle));
-        arm.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
-        foreach (HitboxCollision hitbox in arm.GetComponentsInChildren<HitboxCollision>(true))
+        if(g_arm!= null) Destroy(g_arm);
+        g_arm = GameController.Instance.CreatePrefab("Sandblast", transform.position + new Vector3(1.5f * movement.Facing, 2.5f), transform.rotation);
+        g_arm.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
+        foreach (HitboxCollision hitbox in g_arm.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
             hitbox.Facing = movement.Facing;
         }
-        arm.transform.SetParent(drifter.gameObject.transform);
-        arm.GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)drifter.GetColor()]);
-        armTether = arm.GetComponentInChildren<Tether>();
-        armTether.setTargetLength(len);
-        //Cut this later?
-        //if(movement.currentJumps < movement.numberOfJumps) movement.currentJumps++;
-        if(targetLedge)disableArmHitbox();
+        g_arm.GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)drifter.GetColor()]);
+        g_arm.GetComponent<Rigidbody2D>().velocity = new Vector3(movement.Facing * 25f,0,0);
+
+        // float angle = 55f  * movement.Facing;
+        // float len = 1.28f;
+                
+        // Vector3 pos = new Vector3(1.5f * movement.Facing,3.7f,0);
+
+        // if(arm != null)deleteArm();
+        // bool targetLedge = false;
+        // if(tether.TetherPoint != Vector3.zero)
+        // {
+
+        //     tetherPoint = tether.TetherPoint;
+        //     //angle = Vector2.Angle(tether.tetherPoint,transform.position + pos);
+        //     float deltay = tetherPoint.y- (transform.position + pos).y;
+        //     float deltax = tetherPoint.x- (transform.position + pos).x;
+        //     angle = Mathf.Atan2(deltay, deltax)*180 / Mathf.PI + (movement.Facing < 0 ?180:0);
+
+
+        //     len = Vector2.Distance(transform.position + pos,tetherPoint) /10f;
+        //     targetLedge = true;
+        //     playState("W_Up_Ledge");
+
+        // }
+        // else
+        //     tetherPoint = Vector3.zero;
+
+        // arm = GameController.Instance.CreatePrefab("Ryyke_Arm", transform.position + pos, Quaternion.Euler(0,0,angle));
+        // arm.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
+        // foreach (HitboxCollision hitbox in arm.GetComponentsInChildren<HitboxCollision>(true))
+        // {
+        //     hitbox.parent = drifter.gameObject;
+        //     hitbox.AttackID = attacks.AttackID;
+        //     hitbox.Facing = movement.Facing;
+        // }
+        // arm.transform.SetParent(drifter.gameObject.transform);
+        // arm.GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)drifter.GetColor()]);
+        // armTether = arm.GetComponentInChildren<Tether>();
+        // armTether.setTargetLength(len);
+        // //Cut this later?
+        // //if(movement.currentJumps < movement.numberOfJumps) movement.currentJumps++;
+        // if(targetLedge)disableArmHitbox();
     }
 
-    public void setArmLen(float len)
-    {
-        if( arm == null)return;
-        armTether.setTargetLength(len);
-    }
+    // public void setArmLen(float len)
+    // {
+    //     if( arm == null)return;
+    //     armTether.setTargetLength(len);
+    // }
 
-    public void freezeTether()
-    {
-        if( arm == null)return;
-        armTether.freezeLen();
-    }
+    // public void freezeTether()
+    // {
+    //     if( arm == null)return;
+    //     armTether.freezeLen();
+    // }
 
 
     public void pullToLedge()
@@ -312,22 +326,22 @@ public class RyykeMasterHit : MasterHit
             Vector3 dir = tetherPoint - new Vector3(rb.position.x,rb.position.y);
             Vector3.Normalize(dir);
             rb.velocity = 10f * dir;
-            armTether.setSpeed(.5f);
+            //armTether.setSpeed(.5f);
    
             //tetherPoint=Vector3.zero;
         }
     }
-    public void deleteArm()
-    {
-        if(arm != null)Destroy(arm);
-        arm = null;
-        armTether= null;
-    }
+    // public void deleteArm()
+    // {
+    //     if(arm != null)Destroy(arm);
+    //     arm = null;
+    //     armTether= null;
+    // }
 
-    public void disableArmHitbox()
-    {
-        armTether.togglehitbox(0);
-    }
+    // public void disableArmHitbox()
+    // {
+    //     armTether.togglehitbox(0);
+    // }
 
     //Flips the direction the character is movement.Facing mid move)
     public void invertDirection()
@@ -424,7 +438,7 @@ public class RyykeMasterHit : MasterHit
         listeningForMovement = false;
         burrowTime = maxBurrowTime;
         burrowing = false;
-        deleteArm(); 
+        //deleteArm(); 
     }
 
     //Takes a snapshot of the current frame to rollback to

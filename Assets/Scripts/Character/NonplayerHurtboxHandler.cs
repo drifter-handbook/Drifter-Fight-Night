@@ -187,7 +187,8 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
             Facing = facing,
             HitstunDuration = this.HitstunDuration,
             HitPauseDuration = this.HitstunDuration,
-            DelayedVelocity = delayedVelocity
+            DelayedVelocity = delayedVelocity,
+            Hitboxes = GetComponent<InstantiatedEntityCleanup>().SerializeFrame()
         };
     }
 
@@ -201,7 +202,7 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
             HitstunDuration = p_frame.HitstunDuration;
             HitPauseDuration = p_frame.HitPauseDuration;
             delayedVelocity = p_frame.DelayedVelocity;
-            
+            GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(p_frame.Hitboxes);
     }
 }
 
@@ -215,6 +216,7 @@ public class NPCHurtboxRollbackFrame: INetworkData
     public int HitPauseDuration;
     public Vector3 DelayedVelocity;
     public int Facing;
+    public BasicProjectileRollbackFrame Hitboxes;
 
     public string Type { get; set; }
 
