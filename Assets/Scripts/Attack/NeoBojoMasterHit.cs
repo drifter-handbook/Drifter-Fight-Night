@@ -89,6 +89,12 @@ public class NeoBojoMasterHit : MasterHit
     {
         if(g_centaur != null)
         {
+            foreach (HitboxCollision hitbox in g_centaur.GetComponentsInChildren<HitboxCollision>(true))
+            {
+                hitbox.parent = drifter.gameObject;
+                hitbox.AttackID = -attacks.AttackID;
+                hitbox.Facing = movement.Facing;
+            }
             g_centaur.GetComponent<Animator>().Play("Centaur_Fire_" + power);
             UnityEngine.Debug.Log("Centaur_Fire_" + power);
             

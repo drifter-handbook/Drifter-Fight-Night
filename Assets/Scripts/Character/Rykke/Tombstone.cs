@@ -6,13 +6,11 @@ using UnityEngine;
 public class Tombstone : NonplayerHurtboxHandler
 {
 
-
 	public bool canAct = false;
 	public bool active = false;
     public bool projectile = true;
     public bool attacking = false;
     public bool listeningForGrounded = true;
-
 
 	public WalkOff ledgeDetector;
 
@@ -248,7 +246,30 @@ public class Tombstone : NonplayerHurtboxHandler
         burst.transform.localScale = new Vector3(facing *10,10,1f);
 
         burst.GetComponent<Animator>().Play(mode ==0? "Vertical":"Horizontal");
+
     }
 
+    //Rollback
+    //=========================================
+
+    //Takes a snapshot of the current frame to rollback to
+    // public TombstoneRollbackFrame SerializeFrame()
+    // {
+    //     TombstoneRollbackFrame baseFrame = SerializeBaseFrame();
+    
+    //     return baseFrame;
+    // }
+
+    // //Rolls back the entity to a given frame state
+    // public void DeserializeFrame(TombstoneRollbackFrame p_frame)
+    // {
+    //     DeserializeBaseFrame(p_frame);
+    // }
 
 }
+
+// public class TombstoneRollbackFrame: ICharacterRollbackFrame
+// {
+//     public string Type { get; set; }
+    
+// }

@@ -5,8 +5,8 @@ using UnityEngine;
 public class RyykeMasterHit : MasterHit
 {
     //Static values
-    static float maxBurrowTime = 2f;
-    static float zombieRadius = 3.75f;
+    static int maxBurrowTime = 120;
+    static int zombieRadius = 4;
 
     //Tether References
     //Tether Recovery Range object
@@ -28,27 +28,13 @@ public class RyykeMasterHit : MasterHit
     bool listeningForMovement = false;
     bool burrowing = false;
     float burrowTime = maxBurrowTime;
-    Vector3 TetherPoint = Vector3.zero;
+    Vector3 tetherPoint = Vector3.zero;
     //Index of the next stone to place
     int tombstoneIndex = 0;
     //The current closest active stone
     int nearbyStone = -1;
     //The current stone being targeted for teleportation with down special
     int targetStone = -1;
-
-
-    //Takes a snapshot of the current frame to rollback to
-    public override MasterhitRollbackFrame SerializeFrame()
-    {
-        MasterhitRollbackFrame baseFrame = SerializeBaseFrame();
-        return baseFrame;
-    }
-
-    //Rolls back the entity to a given frame state
-    public override void DeserializeFrame(MasterhitRollbackFrame p_frame)
-    {
-        DeserializeBaseFrame(p_frame);
-    }
 
     override public void UpdateFrame()
     {
@@ -89,7 +75,7 @@ public class RyykeMasterHit : MasterHit
             movement.move(14f);
             if((!drifter.input[1].Jump && drifter.input[0].Jump) || burrowTime <=0)
             {
-                attacks.SetupAttackID(DrifterAttackType.W_Down);
+                attacks.SetMultiHitAttackID();
                 playState("W_Down_Emerge");
                 listeningForMovement = false;
             }
@@ -103,7 +89,7 @@ public class RyykeMasterHit : MasterHit
         //Tick down the burrow timer
         if(burrowing && burrowTime >0)
         {
-            burrowTime -= Time.fixedDeltaTime;
+            burrowTime--;
         }
 
         isNearStone();
@@ -262,7 +248,6 @@ public class RyykeMasterHit : MasterHit
     //W Up Methods
     public void SpawnTether()
     {
-        
 
         float angle = 55f  * movement.Facing;
         float len = 1.28f;
@@ -274,20 +259,20 @@ public class RyykeMasterHit : MasterHit
         if(tether.TetherPoint != Vector3.zero)
         {
 
-            TetherPoint = tether.TetherPoint;
-            //angle = Vector2.Angle(tether.TetherPoint,transform.position + pos);
-            float deltay = TetherPoint.y- (transform.position + pos).y;
-            float deltax = TetherPoint.x- (transform.position + pos).x;
+            tetherPoint = tether.TetherPoint;
+            //angle = Vector2.Angle(tether.tetherPoint,transform.position + pos);
+            float deltay = tetherPoint.y- (transform.position + pos).y;
+            float deltax = tetherPoint.x- (transform.position + pos).x;
             angle = Mathf.Atan2(deltay, deltax)*180 / Mathf.PI + (movement.Facing < 0 ?180:0);
 
 
-            len = Vector2.Distance(transform.position + pos,TetherPoint) /10f;
+            len = Vector2.Distance(transform.position + pos,tetherPoint) /10f;
             targetLedge = true;
             playState("W_Up_Ledge");
 
         }
         else
-            TetherPoint = Vector3.zero;
+            tetherPoint = Vector3.zero;
 
         arm = GameController.Instance.CreatePrefab("Ryyke_Arm", transform.position + pos, Quaternion.Euler(0,0,angle));
         arm.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
@@ -298,8 +283,7 @@ public class RyykeMasterHit : MasterHit
             hitbox.Facing = movement.Facing;
         }
         arm.transform.SetParent(drifter.gameObject.transform);
-        arm.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
-
+        arm.GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)drifter.GetColor()]);
         armTether = arm.GetComponentInChildren<Tether>();
         armTether.setTargetLength(len);
         //Cut this later?
@@ -322,14 +306,14 @@ public class RyykeMasterHit : MasterHit
 
     public void pullToLedge()
     {
-        if(TetherPoint!=Vector3.zero)
+        if(tetherPoint!=Vector3.zero)
         {
-            Vector3 dir = TetherPoint - new Vector3(rb.position.x,rb.position.y);
+            Vector3 dir = tetherPoint - new Vector3(rb.position.x,rb.position.y);
             Vector3.Normalize(dir);
             rb.velocity = 10f * dir;
             armTether.setSpeed(.5f);
    
-            //TetherPoint=Vector3.zero;
+            //tetherPoint=Vector3.zero;
         }
     }
     public void deleteArm()
@@ -441,4 +425,72 @@ public class RyykeMasterHit : MasterHit
         burrowing = false;
         deleteArm(); 
     }
+
+    //Takes a snapshot of the current frame to rollback to
+    public override MasterhitRollbackFrame SerializeFrame()
+    {
+        MasterhitRollbackFrame baseFrame = SerializeBaseFrame();
+    //     baseFrame.CharacterFrame = new RyykeRollbackFrame() 
+    //     {
+    //         Sandblast = g_Sandblast != null ? g_Sandblast.GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null,
+    //         Sandspear1 = g_Sandspear1 != null ? g_Sandspear1.GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null,
+    //         Sandspear2 = g_Sandspear2 != null ? g_Sandspear2.GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null,     
+    //     };
+
+         return baseFrame;
+    }
+
+    //Rolls back the entity to a given frame state
+    public override void DeserializeFrame(MasterhitRollbackFrame p_frame)
+    {
+        DeserializeBaseFrame(p_frame);
+
+        RyykeRollbackFrame sb_frame = (RyykeRollbackFrame)p_frame.CharacterFrame;
+
+        //Sandblast reset
+        // if(sb_frame.Sandblast != null)
+        // {
+        //     if(g_Sandblast == null)CreateSandblast();
+        //     g_Sandblast.GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(sb_frame.Sandblast);
+        // }
+        // //Projectile does not exist in rollback frame
+        // else
+        // {
+        //     Destroy(g_Sandblast);
+        //     g_Sandblast = null;
+        // }  
+
+        // //Sandspears reset
+        // if(sb_frame.Sandspear1 != null)
+        // {
+        //     if(g_Sandspear1 == null)CreateSandblast();
+        //     g_Sandspear1.GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(sb_frame.Sandspear1);
+        //     g_Sandspear2.GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(sb_frame.Sandspear2);
+
+        // }
+        // //Projectile does not exist in rollback frame
+        // else
+        // {
+        //     Destroy(g_Sandspear1);
+        //     Destroy(g_Sandspear2);
+        //     g_Sandspear1 = null;
+        //     g_Sandspear2 = null;
+        // }  
+
+    }
+
+}
+
+public class RyykeRollbackFrame: ICharacterRollbackFrame
+{
+    public string Type { get; set; }
+    public bool ListeningForDirection;
+    public bool ListeningForMovement;
+    public bool Burrowing;
+    public int BurrowTime;
+    public Vector3 tetherPoint;
+    public int TombstoneIndex;
+    // public TombstoneRollbackFrame Tombstone0;
+    // public TombstoneRollbackFrame Tombstone1;
+    // public TombstoneRollbackFrame Tombstone2;
 }

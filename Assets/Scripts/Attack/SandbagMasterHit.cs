@@ -29,8 +29,8 @@ public class SandbagMasterHit : MasterHit
 		}
 
 		if(g_Sandblast != null) g_Sandblast.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
-		if(g_Sandblast != null) g_Sandspear1.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
-		if(g_Sandblast != null) g_Sandspear2.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
+		if(g_Sandspear1 != null) g_Sandspear1.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
+		if(g_Sandspear2 != null) g_Sandspear2.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
 
     }
 
@@ -130,7 +130,7 @@ public class SandbagMasterHit : MasterHit
     public override MasterhitRollbackFrame SerializeFrame()
     {
     	MasterhitRollbackFrame baseFrame = SerializeBaseFrame();
-    	baseFrame.CharacterFrame= new SandbagRollbackFrame() 
+    	baseFrame.CharacterFrame = new SandbagRollbackFrame() 
         {
             Sandblast = g_Sandblast != null ? g_Sandblast.GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null,
 			Sandspear1 = g_Sandspear1 != null ? g_Sandspear1.GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null,

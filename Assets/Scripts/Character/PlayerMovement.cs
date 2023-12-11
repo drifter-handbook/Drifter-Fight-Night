@@ -878,7 +878,7 @@ public class PlayerMovement : MonoBehaviour
         canLandingCancel = false;
         mainCamera.Darken(darkentime);
         drifter.canSuper = false;
-        drifter.attacks.SetupAttackID(DrifterAttackType.Super_Cancel);
+        drifter.attacks.SetMultiHitAttackID();
         Vector3 flip = new Vector3(Facing * 10f, 10f, 0f);
         //Vector3 pos = new Vector3(Facing * 3f, 3.5f, 1f);
         

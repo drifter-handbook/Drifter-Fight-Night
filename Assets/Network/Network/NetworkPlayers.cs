@@ -42,7 +42,7 @@ public class NetworkPlayers : MonoBehaviour
         foreach (CharacterSelectState charSel in CharacterMenu.charSelStates.Values)
             CreatePlayer(charSel.PeerID);
 
-        br.makeLobby();//InitializeRollbackSession();
+        //br.makeLobby();//InitializeRollbackSession();
     }
 
     // Update is called once per frame
