@@ -122,7 +122,8 @@ public class NeoBojoMasterHit : MasterHit
         MasterhitRollbackFrame baseFrame = SerializeBaseFrame();
         baseFrame.CharacterFrame= new BojoRollbackFrame() 
         {
-            Centaur = g_centaur != null ? g_centaur.GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null,
+            CentaurHit = g_centaur != null ? g_centaur.GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null,
+            CentaurBody = g_centaur != null ? g_centaur.GetComponent<NonplayerHurtboxHandler>().SerializeFrame(): null,
             Note = g_note != null ? g_note.GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null,
             Soundwave = g_soundwave != null ? g_soundwave.GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null,
             Power = power
@@ -141,10 +142,11 @@ public class NeoBojoMasterHit : MasterHit
         power = bj_frame.Power;
 
         //Sandblast reset
-        if(bj_frame.Centaur != null)
+        if(bj_frame.CentaurHit != null)
         {
             if(g_centaur == null)SpawnCentaur();
-            g_centaur.GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(bj_frame.Centaur);
+            g_centaur.GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(bj_frame.CentaurHit);
+            g_centaur.GetComponent<NonplayerHurtboxHandler>().DeserializeFrame(bj_frame.CentaurBody);
         }
         //Projectile does not exist in rollback frame
         else
@@ -184,7 +186,8 @@ public class BojoRollbackFrame: ICharacterRollbackFrame
 {
     public string Type { get; set; }
 
-    public BasicProjectileRollbackFrame Centaur;
+    public BasicProjectileRollbackFrame CentaurHit;
+    public NPCHurtboxRollbackFrame CentaurBody;
     public BasicProjectileRollbackFrame Soundwave;
     public BasicProjectileRollbackFrame Note;
     public int Power;

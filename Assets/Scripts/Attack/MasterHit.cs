@@ -581,6 +581,11 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         movement.canFastFall = false;
     }
 
+    public virtual void TriggerRemoteSpawn(int index)
+    {
+
+    }
+
 
     //Rollback
     //============================
