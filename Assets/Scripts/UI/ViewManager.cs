@@ -206,7 +206,7 @@ public class ViewManager : MonoBehaviour
         {
             UnityEngine.Debug.Log("Update toggles");
             UpdateToggles();
-            if(!mouse)EventSystem.current.SetSelectedGameObject(GameObject.Find("Back"));
+            if(!mouse)EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Settings"));
         }
     }
 
