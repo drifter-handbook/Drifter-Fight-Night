@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-using HouraiTeahouse.Backroll;
+using UnityGGPO;
 
 public class NetworkPlayers : MonoBehaviour
 {
@@ -14,8 +14,6 @@ public class NetworkPlayers : MonoBehaviour
     public List<GameObject> spawnPoints;
 
     public GameObject playerInputPrefab;
-
-    BackrollController br = new BackrollController();
 
     DrifterRollbackFrame[,] rollbackTest = new DrifterRollbackFrame[5,2];
 

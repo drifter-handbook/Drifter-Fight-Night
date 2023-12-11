@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "com.houraiteahouse.backroll": "0.1.1",
     "com.unity.2d.animation": "7.0.6",
     "com.unity.2d.pixel-perfect": "5.0.1",
     "com.unity.2d.psdimporter": "6.0.4",
@@ -17,6 +16,7 @@
     "com.unity.textmeshpro": "3.0.6",
     "com.unity.timeline": "1.6.4",
     "com.unity.ugui": "1.0.0",
+    "unityggpo.plugin": "https://github.com/nykwil/UnityGGPO.git?path=/Unity/Packages/UnityGGPO",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
     "com.unity.modules.animation": "1.0.0",
@@ -48,16 +48,5 @@
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
     "com.unity.modules.xr": "1.0.0"
-  },
-  "scopedRegistries": [
-    {
-      "name": "Hourai Teahouse",
-      "url": "https://upm.houraiteahouse.net",
-      "scopes": [
-        "com.houraiteahouse",
-        "com.discord",
-        "com.facepunch"
-      ]
-    }
-  ]
+  }
 }
