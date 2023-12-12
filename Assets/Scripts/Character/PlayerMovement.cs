@@ -196,7 +196,7 @@ public class PlayerMovement : MonoBehaviour
 
         bool jumpPressed = !drifter.input[1].Jump && drifter.input[0].Jump;
         bool canAct = !drifter.status.HasStunEffect() && !drifter.guarding;// && !drifter.input[0].Guard;
-        bool canGuard = !drifter.status.HasStunEffect() && !jumping;
+        bool canGuard = !drifter.status.HasStunEffect() && !jumping && !ledgeHanging;
        
         bool moving = drifter.input[0].MoveX != 0;
 
@@ -518,7 +518,7 @@ public class PlayerMovement : MonoBehaviour
             }
             
             //Neutral Getup
-            else if((drifter.input[0].MoveX  * Facing > 0)  || drifter.input[0].MoveY > 0){
+            else if((drifter.input[0].MoveX  * Facing > 0)  || drifter.input[0].MoveY > 0 || drifter.input[0].Guard ){
                 DropLedge();
                 drifter.status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,18);
                 drifter.PlayAnimation("Ledge_Climb");
