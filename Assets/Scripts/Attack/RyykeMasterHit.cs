@@ -22,9 +22,8 @@ public class RyykeMasterHit : MasterHit
     
 
     //Clean up Later
-    GameObject g_arm;
-    GameObject g_hand;
-    public GameObject line;
+    GameObject g_Tether_Arm;
+    GameObject g_Tether_Hand;
     public bool armRetracting = false;
 
     HingeJoint2D tetherJoint;
@@ -48,7 +47,7 @@ public class RyykeMasterHit : MasterHit
         base.UpdateFrame();
 
         //Remove the arm if it is not needed
-        //if(g_arm!= null &&(movement.ledgeHanging || status.HasEnemyStunEffect())) deleteArm();
+        //if(g_Tether_Arm!= null &&(movement.ledgeHanging || status.HasEnemyStunEffect())) deleteArm();
 
         //remove all tombstones on death
         if(status.HasStatusEffect(PlayerStatusEffect.DEAD))
@@ -104,19 +103,24 @@ public class RyykeMasterHit : MasterHit
          for(int i = 0; i <3; i++)
              if(tombstones[i] != null) tombstones[i].GetComponent<Tombstone>().UpdateFrame();
 
-        if(g_arm != null && g_hand != null)
+        if(g_Tether_Arm != null && g_Tether_Hand != null)
         {
-            if(armRetracting)
-                g_hand.GetComponent<Rigidbody2D>().position = Vector2.MoveTowards(g_hand.GetComponent<Rigidbody2D>().position, g_arm.transform.position,3);
 
-            g_arm.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
-            g_hand.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
-            line.GetComponentInChildren<LineRenderer>().SetPosition(0,g_arm.transform.position);
-            line.GetComponentInChildren<LineRenderer>().SetPosition(1,g_hand.transform.position);
+            if(tetherPoint != Vector3.zero)
+                g_Tether_Hand.GetComponent<Rigidbody2D>().position = Vector2.MoveTowards(g_Tether_Hand.GetComponent<Rigidbody2D>().position, tetherPoint,3);
+
+            else if(armRetracting)
+                g_Tether_Hand.GetComponent<Rigidbody2D>().position = Vector2.MoveTowards(g_Tether_Hand.GetComponent<Rigidbody2D>().position, g_Tether_Arm.transform.position,3);
+            
+
+
+            g_Tether_Arm.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
+            g_Tether_Hand.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
+            g_Tether_Arm.GetComponentInChildren<LineRenderer>().SetPosition(0,g_Tether_Arm.transform.position);
+            g_Tether_Arm.GetComponentInChildren<LineRenderer>().SetPosition(1,g_Tether_Hand.GetComponent<Rigidbody2D>().position);
         }
         else
         {
-            line.SetActive(false);
             armRetracting = false;
         }
 
@@ -275,10 +279,10 @@ public class RyykeMasterHit : MasterHit
     public void SpawnTether()
     {
 
-        if(g_arm!= null) Destroy(g_arm);
-        if(g_hand!= null) Destroy(g_hand);
-         float angle = 55f  * movement.Facing;
-        // Vector3 pos = new Vector3(1.5f * movement.Facing,3.7f,0);
+        if(g_Tether_Arm!= null) Destroy(g_Tether_Arm);
+        if(g_Tether_Hand!= null) Destroy(g_Tether_Hand);
+        float angle = 55f *movement.Facing;
+        Vector3 pos = new Vector3(1.5f * movement.Facing,3.7f,0);
         // if(tether.TetherPoint != Vector3.zero)
         // {
 
@@ -295,7 +299,10 @@ public class RyykeMasterHit : MasterHit
         if(tether.TetherPoint != Vector3.zero)
         {
             tetherPoint = tether.TetherPoint;
-            //targetLedge = true;
+            //angle = Vector2.Angle(tether.tetherPoint,transform.position + pos);
+            float deltay = tetherPoint.y- (transform.position + pos).y;
+            float deltax = tetherPoint.x- (transform.position + pos).x;
+            angle = Mathf.Atan2(deltay, deltax)*180 / Mathf.PI + (movement.Facing < 0 ?180:0);
 
             playState("W_Up_Ledge");
 
@@ -304,31 +311,32 @@ public class RyykeMasterHit : MasterHit
             tetherPoint = Vector3.zero;
 
 
-        g_arm = GameController.Instance.CreatePrefab("Ryyke_Arm", transform.position + new Vector3(2.5f * movement.Facing,4.7f), Quaternion.Euler(0,0,angle));
-        g_arm.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
-        g_arm.GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)drifter.GetColor()]);
+        g_Tether_Arm = GameController.Instance.CreatePrefab("Ryyke_Arm", transform.position + pos, Quaternion.Euler(0,0,angle));
+        g_Tether_Hand = GameController.Instance.CreatePrefab("Ryyke_Hand", transform.position + pos, Quaternion.Euler(0,0,angle));
 
-        g_arm.transform.SetParent(drifter.gameObject.transform);
+        g_Tether_Arm.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
+        g_Tether_Hand.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
 
-        g_hand = GameController.Instance.CreatePrefab("Ryyke_Hand", transform.position + new Vector3(1.5f * movement.Facing,3.7f), Quaternion.Euler(0,0,angle));
-        g_hand.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
+        g_Tether_Arm.GetComponentInChildren<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)drifter.GetColor()]);
+        g_Tether_Arm.GetComponentInChildren<LineRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)drifter.GetColor()]);
+        g_Tether_Hand.GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)drifter.GetColor()]);
 
-        g_hand.GetComponent<Rigidbody2D>().velocity = rb.velocity + new Vector2(80f * movement.Facing * Mathf.Cos((55* Mathf.PI)/180),80f *Mathf.Sin((55 * Mathf.PI)/180));
+        g_Tether_Arm.transform.SetParent(drifter.gameObject.transform);
+        g_Tether_Hand.GetComponent<RemoteProjectileUtil>().hit = this;
 
-        foreach (HitboxCollision hitbox in g_hand.GetComponentsInChildren<HitboxCollision>(true))
+
+        if(tetherPoint == Vector3.zero) g_Tether_Hand.GetComponent<Rigidbody2D>().velocity = rb.velocity + new Vector2(80f * movement.Facing * Mathf.Cos((angle*movement.Facing* Mathf.PI)/180),80f *Mathf.Sin((angle*movement.Facing * Mathf.PI)/180));
+
+        foreach (HitboxCollision hitbox in g_Tether_Hand.GetComponentsInChildren<HitboxCollision>(true))
         {
             hitbox.parent = drifter.gameObject;
             hitbox.AttackID = attacks.AttackID;
             hitbox.Facing = movement.Facing;
         }
-        g_hand.GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)drifter.GetColor()]);
+        
 
-        g_hand.GetComponent<RemoteProjectileUtil>().hit = this;
-
-        line.SetActive(true);
-
-        line.GetComponentInChildren<LineRenderer>().SetPosition(0,g_arm.transform.position);
-        line.GetComponentInChildren<LineRenderer>().SetPosition(1,g_hand.transform.position);
+        g_Tether_Arm.GetComponentInChildren<LineRenderer>().SetPosition(0,g_Tether_Arm.transform.position);
+        g_Tether_Arm.GetComponentInChildren<LineRenderer>().SetPosition(1,g_Tether_Hand.transform.position);
 
 
         // float angle = 55f  * movement.Facing;
@@ -405,12 +413,10 @@ public class RyykeMasterHit : MasterHit
     }
     public void deleteArm()
     {
-        Destroy(g_arm);
-        Destroy(g_hand);
-        line.SetActive(false);
-
-        g_arm = null;
-        g_hand = null;
+        Destroy(g_Tether_Arm);
+        Destroy(g_Tether_Hand);
+        g_Tether_Arm = null;
+        g_Tether_Hand = null;
 
     }
 
