@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: W_Side
   m_EditorClassIdentifier: 
   AttackDamage: 7
-  Knockback: 35
+  Knockback: 32
   KnockbackScale: 0
-  pushBlock: 25
+  pushBlock: -5
   dynamicStun: 1
-  firstActiveFrame: 20
+  firstActiveFrame: 15
   finalFrame: 50
   HitStun: 5
-  ShieldStun: -15
+  ShieldStun: -20
   HitStop: 20
   hitType: 0
   mirrorKnockback: 0
