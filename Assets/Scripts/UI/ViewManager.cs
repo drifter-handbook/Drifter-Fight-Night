@@ -28,7 +28,8 @@ public class ViewManager : MonoBehaviour
     public Toggle toggle2;
     public Toggle toggle3;
 
-    //public GameObject roomCodeBox;
+    PlayerInput[] playerInputs;
+    List<UIMenuType> menuFlowHistory = new List<UIMenuType>();
 
     void Awake()
     {
@@ -53,6 +54,7 @@ public class ViewManager : MonoBehaviour
 
         //Change this later to back out to the previous menu instead
         ShowUIMenuTypeView(UIMenuType.MainMenu);
+        menuFlowHistory.Add(UIMenuType.MainMenu);
     }
 
     public void UpdateToggles()
@@ -73,62 +75,72 @@ public class ViewManager : MonoBehaviour
 
     void Update()
     {
-        if (Keyboard.current.escapeKey.wasPressedThisFrame)
+        playerInputs = FindObjectsOfType<PlayerInput>();
+        foreach(PlayerInput playerInput in playerInputs)
         {
-            if (currentView == UIMenuType.MainMenu)
+            if (playerInput != null && playerInput.currentActionMap.FindAction("Cancel").triggered)
             {
-                Application.Quit();
+                if (currentView == UIMenuType.MainMenu)
+                {
+                    Application.Quit();
+                    return;
+                }
+                else
+                {
+                    Debug.Log("Pressed back time to die: " + menuFlowHistory[menuFlowHistory.Count - 1] + "\n");
+                    mouse = false;
+                    menuFlowHistory.Remove(menuFlowHistory[menuFlowHistory.Count - 1]);
+                    ShowUIMenuTypeView(menuFlowHistory[menuFlowHistory.Count - 1]);
+                    return;
+                }
             }
-            else
+
+            bool gamepadButtonPressed = false;
+            if (Gamepad.current != null)
+            {
+                for (int i = 0; i < Gamepad.current.allControls.Count; i++)
+                {
+                    var c = Gamepad.current.allControls[i];
+                    if (c is ButtonControl)
+                    {
+                        if (((ButtonControl)c).wasPressedThisFrame)
+                        {
+                            gamepadButtonPressed = true;
+                        }
+                    }
+                }
+            }
+
+            if (playerInput != null && playerInput.currentActionMap.FindAction("Click").ReadValue<float>() > 0 || playerInput.currentActionMap.FindAction("RightClick").ReadValue<float>() > 0 || playerInput.currentActionMap.FindAction("MiddleClick").ReadValue<float>() > 0 && !mouse)
+            {
+                mouse = true;
+                //Cursor.visible = true;
+                EventSystem.current.SetSelectedGameObject(null);
+                return;
+
+            }
+            else if ((Keyboard.current.anyKey.isPressed || gamepadButtonPressed) && mouse && (!(playerInput.currentActionMap.FindAction("Click").ReadValue<float>() > 0) || !(playerInput.currentActionMap.FindAction("RightClick").ReadValue<float>() > 0) || !(playerInput.currentActionMap.FindAction("MiddleClick").ReadValue<float>() > 0)))
             {
                 mouse = false;
-                ShowUIMenuTypeView(UIMenuType.ModeMenu);
+                //Cursor.visible = false;
+                switch (currentView)
+                {
+                    case UIMenuType.MainMenu: EventSystem.current.SetSelectedGameObject(GameObject.Find("Main Play")); break;
+                    case UIMenuType.ModeMenu: ShowUIMenuTypeView(UIMenuType.ModeMenu); break;
+                    case UIMenuType.LocalMenu: EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Local")); break;
+                    case UIMenuType.OnlineMenu: EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Online")); break;
+                    case UIMenuType.HostMenu: EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Host")); break;
+                    case UIMenuType.JoinMenu: EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Join")); break;
+                    case UIMenuType.SettingsMenu: EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Settings")); break;
+                    default:
+                        {
+                            Debug.Log("Unsupported UIMenuType " + currentView + "\n");
+                        }
+                        break;
+                }
+                return;
             }
         }
-
-        bool gamepadButtonPressed = false;
-        if(Gamepad.current != null)
-        {
-        	for (int i = 0; i < Gamepad.current.allControls.Count; i++)
-        	{
-            	var c = Gamepad.current.allControls[i];
-            	if (c is ButtonControl)
-            	{
-                	if (((ButtonControl)c).wasPressedThisFrame)
-                	{
-                    	gamepadButtonPressed = true;
-                	}
-            	}
-        	}
-        }
-        
-
-        if (Mouse.current.leftButton.isPressed || Mouse.current.rightButton.isPressed || Mouse.current.middleButton.isPressed && !mouse)
-        {
-            mouse = true;
-            //Cursor.visible = true;
-            EventSystem.current.SetSelectedGameObject(null);
-
-        }
-        else if((Keyboard.current.anyKey.isPressed || gamepadButtonPressed) && mouse && (!Mouse.current.leftButton.isPressed || !Mouse.current.rightButton.isPressed || !Mouse.current.middleButton.isPressed)){
-            mouse = false;
-            //Cursor.visible = false;
-            switch (currentView){
-                case UIMenuType.MainMenu:       EventSystem.current.SetSelectedGameObject(GameObject.Find("Main Play"));        break;
-                case UIMenuType.ModeMenu:       ShowUIMenuTypeView(UIMenuType.ModeMenu);                                        break;
-                case UIMenuType.LocalMenu:      EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Local"));       break;
-                case UIMenuType.OnlineMenu:     EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Online"));      break;
-                case UIMenuType.HostMenu:       EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Host"));        break;
-                case UIMenuType.JoinMenu:       EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Join"));        break;
-                case UIMenuType.SettingsMenu:   EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Settings"));    break;
-                default:
-                    {
-                        Debug.Log("Unsupported UIMenuType " + currentView + "\n");
-                    }
-                    break;
-            }
-        }
-
     }
 
     public Transform GetView(UIMenuType name)
@@ -140,16 +152,21 @@ public class ViewManager : MonoBehaviour
     public void SetView(int view)
     {
         ShowUIMenuTypeView((UIMenuType)view);
+        menuFlowHistory.Add((UIMenuType)view);
+    }
+
+    [com.llamagod.EnumAction(typeof(UIMenuType))]
+    public void SetViewBack(int view)
+    {
+        menuFlowHistory.Remove(menuFlowHistory[menuFlowHistory.Count - 1]);
+        ShowUIMenuTypeView((UIMenuType)view);
     }
 
     public void ShowUIMenuTypeView(UIMenuType name)
-    {
-        
+    { 
         views[currentView].gameObject.SetActive(false);
         currentView = name;
         views[name].gameObject.SetActive(true);
-
-
         // if(roomCodeBox.activeSelf && PlayerPrefs.GetInt("HideRoomCode") > 0)
         // {
         //     roomCodeBox.GetComponent<InputField>().contentType = InputField.ContentType.Password;

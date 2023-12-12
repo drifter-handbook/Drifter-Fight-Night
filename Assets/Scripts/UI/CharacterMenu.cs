@@ -108,13 +108,10 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         // }
         // else
         //     roomCode.SetActive(false);
-
-        
     }
 
     void Start()
     {
-
         characterRows[0] = topRow;
         characterRows[1] = middleRow;
         characterRows[2] = bottomRow;
@@ -151,18 +148,14 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         // if(GameController.Instance.IsTraining || GameController.Instance.controls.Count <1 )
         //     GameController.Instance.AssignInputAssest();
 
-        foreach(int peer in GameController.Instance.controls.Keys)
-        {
-            AddCharSelState(peer);
-        }
-
         //Populate a card for each active controller
         // for(int i = -1; i < GameController.Instance.controls.Count-1; i++)
         //     AddCharSelState(i);
 
         if(GameController.Instance.IsTraining) AddCharSelState(8,GameController.Instance.Trainee);
-
+        GameController.Instance.removeAllUIPeers();
     }
+
     IEnumerator delayJoining()
     {
         yield return new WaitForSeconds(.25f);
@@ -186,7 +179,9 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
 
     public void AddCharSelState(int peerID, DrifterType drifter)
     {
-        if(charSelStates.Count >= (GameController.Instance.IsTraining?2:GameController.Instance.maxPlayerCount))return;
+        int maxPlayer = GameController.Instance.maxPlayerCount;
+        bool training = GameController.Instance.IsTraining;
+        if (charSelStates.Count >= (training ? 2 : maxPlayer))return;
 
         int[] drifterLoc = findDrifterMatrixPosition(drifter);
         GameObject cursor = GameController.Instance.host.CreateNetworkObject("CharacterCursor",characterRows[drifterLoc[0]][drifterLoc[1]].transform.position, transform.rotation);

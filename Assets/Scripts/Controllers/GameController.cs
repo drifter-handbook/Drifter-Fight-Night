@@ -133,27 +133,37 @@ public class GameController : MonoBehaviour
         }
 
         aggregatePrefabs("Assets/Resources/");
-
+        inputManager.EnableJoining();
         //AssignInputAssest();
-        
+
     }
 
     public void addUser(PlayerInput playerInput)
     {
         int peerID = -1;
-        while(controls.ContainsKey(peerID))
+        while (controls.ContainsKey(peerID))
+        {
             peerID++;
-        controls.Add(peerID,playerInput);
+        }
+        controls.Add(peerID, playerInput);
 
-        FindObjectOfType<CharacterMenu>()?.AddCharSelState(peerID);
+        if (FindObjectOfType<ViewManager>() == null)
+        {
+            playerInput.SwitchCurrentActionMap("Controls");
+            FindObjectOfType<CharacterMenu>()?.AddCharSelState(peerID);
+        }
+        else 
+        {
+            playerInput.SwitchCurrentActionMap("UI");
+        }
 
         playerInput.ActivateInput();
-
         DontDestroyOnLoad(playerInput);
 
-        if(controls.Count >= 1 && IsTraining)
+        if (controls.Count >= 1 && IsTraining)
+        {
             DisableJoining();
-
+        }
     }
 
     public void removeUserByPeer(int peerID)
@@ -168,10 +178,15 @@ public class GameController : MonoBehaviour
         //inputManager.Un
         Destroy(controls[peerID].gameObject);
         controls.Remove(peerID);
-        FindObjectOfType<CharacterMenu>()?.RemoveCharSelState(peerID);
+        if (FindObjectOfType<ViewManager>() == null)
+        {
+            FindObjectOfType<CharacterMenu>()?.RemoveCharSelState(peerID);
+        }
         if(peerID != -1) host.Peers.Remove(peerID);
-        if(!clearingPeers && IsTraining && controls.Count ==0)
+        if(!clearingPeers && IsTraining && controls.Count == 0)
+        {
             EnableJoining();
+        }
     }
 
     public void removeAllPeers()
@@ -185,6 +200,17 @@ public class GameController : MonoBehaviour
         foreach(int peer in peersToRemove)
             removeUserByPeer(peer);
         clearingPeers = false;
+    }
+
+    public void removeAllUIPeers()
+    {
+        foreach (int peer in controls.Keys)
+        {
+            controls[peer].DeactivateInput();
+            Destroy(controls[peer].gameObject);
+            controls.Remove(peer);
+            if (peer!= -1) host.Peers.Remove(peer);
+        }
     }
 
     //Wrap enable method
