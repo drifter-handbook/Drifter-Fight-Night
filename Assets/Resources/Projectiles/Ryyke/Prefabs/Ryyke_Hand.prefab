@@ -103,7 +103,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 10
+  m_LinearDrag: 2
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -182,8 +182,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1689159585584029885}
-  - component: {fileID: 7976822433232150831}
   - component: {fileID: 4700384337654438390}
+  - component: {fileID: 5570786811071347762}
   m_Layer: 9
   m_Name: Hitboxes
   m_TagString: Untagged
@@ -206,22 +206,6 @@ Transform:
   m_Father: {fileID: 8797149190506707536}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &7976822433232150831
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5880671735623049441}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.04, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.06
 --- !u!114 &4700384337654438390
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -242,3 +226,19 @@ MonoBehaviour:
   animator: {fileID: 5941506816413816551}
   playOnInvuln: 0
   playOnBlock: 0
+--- !u!70 &5570786811071347762
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5880671735623049441}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.0032307387, y: -0.003749419}
+  m_Size: {x: 0.21205871, y: 0.15328166}
+  m_Direction: 1

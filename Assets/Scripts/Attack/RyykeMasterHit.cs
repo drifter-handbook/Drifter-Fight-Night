@@ -25,6 +25,7 @@ public class RyykeMasterHit : MasterHit
     GameObject g_arm;
     GameObject g_hand;
     public GameObject line;
+    public bool armRetracting = false;
 
     HingeJoint2D tetherJoint;
 
@@ -105,6 +106,9 @@ public class RyykeMasterHit : MasterHit
 
         if(g_arm != null && g_hand != null)
         {
+            if(armRetracting)
+                g_hand.GetComponent<Rigidbody2D>().position = Vector2.MoveTowards(g_hand.GetComponent<Rigidbody2D>().position, g_arm.transform.position,2);
+
             g_arm.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
             g_hand.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
             line.GetComponentInChildren<LineRenderer>().SetPosition(0,g_arm.transform.position);
@@ -113,6 +117,7 @@ public class RyykeMasterHit : MasterHit
         else
         {
             line.SetActive(false);
+            armRetracting = false;
         }
 
         
@@ -308,7 +313,7 @@ public class RyykeMasterHit : MasterHit
         g_hand = GameController.Instance.CreatePrefab("Ryyke_Hand", transform.position + new Vector3(1.5f * movement.Facing,3.7f), Quaternion.Euler(0,0,angle));
         g_hand.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
 
-        g_hand.GetComponent<Rigidbody2D>().velocity = rb.velocity + new Vector2(70f * movement.Facing * Mathf.Cos((55* Mathf.PI)/180),70f *Mathf.Sin((55 * Mathf.PI)/180));
+        g_hand.GetComponent<Rigidbody2D>().velocity = rb.velocity + new Vector2(80f * movement.Facing * Mathf.Cos((55* Mathf.PI)/180),80f *Mathf.Sin((55 * Mathf.PI)/180));
 
         foreach (HitboxCollision hitbox in g_hand.GetComponentsInChildren<HitboxCollision>(true))
         {
@@ -382,6 +387,7 @@ public class RyykeMasterHit : MasterHit
 
     public void RetractArm()
     {
+        armRetracting = true;
 
     }
 
