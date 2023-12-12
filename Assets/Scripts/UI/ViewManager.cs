@@ -20,8 +20,8 @@ public class ViewManager : MonoBehaviour
     public GameObject savedIPObject;
     public GameObject roomNameObject;
 
-    string currentView;
-    Dictionary<string, Transform> views = new Dictionary<string, Transform>();
+    UIMenuType currentView;
+    Dictionary<UIMenuType, Transform> views = new Dictionary<UIMenuType, Transform>();
     bool mouse = true;
 
     public Toggle toggle1;
@@ -33,26 +33,26 @@ public class ViewManager : MonoBehaviour
     void Awake()
     {
         mouse = true;
-        views = new Dictionary<string, Transform>();
+        views = new Dictionary<UIMenuType, Transform>();
         if (views.Count <= 0)
         {
             foreach (var child in this.gameObject.GetComponentsInDirectChildren<Transform>())
             {
                 child.gameObject.SetActive(false);
 
-                if (views.ContainsKey(child.gameObject.name))
+                if (views.ContainsKey(child.gameObject.GetComponent<UIMenu>().currentMenu))
                 {
                     Debug.LogWarning("Views already contains key " + child.gameObject.name + "!");
                     continue;
                 }
-                views.Add(child.gameObject.name, child.transform);
+                views.Add(child.gameObject.GetComponent<UIMenu>().currentMenu, child.transform);
             }
         }
         startingMenu.gameObject.SetActive(true);
-        currentView = startingMenu.gameObject.name;
+        currentView = startingMenu.gameObject.GetComponent<UIMenu>().currentMenu;
 
         //Change this later to back out to the previous menu instead
-        ShowView("Main Menu");
+        ShowUIMenuTypeView(UIMenuType.MainMenu);
     }
 
     public void UpdateToggles()
@@ -75,14 +75,14 @@ public class ViewManager : MonoBehaviour
     {
         if (Keyboard.current.escapeKey.wasPressedThisFrame)
         {
-            if (currentView == "Mode Menu")
+            if (currentView == UIMenuType.MainMenu)
             {
                 Application.Quit();
             }
             else
             {
                 mouse = false;
-                ShowView("Mode Menu");
+                ShowUIMenuTypeView(UIMenuType.ModeMenu);
             }
         }
 
@@ -114,40 +114,35 @@ public class ViewManager : MonoBehaviour
             mouse = false;
             //Cursor.visible = false;
             switch (currentView){
-            	case "Host Menu":
-                    EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Host"));
-                    break;
-                case "Join Menu":
-                    EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Join"));
-                    break;
-                case "Online Menu":
-                    EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Online"));
-                    break;
-                case "Local Menu":
-                    EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Local"));
-                    break;
-                case "Mode Menu":
-                    ShowView("Mode Menu");
-                    break;
-                case "Settings Menu":
-                    EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Settings"));
-                    break;
-                case "Main Menu":
-                    EventSystem.current.SetSelectedGameObject(GameObject.Find("Main Play"));
-                    break;
+                case UIMenuType.MainMenu:       EventSystem.current.SetSelectedGameObject(GameObject.Find("Main Play"));        break;
+                case UIMenuType.ModeMenu:       ShowUIMenuTypeView(UIMenuType.ModeMenu);                                        break;
+                case UIMenuType.LocalMenu:      EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Local"));       break;
+                case UIMenuType.OnlineMenu:     EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Online"));      break;
+                case UIMenuType.HostMenu:       EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Host"));        break;
+                case UIMenuType.JoinMenu:       EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Join"));        break;
+                case UIMenuType.SettingsMenu:   EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Settings"));    break;
                 default:
+                    {
+                        Debug.Log("Unsupported UIMenuType " + currentView + "\n");
+                    }
                     break;
             }
         }
 
     }
 
-    public Transform GetView(string name)
+    public Transform GetView(UIMenuType name)
     {
         return views[name];
     }
 
-    public void ShowView(string name)
+    [com.llamagod.EnumAction(typeof(UIMenuType))]
+    public void SetView(int view)
+    {
+        ShowUIMenuTypeView((UIMenuType)view);
+    }
+
+    public void ShowUIMenuTypeView(UIMenuType name)
     {
         
         views[currentView].gameObject.SetActive(false);
@@ -158,56 +153,58 @@ public class ViewManager : MonoBehaviour
         // if(roomCodeBox.activeSelf && PlayerPrefs.GetInt("HideRoomCode") > 0)
         // {
         //     roomCodeBox.GetComponent<InputField>().contentType = InputField.ContentType.Password;
-        // } else if (roomCodeBox.activeSelf && PlayerPrefs.GetInt("HideRoomCode") == 0){
+        // }
+        // else if (roomCodeBox.activeSelf && PlayerPrefs.GetInt("HideRoomCode") == 0)
+        // {
         //     roomCodeBox.GetComponent<InputField>().contentType = InputField.ContentType.Standard;
         // }
 
-         if (name == "Local Menu" && !mouse)
+        switch(name)
         {
-            EventSystem.current.SetSelectedGameObject(GameObject.Find("Training"));
-        }
-
-        if (name == "Online Menu" && !mouse)
-        {
-            EventSystem.current.SetSelectedGameObject(GameObject.Find("Host"));
-        }
-        if(name == "Mode Menu" && !mouse)
-            EventSystem.current.SetSelectedGameObject(GameObject.Find("Local"));
-
-        if (name == "Main Menu" && !mouse)
-            EventSystem.current.SetSelectedGameObject(GameObject.Find("Main Play"));
-
-        if (name == "Join Menu")
-        {
-            if(!mouse)EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Join"));
-            // if (PlayerPrefs.GetInt("HideTextInput") > 0)
-            // {
-            //     savedIPObject.GetComponent<InputField>().contentType = InputField.ContentType.Password;
-            // } else
-            // {
-            //     savedIPObject.GetComponent<InputField>().contentType = InputField.ContentType.Standard;
-            // }
-
-            // if (PlayerPrefs.GetString("savedIP") != null)
-            // {
-            //     savedIPObject.GetComponent<InputField>().text = PlayerPrefs.GetString("savedIP");
-            // }
+            case UIMenuType.MainMenu: if (!mouse) EventSystem.current.SetSelectedGameObject(GameObject.Find("Main Play"));  break;
+            case UIMenuType.ModeMenu: if (!mouse) EventSystem.current.SetSelectedGameObject(GameObject.Find("Local"));      break;
+            case UIMenuType.OnlineMenu: if (!mouse) EventSystem.current.SetSelectedGameObject(GameObject.Find("Host"));     break;
+            case UIMenuType.LocalMenu:
+                {
+                    if (Debug.isDebugBuild)
+                    {
+                        if (!mouse) EventSystem.current.SetSelectedGameObject(GameObject.Find("Training"));
+                    }
+                    else
+                    {
+                        if (!mouse) EventSystem.current.SetSelectedGameObject(GameObject.Find("Fight Night"));
+                    }
+                    break;
+                }
+            case UIMenuType.HostMenu:
+                {
+                    if (!mouse) EventSystem.current.SetSelectedGameObject(GameObject.Find("Host Button"));
+                    roomNameObject.GetComponent<InputField>().text = GameController.Instance.Username;
+                    break;
+                }
+            case UIMenuType.JoinMenu:
+                {
+                    if (!mouse) EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Join"));
+                    // savedIPObject.GetComponent<InputField>().contentType = PlayerPrefs.GetInt("HideTextInput") > 0 ? InputField.ContentType.Password : InputField.ContentType.Standard;
+                    // if (PlayerPrefs.GetString("savedIP") != null)
+                    // {
+                    //     savedIPObject.GetComponent<InputField>().text = PlayerPrefs.GetString("savedIP");
+                    // }
+                    break;
+                }
+            case UIMenuType.SettingsMenu:
+                {
+                    UpdateToggles();
+                    if(!mouse) EventSystem.current.SetSelectedGameObject(GameObject.Find("IPToggle"));
+                    break;
+                }
+            default:
+                {
+                    Debug.Log("Unhandled UIMenuType type" + name + "\n");
+                    break;
+                }
         }
         
-
-        if (name == "Host Menu")
-        {
-            if(!mouse)EventSystem.current.SetSelectedGameObject(GameObject.Find("Host Button"));
-
-            roomNameObject.GetComponent<InputField>().text = GameController.Instance.Username;
-        }
-
-        if(name == "Settings Menu")
-        {
-            UnityEngine.Debug.Log("Update toggles");
-            UpdateToggles();
-            if(!mouse)EventSystem.current.SetSelectedGameObject(GameObject.Find("Back"));
-        }
     }
 
     // May be moved to game controller?
