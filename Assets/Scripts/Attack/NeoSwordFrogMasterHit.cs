@@ -90,6 +90,9 @@ public class NeoSwordFrogMasterHit : MasterHit
 
         listeningForDirection = false;
         movement.updateFacing();
+
+        foreach (HitboxCollision hitbox in GetComponentsInChildren<HitboxCollision>(true))
+            hitbox.Facing = drifter.movement.Facing;
         
         if(HeldDirection.y <0 && movement.grounded) playState("W_Neutral_GD");
         else if(HeldDirection.y <0) playState("W_Neutral_D");

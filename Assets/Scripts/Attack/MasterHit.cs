@@ -220,9 +220,9 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
         else if(drifter.canSpecialCancel() && !attacks.grabPressed() && attacks.specialPressed() && !status.HasEnemyStunEffect())
         {
             int dir = (int)checkForDirection(8);
+            movement.setFacingDelayed(dir);
             attacks.useSpecial();
             status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, 2);
-            movement.setFacingDelayed(dir);
             clearMasterhitVars();
             drifter.canFeint = true;
             movement.techParticle();

@@ -107,7 +107,7 @@ public class RyykeMasterHit : MasterHit
         if(g_arm != null && g_hand != null)
         {
             if(armRetracting)
-                g_hand.GetComponent<Rigidbody2D>().position = Vector2.MoveTowards(g_hand.GetComponent<Rigidbody2D>().position, g_arm.transform.position,2);
+                g_hand.GetComponent<Rigidbody2D>().position = Vector2.MoveTowards(g_hand.GetComponent<Rigidbody2D>().position, g_arm.transform.position,3);
 
             g_arm.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
             g_hand.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();

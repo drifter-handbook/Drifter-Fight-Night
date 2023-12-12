@@ -42,6 +42,9 @@ public class MythariusMasterHit : MasterHit
 
         listeningForDirection = false;
         movement.updateFacing();
+
+        foreach (HitboxCollision hitbox in GetComponentsInChildren<HitboxCollision>(true))
+            hitbox.Facing = drifter.movement.Facing;
         
         if(heldDirection.y <0 && movement.grounded) playState("W_Neutral_GD");
         else if(heldDirection.y <0) playState("W_Neutral_D");
