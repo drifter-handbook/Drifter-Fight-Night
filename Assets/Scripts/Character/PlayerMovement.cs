@@ -746,7 +746,7 @@ public class PlayerMovement : MonoBehaviour
                 spawnJuiceParticle(transform.position + particleOffset +new Vector3(0,-1,0), MovementParticleMode.DoubleJump);
             
             //jump needs a little delay so character animations can spend
-            //a frame of two preparing to jump
+            //a frame or two preparing to jump
             //jumpCoroutine = StartCoroutine(DelayedJump());
 
             jumpTimer = -5f;
@@ -804,10 +804,7 @@ public class PlayerMovement : MonoBehaviour
             drifter.status.clearStunStatus();
             spawnSuperParticle("Hyper_Guard_Burst",1f,8);
             canceltype = "Hyper_Guard_Burst";
-            drifter.status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,1);
-            drifter.status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,480);
-            drifter.PlayAnimation("Burst");
-            pauseGravity();
+            drifter.attacks.useSuper();
         }
         
         //Offensive Cancel
@@ -817,19 +814,13 @@ public class PlayerMovement : MonoBehaviour
             {
                 spawnSuperParticle("Offensive_Cancel",2f,20);
                 canceltype = "Offensive_Cancel";
-                drifter.PlayAnimation("Burst");
-                pauseGravity();
-                drifter.status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,1);
-                drifter.status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,480);
+                drifter.attacks.useSuper();
             }
             else if(drifter.canFeint)
             {
                 spawnSuperParticle("Feint_Cancel",1f,8);
                 canceltype = "Feint_Cancel";
-                drifter.PlayAnimation("Burst");
-                pauseGravity();
-                drifter.status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,1);
-                drifter.status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,480);
+                drifter.attacks.useSuper();
             }
             
         }
@@ -840,24 +831,18 @@ public class PlayerMovement : MonoBehaviour
             drifter.ToggleAnimator(true);
             hitstun = false;
             drifter.status.clearStunStatus();
-            drifter.status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,1);
             drifter.status.ApplyStatusEffect(PlayerStatusEffect.INVULN,8);
-            drifter.status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,480);
 
             spawnSuperParticle("Defensive_Cancel",2f,8);
             canceltype = "Defensive_Cancel";
             if(currentJumps+1 < numberOfJumps) currentJumps++;
-            drifter.PlayAnimation("Burst");
-            pauseGravity();
+            drifter.attacks.useSuper();
         }
         else if (!drifter.guarding && drifter.superCharge >= 1f && !drifter.status.HasStunEffect())
         {
             spawnSuperParticle("Time_Cancel",1f,8);
             canceltype = "Time_Cancel";
-            drifter.PlayAnimation("Burst");
-            pauseGravity();
-            drifter.status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,1);
-            drifter.status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,480);
+            drifter.attacks.useSuper();
         }
 
     }

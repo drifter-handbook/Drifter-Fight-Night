@@ -213,6 +213,13 @@ public class PlayerAttacks : MonoBehaviour
         }
     }
 
+    public void useSuper()
+    {
+        drifter.status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,1);
+        StartAttack(DrifterAttackType.Super_Cancel);
+        drifter.movement.pauseGravity();
+    }
+
     public void useGrab()
     {
         if (drifter.movement.grounded)StartAttack(DrifterAttackType.E_Side);
