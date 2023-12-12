@@ -291,8 +291,6 @@ public class RyykeMasterHit : MasterHit
         {
             tetherPoint = tether.TetherPoint;
             //targetLedge = true;
-            tetherJoint = drifter.gameObject.AddComponent(typeof(HingeJoint2D )) as HingeJoint2D;
-            //tetherJoint.attachedRigidbody = tether.g_obj;
 
             playState("W_Up_Ledge");
 
@@ -300,10 +298,8 @@ public class RyykeMasterHit : MasterHit
         else
             tetherPoint = Vector3.zero;
 
-        
 
-
-        g_arm = GameController.Instance.CreatePrefab("Ryyke_Arm", transform.position + new Vector3(1.5f * movement.Facing,3.7f), Quaternion.Euler(0,0,angle));
+        g_arm = GameController.Instance.CreatePrefab("Ryyke_Arm", transform.position + new Vector3(2.5f * movement.Facing,4.7f), Quaternion.Euler(0,0,angle));
         g_arm.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
         g_arm.GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)drifter.GetColor()]);
 
@@ -312,7 +308,7 @@ public class RyykeMasterHit : MasterHit
         g_hand = GameController.Instance.CreatePrefab("Ryyke_Hand", transform.position + new Vector3(1.5f * movement.Facing,3.7f), Quaternion.Euler(0,0,angle));
         g_hand.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
 
-        g_hand.GetComponent<Rigidbody2D>().velocity = rb.velocity + new Vector2(25f * movement.Facing * Mathf.Cos((55* Mathf.PI)/180),25f *Mathf.Sin((55 * Mathf.PI)/180));
+        g_hand.GetComponent<Rigidbody2D>().velocity = rb.velocity + new Vector2(70f * movement.Facing * Mathf.Cos((55* Mathf.PI)/180),70f *Mathf.Sin((55 * Mathf.PI)/180));
 
         foreach (HitboxCollision hitbox in g_hand.GetComponentsInChildren<HitboxCollision>(true))
         {
@@ -321,6 +317,8 @@ public class RyykeMasterHit : MasterHit
             hitbox.Facing = movement.Facing;
         }
         g_hand.GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)drifter.GetColor()]);
+
+        g_hand.GetComponent<RemoteProjectileUtil>().hit = this;
 
         line.SetActive(true);
 
@@ -382,34 +380,38 @@ public class RyykeMasterHit : MasterHit
     //     armTether.freezeLen();
     // }
 
+    public void RetractArm()
+    {
+
+    }
+
 
     public void pullToLedge()
     {
         if(tetherPoint!=Vector3.zero)
         {
-            Destroy(tetherJoint);
-            tetherJoint = null;
             Vector3 dir = tetherPoint - new Vector3(rb.position.x,rb.position.y);
             Vector3.Normalize(dir);
             rb.velocity = 10f * dir;
-
-            //armTether.setSpeed(.5f);
-
    
             tetherPoint=Vector3.zero;
         }
     }
-    // public void deleteArm()
-    // {
-    //     if(arm != null)Destroy(arm);
-    //     arm = null;
-    //     armTether= null;
-    // }
+    public void deleteArm()
+    {
+        Destroy(g_arm);
+        Destroy(g_hand);
+        line.SetActive(false);
 
-    // public void disableArmHitbox()
-    // {
-    //     armTether.togglehitbox(0);
-    // }
+        g_arm = null;
+        g_hand = null;
+
+    }
+
+    public override void TriggerRemoteSpawn(int index)
+    {
+        playState("W_Up_Drifter");
+    }
 
     //Flips the direction the character is movement.Facing mid move)
     public void invertDirection()
@@ -506,7 +508,7 @@ public class RyykeMasterHit : MasterHit
         listeningForMovement = false;
         burrowTime = maxBurrowTime;
         burrowing = false;
-        //deleteArm(); 
+        deleteArm(); 
     }
 
     //Takes a snapshot of the current frame to rollback to

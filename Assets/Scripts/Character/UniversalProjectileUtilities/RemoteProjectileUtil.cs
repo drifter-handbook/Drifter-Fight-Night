@@ -6,11 +6,11 @@ using System;
 public class RemoteProjectileUtil : MonoBehaviour
 {
     public MasterHit hit;
-    public int PorjectileIndex = 0;
+    public int ProjectileIndex = 0;
 
     public void TriggerRemoteSpawn()
     {
-        hit.TriggerRemoteSpawn(PorjectileIndex);
+        hit.TriggerRemoteSpawn(ProjectileIndex);
     }
 
 }

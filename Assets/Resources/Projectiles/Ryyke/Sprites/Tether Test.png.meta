@@ -108,7 +108,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
+        y: 16
         width: 15
         height: 16
       alignment: 9
@@ -129,7 +129,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 15
-        y: 0
+        y: 16
         width: 42
         height: 16
       alignment: 0
@@ -149,12 +149,12 @@ TextureImporter:
       name: Tether Test_2
       rect:
         serializedVersion: 2
-        x: 57
-        y: 0
-        width: 7
+        x: 56
+        y: 16
+        width: 8
         height: 16
       alignment: 9
-      pivot: {x: 0.14285715, y: 0.4375}
+      pivot: {x: 0.25, y: 0.4375}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -162,6 +162,27 @@ TextureImporter:
       bones: []
       spriteID: 3c02e0393a6749d4ab1a4e5e443d8f70
       internalID: -863390286
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tether Test_3
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 0
+        width: 8
+        height: 16
+      alignment: 9
+      pivot: {x: 0.25, y: 0.4375}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 745f82556769dfe449e54ce69fa8bc71
+      internalID: 890141056
       vertices: []
       indices: 
       edges: []
@@ -179,6 +200,7 @@ TextureImporter:
     nameFileIdTable:
       Tether Test_0: 1197938511
       Tether Test_2: -863390286
+      Tether Test_3: 890141056
       Tether Test_1: -499317079
   spritePackingTag: 
   pSDRemoveMatte: 0
