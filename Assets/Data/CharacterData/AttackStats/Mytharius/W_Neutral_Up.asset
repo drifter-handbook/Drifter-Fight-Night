@@ -19,13 +19,13 @@ MonoBehaviour:
   dynamicStun: 1
   firstActiveFrame: 5
   finalFrame: 27
-  HitStun: 15
-  ShieldStun: -17
+  HitStun: 5
+  ShieldStun: -20
   HitStop: 20
   hitType: 0
-  mirrorKnockback: 0
-  AngleOfImpact: 75
-  StatusEffect: 29
+  mirrorKnockback: 1
+  AngleOfImpact: -35
+  StatusEffect: 28
   StatusDuration: 60
   HitFX: {fileID: 11400000, guid: e007b7ceac776034b9838dfd15059cdd, type: 2}
   canHitGrounded: 1
