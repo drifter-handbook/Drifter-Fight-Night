@@ -22,6 +22,34 @@ public class MythariusMasterHit : MasterHit
 
         if(g_Bird != null) g_Bird.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
 
+        if(listeningForDirection)
+        {
+            if(!drifter.input[0].Special) delaytime++;
+            heldDirection += new Vector2(drifter.input[0].MoveX,drifter.input[0].MoveY);
+            if(heldDirection != Vector2.zero || delaytime > 5) NeutralSpecial();
+        }
+
+    }
+
+    public void listenForDirection()
+    {
+        delaytime = 0;
+        listeningForDirection = true;
+    }
+
+    public void NeutralSpecial()
+    {
+
+        listeningForDirection = false;
+        movement.updateFacing();
+        
+        if(heldDirection.y <0 && movement.grounded) playState("W_Neutral_GD");
+        else if(heldDirection.y <0) playState("W_Neutral_D");
+        else if(heldDirection.y >0) playState("W_Neutral_U");
+        else playState("W_Neutral_S");
+
+        heldDirection = Vector2.zero;
+
     }
 
     public void warpStart()
@@ -104,7 +132,7 @@ public class MythariusMasterHit : MasterHit
             Bird = (g_Bird != null) ? g_Bird.GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null,
             Letter = (g_Letter != null) ? g_Letter.GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null,
             ListeningForDirection = listeningForDirection,
-            HeldDirection = heldDirection,
+            heldDirection = heldDirection,
         };
 
 
@@ -144,7 +172,7 @@ public class MythariusMasterHit : MasterHit
             g_Letter = null;
         }  
         listeningForDirection = myth_frame.ListeningForDirection;
-        heldDirection = myth_frame.HeldDirection;
+        heldDirection = myth_frame.heldDirection;
     }
 
 }
@@ -156,6 +184,6 @@ public class MythariusRollbackFrame: ICharacterRollbackFrame
     public BasicProjectileRollbackFrame Bird;
     public BasicProjectileRollbackFrame Letter;
     public bool ListeningForDirection;
-    public Vector2 HeldDirection;
+    public Vector2 heldDirection;
     
 }

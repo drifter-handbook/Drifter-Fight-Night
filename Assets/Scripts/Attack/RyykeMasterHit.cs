@@ -20,9 +20,13 @@ public class RyykeMasterHit : MasterHit
     //2 Down Stone
     Tombstone[] tombstones = new Tombstone[] {null,null,null};
     
+
+    //Clean up Later
     GameObject g_arm;
     GameObject g_hand;
     public GameObject line;
+
+    HingeJoint2D tetherJoint;
 
 
 	//Gamestate sync
@@ -287,6 +291,9 @@ public class RyykeMasterHit : MasterHit
         {
             tetherPoint = tether.TetherPoint;
             //targetLedge = true;
+            tetherJoint = drifter.gameObject.AddComponent(typeof(HingeJoint2D )) as HingeJoint2D;
+            //tetherJoint.attachedRigidbody = tether.g_obj;
+
             playState("W_Up_Ledge");
 
         }
@@ -380,10 +387,14 @@ public class RyykeMasterHit : MasterHit
     {
         if(tetherPoint!=Vector3.zero)
         {
+            Destroy(tetherJoint);
+            tetherJoint = null;
             Vector3 dir = tetherPoint - new Vector3(rb.position.x,rb.position.y);
             Vector3.Normalize(dir);
             rb.velocity = 10f * dir;
+
             //armTether.setSpeed(.5f);
+
    
             tetherPoint=Vector3.zero;
         }
