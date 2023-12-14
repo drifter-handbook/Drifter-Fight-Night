@@ -128,30 +128,24 @@ public class PlayerMovement : MonoBehaviour
 	void OnCollisionStay2D(Collision2D col) {
 
 		if(!drifter.status.HasGroundFriction() && ((prevVelocity.y < 0 || col.gameObject.tag !=  "Platform" ))) {
-				//drifter.status.bounce();
-				Vector3 normal = col.contacts[0].normal;
+			//drifter.status.bounce();
+			Vector3 normal = col.contacts[0].normal;
 
-				if(normal.y == 1f && drifter.status.canbeKnockedDown() && !drifter.knockedDown) {
-					//Determine knockdown duration
-					drifter.status.ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,90);
-					//drifter.status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.5f);
-					terminalVelocity = 2f;
-					drifter.PlayAnimation("Knockdown_Bounce");
-
-					mainCamera.Shake(6,.33f);
-
-					//If the victim is in hitpause, set their delayed velocity instead
-					// if(kdbounceVelocity.magnitude >15f)
-					//     if(drifter.status.HasStatusEffect(PlayerStatusEffect.HITPAUSE)) drifter.status.setDelayedVelocity(new Vector3(kdbounceVelocity.x,Mathf.Clamp(kdbounceVelocity.y,-15f,15f)));
-					//     else rb.velocity= new Vector3(kdbounceVelocity.x,Mathf.Clamp(kdbounceVelocity.y,-15f,15f));
-
-					if(drifter.status.HasStatusEffect(PlayerStatusEffect.HITPAUSE)) drifter.status.setDelayedVelocity(new Vector3(Facing *-9f,20));
-					else rb.velocity = new Vector3(Facing *-9f,20);
+			if(normal.y == 1f && drifter.status.canbeKnockedDown() && !drifter.knockedDown) {
+				//Determine knockdown duration
+				drifter.status.ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,90);
+				//drifter.status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.5f);
+				terminalVelocity = 2f;
+				drifter.PlayAnimation("Knockdown_Bounce");
+				mainCamera.Shake(6,.33f);
+				//If the victim is in hitpause, set their delayed velocity instead
+				// if(kdbounceVelocity.magnitude >15f)
+				//     if(drifter.status.HasStatusEffect(PlayerStatusEffect.HITPAUSE)) drifter.status.setDelayedVelocity(new Vector3(kdbounceVelocity.x,Mathf.Clamp(kdbounceVelocity.y,-15f,15f)));
+				//     else rb.velocity= new Vector3(kdbounceVelocity.x,Mathf.Clamp(kdbounceVelocity.y,-15f,15f));
+				if(drifter.status.HasStatusEffect(PlayerStatusEffect.HITPAUSE)) drifter.status.setDelayedVelocity(new Vector3(Facing *-9f,20));
+				else rb.velocity = new Vector3(Facing *-9f,20);
 					//kdbounceVelocity = Vector3.zero;
-
-				}
-
-	   
+			}
 		}
 	}
 

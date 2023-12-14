@@ -204,14 +204,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 			lightTappedFlag = false;
 		}
 		else if(drifter.canSpecialCancel() && !attacks.grabPressed() && attacks.specialPressed() && !status.HasEnemyStunEffect()) {
-			int dir = (int)checkForDirection(8);
-			movement.setFacingDelayed(dir);
-			attacks.useSpecial();
-			status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, 2);
-			clearMasterhitVars();
-			drifter.canFeint = true;
-			movement.techParticle();
-			drifter.canSpecialCancelFlag = false;
+			attacks.useSpecial(true);
 		}
 		else
 			attackWasCanceled = false;

@@ -252,7 +252,7 @@ public class RyykeMasterHit : MasterHit
 		DeleteArm();
 
 		float angle = 55f *movement.Facing;
-		Vector3 pos = new Vector3(1.5f * movement.Facing,3.7f,0);
+		Vector3 pos = new Vector3(1.5f * movement.Facing,3.6f,0);
 
 		//Calculate Ledge Position
 		if(tether.TetherPoint != Vector3.zero) {

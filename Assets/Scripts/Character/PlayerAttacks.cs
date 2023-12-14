@@ -151,45 +151,55 @@ public class PlayerAttacks : MonoBehaviour
         else if (lightPressed() && canAct) useNormal();
     }
 
-    public void useSpecial()
+    public void useSpecial(bool isCancel = false)
     {
+
+        if(isCancel) drifter.movement.setFacingDelayed((int)drifter.masterhit.checkForDirection(8));
+
         drifter.movement.canLandingCancel = false;
-        if(drifter.input[0].MoveY > 0 && currentUpRecoveries > 0)
-            {
+        if(drifter.input[0].MoveY > 0 && currentUpRecoveries > 0) {
                 StartAttack(DrifterAttackType.W_Up);
                 if(shareRecoveries)
                     decrementAllRecoveries();
                 else
                     currentUpRecoveries--;
-            }
-            else if((!W_Down_Is_Recovery || currentDownRecoveries > 0) && drifter.input[0].MoveY < 0)
-            {
-                StartAttack(DrifterAttackType.W_Down);
-                if(W_Down_Is_Recovery)
-                    if(shareRecoveries)
-                        decrementAllRecoveries();
-                    else
-                        currentDownRecoveries--;
-            }
-            else if((!W_Side_Is_Recovery || currentSideRecoveries > 0) &&drifter.input[0].MoveX!=0)
-            {
-                StartAttack(DrifterAttackType.W_Side);
-                if(W_Side_Is_Recovery)
-                    if(shareRecoveries)
-                        decrementAllRecoveries();
-                    else
-                        currentSideRecoveries--;
-            }
-            else if((!W_Neutral_Is_Recovery || currentNeutralRecoveries > 0) && drifter.input[0].MoveY==0 && drifter.input[0].MoveX==0)
-            {
-                StartAttack(DrifterAttackType.W_Neutral);
-                if(W_Neutral_Is_Recovery)
-                    if(shareRecoveries)
-                        decrementAllRecoveries();
-                    else
-                        currentNeutralRecoveries--;
-                
-            }
+        }
+        else if((!W_Down_Is_Recovery || currentDownRecoveries > 0) && drifter.input[0].MoveY < 0)
+        {
+            StartAttack(DrifterAttackType.W_Down);
+            if(W_Down_Is_Recovery)
+                if(shareRecoveries)
+                    decrementAllRecoveries();
+                else
+                    currentDownRecoveries--;
+        }
+        else if((!W_Side_Is_Recovery || currentSideRecoveries > 0) &&drifter.input[0].MoveX!=0)
+        {
+            StartAttack(DrifterAttackType.W_Side);
+            if(W_Side_Is_Recovery)
+                if(shareRecoveries)
+                    decrementAllRecoveries();
+                else
+                    currentSideRecoveries--;
+        }
+        else if((!W_Neutral_Is_Recovery || currentNeutralRecoveries > 0) && drifter.input[0].MoveY==0 && drifter.input[0].MoveX==0)
+        {
+            StartAttack(DrifterAttackType.W_Neutral);
+            if(W_Neutral_Is_Recovery)
+                if(shareRecoveries)
+                    decrementAllRecoveries();
+                else
+                    currentNeutralRecoveries--;
+        }
+        else
+            return;
+
+        if(isCancel) {
+            drifter.status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, 2);
+            drifter.masterhit.clearMasterhitVars();
+            drifter.canFeint = true;
+            drifter.movement.techParticle();
+        }
     }
 
     public void useNormal()
