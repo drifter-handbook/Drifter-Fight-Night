@@ -199,6 +199,7 @@ public class PlayerAttacks : MonoBehaviour
             drifter.masterhit.clearMasterhitVars();
             drifter.canFeint = true;
             drifter.movement.techParticle();
+            drifter.canSpecialCancelFlag = false;
         }
     }
 
