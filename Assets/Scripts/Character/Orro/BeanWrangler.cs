@@ -196,8 +196,6 @@ public class BeanWrangler : NonplayerHurtboxHandler
                 hitbox.AttackID = attacks.AttackID;
                 hitbox.Facing = facing;
         }
-
-        razor.GetComponent<SyncProjectileColorDataHost>().setColor(color);
     }
 
 
@@ -218,7 +216,6 @@ public class BeanWrangler : NonplayerHurtboxHandler
             hitbox.Facing = facing;
        }
 
-       rip.GetComponent<SyncProjectileColorDataHost>().setColor(color);
        charge = 0;
     }
 

@@ -48,6 +48,8 @@ public class OrroReworkMasterHit : MasterHit
     {
         base.UpdateFrame();
 
+
+
         //Refresh hover values when you land
         if(movement.grounded)
         {
@@ -140,6 +142,8 @@ public class OrroReworkMasterHit : MasterHit
             Empowered = !beanFollowing || Vector3.Distance(targetPos,bean.rb.position) > 3.8f;
         }
 
+        bean.UpdateFrame();
+
     }
 
     public void listenForDirection()
@@ -187,7 +191,6 @@ public class OrroReworkMasterHit : MasterHit
     	platform = GameController.Instance.CreatePrefab("orro_w_down_platform", transform.position, transform.rotation);
         platform.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
     	platform.transform.SetParent(drifter.gameObject.transform);
-    	platform.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
 
     }
 
@@ -196,7 +199,6 @@ public class OrroReworkMasterHit : MasterHit
     {
     	if(platform != null)
     	{
-    		platform.GetComponent<SyncAnimatorStateHost>().SetState("W_Down_Platform_Decay");
     		platform = null;
     	}
     	
@@ -307,8 +309,7 @@ public class OrroReworkMasterHit : MasterHit
             hurtbox.owner = drifter.gameObject;
         
         bean.facing = movement.Facing;
-        bean.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
-        bean.color = drifter.GetColor();
+        // bean.color = drifter.GetColor();
 
     }
 
@@ -335,7 +336,7 @@ public class OrroReworkMasterHit : MasterHit
             hitbox.Facing = movement.Facing;
        }
 
-       scratch.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
+
     }
 
     //Creates a side air projectile
@@ -358,7 +359,7 @@ public class OrroReworkMasterHit : MasterHit
             hitbox.Facing = movement.Facing;
        }
 
-       scratch.GetComponent<SyncProjectileColorDataHost>().setColor(drifter.GetColor());
+  
     }
 
 
