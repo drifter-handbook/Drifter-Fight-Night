@@ -7,6 +7,8 @@ public class OrroReworkMasterHit : MasterHit
 	BeanWrangler bean;
 	GameObject beanObject;
 
+	GameObject g_Explosion;
+
 	bool beanIsCharging = false;
 	bool beanFollowing = true;   
 	Vector3 targetPos;
@@ -184,6 +186,22 @@ public class OrroReworkMasterHit : MasterHit
 
 	*/
 
+	//Creates a side air projectile
+	public void Create_Explosion() {
+
+		Vector3 pos = new Vector3(2f * movement.Facing,6.7f,0);
+		
+		g_Explosion = GameController.Instance.CreatePrefab("Orro_Up_Ground_Explosion", transform.position + pos, transform.rotation);
+		g_Explosion.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
+		foreach (HitboxCollision hitbox in g_Explosion.GetComponentsInChildren<HitboxCollision>(true)) {
+			hitbox.parent = drifter.gameObject;
+			hitbox.AttackID = attacks.AttackID;
+			hitbox.Facing = movement.Facing;
+	   }
+
+	   SetObjectColor(g_Explosion);
+	}
+
 
 	//Creates a side air projectile
 	public void SpawnSideAir() {
@@ -259,13 +277,14 @@ public class OrroReworkMasterHit : MasterHit
 	public override MasterhitRollbackFrame SerializeFrame() {
 		MasterhitRollbackFrame baseFrame = SerializeBaseFrame();
 		baseFrame.CharacterFrame = new OrroRollbackFrame()  {
-			Bean = bean.SerializeFrame(),
+			Bean = (bean != null) ? bean.SerializeFrame(): null,
 			ListeningForDirection = listeningForDirection,
 			HeldDirection = heldDirection,
 			BeanIsCharging = beanIsCharging,
 			BeanFollowing = beanFollowing,
 			TargetPos = targetPos,
 			NeutralSpecialReleaseDelay = neutralSpecialReleaseDelay,
+			Explosion = (g_Explosion != null) ? g_Explosion.GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null,
 		};
 
 
@@ -278,13 +297,36 @@ public class OrroReworkMasterHit : MasterHit
 
 		OrroRollbackFrame orro_frame = (OrroRollbackFrame)p_frame.CharacterFrame;
 
-		bean.DeserializeFrame(orro_frame.Bean);
+		
 		listeningForDirection = orro_frame.ListeningForDirection;
 		heldDirection = orro_frame.HeldDirection;
 		beanIsCharging = orro_frame.BeanIsCharging;
 		beanFollowing = orro_frame.BeanFollowing;
 		targetPos = orro_frame.TargetPos;
 		neutralSpecialReleaseDelay = orro_frame.NeutralSpecialReleaseDelay;
+
+		if(orro_frame.Bean != null) {
+			if(beanObject == null)spawnBean();
+			bean.DeserializeFrame(orro_frame.Bean);
+		}
+		//Projectile does not exist in rollback frame
+		else {
+			Destroy(beanObject);
+			bean = null;
+			beanObject = null;
+		}
+			
+
+		if(orro_frame.Explosion != null) {
+			if(g_Explosion == null)Create_Explosion();
+			g_Explosion.GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(orro_frame.Explosion);
+		}
+		//Projectile does not exist in rollback frame
+		else {
+			Destroy(g_Explosion);
+			g_Explosion = null;
+		}
+
 	}
 
 }
@@ -300,5 +342,6 @@ public class OrroRollbackFrame: ICharacterRollbackFrame
 	public bool BeanFollowing;   
 	public Vector3 TargetPos;
 	public int NeutralSpecialReleaseDelay;
+	public BasicProjectileRollbackFrame Explosion;
 	
 }
