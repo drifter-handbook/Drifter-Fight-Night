@@ -10,7 +10,7 @@ public enum ProjectileIndex
 public class MythariusMasterHit : MasterHit
 {
 	bool listeningForDirection = false;
-	int delaytime = 0;
+	int neutralSpecialReleaseDelay = 0;
 	Vector2 heldDirection = Vector2.zero;
 
 	GameObject g_Bird;
@@ -22,15 +22,15 @@ public class MythariusMasterHit : MasterHit
 		if(g_Bird != null) g_Bird.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
 
 		if(listeningForDirection) {
-			if(!drifter.input[0].Special) delaytime++;
+			if(!drifter.input[0].Special) neutralSpecialReleaseDelay++;
 			heldDirection += new Vector2(drifter.input[0].MoveX,drifter.input[0].MoveY);
-			if(heldDirection != Vector2.zero || delaytime > 5) NeutralSpecial();
+			if(heldDirection != Vector2.zero || neutralSpecialReleaseDelay > 5) NeutralSpecial();
 		}
 
 	}
 
 	public void listenForDirection() {
-		delaytime = 0;
+		neutralSpecialReleaseDelay = 0;
 		listeningForDirection = true;
 	}
 
@@ -120,7 +120,8 @@ public class MythariusMasterHit : MasterHit
 			Bird = (g_Bird != null) ? g_Bird.GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null,
 			Letter = (g_Letter != null) ? g_Letter.GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null,
 			ListeningForDirection = listeningForDirection,
-			heldDirection = heldDirection,
+			HeldDirection = heldDirection,
+			NeutralSpecialReleaseDelay = neutralSpecialReleaseDelay,
 		};
 
 
@@ -155,7 +156,8 @@ public class MythariusMasterHit : MasterHit
 			g_Letter = null;
 		}  
 		listeningForDirection = myth_frame.ListeningForDirection;
-		heldDirection = myth_frame.heldDirection;
+		heldDirection = myth_frame.HeldDirection;
+		neutralSpecialReleaseDelay = myth_frame.NeutralSpecialReleaseDelay;
 	}
 
 }
@@ -167,6 +169,7 @@ public class MythariusRollbackFrame: ICharacterRollbackFrame
 	public BasicProjectileRollbackFrame Bird;
 	public BasicProjectileRollbackFrame Letter;
 	public bool ListeningForDirection;
-	public Vector2 heldDirection;
+	public Vector2 HeldDirection;
+	public int NeutralSpecialReleaseDelay;
 	
 }

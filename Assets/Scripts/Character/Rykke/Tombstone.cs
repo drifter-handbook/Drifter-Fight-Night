@@ -6,26 +6,27 @@ using UnityEngine;
 public class Tombstone : NonplayerHurtboxHandler
 {
 
+    //Synced Flags
 	public bool canAct = false;
 	public bool active = false;
     public bool projectile = true;
     public bool attacking = false;
     public bool listeningForGrounded = true;
 
-	public WalkOff ledgeDetector;
-
-    int tombstoneType = 0;
-	
+	//Utility References
 	GameObject drifter;
-
 	Collider2D physicsCollider; 
 	Animator animator;
+    WalkOff ledgeDetector;
 
+    //Calculated values
+    int tombstoneType = 0;
 	float distanceFromParent = 0;
 
-	//Const Vector OFFSET
+	//Constants
 	Vector2 OFFSET = new Vector2(0,2);
     float ZOMBIE_RADIUS = 4.5f;
+
 
 	// Start is called before the first frame update
     void Awake()
@@ -33,6 +34,7 @@ public class Tombstone : NonplayerHurtboxHandler
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         physicsCollider = GetComponentInChildren<PolygonCollider2D>();
+        ledgeDetector = GetComponentInChildren<WalkOff>();
     }
 
     // // Update is called once per frame
