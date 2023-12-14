@@ -70,7 +70,6 @@ public class PlayerHurtboxHandler : MonoBehaviour
         {
             
             // register new attack
-
             Drifter drifter = GetComponent<Drifter>();
             PlayerStatus status = drifter.status;
 

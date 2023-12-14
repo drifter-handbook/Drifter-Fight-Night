@@ -86,7 +86,8 @@ public class SandbagMasterHit : MasterHit
             hitbox.AttackID = attacks.AttackID;
             hitbox.Facing = movement.Facing;
         }
-		g_Sandblast.GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)drifter.GetColor()]);
+
+        SetObjectColor(g_Sandblast);
 		g_Sandblast.GetComponent<Rigidbody2D>().velocity = new Vector3(movement.Facing * 25f,0,0);
 	}
 
@@ -117,8 +118,8 @@ public class SandbagMasterHit : MasterHit
             hitbox.AttackID = attacks.AttackID;
             hitbox.Facing = movement.Facing;
         }
-		g_Sandspear1.GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)drifter.GetColor()]);
-		g_Sandspear2.GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)drifter.GetColor()]);
+		SetObjectColor(g_Sandspear1);
+		SetObjectColor(g_Sandspear2);
 		g_Sandspear1.transform.SetParent(drifter.gameObject.transform);
 		g_Sandspear2.transform.SetParent(drifter.gameObject.transform);
 	}
@@ -163,7 +164,7 @@ public class SandbagMasterHit : MasterHit
     	//Sandspears reset
     	if(sb_frame.Sandspear1 != null)
     	{
-    		if(g_Sandspear1 == null)CreateSandblast();
+    		if(g_Sandspear1 == null)CreateSandSpears();
     		g_Sandspear1.GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(sb_frame.Sandspear1);
     		g_Sandspear2.GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(sb_frame.Sandspear2);
 
