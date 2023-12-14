@@ -261,8 +261,6 @@ public class RyykeMasterHit : MasterHit
 			float deltax = tetherPoint.x- (transform.position + pos).x;
 			angle = Mathf.Atan2(deltay, deltax)*180 / Mathf.PI + (movement.Facing < 0 ?180:0);
 			playState("W_Up_Ledge");
-			foreach (HitboxCollision hitbox in g_Tether_Hand.GetComponentsInChildren<HitboxCollision>(true))
-				hitbox.isActive = false;
 		}
 		else
 			tetherPoint = Vector3.zero;
@@ -272,6 +270,9 @@ public class RyykeMasterHit : MasterHit
 
 		//If the arm is not targeting a ledge, fire it as a projectile
 		if(tetherPoint == Vector3.zero) g_Tether_Hand.GetComponent<Rigidbody2D>().velocity = rb.velocity + new Vector2(80f * movement.Facing * Mathf.Cos((angle*movement.Facing* Mathf.PI)/180),80f *Mathf.Sin((angle*movement.Facing * Mathf.PI)/180));
+		else
+			foreach (HitboxCollision hitbox in g_Tether_Hand.GetComponentsInChildren<HitboxCollision>(true))
+				hitbox.isActive = false;
 
 		foreach (HitboxCollision hitbox in g_Tether_Hand.GetComponentsInChildren<HitboxCollision>(true)) {
 			hitbox.parent = drifter.gameObject;
