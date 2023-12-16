@@ -29,7 +29,7 @@ public class ViewManager : MonoBehaviour
     public Toggle toggle3;
 
     PlayerInput[] playerInputs;
-    List<UIMenuType> menuFlowHistory = new List<UIMenuType>();
+    public List<UIMenuType> menuFlowHistory = new List<UIMenuType>();
 
     void Awake()
     {
@@ -132,6 +132,7 @@ public class ViewManager : MonoBehaviour
                     case UIMenuType.HostMenu: EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Host")); break;
                     case UIMenuType.JoinMenu: EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Join")); break;
                     case UIMenuType.SettingsMenu: EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Settings")); break;
+                    case UIMenuType.RebindMenu: EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Settings")); break;
                     default:
                         {
                             Debug.Log("Unsupported UIMenuType " + currentView + "\n");
@@ -181,6 +182,7 @@ public class ViewManager : MonoBehaviour
             case UIMenuType.MainMenu: if (!mouse) EventSystem.current.SetSelectedGameObject(GameObject.Find("Main Play"));  break;
             case UIMenuType.ModeMenu: if (!mouse) EventSystem.current.SetSelectedGameObject(GameObject.Find("Local"));      break;
             case UIMenuType.OnlineMenu: if (!mouse) EventSystem.current.SetSelectedGameObject(GameObject.Find("Host"));     break;
+            case UIMenuType.RebindMenu: if (!mouse) EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Settings")); break;
             case UIMenuType.LocalMenu:
                 {
                     if (Debug.isDebugBuild)

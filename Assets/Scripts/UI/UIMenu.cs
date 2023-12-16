@@ -10,7 +10,8 @@ public enum UIMenuType
     OnlineMenu,
     HostMenu,
     JoinMenu,
-    SettingsMenu
+    SettingsMenu,
+    RebindMenu
 }
 
 public class UIMenu : MonoBehaviour
