@@ -190,11 +190,7 @@ public class PlayerMovement : MonoBehaviour
 		//pause attacker during hitpause, and apply hurt animation to defender
 		if(drifter.status.HasStatusEffect(PlayerStatusEffect.HITPAUSE)) {
 			
-			if(drifter.guardBreaking && drifter.status.HasEnemyStunEffect()) {
-				drifter.PlayAnimation("Guard_Break");
-				shake.Shake(12,.7f);
-			}
-			else if(drifter.status.HasStatusEffect(PlayerStatusEffect.FLATTEN)) {
+			if(drifter.status.HasStatusEffect(PlayerStatusEffect.FLATTEN)) {
 				//do nothing
 			}
 			else if(drifter.status.HasEnemyStunEffect() && !drifter.guarding) {
@@ -222,7 +218,7 @@ public class PlayerMovement : MonoBehaviour
 		}
 
 		//Cancel aerials on landing + landing animation
-		if(!grounded && IsGrounded() && !drifter.status.HasEnemyStunEffect() && !jumping && !drifter.guarding && !drifter.guardBreaking && (!drifter.status.HasStatusEffect(PlayerStatusEffect.END_LAG) || canLandingCancel)) {
+		if(!grounded && IsGrounded() && !drifter.status.HasEnemyStunEffect() && !jumping && !drifter.guarding && (!drifter.status.HasStatusEffect(PlayerStatusEffect.END_LAG) || canLandingCancel)) {
 			drifter.PlayAnimation("Jump_End");
 			//Remove armour on landing 
 			//TODO determine if there are more things that need to be removed on actionable landing
@@ -269,12 +265,7 @@ public class PlayerMovement : MonoBehaviour
 	   
 		//Sets hitstun state when applicable
 
-		if(drifter.status.HasEnemyStunEffect() && drifter.guardBreaking) {
-			drifter.PlayAnimation("Guard_Break");
-			hitstun = true;
-		}
-
-		else if(drifter.status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN)) {
+		if(drifter.status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN)) {
 			hitstun = true;
 			DropLedge();
 		}
@@ -714,7 +705,7 @@ public class PlayerMovement : MonoBehaviour
 		if(!GameController.Instance.IsHost || drifter.superCharge < 1f || drifter.status.HasStatusEffect(PlayerStatusEffect.DEAD) || !drifter.canSuper)return;
 
 		//Hyperguard
-		if(drifter.status.HasStatusEffect(PlayerStatusEffect.KNOCKBACK) && drifter.guarding && !drifter.guardBreaking  && drifter.superCharge >= 1f) {
+		if(drifter.status.HasStatusEffect(PlayerStatusEffect.KNOCKBACK) && drifter.guarding  && drifter.superCharge >= 1f) {
 			drifter.ToggleAnimator(true);
 			hitstun = false;
 			drifter.status.clearStunStatus();

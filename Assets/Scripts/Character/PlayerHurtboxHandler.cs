@@ -234,7 +234,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
                     drifter.clearGuardFlags();
                     
                 }
-                else drifter.guardBreaking = false;
+                //else drifter.guardBreaking = false;
 
                 //As long as the defender isnt in superarmour, or they are being grabbed, apply knockback velocity
                 if(!status.HasStatusEffect(PlayerStatusEffect.ARMOUR) || attackData.hitType==HitType.GRAB || (crossUp && drifter.guarding) ){
@@ -327,7 +327,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
             {
 
                 drifter.movement.updateFacing();
-                if(attackData.hitType==HitType.GUARD_CRUSH)drifter.guardBreaking = true;
+                //if(attackData.hitType==HitType.GUARD_CRUSH)drifter.guardBreaking = true;
                 //push both players back on guarrd
                 
                 if(hitbox.gameObject.tag != "Projectile")

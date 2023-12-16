@@ -75,8 +75,6 @@ public class Drifter : MonoBehaviour
     [NonSerialized]
     public bool parrying = false;
     [NonSerialized]
-    public bool guardBreaking = false;
-    [NonSerialized]
     public bool canFeint = true;
     [NonSerialized]
     public bool canSuper = true;
@@ -267,7 +265,6 @@ public class Drifter : MonoBehaviour
         guarding = false;
         parrying = false;
         perfectGuarding = false;
-        guardBreaking = false;
     }
 
     //Command Input Detection
@@ -367,7 +364,6 @@ public class Drifter : MonoBehaviour
             Guarding = guarding,
             PerfectGuarding = perfectGuarding,
             Parrying = parrying,
-            GuardBreaking = guardBreaking,
             CanFeint = canFeint,
             CanSuper = canSuper,
             KnockedDown = knockedDown,
@@ -407,7 +403,6 @@ public class Drifter : MonoBehaviour
         guarding = p_frame.Guarding;
         perfectGuarding = p_frame.PerfectGuarding;
         parrying = p_frame.Parrying;
-        guardBreaking = p_frame.GuardBreaking;
         canFeint = p_frame.CanFeint;
         canSuper = p_frame.CanSuper;
         knockedDown = p_frame.KnockedDown;
@@ -464,7 +459,6 @@ public class DrifterRollbackFrame: INetworkData
     public bool Guarding;
     public bool PerfectGuarding;
     public bool Parrying;
-    public bool GuardBreaking;
     public bool CanFeint;
     public bool CanSuper;
     public bool KnockedDown;
