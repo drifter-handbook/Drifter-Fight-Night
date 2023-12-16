@@ -155,11 +155,8 @@ AnimationClip:
     - time: 0.25
       value: {fileID: -1742010345930975939, guid: 6513d515ebfb5f642aa045a62823dba6,
         type: 3}
-    - time: 0.5
-      value: {fileID: 1290954139980720899, guid: 6513d515ebfb5f642aa045a62823dba6,
-        type: 3}
     - time: 0.5833333
-      value: {fileID: 3518562608145980264, guid: 6513d515ebfb5f642aa045a62823dba6,
+      value: {fileID: 1290954139980720899, guid: 6513d515ebfb5f642aa045a62823dba6,
         type: 3}
     - time: 0.6666667
       value: {fileID: 2357461571882082887, guid: 6513d515ebfb5f642aa045a62823dba6,
@@ -214,7 +211,6 @@ AnimationClip:
     - {fileID: 6628611790330932024, guid: 6513d515ebfb5f642aa045a62823dba6, type: 3}
     - {fileID: -1742010345930975939, guid: 6513d515ebfb5f642aa045a62823dba6, type: 3}
     - {fileID: 1290954139980720899, guid: 6513d515ebfb5f642aa045a62823dba6, type: 3}
-    - {fileID: 3518562608145980264, guid: 6513d515ebfb5f642aa045a62823dba6, type: 3}
     - {fileID: 2357461571882082887, guid: 6513d515ebfb5f642aa045a62823dba6, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
@@ -380,13 +376,6 @@ AnimationClip:
     messageOptions: 0
   - time: 0
     functionName: clearMasterhitVars
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.5
-    functionName: refreshHitboxID
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

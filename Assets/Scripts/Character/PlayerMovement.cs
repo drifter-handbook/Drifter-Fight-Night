@@ -175,8 +175,6 @@ public class PlayerMovement : MonoBehaviour
 		if(SuperCancel != null) SuperCancel.GetComponentInChildren<InstantiatedEntityCleanup>().UpdateFrame();
 
 		if(dashLock >0) dashLock--;
-		// if(drifter.input[0].Guard) techWindowElapsed += Time.fixedDeltaTime;
-		// else if(drifter.status.HasGroundFriction()) techWindowElapsed = 0;
 
 		bool jumpPressed = !drifter.input[1].Jump && drifter.input[0].Jump;
 		bool canAct = !drifter.status.HasStunEffect() && !drifter.guarding;// && !drifter.input[0].Guard;
