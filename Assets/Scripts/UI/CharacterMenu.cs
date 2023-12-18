@@ -352,9 +352,12 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver {
 
     //Circular Array Helper
     private int WrapIndex(int curr, int max) {
-        int returnVal = curr >= max ? 0 : curr;
-        returnVal = curr < 0 ? max - 1 : curr;
-        return returnVal;
+        if (curr >= max) 
+            return 0;
+        else if (curr < 0) 
+            return (max - 1);
+        else 
+            return curr;
     }
 
     //Updates input commands for a given cursor object
