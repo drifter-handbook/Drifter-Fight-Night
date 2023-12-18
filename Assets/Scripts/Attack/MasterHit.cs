@@ -209,6 +209,8 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 		else
 			attackWasCanceled = false;
 
+		//ledgeDetector.UpdateFrame();
+
 	}
 
 	//Flag the character to begin listen for a given event

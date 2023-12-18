@@ -64,16 +64,16 @@ public class RyykeMasterHit : MasterHit
 		//Listen for movement commands in unempowered down special
 		if(listeningForMovement) {
 			movement.move(14f);
+			ledgeDetector.UpdateFrame();
 			if((!drifter.input[1].Jump && drifter.input[0].Jump) || burrowTime <=0) {
 				attacks.SetMultiHitAttackID();
 				playState("W_Down_Emerge");
 				listeningForMovement = false;
 			}
 			else if(drifter.input[0].MoveX !=0)
-				playState("W_Down_Move");
+				drifter.PlayAnimation("W_Down_Move",0,true);
 			else
-				playState("W_Down_Idle");
-
+				drifter.PlayAnimation("W_Down_Idle",0,true);
 		}
 
 		//Tick down the burrow timer
@@ -360,7 +360,10 @@ public class RyykeMasterHit : MasterHit
 		burrowing = true;
 		burrowTime = maxBurrowTime;
 		listenForLedge(true);
+
+		if(ledgeDetector.IsTouchingGround())setXVelocity(35f);
 		movement.cancelJump();
+
 
 	}
 

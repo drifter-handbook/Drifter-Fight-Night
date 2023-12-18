@@ -3,6 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum CancelType
+{
+	Feint_Cancel,
+	Offensive_Cancel,
+	Defensive_Cancel,
+	Hyper_Guard_Burst,
+	Time_Cancel
+}
+
 public class PlayerMovement : MonoBehaviour
 {
 	//Character Properties
@@ -11,8 +20,8 @@ public class PlayerMovement : MonoBehaviour
 	public float dashSpeed = 35f;
 	// public float delayedJumpDuration = 0.05f;
 	
-	public float groundAccelerationTime = .6f;
-	public float airAccelerationTime = .8f;
+	public float groundAccelerationTime = 36f;
+	public float airAccelerationTime = 48f;
 	public float airSpeed = 15f;
 	public float jumpHeight = 20f;
 	public float jumpTime = 1f;
@@ -59,19 +68,19 @@ public class PlayerMovement : MonoBehaviour
 	[NonSerialized]
 	public bool strongLedgeGrab = true;
 	[NonSerialized]
-	public float accelerationPercent = .9f;
+	public int accelerationFrames = 6;
 	[NonSerialized]
 	public float dashLock = 0;
 	[NonSerialized]
 	public float jumpTimer = 30f;
 
 	GameObject SuperCancel;
-	string canceltype = "Feint_Cancel";
+	CancelType canceltype = CancelType.Feint_Cancel;
 
 	//Situational Iteration variables
 	int dropThroughTime = 18;
 	int ringTime = 6;
-	float walkTime = 0;
+	int dustCloudTimer = 0;
 	Vector2 prevVelocity;
 
 	float currentSpeed;
@@ -82,8 +91,6 @@ public class PlayerMovement : MonoBehaviour
 	//Access to main camera for screen darkening
 	ScreenShake mainCamera;
 
-	// public float activeFriction = .1f;
-	// public float inactiveFriction = .4f;
 	PolygonCollider2D frictionCollider;
 	BoxCollider2D BodyCollider; 
 
@@ -93,6 +100,9 @@ public class PlayerMovement : MonoBehaviour
 	public Rigidbody2D rb;
 	Drifter drifter;
 	GameObjectShake shake;
+
+	public GameObject PushBox;
+	GameObject Pusher;
 
 	
 	Vector2 kdbounceVelocity;
@@ -139,9 +149,6 @@ public class PlayerMovement : MonoBehaviour
 				drifter.PlayAnimation("Knockdown_Bounce");
 				mainCamera.Shake(6,.33f);
 				//If the victim is in hitpause, set their delayed velocity instead
-				// if(kdbounceVelocity.magnitude >15f)
-				//     if(drifter.status.HasStatusEffect(PlayerStatusEffect.HITPAUSE)) drifter.status.setDelayedVelocity(new Vector3(kdbounceVelocity.x,Mathf.Clamp(kdbounceVelocity.y,-15f,15f)));
-				//     else rb.velocity= new Vector3(kdbounceVelocity.x,Mathf.Clamp(kdbounceVelocity.y,-15f,15f));
 				if(drifter.status.HasStatusEffect(PlayerStatusEffect.HITPAUSE)) drifter.status.setDelayedVelocity(new Vector3(Facing *-9f,20));
 				else rb.velocity = new Vector3(Facing *-9f,20);
 					//kdbounceVelocity = Vector3.zero;
@@ -160,10 +167,20 @@ public class PlayerMovement : MonoBehaviour
 
 			else if(prevVelocity.magnitude > 35f && !drifter.status.canbeKnockedDown()) {
 				rb.velocity = Vector2.Reflect(prevVelocity,normal) *.8f;
-				// drifter.status.saveXVelocity(rb.velocity.x);
-				// drifter.status.saveYVelocity(rb.velocity.y);
 				spawnJuiceParticle(col.contacts[0].point, MovementParticleMode.Restitution, Quaternion.Euler(0f,0f, ( (rb.velocity.x < 0)?1:-1 ) * Vector3.Angle(Vector3.up,normal)),false);
 			}
+		}
+	}
+
+	void OnTriggerStay2D(Collider2D col) {
+		if(col.gameObject.tag == "Pushbox") {
+			Pusher = col.gameObject;
+		}
+	}
+
+	void OnTriggerExit2D(Collider2D col) {
+		if(col.gameObject.tag == "Pushbox") {
+			Pusher = null;
 		}
 	}
 
@@ -179,8 +196,10 @@ public class PlayerMovement : MonoBehaviour
 		bool jumpPressed = !drifter.input[1].Jump && drifter.input[0].Jump;
 		bool canAct = !drifter.status.HasStunEffect() && !drifter.guarding;// && !drifter.input[0].Guard;
 		bool canGuard = !drifter.status.HasStunEffect() && !jumping && !ledgeHanging;
-	   
 		bool moving = drifter.input[0].MoveX != 0;
+		bool hasCollision = !drifter.status.HasStunEffect() && !ledgeHanging;
+		//Only collide with other players when not using a move or hanging on a ledge
+		PushBox.SetActive(hasCollision);
 
 		//Unpause gravity when hit
 		if(!drifter.status.HasGroundFriction())gravityPaused=false;
@@ -356,7 +375,7 @@ public class PlayerMovement : MonoBehaviour
 		ContactPoint2D[] contacts = new ContactPoint2D[1];
 		bool groundFrictionPosition = frictionCollider.GetContacts(contacts) >0;
 
-		if(!moving)accelerationPercent = .9f;
+		if(!moving)accelerationFrames = 6;
 		drifter.toggleHidden(drifter.status.HasStatusEffect(PlayerStatusEffect.HIDDEN));
 
 		//Normal walking logic
@@ -366,46 +385,52 @@ public class PlayerMovement : MonoBehaviour
 
 
 			//If just started moving or switched directions
-			if((rb.velocity.x == 0 || rb.velocity.x * drifter.input[0].MoveX < 0) && IsGrounded())
+			if((accelerationFrames == 6 || rb.velocity.x * drifter.input[0].MoveX < 0) && IsGrounded())
 				if(groundFrictionPosition) spawnJuiceParticle(new Vector2(-Facing * 1.5f,0) + contacts[0].point, MovementParticleMode.KickOff);
 			
 			
 			if(IsGrounded()) {
 
 				if(!jumping) {
-					if(drifter.input[0].MoveX !=0 && drifter.input[1].MoveX == 0)drifter.PlayAnimation("Walk");
-					//drifter.status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0);
+					if(drifter.input[0].MoveX !=0 && drifter.input[1].MoveX == 0)
+						drifter.PlayAnimation("Walk");
+
+					//Spawn dust clouds as characters walk, every 20 frames
 					if(groundFrictionPosition) {
-						if(walkTime > .2f + (30f -walkSpeed)/100f) {
+						if(dustCloudTimer > 15) {
 							spawnJuiceParticle(new Vector2(-Facing * 1.5f,0) + contacts[0].point, MovementParticleMode.WalkDust);
-							walkTime = 0;
+							dustCloudTimer = 0;
 						}
-						else walkTime += Time.fixedDeltaTime;
+						else dustCloudTimer ++;
 						
 					}
 
 				}
-				if(accelerationPercent > 0) accelerationPercent -= Time.fixedDeltaTime/groundAccelerationTime * (drifter.status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f: 1f);
-				else accelerationPercent = 0;
+				if(accelerationFrames < groundAccelerationTime) accelerationFrames ++;
+				else accelerationFrames = (int)groundAccelerationTime;
 
-				currentSpeed = walkSpeed * (drifter.status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f: 1f) * (drifter.status.HasStatusEffect(PlayerStatusEffect.SPEEDUP) ? 1.5f: 1f) * (drifter.input[0].MoveX > 0 ? 1 : -1);
-				//accelerationPercent = Time.fixedDeltaTime * (groundAccelerationTime * (drifter.status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f: 1f) * (drifter.status.HasStatusEffect(PlayerStatusEffect.SPEEDUP) ? 1.5f: 1f));
+				currentSpeed = walkSpeed * ((drifter.status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) || Pusher!=null) ? .4f: 1f) * (drifter.status.HasStatusEffect(PlayerStatusEffect.SPEEDUP) ? 1.5f: 1f) * (drifter.input[0].MoveX > 0 ? 1 : -1);
+
+				rb.velocity = new Vector2(Mathf.Lerp(rb.velocity.x,currentSpeed,accelerationFrames/groundAccelerationTime), rb.velocity.y);
 
 			}
 			else {
-				if(!jumping)drifter.PlayAnimation("Hang");
-				//drifter.status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0);
+				if(!jumping)
+					drifter.PlayAnimation("Hang");
 
-				if(accelerationPercent >0) accelerationPercent -= Time.fixedDeltaTime/airAccelerationTime * (drifter.status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f: 1f);
-				else accelerationPercent = 0;
+				if(accelerationFrames < airAccelerationTime) accelerationFrames ++;
+				else accelerationFrames = (int)airAccelerationTime;
 
-				currentSpeed = airSpeed * (drifter.status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f: 1f) * (drifter.status.HasStatusEffect(PlayerStatusEffect.SPEEDUP) ? 1.5f: 1f) * (drifter.input[0].MoveX > 0 ? 1 : -1);
-				//accelerationPercent = Time.fixedDeltaTime * (airAccelerationTime * (drifter.status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f: 1f) * (drifter.status.HasStatusEffect(PlayerStatusEffect.SPEEDUP) ? 1.5f: 1f));
-				
+				currentSpeed = airSpeed * ((drifter.status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) || Pusher!=null) ? .4f: 1f) * (drifter.status.HasStatusEffect(PlayerStatusEffect.SPEEDUP) ? 1.5f: 1f) * (drifter.input[0].MoveX > 0 ? 1 : -1);
+
+				rb.velocity = new Vector2(Mathf.Lerp(rb.velocity.x,currentSpeed,accelerationFrames/airAccelerationTime), rb.velocity.y);
 			}
-			rb.velocity = new Vector2(Mathf.Lerp(currentSpeed,rb.velocity.x,accelerationPercent), rb.velocity.y);
-			//rb.velocity = new Vector2(Mathf.MoveTowards(currentSpeed,rb.velocity.x,accelerationPercent), rb.velocity.y);
 		}
+
+		//Character """collision"""
+		if(Pusher!=null && hasCollision) 
+			rb.AddForce(new Vector2(
+				-1 * Mathf.Sign(Pusher.transform.position.x-PushBox.transform.position.x) * Mathf.Clamp(1/Mathf.Abs(Pusher.transform.position.x-PushBox.transform.position.x),2f,5f), 0), ForceMode2D.Impulse);
 
 		//Guard
 		if(drifter.input[0].Guard && canGuard) {
@@ -509,14 +534,15 @@ public class PlayerMovement : MonoBehaviour
 
 	//Moves the character left or right, based on the speed provided
 	public void move(float speed, bool flipDirection = true) {
-		if(accelerationPercent >0) accelerationPercent -= Time.fixedDeltaTime/airAccelerationTime * (drifter.status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f: 1f);
-		else accelerationPercent = 0;
+
+		if(accelerationFrames < airAccelerationTime) accelerationFrames ++;
+		else accelerationFrames = (int)airAccelerationTime;
 
 		if(flipDirection)updateFacing();
 
 		if(drifter.input[0].MoveX != 0) {
 			currentSpeed = speed * (drifter.status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f: 1f) * (drifter.status.HasStatusEffect(PlayerStatusEffect.SPEEDUP) ? 1.5f: 1f) * (drifter.input[0].MoveX > 0 ? 1 : -1);
-			rb.velocity = new Vector2(Mathf.Lerp(currentSpeed,rb.velocity.x,accelerationPercent), rb.velocity.y);
+			rb.velocity = new Vector2(Mathf.Lerp(rb.velocity.x,currentSpeed,accelerationFrames/airAccelerationTime), rb.velocity.y);
 		}
 		
 	}
@@ -530,7 +556,7 @@ public class PlayerMovement : MonoBehaviour
 	//Updates the direction the player is facing
 	public void updateFacing() {
 
-		if(Facing != drifter.input[0].MoveX)accelerationPercent =.9f;
+		if(Facing != drifter.input[0].MoveX)accelerationFrames = 6;
 
 		if(drifter.input[0].MoveX > 0) Facing = 1;
 		else if(drifter.input[0].MoveX < 0) Facing = -1;
@@ -667,7 +693,7 @@ public class PlayerMovement : MonoBehaviour
 	public bool dash() {
 		if(currentDashes > 0 && !dashing) {
 			updateFacing();
-			accelerationPercent = 0;
+			accelerationFrames = 120;
 			dashLock = 60;
 			dashing = true;
 			spawnJuiceParticle(BodyCollider.bounds.center + new Vector3(Facing * 1.5f,0), MovementParticleMode.Dash_Ring, Quaternion.Euler(0f,0f,0f), false);
@@ -707,24 +733,20 @@ public class PlayerMovement : MonoBehaviour
 			drifter.ToggleAnimator(true);
 			hitstun = false;
 			drifter.status.clearStunStatus();
-			spawnSuperParticle("Hyper_Guard_Burst",1f,8);
-			canceltype = "Hyper_Guard_Burst";
+			spawnSuperParticle(CancelType.Feint_Cancel,1f,8);
 			drifter.attacks.useSuper();
 		}
 		
 		//Offensive Cancel
 		else if(drifter.status.HasStatusEffect(PlayerStatusEffect.END_LAG) && drifter.superCharge >= 1f) {
 			if(drifter.superCharge >= 2f && !drifter.canFeint) {
-				spawnSuperParticle("Offensive_Cancel",2f,20);
-				canceltype = "Offensive_Cancel";
+				spawnSuperParticle(CancelType.Offensive_Cancel,2f,20);
 				drifter.attacks.useSuper();
 			}
 			else if(drifter.canFeint) {
-				spawnSuperParticle("Feint_Cancel",1f,8);
-				canceltype = "Feint_Cancel";
+				spawnSuperParticle(CancelType.Feint_Cancel,1f,8);
 				drifter.attacks.useSuper();
 			}
-			
 		}
 
 		//Burst/Defensive Cancel
@@ -734,14 +756,12 @@ public class PlayerMovement : MonoBehaviour
 			drifter.status.clearStunStatus();
 			drifter.status.ApplyStatusEffect(PlayerStatusEffect.INVULN,8);
 
-			spawnSuperParticle("Defensive_Cancel",2f,8);
-			canceltype = "Defensive_Cancel";
+			spawnSuperParticle(CancelType.Defensive_Cancel,2f,8);
 			if(currentJumps+1 < numberOfJumps) currentJumps++;
 			drifter.attacks.useSuper();
 		}
 		else if (!drifter.guarding && drifter.superCharge >= 1f && !drifter.status.HasStunEffect()) {
-			spawnSuperParticle("Time_Cancel",1f,8);
-			canceltype = "Time_Cancel";
+			spawnSuperParticle(CancelType.Time_Cancel,1f,8);
 			drifter.attacks.useSuper();
 		}
 
@@ -755,16 +775,16 @@ public class PlayerMovement : MonoBehaviour
 		rb.gravityScale = baseGravity;
 	}
 
-	private void spawnSuperParticle(string mode,float cost,int darkentime) {
+	private void spawnSuperParticle(CancelType mode,float cost,int darkentime) {
 		if(SuperCancel!= null)
 			Destroy(SuperCancel);
 
+		canceltype = mode;
 		canLandingCancel = false;
 		mainCamera.Darken(darkentime);
 		drifter.canSuper = false;
 		drifter.attacks.SetMultiHitAttackID();
 		Vector3 flip = new Vector3(Facing * 10f, 10f, 0f);
-		//Vector3 pos = new Vector3(Facing * 3f, 3.5f, 1f);
 		
 		drifter.superCharge -= cost;
 
@@ -775,7 +795,7 @@ public class PlayerMovement : MonoBehaviour
 			hitbox.isActive = true;
 			hitbox.Facing = Facing;
 		}
-		SuperCancel.GetComponent<InstantiatedEntityCleanup>().animator.Play(mode);
+		SuperCancel.GetComponent<InstantiatedEntityCleanup>().animator.Play(canceltype.ToString());
 		
 	}
 
@@ -804,7 +824,7 @@ public class PlayerMovement : MonoBehaviour
 			GravityPaused = gravityPaused,
 			LedgeHanging = ledgeHanging,
 			StrongLedgeGrab = strongLedgeGrab,
-			AccelerationPercent = accelerationPercent,
+			AccelerationFrames = accelerationFrames,
 			DashLock = dashLock,
 			JumpTimer = jumpTimer,
 			DropThroughTime = dropThroughTime,
@@ -838,7 +858,7 @@ public class PlayerMovement : MonoBehaviour
 		gravityPaused = p_frame.GravityPaused;
 		ledgeHanging = p_frame.LedgeHanging;
 		strongLedgeGrab = p_frame.StrongLedgeGrab;
-		accelerationPercent = p_frame.AccelerationPercent;
+		accelerationFrames = p_frame.AccelerationFrames;
 		dashLock = p_frame.DashLock;
 		jumpTimer = p_frame.JumpTimer;
 		dropThroughTime = p_frame.DropThroughTime;
@@ -882,7 +902,7 @@ public class MovementRollbackFrame: INetworkData
 	public bool GravityPaused;
 	public bool LedgeHanging;
 	public bool StrongLedgeGrab;
-	public float AccelerationPercent;
+	public int AccelerationFrames;
 	public float DashLock;
 	public float JumpTimer;
 	public int DropThroughTime;
@@ -891,6 +911,6 @@ public class MovementRollbackFrame: INetworkData
 	public float CurrentSpeed;
 	public bool DelayedFacingFlip;
 	public BasicProjectileRollbackFrame SuperCancel;
-	public string CancelType;
+	public CancelType CancelType;
 
 }

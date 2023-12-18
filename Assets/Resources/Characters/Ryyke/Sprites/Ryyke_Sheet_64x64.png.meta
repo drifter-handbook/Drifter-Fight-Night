@@ -2713,7 +2713,7 @@ TextureImporter:
         width: 64
         height: 64
       alignment: 9
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.65625, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2734,7 +2734,7 @@ TextureImporter:
         width: 64
         height: 64
       alignment: 9
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.75, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2755,7 +2755,7 @@ TextureImporter:
         width: 128
         height: 64
       alignment: 9
-      pivot: {x: 0.25, y: 0}
+      pivot: {x: 0.375, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2776,7 +2776,7 @@ TextureImporter:
         width: 128
         height: 64
       alignment: 9
-      pivot: {x: 0.25, y: 0}
+      pivot: {x: 0.375, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2797,7 +2797,7 @@ TextureImporter:
         width: 128
         height: 64
       alignment: 9
-      pivot: {x: 0.25, y: 0}
+      pivot: {x: 0.375, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2839,7 +2839,7 @@ TextureImporter:
         width: 96
         height: 64
       alignment: 9
-      pivot: {x: 0.3, y: 0}
+      pivot: {x: 0.33333334, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2923,7 +2923,7 @@ TextureImporter:
         width: 96
         height: 64
       alignment: 9
-      pivot: {x: 0.3, y: 0}
+      pivot: {x: 0.41666666, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3007,7 +3007,7 @@ TextureImporter:
         width: 128
         height: 64
       alignment: 9
-      pivot: {x: 0.25, y: 0}
+      pivot: {x: 0.375, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -3025,10 +3025,10 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 128
+        width: 64
         height: 64
       alignment: 9
-      pivot: {x: 0.25, y: 0}
+      pivot: {x: 0.75, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -5833,6 +5833,90 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Ryyke_Sheet_64x64_154
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.75, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 492452ce019c73c46a00b1b6a4b7cce1
+      internalID: -474496784
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ryyke_Sheet_64x64_155
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 64
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 80de66060dd94f649b4dc0d70bfa9055
+      internalID: -157460899
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ryyke_Sheet_64x64_222
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 0
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.625, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bf6c29f8dcb3bee479dd581a3c75ef6a
+      internalID: -353155206
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ryyke_Sheet_64x64_223
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 0
+        width: 64
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6a68fafad2c465b47b5c7f85aa14ad38
+      internalID: 973703866
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -5867,6 +5951,7 @@ TextureImporter:
       Ryyke_Sheet_64x64_193: 9097624464956033965
       Ryyke_Sheet_64x64_210: -6573996682896176499
       Ryyke_Sheet_64x64_195: 5295598742579411147
+      Ryyke_Sheet_64x64_154: -474496784
       Ryyke_Sheet_64x64_12: -4875078460170874732
       Ryyke_Sheet_64x64_164: -7211823792024689325
       Ryyke_Sheet_64x64_182: 3199182097424751224
@@ -5878,12 +5963,12 @@ TextureImporter:
       Ryyke_Sheet_64x64_70: -5348060209767940373
       Ryyke_Sheet_64x64_96: 5730545415645593929
       Ryyke_Sheet_64x64_156: -2592521420066618287
-      Ryyke_Sheet_64x64_140: -6788020559217524019
       Ryyke_Sheet_64x64_152: 2264976383513345419
       Ryyke_Sheet_64x64_183: 6330471856333330654
-      Ryyke_Sheet_64x64_41: -7297785700267550154
+      Ryyke_Sheet_64x64_140: -6788020559217524019
       Ryyke_Sheet_64x64_175: 5577651385040646909
       Ryyke_Sheet_64x64_215: -789928838012925677
+      Ryyke_Sheet_64x64_41: -7297785700267550154
       Ryyke_Sheet_64x64_40: -2905849141000804372
       Ryyke_Sheet_64x64_106: -6318005252840869956
       Ryyke_Sheet_64x64_107: -4363250991648153502
@@ -5911,7 +5996,9 @@ TextureImporter:
       Ryyke_Sheet_64x64_160: 9144394363903274839
       Ryyke_Sheet_64x64_202: -862071802691058611
       Ryyke_Sheet_64x64_0: 2872628290396796221
+      Ryyke_Sheet_64x64_222: -353155206
       Ryyke_Sheet_64x64_111: -9079551097700121944
+      Ryyke_Sheet_64x64_223: 973703866
       Ryyke_Sheet_64x64_179: 135195619011442588
       Ryyke_Sheet_64x64_196: -4859562853870661226
       Ryyke_Sheet_64x64_77: -6644864361842875459
@@ -5951,6 +6038,7 @@ TextureImporter:
       Ryyke_Sheet_64x64_184: 8083424437233379031
       Ryyke_Sheet_64x64_53: -7794150442008489327
       Ryyke_Sheet_64x64_23: -1123869497975745810
+      Ryyke_Sheet_64x64_155: -157460899
       Ryyke_Sheet_64x64_131: 1629990369118985078
       Ryyke_Sheet_64x64_147: 4486734146290756229
       Ryyke_Sheet_64x64_69: 6798329764195824170
