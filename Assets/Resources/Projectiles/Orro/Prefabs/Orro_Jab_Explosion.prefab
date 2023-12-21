@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3684943833946375004}
   - component: {fileID: 2248057894238533756}
   m_Layer: 0
-  m_Name: Orro_Up_Ground_Explosion
+  m_Name: Orro_Jab_Explosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 65873275, guid: ccb93b633bdc5834c9955ee9e8c05795, type: 3}
+  m_Sprite: {fileID: 402637814, guid: e4b69d71e743e76418abd585d7e6bc84, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -113,7 +113,7 @@ Animator:
   m_GameObject: {fileID: 5200170305971518944}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 0a923a547b0f483468ca8b0e2b6bd233, type: 2}
+  m_Controller: {fileID: 9100000, guid: 2b66711888d798e45afd5f51f53c3ce7, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -168,7 +168,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OverrideData: {fileID: 11400000, guid: e1a8d3d2d004a1942bb3e90fc1dd3976, type: 2}
+  OverrideData: {fileID: 11400000, guid: 6fc13554e575a7041ab19e2c76e639da, type: 2}
   parent: {fileID: 5200170305971518944}
   projectilePriority: -2
 --- !u!70 &2313758483391390009

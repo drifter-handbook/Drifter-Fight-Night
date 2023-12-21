@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class OrroReworkMasterHit : MasterHit
 {
 	BeanWrangler bean;
 	GameObject beanObject;
 
-	GameObject g_Explosion;
+	GameObject[] explosions = new GameObject[17];
+
+	GameObject[] orbs = new GameObject[] {null,null,null};
 
 	bool beanIsCharging = false;
 	bool beanFollowing = true;   
@@ -72,6 +75,9 @@ public class OrroReworkMasterHit : MasterHit
 		}
 
 		bean.UpdateFrame();
+
+		foreach(GameObject exp in explosions)
+			if(exp != null) exp.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
 
 	}
 
@@ -185,21 +191,39 @@ public class OrroReworkMasterHit : MasterHit
 		Other Projectiles
 
 	*/
+	public void Create_Explosion(int p_attack) {
+		Create_Explosion((DrifterAttackType) p_attack);
+	}
 
-	//Creates a side air projectile
-	public void Create_Explosion() {
+	//Creates a normal projectile
+	private void Create_Explosion(DrifterAttackType p_attack) {
 
-		Vector3 pos = new Vector3(2f * movement.Facing,6.7f,0);
-		
-		g_Explosion = GameController.Instance.CreatePrefab("Orro_Up_Ground_Explosion", transform.position + pos, transform.rotation);
-		g_Explosion.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
-		foreach (HitboxCollision hitbox in g_Explosion.GetComponentsInChildren<HitboxCollision>(true)) {
+		GameObject projectile;
+
+		switch(p_attack) {
+			case DrifterAttackType.Ground_Q_Neutral:
+				projectile = GameController.Instance.CreatePrefab("Orro_Jab_Explosion", transform.position + new Vector3(3f * movement.Facing,3f,0), transform.rotation);
+				break;
+
+			case DrifterAttackType.Ground_Q_Up:
+				projectile = GameController.Instance.CreatePrefab("Orro_Up_Ground_Explosion", transform.position + new Vector3(2f * movement.Facing,6.7f,0), transform.rotation);
+				break;
+
+			default:
+				return;
+				break;
+		}
+
+		projectile.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
+
+		foreach (HitboxCollision hitbox in projectile.GetComponentsInChildren<HitboxCollision>(true)) {
 			hitbox.parent = drifter.gameObject;
 			hitbox.AttackID = attacks.AttackID;
 			hitbox.Facing = movement.Facing;
 	   }
+	   SetObjectColor(projectile);
+	   explosions[(int)p_attack] = projectile;
 
-	   SetObjectColor(g_Explosion);
 	}
 
 
@@ -276,6 +300,12 @@ public class OrroReworkMasterHit : MasterHit
 	//Takes a snapshot of the current frame to rollback to
 	public override MasterhitRollbackFrame SerializeFrame() {
 		MasterhitRollbackFrame baseFrame = SerializeBaseFrame();
+
+		BasicProjectileRollbackFrame[] p_Explosions = new BasicProjectileRollbackFrame[17];
+
+		for(int i = 0; i < 17; i++)
+			p_Explosions[i] = (explosions[i] != null) ? explosions[i].GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null;
+
 		baseFrame.CharacterFrame = new OrroRollbackFrame()  {
 			Bean = (bean != null) ? bean.SerializeFrame(): null,
 			ListeningForDirection = listeningForDirection,
@@ -284,7 +314,7 @@ public class OrroReworkMasterHit : MasterHit
 			BeanFollowing = beanFollowing,
 			TargetPos = targetPos,
 			NeutralSpecialReleaseDelay = neutralSpecialReleaseDelay,
-			Explosion = (g_Explosion != null) ? g_Explosion.GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null,
+			Explosions = p_Explosions,
 		};
 
 
@@ -305,6 +335,21 @@ public class OrroReworkMasterHit : MasterHit
 		targetPos = orro_frame.TargetPos;
 		neutralSpecialReleaseDelay = orro_frame.NeutralSpecialReleaseDelay;
 
+
+		for(int i = 0; i < 17; i++) {
+
+			if(orro_frame.Explosions[i] != null) {
+				if(explosions[i] == null)Create_Explosion(i);
+				explosions[i].GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(orro_frame.Explosions[i]);
+				}
+				//Projectile does not exist in rollback frame
+			else {
+				Destroy(explosions[i]);
+				explosions[i] = null;
+			}
+		}
+
+
 		if(orro_frame.Bean != null) {
 			if(beanObject == null)spawnBean();
 			bean.DeserializeFrame(orro_frame.Bean);
@@ -314,17 +359,6 @@ public class OrroReworkMasterHit : MasterHit
 			Destroy(beanObject);
 			bean = null;
 			beanObject = null;
-		}
-			
-
-		if(orro_frame.Explosion != null) {
-			if(g_Explosion == null)Create_Explosion();
-			g_Explosion.GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(orro_frame.Explosion);
-		}
-		//Projectile does not exist in rollback frame
-		else {
-			Destroy(g_Explosion);
-			g_Explosion = null;
 		}
 
 	}
@@ -342,6 +376,7 @@ public class OrroRollbackFrame: ICharacterRollbackFrame
 	public bool BeanFollowing;   
 	public Vector3 TargetPos;
 	public int NeutralSpecialReleaseDelay;
-	public BasicProjectileRollbackFrame Explosion;
+	public BasicProjectileRollbackFrame[] Explosions;
+	//public BasicProjectileRollbackFrame[] Orbs;
 	
 }
