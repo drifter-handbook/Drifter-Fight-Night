@@ -116,9 +116,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
             }
 
 
-            bool crossUp = ((hitbox.parent.transform.localPosition.x > transform.localPosition.x  && drifter.movement.Facing < 0) 
-                        || (hitbox.parent.transform.localPosition.x < transform.localPosition.x  && drifter.movement.Facing > 0 && attackData.AttackDamage >0f)) 
-                        && Mathf.Abs(Mathf.Abs(hitbox.parent.transform.localPosition.x) - Mathf.Abs(transform.localPosition.x)) > 1.4f;
+            bool crossUp = (hitbox.parent.transform.localPosition.x > transform.localPosition.x  && drifter.movement.Facing < 0) 
+                        || (hitbox.parent.transform.localPosition.x < transform.localPosition.x  && drifter.movement.Facing > 0 && attackData.AttackDamage > 0f);
 
             // apply damage
             if (drifter != null && status != null)
