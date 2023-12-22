@@ -161,7 +161,7 @@ public class RyykeMasterHit : MasterHit
 	   if(stonesFull) {
 			tombstoneIndex++;
 			if(tombstoneIndex >2)tombstoneIndex = 0;
-			Destroy(tombstones[tombstoneIndex].gameObject);
+			tombstones[tombstoneIndex].PlayAnimationEvent(tombstoneIndex + "_Break");
 	   }
 
 	   SetObjectColor(stone);

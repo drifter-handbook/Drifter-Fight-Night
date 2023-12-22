@@ -59,8 +59,6 @@ public class PlayerHurtboxHandler : MonoBehaviour
 	public virtual int RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID,  SingleAttackData attackData)	{
 		int returnCode = -3;
 
-		UnityEngine.Debug.Log("ID: " + attackID + " Can hit: " + CanHit(attackID));
-
 		if (hitbox.parent != hurtbox.parent && CanHit(attackID)) {
 			// register new attack
 			Drifter drifter = GetComponent<Drifter>();
