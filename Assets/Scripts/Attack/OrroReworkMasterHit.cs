@@ -191,8 +191,8 @@ public class OrroReworkMasterHit : MasterHit
 		Other Projectiles
 
 	*/
-	public void Create_Explosion(int p_attack) {
-		Create_Explosion((DrifterAttackType) p_attack);
+	public void Create_Explosion() {
+		Create_Explosion(drifter.attacks.AttackType);
 	}
 
 	//Creates a normal projectile
@@ -339,7 +339,7 @@ public class OrroReworkMasterHit : MasterHit
 		for(int i = 0; i < 17; i++) {
 
 			if(orro_frame.Explosions[i] != null) {
-				if(explosions[i] == null)Create_Explosion(i);
+				if(explosions[i] == null)Create_Explosion((DrifterAttackType)i);
 				explosions[i].GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(orro_frame.Explosions[i]);
 				}
 				//Projectile does not exist in rollback frame

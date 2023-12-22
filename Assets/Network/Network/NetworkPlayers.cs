@@ -15,7 +15,9 @@ public class NetworkPlayers : MonoBehaviour
 
     public GameObject playerInputPrefab;
 
-    DrifterRollbackFrame[,] rollbackTest = new DrifterRollbackFrame[5,2];
+    public int rollbackFrames = 10;
+
+    DrifterRollbackFrame[,] rollbackTest;
 
     //Dictionary<int, GameObject> clientPlayers = new Dictionary<int, GameObject>();
 
@@ -39,6 +41,9 @@ public class NetworkPlayers : MonoBehaviour
         // create players
         foreach (CharacterSelectState charSel in CharacterMenu.charSelStates.Values)
             CreatePlayer(charSel.PeerID);
+
+
+        rollbackTest = new DrifterRollbackFrame[rollbackFrames,2];
 
         //br.makeLobby();//InitializeRollbackSession();
     }
@@ -70,7 +75,7 @@ public class NetworkPlayers : MonoBehaviour
 
         }
 
-        for (int i = 3; i >= 0; i--)
+        for (int i = rollbackFrames -2; i >= 0; i--)
         {
             rollbackTest[i + 1,0] = rollbackTest[i,0];
             rollbackTest[i + 1,1] = rollbackTest[i,1];
@@ -158,8 +163,8 @@ public class NetworkPlayers : MonoBehaviour
         int z = 0;
         foreach (CharacterSelectState charSel in CharacterMenu.charSelStates.Values){
         
-            players[charSel.PeerID].GetComponent<Drifter>().DeserializeFrame(rollbackTest[4,z]);
-            rollbackTest[0,z] = rollbackTest[4,z];
+            players[charSel.PeerID].GetComponent<Drifter>().DeserializeFrame(rollbackTest[rollbackFrames -1,z]);
+            rollbackTest[0,z] = rollbackTest[rollbackFrames -1,z];
             z++;
         }
 

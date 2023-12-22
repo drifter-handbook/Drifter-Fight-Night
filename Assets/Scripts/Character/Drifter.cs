@@ -49,6 +49,7 @@ public class Drifter : MonoBehaviour
 	public PlayerAttacks attacks;
 	public MasterHit masterhit;
 	public PlayerHurtboxHandler hurtbox;
+	public InstantiatedEntityCleanup entity;
 	
 	public Animator animator;
 	public AnimatorOverrideController[] animOverrides;
@@ -87,6 +88,8 @@ public class Drifter : MonoBehaviour
 	public float superCharge = 2f;
 	[NonSerialized]
 	public bool sparkleMode = false;
+	[NonSerialized]
+	public bool usingSuper = false;
 
 	public int Stocks;
 	public float DamageTaken;
@@ -179,8 +182,7 @@ public class Drifter : MonoBehaviour
 		if(p_gate && Animator.StringToHash(p_state) == animator.GetCurrentAnimatorStateInfo(0).shortNameHash) {
 			UnityEngine.Debug.Log("Animation state " +p_state + " was gated!");
 		}
-		else
-		{
+		else {
 			animator.Play(Animator.StringToHash(p_state),0,p_normalizedTime < 0 ? 0: p_normalizedTime);
 		}
 	}
@@ -209,6 +211,7 @@ public class Drifter : MonoBehaviour
 		movement.jumping = false;
 		movement.dashing = false;
 		movement.canFastFall = true;
+		SetUsingSuper(false);
 		canFeint = true;
 		canSuper = true;
 		clearGuardFlags();
@@ -229,6 +232,13 @@ public class Drifter : MonoBehaviour
 			PlayAnimation(movement.hitstun?"Guard":"Guard_Start");
 		}
 		movement.hitstun = false;
+	}
+
+	public void SetUsingSuper(bool SuperState) {
+		usingSuper = SuperState;
+		entity.pauseBehavior = !SuperState;
+		//Unpause the animatior if using a super
+		if(SuperState)ToggleAnimator(SuperState);
 	}
 
 
@@ -329,13 +339,13 @@ public class Drifter : MonoBehaviour
 			CancelTimer = cancelTimer,
 			ListenForSpecialCancel = listenForSpecialCancel,
 			SparkleMode = sparkleMode,
-
+			UsingSuper = usingSuper,
 			//Animation
 			AnimationOverrideIndex = overrideIndex,
 			AnimationSpeed = animator.speed,
-			AnimationClip = animator.GetCurrentAnimatorStateInfo(0).shortNameHash,
-			AnimationTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime,
-			AnimatorEnabled = animator.enabled,
+			//AnimationClip = animator.GetCurrentAnimatorStateInfo(0).shortNameHash,
+			//AnimationTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime,
+			//AnimatorEnabled = animator.enabled,
 
 			//Components
 			MovementFrame = movement.SerializeFrame(),
@@ -343,6 +353,7 @@ public class Drifter : MonoBehaviour
 			MasterhitFrame =  masterhit.SerializeFrame(),
 			StatusFrame = status.SerializeFrame(),
 			HurtboxhitFrame = hurtbox.SerializeFrame(),
+			EntityFrame = entity.SerializeFrame(),
 		};
 	}
 
@@ -367,23 +378,29 @@ public class Drifter : MonoBehaviour
 		cancelTimer = p_frame.CancelTimer;
 		listenForSpecialCancel = p_frame.ListenForSpecialCancel;
 		sparkleMode = p_frame.SparkleMode;
+		usingSuper = p_frame.UsingSuper;
 
 		//Animation
-		animator.enabled = p_frame.AnimatorEnabled;
+		//animator.enabled = p_frame.AnimatorEnabled;
 		SetAnimationOverride(p_frame.AnimationOverrideIndex); 
 		animator.speed = p_frame.AnimationSpeed;
-		animator.Play(p_frame.AnimationClip,0,p_frame.AnimationTime);
+		//animator.Play(p_frame.AnimationClip,0,p_frame.AnimationTime);
 		
 		//Components
+		entity.DeserializeFrame(p_frame.EntityFrame);
 		movement.DeserializeFrame(p_frame.MovementFrame);
 		attacks.DeserializeFrame(p_frame.AttackFrame);
+		hurtbox.DeserializeFrame(p_frame.HurtboxhitFrame);
 		masterhit.DeserializeFrame(p_frame.MasterhitFrame);
 		status.DeserializeFrame(p_frame.StatusFrame);
-		hurtbox.DeserializeFrame(p_frame.HurtboxhitFrame);
-
+		
 	}
 
 	public void UpdateFrame() {
+
+		if(GameController.Instance.IsPaused)
+            return;
+
 		if(cancelTimer >0) {
 			cancelTimer--;
 			if(cancelTimer <=0) {
@@ -392,11 +409,18 @@ public class Drifter : MonoBehaviour
 				canSpecialCancelFlag = false;
 			}
 		}
-		movement.UpdateFrame();
-		attacks.UpdateFrame();
-		masterhit.UpdateFrame();
-		status.UpdateFrame();
-		hurtbox.UpdateFrame();
+		
+		//Do not update components if in super freeze
+		if(!entity.paused) {
+			
+			//entity.UpdateFrame();
+			movement.UpdateFrame();
+			attacks.UpdateFrame();
+			status.UpdateFrame();
+			hurtbox.UpdateFrame();
+			masterhit.UpdateFrame();
+		}
+		
 		
 	}
 }
@@ -420,17 +444,20 @@ public class DrifterRollbackFrame: INetworkData
 	public int CancelTimer;
 	public bool ListenForSpecialCancel;
 	public bool SparkleMode;
+	public bool UsingSuper;
 
 	public int AnimationOverrideIndex; 
 	public float AnimationSpeed;
-	public int AnimationClip;
-	public float AnimationTime;
-	public bool AnimatorEnabled;
+	
+	// public int AnimationClip;
+	// public float AnimationTime;
+	// public bool AnimatorEnabled;
 
 	public MovementRollbackFrame MovementFrame;
 	public AttackRollbackFrame AttackFrame;
 	public MasterhitRollbackFrame MasterhitFrame;
 	public StatusRollbackFrame StatusFrame;
 	public HurtboxRollbackFrame HurtboxhitFrame;
+	public BasicProjectileRollbackFrame EntityFrame;
 	
 }

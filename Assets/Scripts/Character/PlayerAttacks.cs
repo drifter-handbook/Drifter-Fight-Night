@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public enum DrifterAttackType
-{
+public enum DrifterAttackType {
 	Null,
 	Ground_Q_Side, Ground_Q_Down, Ground_Q_Up, Ground_Q_Neutral,
 	Aerial_Q_Side, Aerial_Q_Down, Aerial_Q_Up, Aerial_Q_Neutral,
@@ -14,28 +13,14 @@ public enum DrifterAttackType
 }
 
 [Serializable]
-public class SingleAttack
-{
+public class SingleAttack {
 	public DrifterAttackType attack;
 	public SingleAttackData attackData;
 	public bool hasAirVariant;
 }
 
-public class AttackRollbackFrame: INetworkData
-{
-	public string Type { get; set; }
-	public int AttackID;
-	public int nextID;
-	public DrifterAttackType AttackType;
-	public int CurrentUpRecoveries;
-	public int CurrentDownRecoveries;
-	public int CurrentSideRecoveries;
-	public int CurrentNeutralRecoveries;
-	public HitboxRollbackFrame[] Hitboxes;
-}
+public class PlayerAttacks : MonoBehaviour {
 
-public class PlayerAttacks : MonoBehaviour
-{
 	public static Dictionary<DrifterAttackType, string> AnimatorStates = new Dictionary<DrifterAttackType, string>() {
 		{ DrifterAttackType.Ground_Q_Neutral, "Ground_Neutral" },
 		{ DrifterAttackType.Aerial_Q_Neutral, "Aerial_Neutral" },
@@ -182,6 +167,7 @@ public class PlayerAttacks : MonoBehaviour
 		drifter.movement.canLandingCancel = false;
 
 		if(isCancel) {
+			AttackFrameDelay = 4;
 			drifter.status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, 2);
 			drifter.masterhit.clearMasterhitVars();
 			drifter.canFeint = true;
@@ -210,7 +196,7 @@ public class PlayerAttacks : MonoBehaviour
 	}
 
 	public void useSuper() {
-		drifter.status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,1);
+		drifter.SetUsingSuper(true);
 		StartAttack(DrifterAttackType.Super_Cancel);
 		drifter.movement.pauseGravity();
 	}
@@ -273,7 +259,8 @@ public class PlayerAttacks : MonoBehaviour
 		currentNeutralRecoveries = maxRecoveries;
 	}
 
-	public void StartAttack(DrifterAttackType attackType) {
+	public void StartAttack(DrifterAttackType attackType, int frameDelay = 2) {
+		drifter.status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,0);
 		drifter.gainSuperMeter(.05f);
 		drifter.movement.jumping = false;
 		drifter.status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,480);
@@ -283,8 +270,8 @@ public class PlayerAttacks : MonoBehaviour
 			drifter.PlayAnimation(AnimatorStates[attackType] + "_Ground");
 		else
 			drifter.PlayAnimation(AnimatorStates[attackType] + "_Air");
-		//Delay setting Attack key for 3 frames for specvial cancels
-		AttackFrameDelay = 3;
+		//Delay setting Attack key for 3 frames for special cancels
+		AttackFrameDelay = frameDelay;
 		AttackType = attackType;
 		SetupAttackID(attackType);
 		//UnityEngine.Debug.Log("STARTING ATTACK: " + attackType.ToString() + "  With attackID: " + AttackID);
@@ -329,7 +316,7 @@ public class PlayerAttacks : MonoBehaviour
 			CurrentDownRecoveries = currentDownRecoveries,
 			CurrentSideRecoveries = currentSideRecoveries,
 			CurrentNeutralRecoveries = currentNeutralRecoveries,
-			Hitboxes = HitboxFrames
+			//Hitboxes = HitboxFrames
 		};
 	}
 
@@ -343,10 +330,22 @@ public class PlayerAttacks : MonoBehaviour
 			currentSideRecoveries = p_frame.CurrentSideRecoveries;
 			currentNeutralRecoveries = p_frame.CurrentNeutralRecoveries;
 
-			for(int i = 0; i < p_frame.Hitboxes.Length; i++) {
-				hitboxes[i].DeserializeFrame(p_frame.Hitboxes[i]);
-			}
-
+			// for(int i = 0; i < p_frame.Hitboxes.Length; i++) {
+			// 	hitboxes[i].DeserializeFrame(p_frame.Hitboxes[i]);
+			// }
 
 	}
+}
+
+public class AttackRollbackFrame: INetworkData
+{
+	public string Type { get; set; }
+	public int AttackID;
+	public int nextID;
+	public DrifterAttackType AttackType;
+	public int CurrentUpRecoveries;
+	public int CurrentDownRecoveries;
+	public int CurrentSideRecoveries;
+	public int CurrentNeutralRecoveries;
+	//public HitboxRollbackFrame[] Hitboxes;
 }

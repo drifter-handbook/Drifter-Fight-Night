@@ -34,25 +34,30 @@ public class Tombstone : NonplayerHurtboxHandler
 		animator = GetComponent<Animator>();
 		physicsCollider = GetComponentInChildren<PolygonCollider2D>();
 		ledgeDetector = GetComponentInChildren<WalkOff>();
+		entity = GetComponent<InstantiatedEntityCleanup>();
 	}
 
 	// // Update is called once per frame
 	public override void UpdateFrame() {
 		base.UpdateFrame();
 
-		if(listeningForGrounded && IsGrounded()) {
-			listeningForGrounded = false;
+		if(!entity.paused){
+			if(listeningForGrounded && IsGrounded()) {
+				listeningForGrounded = false;
 			if(projectile) returnToIdle();
 			else {
 				PlayAnimation("Land");
 				canAct = false;
 			}
 
+			}
+			ledgeDetector.UpdateFrame();
 		}
-		ledgeDetector.UpdateFrame();
+		
 	}
 
 	new void Start() {
+		//base.Start();
 		PlayAnimationEvent(tombstoneType + "_Spin");
 	}
 

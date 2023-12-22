@@ -35,7 +35,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
 	BeanState state;
 
 	new void Start() {
-
+		entity = GetComponent<InstantiatedEntityCleanup>();
 		base.Start();
 		animator = GetComponent<Animator>();
 		//Movement Stuff
@@ -47,60 +47,60 @@ public class BeanWrangler : NonplayerHurtboxHandler
 	public override void UpdateFrame() {
 
 		base.UpdateFrame();
-		prevHitstunDuration = HitstunDuration;
+			prevHitstunDuration = HitstunDuration;
 		
-		if(HitstunDuration >0) 
-			return;
-		else if(prevHitstunDuration != HitstunDuration && HitstunDuration <=0 && alive)
-			returnToNeutral();
-		else {
-			//Get the next state for bean to move towards
-			targetPos = state;
+			if(HitstunDuration >0) 
+				return;
+			else if(prevHitstunDuration != HitstunDuration && HitstunDuration <=0 && alive)
+				returnToNeutral();
+			else {
+				//Get the next state for bean to move towards
+				targetPos = state;
 
-			//If bean is currently following orro,
-			if(following && canAct) {
-				facing = targetPos.Facing;
+				//If bean is currently following orro,
+				if(following && canAct) {
+					facing = targetPos.Facing;
 
-				if(!alive) {
-					//Heal bean if he is dead
-					if(percentage > 0) percentage -= 4f;
-					if(percentage <= 0)	{
-						percentage = 0;
-						alive = true;
-						PlayAnimation("Bean_Spawn");
+					if(!alive) {
+						//Heal bean if he is dead
+						if(percentage > 0) percentage -= 4f;
+						if(percentage <= 0)	{
+							percentage = 0;
+							alive = true;
+							PlayAnimation("Bean_Spawn");
+						}
+					}
+
+					//Return to orro
+					//If bean is too far away (more than 3 stage lengths, he will immediately teleport to orro.
+					if(Vector3.Distance(rb.position,targetPos.Pos) > 100f) {
+						rb.position = targetPos.Pos;
+						transform.localScale = new Vector3(targetPos.Facing * Mathf.Abs(transform.localScale.x),
+							transform.localScale.y, transform.localScale.z);
+					}
+
+					//If bean is returning to orro, he will move at a slower speed and not heal
+					if(Vector3.Distance(rb.position,targetPos.Pos) > 3.8f) {
+						rb.position =  Vector3.MoveTowards(rb.position,targetPos.Pos,RETURN_SPEED/60f);
+						transform.localScale = new Vector3((targetPos.Pos.x > rb.position.x ? 1f : -1f) * Mathf.Abs(transform.localScale.x),
+							transform.localScale.y, transform.localScale.z); 
+							beanMovementDelay = 50;
+					}
+					//Follow orro while attatched
+					//Bean follows more closely while attatched to not get left behind
+					else {
+						//Tick down beans damage when he is attatched to orro
+						if(percentage > 0) percentage -=.02f;
+
+						//Follow Logic
+						rb.position =  Vector3.Lerp(rb.position,targetPos.Pos, .25f * beanMovementDelay / 100f);
+						transform.localScale = new Vector3(targetPos.Facing * Mathf.Abs(transform.localScale.x),
+							transform.localScale.y, transform.localScale.z); 
+						if(beanMovementDelay < 100) beanMovementDelay++;
 					}
 				}
 
-				//Return to orro
-				//If bean is too far away (more than 3 stage lengths, he will immediately teleport to orro.
-				if(Vector3.Distance(rb.position,targetPos.Pos) > 100f) {
-					rb.position = targetPos.Pos;
-					transform.localScale = new Vector3(targetPos.Facing * Mathf.Abs(transform.localScale.x),
-						transform.localScale.y, transform.localScale.z);
-				}
-
-				//If bean is returning to orro, he will move at a slower speed and not heal
-				if(Vector3.Distance(rb.position,targetPos.Pos) > 3.8f) {
-					rb.position =  Vector3.MoveTowards(rb.position,targetPos.Pos,RETURN_SPEED/60f);
-					transform.localScale = new Vector3((targetPos.Pos.x > rb.position.x ? 1f : -1f) * Mathf.Abs(transform.localScale.x),
-						transform.localScale.y, transform.localScale.z); 
-						beanMovementDelay = 50;
-				}
-				//Follow orro while attatched
-				//Bean follows more closely while attatched to not get left behind
-				else {
-					//Tick down beans damage when he is attatched to orro
-					if(percentage > 0) percentage -=.02f;
-
-					//Follow Logic
-					rb.position =  Vector3.Lerp(rb.position,targetPos.Pos, .25f * beanMovementDelay / 100f);
-					transform.localScale = new Vector3(targetPos.Facing * Mathf.Abs(transform.localScale.x),
-						transform.localScale.y, transform.localScale.z); 
-					if(beanMovementDelay < 100) beanMovementDelay++;
-				}
 			}
-
-		}
 	}
 
 	public void PlayAnimation(string p_state, float p_normalizedTime = -1) {

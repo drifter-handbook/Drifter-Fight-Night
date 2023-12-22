@@ -131,9 +131,6 @@ public class PlayerStatus : MonoBehaviour
     // Update is called once per frame
     public void UpdateFrame()
     {
-        if(GameController.Instance.IsPaused)
-            return;
-
         if(grabPoint!=null && HasStatusEffect(PlayerStatusEffect.GRABBED) && grabPoint.enabled)
         {
             //drifter.movement.rb.position = grabPoint.bounds.center;

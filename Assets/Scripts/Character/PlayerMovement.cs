@@ -186,8 +186,6 @@ public class PlayerMovement : MonoBehaviour
 
 
 	public void UpdateFrame() {
-		if(GameController.Instance.IsPaused)
-			return;
 
 		if(SuperCancel != null) SuperCancel.GetComponentInChildren<InstantiatedEntityCleanup>().UpdateFrame();
 
@@ -726,7 +724,7 @@ public class PlayerMovement : MonoBehaviour
 
 	public void superCancel() {
 
-		if(!GameController.Instance.IsHost || drifter.superCharge < 1f || drifter.status.HasStatusEffect(PlayerStatusEffect.DEAD) || !drifter.canSuper)return;
+		if(drifter.superCharge < 1f || drifter.status.HasStatusEffect(PlayerStatusEffect.DEAD) || !drifter.canSuper)return;
 
 		//Hyperguard
 		if(drifter.status.HasStatusEffect(PlayerStatusEffect.KNOCKBACK) && drifter.guarding  && drifter.superCharge >= 1f) {
@@ -735,6 +733,7 @@ public class PlayerMovement : MonoBehaviour
 			drifter.status.clearStunStatus();
 			spawnSuperParticle(CancelType.Feint_Cancel,1f,8);
 			drifter.attacks.useSuper();
+			
 		}
 		
 		//Offensive Cancel
@@ -742,6 +741,7 @@ public class PlayerMovement : MonoBehaviour
 			if(drifter.superCharge >= 2f && !drifter.canFeint) {
 				spawnSuperParticle(CancelType.Offensive_Cancel,2f,20);
 				drifter.attacks.useSuper();
+				
 			}
 			else if(drifter.canFeint) {
 				spawnSuperParticle(CancelType.Feint_Cancel,1f,8);
@@ -755,10 +755,11 @@ public class PlayerMovement : MonoBehaviour
 			hitstun = false;
 			drifter.status.clearStunStatus();
 			drifter.status.ApplyStatusEffect(PlayerStatusEffect.INVULN,8);
-
+			
 			spawnSuperParticle(CancelType.Defensive_Cancel,2f,8);
-			if(currentJumps+1 < numberOfJumps) currentJumps++;
 			drifter.attacks.useSuper();
+			if(currentJumps+1 < numberOfJumps) currentJumps++;
+			
 		}
 		else if (!drifter.guarding && drifter.superCharge >= 1f && !drifter.status.HasStunEffect()) {
 			spawnSuperParticle(CancelType.Time_Cancel,1f,8);
@@ -806,9 +807,9 @@ public class PlayerMovement : MonoBehaviour
 	public MovementRollbackFrame SerializeFrame() {
 		return new MovementRollbackFrame() {
 			//Rigid body
-			Velocity = rb.velocity,
-			Gravity = rb.gravityScale,
-			Position = rb.position,
+			// Velocity = rb.velocity,
+			// Gravity = rb.gravityScale,
+			// Position = rb.position,
 
 			//Flags
 			Facing = this.Facing,
@@ -840,9 +841,9 @@ public class PlayerMovement : MonoBehaviour
 	//Rolls back the entity to a given frame state
 	public void DeserializeFrame(MovementRollbackFrame p_frame) {
 		//Rigid body
-		rb.velocity = p_frame.Velocity;
-		rb.gravityScale = p_frame.Gravity;
-		rb.position = p_frame.Position;
+		// rb.velocity = p_frame.Velocity;
+		// rb.gravityScale = p_frame.Gravity;
+		// rb.position = p_frame.Position;
 
 		//Flags
 		Facing = p_frame.Facing;
@@ -885,9 +886,9 @@ public class MovementRollbackFrame: INetworkData
 {
 	public string Type { get; set; }
 
-	public Vector2 Velocity;
-	public float Gravity;
-	public Vector2 Position;
+	//public Vector2 Velocity;
+	//public float Gravity;
+	//public Vector2 Position;
 
 	public int Facing;
 	public float TerminalVelocity;
