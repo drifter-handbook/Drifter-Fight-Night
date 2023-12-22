@@ -7,7 +7,6 @@ public class BasicProjectileRollbackFrame: INetworkData
 {
 	public string Type { get; set; }
 
-	public Vector2 SavedVelocity;
 	public Vector2 Velocity;
 	public Vector2 Position;
 	public float Rotation;
@@ -15,18 +14,26 @@ public class BasicProjectileRollbackFrame: INetworkData
 	public int AnimatorState;
 	public float AnimatorTime;
 	public bool AnimatorActive;
+
+	//Super Freeze
+	public bool PauseBehavior;
+	public bool Paused;	
+	public Vector2 SavedVelocity;
+	public float SavedGravity;
+	public bool DataSaved;
+
 	public HitboxRollbackFrame[] Hitboxes;    
 }
 
 public class InstantiatedEntityCleanup : MonoBehaviour
 {
 	public int duration = -1;
-	// Start is called before the first frame update
 	public Rigidbody2D rb;
 	public Animator animator;
 
-	public bool paused = false;
+	
 	public bool pauseBehavior = true;
+	public bool paused = false;
 
 	private Vector2 savedVelocity;
 	private float savedGravity;
@@ -34,7 +41,8 @@ public class InstantiatedEntityCleanup : MonoBehaviour
 
 	HitboxCollision[] hitboxes;
 
-	//Remove Me
+	//Destroy if the projectile leaves play
+	//Turn off for things that respawn, ie Players and Bean
 	public bool DestroyOnExit = true;
 
 	public void UpdateFrame() {
@@ -104,7 +112,13 @@ public class InstantiatedEntityCleanup : MonoBehaviour
 			AnimatorState = animator !=null ?animator.GetCurrentAnimatorStateInfo(0).shortNameHash : -1,
 			AnimatorTime = animator !=null ? animator.GetCurrentAnimatorStateInfo(0).normalizedTime : -1,
 			AnimatorActive = animator !=null ? animator.enabled : false,
-			Hitboxes = HitboxFrames
+			Hitboxes = HitboxFrames,
+
+			PauseBehavior = pauseBehavior,
+			Paused = paused,
+			SavedVelocity = savedVelocity,
+			SavedGravity = savedGravity,
+			DataSaved = dataSaved,
 		};
 	}
 
@@ -127,6 +141,12 @@ public class InstantiatedEntityCleanup : MonoBehaviour
 		for(int i = 0; i < p_frame.Hitboxes.Length; i++) {
 			hitboxes[i].DeserializeFrame(p_frame.Hitboxes[i]);
 		}
+
+		pauseBehavior = p_frame.PauseBehavior;
+		paused = p_frame.Paused;
+		savedVelocity = p_frame.SavedVelocity;
+		savedGravity = p_frame.SavedGravity;
+		dataSaved = p_frame.DataSaved;
 
 	}
 

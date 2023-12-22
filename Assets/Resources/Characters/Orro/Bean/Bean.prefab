@@ -618,11 +618,11 @@ MonoBehaviour:
   rb: {fileID: 6932556643919112318}
   healthBar: {fileID: 6735839145750309103}
   color: 0
-  charge: 0
-  returnSpeed: 20
-  Bean_Respawn_Delay: 3
+  following: 1
+  beanMovementDelay: 100
   canAct: 1
   alive: 0
+  prevHitstunDuration: 0
 --- !u!50 &6932556643919112318
 Rigidbody2D:
   serializedVersion: 4
@@ -675,7 +675,9 @@ MonoBehaviour:
   duration: -1
   rb: {fileID: 6932556643919112318}
   animator: {fileID: 8477712233780534944}
-  updateSelf: 0
+  pauseBehavior: 1
+  paused: 0
+  DestroyOnExit: 0
 --- !u!1 &7018911611265777531
 GameObject:
   m_ObjectHideFlags: 0
