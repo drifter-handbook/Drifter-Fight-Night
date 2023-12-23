@@ -108,8 +108,10 @@ public class RyykeMasterHit : MasterHit
 
 	void DeleteAllStones() {
 		for(int i = 0; i <3; i++)
-			if(tombstones[i] != null)
-				Destroy(tombstones[i].gameObject);
+			if(tombstones[i] != null){
+				tombstones[i].breakStone();
+				tombstones[i] = null;
+			}
 	}
 
 	//Play a specified Tombstone spawn animation based on which one is being created
@@ -161,7 +163,7 @@ public class RyykeMasterHit : MasterHit
 	   if(stonesFull) {
 			tombstoneIndex++;
 			if(tombstoneIndex >2)tombstoneIndex = 0;
-			tombstones[tombstoneIndex].PlayAnimationEvent(tombstoneIndex + "_Break");
+			tombstones[tombstoneIndex].breakStone();
 	   }
 
 	   SetObjectColor(stone);
@@ -200,16 +202,16 @@ public class RyykeMasterHit : MasterHit
 		}
 
 		//After the closest stone is found, Activate it
-		if(nearbyStone >=0 && !tombstones[nearbyStone].active) {
+		if(nearbyStone >=0 && !tombstones[nearbyStone].active) 
 			tombstones[nearbyStone].PlayConditionalAnimation("Activate",true,true);
 
-			//Deactivate all other active stones, so only one zombie is active at a time
-			for(int i = 0; i <3; i++) {
-				if(tombstones[i] != null && i != nearbyStone && tombstones[i].active && !tombstones[i].attacking) {
-					tombstones[i].PlayConditionalAnimation("Deactivate",true,true);
-					tombstones[i].active = false;
-				}
+		//Deactivate all other active stones, so only one zombie is active at a time
+		for(int i = 0; i <3; i++) {
+			if(tombstones[i] != null && i != nearbyStone && tombstones[i].active && !tombstones[i].attacking) {
+				tombstones[i].PlayConditionalAnimation("Deactivate",true,true);
+				tombstones[i].active = false;
 			}
+			
 		}
 		
 		//If the closest stone is already active and exists, and Ryyke is not empowered
@@ -356,15 +358,19 @@ public class RyykeMasterHit : MasterHit
 		isNearStone();
 	}
 
+	public void W_Down_Dash() {
+		//burrowing = true;
+		//burrowTime = maxBurrowTime;
+		listenForLedge(true);
+		if(ledgeDetector.IsTouchingGround())setXVelocity(35f);
+		movement.cancelJump();
+	}
+
 	public void burrow() {
 		burrowing = true;
 		burrowTime = maxBurrowTime;
 		listenForLedge(true);
-
-		if(ledgeDetector.IsTouchingGround())setXVelocity(35f);
 		movement.cancelJump();
-
-
 	}
 
 	public void moveWhileBurrowed(int moveFlag) {

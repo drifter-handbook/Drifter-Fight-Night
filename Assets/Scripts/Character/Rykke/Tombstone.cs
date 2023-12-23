@@ -12,6 +12,7 @@ public class Tombstone : NonplayerHurtboxHandler
 	public bool projectile = true;
 	public bool attacking = false;
 	public bool listeningForGrounded = true;
+	public bool breaking = false;
 
 	//Utility References
 	GameObject drifter;
@@ -44,7 +45,9 @@ public class Tombstone : NonplayerHurtboxHandler
 		if(!entity.paused){
 			if(listeningForGrounded && IsGrounded()) {
 				listeningForGrounded = false;
-			if(projectile) returnToIdle();
+			if(projectile)
+				PlayAnimation(tombstoneType + "_Land"); 
+				//returnToIdle();
 			else {
 				PlayAnimation("Land");
 				canAct = false;
@@ -93,7 +96,12 @@ public class Tombstone : NonplayerHurtboxHandler
 
 	void OnTriggerEnter2D(Collider2D collider) {
 		if(collider.gameObject.tag == "BounceObject" && collider.GetComponent<Tombstone>().drifter == drifter)
-			if(projectile){
+			
+			//Dont interaxt with tombstones on their way out
+			if(breaking || collider.GetComponent<Tombstone>().breaking){
+				return;
+			}
+			else if(projectile){
 				rb.velocity = new Vector3(facing * -10f,20f);
 				foreach (HitboxCollision hitbox in GetComponentsInChildren<HitboxCollision>(true))
 					hitbox.Facing = -facing;
@@ -105,6 +113,13 @@ public class Tombstone : NonplayerHurtboxHandler
 
 			}
 			//else if(!active && ! canAct)rb.velocity = new Vector3(collider.gameObject.transform.position.x > transform.position.x ? -5f:5f,0);
+	}
+
+	public void breakStone(){
+		breaking = true;
+		canAct = false;
+		active = false;
+		PlayAnimation(tombstoneType + "_Break");
 	}	
 
 	private void PlayAnimation(string p_state, float p_normalizedTime = -1) {
@@ -242,7 +257,8 @@ public class Tombstone : NonplayerHurtboxHandler
 			Active = active,
 			Projectile = projectile,
 			Attacking = attacking,
-			ListeningForGrounded = listeningForGrounded
+			ListeningForGrounded = listeningForGrounded,
+			Breaking = breaking,
 		};
 	}
 
@@ -255,6 +271,7 @@ public class Tombstone : NonplayerHurtboxHandler
 		projectile = p_frame.Projectile;
 		attacking = p_frame.Attacking;
 		listeningForGrounded = p_frame.ListeningForGrounded;
+		breaking = p_frame.Breaking;
 	}
 
 }
@@ -269,6 +286,7 @@ public class TombstoneRollbackFrame: INetworkData
 	public bool Projectile;
 	public bool Attacking;
 	public bool ListeningForGrounded;
+	public bool Breaking;
 
 	public string Type { get; set; }
 	
