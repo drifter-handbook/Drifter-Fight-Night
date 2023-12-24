@@ -41,22 +41,18 @@ public class Tombstone : NonplayerHurtboxHandler
 	// // Update is called once per frame
 	public override void UpdateFrame() {
 		base.UpdateFrame();
+		entity.UpdateFrame();
 
-		if(!entity.paused){
-			if(listeningForGrounded && IsGrounded()) {
-				listeningForGrounded = false;
+		if(listeningForGrounded && IsGrounded()) {
+			listeningForGrounded = false;
 			if(projectile)
 				PlayAnimation(tombstoneType + "_Land"); 
-				//returnToIdle();
 			else {
 				PlayAnimation("Land");
 				canAct = false;
 			}
-
-			}
-			ledgeDetector.UpdateFrame();
 		}
-		
+		ledgeDetector.UpdateFrame();
 	}
 
 	new void Start() {
@@ -87,7 +83,6 @@ public class Tombstone : NonplayerHurtboxHandler
 			oldAttacks[attackID] = MAX_ATTACK_DURATION;
 
 			if(percentage >= maxPercentage)Destroy(gameObject);
-			
 		}
 
 		return returnCode;
@@ -119,12 +114,11 @@ public class Tombstone : NonplayerHurtboxHandler
 		breaking = true;
 		canAct = false;
 		active = false;
+		entity.unfreeze();
 		PlayAnimation(tombstoneType + "_Break");
 	}	
 
 	private void PlayAnimation(string p_state, float p_normalizedTime = -1) {
-
-		UnityEngine.Debug.Log(p_state);
 		animator.Play(Animator.StringToHash(p_state),0,p_normalizedTime < 0 ? 0: p_normalizedTime);
 	}
 			
@@ -196,6 +190,7 @@ public class Tombstone : NonplayerHurtboxHandler
 		canAct = true;
 		attacking = false;
 		projectile = false;
+		//entity.useHitpause = true;
 
 	}
 
@@ -210,6 +205,7 @@ public class Tombstone : NonplayerHurtboxHandler
 		listeningForGrounded = true;
 		PlayAnimationEvent(tombstoneType + "_Spin");
 		throwStone(3);
+		//entity.useHitpause = false;
 	}
 
 

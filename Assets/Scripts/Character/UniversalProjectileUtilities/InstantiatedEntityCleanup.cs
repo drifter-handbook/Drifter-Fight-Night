@@ -15,6 +15,10 @@ public class BasicProjectileRollbackFrame: INetworkData
 	public float AnimatorTime;
 	public bool AnimatorActive;
 
+	//Hitpause
+	public int FreezeDuration;
+	public bool UseHitpause;
+
 	//Super Freeze
 	public bool PauseBehavior;
 	public bool Paused;	
@@ -25,19 +29,20 @@ public class BasicProjectileRollbackFrame: INetworkData
 	public HitboxRollbackFrame[] Hitboxes;    
 }
 
-public class InstantiatedEntityCleanup : MonoBehaviour
-{
+public class InstantiatedEntityCleanup : MonoBehaviour{
+
 	public int duration = -1;
 	public Rigidbody2D rb;
 	public Animator animator;
 
-	
 	public bool pauseBehavior = true;
 	public bool paused = false;
+	public bool useHitpause = false;
 
 	private Vector2 savedVelocity;
 	private float savedGravity;
 	private bool dataSaved = false;
+	private int freezeDuration = 0;
 
 	HitboxCollision[] hitboxes;
 
@@ -46,7 +51,13 @@ public class InstantiatedEntityCleanup : MonoBehaviour
 	public bool DestroyOnExit = true;
 
 	public void UpdateFrame() {
-		if(duration >0) {
+		if(freezeDuration > 0){
+			freezeDuration--;
+			if(useHitpause && freezeDuration <= 0)
+				unfreeze();
+		}
+		
+		if(duration >0 && !paused) {
 			duration--;
 			if(duration <=0)
 				Destroy(gameObject);
@@ -60,24 +71,24 @@ public class InstantiatedEntityCleanup : MonoBehaviour
 	void OnTriggerExit2D(Collider2D other) {
 		if(other.gameObject.tag == "Killzone" && DestroyOnExit)
 			Destroy(gameObject);
-		else if(other.gameObject.tag == "SuperFreeze") {
-			if(pauseBehavior && dataSaved) {
-				if(animator !=null) animator.enabled = true;
-				if(rb != null) {
-					rb.velocity = savedVelocity;
-					rb.gravityScale = savedGravity;
-					savedVelocity = Vector2.zero;
-					savedGravity = 0;
-				}
-				dataSaved = false;
-			}
-			paused = false;
-		}
+		else if(other.gameObject.tag == "SuperFreeze")
+			unfreeze();
+			
 	}
 
 	void OnTriggerStay2D(Collider2D other) {
-		if(other.gameObject.tag == "SuperFreeze") {
-			if(pauseBehavior && !dataSaved){
+		if(other.gameObject.tag == "SuperFreeze")
+			applyFreeze(0);
+		
+	}
+
+	public void ApplyFreeze(int frames){
+		if(useHitpause)
+			applyFreeze(frames);
+	}
+
+	private void applyFreeze(int frames){
+		if(pauseBehavior && !dataSaved){
 				if(animator !=null) animator.enabled = false;
 				if(rb != null){
 					savedVelocity = rb.velocity;
@@ -86,9 +97,24 @@ public class InstantiatedEntityCleanup : MonoBehaviour
 					rb.gravityScale = 0;
 					dataSaved = true;
 				}
+				freezeDuration = frames;
 			}
 			paused = true;
+
+	}
+
+	public void unfreeze(){
+		if(pauseBehavior && dataSaved) {
+			if(animator !=null) animator.enabled = true;
+			if(rb != null) {
+				rb.velocity = savedVelocity;
+				rb.gravityScale = savedGravity;
+				savedVelocity = Vector2.zero;
+				savedGravity = 0;
+			}
+			dataSaved = false;
 		}
+		paused = false;
 	}
 
 	public void Cleanup() {
@@ -119,6 +145,8 @@ public class InstantiatedEntityCleanup : MonoBehaviour
 			SavedVelocity = savedVelocity,
 			SavedGravity = savedGravity,
 			DataSaved = dataSaved,
+			FreezeDuration = freezeDuration,
+			UseHitpause = useHitpause,
 		};
 	}
 
@@ -135,7 +163,6 @@ public class InstantiatedEntityCleanup : MonoBehaviour
 		if(animator != null) {
 			animator.enabled = p_frame.AnimatorActive;
 			animator.Play(p_frame.AnimatorState,0,p_frame.AnimatorTime);
-
 		}
 
 		for(int i = 0; i < p_frame.Hitboxes.Length; i++) {
@@ -147,6 +174,8 @@ public class InstantiatedEntityCleanup : MonoBehaviour
 		savedVelocity = p_frame.SavedVelocity;
 		savedGravity = p_frame.SavedGravity;
 		dataSaved = p_frame.DataSaved;
+		useHitpause = p_frame.UseHitpause;
+		freezeDuration = p_frame.FreezeDuration;
 
 	}
 

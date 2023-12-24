@@ -297,8 +297,13 @@ public class PlayerHurtboxHandler : MonoBehaviour
 					status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, HitPauseDuration * (hadSlowmo?2:1));
 				
 				//apply attacker hitpause
-				if (HitPauseDuration >0 && hitbox.gameObject.tag != "Projectile")
-					attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,HitPauseDuration);
+
+				if(HitPauseDuration >0) {
+					if(hitbox.gameObject.tag != "Projectile")
+						attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,HitPauseDuration);
+					else
+						hitbox.gameObject.GetComponentInParent<InstantiatedEntityCleanup>()?.ApplyFreeze(HitPauseDuration);
+				}
 
 				drifter.GetComponentInChildren<GameObjectShake>().Shake(attackData.StatusEffect != PlayerStatusEffect.CRINGE?attackData.HitStop:attackData.StatusDuration,attackData.StatusEffect != PlayerStatusEffect.CRINGE?1.5f:2f);
 

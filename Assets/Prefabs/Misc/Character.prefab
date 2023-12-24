@@ -775,9 +775,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ef945a1776594438c7a9223e2d7bb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useHitpause: 0
   duration: -1
   rb: {fileID: 3106753082241659639}
   animator: {fileID: 2000386183588008255}
+  pauseBehavior: 1
   paused: 0
   DestroyOnExit: 0
 --- !u!1 &4227067111414324707

@@ -30,7 +30,7 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
 	}
 
 	protected int HitstunDuration = 0;
-	protected int HitPauseDuration = 0;
+	// protected int HitPauseDuration = 0;
 	protected Vector3 delayedVelocity = Vector3.zero;
 	protected InstantiatedEntityCleanup entity;
 
@@ -48,23 +48,9 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
 		
 		base.UpdateFrame();
 
-		if(!entity.paused) {
-			if(HitPauseDuration > 0) {
-				HitPauseDuration--;
-
-				if(HitPauseDuration <=0) {
-					if(takesKnockback && delayedVelocity != Vector3.zero) {
-						rb.velocity = delayedVelocity;
-						delayedVelocity = Vector3.zero;
-					}
-				}
-			
-			}
-
-			else if(HitstunDuration > 0) {
-				HitstunDuration--;
-				if(HitstunDuration < 0) HitstunDuration = 0;
-			}
+		if(!entity.paused && HitstunDuration > 0) {
+			HitstunDuration--;
+			if(HitstunDuration < 0) HitstunDuration = 0;
 		}
 	}
 
@@ -127,16 +113,17 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
 			AttackFXSystem attackFX = attackData.HitFX;
 			Vector2 hitSparkScale =  new Vector2(facingDir *10f, 10f);
 
-			//apply attacker hitpause
-			HitPauseDuration = (int)(HitstunDuration *.3f);
-			if(attackData.HitStop >=0)
-				HitPauseDuration += attackData.HitStop;
+			//apply hitpause
+			int HitPauseDuration = attackData.HitStop >=0 ? attackData.HitStop : HitstunDuration;
 
+			entity.ApplyFreeze(HitPauseDuration);
 
-			if (hitbox.gameObject.tag != "Projectile")
-				attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(attackData.AttackDamage <=2f ? 1 : Mathf.Max(HitPauseDuration,2)));
-
-
+			if(HitPauseDuration >0) {
+				if(hitbox.gameObject.tag != "Projectile")
+					attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(attackData.AttackDamage <=2f ? 1 : Mathf.Max(HitPauseDuration,2)));
+				else
+					hitbox.gameObject.GetComponentInParent<InstantiatedEntityCleanup>()?.ApplyFreeze(HitPauseDuration);
+			}
 
 			//Cause the screen to shake slightly on hit, as long as the move has knockback
 			if(Shake != null && attackData.Knockback !=0){
@@ -178,7 +165,7 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
 			Percentage = percentage,
 			Facing = facing,
 			HitstunDuration = this.HitstunDuration,
-			HitPauseDuration = this.HitstunDuration,
+			// HitPauseDuration = this.HitstunDuration,
 			DelayedVelocity = delayedVelocity,
 			Entity = entity.SerializeFrame(),
 		};
@@ -191,7 +178,7 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
 		percentage = p_frame.Percentage;
 		facing =p_frame.Facing;
 		HitstunDuration = p_frame.HitstunDuration;
-		HitPauseDuration = p_frame.HitPauseDuration;
+		// HitPauseDuration = p_frame.HitPauseDuration;
 		delayedVelocity = p_frame.DelayedVelocity;
 		entity.DeserializeFrame(p_frame.Entity);
 	}
@@ -204,7 +191,7 @@ public class NPCHurtboxRollbackFrame: INetworkData
 	public bool TakesKnockback;
 	public float Percentage;  
 	public int HitstunDuration;
-	public int HitPauseDuration;
+	// public int HitPauseDuration;
 	public Vector3 DelayedVelocity;
 	public int Facing;
 	public BasicProjectileRollbackFrame Entity;

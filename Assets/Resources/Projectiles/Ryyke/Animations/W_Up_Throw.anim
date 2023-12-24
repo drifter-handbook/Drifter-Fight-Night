@@ -434,6 +434,9 @@ AnimationClip:
     - time: 1.25
       value: {fileID: -4761751656518710045, guid: a847b750abe5d4144a9d360ad787eb3a,
         type: 3}
+    - time: 1.4166666
+      value: {fileID: -8015009983807504564, guid: a847b750abe5d4144a9d360ad787eb3a,
+        type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -529,12 +532,13 @@ AnimationClip:
     - {fileID: 1668801993540087644, guid: a847b750abe5d4144a9d360ad787eb3a, type: 3}
     - {fileID: -6265496646228014385, guid: a847b750abe5d4144a9d360ad787eb3a, type: 3}
     - {fileID: -4761751656518710045, guid: a847b750abe5d4144a9d360ad787eb3a, type: 3}
+    - {fileID: -8015009983807504564, guid: a847b750abe5d4144a9d360ad787eb3a, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 1.4166666
+    m_StopTime: 1.5833334
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -979,7 +983,7 @@ AnimationClip:
     floatParameter: 30
     intParameter: 0
     messageOptions: 0
-  - time: 1.4166666
+  - time: 1.5833334
     functionName: PlayAnimationEvent
     data: Hang
     objectReferenceParameter: {fileID: 0}

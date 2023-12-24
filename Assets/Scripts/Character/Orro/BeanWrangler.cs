@@ -230,7 +230,6 @@ public class BeanWrangler : NonplayerHurtboxHandler
 					PlayAnimation("Bean_Death");
 					HitstunDuration = 0;
 					//Delay before bean begins recharging
-					HitPauseDuration = BEAN_RESPAWN_DELAY;
 					rb.velocity = Vector3.zero;
 					delayedVelocity = Vector3.zero;
 			}

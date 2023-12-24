@@ -102,7 +102,8 @@ public class RyykeMasterHit : MasterHit
 		}
 
 		for(int i = 0; i <3; i++)
-			 if(tombstones[i] != null) tombstones[i].GetComponent<Tombstone>().UpdateFrame();
+			 if(tombstones[i] != null)
+			 	tombstones[i].GetComponent<Tombstone>().UpdateFrame();
 	  
 	}
 
