@@ -181,29 +181,28 @@ public class RyykeMasterHit : MasterHit
 				float distance = tombstones[i].getDistance(rb.position);
 				
 				//If it is within the active range, and Ryyke is not burrowing
-				if(distance < zombieRadius && !burrowing && !status.HasEnemyStunEffect() &&  tombstones[i].canAct) {
+				if(distance < zombieRadius && !burrowing && !status.HasEnemyStunEffect() && tombstones[i].canAct) {
 					//Disable the reset flag for empowered state if a stone is nearby
 					reset = false;
 					//If the tombstone can act and it is the closer than the current closest tombstone
-					if(distance < bestDistance)
-					{
+					if(distance < bestDistance)	{
 						//Set it as the closest stone and update the distance
 						nearbyStone = i;
 						bestDistance = distance;
 					}
 				}
-				//Otherwise, if Ryyke is stunned, burrowing, or out of range
-				else if((distance >= zombieRadius  || burrowing || status.HasStunEffect()) && !tombstones[i].attacking) {
-					//Deactivate tombstones that are not nearby
-					if(tombstones[i].active)tombstones[i].PlayConditionalAnimation("Deactivate",true,true);
-					tombstones[i].active = false;
-				}
+				// //Otherwise, if Ryyke is stunned, burrowing, or out of range
+				// else if((burrowing || status.HasStunEffect()) && !tombstones[i].attacking) {
+				// 	//Deactivate tombstones that are not nearby
+				// 	if(tombstones[i].active)tombstones[i].PlayConditionalAnimation("Deactivate",true,true);
+				// 	tombstones[i].active = false;
+				// }
 			}
 		}
 
 		//After the closest stone is found, Activate it
 		if(nearbyStone >=0 && !tombstones[nearbyStone].active) 
-			tombstones[nearbyStone].PlayConditionalAnimation("Activate",true,true);
+			tombstones[nearbyStone].PlayConditionalAnimation(nearbyStone + "_Activate",true,true);
 
 		//Deactivate all other active stones, so only one zombie is active at a time
 		for(int i = 0; i <3; i++) {

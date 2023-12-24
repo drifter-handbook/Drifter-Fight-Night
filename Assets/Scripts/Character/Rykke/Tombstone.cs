@@ -123,6 +123,8 @@ public class Tombstone : NonplayerHurtboxHandler
 	}	
 
 	private void PlayAnimation(string p_state, float p_normalizedTime = -1) {
+
+		UnityEngine.Debug.Log(p_state);
 		animator.Play(Animator.StringToHash(p_state),0,p_normalizedTime < 0 ? 0: p_normalizedTime);
 	}
 			
