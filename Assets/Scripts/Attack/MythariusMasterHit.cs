@@ -19,6 +19,9 @@ public class MythariusMasterHit : MasterHit
 	override public void UpdateFrame() {
 		base.UpdateFrame();
 
+		if(movement.ledgeHanging || status.HasEnemyStunEffect())
+			listeningForDirection = false;
+
 		if(g_Bird != null) g_Bird.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
 
 		if(listeningForDirection) {
