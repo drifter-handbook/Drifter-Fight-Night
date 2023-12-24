@@ -192,12 +192,6 @@ public class RyykeMasterHit : MasterHit
 						bestDistance = distance;
 					}
 				}
-				// //Otherwise, if Ryyke is stunned, burrowing, or out of range
-				// else if((burrowing || status.HasStunEffect()) && !tombstones[i].attacking) {
-				// 	//Deactivate tombstones that are not nearby
-				// 	if(tombstones[i].active)tombstones[i].PlayConditionalAnimation("Deactivate",true,true);
-				// 	tombstones[i].active = false;
-				// }
 			}
 		}
 

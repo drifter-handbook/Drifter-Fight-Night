@@ -3,15 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class OrroReworkMasterHit : MasterHit
-{
-	BeanWrangler bean;
-	GameObject beanObject;
+public class OrroReworkMasterHit : MasterHit {
+	const int MAX_BOOKS = 3;
+	const int BOOK_BOLT_DELAY = 10;
 
+	//For orros porjectile normals
 	GameObject[] explosions = new GameObject[17];
 
-	GameObject[] orbs = new GameObject[] {null,null,null};
+	//W_Down data
+	GameObject[] books = new GameObject[] {null,null,null};
+	GameObject[] bookBolts = new GameObject[] {null,null,null};
+	int bookBoltTimer = 0;
 
+	//Bean data
+	BeanWrangler bean;
+	GameObject beanObject;
 	bool beanIsCharging = false;
 	bool beanFollowing = true;   
 	Vector3 targetPos;
@@ -28,6 +34,16 @@ public class OrroReworkMasterHit : MasterHit
 
 	override public void UpdateFrame() {
 		base.UpdateFrame();
+
+		if(drifter.status.HasEnemyStunEffect())
+			removeAllBooks();
+
+		//Creates book bolts on a delay
+		if(bookBoltTimer > 0){
+			bookBoltTimer--;
+			if(bookBoltTimer == 0)
+				Create_Book_Bolt();
+		}
 
 		//reset bean when he dies
 		if(!bean.alive) {
@@ -191,6 +207,84 @@ public class OrroReworkMasterHit : MasterHit
 		Other Projectiles
 
 	*/
+
+	public void Create_Book() {
+
+		const float BOOK_RADIUS = 3f;
+
+		int bookIndex = -1;
+
+		for(int i = 0; i <MAX_BOOKS; i++) {
+			if(books[i] == null) {
+				bookIndex = i;
+				i = MAX_BOOKS;
+			}
+		}
+		if(bookIndex < 0)
+			return;
+		
+
+		GameObject projectile;
+
+		float angle = bookIndex * 2f/MAX_BOOKS * Mathf.PI;
+
+		projectile = GameController.Instance.CreatePrefab("Orro_Book", transform.position + new Vector3(Mathf.Sin(angle) * movement.Facing * BOOK_RADIUS ,Mathf.Cos(angle) *BOOK_RADIUS + 3f,0), transform.rotation);
+
+		projectile.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
+
+	   	SetObjectColor(projectile);
+
+	   	projectile.transform.SetParent(drifter.gameObject.transform);
+	   	books[bookIndex] = projectile;
+
+	   	if(bookIndex == 2) bookBoltTimer = BOOK_BOLT_DELAY; 
+
+	}
+
+	void removeAllBooks() {
+		for(int i = 0; i < MAX_BOOKS; i++)
+			if(books[i] != null){
+				Destroy(books[i]);
+				books[i] = null;
+			}
+	}
+
+	public void Create_Book_Bolt() {
+
+		int bookIndex = -1;
+
+		for(int i = 0; i < MAX_BOOKS; i++) {
+			if(books[i] != null) {
+				bookIndex = i;
+				i = MAX_BOOKS;
+			}
+		}
+		if(bookIndex < 0)return;
+
+		GameObject projectile;
+
+		projectile = GameController.Instance.CreatePrefab("Orro_Book_Bolt", books[bookIndex].transform.position, transform.rotation);
+
+		projectile.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
+
+		foreach (HitboxCollision hitbox in projectile.GetComponentsInChildren<HitboxCollision>(true)) {
+			hitbox.parent = drifter.gameObject;
+			hitbox.AttackID = attacks.NextID;
+			hitbox.Facing = movement.Facing;
+		}
+
+		projectile.GetComponent<Rigidbody2D>().velocity = new Vector3(movement.Facing * 25f,0,0);
+
+		SetObjectColor(projectile);
+		bookBolts[bookIndex] = projectile;
+		bookBoltTimer = BOOK_BOLT_DELAY;
+
+		Destroy(books[bookIndex]);
+		books[bookIndex] = null;
+		
+	}
+
+
 	public void Create_Explosion() {
 		Create_Explosion(drifter.attacks.AttackType);
 	}
@@ -377,6 +471,6 @@ public class OrroRollbackFrame: ICharacterRollbackFrame
 	public Vector3 TargetPos;
 	public int NeutralSpecialReleaseDelay;
 	public BasicProjectileRollbackFrame[] Explosions;
-	//public BasicProjectileRollbackFrame[] Orbs;
+	//public BasicProjectileRollbackFrame[] books;
 	
 }
