@@ -629,7 +629,7 @@ public class PlayerMovement : MonoBehaviour
 		drifter.clearGuardFlags();
 		ledgeHanging = true;
 		rb.gravityScale = 0f;
-		if(strongLedgeGrab)drifter.status.ApplyStatusEffect(PlayerStatusEffect.INVULN,30);
+		if(strongLedgeGrab)drifter.status.ApplyStatusEffect(PlayerStatusEffect.INVULN,150);
 		drifter.PlayAnimation("Ledge_Grab");
 
 		setFacing(rb.position.x > 0 ? -1 :1);
@@ -646,6 +646,8 @@ public class PlayerMovement : MonoBehaviour
 
 	//Manages all the things that need to happen when a ledge is released
 	public void DropLedge(){
+		//Apply ledge invuln if the play is currently invuln
+		if(drifter.status.HasStatusEffect(PlayerStatusEffect.INVULN))drifter.status.ApplyStatusEffect(PlayerStatusEffect.INVULN,20);
 		ledgeHanging = false;
 		resetGravity();
 		strongLedgeGrab = false;
