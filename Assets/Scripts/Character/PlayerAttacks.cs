@@ -63,7 +63,7 @@ public class PlayerAttacks : MonoBehaviour {
 	public bool shareRecoveries = false;
 
 	[NonSerialized]
-	public int nextID = 0;
+	public static int nextID = 0;
 
 	public int NextID { get { nextID++;if(nextID>63)nextID=0; return nextID; } set{ nextID = value;}}
 	[NonSerialized]
@@ -261,7 +261,7 @@ public class PlayerAttacks : MonoBehaviour {
 
 	public void StartAttack(DrifterAttackType attackType, int frameDelay = 2) {
 		drifter.status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,0);
-		drifter.gainSuperMeter(.05f);
+		drifter.gainSuperMeter(5);
 		drifter.movement.jumping = false;
 		drifter.status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,480);
 		if(!AttackVariants[attackType])
@@ -310,7 +310,7 @@ public class PlayerAttacks : MonoBehaviour {
 
 		return new AttackRollbackFrame() {
 			AttackID = this.AttackID,
-			nextID = this.nextID,
+			nextID = PlayerAttacks.nextID,
 			AttackType = this.AttackType,
 			CurrentUpRecoveries = currentUpRecoveries,
 			CurrentDownRecoveries = currentDownRecoveries,

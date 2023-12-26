@@ -727,11 +727,11 @@ public class PlayerMovement : MonoBehaviour
 		if(drifter.superCharge < 1f || drifter.status.HasStatusEffect(PlayerStatusEffect.DEAD) || !drifter.canSuper)return;
 
 		//Hyperguard
-		if(drifter.status.HasStatusEffect(PlayerStatusEffect.KNOCKBACK) && drifter.guarding  && drifter.superCharge >= 1f) {
+		if(drifter.status.HasStatusEffect(PlayerStatusEffect.KNOCKBACK) && drifter.guarding  && drifter.superCharge >= 100) {
 			drifter.ToggleAnimator(true);
 			hitstun = false;
 			drifter.status.clearStunStatus();
-			spawnSuperParticle(CancelType.Feint_Cancel,1f,8);
+			spawnSuperParticle(CancelType.Feint_Cancel,100,8);
 			drifter.attacks.useSuper();
 			
 		}
@@ -739,12 +739,12 @@ public class PlayerMovement : MonoBehaviour
 		//Offensive Cancel
 		else if(drifter.status.HasStatusEffect(PlayerStatusEffect.END_LAG) && drifter.superCharge >= 1f) {
 			if(drifter.superCharge >= 2f && !drifter.canFeint) {
-				spawnSuperParticle(CancelType.Offensive_Cancel,2f,20);
+				spawnSuperParticle(CancelType.Offensive_Cancel,200,20);
 				drifter.attacks.useSuper();
 				
 			}
 			else if(drifter.canFeint) {
-				spawnSuperParticle(CancelType.Feint_Cancel,1f,8);
+				spawnSuperParticle(CancelType.Feint_Cancel,100,8);
 				drifter.attacks.useSuper();
 			}
 		}
@@ -756,13 +756,13 @@ public class PlayerMovement : MonoBehaviour
 			drifter.status.clearStunStatus();
 			drifter.status.ApplyStatusEffect(PlayerStatusEffect.INVULN,8);
 			
-			spawnSuperParticle(CancelType.Defensive_Cancel,2f,8);
+			spawnSuperParticle(CancelType.Defensive_Cancel,200,8);
 			drifter.attacks.useSuper();
 			if(currentJumps+1 < numberOfJumps) currentJumps++;
 			
 		}
 		else if (!drifter.guarding && drifter.superCharge >= 1f && !drifter.status.HasStunEffect()) {
-			spawnSuperParticle(CancelType.Time_Cancel,1f,8);
+			spawnSuperParticle(CancelType.Time_Cancel,100,8);
 			drifter.attacks.useSuper();
 		}
 
@@ -776,7 +776,7 @@ public class PlayerMovement : MonoBehaviour
 		rb.gravityScale = baseGravity;
 	}
 
-	private void spawnSuperParticle(CancelType mode,float cost,int darkentime) {
+	private void spawnSuperParticle(CancelType mode,int cost,int darkentime) {
 		if(SuperCancel!= null)
 			Destroy(SuperCancel);
 
@@ -870,7 +870,7 @@ public class PlayerMovement : MonoBehaviour
 
 		//Super Particle reset
 		if(p_frame.SuperCancel != null) {
-			if(SuperCancel == null)spawnSuperParticle(canceltype,1f,8);
+			if(SuperCancel == null)spawnSuperParticle(canceltype,0,8);
 			SuperCancel.GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(p_frame.SuperCancel);
 		}
 		//Projectile does not exist in rollback frame

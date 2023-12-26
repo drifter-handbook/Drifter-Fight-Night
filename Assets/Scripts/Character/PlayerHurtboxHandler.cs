@@ -11,7 +11,6 @@ public class PlayerHurtboxHandler : MonoBehaviour
 	public int[] oldAttacks = new int[128];
 	public int framesSinceCleaned = 0; 
 
-
 	protected const int MAX_ATTACK_DURATION = 240;
 
 	// for creating hitsparks
@@ -93,7 +92,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
 			attacker.canFeint = false;
 
-			Vector3 hitSparkPos = hurtbox.capsule.ClosestPoint(hitbox.parent.transform.position);
+			Vector2 hitSparkPos = hurtbox.capsule.ClosestPoint(hitbox.parent.transform.position);
 			
 			//Freezefame if hit a counter
 			if(hurtbox.gameObject.name == "Counter" &&  attackData.AttackDamage >0f && attackData.hitType!=HitType.GRAB) {
@@ -297,7 +296,6 @@ public class PlayerHurtboxHandler : MonoBehaviour
 					status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, HitPauseDuration * (hadSlowmo?2:1));
 				
 				//apply attacker hitpause
-
 				if(HitPauseDuration >0) {
 					if(hitbox.gameObject.tag != "Projectile")
 						attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,HitPauseDuration);
@@ -418,21 +416,22 @@ public class PlayerHurtboxHandler : MonoBehaviour
 				// 1: hit was against a non-player object
 			switch(returnCode) {
 				case 1:
-					attacker.gainSuperMeter(.04f);
+					attacker.gainSuperMeter(4);
 					break;
 				case 0:
-					attacker.gainSuperMeter(damageDealt *.02f);
-					drifter.gainSuperMeter(.05f);
+					attacker.gainSuperMeter((int)damageDealt * 2);
+					drifter.gainSuperMeter(5);
+					attacker.TriggerOnHit(drifter);
 					break;
 				case -1:
-					attacker.gainSuperMeter(.06f);
-					drifter.gainSuperMeter(.06f);
+					attacker.gainSuperMeter(6);
+					drifter.gainSuperMeter(6);
 					break;
 				case -2:
-					drifter.gainSuperMeter(.5f);
+					drifter.gainSuperMeter(50);
 					break;
 				case -4:
-					drifter.gainSuperMeter(.33f);
+					drifter.gainSuperMeter(33);
 					break;
 				default:
 					break;

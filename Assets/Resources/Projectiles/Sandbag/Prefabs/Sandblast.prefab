@@ -65,7 +65,7 @@ MonoBehaviour:
   parent: {fileID: 6393105525490921081}
   projectilePriority: 2
   victim: {fileID: 0}
-  SuccessState: SandblastDetonate
+  SuccessState: Sandblast_Detonate
   animator: {fileID: 6438198135666115965}
   playOnInvuln: 1
   playOnBlock: 1
@@ -82,8 +82,6 @@ GameObject:
   - component: {fileID: 6438198135666115965}
   - component: {fileID: 5078160392277462324}
   - component: {fileID: 6764413425641248834}
-  - component: {fileID: 5073568088031775}
-  - component: {fileID: 3039992570321856119}
   m_Layer: 0
   m_Name: Sandblast
   m_TagString: Untagged
@@ -192,7 +190,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ef945a1776594438c7a9223e2d7bb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  duration: -1
+  destoryState: Sandblast_Detonate
+  duration: 60
   rb: {fileID: 6764413425641248834}
   animator: {fileID: 6438198135666115965}
   pauseBehavior: 1
@@ -220,28 +219,3 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &5073568088031775
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6393105525490921081}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7b12ef163997554cbbdbc51e4f062ce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3039992570321856119
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6393105525490921081}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3733111730fd6144f88e05a0c9df77b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playStateWhenGrounded: 0

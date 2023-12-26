@@ -100,8 +100,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ef945a1776594438c7a9223e2d7bb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  destoryState: Book_Bolt_Detonate
   duration: 120
-  rb: {fileID: 0}
+  rb: {fileID: 6703609302673638296}
   animator: {fileID: 2248057894238533756}
   pauseBehavior: 1
   paused: 0
@@ -147,7 +148,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!1 &5446052880042297975
 GameObject:
   m_ObjectHideFlags: 0
@@ -157,11 +158,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5013637548384932198}
-  - component: {fileID: 4565049152051079969}
   - component: {fileID: 690663039766260789}
+  - component: {fileID: 4228991214658927297}
   m_Layer: 9
   m_Name: Hitbox
-  m_TagString: Untagged
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -181,21 +182,6 @@ Transform:
   m_Father: {fileID: 513894015304959740}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4565049152051079969
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5446052880042297975}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OverrideData: {fileID: 11400000, guid: f6a2538f3a72edc44a15cd53f54d15d0, type: 2}
-  parent: {fileID: 5200170305971518944}
-  projectilePriority: -2
 --- !u!70 &690663039766260789
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -206,9 +192,29 @@ CapsuleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.046876244, y: 0.025044534}
   m_Size: {x: 0.5363829, y: 0.19733714}
   m_Direction: 1
+--- !u!114 &4228991214658927297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5446052880042297975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65c4d126f18c9ca47b80033f0cb0d909, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OverrideData: {fileID: 11400000, guid: f6a2538f3a72edc44a15cd53f54d15d0, type: 2}
+  parent: {fileID: 5200170305971518944}
+  projectilePriority: -2
+  victim: {fileID: 0}
+  SuccessState: Book_Bolt_Detonate
+  animator: {fileID: 2248057894238533756}
+  playOnInvuln: 1
+  playOnBlock: 1

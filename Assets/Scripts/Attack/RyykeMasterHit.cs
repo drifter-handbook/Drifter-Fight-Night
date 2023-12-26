@@ -356,7 +356,7 @@ public class RyykeMasterHit : MasterHit
 		//burrowing = true;
 		//burrowTime = maxBurrowTime;
 		listenForLedge(true);
-		if(ledgeDetector.IsTouchingGround())setXVelocity(35f);
+		if(ledgeDetector.IsTouchingGround())setXVelocity(40f);
 		movement.cancelJump();
 	}
 

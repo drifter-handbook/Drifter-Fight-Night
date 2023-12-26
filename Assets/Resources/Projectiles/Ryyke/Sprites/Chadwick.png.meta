@@ -1536,11 +1536,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 64
-        width: 128
-        height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.083333336}
+        y: 192
+        width: 64
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1556,12 +1556,12 @@ TextureImporter:
       name: Chadwick_60
       rect:
         serializedVersion: 2
-        x: 128
-        y: 64
+        x: 64
+        y: 192
         width: 128
-        height: 192
-      alignment: 9
-      pivot: {x: 0.5, y: 0.083333336}
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1577,12 +1577,12 @@ TextureImporter:
       name: Chadwick_61
       rect:
         serializedVersion: 2
-        x: 256
-        y: 128
-        width: 64
-        height: 128
-      alignment: 9
-      pivot: {x: 0.5, y: -0.375}
+        x: 63
+        y: 160
+        width: 130
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1598,12 +1598,12 @@ TextureImporter:
       name: Chadwick_62
       rect:
         serializedVersion: 2
-        x: 256
-        y: 0
-        width: 64
-        height: 128
-      alignment: 9
-      pivot: {x: 0.5, y: -0.375}
+        x: 48
+        y: 128
+        width: 160
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1968,6 +1968,27 @@ TextureImporter:
       bones: []
       spriteID: 1d016c05ebb5d4f42820c5e974706446
       internalID: 994329414
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Chadwick_79
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 96
+        width: 160
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 08770cbf7bf26a442ac35959f8ce5c25
+      internalID: 833164244
       vertices: []
       indices: 
       edges: []

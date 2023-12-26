@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: W_Down
   m_EditorClassIdentifier: 
   AttackDamage: 14
-  Knockback: 35
+  Knockback: 10
   KnockbackScale: 0.5
   pushBlock: 35
   dynamicStun: 0
@@ -23,13 +23,13 @@ MonoBehaviour:
   ShieldStun: 25
   HitStop: 20
   hitType: 0
-  mirrorKnockback: 0
-  AngleOfImpact: 85
-  StatusEffect: 20
-  StatusDuration: 0
+  mirrorKnockback: 1
+  AngleOfImpact: 290
+  StatusEffect: 28
+  StatusDuration: 60
   HitFX: {fileID: 11400000, guid: e007b7ceac776034b9838dfd15059cdd, type: 2}
   canHitGrounded: 1
-  canHitAerial: 1
+  canHitAerial: 0
   canHitKnockedDown: 0
   scalingLowerBound: -1
   scalingUpperBound: -1

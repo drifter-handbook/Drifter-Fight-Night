@@ -514,7 +514,23 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 			renderer.material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)drifter.GetColor()]);
 	}
 
+	protected void FireAtTarget(GameObject projectile, Vector2 target, Vector2 source, float speed){
+
+		float deltay = target.y- source.y;
+		float deltax = target.x- source.x;
+		float angle = Mathf.Atan2(deltay, deltax)*180 / Mathf.PI + (movement.Facing < 0 ?180:0);
+
+		projectile.transform.rotation = Quaternion.Euler(0,0,angle);
+
+		projectile.GetComponent<Rigidbody2D>().velocity = new Vector2(speed * movement.Facing * Mathf.Cos((angle*movement.Facing* Mathf.PI)/180),speed *Mathf.Sin((angle*movement.Facing * Mathf.PI)/180));
+
+	}
+
 	public virtual void TriggerRemoteSpawn(int index) {
+
+	}
+
+	public virtual void TriggerOnHit(Drifter drifter) {
 
 	}
 

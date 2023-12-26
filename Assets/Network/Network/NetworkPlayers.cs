@@ -52,6 +52,8 @@ public class NetworkPlayers : MonoBehaviour
     void FixedUpdate()
     {
 
+        Physics2D.Simulate(1f/60f);
+
         PlayerInputData input;
 
         int q = 0;
@@ -85,7 +87,7 @@ public class NetworkPlayers : MonoBehaviour
         rollbackTest[0,0] = rollback2[0];
         rollbackTest[0,1] = rollback2[1];
 
-        Physics2D.Simulate(1f/60f);
+        //Physics2D.Simulate(1f/60f);
     }
 
     GameObject CreatePlayer(int peerID)

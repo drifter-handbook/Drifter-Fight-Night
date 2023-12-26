@@ -31,6 +31,8 @@ public class BasicProjectileRollbackFrame: INetworkData
 
 public class InstantiatedEntityCleanup : MonoBehaviour{
 
+	public string destoryState = "";
+
 	public int duration = -1;
 	public Rigidbody2D rb;
 	public Animator animator;
@@ -59,8 +61,11 @@ public class InstantiatedEntityCleanup : MonoBehaviour{
 		
 		if(duration >0 && !paused) {
 			duration--;
-			if(duration <=0)
-				Destroy(gameObject);
+			if(duration <=0) {
+				if(destoryState != "" ) animator.Play(destoryState);
+				else Destroy(gameObject);
+			}
+				
 		}
 	}
 
@@ -85,6 +90,15 @@ public class InstantiatedEntityCleanup : MonoBehaviour{
 	public void ApplyFreeze(int frames){
 		if(useHitpause)
 			applyFreeze(frames);
+	}
+
+	public void PlayAnimation(string state){
+		animator.Play(state);
+	}
+
+	public void stopMovement() {
+		rb.gravityScale = 0;
+		rb.velocity = Vector2.zero;
 	}
 
 	private void applyFreeze(int frames){

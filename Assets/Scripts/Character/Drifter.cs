@@ -85,7 +85,7 @@ public class Drifter : MonoBehaviour
 	[NonSerialized]
 	public bool hiddenFlag = false;
 	[NonSerialized]
-	public float superCharge = 2f;
+	public int superCharge = 200;
 	[NonSerialized]
 	public bool sparkleMode = false;
 	[NonSerialized]
@@ -130,14 +130,15 @@ public class Drifter : MonoBehaviour
 	}
 
 	//Sets the character's super charge to a given value
-	public void SetCharge(float newCharge) { 
+	public void SetCharge(int newCharge) { 
 		if(superCharge != newCharge) superCharge=newCharge;
 		//gameObject.GetComponent<SyncChargeHost>().setCharge(superCharge);
 	}
 
 	//Grants the character additonal charge for their super meter, up to the cap of 5 bars
-	public void gainSuperMeter(float charge) {
-		superCharge = Mathf.Min(charge + superCharge,5f);
+	public void gainSuperMeter(int charge) {
+		superCharge += charge;
+		if(superCharge >500) superCharge = 500;
 	}
 
 
@@ -202,6 +203,11 @@ public class Drifter : MonoBehaviour
 
 	public void ToggleAnimator(bool p_mode) {
 		animator.enabled = p_mode;
+	}
+
+	public void TriggerOnHit(Drifter drifterHit){
+		//UnityEngine.Debug.Log(drifterType + " Hit a target");
+		masterhit.TriggerOnHit(drifterHit);
 	}
 
 	//Return to idle is called anytime the player regains control
@@ -438,7 +444,7 @@ public class DrifterRollbackFrame: INetworkData
 	public bool KnockedDown;
 	public bool CanSpecialCancel; 
 	public bool Hidden;
-	public float SuperCharge;
+	public int SuperCharge;
 	public int Stocks;
 	public float DamageTaken;
 	public int CancelTimer;

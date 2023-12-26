@@ -96,11 +96,11 @@ public class PlayerCard : MonoBehaviour
 
     }
 
-    public void SetCharge(float charge)
+    public void SetCharge(int charge)
     {
-        chargeLevels.sprite = levels[(int)charge];
+        chargeLevels.sprite = levels[(charge/100)];
 
-        int loc = (int)(-(charge/5f) * 65f);
+        int loc = (int)(-(charge/500f) * 65f);
 
         chargeBar.anchoredPosition  =  new Vector2(-1 *loc,4);
         chargeMask.anchoredPosition  = new Vector2(loc,-4);
