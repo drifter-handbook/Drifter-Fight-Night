@@ -195,17 +195,20 @@ AnimationClip:
     - time: 0.75
       value: {fileID: 8493644945354530446, guid: a847b750abe5d4144a9d360ad787eb3a,
         type: 3}
-    - time: 1.3333334
+    - time: 1.25
       value: {fileID: 8900525303037882724, guid: a847b750abe5d4144a9d360ad787eb3a,
         type: 3}
-    - time: 1.5
+    - time: 1.4166666
       value: {fileID: -5026457151525707535, guid: a847b750abe5d4144a9d360ad787eb3a,
         type: 3}
-    - time: 1.8333334
+    - time: 1.6666666
       value: {fileID: 3354776285435904460, guid: a847b750abe5d4144a9d360ad787eb3a,
         type: 3}
-    - time: 2
+    - time: 1.8333334
       value: {fileID: 3747605034760219343, guid: a847b750abe5d4144a9d360ad787eb3a,
+        type: 3}
+    - time: 2
+      value: {fileID: 4027674896743070039, guid: a847b750abe5d4144a9d360ad787eb3a,
         type: 3}
     attribute: m_Sprite
     path: 
@@ -271,6 +274,7 @@ AnimationClip:
     - {fileID: -5026457151525707535, guid: a847b750abe5d4144a9d360ad787eb3a, type: 3}
     - {fileID: 3354776285435904460, guid: a847b750abe5d4144a9d360ad787eb3a, type: 3}
     - {fileID: 3747605034760219343, guid: a847b750abe5d4144a9d360ad787eb3a, type: 3}
+    - {fileID: 4027674896743070039, guid: a847b750abe5d4144a9d360ad787eb3a, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
@@ -455,14 +459,14 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.16666667
-    functionName: setXVelocity
+    functionName: setYVelocity
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 10
     intParameter: 0
     messageOptions: 0
   - time: 0.16666667
-    functionName: setYVelocity
+    functionName: setXVelocity
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 10
