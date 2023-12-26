@@ -237,7 +237,7 @@ public class Tombstone : NonplayerHurtboxHandler
 
 	//Spawns a flame burst effect
 	public void burst(int mode = 0) {
-		GameObject burst = GameController.Instance.CreatePrefab("Zombie_Burst", transform.position , transform.rotation);
+		GameObject burst = GameController.Instance.CreatePrefab("Zombie_Burst", transform.position + new Vector3(2f * facing,0), transform.rotation);
 		burst.transform.localScale = new Vector3(facing *10,10,1f);
 
 		burst.GetComponent<Animator>().Play(mode ==0? "Vertical":"Horizontal");
