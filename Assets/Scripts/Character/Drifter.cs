@@ -223,6 +223,7 @@ public class Drifter : MonoBehaviour
 		clearGuardFlags();
 		if(movement.grounded && input[0].MoveX !=0)PlayAnimation("Walk");
 		else if(movement.grounded)PlayAnimation("Idle");
+		else if(movement.ledgeHanging)PlayAnimation("Ledge_Grab");
 		else PlayAnimation("Hang");
 		if(status.HasStatusEffect(PlayerStatusEffect.END_LAG)) status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0);
 		if(status.HasStatusEffect(PlayerStatusEffect.FLATTEN)) status.ApplyStatusEffect(PlayerStatusEffect.FLATTEN,0);
