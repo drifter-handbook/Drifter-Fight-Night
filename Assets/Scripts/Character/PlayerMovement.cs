@@ -78,6 +78,7 @@ public class PlayerMovement : MonoBehaviour
 	CancelType canceltype = CancelType.Feint_Cancel;
 
 	//Situational Iteration variables
+	int ledgeGrabLockout = 0;
 	int dropThroughTime = 18;
 	int ringTime = 6;
 	int dustCloudTimer = 0;
@@ -102,7 +103,8 @@ public class PlayerMovement : MonoBehaviour
 	GameObjectShake shake;
 
 	public GameObject PushBox;
-	GameObject Pusher;
+	public GameObject LedgeGrabBox;
+ 	GameObject Pusher;
 
 	
 	Vector2 kdbounceVelocity;
@@ -198,6 +200,12 @@ public class PlayerMovement : MonoBehaviour
 		bool hasCollision = !drifter.status.HasStunEffect() && !ledgeHanging;
 		//Only collide with other players when not using a move or hanging on a ledge
 		PushBox.SetActive(hasCollision);
+
+		if(ledgeGrabLockout > 0){
+			ledgeGrabLockout --;
+			if(ledgeGrabLockout ==0)
+				LedgeGrabBox.SetActive(true);
+		}
 
 		//Unpause gravity when hit
 		if(!drifter.status.HasGroundFriction())gravityPaused=false;
@@ -453,21 +461,11 @@ public class PlayerMovement : MonoBehaviour
 		//Ledgegrabs Stuff
 		else if(canAct && ledgeHanging) {
 			rb.velocity = Vector2.zero;
-			//Roll Onto Ledge
-			// if(drifter.input[0].Guard)
-			// {
-			//     drifter.status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,framerateScalar * 2);
-			//     drifter.PlayAnimation(drifter.LedgeRollStateName);
-			// }
 
 			//Jump away from ledge
-			if((drifter.input[0].MoveX  * Facing < 0)){
-				DropLedge();
-				drifter.returnToIdle();
-
-				rb.velocity = new Vector3(Facing  * -25f,25f);
-			}
-			
+			if((drifter.input[0].MoveX  * Facing < 0))
+				JumpFromLedge();
+	
 			//Neutral Getup
 			else if((drifter.input[0].MoveX  * Facing > 0)  || drifter.input[0].MoveY > 0 || drifter.input[0].Guard ){
 				DropLedge();
@@ -651,6 +649,13 @@ public class PlayerMovement : MonoBehaviour
 		ledgeHanging = false;
 		resetGravity();
 		strongLedgeGrab = false;
+		ledgeGrabLockout = 30;
+		LedgeGrabBox.SetActive(false);
+	}
+	public void JumpFromLedge(){
+		 DropLedge();
+		 drifter.returnToIdle();
+		rb.velocity = new Vector3(Facing  * -25f,25f);
 	}
 
 	//Wrapper for spawning particles at the character's feet
@@ -815,6 +820,7 @@ public class PlayerMovement : MonoBehaviour
 
 			//Flags
 			Facing = this.Facing,
+			LedgeGrabLockout = ledgeGrabLockout,
 			TerminalVelocity = terminalVelocity,
 			CurrentJumps = currentJumps,
 			CurrentDashes = currentDashes,
@@ -849,6 +855,7 @@ public class PlayerMovement : MonoBehaviour
 
 		//Flags
 		Facing = p_frame.Facing;
+		ledgeGrabLockout = p_frame.LedgeGrabLockout;
 		terminalVelocity = p_frame.TerminalVelocity;
 		currentJumps = p_frame.CurrentJumps;
 		currentDashes = p_frame.CurrentDashes;
@@ -896,6 +903,7 @@ public class MovementRollbackFrame: INetworkData
 	public float TerminalVelocity;
 	public int CurrentJumps;
 	public int CurrentDashes;
+	public int LedgeGrabLockout;
 	public bool Grounded;
 	public bool Hitstun;
 	public bool CanLandingCancel;

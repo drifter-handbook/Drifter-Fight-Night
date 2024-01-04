@@ -7,34 +7,26 @@ public class LedgeGrabCollision : MonoBehaviour
 	public PlayerMovement movement;
 	public PlayerStatus status;
 	BoxCollider2D ledgeBox;
-    //Coroutine insurance;
-    // Start is called before the first frame update
-    void Start()
-    {
-        ledgeBox = GetComponent<BoxCollider2D>();
-    }
+	//Coroutine insurance;
+	// Start is called before the first frame update
+	void Start() {
+		ledgeBox = GetComponent<BoxCollider2D>();
+	}
 
-    // Update is called once per frame
+	// Update is called once per frame
 
-    void OnTriggerStay2D(Collider2D col){
+	void OnTriggerStay2D(Collider2D col){
 
-    	if(col.gameObject.tag == "Ledge" && !col.GetComponent<HopUp>().locked && !status.HasEnemyStunEffect() && !movement.ledgeHanging){
-    		movement.GrabLedge(col.gameObject.transform.position);
-    	}
+		if(col.gameObject.tag == "Ledge" && col.GetComponent<HopUp>().ledgeLock != LedgeLockState.Locked && !status.HasEnemyStunEffect() && !movement.ledgeHanging){
+			movement.GrabLedge(col.gameObject.transform.position);
+		}
 
-    }
+	}
 
-    void OnTriggerExit2D(Collider2D col){
+	void OnTriggerExit2D(Collider2D col){
 
-    	if(col.gameObject.tag == "Ledge" && movement.ledgeHanging){
-    		movement.DropLedge();
-    		StartCoroutine(FlickerLedgebox());
-    	}
-    }
-
-    IEnumerator FlickerLedgebox(){
-    	ledgeBox.enabled = false;
-    	yield return new WaitForSeconds(.5f);
-    	ledgeBox.enabled = true;
-    }
+		if(col.gameObject.tag == "Ledge" && movement.ledgeHanging){
+			movement.DropLedge();
+		}
+	}
 }

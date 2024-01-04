@@ -5,7 +5,6 @@ using UnityEngine;
 public class NeoSwordFrogMasterHit : MasterHit
 {
 	public int W_Down_Projectiles = 3;
-	Tether tongueTether;
 	Vector2 HeldDirection = Vector2.zero; 
 
 
@@ -27,7 +26,6 @@ public class NeoSwordFrogMasterHit : MasterHit
 		}
 
 		if(movement.ledgeHanging || status.HasEnemyStunEffect()) {
-			if(g_tongue != null)deleteTongue();
 			listeningForDirection = false;
 			projnum = 0;
 		}
@@ -52,8 +50,6 @@ public class NeoSwordFrogMasterHit : MasterHit
 		foreach(GameObject kunai in kunais)
 			if(kunai != null)
 				kunai.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
-
-		if(g_tongue != null) g_tongue.GetComponent<Tether>().UpdateFrame();
 	
 	}
 
@@ -66,13 +62,11 @@ public class NeoSwordFrogMasterHit : MasterHit
 		base.clearMasterhitVars();
 		listeningForDirection = false;
 		projnum = 0;
-		deleteTongue();
 	}
 
 	public new void returnToIdle() {
 		base.returnToIdle();
 		projnum = 0;
-		deleteTongue();
 	}
 
 	public void NeutralSpecialSlash() {
@@ -95,40 +89,6 @@ public class NeoSwordFrogMasterHit : MasterHit
 	 //Flips the direction the charactr is movement.Facing mid move)
 	public void invertDirection() {
 		movement.flipFacing();
-	}
-
-	//Grab Methods
-	public void SpawnTongue() {
-		if(g_tongue != null)deleteTongue();
-
-		g_tongue = GameController.Instance.CreatePrefab("SF_Tongue", transform.position + new Vector3(2.3f * movement.Facing,1.6f), transform.rotation);
-		g_tongue.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
-		foreach (HitboxCollision hitbox in g_tongue.GetComponentsInChildren<HitboxCollision>(true)) {
-			hitbox.parent = drifter.gameObject;
-			hitbox.AttackID = attacks.AttackID;
-			hitbox.Facing = movement.Facing;
-		}
-		g_tongue.transform.SetParent(drifter.gameObject.transform);
-		g_tongue.GetComponent<SpriteRenderer>().material.SetColor(Shader.PropertyToID("_OutlineColor"),CharacterMenu.ColorFromEnum[(PlayerColor)drifter.GetColor()]);
-
-		tongueTether = g_tongue.GetComponentInChildren<Tether>();
-		tongueTether.setTargetLength(.64f);
-		tongueTether.setSpeed(4f);
-	}
-
-	public void deleteTongue() {
-		if(g_tongue != null)Destroy(g_tongue);
-		g_tongue = null;
-	}
-
-	public void setTongueLen(float len) {
-		if(g_tongue == null)return;
-		tongueTether.setTargetLength(len);
-	}
-
-	public void freezeTether() {
-		if(g_tongue == null)return;
-		tongueTether.freezeLen();
 	}
 
 	public void downSpecialProjectile() {
@@ -223,7 +183,6 @@ public class NeoSwordFrogMasterHit : MasterHit
 			Delaytime = delaytime,
 			Projnum = projnum,
 			Kunais = kunaiList,
-			Tongue = g_tongue != null ? g_tongue.GetComponent<Tether>().SerializeFrame(): null,
 
 		};
 
@@ -249,16 +208,7 @@ public class NeoSwordFrogMasterHit : MasterHit
 				Destroy(kunais[i]);
 				kunais[i] = null;
 			}  
-		}
-
-		if(sf_frame.Tongue != null){
-			if(g_tongue== null) SpawnTongue();
-			g_tongue.GetComponent<Tether>().DeserializeFrame(sf_frame.Tongue);
-		}
-		else {
-			Destroy(g_tongue);
-			g_tongue = null;
-		}  
+		} 
 	}
 
 }
@@ -270,7 +220,6 @@ public class SwordfrogRollbackFrame: ICharacterRollbackFrame
 	public int Delaytime;
 	public int Projnum;
 
-	public TetherRollbackFrame Tongue;
 
 	public BasicProjectileRollbackFrame[] Kunais;
 }

@@ -597,6 +597,7 @@ MonoBehaviour:
   walkSpeed: 25
   terminalVelocity: 80
   PushBox: {fileID: 7404139115897645622}
+  LedgeGrabBox: {fileID: 7136038149365406979}
 --- !u!114 &9142496942411782138
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -775,12 +776,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ef945a1776594438c7a9223e2d7bb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useHitpause: 0
+  destoryState: 
   duration: -1
   rb: {fileID: 3106753082241659639}
   animator: {fileID: 2000386183588008255}
   pauseBehavior: 1
   paused: 0
+  useHitpause: 0
   DestroyOnExit: 0
 --- !u!1 &4227067111414324707
 GameObject:

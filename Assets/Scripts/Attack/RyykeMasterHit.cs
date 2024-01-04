@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -266,12 +266,11 @@ public class RyykeMasterHit : MasterHit
 
 		//If the arm is not targeting a ledge, fire it as a projectile
 		if(tetherPoint == Vector3.zero) g_Tether_Hand.GetComponent<Rigidbody2D>().velocity = rb.velocity + new Vector2(80f * movement.Facing * Mathf.Cos((angle*movement.Facing* Mathf.PI)/180),80f *Mathf.Sin((angle*movement.Facing * Mathf.PI)/180));
-		else
-			foreach (PuppetGrabHitboxCollision hitbox in g_Tether_Hand.GetComponentsInChildren<PuppetGrabHitboxCollision>(true)){
-				//Set the hand to the ledge data and disable its state change on hit
-				hitbox.SuccessState = "";
-				hitbox.OverrideData = attacks.Attacks[DrifterAttackType.W_Up];
-			}
+		else {
+			foreach (HitboxCollision hitbox in g_Tether_Hand.GetComponentsInChildren<HitboxCollision>(true))
+				hitbox.isActive = false;
+			tether.g_obj.GetComponent<HopUp>().ledgeLock = LedgeLockState.Tethered;
+		}
 
 		foreach (HitboxCollision hitbox in g_Tether_Hand.GetComponentsInChildren<HitboxCollision>(true)) {
 			hitbox.parent = drifter.gameObject;

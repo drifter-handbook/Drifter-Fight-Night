@@ -2,32 +2,45 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum LedgeLockState{
+	Open, Locked, Tethered
+}
 
-public class HopUp : MonoBehaviour
-{
+public class HopUp : MonoBehaviour {
+	public LedgeLockState ledgeLock = LedgeLockState.Open;
+	PlayerMovement lockingPlayer;
 
-    public bool locked = false;
-    Collider2D lockingPlayer;
+	void OnTriggerStay2D(Collider2D col) {
+		if (col.gameObject.tag == "LedgeGrabBox") {
+			switch(ledgeLock){
+				case(LedgeLockState.Open):
+					ledgeLock = LedgeLockState.Locked;
+					lockingPlayer = col.gameObject.GetComponent<LedgeGrabCollision>().movement;
+					break;
+				case(LedgeLockState.Tethered):
+					if(col.gameObject.GetComponent<LedgeGrabCollision>().movement != lockingPlayer){
+						forceDrop();
+						ledgeLock = LedgeLockState.Locked;
+						lockingPlayer = col.gameObject.GetComponent<LedgeGrabCollision>().movement;
+					}
+					break;
+				default:
+					break;
+			}
+		}
+	}
 
-    void OnTriggerStay2D(Collider2D col)
-    {
-        if (col.gameObject.tag == "LedgeGrabBox" && !locked)
-        {
-            locked = true;
-            lockingPlayer = col;
+	void OnTriggerExit2D(Collider2D col) {
+		if(col.gameObject.tag == "LedgeGrabBox" && col.gameObject.GetComponent<LedgeGrabCollision>().movement == lockingPlayer && ledgeLock != LedgeLockState.Open){
+			ledgeLock = LedgeLockState.Open;
+		}
+	}
 
-        }
-    }
-
-    void OnTriggerExit2D(Collider2D col){
-        if(col == lockingPlayer && locked){
-            //StartCoroutine(Unlock());
-            locked = false;
-        }
-    }
-
-    IEnumerator Unlock(){
-        yield return new WaitForSeconds(.083333f);
-        locked = false;
-    }
+	public void forceDrop() {
+		if(lockingPlayer != null){
+			lockingPlayer.JumpFromLedge();
+			ledgeLock = LedgeLockState.Open;
+		}
+		
+	}
 }
