@@ -31,7 +31,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5180070245103689804}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4030958141635760036
 MonoBehaviour:
@@ -162,7 +162,7 @@ Transform:
   - {fileID: 8832248496886902388}
   - {fileID: 3933128490031965101}
   m_Father: {fileID: 5180070245103689804}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3354306740604093828
 GameObject:
@@ -228,73 +228,6 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: 901ad01b25c60c54e9c1cf2e1544bf2a, type: 2}
   parent: {fileID: 1529639735558506143}
   projectilePriority: -2
---- !u!1 &3865943257399037262
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1354358955333474699}
-  - component: {fileID: 10814356495452460}
-  - component: {fileID: 7858708824758204407}
-  m_Layer: 9
-  m_Name: Grab_Ground
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1354358955333474699
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3865943257399037262}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5180070245103689804}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!70 &10814356495452460
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3865943257399037262}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.5353832, y: 0.15732776}
-  m_Size: {x: 0.65716964, y: 0.10769483}
-  m_Direction: 1
---- !u!114 &7858708824758204407
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3865943257399037262}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5628fe228e8be043b618c6647ceb161, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OverrideData: {fileID: 11400000, guid: 1391cfd47cbf5c24caee6f40a0bac65b, type: 2}
-  parent: {fileID: 1529639735558506143}
-  projectilePriority: -2
-  victim: {fileID: 0}
-  SuccessState: Grab_Ground_Success
-  cancelable: 1
 --- !u!1 &4071932813430323094
 GameObject:
   m_ObjectHideFlags: 0
@@ -326,7 +259,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5180070245103689804}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!70 &6640195269984095940
 CapsuleCollider2D:
@@ -356,7 +289,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OverrideData: {fileID: 0}
+  OverrideData: {fileID: 11400000, guid: 6ca6dea5c6c35494a8d6de7a886abc4f, type: 2}
   parent: {fileID: 1529639735558506143}
   projectilePriority: -2
 --- !u!1 &4132256652347617111
@@ -758,7 +691,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5180070245103689804}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6812431134502577840
 MonoBehaviour:
@@ -1279,7 +1212,7 @@ PrefabInstance:
         type: 3}
       propertyPath: AttackMap.Array.data[2].attackData
       value: 
-      objectReference: {fileID: 11400000, guid: 6ca6dea5c6c35494a8d6de7a886abc4f,
+      objectReference: {fileID: 11400000, guid: 1391cfd47cbf5c24caee6f40a0bac65b,
         type: 2}
     - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}

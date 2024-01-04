@@ -410,6 +410,7 @@ public class RyykeMasterHit : MasterHit
 
 		baseFrame.CharacterFrame = new RyykeRollbackFrame() {
 			Tombstones = p_Tombstones,
+			ArmRetracting = armRetracting,
 			ListeningForDirection = listeningForDirection, 
 			ListeningForMovement = listeningForMovement,
 			Burrowing = burrowing,
@@ -429,6 +430,13 @@ public class RyykeMasterHit : MasterHit
 
 		RyykeRollbackFrame ryyke_frame = (RyykeRollbackFrame)p_frame.CharacterFrame;
 
+		armRetracting = ryyke_frame.ArmRetracting;
+		listeningForDirection = ryyke_frame.ListeningForDirection;
+		listeningForMovement = ryyke_frame.ListeningForMovement;
+		burrowing = ryyke_frame.Burrowing;
+		burrowTime = ryyke_frame.BurrowTime;
+		tetherPoint = ryyke_frame.TetherPoint;
+		tombstoneIndex = ryyke_frame.TombstoneIndex;
 
 		//Tombstone reset
 		for(int i = 0; i <3; i++) {
@@ -475,6 +483,7 @@ public class RyykeRollbackFrame: ICharacterRollbackFrame
 	public bool ListeningForMovement;
 	public bool Burrowing;
 	public int BurrowTime;
+	public bool ArmRetracting;
 	public Vector3 TetherPoint;
 	public int TombstoneIndex;
 	public TombstoneRollbackFrame[] Tombstones;

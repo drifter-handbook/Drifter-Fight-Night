@@ -120,9 +120,24 @@ public class NeoSwordFrogMasterHit : MasterHit
 
 		g_Tether_Tongue.GetComponent<Rigidbody2D>().velocity = rb.velocity + new Vector2(movement.Facing * 75f, 0f);
 
+		foreach (HitboxCollision hitbox in g_Tether_Tongue.GetComponentsInChildren<HitboxCollision>(true)) {
+			hitbox.OverrideData = attacks.Attacks[attacks.AttackType];
+		}
+
 		SetObjectColor(g_Tether_Tongue);
 
 		g_Tether_Tongue.GetComponent<RemoteProjectileUtil>().hit = this;
+	}
+
+	void CreateHead(Vector3 pos) {
+
+		g_Tether_Head = GameController.Instance.CreatePrefab("SwordFrog_Head", pos, transform.rotation);
+		g_Tether_Head.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
+
+		SetObjectColor(g_Tether_Head);
+
+		g_Tether_Head.transform.SetParent(drifter.gameObject.transform);
+
 	}
 
 	public void DeleteTongue() {
@@ -261,6 +276,10 @@ public class NeoSwordFrogMasterHit : MasterHit
 			Delaytime = delaytime,
 			Projnum = projnum,
 			Kunais = kunaiList,
+			TongueRetracting = tongueRetracting,
+
+			Tongue = (g_Tether_Tongue != null) ? g_Tether_Tongue.GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null,
+			Head = (g_Tether_Head != null) ? g_Tether_Head.GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null,
 
 		};
 
@@ -275,6 +294,30 @@ public class NeoSwordFrogMasterHit : MasterHit
 		listeningForDirection = sf_frame.ListeningForDirection;
 		delaytime = sf_frame.Delaytime;
 		projnum = sf_frame.Projnum;
+		tongueRetracting = sf_frame.TongueRetracting;
+
+
+		//Tongue reset
+		if(sf_frame.Tongue != null) {
+			if(g_Tether_Tongue == null)CreateTongue(transform.position);
+			g_Tether_Tongue.GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(sf_frame.Tongue);
+		}
+		//Projectile does not exist in rollback frame
+		else {
+			Destroy(g_Tether_Tongue);
+			g_Tether_Tongue = null;
+		}
+
+		//Head reset
+		if(sf_frame.Head != null) {
+			if(g_Tether_Head == null)CreateHead(transform.position);
+			g_Tether_Head.GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(sf_frame.Head);
+		}
+		//Projectile does not exist in rollback frame
+		else {
+			Destroy(g_Tether_Head);
+			g_Tether_Head = null;
+		}
 
 
 		for(int i = 0; i <3; i++) {
@@ -298,7 +341,10 @@ public class SwordfrogRollbackFrame: ICharacterRollbackFrame
 	public int Delaytime;
 	public int Projnum;
 
+	public bool TongueRetracting;
 
+	public BasicProjectileRollbackFrame Tongue;
+	public BasicProjectileRollbackFrame Head;
 	public BasicProjectileRollbackFrame[] Kunais;
 }
 	
