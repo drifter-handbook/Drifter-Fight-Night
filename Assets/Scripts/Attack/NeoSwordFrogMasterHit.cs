@@ -113,14 +113,17 @@ public class NeoSwordFrogMasterHit : MasterHit
 	}
 
 
-	void CreateTongue(Vector3 pos) {
+	void CreateTongue(Vector3 pos, float angle) {
 
-		g_Tether_Tongue = GameController.Instance.CreatePrefab("SwordFrog_Tongue", pos, transform.rotation);
+		g_Tether_Tongue = GameController.Instance.CreatePrefab("SwordFrog_Tongue", pos, Quaternion.Euler(0,0,angle));
 		g_Tether_Tongue.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
 
 		g_Tether_Tongue.GetComponent<Rigidbody2D>().velocity = rb.velocity + new Vector2(movement.Facing * 75f, 0f);
 
-		foreach (HitboxCollision hitbox in g_Tether_Tongue.GetComponentsInChildren<HitboxCollision>(true)) {
+		foreach (PuppetGrabHitboxCollision hitbox in g_Tether_Tongue.GetComponentsInChildren<PuppetGrabHitboxCollision>(true)) {
+			hitbox.parent = drifter.gameObject;
+			hitbox.AttackID = attacks.AttackID;
+			hitbox.Facing = movement.Facing;
 			hitbox.OverrideData = attacks.Attacks[attacks.AttackType];
 		}
 
@@ -129,9 +132,9 @@ public class NeoSwordFrogMasterHit : MasterHit
 		g_Tether_Tongue.GetComponent<RemoteProjectileUtil>().hit = this;
 	}
 
-	void CreateHead(Vector3 pos) {
+	void CreateHead(Vector3 pos, float angle) {
 
-		g_Tether_Head = GameController.Instance.CreatePrefab("SwordFrog_Head", pos, transform.rotation);
+		g_Tether_Head = GameController.Instance.CreatePrefab("SwordFrog_Head", pos, Quaternion.Euler(0,0,angle));
 		g_Tether_Head.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
 
 		SetObjectColor(g_Tether_Head);
@@ -151,17 +154,55 @@ public class NeoSwordFrogMasterHit : MasterHit
 	public void SpawnGrabTongue() {
 		DeleteTongue();
 
-		CreateTongue(GrabConnectionPoint.transform.position);
-
-		foreach (HitboxCollision hitbox in g_Tether_Tongue.GetComponentsInChildren<HitboxCollision>(true)) {
-			hitbox.parent = drifter.gameObject;
-			hitbox.AttackID = attacks.AttackID;
-			hitbox.Facing = movement.Facing;
-		}
+		CreateTongue(GrabConnectionPoint.transform.position, 0);
 	
 		g_Tether_Tongue.GetComponentInChildren<LineRenderer>().SetPosition(0, g_Tether_Tongue.transform.position);
 		g_Tether_Tongue.GetComponentInChildren<LineRenderer>().SetPosition(1, GrabConnectionPoint.transform.position);
 
+	}
+
+	public void SpawnWUpTongue(){
+
+		DeleteTongue();
+
+		float angle = 65f *movement.Facing;
+		Vector3 pos = new Vector3(1.5f * movement.Facing,3.6f,0);
+
+		//Calculate Ledge Position
+		if(tether.TetherPoint != Vector3.zero) {
+			tetherPoint = tether.TetherPoint;
+			float deltay = tetherPoint.y- (transform.position + pos).y;
+			float deltax = tetherPoint.x- (transform.position + pos).x;
+			angle = Mathf.Atan2(deltay, deltax)*180 / Mathf.PI + (movement.Facing < 0 ?180:0);
+			playState("W_Up_Ledge");
+		}
+		else
+			tetherPoint = Vector3.zero;
+
+
+		CreateTongue(transform.position,angle);
+		CreateHead(transform.position,angle);
+
+		if(tetherPoint == Vector3.zero) g_Tether_Tongue.GetComponent<Rigidbody2D>().velocity = rb.velocity + new Vector2(75f * movement.Facing * Mathf.Cos((angle*movement.Facing* Mathf.PI)/180),75f *Mathf.Sin((angle*movement.Facing * Mathf.PI)/180));
+		else {
+			foreach (HitboxCollision hitbox in g_Tether_Tongue.GetComponentsInChildren<HitboxCollision>(true))
+				hitbox.isActive = false;
+			tether.g_obj.GetComponent<HopUp>().ledgeLock = LedgeLockState.Tethered;
+		}
+
+		g_Tether_Tongue.GetComponent<RemoteProjectileUtil>().ProjectileIndex = -1;
+
+
+	}
+
+	public void pullToLedge() {
+		if(tetherPoint!=Vector3.zero) {
+			Vector3 dir = tetherPoint - new Vector3(rb.position.x,rb.position.y);
+			Vector3.Normalize(dir);
+			rb.velocity = 10f * dir;
+   
+			tetherPoint = Vector3.zero;
+		}
 	}
 
 	public void RetractTongue() {
@@ -299,7 +340,7 @@ public class NeoSwordFrogMasterHit : MasterHit
 
 		//Tongue reset
 		if(sf_frame.Tongue != null) {
-			if(g_Tether_Tongue == null)CreateTongue(transform.position);
+			if(g_Tether_Tongue == null)CreateTongue(transform.position,0);
 			g_Tether_Tongue.GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(sf_frame.Tongue);
 		}
 		//Projectile does not exist in rollback frame
@@ -310,7 +351,7 @@ public class NeoSwordFrogMasterHit : MasterHit
 
 		//Head reset
 		if(sf_frame.Head != null) {
-			if(g_Tether_Head == null)CreateHead(transform.position);
+			if(g_Tether_Head == null)CreateHead(transform.position,0);
 			g_Tether_Head.GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(sf_frame.Head);
 		}
 		//Projectile does not exist in rollback frame
