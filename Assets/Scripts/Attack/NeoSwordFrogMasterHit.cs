@@ -5,10 +5,15 @@ using UnityEngine;
 public class NeoSwordFrogMasterHit : MasterHit
 {
 	public int W_Down_Projectiles = 3;
+	public GameObject GrabConnectionPoint;
 	Vector2 HeldDirection = Vector2.zero; 
 
+	public TetherRange tether;
+	GameObject g_Tether_Tongue;
+	GameObject g_Tether_Head;
+	bool tongueRetracting = false;
+	Vector3 tetherPoint = Vector3.zero;
 
-	GameObject g_tongue;
 	GameObject[] kunais = new GameObject[3];
 
 	bool listeningForDirection = false;
@@ -23,11 +28,13 @@ public class NeoSwordFrogMasterHit : MasterHit
 			Empowered = false;
 			drifter.Sparkle(false);
 			projnum = 0;
+			DeleteTongue();
 		}
 
 		if(movement.ledgeHanging || status.HasEnemyStunEffect()) {
 			listeningForDirection = false;
 			projnum = 0;
+			DeleteTongue();
 		}
 
 		//Handle neutral special attacks
@@ -45,6 +52,24 @@ public class NeoSwordFrogMasterHit : MasterHit
 			fireKunaiAirLine(projnum);
 			projnum++;
 		}
+
+		if(g_Tether_Tongue != null) {
+			g_Tether_Tongue.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
+
+			if(tetherPoint != Vector3.zero)
+				g_Tether_Tongue.GetComponent<Rigidbody2D>().position = Vector2.MoveTowards(g_Tether_Tongue.GetComponent<Rigidbody2D>().position, tetherPoint,3);
+
+			else if(tongueRetracting)
+				g_Tether_Tongue.GetComponent<Rigidbody2D>().position = Vector2.MoveTowards(g_Tether_Tongue.GetComponent<Rigidbody2D>().position, (g_Tether_Head != null) ?g_Tether_Head.transform.position:GrabConnectionPoint.transform.position,1);
+
+
+			g_Tether_Tongue.GetComponentInChildren<LineRenderer>().SetPosition(0,g_Tether_Tongue.transform.position);
+			g_Tether_Tongue.GetComponentInChildren<LineRenderer>().SetPosition(1,(g_Tether_Head != null) ?g_Tether_Head.transform.position:GrabConnectionPoint.transform.position);
+		}
+		else {
+			tongueRetracting = false;
+		}
+
 
 		//Update Child Frames
 		foreach(GameObject kunai in kunais)
@@ -66,6 +91,7 @@ public class NeoSwordFrogMasterHit : MasterHit
 
 	public new void returnToIdle() {
 		base.returnToIdle();
+		DeleteTongue();
 		projnum = 0;
 	}
 
@@ -85,6 +111,58 @@ public class NeoSwordFrogMasterHit : MasterHit
 		HeldDirection = Vector2.zero;
 
 	}
+
+
+	void CreateTongue(Vector3 pos) {
+
+		g_Tether_Tongue = GameController.Instance.CreatePrefab("SwordFrog_Tongue", pos, transform.rotation);
+		g_Tether_Tongue.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
+
+		g_Tether_Tongue.GetComponent<Rigidbody2D>().velocity = rb.velocity + new Vector2(movement.Facing * 75f, 0f);
+
+		SetObjectColor(g_Tether_Tongue);
+
+		g_Tether_Tongue.GetComponent<RemoteProjectileUtil>().hit = this;
+	}
+
+	public void DeleteTongue() {
+		if(g_Tether_Tongue!= null) Destroy(g_Tether_Tongue);
+		if(g_Tether_Head!= null) Destroy(g_Tether_Head);
+		g_Tether_Tongue = null;
+		g_Tether_Head = null;
+
+	}
+
+	public void SpawnGrabTongue() {
+		DeleteTongue();
+
+		CreateTongue(GrabConnectionPoint.transform.position);
+
+		foreach (HitboxCollision hitbox in g_Tether_Tongue.GetComponentsInChildren<HitboxCollision>(true)) {
+			hitbox.parent = drifter.gameObject;
+			hitbox.AttackID = attacks.AttackID;
+			hitbox.Facing = movement.Facing;
+		}
+	
+		g_Tether_Tongue.GetComponentInChildren<LineRenderer>().SetPosition(0, g_Tether_Tongue.transform.position);
+		g_Tether_Tongue.GetComponentInChildren<LineRenderer>().SetPosition(1, GrabConnectionPoint.transform.position);
+
+	}
+
+	public void RetractTongue() {
+		tongueRetracting = true;
+	}
+
+	public override void TriggerRemoteSpawn(int index) {
+		switch(index){
+			case(0):
+				playState("Grab_Ground_Success");
+				break;
+			default:
+				break;
+		}
+	}
+
 
 	 //Flips the direction the charactr is movement.Facing mid move)
 	public void invertDirection() {

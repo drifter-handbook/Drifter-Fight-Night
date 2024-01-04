@@ -92,19 +92,34 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 		attackWasCanceled = true;
 		//Clear all flags if the character is dead or stunned by an opponent
 
+		if(drifter.status.canbeKnockedDown() && !drifter.knockedDown && movement.grounded) {
+			if(!drifter.status.HasStatusEffect(PlayerStatusEffect.HITPAUSE)){
+				//Determine knockdown duration
+				movement.terminalVelocity = 2f;
+				drifter.PlayAnimation("Knockdown_Bounce");
+				drifter.status.ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,90);
+				//movement.mainCamera.Shake(6,.33f);
+				//If the victim is in hitpause, set their delayed velocity instead
+				rb.velocity = new Vector2(movement.Facing *-9f,20);
+			}
+		}
+
 		//Handles knockdown after bounce
-		if(status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN)) {
-			drifter.knockedDown = true;
-			knockdownFlag = true;
-			resetTerminalVelocity();
-			if(listeningForGroundedFlag && movement.grounded) {
-				status.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,0);
-				//status.ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,0f);
-				status.ApplyStatusEffect(PlayerStatusEffect.FLATTEN,status.remainingDuration(PlayerStatusEffect.KNOCKDOWN));
-				rb.velocity = new Vector2(movement.Facing * -10f * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f),rb.velocity.y);
-				BounceParticle();
-				playQueuedState();
-				clearMasterhitVars();
+		else if(status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN)){
+
+			if(!status.HasStatusEffect(PlayerStatusEffect.HITPAUSE)) {
+				drifter.knockedDown = true;
+				knockdownFlag = true;
+				resetTerminalVelocity();
+				if(listeningForGroundedFlag && movement.grounded) {
+					status.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,0);
+					//status.ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,0f);
+					status.ApplyStatusEffect(PlayerStatusEffect.FLATTEN,status.remainingDuration(PlayerStatusEffect.KNOCKDOWN));
+					rb.velocity = new Vector2(movement.Facing * -10f * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f),rb.velocity.y);
+					BounceParticle();
+					playQueuedState();
+					clearMasterhitVars();
+				}
 			}
 		}
 
@@ -117,8 +132,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 			(specialReleasedFlag && !drifter.input[0].Special)||
 			(specialTappedFlag && checkForSpecialTap())||
 			(specialLimit > 0 && specialCharge >= specialLimit)
-			)
- {
+			) {
 			attackWasCanceled = false;
 			playQueuedState();
 			clearMasterhitVars();

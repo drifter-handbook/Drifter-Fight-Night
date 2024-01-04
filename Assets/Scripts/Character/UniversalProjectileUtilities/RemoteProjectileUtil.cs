@@ -8,8 +8,7 @@ public class RemoteProjectileUtil : MonoBehaviour
     public MasterHit hit;
     public int ProjectileIndex = 0;
 
-    public void TriggerRemoteSpawn()
-    {
+    public void TriggerRemoteSpawn() {
         hit.TriggerRemoteSpawn(ProjectileIndex);
     }
 

@@ -133,55 +133,53 @@ public class PlayerStatus : MonoBehaviour {
 			delayedVelocity = Vector2.zero;
 		}
 		
-			//Hitpause pauses all other statuses for its duration
-			if(HasStatusEffect(PlayerStatusEffect.HITPAUSE) || HasStatusEffect(PlayerStatusEffect.GRABBED)) {
-				statusDataMap[(int)PlayerStatusEffect.HITPAUSE].duration--;
-				if(!HasStatusEffect(PlayerStatusEffect.HITPAUSE) && !HasStatusEffect(PlayerStatusEffect.SLOWMOTION)) {
-					if(delayedVelocity != Vector2.zero)drifter.movement.rb.velocity = delayedVelocity;
-					if(delayedEffect != PlayerStatusEffect.HIT)	{
-						ApplyStatusEffect(delayedEffect,delayedEffectDuration);
-						delayedEffect = PlayerStatusEffect.HIT;
+		//Hitpause pauses all other statuses for its duration
+		if(HasStatusEffect(PlayerStatusEffect.HITPAUSE) || HasStatusEffect(PlayerStatusEffect.GRABBED)) {
+			statusDataMap[(int)PlayerStatusEffect.HITPAUSE].duration--;
+			if(!HasStatusEffect(PlayerStatusEffect.HITPAUSE) && !HasStatusEffect(PlayerStatusEffect.SLOWMOTION)) {
+				if(delayedVelocity != Vector2.zero)drifter.movement.rb.velocity = delayedVelocity;
+				if(delayedEffect != PlayerStatusEffect.HIT)	{
+					ApplyStatusEffect(delayedEffect,delayedEffectDuration);
+					delayedEffect = PlayerStatusEffect.HIT;
+				}
+			}
+		}
+		//Otherwise, tick down all active statuses
+		else{
+			for(int i = 0; i < statusDataMap.Length; i++) {
+			//for(int i = 0; i < statusDataMap.Length; i++) {
+				if(HasStatusEffect(i))	{
+					statusDataMap[i].duration--;
+
+					//Damage player if they are on fire
+					if(i == (int)PlayerStatusEffect.BURNING) drifter.DamageTaken += Time.fixedDeltaTime;
+						
+					//Re-apply the saved velocity if the player just lost cringe
+						
+					if(i == (int)PlayerStatusEffect.SLOWMOTION && HasEnemyStunEffect())drifter.movement.rb.velocity = delayedVelocity * .2f;
+
+
+					// if((i == (int)PlayerStatusEffect.CRINGE && !HasStatusEffect(PlayerStatusEffect.CRINGE)) || (i == (int)PlayerStatusEffect.SLOWMOTION && !HasStatusEffect(PlayerStatusEffect.SLOWMOTION))) {
+					// 		drifter.movement.rb.velocity = delayedVelocity;
+					// 		drifter.SetAnimationSpeed(1f);
+					// }
+
+					if(i == (int)PlayerStatusEffect.FLATTEN) {
+
+						//Wakeup if knocked off stage
+						if(!drifter.movement.grounded)
+							ApplyStatusEffect(PlayerStatusEffect.FLATTEN,0);
+						if(!HasStatusEffect(PlayerStatusEffect.FLATTEN)) {
+							ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,8);
+							drifter.movement.hitstun = true;
+							drifter.knockedDown = false;
+							drifter.PlayAnimation("Jump_End");
+							ApplyStatusEffect(PlayerStatusEffect.INVULN,5);
+						}
 					}
 				}
 			}
-			//Otherwise, tick down all active statuses
-			else{
-				for(int i = 0; i < statusDataMap.Length; i++) {
-				//for(int i = 0; i < statusDataMap.Length; i++) {
-					if(HasStatusEffect(i))	{
-						statusDataMap[i].duration--;
-
-						//Damage player if they are on fire
-						if(i == (int)PlayerStatusEffect.BURNING) drifter.DamageTaken += Time.fixedDeltaTime;
-						
-						//Re-apply the saved velocity if the player just lost cringe
-						
-						if(i == (int)PlayerStatusEffect.SLOWMOTION && HasEnemyStunEffect())drifter.movement.rb.velocity = delayedVelocity * .2f;
-
-
-						if((i == (int)PlayerStatusEffect.CRINGE && !HasStatusEffect(PlayerStatusEffect.CRINGE)) || (i == (int)PlayerStatusEffect.SLOWMOTION && !HasStatusEffect(PlayerStatusEffect.SLOWMOTION))) {
-							drifter.movement.rb.velocity = delayedVelocity;
-							drifter.SetAnimationSpeed(1f);
-						}
-
-						if(i == (int)PlayerStatusEffect.FLATTEN) {
-
-							//Wakeup if knocked off stage
-							if(!drifter.movement.grounded)
-								ApplyStatusEffect(PlayerStatusEffect.FLATTEN,0);
-
-							if(!HasStatusEffect(PlayerStatusEffect.FLATTEN)) {
-								ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,8);
-								drifter.movement.hitstun = true;
-								drifter.knockedDown = false;
-								drifter.PlayAnimation("Jump_End");
-								ApplyStatusEffect(PlayerStatusEffect.INVULN,5);
-							}
-						}
-
-					}
-				}
-			}
+		}
 			
 		if(delayedVelocity != Vector2.zero && !(HasStatusEffect(PlayerStatusEffect.HITPAUSE) || HasStatusEffect(PlayerStatusEffect.CRINGE) || HasStatusEffect(PlayerStatusEffect.GRABBED) || HasStatusEffect(PlayerStatusEffect.SLOWMOTION))) delayedVelocity = Vector2.zero;
 
@@ -246,7 +244,7 @@ public class PlayerStatus : MonoBehaviour {
 
 	//Player is not in hitstun
 	public bool HasGroundFriction() {
-		return !HasStatusEffect(PlayerStatusEffect.KNOCKBACK) && !HasStatusEffect(PlayerStatusEffect.KNOCKDOWN); 
+		return !HasStatusEffect(PlayerStatusEffect.KNOCKBACK); //&& !HasStatusEffect(PlayerStatusEffect.KNOCKDOWN); 
 	}
 
 	public void ApplyStatusEffect(PlayerStatusEffect ef, int duration) {

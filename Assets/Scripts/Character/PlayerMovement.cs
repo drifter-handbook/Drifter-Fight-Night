@@ -137,27 +137,6 @@ public class PlayerMovement : MonoBehaviour
 	}
 
 	//Restitution
-	void OnCollisionStay2D(Collision2D col) {
-
-		if(!drifter.status.HasGroundFriction() && ((prevVelocity.y < 0 || col.gameObject.tag !=  "Platform" ))) {
-			//drifter.status.bounce();
-			Vector3 normal = col.contacts[0].normal;
-
-			if(normal.y == 1f && drifter.status.canbeKnockedDown() && !drifter.knockedDown) {
-				//Determine knockdown duration
-				drifter.status.ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,90);
-				//drifter.status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,.5f);
-				terminalVelocity = 2f;
-				drifter.PlayAnimation("Knockdown_Bounce");
-				mainCamera.Shake(6,.33f);
-				//If the victim is in hitpause, set their delayed velocity instead
-				if(drifter.status.HasStatusEffect(PlayerStatusEffect.HITPAUSE)) drifter.status.setDelayedVelocity(new Vector3(Facing *-9f,20));
-				else rb.velocity = new Vector3(Facing *-9f,20);
-					//kdbounceVelocity = Vector3.zero;
-			}
-		}
-	}
-
 	void OnCollisionEnter2D(Collision2D col) {
 		 if(!drifter.status.HasGroundFriction() && ((prevVelocity.y < 0 || col.gameObject.tag !=  "Platform" ))) {
 			Vector3 normal = col.contacts[0].normal;
@@ -168,6 +147,7 @@ public class PlayerMovement : MonoBehaviour
 			}
 
 			else if(prevVelocity.magnitude > 35f && !drifter.status.canbeKnockedDown()) {
+				UnityEngine.Debug.Log("Restitution");
 				rb.velocity = Vector2.Reflect(prevVelocity,normal) *.8f;
 				spawnJuiceParticle(col.contacts[0].point, MovementParticleMode.Restitution, Quaternion.Euler(0f,0f, ( (rb.velocity.x < 0)?1:-1 ) * Vector3.Angle(Vector3.up,normal)),false);
 			}
@@ -215,6 +195,10 @@ public class PlayerMovement : MonoBehaviour
 			
 			if(drifter.status.HasStatusEffect(PlayerStatusEffect.FLATTEN)) {
 				//do nothing
+			}
+			else if(drifter.status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN)){
+				drifter.PlayAnimation("Knockdown_Bounce");
+				drifter.ToggleAnimator(false);
 			}
 			else if(drifter.status.HasEnemyStunEffect() && !drifter.guarding) {
 				drifter.PlayAnimation("HitStun");
@@ -484,7 +468,7 @@ public class PlayerMovement : MonoBehaviour
 		}
 
 		//Player is not trying to move, and is not in hitstun
-		else if (!moving && drifter.status.HasGroundFriction()) {
+		else if (!moving && canAct) {
 			if(drifter.input[1].MoveX !=0 && drifter.input[0].MoveX == 0 && canAct && !jumping && !drifter.guarding)
 				drifter.returnToIdle();
 			//standing ground friction (When button is not held)
@@ -594,7 +578,7 @@ public class PlayerMovement : MonoBehaviour
 	private bool IsGrounded() {
 		int count = Physics2D.RaycastNonAlloc(frictionCollider.bounds.center + frictionCollider.bounds.extents.y * Vector3.down, Vector3.down, hits, 0.2f);
 
-		for (int i = 0; i < count; i++) if (hits[i].collider.gameObject.tag == "Ground" || (hits[i].collider.gameObject.tag == "Platform" && drifter.status.HasGroundFriction())) return rb.velocity.y <=.1f;
+		for (int i = 0; i < count; i++) if (hits[i].collider.gameObject.tag == "Ground" || (hits[i].collider.gameObject.tag == "Platform")) return rb.velocity.y <=.1f;
 
 		return false;
 	}

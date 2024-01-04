@@ -96,8 +96,7 @@ public class RyykeMasterHit : MasterHit
 			g_Tether_Arm.GetComponentInChildren<LineRenderer>().SetPosition(0,g_Tether_Arm.transform.position);
 			g_Tether_Arm.GetComponentInChildren<LineRenderer>().SetPosition(1,g_Tether_Hand.transform.position);
 		}
-		else
-		{
+		else {
 			armRetracting = false;
 		}
 
