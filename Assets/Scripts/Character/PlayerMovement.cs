@@ -728,8 +728,8 @@ public class PlayerMovement : MonoBehaviour
 		}
 		
 		//Offensive Cancel
-		else if(drifter.status.HasStatusEffect(PlayerStatusEffect.END_LAG) && drifter.superCharge >= 1f) {
-			if(drifter.superCharge >= 2f && !drifter.canFeint) {
+		else if(drifter.status.HasStatusEffect(PlayerStatusEffect.END_LAG) && drifter.superCharge >= 100) {
+			if(drifter.superCharge >= 200 && !drifter.canFeint) {
 				spawnSuperParticle(CancelType.Offensive_Cancel,200,20);
 				drifter.attacks.useSuper();
 				
@@ -741,7 +741,7 @@ public class PlayerMovement : MonoBehaviour
 		}
 
 		//Burst/Defensive Cancel
-		else if(!drifter.guarding && drifter.superCharge >= 2f && drifter.status.HasEnemyStunEffect() && !drifter.status.HasStatusEffect(PlayerStatusEffect.GRABBED) && !drifter.status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN)) {
+		else if(!drifter.guarding && drifter.superCharge >= 200 && drifter.status.HasEnemyStunEffect() && !drifter.status.HasStatusEffect(PlayerStatusEffect.GRABBED) && !drifter.status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN)) {
 			drifter.ToggleAnimator(true);
 			hitstun = false;
 			drifter.status.clearStunStatus();
@@ -752,7 +752,7 @@ public class PlayerMovement : MonoBehaviour
 			if(currentJumps+1 < numberOfJumps) currentJumps++;
 			
 		}
-		else if (!drifter.guarding && drifter.superCharge >= 1f && !drifter.status.HasStunEffect()) {
+		else if (!drifter.guarding && drifter.superCharge >= 100 && !drifter.status.HasStunEffect()) {
 			spawnSuperParticle(CancelType.Time_Cancel,100,8);
 			drifter.attacks.useSuper();
 		}
