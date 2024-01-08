@@ -169,6 +169,7 @@ public class PlayerStatus : MonoBehaviour {
 						//Wakeup if knocked off stage
 						if(!drifter.movement.grounded)
 							ApplyStatusEffect(PlayerStatusEffect.FLATTEN,0);
+						//Stand Up after knocdown
 						if(!HasStatusEffect(PlayerStatusEffect.FLATTEN)) {
 							ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,8);
 							drifter.movement.hitstun = true;

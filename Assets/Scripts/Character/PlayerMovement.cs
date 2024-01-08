@@ -274,13 +274,13 @@ public class PlayerMovement : MonoBehaviour
 
 		if(drifter.status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN)) {
 			hitstun = true;
-			DropLedge();
+			DropLedge(false);
 		}
 
 		else if(drifter.status.HasEnemyStunEffect() && !drifter.guarding) {
 			hitstun = true;
 			drifter.PlayAnimation("HitStun");
-			DropLedge();
+			DropLedge(false);
 		}
 
 		else if(drifter.status.HasEnemyStunEffect() && drifter.guarding) {
@@ -627,9 +627,9 @@ public class PlayerMovement : MonoBehaviour
 	}
 
 	//Manages all the things that need to happen when a ledge is released
-	public void DropLedge(){
+	public void DropLedge(bool grantInvuln = true){
 		//Apply ledge invuln if the play is currently invuln
-		if(drifter.status.HasStatusEffect(PlayerStatusEffect.INVULN))drifter.status.ApplyStatusEffect(PlayerStatusEffect.INVULN,20);
+		if(drifter.status.HasStatusEffect(PlayerStatusEffect.INVULN) && grantInvuln)drifter.status.ApplyStatusEffect(PlayerStatusEffect.INVULN,20);
 		ledgeHanging = false;
 		resetGravity();
 		strongLedgeGrab = false;
