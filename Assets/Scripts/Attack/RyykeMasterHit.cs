@@ -339,7 +339,7 @@ public class RyykeMasterHit : MasterHit
 		stone.updateDirection(movement.Facing);
 
 		foreach (HitboxCollision hitbox in stone.gameObject.GetComponentsInChildren<HitboxCollision>(true)) {
-			hitbox.AttackID = attacks.AttackID;
+			hitbox.AttackID = attacks.NextID;
 			hitbox.Facing = stone.facing;
 			hitbox.isActive = true;
 		}

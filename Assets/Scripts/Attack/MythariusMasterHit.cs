@@ -88,7 +88,7 @@ public class MythariusMasterHit : MasterHit
 		g_Bird.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
 		foreach (HitboxCollision hitbox in g_Bird.GetComponentsInChildren<HitboxCollision>(true)) {
 			hitbox.parent = drifter.gameObject;
-			hitbox.AttackID = attacks.AttackID;
+			hitbox.AttackID = attacks.NextID;
 			hitbox.Facing = movement.Facing;
 	   }
 
@@ -103,10 +103,9 @@ public class MythariusMasterHit : MasterHit
 
 		g_Letter = GameController.Instance.CreatePrefab("Mytharius_Letter", g_Bird.transform.position, g_Bird.transform.rotation);
 		g_Letter.transform.localScale = new Vector3(birdFacing *10,10,1f);
-		attacks.SetMultiHitAttackID();
 		foreach (HitboxCollision hitbox in g_Letter.GetComponentsInChildren<HitboxCollision>(true)) {
 			hitbox.parent = drifter.gameObject;
-			hitbox.AttackID = attacks.AttackID;
+			hitbox.AttackID = attacks.NextID;
 			hitbox.Facing = birdFacing;
 		}
 

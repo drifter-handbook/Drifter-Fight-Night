@@ -60,7 +60,7 @@ public class NeoBojoMasterHit : MasterHit
 			g_centaur.GetComponent<Rigidbody2D>().velocity = new Vector3(movement.Facing * 15,0);
 			foreach (HitboxCollision hitbox in g_centaur.GetComponentsInChildren<HitboxCollision>(true)) {
 					hitbox.parent = drifter.gameObject;
-					hitbox.AttackID = attacks.AttackID;
+					hitbox.AttackID = attacks.NextID;
 					hitbox.Facing = movement.Facing;
 			}
 
@@ -79,7 +79,7 @@ public class NeoBojoMasterHit : MasterHit
 		if(g_centaur != null) {
 			foreach (HitboxCollision hitbox in g_centaur.GetComponentsInChildren<HitboxCollision>(true)) {
 				hitbox.parent = drifter.gameObject;
-				hitbox.AttackID = attacks.AttackID;
+				hitbox.AttackID = attacks.NextID;
 				hitbox.Facing = movement.Facing;
 			}
 			g_centaur.GetComponent<Animator>().Play("Centaur_Fire_" + power);
