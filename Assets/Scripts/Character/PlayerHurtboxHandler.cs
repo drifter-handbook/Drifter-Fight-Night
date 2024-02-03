@@ -421,7 +421,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 				case 0:
 					attacker.gainSuperMeter((int)damageDealt * 2);
 					drifter.gainSuperMeter(5);
-					attacker.TriggerOnHit(drifter);
+					attacker.TriggerOnHit(drifter,(hitbox.gameObject.tag == "Projectile"));
 					break;
 				case -1:
 					attacker.gainSuperMeter(6);

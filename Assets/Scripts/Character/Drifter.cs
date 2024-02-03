@@ -205,9 +205,9 @@ public class Drifter : MonoBehaviour
 		animator.enabled = p_mode;
 	}
 
-	public void TriggerOnHit(Drifter drifterHit){
+	public void TriggerOnHit(Drifter drifterHit, bool isProjectile){
 		//UnityEngine.Debug.Log(drifterType + " Hit a target");
-		masterhit.TriggerOnHit(drifterHit);
+		masterhit.TriggerOnHit(drifterHit,isProjectile);
 	}
 
 	//Return to idle is called anytime the player regains control
