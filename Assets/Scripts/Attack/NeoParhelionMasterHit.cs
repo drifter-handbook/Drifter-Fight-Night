@@ -16,14 +16,15 @@ public class NeoParhelionMasterHit : MasterHit
 
 	override public void UpdateFrame() {
 		base.UpdateFrame();
-		if(drifter.status.HasEnemyStunEffect()){
-			staticBurstTimer = -1;
-			deleteStaticField();
-			//staticCharge = 0;
-			
-		}
 
-		if(staticBurstTimer > 0 && !status.HasStatusEffect(PlayerStatusEffect.HITPAUSE)){
+		if(drifter.status.HasEnemyStunEffect() || movement.ledgeHanging || drifter.usingSuper)
+			deleteStaticField();
+
+		if(drifter.status.HasEnemyStunEffect())
+			staticBurstTimer = 1;
+
+
+		if(staticBurstTimer > 0 && !status.HasStatusEffect(PlayerStatusEffect.HITPAUSE) && !drifter.usingSuper){
 			staticBurstTimer--;
 			if(staticBurstTimer == 0 && status.HasStatusEffect(PlayerStatusEffect.ELECTRIFIED)){
 				Create_Burst(staticBurstTarget.gameObject.transform.position);
