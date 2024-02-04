@@ -212,12 +212,12 @@ public class BeanWrangler : NonplayerHurtboxHandler
 
 	//Registers a hit on bean, and handles his counter.
 	//If bean has taken over 40%, he becomes inactive untill he can heal
-	public override int RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, SingleAttackData attackData) {
+	public override AttackHitType RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, SingleAttackData attackData) {
 
-		int returnCode = -3;
+		AttackHitType returnCode = AttackHitType.NONE;
 
 		if(GameController.Instance.IsHost && hitbox.parent != hurtbox.parent && hurtbox.owner != hitbox.parent && CanHit(attackID)) {
-			if(following && Vector3.Distance(rb.position,targetPos.Pos) <= 3.8f) return -3;
+			if(following && Vector3.Distance(rb.position,targetPos.Pos) <= 3.8f) return AttackHitType.NONE;
 
 				returnCode =  base.RegisterAttackHit(hitbox,hurtbox,attackID,attackData);
 				oldAttacks[attackID] = MAX_ATTACK_DURATION;

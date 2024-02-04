@@ -16,7 +16,7 @@ public class PuppetHitboxCollision : HitboxCollision
         if (hurtbox != null && isActive)
         {
             //string player = playerType.NetworkType;
-            hitResult = hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID + 64, OverrideData != null?OverrideData:drifter.attacks.GetCurrentAttackData());
+            hitResult = (int)hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID + 64, OverrideData != null?OverrideData:drifter.attacks.GetCurrentAttackData());
      
             if(hitResult == 1) isActive = false;
             

@@ -544,7 +544,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
 	}
 
-	public virtual void TriggerOnHit(Drifter drifter, bool isProjectile) {
+	public virtual void TriggerOnHit(Drifter drifter, bool isProjectile, AttackHitType hitType) {
 
 	}
 

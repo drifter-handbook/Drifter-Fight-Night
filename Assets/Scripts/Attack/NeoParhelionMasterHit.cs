@@ -99,9 +99,9 @@ public class NeoParhelionMasterHit : MasterHit
 	   	burst = projectile;
 	}
 
-	public override void TriggerOnHit(Drifter target_drifter, bool isProjectle){
+	public override void TriggerOnHit(Drifter target_drifter, bool isProjectle, AttackHitType hitType){
 		
-		if(isProjectle)return;
+		if(isProjectle || (hitType != AttackHitType.HIT && hitType != AttackHitType.BLOCK) )return;
 		orbTimer = 8;
 		orbTarget = target_drifter;
 	}

@@ -52,10 +52,10 @@ public class HitboxCollision : MonoBehaviour
             //string player = playerType.NetworkType;
             int hitResult = -3;
             if(OverrideData != null){
-                hitResult = hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, OverrideData);
+                hitResult = (int)hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, OverrideData);
             }
             else{
-                hitResult = hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, drifter.attacks.GetCurrentAttackData());
+                hitResult = (int)hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, drifter.attacks.GetCurrentAttackData());
             }
             if(hitResult == 1) isActive = false;
             if(hitResult >= -1 && drifter.canSpecialCancelFlag)drifter.listenForSpecialCancel = true;

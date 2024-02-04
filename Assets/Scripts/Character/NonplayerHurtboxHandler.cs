@@ -54,7 +54,7 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
 		}
 	}
 
-	public override int RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, SingleAttackData attackData) {
+	public override AttackHitType RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, SingleAttackData attackData) {
 
 		if (hitbox.parent != hurtbox.parent && hurtbox.owner != hitbox.parent && CanHit(attackID)) {
 			
@@ -70,7 +70,7 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
 				GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.STAR, hitSparkPos,0, new Vector2(10f, 10f));
 				attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,48);
 				gameObject.GetComponent<SyncAnimatorStateHost>().SetState("Counter_Success");
-				return -4;
+				return AttackHitType.COUNTER;
 			}
 
 
@@ -153,7 +153,7 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
 
 		}
 
-		return 2;
+		return AttackHitType.SUMMON;
 
 	}
 

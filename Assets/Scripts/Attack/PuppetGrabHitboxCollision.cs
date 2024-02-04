@@ -24,7 +24,7 @@ public class PuppetGrabHitboxCollision : HitboxCollision
             //string player = playerType.NetworkType;
             if(OverrideData != null)
             {
-                hitResult = hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID + 64, OverrideData);
+                hitResult = (int)hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID + 64, OverrideData);
                 if((hitResult == 0  || hitResult == 1) && SuccessState != "" && animator != null)
                 {
                     victim = hurtbox;

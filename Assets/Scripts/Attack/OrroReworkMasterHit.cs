@@ -287,7 +287,8 @@ public class OrroReworkMasterHit : MasterHit {
 		
 	}
 
-	public override void TriggerOnHit(Drifter target_drifter, bool isProjectle){
+	public override void TriggerOnHit(Drifter target_drifter, bool isProjectle, AttackHitType hitType){
+		if(hitType != AttackHitType.HIT) return;
 		bookBoltTimer = BOOK_BOLT_DELAY;
 		boltTarget = target_drifter;
 	}

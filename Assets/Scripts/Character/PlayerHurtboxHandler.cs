@@ -4,6 +4,17 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+public enum AttackHitType : short {
+    INVULN = -5,//hit registered againat an invulnerable enemy
+	COUNTER = -4,// Hit was a registered as a counter
+	NONE = -3,// Hit did not register at all; ID was already present in dict, or target was invulnerable.
+	PARRY = -2,// Hit was registerted, but Parried, dealing no damage
+	BLOCK = -1, // Hit was registered, but blocked
+	HIT = 0, // Hit was registered normally
+	GRAB = 1, // Hit was registered normally and has attatched the opponent to the players hitbox
+	SUMMON = 2//: hit was against a non-player object
+}
+
 public class PlayerHurtboxHandler : MonoBehaviour
 {
 	// keep track of what attacks we've already processed
@@ -55,8 +66,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
 	// 1: Hit was registered normally and has attatched the opponent to the players hitbox
 	// 2: hit was against a non-player object
 
-	public virtual int RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID,  SingleAttackData attackData)	{
-		int returnCode = -3;
+	public virtual AttackHitType RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID,  SingleAttackData attackData)	{
+		AttackHitType returnCode = AttackHitType.NONE;
 
 		if (hitbox.parent != hurtbox.parent && CanHit(attackID)) {
 			// register new attack
@@ -79,16 +90,16 @@ public class PlayerHurtboxHandler : MonoBehaviour
 				((drifter.movement.dashing || status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN)) && attackData.hitType == HitType.GRAB ) || 
 				//Whiff non-OTG moves on otg opponents
 				(!attackData.canHitKnockedDown && status.HasStatusEffect(PlayerStatusEffect.FLATTEN))
-			) return -3;
+			) return AttackHitType.NONE;
 
-			if(status.HasStatusEffect(PlayerStatusEffect.INVULN)) return -3;
+			if(status.HasStatusEffect(PlayerStatusEffect.INVULN)) return AttackHitType.NONE;
 			oldAttacks[attackID] = MAX_ATTACK_DURATION;
 
-			if((drifter.guarding && status.HasStunEffect()) &&  attackData.hitType == HitType.GRAB) return -1;
+			if((drifter.guarding && status.HasStunEffect()) &&  attackData.hitType == HitType.GRAB) return AttackHitType.BLOCK;
 
 			//Ignore the collision if invulnerable or You try to grab a planted opponenet
 			
-			if(status.HasStatusEffect(PlayerStatusEffect.PLANTED) && attackData.StatusEffect == PlayerStatusEffect.GRABBED) return -3;
+			if(status.HasStatusEffect(PlayerStatusEffect.PLANTED) && attackData.StatusEffect == PlayerStatusEffect.GRABBED) return AttackHitType.NONE;
 
 			attacker.canFeint = false;
 
@@ -101,7 +112,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 				attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,30);
 				drifter.PlayAnimation("Counter_Success");
 				status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,15);
-				return -4;
+				return AttackHitType.COUNTER;
 			}
 
 
@@ -305,7 +316,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
 				drifter.GetComponentInChildren<GameObjectShake>().Shake(attackData.StatusEffect != PlayerStatusEffect.CRINGE?attackData.HitStop:attackData.StatusDuration,attackData.StatusEffect != PlayerStatusEffect.CRINGE?1.5f:2f);
 
-				returnCode = attackData.StatusEffect == PlayerStatusEffect.GRABBED?1: 0;             
+				returnCode = (attackData.StatusEffect == PlayerStatusEffect.GRABBED)?AttackHitType.GRAB : AttackHitType.HIT;             
 			}
 			//Normal guarding behavior
 			else if(drifter.guarding && !drifter.parrying) {
@@ -343,7 +354,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 				if (HitPauseDuration >0 && hitbox.gameObject.tag != "Projectile")
 					attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,HitPauseDuration);
 
-				returnCode = -1; 
+				returnCode = AttackHitType.BLOCK; 
 
 			}
 			//Parrying a guardbreaker
@@ -353,7 +364,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 				if(hitbox.gameObject.tag != "Projectile")hitbox.parent.GetComponent<Rigidbody2D>().velocity = new Vector2(hitbox.Facing *-35f, hitbox.parent.GetComponent<Rigidbody2D>().velocity.y);
 			   
 				GetComponent<Rigidbody2D>().velocity = new Vector2(35f * hitbox.Facing , GetComponent<Rigidbody2D>().velocity.y);
-				returnCode = -2;
+				returnCode = AttackHitType.PARRY;
 
 			}
 			//Parrying a normal attack
@@ -368,7 +379,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 				Shake.zoomEffect(36,Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),false);
 				attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,36);
 				drifter.movement.pauseGravity();
-				returnCode = -2;
+				returnCode = AttackHitType.PARRY;
 
 			}
 
@@ -414,23 +425,23 @@ public class PlayerHurtboxHandler : MonoBehaviour
 				// -1: Hit was registered, but blocked
 				// 0: Hit was registered normally
 				// 1: hit was against a non-player object
+			attacker.TriggerOnHit(drifter,(hitbox.gameObject.tag == "Projectile"), returnCode);
 			switch(returnCode) {
-				case 1:
+				case AttackHitType.GRAB:
 					attacker.gainSuperMeter(4);
 					break;
-				case 0:
+				case AttackHitType.HIT:
 					attacker.gainSuperMeter((int)damageDealt * 2);
 					drifter.gainSuperMeter(5);
-					attacker.TriggerOnHit(drifter,(hitbox.gameObject.tag == "Projectile"));
 					break;
-				case -1:
+				case AttackHitType.BLOCK:
 					attacker.gainSuperMeter(6);
 					drifter.gainSuperMeter(6);
 					break;
-				case -2:
+				case AttackHitType.PARRY:
 					drifter.gainSuperMeter(50);
 					break;
-				case -4:
+				case AttackHitType.COUNTER:
 					drifter.gainSuperMeter(33);
 					break;
 				default:

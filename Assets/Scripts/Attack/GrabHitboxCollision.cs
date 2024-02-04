@@ -24,7 +24,7 @@ public class GrabHitboxCollision : HitboxCollision
             //string player = playerType.NetworkType;
             int hitResult = -5;
             if(OverrideData != null){
-                hitResult = hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, OverrideData);
+                hitResult = (int)hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, OverrideData);
                 if(hitResult == 1 || hitResult == 0)
                 {
                 	victim = hurtbox;
@@ -36,7 +36,7 @@ public class GrabHitboxCollision : HitboxCollision
                 }
             }
             else{
-                hitResult = hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, drifter.attacks.GetCurrentAttackData());
+                hitResult = (int)hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, drifter.attacks.GetCurrentAttackData());
             }
             if(hitResult >= -1 && cancelable && drifter.canSpecialCancelFlag)drifter.listenForSpecialCancel = true;
             if(hitResult == 1) isActive = false;

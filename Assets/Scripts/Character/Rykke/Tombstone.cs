@@ -71,9 +71,9 @@ public class Tombstone : NonplayerHurtboxHandler
 
 	//Registers a hit on the stone, and handles his counter.
 	//
-	public override int RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, SingleAttackData attackData) {
+	public override AttackHitType RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, SingleAttackData attackData) {
 
-		int returnCode = -3;
+		AttackHitType returnCode = AttackHitType.NONE;
 
 		if(takesKnockback)takesKnockback = false;
 
