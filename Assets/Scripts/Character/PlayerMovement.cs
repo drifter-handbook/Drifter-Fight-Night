@@ -320,9 +320,9 @@ public class PlayerMovement : MonoBehaviour
 		}
 
 		//Inverts controls if revered
-		if(drifter.status.HasStatusEffect(PlayerStatusEffect.REVERSED)){
-			drifter.input[0].MoveX *= -1;
-		}
+		// if(drifter.status.HasStatusEffect(PlayerStatusEffect.REVERSED)){
+		// 	drifter.input[0].MoveX *= -1;
+		// }
 
 		//Pauses you in place if you have a corresponding status effect.
 		if(drifter.status.HasStatusEffect(PlayerStatusEffect.STUNNED)

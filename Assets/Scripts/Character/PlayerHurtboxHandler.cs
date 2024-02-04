@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -426,6 +426,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 				// 0: Hit was registered normally
 				// 1: hit was against a non-player object
 			attacker.TriggerOnHit(drifter,(hitbox.gameObject.tag == "Projectile"), returnCode);
+			
 			switch(returnCode) {
 				case AttackHitType.GRAB:
 					attacker.gainSuperMeter(4);

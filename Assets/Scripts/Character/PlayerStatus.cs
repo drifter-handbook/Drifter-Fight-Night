@@ -13,7 +13,7 @@ public enum PlayerStatusEffect {
 	DEAD,
 	POISONED,
 	BURNING,
-	REVERSED,
+	ELECTRIFIED,
 	FLIGHT,
 	INVULN,
 	ARMOUR,
@@ -42,18 +42,20 @@ public class PlayerStatusData {
 	public int iconIndex = -1;
 	public bool removeOnHit = true;
 	public bool isStun = false;
+	public bool decrementStatus = true;
 	public bool isSelfInflicted = false;
 	public int channel = 0;
 	public GameObject statusBar = null;
 	public int duration = 0;
 	//public bool isMashable = false;
 
-	public PlayerStatusData(string statusName, int icon = -1 ,bool remove = true,bool stun = false, bool self = false, int channel = 0) { 
+	public PlayerStatusData(string statusName, int icon = -1 ,bool remove = true,bool stun = false, bool decrement = true, bool self = false, int channel = 0) { 
 		name = statusName;
 		iconIndex = icon;
 		removeOnHit = remove;
 		isStun = stun;
 		isSelfInflicted = self;
+		decrementStatus = decrement;
 		this.channel = channel;
 	}
 }
@@ -70,7 +72,7 @@ public class PlayerStatus : MonoBehaviour {
 		new PlayerStatusData("DEAD",icon:  7,remove: false,stun: true)                      ,
 		new PlayerStatusData("POISONED",icon:  0,remove: false)                             ,
 		new PlayerStatusData("BURNING",icon: 1,remove: false)                               ,
-		new PlayerStatusData("REVERSED",icon: 4)                                            ,
+		new PlayerStatusData("ELECTRIFIED",icon: 4, decrement: false)                       ,
 		new PlayerStatusData("FLIGHT",icon: 12, self: true)                                 ,
 		new PlayerStatusData("INVULN",icon: 9, remove: false, self: true)                   ,
 		new PlayerStatusData("ARMOUR",icon: 10, remove: false, self: true)                  ,
@@ -149,7 +151,7 @@ public class PlayerStatus : MonoBehaviour {
 			for(int i = 0; i < statusDataMap.Length; i++) {
 			//for(int i = 0; i < statusDataMap.Length; i++) {
 				if(HasStatusEffect(i))	{
-					statusDataMap[i].duration--;
+					if(statusDataMap[i].decrementStatus)statusDataMap[i].duration--;
 
 					//Damage player if they are on fire
 					if(i == (int)PlayerStatusEffect.BURNING) drifter.DamageTaken += Time.fixedDeltaTime;
@@ -179,6 +181,13 @@ public class PlayerStatus : MonoBehaviour {
 						}
 					}
 				}
+
+				if(statusDataMap[i].duration <= 0){
+						Destroy(statusDataMap[i].statusBar);
+						statusDataMap[i].statusBar = null;
+					}
+					else if(statusDataMap[i].statusBar != null)
+						statusDataMap[i].statusBar.GetComponent<StatusBar>().UpdateFrame();
 			}
 		}
 			
@@ -268,11 +277,10 @@ public class PlayerStatus : MonoBehaviour {
 
 	//Clears all removable Status effects
 	public void clearRemoveOnHitStatus() {
-		for(int i = 0; i < statusDataMap.Length; i++) {
+		for(int i = 0; i < statusDataMap.Length; i++) 
 			if(statusDataMap[i].removeOnHit) 
 				statusDataMap[i].duration = 0;
 		
-		}
 		drifter.SetAnimationSpeed(1f);
 		grabPoint = null;
 	}
@@ -280,11 +288,10 @@ public class PlayerStatus : MonoBehaviour {
 
 	//Clears all stun Status effects
 	public void clearStunStatus() {
-		for(int i = 0; i < statusDataMap.Length; i++) {
+		for(int i = 0; i < statusDataMap.Length; i++) 
 			if(statusDataMap[i].isStun)
 				statusDataMap[i].duration = 0;
-
-		}
+	
 		grabPoint = null;
 	}
 
@@ -323,6 +330,21 @@ public class PlayerStatus : MonoBehaviour {
 		}
 	}
 
+	public void AddStatusDuration(PlayerStatusEffect ef, int duration, int cap = -1){
+		if(HasStatusEffect(ef)) {
+			if( cap <= 0 || (statusDataMap[(int)ef].duration + duration) <= cap)
+				statusDataMap[(int)ef].duration += duration;
+			else
+				statusDataMap[(int)ef].duration = cap;
+		}
+	}
+
+	public void AddStatusBar(PlayerStatusEffect ef, int duration){
+		statusDataMap[(int)ef].statusBar = addStatusBar(ef,duration);
+		
+		ApplyStatusEffect(ef,1);
+	}
+
 	//IDK fam. do we want to keep this?
 	public int GetStatusToRender() {
 		//UnityEngine.Debug.Log("ASKED");
@@ -331,7 +353,7 @@ public class PlayerStatus : MonoBehaviour {
 		if(HasStatusEffect(PlayerStatusEffect.PARALYZED))return 3;
 		if(HasStatusEffect(PlayerStatusEffect.EXPOSED))return 4;
 		if(HasStatusEffect(PlayerStatusEffect.FEATHERWEIGHT))return 5;
-		if(HasStatusEffect(PlayerStatusEffect.REVERSED))return 6;
+		if(HasStatusEffect(PlayerStatusEffect.ELECTRIFIED))return 6;
 		if(HasStatusEffect(PlayerStatusEffect.SLOWED))return 7;
 		if(HasStatusEffect(PlayerStatusEffect.INVULN))return 8;
 		if(HasStatusEffect(PlayerStatusEffect.GRABBED))return 9;

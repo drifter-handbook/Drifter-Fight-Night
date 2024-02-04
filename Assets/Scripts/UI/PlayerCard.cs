@@ -83,6 +83,7 @@ public class PlayerCard : MonoBehaviour
         newBar.transform.localScale = new Vector3(100, 100, 1);
         newBar.GetComponent<StatusBar>().status = status;
         newBar.GetComponent<StatusBar>().initialize(statusEffect,icon,duration);
+        newBar.GetComponent<StatusBar>().UpdateFrame();
         //currentStatusCount++;
         return newBar;
 

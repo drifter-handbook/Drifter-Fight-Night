@@ -17,18 +17,16 @@ public class StatusBar : MonoBehaviour
     float duration;
     PlayerStatusEffect ef;
 
-    void FixedUpdate()
-    {
+    public void UpdateFrame() {
         if(status == null) Destroy(gameObject);
         if(duration < status.remainingDuration(ef)) duration = status.remainingDuration(ef);
-        if(duration == 0) Destroy(gameObject);
+        //if(duration == 0) Destroy(gameObject);
         bar.fillAmount = status.remainingDuration(ef)/duration;
-        if(status.remainingDuration(ef) <= 0) Destroy(gameObject);
+        //if(status.remainingDuration(ef) <= 0) Destroy(gameObject);
 
     } 
 
-    public void initialize(PlayerStatusEffect statusEffect,int index, int duration)
-    {
+    public void initialize(PlayerStatusEffect statusEffect,int index, int duration) {
         if(duration == 0) Destroy(gameObject);
         ef = statusEffect;
         Icon.sprite = statusIcons[index];

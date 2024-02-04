@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class NeoParhelionMasterHit : MasterHit
 {
-	int MAX_ORBS = 3;
-	GameObject[] orbs = new GameObject[] {null,null,null};
-	GameObject burst;
-	Drifter orbTarget = null;
-	int orbTimer = 0;
+	GameObject g_staticField;
+	GameObject g_burst;
+	Drifter staticBurstTarget = null;
+	int staticBurstTimer = 0;
+	//int staticCharge = 0;
+	int staticCycles = 0;
 
 	//Inhereted Roll Methods
 	public GrabHitboxCollision Up_W_Grab;
@@ -16,99 +17,99 @@ public class NeoParhelionMasterHit : MasterHit
 	override public void UpdateFrame() {
 		base.UpdateFrame();
 		if(drifter.status.HasEnemyStunEffect()){
-			orbTimer = -1;
-			removeAllOrbs();
+			staticBurstTimer = -1;
+			deleteStaticField();
+			//staticCharge = 0;
+			
 		}
 
-		if(orbTimer > 0 && !status.HasStatusEffect(PlayerStatusEffect.HITPAUSE)){
-			orbTimer--;
-			if(orbTimer == 0){
-				int orbIndex = -1;
-				for(int i = 0; i < MAX_ORBS; i++) {
-					if(orbs[i] != null) {
-						orbIndex = i;
-						i = MAX_ORBS;
-					}
-				}
-				if(orbIndex < 0) return;
-
-				Create_Burst(orbTarget.gameObject.transform.position);
-
-				Destroy(orbs[orbIndex]);
-				orbs[orbIndex] = null;
-				orbTarget = null;
+		if(staticBurstTimer > 0 && !status.HasStatusEffect(PlayerStatusEffect.HITPAUSE)){
+			staticBurstTimer--;
+			if(staticBurstTimer == 0 && status.HasStatusEffect(PlayerStatusEffect.ELECTRIFIED)){
+				Create_Burst(staticBurstTarget.gameObject.transform.position);
 			}
 
 		}
+
+		if(g_burst != null) g_burst.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
+		if(g_staticField!= null) g_staticField.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
 	}
 
-	void removeAllOrbs(){
-		for(int i = 0; i < MAX_ORBS; i++){
-			if(orbs[i] != null){
-				Destroy(orbs[i]);
-				orbs[i] = null;
-			}
-		}
-	}
-
-	public void Create_Orb() {
-
-		const float ORB_RADIUS = 3f;
-
-		int orbIndex = -1;
-
-		for(int i = 0; i <MAX_ORBS; i++) {
-			if(orbs[i] == null) {
-				orbIndex = i;
-				i = MAX_ORBS;
-			}
-		}
-		if(orbIndex < 0)
-			return;
-		
-		float angle = orbIndex * 2f/MAX_ORBS * Mathf.PI;
-
-		GameObject projectile = Create_Orb(transform.position + new Vector3(Mathf.Sin(angle) * movement.Facing * ORB_RADIUS ,Mathf.Cos(angle) *ORB_RADIUS + 3f,0));
-
-	   	orbs[orbIndex] = projectile;
-	}
-
-
-	public GameObject Create_Orb(Vector2 pos){
+	public void Create_Static_Field(int launcher){
+		deleteStaticField();
 		GameObject projectile;
-		projectile = GameController.Instance.CreatePrefab("Parhelion_Orb", pos, transform.rotation);
+		projectile = GameController.Instance.CreatePrefab("Parhelion_Static", transform.position + new Vector3(0,2f), transform.rotation);
 		projectile.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
-	   	SetObjectColor(projectile);
-	   	projectile.transform.SetParent(drifter.gameObject.transform);
+		SetObjectColor(projectile);
+		projectile.transform.SetParent(drifter.gameObject.transform);
 
-	   	return projectile;
+		foreach (HitboxCollision hitbox in projectile.GetComponentsInChildren<HitboxCollision>(true)) {
+			hitbox.parent = drifter.gameObject;
+			hitbox.AttackID = attacks.NextID;
+			hitbox.Facing = movement.Facing;
+		}
+
+		if(!status.HasStatusEffect(PlayerStatusEffect.ELECTRIFIED)){
+			status.AddStatusBar(PlayerStatusEffect.ELECTRIFIED, 500);
+		}
+		
+		//if(staticCharge < 4) staticCharge++;
+
+		status.AddStatusDuration(PlayerStatusEffect.ELECTRIFIED, 100,500);
+
+		staticCycles++;
+
+		if(launcher != 0)
+			projectile.GetComponent<InstantiatedEntityCleanup>().PlayAnimation("Parhelion_Static_End");
+
+		g_staticField = projectile;
 	}
 
 	private void Create_Burst(Vector2 pos){
 		GameObject projectile;
 		projectile = GameController.Instance.CreatePrefab("Parhelion_Burst", pos, transform.rotation);
 		projectile.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
-	   	SetObjectColor(projectile);
+		SetObjectColor(projectile);
 
-	   	foreach (HitboxCollision hitbox in projectile.GetComponentsInChildren<HitboxCollision>(true)) {
+		foreach (HitboxCollision hitbox in projectile.GetComponentsInChildren<HitboxCollision>(true)) {
 			hitbox.parent = drifter.gameObject;
 			hitbox.AttackID = attacks.NextID;
 			hitbox.Facing = movement.Facing;
 		}
 
-	   	burst = projectile;
+		g_burst = projectile;
+	}
+
+	public void Loop_W_Down(){
+		if(!drifter.input[0].Special || staticCycles >3){
+			staticCycles = 0;
+			playState("W_Down_End");
+		}
+	}
+
+	private void deleteStaticField() {
+		Destroy(g_staticField);
+		g_staticField = null;
 	}
 
 	public override void TriggerOnHit(Drifter target_drifter, bool isProjectle, AttackHitType hitType){
 		
-		if(isProjectle || (hitType != AttackHitType.HIT && hitType != AttackHitType.BLOCK) )return;
-		orbTimer = 8;
-		orbTarget = target_drifter;
+		if(isProjectle || (hitType != AttackHitType.HIT && hitType != AttackHitType.BLOCK) || !status.HasStatusEffect(PlayerStatusEffect.ELECTRIFIED) || staticCycles >0)return;
+		//If a burst is already charging, reset timer instead and dont consume moe juice
+		if(staticBurstTimer >0)	{
+			staticBurstTimer = 8;
+			return;
+		}
+		status.AddStatusDuration(PlayerStatusEffect.ELECTRIFIED, -100);
+		staticBurstTimer = 8;
+		staticBurstTarget = target_drifter;
 	}
 
 	public new void returnToIdle() {
 		base.returnToIdle();
 		Up_W_Grab.victim = null;
+		deleteStaticField();
+		staticCycles = 0;
 	}
 
 	public void W_Up_Slam() {
