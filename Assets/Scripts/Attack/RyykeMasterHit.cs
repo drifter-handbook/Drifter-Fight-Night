@@ -38,7 +38,7 @@ public class RyykeMasterHit : MasterHit
 		base.UpdateFrame();
 
 		//Remove the arm if it is not needed
-		if(g_Tether_Arm!= null &&(movement.ledgeHanging || status.HasEnemyStunEffect())) DeleteArm();
+		if(movement.ledgeHanging || status.HasEnemyStunEffect()) clearMasterhitVars();
 
 		//remove all tombstones on death
 		if(status.HasStatusEffect(PlayerStatusEffect.DEAD)) {
@@ -383,12 +383,8 @@ public class RyykeMasterHit : MasterHit
 	}
 
 
-	public new void returnToIdle() {
-		base.returnToIdle();
-		clear();
-	}
-
-	public void clear() {
+	public override void clearMasterhitVars() {
+		base.clearMasterhitVars();
 		listeningForDirection = false;
 		listeningForMovement = false;
 		burrowTime = maxBurrowTime;

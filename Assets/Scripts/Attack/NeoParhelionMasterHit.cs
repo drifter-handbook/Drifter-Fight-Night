@@ -11,14 +11,17 @@ public class NeoParhelionMasterHit : MasterHit
 	//int staticCharge = 0;
 	int staticCycles = 0;
 
+	const int MAX_STATIC_CHARGE_DURATION = 500;
+	const int STATIC_CHARGE_HITS = 5;
+
 	//Inhereted Roll Methods
 	public GrabHitboxCollision Up_W_Grab;
 
 	override public void UpdateFrame() {
 		base.UpdateFrame();
 
-		if(drifter.status.HasEnemyStunEffect() || movement.ledgeHanging || drifter.usingSuper)
-			deleteStaticField();
+		if(drifter.status.HasEnemyStunEffect() || movement.ledgeHanging)
+			clearMasterhitVars();
 
 		if(drifter.status.HasEnemyStunEffect())
 			staticBurstTimer = 1;
@@ -51,12 +54,12 @@ public class NeoParhelionMasterHit : MasterHit
 		}
 
 		if(!status.HasStatusEffect(PlayerStatusEffect.ELECTRIFIED)){
-			status.AddStatusBar(PlayerStatusEffect.ELECTRIFIED, 500);
+			status.AddStatusBar(PlayerStatusEffect.ELECTRIFIED, MAX_STATIC_CHARGE_DURATION);
 		}
 		
 		//if(staticCharge < 4) staticCharge++;
 
-		status.AddStatusDuration(PlayerStatusEffect.ELECTRIFIED, 100,500);
+		status.AddStatusDuration(PlayerStatusEffect.ELECTRIFIED, MAX_STATIC_CHARGE_DURATION/STATIC_CHARGE_HITS,MAX_STATIC_CHARGE_DURATION);
 
 		staticCycles++;
 
@@ -101,7 +104,7 @@ public class NeoParhelionMasterHit : MasterHit
 			staticBurstTimer = 8;
 			return;
 		}
-		status.AddStatusDuration(PlayerStatusEffect.ELECTRIFIED, -100);
+		status.AddStatusDuration(PlayerStatusEffect.ELECTRIFIED, -MAX_STATIC_CHARGE_DURATION/STATIC_CHARGE_HITS);
 		staticBurstTimer = 8;
 		staticBurstTarget = target_drifter;
 	}
@@ -109,6 +112,12 @@ public class NeoParhelionMasterHit : MasterHit
 	public new void returnToIdle() {
 		base.returnToIdle();
 		Up_W_Grab.victim = null;
+		deleteStaticField();
+		staticCycles = 0;
+	}
+
+	public override void clearMasterhitVars(){
+		base.clearMasterhitVars();
 		deleteStaticField();
 		staticCycles = 0;
 	}
