@@ -22,23 +22,16 @@ public class NeoParhelionMasterHit : MasterHit
 	override public void UpdateFrame() {
 		base.UpdateFrame();
 
-		if(drifter.status.HasEnemyStunEffect() || movement.ledgeHanging)
+		if(drifter.status.HasEnemyStunEffect() || movement.ledgeHanging){
+			staticBurstTarget = null;
 			clearMasterhitVars();
-
-		if(drifter.status.HasEnemyStunEffect())
-			staticBurstTimer = 1;
-
-		if(status.HasStatusEffect(PlayerStatusEffect.ELECTRIFIED) && zap == null){
-			zap = GameController.Instance.CreatePrefab("ParhelionLightningAura", transform.position + new Vector3(0,2f), transform.rotation);
-
-			zap.transform.SetParent(drifter.gameObject.transform);
-		}
-		else if(!status.HasStatusEffect(PlayerStatusEffect.ELECTRIFIED) && zap != null){
-			Destroy(zap);
-			zap = null;
 		}
 
-		if(staticBurstTimer > 0 && !status.HasStatusEffect(PlayerStatusEffect.HITPAUSE) && !drifter.usingSuper){
+		if(drifter.status.HasEnemyStunEffect()){
+			staticBurstTimer = 0;
+		}
+
+		if(staticBurstTimer > 0 && !status.HasStatusEffect(PlayerStatusEffect.HITPAUSE) && !drifter.usingSuper && staticBurstTarget != null){
 			staticBurstTimer--;
 			if(staticBurstTimer == 0){
 				if(numBursts > 1){
@@ -124,15 +117,15 @@ public class NeoParhelionMasterHit : MasterHit
 			return;
 		}
 
-		//onBlock = hitType == AttackHitType.BLOCK;
+		if(hitType == AttackHitType.BLOCK){
+			numBursts = 1;
+			status.AddStatusDuration(PlayerStatusEffect.ELECTRIFIED, -100);
+		}
+		else{
+			numBursts = status.remainingDuration(PlayerStatusEffect.ELECTRIFIED)/100;
+			status.ApplyStatusEffect(PlayerStatusEffect.ELECTRIFIED,0);
+		}
 		staticBurstTimer = 8;
-
-		UnityEngine.Debug.Log(status.remainingDuration(PlayerStatusEffect.ELECTRIFIED));
-
-		numBursts = status.remainingDuration(PlayerStatusEffect.ELECTRIFIED)/100;
-
-		UnityEngine.Debug.Log(numBursts);
-		status.ApplyStatusEffect(PlayerStatusEffect.ELECTRIFIED,0);
 		staticBurstTarget = target_drifter;
 	}
 
@@ -147,7 +140,8 @@ public class NeoParhelionMasterHit : MasterHit
 		base.clearMasterhitVars();
 		deleteStaticField();
 		staticCycles = 0;
-		numBursts = 0;
+		//staticBurstTarget = null;
+		//numBursts = 0;
 	}
 
 	public void W_Up_Slam() {

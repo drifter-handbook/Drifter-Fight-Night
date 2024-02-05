@@ -44,12 +44,14 @@ public class PlayerStatusData {
 	public bool isStun = false;
 	public bool decrementStatus = true;
 	public bool isSelfInflicted = false;
+	public bool hasParticle = false;
 	public int channel = 0;
 	public GameObject statusBar = null;
+	public GameObject statusEffector = null;
 	public int duration = 0;
 	//public bool isMashable = false;
 
-	public PlayerStatusData(string statusName, int icon = -1 ,bool remove = true,bool stun = false, bool decrement = true, bool self = false, int channel = 0) { 
+	public PlayerStatusData(string statusName, int icon = -1 ,bool remove = true,bool stun = false, bool decrement = true, bool self = false, int channel = 0, bool hasParticle = false) { 
 		name = statusName;
 		iconIndex = icon;
 		removeOnHit = remove;
@@ -57,6 +59,7 @@ public class PlayerStatusData {
 		isSelfInflicted = self;
 		decrementStatus = decrement;
 		this.channel = channel;
+		this.hasParticle = hasParticle;
 	}
 }
 
@@ -71,8 +74,8 @@ public class PlayerStatus : MonoBehaviour {
 		new PlayerStatusData("CRINGE",icon: 3,stun: true)                                   ,
 		new PlayerStatusData("DEAD",icon:  7,remove: false,stun: true)                      ,
 		new PlayerStatusData("POISONED",icon:  0,remove: false)                             ,
-		new PlayerStatusData("BURNING",icon: 1,remove: false)                               ,
-		new PlayerStatusData("ELECTRIFIED",icon: 4, decrement: false)                       ,
+		new PlayerStatusData("BURNING",icon: 1,remove: false, hasParticle: true)            ,
+		new PlayerStatusData("ELECTRIFIED",icon: 4, decrement: false, hasParticle: true)    ,
 		new PlayerStatusData("FLIGHT",icon: 12, self: true)                                 ,
 		new PlayerStatusData("INVULN",icon: 9, remove: false, self: true)                   ,
 		new PlayerStatusData("ARMOUR",icon: 10, remove: false, self: true)                  ,
@@ -160,12 +163,6 @@ public class PlayerStatus : MonoBehaviour {
 						
 					if(i == (int)PlayerStatusEffect.SLOWMOTION && HasEnemyStunEffect())drifter.movement.rb.velocity = delayedVelocity * .2f;
 
-
-					// if((i == (int)PlayerStatusEffect.CRINGE && !HasStatusEffect(PlayerStatusEffect.CRINGE)) || (i == (int)PlayerStatusEffect.SLOWMOTION && !HasStatusEffect(PlayerStatusEffect.SLOWMOTION))) {
-					// 		drifter.movement.rb.velocity = delayedVelocity;
-					// 		drifter.SetAnimationSpeed(1f);
-					// }
-
 					if(i == (int)PlayerStatusEffect.FLATTEN) {
 
 						//Wakeup if knocked off stage
@@ -183,11 +180,17 @@ public class PlayerStatus : MonoBehaviour {
 				}
 
 				if(statusDataMap[i].duration <= 0){
-						Destroy(statusDataMap[i].statusBar);
-						statusDataMap[i].statusBar = null;
+					Destroy(statusDataMap[i].statusBar);
+					statusDataMap[i].statusBar = null;
+
+					if(statusDataMap[i].statusEffector != null){
+						Destroy(statusDataMap[i].statusEffector);
+						statusDataMap[i].statusEffector = null;
 					}
-					else if(statusDataMap[i].statusBar != null)
-						statusDataMap[i].statusBar.GetComponent<StatusBar>().UpdateFrame();
+
+				}
+				else if(statusDataMap[i].statusBar != null)
+					statusDataMap[i].statusBar.GetComponent<StatusBar>().UpdateFrame();
 			}
 		}
 			
@@ -341,7 +344,7 @@ public class PlayerStatus : MonoBehaviour {
 
 	public void AddStatusBar(PlayerStatusEffect ef, int duration){
 		statusDataMap[(int)ef].statusBar = addStatusBar(ef,duration);
-		
+
 		ApplyStatusEffect(ef,1);
 	}
 
@@ -368,6 +371,14 @@ public class PlayerStatus : MonoBehaviour {
 		return card.addStatusBar(ef,statusDataMap[(int)ef].iconIndex,duration,this);
 	}
 
+	GameObject addStatusEffector(PlayerStatusEffect ef) {
+		
+		GameObject effector = GameController.Instance.CreatePrefab(statusDataMap[(int)ef].name + "_Particle", transform.position + new Vector3(0,-.2f,0), transform.rotation);
+		effector.transform.SetParent(drifter.gameObject.transform);
+		return effector;
+	}
+
+
 
 	//God this bullshit...
 	void ApplyStatusEffectFor(PlayerStatusEffect ef, int duration) {
@@ -381,6 +392,7 @@ public class PlayerStatus : MonoBehaviour {
 		}
 
 		if(!HasStatusEffect(ef) && data.statusBar == null && !(data.iconIndex < 0))data.statusBar = addStatusBar(ef,duration);
+		if(!HasStatusEffect(ef) && data.statusEffector== null && statusDataMap[(int)ef].hasParticle) data.statusEffector = addStatusEffector(ef);
 
 		//Ignores hitstun if in superarmour or invuln
 		if(ef == PlayerStatusEffect.DEAD){
