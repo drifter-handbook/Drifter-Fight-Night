@@ -12,7 +12,9 @@ public class NeoParhelionMasterHit : MasterHit
 	int staticCycles = 0;
 	bool onBlock = false;
 
-	GameObject zap = null;
+	GameObject zap;
+
+	GameObject dashTrail;
 
 	const int MAX_STATIC_CHARGE_DURATION = 400;
 
@@ -26,6 +28,7 @@ public class NeoParhelionMasterHit : MasterHit
 			staticBurstTarget = null;
 			deleteStaticField();
 			staticCycles = 0;
+			Remove_Dash_Trail();
 		}
 
 		if(drifter.status.HasEnemyStunEffect()){
@@ -104,6 +107,18 @@ public class NeoParhelionMasterHit : MasterHit
 		}
 	}
 
+	public void Create_Dash_Trail() {
+		dashTrail = drifter.createParticleEffector("PARHELION_DASH_Particle");
+	}
+
+	public void Remove_Dash_Trail() {
+		if(dashTrail == null) return;
+		dashTrail.GetComponent<ParticleSystemController>().Cleanup();
+		dashTrail = null;
+	}
+
+
+
 	private void deleteStaticField() {
 		Destroy(g_staticField);
 		g_staticField = null;
@@ -141,6 +156,7 @@ public class NeoParhelionMasterHit : MasterHit
 		base.clearMasterhitVars();
 		deleteStaticField();
 		staticCycles = 0;
+		Remove_Dash_Trail();
 		//staticBurstTarget = null;
 		//numBursts = 0;
 	}

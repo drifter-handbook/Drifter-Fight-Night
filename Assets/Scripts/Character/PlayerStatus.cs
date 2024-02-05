@@ -192,7 +192,7 @@ public class PlayerStatus : MonoBehaviour {
 					statusDataMap[i].statusBar = null;
 
 					if(statusDataMap[i].statusEffector != null){
-						Destroy(statusDataMap[i].statusEffector);
+						statusDataMap[i].statusEffector.GetComponent<ParticleSystemController>().Cleanup();
 						statusDataMap[i].statusEffector = null;
 					}
 
