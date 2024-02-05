@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6230038197485977375}
   - component: {fileID: -7838983525291667944}
   - component: {fileID: -7987150666400547575}
+  - component: {fileID: 2448668560751912792}
   m_Layer: 0
   m_Name: ELECTRIFIED_Particle
   m_TagString: Untagged
@@ -4814,6 +4815,19 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &2448668560751912792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4991686352384502868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b5f2b61449d7414398f5dc366d9aa35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particles: {fileID: -7838983525291667944}
 --- !u!1001 &5455698993824850458
 PrefabInstance:
   m_ObjectHideFlags: 0

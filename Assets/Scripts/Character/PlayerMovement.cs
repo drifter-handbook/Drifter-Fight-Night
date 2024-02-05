@@ -297,8 +297,8 @@ public class PlayerMovement : MonoBehaviour
 		if(drifter.status.HasStatusEffect(PlayerStatusEffect.KNOCKBACK) && rb.velocity.magnitude > 45f ){
 			if(smoketrail == null) smoketrail = drifter.createParticleEffector("LAUNCHED_PARTICLE");
 		}
-		else{
-			Destroy(smoketrail);
+		else if (smoketrail != null) {
+			smoketrail.GetComponent<ParticleSystemController>().Cleanup();
 			smoketrail = null;
 		}
 
