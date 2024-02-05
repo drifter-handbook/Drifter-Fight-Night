@@ -95,26 +95,30 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 		if(drifter.status.canbeKnockedDown() && !drifter.knockedDown && movement.grounded) {
 			if(!drifter.status.HasStatusEffect(PlayerStatusEffect.HITPAUSE)){
 				//Determine knockdown duration
-				movement.terminalVelocity = 2f;
+				movement.gravityPaused = true;
+				setTerminalVelocity(20f);
+				rb.gravityScale = 10f;
 				drifter.PlayAnimation("Knockdown_Bounce");
-				drifter.status.ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,90);
+				drifter.status.ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,60);
 				//movement.mainCamera.Shake(6,.33f);
 				//If the victim is in hitpause, set their delayed velocity instead
-				rb.velocity = new Vector2(movement.Facing *-9f,20);
+				rb.velocity = new Vector2(movement.Facing *-12f,20);
+				listeningForGroundedFlag = true;
 			}
 		}
 
 		//Handles knockdown after bounce
 		else if(status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN)){
-
 			if(!status.HasStatusEffect(PlayerStatusEffect.HITPAUSE)) {
 				drifter.knockedDown = true;
 				knockdownFlag = true;
-				resetTerminalVelocity();
 				if(listeningForGroundedFlag && movement.grounded) {
+					resetTerminalVelocity();
+					movement.resetGravity();
 					status.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,0);
-					//status.ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,0f);
-					status.ApplyStatusEffect(PlayerStatusEffect.FLATTEN,status.remainingDuration(PlayerStatusEffect.KNOCKDOWN));
+					status.ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,91);
+					playState("Knockdown");
+					status.ApplyStatusEffect(PlayerStatusEffect.FLATTEN,90);
 					rb.velocity = new Vector2(movement.Facing * -10f * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f),rb.velocity.y);
 					BounceParticle();
 					playQueuedState();
@@ -123,9 +127,8 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 			}
 		}
 
-		else if(status.HasEnemyStunEffect() || movement.ledgeHanging) {
+		else if(status.HasEnemyStunEffect() || movement.ledgeHanging ) {
 			clearMasterhitVars();
-			resetTerminalVelocity();
 		}
 		else if(
 			(listeningForGroundedFlag && movement.grounded)||
@@ -420,12 +423,6 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 		if(checkForJumpTap())movement.jump();
 		//Still needed?
 		attacks.UpdateFrame();
-	}
-
-	public void knockdownRecover() {
-		if(status.HasStatusEffect(PlayerStatusEffect.FLATTEN)) status.ApplyStatusEffect(PlayerStatusEffect.FLATTEN,0);
-		if(status.HasEnemyStunEffect())status.clearStunStatus();
-		movement.techParticle();
 	}
 
 	public void playState(string state) {

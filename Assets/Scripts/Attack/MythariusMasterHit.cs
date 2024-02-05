@@ -20,7 +20,7 @@ public class MythariusMasterHit : MasterHit
 		base.UpdateFrame();
 
 		if(movement.ledgeHanging || status.HasEnemyStunEffect())
-			listeningForDirection = false;
+			clearMasterhitVars();
 
 		if(g_Bird != null) g_Bird.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
 
@@ -35,6 +35,11 @@ public class MythariusMasterHit : MasterHit
 	public void listenForDirection() {
 		neutralSpecialReleaseDelay = 0;
 		listeningForDirection = true;
+	}
+
+	public override void clearMasterhitVars() {
+		base.clearMasterhitVars();
+		listeningForDirection = false;
 	}
 
 	public void NeutralSpecial() {

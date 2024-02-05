@@ -235,17 +235,17 @@ public class PlayerMovement : MonoBehaviour
 		//Handle Jump
 		if(jumpTimer < fullhopFrames) {
 			float prevJumpTimer = jumpTimer;
-			jumpTimer += (drifter.status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f);
+			jumpTimer += (drifter.status.hasSloMoEffect() ? .4f : 1f);
 
 			//Shorthop
 			if(jumpTimer >= 0 && grounded && prevJumpTimer <0 && (!drifter.input[0].Jump || drifter.status.HasStatusEffect(PlayerStatusEffect.END_LAG))) {
 				jumpTimer = fullhopFrames;
-				rb.velocity = new Vector2(rb.velocity.x, jumpSpeed * (drifter.status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f));
+				rb.velocity = new Vector2(rb.velocity.x, jumpSpeed * (drifter.status.hasSloMoEffect() ? .4f : 1f));
 				if(drifter.status.HasStatusEffect(PlayerStatusEffect.END_LAG)) UnityEngine.Debug.Log("JUMP QUEUED A MOVE");
 			}
 			//fullhop
 			else if(jumpTimer >= 0) {
-				rb.velocity = new Vector2(rb.velocity.x, jumpSpeed * (drifter.status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f));
+				rb.velocity = new Vector2(rb.velocity.x, jumpSpeed * (drifter.status.hasSloMoEffect() ? .4f : 1f));
 				if(drifter.status.HasStatusEffect(PlayerStatusEffect.END_LAG)) jumpTimer = fullhopFrames;
 			}
 
@@ -274,7 +274,7 @@ public class PlayerMovement : MonoBehaviour
 
 		if(drifter.status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN)) {
 			hitstun = true;
-			DropLedge(false);
+			//DropLedge(false);
 		}
 
 		else if(drifter.status.HasEnemyStunEffect() && !drifter.guarding) {
@@ -336,7 +336,7 @@ public class PlayerMovement : MonoBehaviour
 			rb.velocity = Vector2.zero;
 			rb.gravityScale = 0;                       
 		}
-		else if(drifter.status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) && !gravityPaused) {
+		else if(drifter.status.hasSloMoEffect() && !gravityPaused) {
 			rb.gravityScale = baseGravity*.4f;
 			terminalVelocity =  baseTerminalVelocity *.4f;
 		}
@@ -344,7 +344,7 @@ public class PlayerMovement : MonoBehaviour
 
 		//makes sure gavity is always reset after using a move
 		//TODO make sure this is still necessary
-		else if((!drifter.status.HasStatusEffect(PlayerStatusEffect.END_LAG) || !gravityPaused) && !ledgeHanging){
+		else if((!drifter.status.HasStatusEffect(PlayerStatusEffect.END_LAG) || !gravityPaused) && !ledgeHanging && !drifter.status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN)){
 			resetGravity();
 			if(!drifter.status.HasStatusEffect(PlayerStatusEffect.END_LAG))resetTerminalVelocity();
 		}
@@ -399,7 +399,7 @@ public class PlayerMovement : MonoBehaviour
 				if(accelerationFrames < groundAccelerationTime) accelerationFrames ++;
 				else accelerationFrames = (int)groundAccelerationTime;
 
-				currentSpeed = walkSpeed * ((drifter.status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) || Pusher!=null) ? .4f: 1f) * (drifter.status.HasStatusEffect(PlayerStatusEffect.SPEEDUP) ? 1.5f: 1f) * (drifter.input[0].MoveX > 0 ? 1 : -1);
+				currentSpeed = walkSpeed * ((drifter.status.hasSloMoEffect() || Pusher!=null) ? .4f: 1f) * (drifter.status.HasStatusEffect(PlayerStatusEffect.SPEEDUP) ? 1.5f: 1f) * (drifter.input[0].MoveX > 0 ? 1 : -1);
 
 				rb.velocity = new Vector2(Mathf.Lerp(rb.velocity.x,currentSpeed,accelerationFrames/groundAccelerationTime), rb.velocity.y);
 
@@ -411,7 +411,7 @@ public class PlayerMovement : MonoBehaviour
 				if(accelerationFrames < airAccelerationTime) accelerationFrames ++;
 				else accelerationFrames = (int)airAccelerationTime;
 
-				currentSpeed = airSpeed * ((drifter.status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) || Pusher!=null) ? .4f: 1f) * (drifter.status.HasStatusEffect(PlayerStatusEffect.SPEEDUP) ? 1.5f: 1f) * (drifter.input[0].MoveX > 0 ? 1 : -1);
+				currentSpeed = airSpeed * ((drifter.status.hasSloMoEffect() || Pusher!=null) ? .4f: 1f) * (drifter.status.HasStatusEffect(PlayerStatusEffect.SPEEDUP) ? 1.5f: 1f) * (drifter.input[0].MoveX > 0 ? 1 : -1);
 
 				rb.velocity = new Vector2(Mathf.Lerp(rb.velocity.x,currentSpeed,accelerationFrames/airAccelerationTime), rb.velocity.y);
 			}
@@ -521,7 +521,7 @@ public class PlayerMovement : MonoBehaviour
 		if(flipDirection)updateFacing();
 
 		if(drifter.input[0].MoveX != 0) {
-			currentSpeed = speed * (drifter.status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f: 1f) * (drifter.status.HasStatusEffect(PlayerStatusEffect.SPEEDUP) ? 1.5f: 1f) * (drifter.input[0].MoveX > 0 ? 1 : -1);
+			currentSpeed = speed * (drifter.status.hasSloMoEffect() ? .4f: 1f) * (drifter.status.HasStatusEffect(PlayerStatusEffect.SPEEDUP) ? 1.5f: 1f) * (drifter.input[0].MoveX > 0 ? 1 : -1);
 			rb.velocity = new Vector2(Mathf.Lerp(rb.velocity.x,currentSpeed,accelerationFrames/airAccelerationTime), rb.velocity.y);
 		}
 		

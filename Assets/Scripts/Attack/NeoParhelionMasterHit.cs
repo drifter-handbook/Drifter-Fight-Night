@@ -24,7 +24,8 @@ public class NeoParhelionMasterHit : MasterHit
 
 		if(drifter.status.HasEnemyStunEffect() || movement.ledgeHanging){
 			staticBurstTarget = null;
-			clearMasterhitVars();
+			deleteStaticField();
+			staticCycles = 0;
 		}
 
 		if(drifter.status.HasEnemyStunEffect()){

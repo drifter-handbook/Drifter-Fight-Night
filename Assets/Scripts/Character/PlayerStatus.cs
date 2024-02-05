@@ -35,6 +35,7 @@ public enum PlayerStatusEffect {
 	TUMBLE,
 	KNOCKDOWN,
 	FLATTEN,
+	SUPER_SLOWMOTION,
 }
 
 public class PlayerStatusData {
@@ -97,6 +98,7 @@ public class PlayerStatus : MonoBehaviour {
 		new PlayerStatusData("TUMBLE")                                                      ,
 		new PlayerStatusData("KNOCKDOWN", icon: 3,stun: true)                               ,
 		new PlayerStatusData("FLATTEN")                                                     ,
+		new PlayerStatusData("SUPER_SLOWMOTION",icon: 16)                      	            ,
 	};
 
 	
@@ -117,6 +119,8 @@ public class PlayerStatus : MonoBehaviour {
 	[SerializeField]
 	private PlayerDamageNumbers damageDisplay;
 	Drifter drifter;
+
+	public GameObject ParticlePoint;
 
 	// Start is called before the first frame update
 	void Start() {
@@ -141,7 +145,7 @@ public class PlayerStatus : MonoBehaviour {
 		//Hitpause pauses all other statuses for its duration
 		if(HasStatusEffect(PlayerStatusEffect.HITPAUSE) || HasStatusEffect(PlayerStatusEffect.GRABBED)) {
 			statusDataMap[(int)PlayerStatusEffect.HITPAUSE].duration--;
-			if(!HasStatusEffect(PlayerStatusEffect.HITPAUSE) && !HasStatusEffect(PlayerStatusEffect.SLOWMOTION)) {
+			if(!HasStatusEffect(PlayerStatusEffect.HITPAUSE) && !hasSloMoEffect()) {
 				if(delayedVelocity != Vector2.zero)drifter.movement.rb.velocity = delayedVelocity;
 				if(delayedEffect != PlayerStatusEffect.HIT)	{
 					ApplyStatusEffect(delayedEffect,delayedEffectDuration);
@@ -158,10 +162,16 @@ public class PlayerStatus : MonoBehaviour {
 
 					//Damage player if they are on fire
 					if(i == (int)PlayerStatusEffect.BURNING) drifter.DamageTaken += Time.fixedDeltaTime;
+
+					if(i == (int)PlayerStatusEffect.KNOCKDOWN && !HasStatusEffect(PlayerStatusEffect.KNOCKDOWN) && !HasStatusEffect(PlayerStatusEffect.FLATTEN)){
+						if(HasStatusEffect(PlayerStatusEffect.FLATTEN)) ApplyStatusEffect(PlayerStatusEffect.FLATTEN,0);
+						if(HasEnemyStunEffect())clearStunStatus();
+						drifter.movement.techParticle();
+					}
 						
 					//Re-apply the saved velocity if the player just lost cringe
 						
-					if(i == (int)PlayerStatusEffect.SLOWMOTION && HasEnemyStunEffect())drifter.movement.rb.velocity = delayedVelocity * .2f;
+					if((i == (int)PlayerStatusEffect.SLOWMOTION || i == (int)PlayerStatusEffect.SUPER_SLOWMOTION) &&HasEnemyStunEffect())drifter.movement.rb.velocity = delayedVelocity * .2f;
 
 					if(i == (int)PlayerStatusEffect.FLATTEN) {
 
@@ -194,7 +204,7 @@ public class PlayerStatus : MonoBehaviour {
 			}
 		}
 			
-		if(delayedVelocity != Vector2.zero && !(HasStatusEffect(PlayerStatusEffect.HITPAUSE) || HasStatusEffect(PlayerStatusEffect.CRINGE) || HasStatusEffect(PlayerStatusEffect.GRABBED) || HasStatusEffect(PlayerStatusEffect.SLOWMOTION))) delayedVelocity = Vector2.zero;
+		if(delayedVelocity != Vector2.zero && !(HasStatusEffect(PlayerStatusEffect.HITPAUSE) || HasStatusEffect(PlayerStatusEffect.CRINGE) || HasStatusEffect(PlayerStatusEffect.GRABBED) || hasSloMoEffect())) delayedVelocity = Vector2.zero;
 
 		if(isInCombo && !HasEnemyStunEffect()) isInCombo = false; 
 		
@@ -265,7 +275,7 @@ public class PlayerStatus : MonoBehaviour {
 	}
 
 	public void ApplyDelayedStatusEffect(PlayerStatusEffect p_ef, int p_duration) {
-		if(!HasStatusEffect(PlayerStatusEffect.HITPAUSE) && !HasStatusEffect(PlayerStatusEffect.SLOWMOTION))ApplyStatusEffectFor(p_ef, p_duration);
+		if(!HasStatusEffect(PlayerStatusEffect.HITPAUSE) && !hasSloMoEffect())ApplyStatusEffectFor(p_ef, p_duration);
 		else {
 			delayedEffect = p_ef;
 			delayedEffectDuration = p_duration;
@@ -286,6 +296,10 @@ public class PlayerStatus : MonoBehaviour {
 		
 		drifter.SetAnimationSpeed(1f);
 		grabPoint = null;
+	}
+
+	public bool hasSloMoEffect(){
+		return HasStatusEffect(PlayerStatusEffect.SLOWMOTION) || HasStatusEffect(PlayerStatusEffect.SUPER_SLOWMOTION);
 	}
 
 
@@ -373,7 +387,7 @@ public class PlayerStatus : MonoBehaviour {
 
 	GameObject addStatusEffector(PlayerStatusEffect ef) {
 		
-		GameObject effector = GameController.Instance.CreatePrefab(statusDataMap[(int)ef].name + "_Particle", transform.position + new Vector3(0,-.2f,0), transform.rotation);
+		GameObject effector = GameController.Instance.CreatePrefab(statusDataMap[(int)ef].name + "_Particle", ParticlePoint.transform.position, transform.rotation);
 		effector.transform.SetParent(drifter.gameObject.transform);
 		return effector;
 	}
@@ -410,7 +424,7 @@ public class PlayerStatus : MonoBehaviour {
 
 		//Disallow unique stuns on already stunned opponents.
 		//TODO See if this is necessary when plants are reintroduced
-		if((data.isStun && !data.isSelfInflicted && HasStatusEffect(ef)) && ef != PlayerStatusEffect.KNOCKBACK || (HasStatusEffect(PlayerStatusEffect.PLANTED) && (ef == PlayerStatusEffect.GRABBED))){
+		if((data.isStun && !data.isSelfInflicted && HasStatusEffect(ef)) && ef != PlayerStatusEffect.KNOCKBACK  && ef != PlayerStatusEffect.KNOCKDOWN || (HasStatusEffect(PlayerStatusEffect.PLANTED) && (ef == PlayerStatusEffect.GRABBED))){
 			
 			statusDataMap[(int)PlayerStatusEffect.KNOCKBACK].duration = 30;
 			clearRemoveOnHitStatus();
@@ -421,10 +435,10 @@ public class PlayerStatus : MonoBehaviour {
 		if((ef == PlayerStatusEffect.KNOCKBACK || data.isStun && !data.isSelfInflicted) && duration >0)clearRemoveOnHitStatus();        
 		
 		//save delayed velocity
-		if((ef == PlayerStatusEffect.HITPAUSE || ef == PlayerStatusEffect.CRINGE || ef == PlayerStatusEffect.GRABBED || ef == PlayerStatusEffect.SLOWMOTION ||(ef == PlayerStatusEffect.KNOCKBACK &&  HasStatusEffect(PlayerStatusEffect.SLOWMOTION)))&& drifter.movement.rb.velocity != Vector2.zero) delayedVelocity = drifter.movement.rb.velocity;
+		if((ef == PlayerStatusEffect.HITPAUSE || ef == PlayerStatusEffect.CRINGE || ef == PlayerStatusEffect.GRABBED || hasSloMoEffect() || (ef == PlayerStatusEffect.KNOCKBACK &&  hasSloMoEffect())) && drifter.movement.rb.velocity != Vector2.zero) delayedVelocity = drifter.movement.rb.velocity;
 
 		//Slow down animation speed in slowmo
-		if(ef == PlayerStatusEffect.SLOWMOTION)
+		if(ef == PlayerStatusEffect.SLOWMOTION || ef == PlayerStatusEffect.SUPER_SLOWMOTION)
 			drifter.SetAnimationSpeed(.4f);
 
 		if(data.isStun && !data.isSelfInflicted) isInCombo = true;

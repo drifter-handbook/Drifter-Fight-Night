@@ -38,7 +38,13 @@ public class RyykeMasterHit : MasterHit
 		base.UpdateFrame();
 
 		//Remove the arm if it is not needed
-		if(movement.ledgeHanging || status.HasEnemyStunEffect()) clearMasterhitVars();
+		if(movement.ledgeHanging || status.HasEnemyStunEffect()){
+			listeningForDirection = false;
+			listeningForMovement = false;
+			burrowTime = maxBurrowTime;
+			burrowing = false;
+			DeleteArm(); 
+		}
 
 		//remove all tombstones on death
 		if(status.HasStatusEffect(PlayerStatusEffect.DEAD)) {

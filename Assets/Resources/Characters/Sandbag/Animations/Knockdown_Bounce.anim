@@ -114,9 +114,6 @@ AnimationClip:
     - time: 0
       value: {fileID: 8026211003119494510, guid: 4fc1abb216396174c87dffc236f7442e,
         type: 3}
-    - time: 0.41666666
-      value: {fileID: 8026211003119494510, guid: 4fc1abb216396174c87dffc236f7442e,
-        type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -172,13 +169,12 @@ AnimationClip:
       isPPtrCurve: 0
     pptrCurveMapping:
     - {fileID: 8026211003119494510, guid: 4fc1abb216396174c87dffc236f7442e, type: 3}
-    - {fileID: 8026211003119494510, guid: 4fc1abb216396174c87dffc236f7442e, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.5
+    m_StopTime: 0.083333336
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -360,25 +356,4 @@ AnimationClip:
     script: {fileID: 0}
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events:
-  - time: 0
-    functionName: listenForGrounded
-    data: Knockdown
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.5
-    functionName: knockdownRecover
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.5
-    functionName: returnToIdle
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
+  m_Events: []
