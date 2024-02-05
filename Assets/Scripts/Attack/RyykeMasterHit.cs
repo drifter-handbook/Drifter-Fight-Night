@@ -338,8 +338,10 @@ public class RyykeMasterHit : MasterHit
 	public void refeshStoneHitboxes(Tombstone stone) {
 		stone.updateDirection(movement.Facing);
 
+		int id =attacks.NextID;
+
 		foreach (HitboxCollision hitbox in stone.gameObject.GetComponentsInChildren<HitboxCollision>(true)) {
-			hitbox.AttackID = attacks.NextID;
+			hitbox.AttackID = id;
 			hitbox.Facing = stone.facing;
 			hitbox.isActive = true;
 		}

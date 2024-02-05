@@ -58,9 +58,10 @@ public class NeoBojoMasterHit : MasterHit
 			g_centaur = GameController.Instance.CreatePrefab("Centaur", transform.position , transform.rotation);
 			g_centaur.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
 			g_centaur.GetComponent<Rigidbody2D>().velocity = new Vector3(movement.Facing * 15,0);
+			int id = attacks.NextID;
 			foreach (HitboxCollision hitbox in g_centaur.GetComponentsInChildren<HitboxCollision>(true)) {
 					hitbox.parent = drifter.gameObject;
-					hitbox.AttackID = attacks.NextID;
+					hitbox.AttackID = id;
 					hitbox.Facing = movement.Facing;
 			}
 
@@ -77,9 +78,10 @@ public class NeoBojoMasterHit : MasterHit
 
 	public void fireCentaur() {
 		if(g_centaur != null) {
+			int id = attacks.NextID;
 			foreach (HitboxCollision hitbox in g_centaur.GetComponentsInChildren<HitboxCollision>(true)) {
 				hitbox.parent = drifter.gameObject;
-				hitbox.AttackID = attacks.NextID;
+				hitbox.AttackID = id;
 				hitbox.Facing = movement.Facing;
 			}
 			g_centaur.GetComponent<Animator>().Play("Centaur_Fire_" + power);
