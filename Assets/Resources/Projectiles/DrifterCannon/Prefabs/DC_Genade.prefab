@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 5963595650009289345}
   - component: {fileID: 1060739831492476122}
   m_Layer: 8
-  m_Name: DCGenade
+  m_Name: DC_Genade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -141,10 +141,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ef945a1776594438c7a9223e2d7bb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  destoryState: 
   duration: -1
   rb: {fileID: 0}
   animator: {fileID: 0}
-  updateSelf: 0
+  pauseBehavior: 1
+  paused: 0
+  useHitpause: 0
+  DestroyOnExit: 1
 --- !u!95 &5727077204013000560
 Animator:
   serializedVersion: 4

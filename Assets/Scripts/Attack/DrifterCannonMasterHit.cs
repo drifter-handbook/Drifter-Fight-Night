@@ -105,7 +105,7 @@ public class DrifterCannonMasterHit : MasterHit
 
     void SpawnExplosion(Vector3 pos, int flip, int direction = 0)
     {
-        g_explosion = GameController.Instance.CreatePrefab("Explosion", transform.position + pos, Quaternion.Euler(0,0,movement.Facing *direction));
+        g_explosion = GameController.Instance.CreatePrefab("DC_Explosion", transform.position + pos, Quaternion.Euler(0,0,movement.Facing *direction));
         g_explosion.transform.localScale = new Vector3(flip * 10f * movement.Facing, 10f , 1f);
 
         foreach (HitboxCollision hitbox in g_explosion.GetComponentsInChildren<HitboxCollision>(true))
@@ -133,7 +133,7 @@ public class DrifterCannonMasterHit : MasterHit
         
         Vector3 pos = new Vector3(.5f * movement.Facing,3.7f,0);
         
-        g_grenade = GameController.Instance.CreatePrefab("DCGenade", transform.position + pos, transform.rotation);
+        g_grenade = GameController.Instance.CreatePrefab("DC_Genade", transform.position + pos, transform.rotation);
         g_grenade.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
         g_grenade.GetComponent<Rigidbody2D>().velocity = new Vector2(20* movement.Facing,25);
 

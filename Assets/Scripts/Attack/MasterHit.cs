@@ -99,7 +99,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 				setTerminalVelocity(20f);
 				rb.gravityScale = 10f;
 				drifter.PlayAnimation("Knockdown_Bounce");
-				drifter.status.ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,60);
+				drifter.status.ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,40);
 				//movement.mainCamera.Shake(6,.33f);
 				//If the victim is in hitpause, set their delayed velocity instead
 				rb.velocity = new Vector2(movement.Facing *-12f,20);
