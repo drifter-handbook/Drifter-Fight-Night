@@ -30,7 +30,6 @@ public class NeoParhelionMasterHit : MasterHit
 
 		if(status.HasStatusEffect(PlayerStatusEffect.ELECTRIFIED) && zap == null){
 			zap = GameController.Instance.CreatePrefab("ParhelionLightningAura", transform.position + new Vector3(0,2f), transform.rotation);
-			zap.transform.localScale = new Vector3(.2f, .2f,1f);
 
 			zap.transform.SetParent(drifter.gameObject.transform);
 		}
