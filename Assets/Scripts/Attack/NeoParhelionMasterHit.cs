@@ -8,11 +8,13 @@ public class NeoParhelionMasterHit : MasterHit
 	GameObject g_burst;
 	Drifter staticBurstTarget = null;
 	int staticBurstTimer = 0;
-	//int staticCharge = 0;
+	int numBursts = -1;
 	int staticCycles = 0;
+	bool onBlock = false;
 
-	const int MAX_STATIC_CHARGE_DURATION = 500;
-	const int STATIC_CHARGE_HITS = 5;
+	GameObject zap = null;
+
+	const int MAX_STATIC_CHARGE_DURATION = 400;
 
 	//Inhereted Roll Methods
 	public GrabHitboxCollision Up_W_Grab;
@@ -26,13 +28,27 @@ public class NeoParhelionMasterHit : MasterHit
 		if(drifter.status.HasEnemyStunEffect())
 			staticBurstTimer = 1;
 
+		if(status.HasStatusEffect(PlayerStatusEffect.ELECTRIFIED) && zap == null){
+			zap = GameController.Instance.CreatePrefab("ParhelionLightningAura", transform.position + new Vector3(0,2f), transform.rotation);
+			zap.transform.SetParent(drifter.gameObject.transform);
+		}
+		else if(!status.HasStatusEffect(PlayerStatusEffect.ELECTRIFIED) && zap != null){
+			Destroy(zap);
+			zap = null;
+		}
+
 
 		if(staticBurstTimer > 0 && !status.HasStatusEffect(PlayerStatusEffect.HITPAUSE) && !drifter.usingSuper){
 			staticBurstTimer--;
-			if(staticBurstTimer == 0 && status.HasStatusEffect(PlayerStatusEffect.ELECTRIFIED)){
-				Create_Burst(staticBurstTarget.gameObject.transform.position);
+			if(staticBurstTimer == 0){
+				if(numBursts > 1){
+					numBursts--;
+					staticBurstTimer = 4;
+					Create_Burst(staticBurstTarget.gameObject.transform.position + new Vector3(Random.Range(-1.75f, 1.75f), Random.Range(-1.75f, 1.75f)));
+				}
+				else
+					Create_Burst(staticBurstTarget.gameObject.transform.position);
 			}
-
 		}
 
 		if(g_burst != null) g_burst.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
@@ -53,14 +69,6 @@ public class NeoParhelionMasterHit : MasterHit
 			hitbox.Facing = movement.Facing;
 		}
 
-		if(!status.HasStatusEffect(PlayerStatusEffect.ELECTRIFIED)){
-			status.AddStatusBar(PlayerStatusEffect.ELECTRIFIED, MAX_STATIC_CHARGE_DURATION);
-		}
-		
-		//if(staticCharge < 4) staticCharge++;
-
-		status.AddStatusDuration(PlayerStatusEffect.ELECTRIFIED, MAX_STATIC_CHARGE_DURATION/STATIC_CHARGE_HITS,MAX_STATIC_CHARGE_DURATION);
-
 		staticCycles++;
 
 		if(launcher != 0)
@@ -75,6 +83,8 @@ public class NeoParhelionMasterHit : MasterHit
 		projectile.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
 		SetObjectColor(projectile);
 
+
+
 		foreach (HitboxCollision hitbox in projectile.GetComponentsInChildren<HitboxCollision>(true)) {
 			hitbox.parent = drifter.gameObject;
 			hitbox.AttackID = attacks.NextID;
@@ -85,8 +95,17 @@ public class NeoParhelionMasterHit : MasterHit
 	}
 
 	public void Loop_W_Down(){
+
+		if(!status.HasStatusEffect(PlayerStatusEffect.ELECTRIFIED)){
+			status.AddStatusBar(PlayerStatusEffect.ELECTRIFIED, MAX_STATIC_CHARGE_DURATION);
+			status.AddStatusDuration(PlayerStatusEffect.ELECTRIFIED, 99, MAX_STATIC_CHARGE_DURATION);
+
+		}
+		else status.AddStatusDuration(PlayerStatusEffect.ELECTRIFIED, 100, MAX_STATIC_CHARGE_DURATION);
+
 		if(!drifter.input[0].Special || staticCycles >3){
 			staticCycles = 0;
+
 			playState("W_Down_End");
 		}
 	}
@@ -104,8 +123,16 @@ public class NeoParhelionMasterHit : MasterHit
 			staticBurstTimer = 8;
 			return;
 		}
-		status.AddStatusDuration(PlayerStatusEffect.ELECTRIFIED, -MAX_STATIC_CHARGE_DURATION/STATIC_CHARGE_HITS);
+
+		//onBlock = hitType == AttackHitType.BLOCK;
 		staticBurstTimer = 8;
+
+		UnityEngine.Debug.Log(status.remainingDuration(PlayerStatusEffect.ELECTRIFIED));
+
+		numBursts = status.remainingDuration(PlayerStatusEffect.ELECTRIFIED)/100;
+
+		UnityEngine.Debug.Log(numBursts);
+		status.ApplyStatusEffect(PlayerStatusEffect.ELECTRIFIED,0);
 		staticBurstTarget = target_drifter;
 	}
 
@@ -120,6 +147,7 @@ public class NeoParhelionMasterHit : MasterHit
 		base.clearMasterhitVars();
 		deleteStaticField();
 		staticCycles = 0;
+		numBursts = 0;
 	}
 
 	public void W_Up_Slam() {
