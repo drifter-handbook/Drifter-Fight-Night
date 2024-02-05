@@ -59,6 +59,8 @@ public class Drifter : MonoBehaviour
 
 	public DrifterType drifterType;
 
+	public GameObject ParticlePoint;
+
 	[NonSerialized]
 	public int myColor;
 	[NonSerialized]
@@ -256,6 +258,15 @@ public class Drifter : MonoBehaviour
 		parrying = false;
 		perfectGuarding = false;
 	}
+
+	public GameObject createParticleEffector(string name){
+		GameObject effector = GameController.Instance.CreatePrefab(name, ParticlePoint.transform.position, transform.rotation);
+		effector.transform.SetParent(transform);
+
+		return effector;
+	}
+
+	
 
 	//Command Input Detection
 

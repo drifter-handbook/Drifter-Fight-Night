@@ -93,12 +93,12 @@ public class PlayerStatus : MonoBehaviour {
 		new PlayerStatusData("HITPAUSE",stun: true, self:true)                              ,
 		new PlayerStatusData("GUARDCRUSHED",icon: 14)                                       ,
 		new PlayerStatusData("STANCE",remove: false,self: true)                             ,
-		new PlayerStatusData("SLOWMOTION",icon: 16,remove: true)                            ,
+		new PlayerStatusData("SLOWMOTION",icon: 16, remove: true)                           ,
 		new PlayerStatusData("HIDDEN",remove: false)                                        ,
 		new PlayerStatusData("TUMBLE")                                                      ,
 		new PlayerStatusData("KNOCKDOWN", icon: 3,stun: true)                               ,
 		new PlayerStatusData("FLATTEN")                                                     ,
-		new PlayerStatusData("SUPER_SLOWMOTION",icon: 16)                      	            ,
+		new PlayerStatusData("SUPER_SLOWMOTION",icon: 16, remove: false)                    ,
 	};
 
 	
@@ -119,8 +119,6 @@ public class PlayerStatus : MonoBehaviour {
 	[SerializeField]
 	private PlayerDamageNumbers damageDisplay;
 	Drifter drifter;
-
-	public GameObject ParticlePoint;
 
 	// Start is called before the first frame update
 	void Start() {
@@ -386,10 +384,7 @@ public class PlayerStatus : MonoBehaviour {
 	}
 
 	GameObject addStatusEffector(PlayerStatusEffect ef) {
-		
-		GameObject effector = GameController.Instance.CreatePrefab(statusDataMap[(int)ef].name + "_Particle", ParticlePoint.transform.position, transform.rotation);
-		effector.transform.SetParent(drifter.gameObject.transform);
-		return effector;
+		return drifter.createParticleEffector(statusDataMap[(int)ef].name + "_Particle");
 	}
 
 

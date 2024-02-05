@@ -88,7 +88,6 @@ public class PlayerMovement : MonoBehaviour
 
 	bool delayedFacingFlip = false;
 
-
 	//Access to main camera for screen darkening
 	ScreenShake mainCamera;
 
@@ -105,9 +104,8 @@ public class PlayerMovement : MonoBehaviour
 	public GameObject PushBox;
 	public GameObject LedgeGrabBox;
  	GameObject Pusher;
+ 	GameObject smoketrail;
 
-	
-	Vector2 kdbounceVelocity;
 
 	void Awake() {
 		//Aggregate componenents
@@ -296,8 +294,12 @@ public class PlayerMovement : MonoBehaviour
 		}
 
 		//Smoke Trail
-		if(drifter.status.HasStatusEffect(PlayerStatusEffect.KNOCKBACK) && rb.velocity.magnitude > 45f){
-			spawnJuiceParticle(transform.position, MovementParticleMode.SmokeTrail, Quaternion.Euler(0,0,UnityEngine.Random.Range(0,180)),false);
+		if(drifter.status.HasStatusEffect(PlayerStatusEffect.KNOCKBACK) && rb.velocity.magnitude > 45f ){
+			if(smoketrail == null) smoketrail = drifter.createParticleEffector("LAUNCHED_PARTICLE");
+		}
+		else{
+			Destroy(smoketrail);
+			smoketrail = null;
 		}
 
 		//Sonic Boom Trail

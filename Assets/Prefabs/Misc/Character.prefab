@@ -417,6 +417,7 @@ MonoBehaviour:
   sparkle: {fileID: 3225961600144131437}
   playerInputController: {fileID: 0}
   drifterType: 0
+  ParticlePoint: {fileID: 6930610079851277569}
   input:
   - MoveX: 0
     MoveY: 0
@@ -765,7 +766,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageDisplay: {fileID: 469188337639645876}
-  ParticlePoint: {fileID: 6930610079851277569}
 --- !u!114 &7674587741064242540
 MonoBehaviour:
   m_ObjectHideFlags: 0
