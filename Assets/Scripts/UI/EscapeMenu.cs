@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.UI;
 
 public class EscapeMenu : MonoBehaviour
 {
@@ -21,6 +22,8 @@ public class EscapeMenu : MonoBehaviour
             {
                 if(input.currentActionMap.FindAction("Menu").ReadValue<float>()>0)
                 {
+                    InputSystemUIInputModule uiInputModule = GameObject.Find("EventSystem")?.GetComponent<InputSystemUIInputModule>();
+                    uiInputModule.actionsAsset = input.actions;
                     ToggleMenu();
                     return;
                 }
