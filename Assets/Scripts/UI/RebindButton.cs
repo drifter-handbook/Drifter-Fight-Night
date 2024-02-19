@@ -4,11 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Users;
+using TMPro;
 
 public class RebindButton : MonoBehaviour {
     [SerializeField]
     public InputActionReference actionReference;
-    public Text mappingString;
+    public TextMeshProUGUI mappingString;
     private static Action<InputUser, InputUserChange, InputDevice> userChangeCallback;
     string bindingName = "";
 

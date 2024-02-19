@@ -23,7 +23,7 @@ public class SimpleScroll : MonoBehaviour
         if(viewManager.menuFlowHistory[viewManager.menuFlowHistory.Count - 1] == UIMenuType.RebindMenu)
         {
             GameObject currentGameObject = EventSystem.current.currentSelectedGameObject;
-            if(currentGameObject.name != "Back Settings")
+            if(currentGameObject!= null && currentGameObject.name != "Back Settings")
             {
                 SnapTo(EventSystem.current.currentSelectedGameObject);
             }
@@ -33,6 +33,14 @@ public class SimpleScroll : MonoBehaviour
     public void SnapTo(GameObject target)
     {
         int index = listItems.IndexOf(target); //Inventory Children List contains all the Children of the ScrollView's Content. We are getting the index of the selected one.
+       
+        if(index < 0)
+        {
+            UnityEngine.Debug.LogWarning("Could not find the element to SnapTo");
+            return;
+        }
+        
+        
         RectTransform rect = listItems[index].GetComponent<RectTransform>(); //We are getting the RectTransform of the selected Inventory Item.
         bool inView = RectTransformUtility.RectangleContainsScreenPoint(scrollRect, rect.position); //We are checking if the Selected Inventory Item is visible from the camera.
         float buttonHeight = rect.rect.height;

@@ -39,7 +39,8 @@ public class MatchmakingUI : MonoBehaviour
             List<MatchmakingRoomEntry> roomEntries = null;
             if (www.isNetworkError || www.isHttpError)
             {
-                throw new UnityException(www.error);
+                //throw new UnityException(www.error); //shhhhhh I don't care
+                UnityEngine.Debug.LogWarning("Issue with retrieving rooms: " + www.error);
             }
             else
             {
