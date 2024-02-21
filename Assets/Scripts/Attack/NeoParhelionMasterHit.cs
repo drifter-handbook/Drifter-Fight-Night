@@ -109,6 +109,9 @@ public class NeoParhelionMasterHit : MasterHit
 
 	public void Create_Dash_Trail() {
 		dashTrail = drifter.createParticleEffector("PARHELION_DASH_Particle");
+		GameObject projectile = GameController.Instance.CreatePrefab("Parhelion_Dash", transform.position, transform.rotation);
+		projectile.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
+
 	}
 
 	public void Remove_Dash_Trail() {
