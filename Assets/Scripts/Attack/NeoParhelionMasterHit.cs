@@ -25,14 +25,14 @@ public class NeoParhelionMasterHit : MasterHit
 		base.UpdateFrame();
 
 		if(drifter.status.HasEnemyStunEffect() || movement.ledgeHanging){
-			staticBurstTarget = null;
 			deleteStaticField();
-			staticCycles = 0;
 			Remove_Dash_Trail();
 		}
 
 		if(drifter.status.HasEnemyStunEffect()){
 			staticBurstTimer = 0;
+			staticBurstTarget = null;
+			staticCycles = 0;
 		}
 
 		if(staticBurstTimer > 0 && !status.HasStatusEffect(PlayerStatusEffect.HITPAUSE) && !drifter.usingSuper && staticBurstTarget != null){
