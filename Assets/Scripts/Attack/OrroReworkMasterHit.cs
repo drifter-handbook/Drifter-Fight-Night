@@ -132,7 +132,7 @@ public class OrroReworkMasterHit : MasterHit {
 	//Enables all relevant flags for orro's neutral special
 	public void BeginWSide() {
 		specialReleasedFlag = true;
-		movementCancelFlag = true;
+		dashCancelFlag = true;
 		activeCancelFlag = true;
 		queuedState = "W_Side_Fire";
 		specialCharge = 0;
@@ -318,7 +318,6 @@ public class OrroReworkMasterHit : MasterHit {
 
 			default:
 				return;
-				break;
 		}
 
 		projectile.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);

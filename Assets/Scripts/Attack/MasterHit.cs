@@ -19,7 +19,7 @@ public class MasterhitRollbackFrame: INetworkData
 	public bool SpecialReleasedFlag;
 	public bool LightTappedFlag;
 	public bool VerticalCancelFlag;
-	public bool MovementCancelFlag;
+	public bool dashCancelFlag;
 	public bool ActiveCancelFlag;
 	public bool ListeningForGroundedFlag;
 	public bool QueuedStateTrigger;
@@ -65,7 +65,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
 	protected bool verticalCancelFlag = false;
 
-	protected bool movementCancelFlag = false;
+	public bool dashCancelFlag = false;
 
 	protected bool activeCancelFlag = false;
 
@@ -73,7 +73,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
 	protected bool queuedStateTrigger = false;
 
-	protected bool jumpFlag = false;
+	public bool jumpFlag = false;
 
 	protected int specialCharge = 0;
 
@@ -140,15 +140,6 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 			playQueuedState();
 			clearMasterhitVars();
 		}
-
-		else if(movementCancelFlag && movement.currentDashes >0 && drifter.doubleTappedX()) {
-			if(movement.dash()) {
-				//movement.techParticle();
-                MovementCancelParticle();
-				clearMasterhitVars();
-				drifter.clearGuardFlags();
-			}            
-		}
 		else if(dacusCancelFlag && attacks.grabPressed())
 		 {
 			status.ApplyStatusEffect(PlayerStatusEffect.INVULN,0);
@@ -181,12 +172,12 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 		else if(verticalCancelFlag && drifter.doubleTappedY() && drifter.input[0].MoveY <0) {
 			playQueuedState();
 			//movement.techParticle();
-            MovementCancelParticle();
+			MovementCancelParticle();
 			returnToIdle();
 		}
-		else if(activeCancelFlag && drifter.input[0].Guard && !drifter.input[1].Guard) {
-			//movement.techParticle();
-            MovementCancelParticle();
+		//Guard cancel a move
+		else if(activeCancelFlag && !drifter.guarding && drifter.input[0].Guard && !drifter.input[1].Guard) {
+			MovementCancelParticle();
 			status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0);
 			status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0);
 			clearMasterhitVars();
@@ -195,32 +186,29 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 			drifter.guarding = true;
 			movement.jumping = false;
 			unpauseGravity();
-			
-
 		}
-		else if((activeCancelFlag || jumpFlag)&& ((drifter.input[0].Jump && !drifter.input[1].Jump && movement.currentJumps>0) || (drifter.doubleTappedX() && movement.currentDashes >0) )) {
-			if(drifter.input[0].Jump) {
-				movement.jumping = false;
-				//movement.techParticle();
-                GraphicalEffectManager.Instance.CreateMovementCancel(movement.gameObject);
+		//Jump cancle a move
+		else if((activeCancelFlag || (jumpFlag && (short)drifter.lastHitType > -1))&& ((drifter.input[0].Jump && !drifter.input[1].Jump && movement.currentJumps>0))) {
+			if(movement.jump(true)){
+				MovementCancelParticle();
 				status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0);
 				status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0);
 				clearMasterhitVars();
 				resetTerminalVelocity();
-				movement.jump();
 				drifter.clearGuardFlags();
 				unpauseGravity();
 			}
-			else {
-				if(movement.dash())
-				{
-					//movement.techParticle();
-                    MovementCancelParticle();
-					clearMasterhitVars();
-				}
-			}
-
+			
 		}
+		//Dash Cancel a move
+		else if((activeCancelFlag || (dashCancelFlag && (short)drifter.lastHitType > -1)) && movement.currentDashes >0 && drifter.doubleTappedX()) {
+			if(movement.dash(true)) {
+				MovementCancelParticle();
+				clearMasterhitVars();
+				drifter.clearGuardFlags();
+			}            
+		}
+
 		else if(lightTappedFlag && checkForLightTap()) {
 			queuedStateTrigger = true;
 			lightTappedFlag = false;
@@ -235,10 +223,20 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
 	}
 
-    public void MovementCancelParticle() {
-        GraphicalEffectManager.Instance.CreateMovementCancel(movement.gameObject);
-        movement.actionCancelParticle();;
-    }
+	public void MovementCancelParticle() {
+		GraphicalEffectManager.Instance.CreateMovementCancel(movement.gameObject);
+		movement.actionCancelParticle();
+	}
+
+	public void SpecialCancelParticle() {
+		GraphicalEffectManager.Instance.CreateMovementCancel(movement.gameObject);
+		GraphicalEffectManager.Instance.CreateSpecialCancel(drifter.gameObject);
+		//BC drift
+		if(drifter.input[0].MoveY == drifter.input[1].MoveY)
+			rb.velocity = new Vector2(rb.velocity.x,18*drifter.input[0].MoveY);
+		if(drifter.input[0].MoveX == drifter.input[1].MoveX)
+			rb.velocity = new Vector2(18*drifter.input[0].MoveX,rb.velocity.y);
+	}
 
 	//Flag the character to begin listen for a given event
 	public void listenForGrounded(string stateName) {
@@ -261,14 +259,15 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 		specialReleasedFlag = true;
 	}
 
-	public void listenForMovementCancel() {
-		movementCancelFlag = true;
+	public void listenForDashCancel() {
+		dashCancelFlag = true;
 	}
 	public void listenForVerticalCancel(string stateName) {
 		queueState(stateName);
 		verticalCancelFlag = true;
 	}
 
+	//Check for guard, jump or dash
 	public void listenForActiveCancel() {
 		activeCancelFlag = true;
 	}
@@ -303,7 +302,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 	public void listenForDacus() {
 		setXVelocity(movement.dashSpeed);
 		if(movement.dashLock <=0)status.ApplyStatusEffect(PlayerStatusEffect.INVULN,3);
-		dacusCancelFlag = true;
+		if(!drifter.enforceFullDistance) dacusCancelFlag = true;
 	}
 
 
@@ -313,7 +312,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 		specialReleasedFlag = false;
 		lightTappedFlag = false;
 		verticalCancelFlag = false;
-		movementCancelFlag = false;
+		dashCancelFlag = false;
 		activeCancelFlag = false;
 		listeningForGroundedFlag = false;
 		queuedStateTrigger = false;
@@ -345,10 +344,10 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 	}
 
 	//Populates hitbox array
-	void Start() {
-		HitboxCollision[] Hitboxes;
-		//grabBoxes = drifter.GetComponentsInChildren<HitboxCollision>(true);
-	}
+	// void Start() {
+	// 	HitboxCollision[] Hitboxes;
+	// 	//grabBoxes = drifter.GetComponentsInChildren<HitboxCollision>(true);
+	// }
 
 	public void setYVelocity(float y) {
 		rb.velocity = new Vector2(rb.velocity.x,y * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f));
@@ -516,8 +515,8 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 	public void endPerfectGuard() {
 		drifter.perfectGuarding = false;
 		if(drifter.guarding)drifter.PlayAnimation("Guard");
-		listenForJumpCancel();
-		listenForMovementCancel();
+		listenForActiveCancel();
+		//listenForDashCancel();
 	}
 
 	public void endParry() {
@@ -576,7 +575,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 			SpecialReleasedFlag = specialReleasedFlag,
 			LightTappedFlag = lightTappedFlag,
 			VerticalCancelFlag = verticalCancelFlag,
-			MovementCancelFlag = movementCancelFlag,
+			dashCancelFlag = dashCancelFlag,
 			ActiveCancelFlag = activeCancelFlag,
 			ListeningForGroundedFlag = listeningForGroundedFlag,
 			QueuedStateTrigger = queuedStateTrigger,
@@ -601,7 +600,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 		specialReleasedFlag = p_frame.SpecialReleasedFlag; 
 		lightTappedFlag = p_frame.LightTappedFlag; 
 		verticalCancelFlag = p_frame.VerticalCancelFlag; 
-		movementCancelFlag = p_frame.MovementCancelFlag; 
+		dashCancelFlag = p_frame.dashCancelFlag; 
 		activeCancelFlag = p_frame.ActiveCancelFlag; 
 		listeningForGroundedFlag = p_frame.ListeningForGroundedFlag; 
 		queuedStateTrigger = p_frame.QueuedStateTrigger; 

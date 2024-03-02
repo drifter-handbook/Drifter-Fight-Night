@@ -10,7 +10,7 @@ public class NeoParhelionMasterHit : MasterHit
 	int staticBurstTimer = 0;
 	int numBursts = -1;
 	int staticCycles = 0;
-	bool onBlock = false;
+	//bool onBlock = false;
 
 	GameObject zap;
 

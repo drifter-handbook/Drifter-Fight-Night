@@ -172,11 +172,14 @@ public class PlayerAttacks : MonoBehaviour {
 			//drifter.status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, 2);
 			drifter.masterhit.clearMasterhitVars();
 			drifter.canFeint = true;
-            drifter.canSpecialCancelFlag = false;
+			drifter.canSpecialCancelFlag = false;
 
+			//Cromatic abberation
 			GraphicalEffectManager.Instance.CreateSpecialCancel(drifter.gameObject);
-            GraphicalEffectManager.Instance.CreateMovementCancel(drifter.gameObject);
-            drifter.movement.actionCancelParticle();
+			//Creates Afterimage
+			GraphicalEffectManager.Instance.CreateMovementCancel(drifter.gameObject);
+			//Creates burst effect
+			drifter.movement.actionCancelParticle();
 		}
 	}
 

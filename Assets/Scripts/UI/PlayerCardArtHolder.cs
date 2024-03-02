@@ -55,7 +55,10 @@ public class PlayerCardArtHolder : MonoBehaviour
                 playerCards[i].setImages(stocks[imageIndex]);
                 playerCards[i].addStocks(stockPrefab, 4);
 
+                //Add dummy and player to training UI
                 if(drifters[i].peerID == 8) trainingUI.DummyHandler.Dummy = drifters[i];
+                else
+                    trainingUI.DummyHandler.Player= drifters[i];
 
             }
             //if(mainCamera == null) GameObject.FindGameObjectWithTag("MainCamera");

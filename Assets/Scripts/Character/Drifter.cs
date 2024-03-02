@@ -94,6 +94,10 @@ public class Drifter : MonoBehaviour
 	public bool usingSuper = false;
 	[NonSerialized]
 	public bool CanGrabLedge = true;
+	[NonSerialized]
+	public bool enforceFullDistance = false;
+	[NonSerialized]
+	public AttackHitType lastHitType = AttackHitType.NONE;
 
 	public int Stocks;
 	public float DamageTaken;
@@ -210,6 +214,7 @@ public class Drifter : MonoBehaviour
 	}
 
 	public void TriggerOnHit(Drifter drifterHit, bool isProjectile, AttackHitType hitType){
+		lastHitType = hitType;
 		//UnityEngine.Debug.Log(drifterType + " Hit a target");
 		masterhit.TriggerOnHit(drifterHit,isProjectile, hitType);
 	}
@@ -238,6 +243,8 @@ public class Drifter : MonoBehaviour
 		listenForSpecialCancel = false;     
 		knockedDown = false;
 		CanGrabLedge = true;
+		enforceFullDistance = false;
+		lastHitType = AttackHitType.NONE;
 		if(transform.position.z != -1) transform.position = new Vector3(transform.position.x,transform.position.y,-1);
 
 		if(input[0].Guard && !movement.ledgeHanging) {

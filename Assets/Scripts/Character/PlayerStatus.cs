@@ -201,6 +201,8 @@ public class PlayerStatus : MonoBehaviour {
 					statusDataMap[i].statusBar.GetComponent<StatusBar>().UpdateFrame();
 			}
 		}
+
+		if(!hasSloMoEffect())drifter.SetAnimationSpeed(1f);
 			
 		if(delayedVelocity != Vector2.zero && !(HasStatusEffect(PlayerStatusEffect.HITPAUSE) || HasStatusEffect(PlayerStatusEffect.CRINGE) || HasStatusEffect(PlayerStatusEffect.GRABBED) || hasSloMoEffect())) delayedVelocity = Vector2.zero;
 

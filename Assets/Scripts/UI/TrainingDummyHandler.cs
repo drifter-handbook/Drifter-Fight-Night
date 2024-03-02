@@ -6,9 +6,11 @@ using UnityEngine.UI;
 public class TrainingDummyHandler : MonoBehaviour
 {
 	public Drifter Dummy;
+	public Drifter Player;
 	public Dropdown d_Dropdown;
 	public Dropdown t_Dropdown;
 	public Dropdown r_Dropdown;
+	public Dropdown s_Dropdown;
 
 	//-1    no option
 	//0     dash
@@ -22,7 +24,13 @@ public class TrainingDummyHandler : MonoBehaviour
 	bool onBlock = false;
 	bool onWakeup = false;
 
+	bool fillMeter = false;
+	bool emptyMeter = false;
+	bool meterReset = false;
+
 	int reset = 0;
+
+	int meterResetFrames = 0;
 
 	int resetFrames = 28;
 	bool resetFlag = true;
@@ -58,6 +66,10 @@ public class TrainingDummyHandler : MonoBehaviour
 		r_Dropdown.onValueChanged.AddListener(delegate {
 			ReactionDropdownValueChanged(r_Dropdown);
 		});
+
+		s_Dropdown.onValueChanged.AddListener(delegate {
+			MeterDropdownValueChanged(s_Dropdown);
+		});
 	}
 
 	void FixedUpdate()
@@ -87,7 +99,6 @@ public class TrainingDummyHandler : MonoBehaviour
 		if((onHit || onBlock)  && !Dummy.status.HasEnemyStunEffect() && reset <=0 )
 			 setDummyInput(baseState);
 
-
 		if(reset > 0)
 		{
 			reset--;
@@ -95,9 +106,21 @@ public class TrainingDummyHandler : MonoBehaviour
 			{
 				resetFlag = true;
 				setDummyInput(baseState);
+				Dummy.SetCharge(300);
 			}
 		}
 
+		if(fillMeter) Player.SetCharge(500);
+		else if (emptyMeter)  Player.SetCharge(0);
+		else if(meterReset && meterResetFrames >0){
+			meterResetFrames--;
+			if(meterResetFrames == 0)
+				Player.SetCharge(500);
+		}
+
+		if(Dummy.status.HasEnemyStunEffect() && meterReset){
+			meterResetFrames = 200;
+		}
 
 	}
 
@@ -208,10 +231,40 @@ public class TrainingDummyHandler : MonoBehaviour
 				resetFrames = 10;
 				break;
 
+			case 6:
+				reactionState[0] = new PlayerInputData(){Super = true};
+				reactionState[1] = new PlayerInputData(){Super = true};
+				//resetFrames = 5;
+				break;
+
 			case 0:
 				reactionState[0] = new PlayerInputData();
 				reactionState[1] = new PlayerInputData();
 				break;
+			default:
+				break;
+		};
+	}
+
+	void MeterDropdownValueChanged(Dropdown change)
+	{
+		fillMeter = false;
+		emptyMeter = false;
+		meterReset = false;
+		switch(change.value)
+		{
+			
+			case 1:
+				fillMeter = true;
+				break;
+			case 2:
+				meterReset = true;
+				Player.SetCharge(500);
+				break;
+			case 3:
+				emptyMeter = true;
+				break;
+			case 0:
 			default:
 				break;
 		};

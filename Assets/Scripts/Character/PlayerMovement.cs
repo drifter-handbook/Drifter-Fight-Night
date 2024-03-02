@@ -231,12 +231,12 @@ public class PlayerMovement : MonoBehaviour
 		}
 
 		//Handle Jump
-		if(jumpTimer < fullhopFrames) {
+		if(jumpTimer < fullhopFrames && !drifter.status.HasStatusEffect(PlayerStatusEffect.HITPAUSE)) {
 			float prevJumpTimer = jumpTimer;
 			jumpTimer += (drifter.status.hasSloMoEffect() ? .4f : 1f);
 
 			//Shorthop
-			if(jumpTimer >= 0 && grounded && prevJumpTimer <0 && (!drifter.input[0].Jump || drifter.status.HasStatusEffect(PlayerStatusEffect.END_LAG))) {
+			if(!drifter.enforceFullDistance && jumpTimer >= 0 && grounded && prevJumpTimer <0 && (!drifter.input[0].Jump || drifter.status.HasStatusEffect(PlayerStatusEffect.END_LAG))) {
 				jumpTimer = fullhopFrames;
 				rb.velocity = new Vector2(rb.velocity.x, jumpSpeed * (drifter.status.hasSloMoEffect() ? .4f : 1f));
 				if(drifter.status.HasStatusEffect(PlayerStatusEffect.END_LAG)) UnityEngine.Debug.Log("JUMP QUEUED A MOVE");
@@ -530,7 +530,7 @@ public class PlayerMovement : MonoBehaviour
 	}
 	
 
-	//Made it public for treamlining channeled attack cancels
+	//Made it public for streamlining channeled attack cancels
 	public void techParticle() {
 		spawnJuiceParticle(BodyCollider.bounds.center, MovementParticleMode.Tech, Quaternion.Euler(0f,0f,0f),false);
 	}
@@ -659,7 +659,7 @@ public class PlayerMovement : MonoBehaviour
 
 
 	//Public jump method allows for forced jumps from attacks
-	public void jump() {
+	public bool jump(bool enforceFullDistance = false) {
 		if (currentJumps > 0) {
 			rb.velocity = new Vector3(rb.velocity.x,Mathf.Max(0,rb.velocity.y));
 			jumping = true;
@@ -672,8 +672,13 @@ public class PlayerMovement : MonoBehaviour
 			if(!grounded)drifter.PlayAnimation("Air_Jump_Start");
 			else drifter.PlayAnimation("Jump_Start");
 			//Particles
-			if(IsGrounded())
+			if(IsGrounded()){
+				if(enforceFullDistance){
+					UnityEngine.Debug.Log("FULLHOP ENFORCED");
+					drifter.enforceFullDistance = true;
+				}
 				spawnJuiceParticle(transform.position + particleOffset + new Vector3(0,-1,0), MovementParticleMode.Jump);
+			}
 			
 			else
 				spawnJuiceParticle(transform.position + particleOffset +new Vector3(0,-1,0), MovementParticleMode.DoubleJump);
@@ -683,10 +688,13 @@ public class PlayerMovement : MonoBehaviour
 			//jumpCoroutine = StartCoroutine(DelayedJump());
 
 			jumpTimer = -5f;
+			return true;
 		}
+		return false;
+
 	}
 
-	public bool dash() {
+	public bool dash(bool enforceFullDistance = false) {
 		if(currentDashes > 0 && !dashing) {
 			updateFacing();
 			accelerationFrames = 120;
@@ -697,7 +705,12 @@ public class PlayerMovement : MonoBehaviour
 			drifter.PlayAnimation("Dash");
 			drifter.status.ApplyStatusEffect(PlayerStatusEffect.INVULN,10);
 			jumping = false;
+			if(IsGrounded() && enforceFullDistance) {
+				UnityEngine.Debug.Log("FULL DASH DISTANCE ENFORCED");
+				drifter.enforceFullDistance = true;
+			}
 			currentDashes--;
+			GraphicalEffectManager.Instance.CreateMovementCancel(drifter.gameObject);
 			return true;
 		}
 		return false;
@@ -729,7 +742,7 @@ public class PlayerMovement : MonoBehaviour
 			drifter.ToggleAnimator(true);
 			hitstun = false;
 			drifter.status.clearStunStatus();
-			spawnSuperParticle(CancelType.Feint_Cancel,100,8);
+			spawnSuperParticle(CancelType.Hyper_Guard_Burst,100,8);
 			drifter.attacks.useSuper();
 			
 		}
