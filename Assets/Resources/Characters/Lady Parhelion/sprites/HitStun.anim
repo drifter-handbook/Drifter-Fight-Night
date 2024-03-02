@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: W_Up_Down_Loop
+  m_Name: HitStun
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -22,26 +22,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1
-        inSlope: Infinity
-        outSlope: Infinity
-        tangentMode: 103
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    attribute: m_Enabled
-    path: Hitboxes/W_Up_Grab
-    classID: 58
-    script: {fileID: 0}
-  - curve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 0.4803043
+        value: 0.39160573
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -52,15 +33,15 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Offset.y
-    path: Hitboxes/W_Up_Grab
-    classID: 58
+    path: Hurtboxes
+    classID: 70
     script: {fileID: 0}
   - curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.015890311
+        value: 0.4897841
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -70,16 +51,16 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: m_Radius
-    path: Hitboxes/W_Up_Grab
-    classID: 58
+    attribute: m_Size.y
+    path: Hurtboxes
+    classID: 70
     script: {fileID: 0}
   - curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.2892502
+        value: -0.028455544
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -90,17 +71,32 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Offset.x
-    path: Hitboxes/W_Up_Grab
-    classID: 58
+    path: Hurtboxes
+    classID: 70
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0.39555627
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_Size.x
+    path: Hurtboxes
+    classID: 70
     script: {fileID: 0}
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: -6036802436359110488, guid: 56b2ff1312627e34fa887642c6fc9d9e,
-        type: 3}
-    - time: 0.083333336
-      value: {fileID: 5117576769609664137, guid: 56b2ff1312627e34fa887642c6fc9d9e,
-        type: 3}
+      value: {fileID: 1030741817, guid: 2ecec31ee50f45c4fb0b1992abe1123c, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -113,13 +109,6 @@ AnimationClip:
   m_ClipBindingConstant:
     genericBindings:
     - serializedVersion: 2
-      path: 3203920553
-      attribute: 3305885265
-      script: {fileID: 0}
-      typeID: 58
-      customType: 0
-      isPPtrCurve: 0
-    - serializedVersion: 2
       path: 0
       attribute: 0
       script: {fileID: 0}
@@ -127,40 +116,46 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     - serializedVersion: 2
-      path: 3203920553
+      path: 2271535460
       attribute: 1872933342
       script: {fileID: 0}
-      typeID: 58
+      typeID: 70
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 3203920553
-      attribute: 1984117138
+      path: 2271535460
+      attribute: 2368279999
       script: {fileID: 0}
-      typeID: 58
+      typeID: 70
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 3203920553
+      path: 2271535460
       attribute: 413499720
       script: {fileID: 0}
-      typeID: 58
+      typeID: 70
+      customType: 0
+      isPPtrCurve: 0
+    - serializedVersion: 2
+      path: 2271535460
+      attribute: 4197328169
+      script: {fileID: 0}
+      typeID: 70
       customType: 0
       isPPtrCurve: 0
     pptrCurveMapping:
-    - {fileID: -6036802436359110488, guid: 56b2ff1312627e34fa887642c6fc9d9e, type: 3}
-    - {fileID: 5117576769609664137, guid: 56b2ff1312627e34fa887642c6fc9d9e, type: 3}
+    - {fileID: 1030741817, guid: 2ecec31ee50f45c4fb0b1992abe1123c, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.16666667
+    m_StopTime: 0.083333336
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
     m_HasAdditiveReferencePose: 0
-    m_LoopTime: 1
+    m_LoopTime: 0
     m_LoopBlend: 0
     m_LoopBlendOrientation: 0
     m_LoopBlendPositionY: 0
@@ -176,26 +171,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1
-        inSlope: Infinity
-        outSlope: Infinity
-        tangentMode: 103
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    attribute: m_Enabled
-    path: Hitboxes/W_Up_Grab
-    classID: 58
-    script: {fileID: 0}
-  - curve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 0.4803043
+        value: 0.39160573
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -206,15 +182,15 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Offset.y
-    path: Hitboxes/W_Up_Grab
-    classID: 58
+    path: Hurtboxes
+    classID: 70
     script: {fileID: 0}
   - curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.015890311
+        value: 0.4897841
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -224,16 +200,16 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: m_Radius
-    path: Hitboxes/W_Up_Grab
-    classID: 58
+    attribute: m_Size.y
+    path: Hurtboxes
+    classID: 70
     script: {fileID: 0}
   - curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.2892502
+        value: -0.028455544
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -244,24 +220,29 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Offset.x
-    path: Hitboxes/W_Up_Grab
-    classID: 58
+    path: Hurtboxes
+    classID: 70
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0.39555627
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_Size.x
+    path: Hurtboxes
+    classID: 70
     script: {fileID: 0}
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events:
-  - time: 0
-    functionName: playStateIfGrounded
-    data: W_Up_Down_Land
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.083333336
-    functionName: playStateIfGrounded
-    data: W_Up_Down_Land
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
+  m_Events: []

@@ -277,6 +277,9 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 		jumpFlag = true;
 	}
 
+	public void setCanLedgeGrab(int state = 0) {
+		drifter.CanGrabLedge = state != 0;
+	}
 
 	public void addCharge(int charge =1) {
 		specialCharge += charge;

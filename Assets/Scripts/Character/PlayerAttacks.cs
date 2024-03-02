@@ -105,7 +105,7 @@ public class PlayerAttacks : MonoBehaviour {
 
 		if(drifter.input[0].Pause && ! drifter.input[1].Pause) NetworkPlayers.Instance.rollemback();
 
-		if(AttackFrameDelay > 0 ) {
+		if(AttackFrameDelay > 0 && !drifter.status.HasStatusEffect(PlayerStatusEffect.HITPAUSE)) {
 			AttackFrameDelay--;
 			if(AttackFrameDelay == 0) {
 				foreach (HitboxCollision hitbox in GetComponentsInChildren<HitboxCollision>(true))
@@ -169,7 +169,7 @@ public class PlayerAttacks : MonoBehaviour {
 
 		if(isCancel) {
 			AttackFrameDelay = 4;
-			drifter.status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, 2);
+			//drifter.status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, 2);
 			drifter.masterhit.clearMasterhitVars();
 			drifter.canFeint = true;
             drifter.canSpecialCancelFlag = false;
@@ -200,6 +200,7 @@ public class PlayerAttacks : MonoBehaviour {
 	}
 
 	public void useSuper() {
+		drifter.status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,0);
 		drifter.SetUsingSuper(true);
 		StartAttack(DrifterAttackType.Super_Cancel);
 		drifter.movement.pauseGravity();
@@ -264,7 +265,7 @@ public class PlayerAttacks : MonoBehaviour {
 	}
 
 	public void StartAttack(DrifterAttackType attackType, int frameDelay = 2) {
-		drifter.status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,0);
+		//drifter.status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,0);
 		drifter.gainSuperMeter(5);
 		drifter.movement.jumping = false;
 		drifter.status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,480);

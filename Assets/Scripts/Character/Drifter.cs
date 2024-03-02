@@ -92,6 +92,8 @@ public class Drifter : MonoBehaviour
 	public bool sparkleMode = false;
 	[NonSerialized]
 	public bool usingSuper = false;
+	[NonSerialized]
+	public bool CanGrabLedge = true;
 
 	public int Stocks;
 	public float DamageTaken;
@@ -235,6 +237,7 @@ public class Drifter : MonoBehaviour
 		canSpecialCancelFlag = false;
 		listenForSpecialCancel = false;     
 		knockedDown = false;
+		CanGrabLedge = true;
 		if(transform.position.z != -1) transform.position = new Vector3(transform.position.x,transform.position.y,-1);
 
 		if(input[0].Guard && !movement.ledgeHanging) {

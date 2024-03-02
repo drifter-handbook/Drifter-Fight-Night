@@ -1137,8 +1137,8 @@ TextureImporter:
         y: 512
         width: 64
         height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.75, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1158,8 +1158,8 @@ TextureImporter:
         y: 512
         width: 64
         height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.65625, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1284,8 +1284,8 @@ TextureImporter:
         y: 512
         width: 64
         height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.75, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1305,8 +1305,8 @@ TextureImporter:
         y: 512
         width: 64
         height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.75, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1326,8 +1326,8 @@ TextureImporter:
         y: 512
         width: 64
         height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.71875, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1347,8 +1347,8 @@ TextureImporter:
         y: 448
         width: 64
         height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: -0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1368,8 +1368,8 @@ TextureImporter:
         y: 448
         width: 64
         height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: -0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1389,8 +1389,8 @@ TextureImporter:
         y: 448
         width: 64
         height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: -0.34375}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1428,9 +1428,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 256
-        y: 448
+        y: 384
         width: 64
-        height: 64
+        height: 128
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1448,12 +1448,12 @@ TextureImporter:
       name: Ladyp_51
       rect:
         serializedVersion: 2
-        x: 320
+        x: 384
         y: 448
-        width: 64
+        width: 96
         height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.25, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1553,10 +1553,10 @@ TextureImporter:
       name: Ladyp_56
       rect:
         serializedVersion: 2
-        x: 256
+        x: 320
         y: 384
         width: 64
-        height: 64
+        height: 128
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1574,12 +1574,12 @@ TextureImporter:
       name: Ladyp_57
       rect:
         serializedVersion: 2
-        x: 384
+        x: 480
         y: 448
-        width: 64
+        width: 96
         height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.25, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1587,27 +1587,6 @@ TextureImporter:
       bones: []
       spriteID: 88366a9e2b8312c00800000000000000
       internalID: 874042143761916808
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Ladyp_58
-      rect:
-        serializedVersion: 2
-        x: 448
-        y: 448
-        width: 64
-        height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: de3f4be18ab0c8c70800000000000000
-      internalID: 8974560974140142573
       vertices: []
       indices: 
       edges: []
@@ -2326,6 +2305,48 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Ladyp_89
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 384
+        width: 64
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 08c2265622ad3214db6f754f71cab344
+      internalID: 440352332
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ladyp_93
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 448
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.59375, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 26356f8be85db4b4a8499231611ddd8e
+      internalID: 1845602688
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -2351,6 +2372,7 @@ TextureImporter:
       Ladyp_66: -906797501663664804
       Ladyp_72: 5133472368423627091
       Ladyp_0: -5358565576426106179
+      Ladyp_93: 1845602688
       Ladyp_33: 4797148140236493076
       Ladyp_40: 616172793744855466
       Ladyp_91: 8711820248124203564
@@ -2368,13 +2390,13 @@ TextureImporter:
       Ladyp_52: -6939517794459602932
       Ladyp_51: 7081077086015249456
       Ladyp_27: -815756408532126736
-      Ladyp_37: 8937701990072231099
-      Ladyp_35: 8045591254537533222
-      Ladyp_86: 4440043537252130893
       Ladyp_11: 1359910208400679166
+      Ladyp_21: 6862673841973606055
+      Ladyp_86: 4440043537252130893
+      Ladyp_37: 8937701990072231099
       Ladyp_71: 854181731537135237
       Ladyp_48: -8283821505858007159
-      Ladyp_21: 6862673841973606055
+      Ladyp_35: 8045591254537533222
       Ladyp_77: -3069044435195778743
       Ladyp_87: -473401700601820311
       Ladyp_64: 5816016034809048200
@@ -2422,6 +2444,7 @@ TextureImporter:
       Ladyp_56: 5117576769609664137
       Ladyp_55: 6335742897950047048
       Ladyp_62: 7738486430048434709
+      Ladyp_89: 440352332
       Ladyp_60: 8575304820511025242
       Ladyp_17: 1179911362015102075
       Ladyp_81: 5379474971429898307
