@@ -143,7 +143,8 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
 		else if(movementCancelFlag && movement.currentDashes >0 && drifter.doubleTappedX()) {
 			if(movement.dash()) {
-				movement.techParticle();
+				//movement.techParticle();
+                MovementCancelParticle();
 				clearMasterhitVars();
 				drifter.clearGuardFlags();
 			}            
@@ -179,11 +180,13 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 		}
 		else if(verticalCancelFlag && drifter.doubleTappedY() && drifter.input[0].MoveY <0) {
 			playQueuedState();
-			movement.techParticle();
+			//movement.techParticle();
+            MovementCancelParticle();
 			returnToIdle();
 		}
 		else if(activeCancelFlag && drifter.input[0].Guard && !drifter.input[1].Guard) {
-			movement.techParticle();
+			//movement.techParticle();
+            MovementCancelParticle();
 			status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0);
 			status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0);
 			clearMasterhitVars();
@@ -198,7 +201,8 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 		else if((activeCancelFlag || jumpFlag)&& ((drifter.input[0].Jump && !drifter.input[1].Jump && movement.currentJumps>0) || (drifter.doubleTappedX() && movement.currentDashes >0) )) {
 			if(drifter.input[0].Jump) {
 				movement.jumping = false;
-				movement.techParticle();
+				//movement.techParticle();
+                GraphicalEffectManager.Instance.CreateMovementCancel(movement.gameObject);
 				status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0);
 				status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0);
 				clearMasterhitVars();
@@ -210,7 +214,8 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 			else {
 				if(movement.dash())
 				{
-					movement.techParticle();
+					//movement.techParticle();
+                    MovementCancelParticle();
 					clearMasterhitVars();
 				}
 			}
@@ -229,6 +234,11 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 		//ledgeDetector.UpdateFrame();
 
 	}
+
+    public void MovementCancelParticle() {
+        GraphicalEffectManager.Instance.CreateMovementCancel(movement.gameObject);
+        movement.actionCancelParticle();;
+    }
 
 	//Flag the character to begin listen for a given event
 	public void listenForGrounded(string stateName) {

@@ -535,6 +535,10 @@ public class PlayerMovement : MonoBehaviour
 		spawnJuiceParticle(BodyCollider.bounds.center, MovementParticleMode.Tech, Quaternion.Euler(0f,0f,0f),false);
 	}
 
+    public void actionCancelParticle() {
+        spawnJuiceParticle(BodyCollider.bounds.center, MovementParticleMode.Cancel, Quaternion.Euler(0f,0f,0f),false);
+    }
+
 	//Updates the direction the player is facing
 	public void updateFacing() {
 

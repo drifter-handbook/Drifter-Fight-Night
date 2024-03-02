@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [Serializable]
 public enum DrifterAttackType {
@@ -171,8 +172,11 @@ public class PlayerAttacks : MonoBehaviour {
 			drifter.status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, 2);
 			drifter.masterhit.clearMasterhitVars();
 			drifter.canFeint = true;
-			drifter.movement.techParticle();
-			drifter.canSpecialCancelFlag = false;
+            drifter.canSpecialCancelFlag = false;
+
+			GraphicalEffectManager.Instance.CreateSpecialCancel(drifter.gameObject);
+            GraphicalEffectManager.Instance.CreateMovementCancel(drifter.gameObject);
+            drifter.movement.actionCancelParticle();
 		}
 	}
 

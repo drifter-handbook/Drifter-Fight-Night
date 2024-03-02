@@ -15,6 +15,8 @@ public class GraphicalEffectManager : MonoBehaviour, INetworkMessageReceiver
 
     public GameObject hitSparksPrefab;
     public GameObject movementParticlePrefab;
+    public GameObject specialCancelEffet;
+    public GameObject movementCancelEffect;
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +28,22 @@ public class GraphicalEffectManager : MonoBehaviour, INetworkMessageReceiver
     void Update()
     {
         
+    }
+
+    public void CreateMovementCancel(GameObject source) {
+        var parent = source.transform.Find("Sprite");
+        var sprite = parent.GetComponent<SpriteRenderer>();
+
+        var fx = Instantiate(movementCancelEffect, parent);
+        fx.GetComponent<AfterimageSpawner>().Init(sprite);
+    }
+
+    public void CreateSpecialCancel(GameObject source) {
+        var parent = source.transform.Find("Sprite");
+        var sprite = parent.GetComponent<SpriteRenderer>();
+
+        var fx = Instantiate(specialCancelEffet, parent);
+        fx.GetComponent<AfterimageSpawner>().Init(sprite);
     }
 
     public void CreateHitSparks(HitSpark mode, Vector3 pos, float angle, Vector2 scale,Color color)

@@ -1,0 +1,97 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3687855291092718140
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 39435977113639906}
+  - component: {fileID: 5256855793788958457}
+  - component: {fileID: 2539031963428145207}
+  m_Layer: 0
+  m_Name: SpecialCancelAbberation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &39435977113639906
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3687855291092718140}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5256855793788958457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3687855291092718140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c223aff00ecf3d4daaf3173308c650d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  afterimagePrefab: {fileID: 7590766723159776503, guid: de0a75eb9b0e21e46bd60ae3abd9bf62,
+    type: 3}
+--- !u!114 &2539031963428145207
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3687855291092718140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 199c3529041a1e94bb9c74a8bc4457eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawner: {fileID: 5256855793788958457}
+  count: 5
+  speed: 0.02
+  motion:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.13137227
+      outSlope: -0.13137227
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.107615896
+    - serializedVersion: 3
+      time: 0.15
+      value: 0
+      inSlope: -9.834356
+      outSlope: -9.834356
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.12251655
+    - serializedVersion: 3
+      time: 0.3
+      value: -1
+      inSlope: -0.077836305
+      outSlope: 0.33787748
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.18874167
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
