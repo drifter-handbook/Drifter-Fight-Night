@@ -16,8 +16,7 @@ public class PlayerCardArtHolder : MonoBehaviour
 
     public GameObject mainCamera;
 
-    private void Update()
-    {
+    void FixedUpdate() {
         if (drifters == null || drifters.Length == 0)
         {
 
@@ -48,7 +47,6 @@ public class PlayerCardArtHolder : MonoBehaviour
                 drifters[i].SetColor(drifters[i].myColor);
 
                 drifters[i].status.card = playerCards[i];
-                drifters[i].GetComponent<PlayerHurtboxHandler>().trainingUI = trainingUI;
                 
                 playerCards[i].drifterIndex = imageIndex;
 
@@ -56,9 +54,13 @@ public class PlayerCardArtHolder : MonoBehaviour
                 playerCards[i].addStocks(stockPrefab, 4);
 
                 //Add dummy and player to training UI
-                if(drifters[i].peerID == 8) trainingUI.DummyHandler.Dummy = drifters[i];
-                else
-                    trainingUI.DummyHandler.Player= drifters[i];
+                if(GameController.Instance.IsTraining){
+                    drifters[i].GetComponent<PlayerHurtboxHandler>().trainingUI = trainingUI;
+                    if(drifters[i].peerID == 8) trainingUI.DummyHandler.Dummy = drifters[i];
+                    else
+                        trainingUI.DummyHandler.Player= drifters[i];
+                }
+                
 
             }
             //if(mainCamera == null) GameObject.FindGameObjectWithTag("MainCamera");

@@ -12,14 +12,6 @@ public class TrainingDummyHandler : MonoBehaviour
 	public Dropdown r_Dropdown;
 	public Dropdown s_Dropdown;
 
-	//-1    no option
-	//0     dash
-	//1     jump
-	//2     jab
-	//3     random
-
-	// int wakeupMode = -1;
-
 	bool onHit = false;
 	bool onBlock = false;
 	bool onWakeup = false;
@@ -72,8 +64,7 @@ public class TrainingDummyHandler : MonoBehaviour
 		});
 	}
 
-	void FixedUpdate()
-	{
+	void FixedUpdate() {
 
 		if(onWakeup && Dummy.knockedDown)
 		{
@@ -118,7 +109,7 @@ public class TrainingDummyHandler : MonoBehaviour
 				Player.SetCharge(500);
 		}
 
-		if(Dummy.status.HasEnemyStunEffect() && meterReset){
+		if(meterReset && Dummy.status.HasEnemyStunEffect()){
 			meterResetFrames = 200;
 		}
 

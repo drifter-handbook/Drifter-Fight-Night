@@ -765,7 +765,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0c70948fef8b0047aa95727076efea8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageDisplay: {fileID: 469188337639645876}
 --- !u!114 &7674587741064242540
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1300,22 +1299,10 @@ PrefabInstance:
     - target: {fileID: 8155291768342023561, guid: a3177128aeb184b48b842f8802b99f69,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a3177128aeb184b48b842f8802b99f69, type: 3}
---- !u!114 &469188337639645876 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 836229240036285419, guid: a3177128aeb184b48b842f8802b99f69,
-    type: 3}
-  m_PrefabInstance: {fileID: 943511125262874975}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44c4c08c974cde445965373aa6907bd2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &6535619870088224090 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6317189062771598341, guid: a3177128aeb184b48b842f8802b99f69,

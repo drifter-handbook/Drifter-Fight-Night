@@ -195,10 +195,6 @@ public class PlayerHurtboxHandler : MonoBehaviour
 			int HitstunDuration = GetHitStun(drifter, attacker, attackData);
 			int HitPauseDuration = attackData.HitStop >=0 ? attackData.HitStop : HitstunDuration;
 
-			//damage numbers managment
-			
-			status?.ApplyDamage(damageDealt, HitstunDuration);
-
 			//Flags a guradbreak for BIGG HITSPARKS
 			bool guardbroken = false;
 
@@ -383,10 +379,10 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
 			}
 
+			trainingUI?.addDamage(damageDealt,HitstunDuration,status);
 			trainingUI?.readFrameAdvantage(attackerStatus,status);
-			
+
 			// create hit sparks
-			
 
 			//When Guardbroken, play the crit animation
 			isCritical = guardbroken || crossUp;

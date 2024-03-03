@@ -172,7 +172,7 @@ public class Drifter : MonoBehaviour
 	//Flips text-based objects attacked to characters to keep them readable as the character turns
 	public void SetIndicatorDirection(float facing) {
 		transform.GetChild(0).localScale = new Vector2(Mathf.Abs(transform.GetChild(0).localScale.x) * facing,transform.GetChild(0).localScale.y);
-		transform.GetChild(3).localScale = new Vector2(Mathf.Abs(transform.GetChild(3).localScale.x) * facing,transform.GetChild(3).localScale.y);
+		//transform.GetChild(3).localScale = new Vector2(Mathf.Abs(transform.GetChild(3).localScale.x) * facing,transform.GetChild(3).localScale.y);
 	}
 
 

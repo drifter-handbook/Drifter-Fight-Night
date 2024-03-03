@@ -116,8 +116,6 @@ public class PlayerStatus : MonoBehaviour {
 	public PlayerCard card;
 	[NonSerialized]
 	public bool isInCombo = false;
-	[SerializeField]
-	private PlayerDamageNumbers damageDisplay;
 	Drifter drifter;
 
 	// Start is called before the first frame update
@@ -283,11 +281,6 @@ public class PlayerStatus : MonoBehaviour {
 		
 	}
 
-	public void ApplyDamage(float damage, int hitstun) {
-
-		damageDisplay.Increment(damage, isInCombo, hitstun);
-	}
-
 	//Clears all removable Status effects
 	public void clearRemoveOnHitStatus() {
 		for(int i = 0; i < statusDataMap.Length; i++) 
@@ -326,8 +319,6 @@ public class PlayerStatus : MonoBehaviour {
 		for(int i = 0; i < statusDataMap.Length; i++) {
 			if(statusDataMap[i].channel == channel)
 				statusDataMap[i].duration = 0;
-
-
 		}
 	}
 
@@ -389,9 +380,6 @@ public class PlayerStatus : MonoBehaviour {
 		return drifter.createParticleEffector(statusDataMap[(int)ef].name + "_Particle");
 	}
 
-
-
-	//God this bullshit...
 	void ApplyStatusEffectFor(PlayerStatusEffect ef, int duration) {
 
 		PlayerStatusData data = statusDataMap[(int)ef];

@@ -19,20 +19,28 @@ public class TrainingUIManager : MonoBehaviour
 
     int combo = 0;
 
+    float comboDamage = 0;
+
     [SerializeField] private TextMeshProUGUI ComboDisplayText;
     [SerializeField] private TextMeshProUGUI FrameDisplayText;
+    [SerializeField] private TextMeshProUGUI DamageDisplayText;
         
-    public void WriteCombo(int combo) {
-        string text = combo.ToString("00");
-        ComboDisplayText.text = text;
-    }
+    // public void WriteCombo(int combo) {
+    //     string text = combo.ToString("00");
+    //     ComboDisplayText.text = text;
+    // }
 
-    public void WriteFrame(int frame) {
-        string text = frame.ToString();
-        if (frame >= 0)
-            text = "+" + text;
-        FrameDisplayText.text = text;
-    }
+    // public void WriteFrame(int frame) {
+    //     string text = frame.ToString();
+    //     if (frame >= 0)
+    //         text = "+" + text;
+    //     FrameDisplayText.text = text;
+    // }
+
+    // public void WriteDamage(float damage) {
+    //     string text = damage.ToString();
+    //     DamageDisplayText.text = text;
+    // }
 
     void FixedUpdate()
     {
@@ -51,6 +59,7 @@ public class TrainingUIManager : MonoBehaviour
 
             FrameDisplayText.text = text;
             ComboDisplayText.text = combo.ToString("00");
+            DamageDisplayText.text = comboDamage.ToString("0.0");
 
             if(!attacker.HasStunEffect() && !defender.HasStunEffect())
                 monitoringFrameAdvantage = false;
@@ -72,6 +81,14 @@ public class TrainingUIManager : MonoBehaviour
         attackerFrame = 0;
         defenderFrame = 0;
         
+    }
+
+    public void addDamage(float damage, int hitstun, PlayerStatus p_defender){
+       if(monitoringFrameAdvantage)
+            comboDamage += damage;
+       else
+            comboDamage = damage;
+       
     }
 
 
