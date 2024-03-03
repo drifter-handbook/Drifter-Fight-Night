@@ -735,7 +735,7 @@ public class PlayerMovement : MonoBehaviour
 
 	public void superCancel() {
 
-		if(drifter.superCharge < 1f || drifter.status.HasStatusEffect(PlayerStatusEffect.DEAD) || !drifter.canSuper)return;
+		if(drifter.superCharge < 1f || drifter.status.HasStatusEffect(PlayerStatusEffect.DEAD) || !drifter.CanUseSuper())return;
 
 		//Hyperguard
 		if(drifter.status.HasStatusEffect(PlayerStatusEffect.KNOCKBACK) && drifter.guarding  && drifter.superCharge >= 100) {
@@ -794,7 +794,6 @@ public class PlayerMovement : MonoBehaviour
 		canceltype = mode;
 		canLandingCancel = false;
 		mainCamera.Darken(darkentime);
-		drifter.canSuper = false;
 		drifter.attacks.SetMultiHitAttackID();
 		Vector3 flip = new Vector3(Facing * 10f, 10f, 0f);
 		

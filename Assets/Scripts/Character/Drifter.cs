@@ -79,8 +79,6 @@ public class Drifter : MonoBehaviour
 	[NonSerialized]
 	public bool canFeint = true;
 	[NonSerialized]
-	public bool canSuper = true;
-	[NonSerialized]
 	public bool knockedDown = false;
 	[NonSerialized]
 	public bool canSpecialCancelFlag = false; //True when a move has connected but the player has not yet canceled their move
@@ -117,7 +115,6 @@ public class Drifter : MonoBehaviour
 			cancelTimer = _canSpecialCancel ? 18:0;
 		}
 	}
-
 
 	public void Start() {
 		Stocks = !GameController.Instance.IsTraining ? 4:9999;
@@ -228,7 +225,6 @@ public class Drifter : MonoBehaviour
 		movement.canFastFall = true;
 		SetUsingSuper(false);
 		canFeint = true;
-		canSuper = true;
 		clearGuardFlags();
 		if(movement.grounded && input[0].MoveX !=0)PlayAnimation("Walk");
 		else if(movement.grounded)PlayAnimation("Idle");
@@ -261,6 +257,10 @@ public class Drifter : MonoBehaviour
 		if(SuperState)ToggleAnimator(SuperState);
 	}
 
+	public bool CanUseSuper(){
+		return (!entity.paused && !usingSuper);
+	}
+
 
 	//Clears all flags associated with guard state
 	public void clearGuardFlags() {
@@ -275,8 +275,6 @@ public class Drifter : MonoBehaviour
 
 		return effector;
 	}
-
-	
 
 	//Command Input Detection
 
@@ -358,7 +356,7 @@ public class Drifter : MonoBehaviour
 			PerfectGuarding = perfectGuarding,
 			Parrying = parrying,
 			CanFeint = canFeint,
-			CanSuper = canSuper,
+			// CanSuper = canSuper,
 			KnockedDown = knockedDown,
 			CanSpecialCancel = _canSpecialCancel, 
 			Hidden = hiddenFlag,
@@ -397,7 +395,7 @@ public class Drifter : MonoBehaviour
 		perfectGuarding = p_frame.PerfectGuarding;
 		parrying = p_frame.Parrying;
 		canFeint = p_frame.CanFeint;
-		canSuper = p_frame.CanSuper;
+		// canSuper = p_frame.CanSuper;
 		knockedDown = p_frame.KnockedDown;
 		_canSpecialCancel = p_frame.CanSpecialCancel; 
 		hiddenFlag = p_frame.Hidden;
@@ -463,7 +461,7 @@ public class DrifterRollbackFrame: INetworkData
 	public bool PerfectGuarding;
 	public bool Parrying;
 	public bool CanFeint;
-	public bool CanSuper;
+	// public bool CanSuper;
 	public bool KnockedDown;
 	public bool CanSpecialCancel; 
 	public bool Hidden;
