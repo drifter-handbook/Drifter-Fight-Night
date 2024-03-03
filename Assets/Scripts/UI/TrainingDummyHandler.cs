@@ -7,7 +7,7 @@ using TMPro;
 public class TrainingDummyHandler : MonoBehaviour
 {
 	public enum buttonIcon
-	{ UP, RIGHT, LEFT, DOWN, NORMAL, SPECIAL, THROW, GUARD, BYZANTINE, NONE, JUMP};
+	{ UP, RIGHT, LEFT, DOWN, NORMAL, SPECIAL, THROW, GUARD, BYZANTINE, JUMP, UPLEFT, UPRIGHT, DOWNLEFT, DOWNRIGHT };
 
 	public Drifter Dummy;
 	public Drifter Player;
@@ -138,6 +138,8 @@ public class TrainingDummyHandler : MonoBehaviour
 
 			PlayerInputData currentFrameData = Player.input[0];
 
+			if(currentFrameData.Pause)clearBuffer();
+
 			if(currentFrameData.Equals(prevFrameData)) {
 				if(currentInputFrameTime < 999) currentInputFrameTime++;
 				if(currentDisplay != null)currentDisplay.GetComponentInChildren<TextMeshProUGUI>().text = currentInputFrameTime.ToString();
@@ -156,10 +158,14 @@ public class TrainingDummyHandler : MonoBehaviour
 				if(currentFrameData.Super) addButton(buttonIcon.BYZANTINE);
 				if(currentFrameData.Jump) addButton(buttonIcon.JUMP);
 
-				if(currentFrameData.MoveX > 0) addButton(buttonIcon.RIGHT);
-				else if(currentFrameData.MoveX < 0) addButton(buttonIcon.LEFT);
-				if(currentFrameData.MoveY > 0) addButton(buttonIcon.UP);
+				if(currentFrameData.MoveX > 0 && currentFrameData.MoveY >0) addButton(buttonIcon.UPRIGHT);
+				else if(currentFrameData.MoveX < 0 && currentFrameData.MoveY >0) addButton(buttonIcon.UPLEFT);
+				else if(currentFrameData.MoveX > 0 && currentFrameData.MoveY <0) addButton(buttonIcon.DOWNRIGHT);
+				else if(currentFrameData.MoveX < 0 && currentFrameData.MoveY <0) addButton(buttonIcon.DOWNLEFT);
+				else if(currentFrameData.MoveY > 0) addButton(buttonIcon.UP);
 				else if(currentFrameData.MoveY < 0) addButton(buttonIcon.DOWN);
+				else if(currentFrameData.MoveX > 0) addButton(buttonIcon.RIGHT);
+				else if(currentFrameData.MoveX < 0) addButton(buttonIcon.LEFT);
 
 				//if(currentFrameData.MoveX == 0 && currentFrameData.MoveY == 0) addButton(buttonIcon.NONE);
 
@@ -325,17 +331,23 @@ public class TrainingDummyHandler : MonoBehaviour
 		};
 	}
 
+	void clearBuffer(){
+		for(int i = 0; i < 16; i++){
+			Destroy(frameList[i]);
+			frameList[i] = null;
+		}
+		prevFrameData = new PlayerInputData();
+		currentInputFrameTime = 0;
+
+	}
+
 	void BufferDropdownValueChanged(Dropdown change)
 	{
 		switch(change.value)
 		{
 			case 1:
 				displayInput = false;
-				for(int i = 0; i < 16; i++){
-					Destroy(frameList[i]);
-					frameList[i] = null;
-				}
-				prevFrameData = new PlayerInputData();
+				clearBuffer();
 				break;
 			case 0:
 			default:
