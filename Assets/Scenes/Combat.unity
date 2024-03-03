@@ -430,6 +430,26 @@ PrefabInstance:
       propertyPath: m_Navigation.m_SelectOnLeft
       value: 
       objectReference: {fileID: 176992866}
+    - target: {fileID: 2285159294649097011, guid: a43d69f154626ad46b68b6da525dd0c1,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2285159294649097011, guid: a43d69f154626ad46b68b6da525dd0c1,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2285159294649097011, guid: a43d69f154626ad46b68b6da525dd0c1,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2285159294649097011, guid: a43d69f154626ad46b68b6da525dd0c1,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2323729364695761698, guid: a43d69f154626ad46b68b6da525dd0c1,
         type: 3}
       propertyPath: m_Navigation.m_SelectOnLeft
@@ -637,6 +657,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: -18.600006
       objectReference: {fileID: 0}
+    - target: {fileID: 8982010922925429442, guid: a43d69f154626ad46b68b6da525dd0c1,
+        type: 3}
+      propertyPath: m_Navigation.m_SelectOnLeft
+      value: 
+      objectReference: {fileID: 176992866}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a43d69f154626ad46b68b6da525dd0c1, type: 3}
 --- !u!114 &1278554312 stripped

@@ -2,15 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class TrainingDummyHandler : MonoBehaviour
 {
+	public enum buttonIcon
+	{ UP, RIGHT, LEFT, DOWN, NORMAL, SPECIAL, THROW, GUARD, BYZANTINE, NONE, JUMP};
+
 	public Drifter Dummy;
 	public Drifter Player;
 	public Dropdown d_Dropdown;
 	public Dropdown t_Dropdown;
 	public Dropdown r_Dropdown;
 	public Dropdown s_Dropdown;
+	public Dropdown b_Dropdown;
+
+	public GameObject inputList;
+
+	GameObject[] frameList = new GameObject[16];
+
+	public Sprite[] images;
+
+	GameObject currentDisplay;
 
 	bool onHit = false;
 	bool onBlock = false;
@@ -19,6 +32,8 @@ public class TrainingDummyHandler : MonoBehaviour
 	bool fillMeter = false;
 	bool emptyMeter = false;
 	bool meterReset = false;
+
+	bool displayInput = true;
 
 	int reset = 0;
 
@@ -42,7 +57,8 @@ public class TrainingDummyHandler : MonoBehaviour
 			new PlayerInputData()
 		};
 
-	int option;
+	PlayerInputData prevFrameData = new PlayerInputData();
+	int currentInputFrameTime = 1;
 
 	void Start()
 	{
@@ -62,9 +78,14 @@ public class TrainingDummyHandler : MonoBehaviour
 		s_Dropdown.onValueChanged.AddListener(delegate {
 			MeterDropdownValueChanged(s_Dropdown);
 		});
+
+		b_Dropdown.onValueChanged.AddListener(delegate {
+			BufferDropdownValueChanged(b_Dropdown);
+		});
 	}
 
 	void FixedUpdate() {
+		if(!GameController.Instance.IsTraining) return;
 
 		if(onWakeup && Dummy.knockedDown)
 		{
@@ -111,6 +132,49 @@ public class TrainingDummyHandler : MonoBehaviour
 
 		if(meterReset && Dummy.status.HasEnemyStunEffect()){
 			meterResetFrames = 200;
+		}
+
+		if(displayInput && Player != null){
+
+			PlayerInputData currentFrameData = Player.input[0];
+
+			if(currentFrameData.Equals(prevFrameData)) {
+				if(currentInputFrameTime < 999) currentInputFrameTime++;
+				if(currentDisplay != null)currentDisplay.GetComponentInChildren<TextMeshProUGUI>().text = currentInputFrameTime.ToString();
+
+			}
+			else if(!currentFrameData.isEmpty()){
+				currentInputFrameTime = 1;
+				currentDisplay = addButtonFrame();
+
+				if(currentFrameData.Light && currentFrameData.Special) addButton(buttonIcon.THROW);
+				else {
+					if(currentFrameData.Light) addButton(buttonIcon.NORMAL);
+					if(currentFrameData.Special) addButton(buttonIcon.SPECIAL);
+				}
+				if(currentFrameData.Guard) addButton(buttonIcon.GUARD);
+				if(currentFrameData.Super) addButton(buttonIcon.BYZANTINE);
+				if(currentFrameData.Jump) addButton(buttonIcon.JUMP);
+
+				if(currentFrameData.MoveX > 0) addButton(buttonIcon.RIGHT);
+				else if(currentFrameData.MoveX < 0) addButton(buttonIcon.LEFT);
+				if(currentFrameData.MoveY > 0) addButton(buttonIcon.UP);
+				else if(currentFrameData.MoveY < 0) addButton(buttonIcon.DOWN);
+
+				//if(currentFrameData.MoveX == 0 && currentFrameData.MoveY == 0) addButton(buttonIcon.NONE);
+
+				currentDisplay.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "1";
+
+				//clear the oldest frame
+				if(frameList[15] != null) Destroy(frameList[15]);
+
+				for (int i = frameList.Length - 2; i >= 0; i--)
+            		frameList[i + 1] = frameList[i];
+        
+        		frameList[0] = currentDisplay;
+        		prevFrameData = currentFrameData;
+			}
+
 		}
 
 	}
@@ -261,12 +325,46 @@ public class TrainingDummyHandler : MonoBehaviour
 		};
 	}
 
+	void BufferDropdownValueChanged(Dropdown change)
+	{
+		switch(change.value)
+		{
+			case 1:
+				displayInput = false;
+				for(int i = 0; i < 16; i++){
+					Destroy(frameList[i]);
+					frameList[i] = null;
+				}
+				prevFrameData = new PlayerInputData();
+				break;
+			case 0:
+			default:
+				displayInput = true;
+				break;
+		};
+	}
+
 	void setDummyInput(PlayerInputData[] p_input)
 	{
 		for(int i = 0; i < p_input.Length; i++)
 		{
 			Dummy.input[i] = p_input[i];
 		}
+	}
+
+	GameObject addButton(buttonIcon icon){
+		GameObject button = GameController.Instance.CreatePrefab("InputFrameButton", transform.position, transform.rotation);
+		button.GetComponent<Image>().sprite = images[(int)icon];
+		button.transform.SetParent(currentDisplay.transform.GetChild(0));
+		button.transform.localScale = new Vector3(1, 1, 1) ;
+		return button;
+	}
+
+	GameObject addButtonFrame(){
+		GameObject display = GameController.Instance.CreatePrefab("InputFrameDisplay", transform.position, transform.rotation);
+		display.transform.SetParent(inputList.transform);
+		display.transform.localScale = new Vector3(1, 1, 1) ;
+		return display;
 	}
 
 	void controlDummy()

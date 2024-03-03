@@ -160,6 +160,7 @@ public class Drifter : MonoBehaviour
 		transform.GetChild(0).GetComponent<Animator>().Play( (colorID < 8)?"P" + (colorID + 1):"P9");
 	}
 
+	//Makes the player sprite invisble
 	public void toggleHidden(bool hidden) {
 		if(hiddenFlag == hidden) return;
 		hiddenFlag = hidden;
