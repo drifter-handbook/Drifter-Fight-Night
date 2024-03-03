@@ -35,6 +35,10 @@ public class TrainingDummyHandler : MonoBehaviour
 
 	bool displayInput = true;
 
+	bool controlDummy;
+
+	bool record;
+
 	int reset = 0;
 
 	int meterResetFrames = 0;
@@ -86,41 +90,48 @@ public class TrainingDummyHandler : MonoBehaviour
 
 	void FixedUpdate() {
 		if(!GameController.Instance.IsTraining) return;
-
-		if(onWakeup && Dummy.knockedDown)
-		{
-			if(resetFlag)setDummyInput(reactionState);
-			resetFlag = false;
-			reset = resetFrames;
+		if(controlDummy){
+			Dummy.input[0] = (PlayerInputData)Player.input[0].Clone();
+			Player.input[0] = new PlayerInputData();
 		}
-
-		if(onBlock && Dummy.status.HasEnemyStunEffect() && Dummy.guarding)
-		{
-			if(resetFlag) setDummyInput(reactionState);
-			resetFlag = false;
-			reset = resetFrames;
-		}
-
-		if(onHit && Dummy.status.HasEnemyStunEffect())
-		{
-			if(resetFlag) setDummyInput(reactionState);
-			resetFlag = false;
-			reset = resetFrames;
-		}
-
-		if((onHit || onBlock)  && !Dummy.status.HasEnemyStunEffect() && reset <=0 )
-			 setDummyInput(baseState);
-
-		if(reset > 0)
-		{
-			reset--;
-			if(reset <=0)
+		else{
+			if(onWakeup && Dummy.knockedDown)
 			{
-				resetFlag = true;
-				setDummyInput(baseState);
-				Dummy.SetCharge(300);
+				if(resetFlag)setDummyInput(reactionState);
+				resetFlag = false;
+				reset = resetFrames;
+			}
+
+			if(onBlock && Dummy.status.HasEnemyStunEffect() && Dummy.guarding)
+			{
+				if(resetFlag) setDummyInput(reactionState);
+				resetFlag = false;
+				reset = resetFrames;
+			}
+
+			if(onHit && Dummy.status.HasEnemyStunEffect())
+			{
+				if(resetFlag) setDummyInput(reactionState);
+				resetFlag = false;
+				reset = resetFrames;
+			}
+
+			if((onHit || onBlock)  && !Dummy.status.HasEnemyStunEffect() && reset <=0 )
+				 setDummyInput(baseState);
+
+			if(reset > 0)
+			{
+				reset--;
+				if(reset <=0)
+				{
+					resetFlag = true;
+					setDummyInput(baseState);
+					Dummy.SetCharge(300);
+				}
 			}
 		}
+		
+		//Meter Settings
 
 		if(fillMeter) Player.SetCharge(500);
 		else if (emptyMeter)  Player.SetCharge(0);
@@ -134,11 +145,30 @@ public class TrainingDummyHandler : MonoBehaviour
 			meterResetFrames = 200;
 		}
 
+		//Command Button
+
+		if(Player != null && Player.input[0].Pause && Player.input[1].Pause && !Player.input[2].Pause){
+			
+			if(Player.input[0].MoveY > 0 && Player.input[0].MoveX ==0)
+				clearBuffer();
+			else if(Player.input[0].MoveY < 0 && Player.input[0].MoveX ==0)
+				Dummy.transform.position = new Vector3(0,5);
+			else if(Player.input[0].MoveY <0 && Player.input[0].MoveX > 0)
+				Dummy.transform.position = NetworkPlayers.Instance.spawnPoints[0].transform.position;
+			else if(Player.input[0].MoveY <0 && Player.input[0].MoveX < 0)
+				Dummy.transform.position = NetworkPlayers.Instance.spawnPoints[1].transform.position;
+			else if(Player.input[0].MoveX > 0)
+				Dummy.transform.position = NetworkPlayers.Instance.spawnPoints[2].transform.position;
+			else if(Player.input[0].MoveX < 0)
+				Dummy.transform.position = NetworkPlayers.Instance.spawnPoints[3].transform.position;
+
+			
+		}
+
+		//Input buffer display
 		if(displayInput && Player != null){
 
 			PlayerInputData currentFrameData = Player.input[0];
-
-			if(currentFrameData.Pause)clearBuffer();
 
 			if(currentFrameData.Equals(prevFrameData)) {
 				if(currentInputFrameTime < 999) currentInputFrameTime++;
@@ -195,6 +225,7 @@ public class TrainingDummyHandler : MonoBehaviour
 			new PlayerInputData(),
 			new PlayerInputData()
 		};
+		controlDummy = false;
 		switch(change.value)
 		{
 			case 1:
@@ -219,6 +250,11 @@ public class TrainingDummyHandler : MonoBehaviour
 				Dummy.input[1] = new PlayerInputData(){Special = true};
 				baseState[1] = new PlayerInputData(){Special = true};
 				break;
+
+			case 5:
+				controlDummy = true;
+				break;
+
 			case 0:
 				Dummy.input[0] = new PlayerInputData();
 				Dummy.input[1] = new PlayerInputData();
@@ -336,7 +372,6 @@ public class TrainingDummyHandler : MonoBehaviour
 			Destroy(frameList[i]);
 			frameList[i] = null;
 		}
-		prevFrameData = new PlayerInputData();
 		currentInputFrameTime = 0;
 
 	}
@@ -347,6 +382,7 @@ public class TrainingDummyHandler : MonoBehaviour
 		{
 			case 1:
 				displayInput = false;
+				prevFrameData = new PlayerInputData();
 				clearBuffer();
 				break;
 			case 0:
@@ -377,10 +413,5 @@ public class TrainingDummyHandler : MonoBehaviour
 		display.transform.SetParent(inputList.transform);
 		display.transform.localScale = new Vector3(1, 1, 1) ;
 		return display;
-	}
-
-	void controlDummy()
-	{
-		
 	}
 }

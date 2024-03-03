@@ -11,9 +11,11 @@ public class WalkOff : MonoBehaviour
 	// Start is called before the first frame update
 
 	public void UpdateFrame() {
-		if(preventWalkOff && !touchingGround)
+		if(preventWalkOff && !touchingGround){
 			rb.velocity = new Vector2(rb.velocity.x != 0 ? Mathf.Sign(rb.velocity.x) * -2 : 0,rb.velocity.y);
-		touchingGround = false;
+			touchingGround = false;
+		}
+		
 	}
 
 	void OnTriggerStay2D(Collider2D collider) {
@@ -26,7 +28,7 @@ public class WalkOff : MonoBehaviour
 		{
 			touchingGround = false;
 			if(preventWalkOff)
-				rb.velocity = new Vector2(0,rb.velocity.y);
+				rb.velocity = new Vector2(Mathf.Sign(rb.velocity.x) * -2,rb.velocity.y);
 		}
 
 	}

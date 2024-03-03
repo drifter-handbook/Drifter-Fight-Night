@@ -173,7 +173,7 @@ public class RyykeMasterHit : MasterHit
 	   }
 
 	   SetObjectColor(stone);
-	   tombstones[tombstoneIndex] = stone.GetComponent<Tombstone>().setup(tombstoneIndex,movement.Facing,drifter.gameObject,zombieRadius);
+	   tombstones[tombstoneIndex] = stone.GetComponent<Tombstone>().setup(tombstoneIndex,movement.Facing,drifter.gameObject,zombieRadius,(PlayerColor)drifter.GetColor());
 	   tombstones[tombstoneIndex].throwStone(mode);
 	}
 
@@ -449,7 +449,7 @@ public class RyykeMasterHit : MasterHit
 				tombstones[i].GetComponent<Tombstone>().DeserializeFrame(ryyke_frame.Tombstones[i]);
 			}
 			//Projectile does not exist in rollback frame
-			else {
+			else if (tombstones[i] != null) {
 				Destroy(tombstones[i].gameObject);
 				tombstones[i] = null;
 			}  

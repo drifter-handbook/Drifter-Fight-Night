@@ -123,15 +123,13 @@ public class PlayerMovement : MonoBehaviour
 		frictionCollider = GetComponent<PolygonCollider2D>();
 
 		baseTerminalVelocity = terminalVelocity;
-		
-	}
-	void Start(){
-		
+
 		baseGravity = rb.gravityScale;
 		jumpSpeed = (jumpHeight / jumpTime + .5f*(rb.gravityScale * jumpTime));
 		if (!GameController.Instance.IsHost) {
 			rb.isKinematic = true;
 		}
+		
 	}
 
 	//Restitution

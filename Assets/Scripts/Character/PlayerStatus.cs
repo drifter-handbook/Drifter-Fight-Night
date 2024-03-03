@@ -116,11 +116,10 @@ public class PlayerStatus : MonoBehaviour {
 	public PlayerCard card;
 	[NonSerialized]
 	public bool isInCombo = false;
-	Drifter drifter;
+	public Drifter drifter;
 
 	// Start is called before the first frame update
 	void Start() {
-		drifter = GetComponent<Drifter>();
 		if(!GameController.Instance.IsTraining)ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,111);
 	}
 	

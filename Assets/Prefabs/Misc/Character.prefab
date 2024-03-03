@@ -664,6 +664,7 @@ MonoBehaviour:
   W_Side_Is_Recovery: 0
   maxRecoveries: 1
   shareRecoveries: 0
+  drifter: {fileID: 5578303729342035337}
 --- !u!50 &3106753082241659639
 Rigidbody2D:
   serializedVersion: 4
@@ -765,6 +766,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0c70948fef8b0047aa95727076efea8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  drifter: {fileID: 5578303729342035337}
 --- !u!114 &7674587741064242540
 MonoBehaviour:
   m_ObjectHideFlags: 0

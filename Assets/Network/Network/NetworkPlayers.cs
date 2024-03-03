@@ -15,6 +15,8 @@ public class NetworkPlayers : MonoBehaviour
 
 	public GameObject playerInputPrefab;
 
+	public GameObject stage;
+
 	public int rollbackFrames = 10;
 
 	DrifterRollbackFrame[,] rollbackTest;
@@ -29,14 +31,15 @@ public class NetworkPlayers : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
 	{
-		GameController.Instance.CreatePrefab(GameController.Instance.selectedStage);
+		stage = GameController.Instance.CreatePrefab(GameController.Instance.selectedStage);
+		GameObject.FindGameObjectWithTag("MainCamera").GetComponent<ScreenShake>().getParalax();
 
 		//populate spawn points
 		spawnPoints = new List<GameObject>();
 		for(int i = 0; i <4; i++)
 			spawnPoints.Add(GameObject.Find("SpawnPoint" + i));
 
-		syncFromClients = GetComponent<NetworkSyncToHost>();
+		//syncFromClients = GetComponent<NetworkSyncToHost>();
 
 		// create players
 		foreach (CharacterSelectState charSel in CharacterMenu.charSelStates.Values)
@@ -54,7 +57,7 @@ public class NetworkPlayers : MonoBehaviour
 
 		Physics2D.Simulate(1f/60f);
 
-		PlayerInputData input;
+		// PlayerInputData input;
 
 		int q = 0;
 
@@ -63,11 +66,12 @@ public class NetworkPlayers : MonoBehaviour
 		foreach (CharacterSelectState charSel in CharacterMenu.charSelStates.Values)
 		{
 			//Link inputs to peer ids
-			input = NetworkUtils.GetNetworkData<PlayerInputData>(syncFromClients["input", charSel.PeerID]);
-			if (input != null)
-				rollback2[q] = UpdateInput(players[charSel.PeerID], input);
+			// input = NetworkUtils.GetNetworkData<PlayerInputData>(syncFromClients["input", charSel.PeerID]);
+			// if (input != null)
+			// 	rollback2[q] = UpdateInput(players[charSel.PeerID], input);
 
-			else if(GameController.Instance.controls.ContainsKey(charSel.PeerID))
+			// else 
+			if(GameController.Instance.controls.ContainsKey(charSel.PeerID))
 				 rollback2[q] = UpdateInput(players[charSel.PeerID], GetInput(GameController.Instance.controls[charSel.PeerID]));
 				
 			else

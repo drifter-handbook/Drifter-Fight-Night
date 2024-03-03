@@ -50,6 +50,7 @@ public class NeoParhelionMasterHit : MasterHit
 
 		if(g_burst != null) g_burst.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
 		if(g_staticField!= null) g_staticField.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
+		ledgeDetector.UpdateFrame();
 	}
 
 	public void Create_Static_Field(int launcher){
@@ -162,10 +163,6 @@ public class NeoParhelionMasterHit : MasterHit
 		Remove_Dash_Trail();
 		//staticBurstTarget = null;
 		//numBursts = 0;
-	}
-
-	public void W_Up_Slam() {
-		if(Up_W_Grab.victim != null) playState("W_Up_Down");
 	}
 
 	//Flips the direction the charactr is facing mid move)

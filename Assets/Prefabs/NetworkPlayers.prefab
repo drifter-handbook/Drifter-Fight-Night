@@ -10,10 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6368815245258981779}
   - component: {fileID: 6368815245258981772}
-  - component: {fileID: 6368815245258981773}
-  - component: {fileID: 6368815245258981774}
-  - component: {fileID: 6368815245258981768}
-  - component: {fileID: 6368815245258981775}
   m_Layer: 0
   m_Name: NetworkPlayers
   m_TagString: NetworkPlayers
@@ -31,6 +27,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -54,52 +51,5 @@ MonoBehaviour:
   - {fileID: 0}
   playerInputPrefab: {fileID: 1559094768925924026, guid: 69f3bbd5367425242880cd60d54fa1d1,
     type: 3}
---- !u!114 &6368815245258981773
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6368815245258981778}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c20a1139a9eaca438c79855ebb3b13b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  NetworkType: NetworkPlayers
---- !u!114 &6368815245258981774
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6368815245258981778}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ebcd7209f441984587a9cf9214b4dfa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &6368815245258981768
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6368815245258981778}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e95498f031010f647b21dc16607cf471, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &6368815245258981775
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6368815245258981778}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 498c6039e9873a04b8001f0e91cc9919, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  stage: {fileID: 0}
+  rollbackFrames: 10

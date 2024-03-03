@@ -61,11 +61,12 @@ public class Tombstone : NonplayerHurtboxHandler
 	}
 
 	//sets necessary fields to make spawning cleaner
-	public Tombstone setup(int p_tombstoneIndex, int p_facing,GameObject p_drifter,float p_radius) {
+	public Tombstone setup(int p_tombstoneIndex, int p_facing,GameObject p_drifter,float p_radius,PlayerColor color) {
 	   tombstoneType = p_tombstoneIndex;
 	   facing = p_facing;
 	   drifter = p_drifter;
 	   ZOMBIE_RADIUS = p_radius;
+	   healthBar.setColor(color);
 	   return this;
 	}
 
@@ -82,7 +83,7 @@ public class Tombstone : NonplayerHurtboxHandler
 
 			oldAttacks[attackID] = MAX_ATTACK_DURATION;
 
-			if(percentage >= maxPercentage)Destroy(gameObject);
+			if(percentage >= maxPercentage)breakStone();
 		}
 
 		return returnCode;

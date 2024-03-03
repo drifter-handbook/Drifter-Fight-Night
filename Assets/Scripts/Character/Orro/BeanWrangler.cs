@@ -16,7 +16,15 @@ public class BeanState {
 public class BeanWrangler : NonplayerHurtboxHandler
 {
 	// Constnat Values
-	public int color = 0;
+	private int _color = 0;
+	public int color {
+		get{ return _color;}
+		set {
+			_color = value;
+			healthBar?.setColor((PlayerColor)value);
+		}	
+	}
+
 	float RETURN_SPEED = 25f;
 	int BEAN_RESPAWN_DELAY = 180;
 
@@ -63,7 +71,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
 
 					if(!alive) {
 						//Heal bean if he is dead
-						if(percentage > 0) percentage -= 4f;
+						if(percentage > 0) percentage -= .06f;
 						if(percentage <= 0)	{
 							percentage = 0;
 							alive = true;

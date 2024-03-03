@@ -15,47 +15,40 @@ public class SummonHealthbarHandler : MonoBehaviour
             rectTransform.transform.localScale = new Vector2(value * .625f,.625f);
         }
     }
-    float maxBarFadeTime = 1.5f;
-    float barFadeTime;
+    int maxBarFadeTime = 90;
+    int barFadeTime = 0;
     public Image bar;
-    SyncAnimatorStateHost anim;
+    Animator anim;
 
 
     RectTransform rectTransform;
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
-        anim = GetComponent<SyncAnimatorStateHost>();
+        anim = GetComponent<Animator>();
         barFadeTime = maxBarFadeTime;
     }
 
-    //TODO Make this not awful, and make it work for multiplayer
-    // void Start()
-    // {
-    //     foreach (Image barChild in GetComponentsInChildren<Image>(true))
-    //     {
-    //         //Currently doesnt work for clients, and clients would not recieve color data in time
-    //         barChild.color = CharacterMenu.ColorFromEnum[(PlayerColor)rectTransform.transform.parent.gameObject.GetComponent<SyncProjectileColorDataHost>().color];
-    //     }
-    //     GetComponent<Image>().color = UnityEngine.Color.white;
-    // }
+    public void setColor(PlayerColor color){
+        foreach (Image barChild in GetComponentsInChildren<Image>(true))        
+            barChild.color = CharacterMenu.ColorFromEnum[color];
+        GetComponent<Image>().color = UnityEngine.Color.white;
+    }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        if(barFadeTime < maxBarFadeTime)
-        {
-        	barFadeTime += Time.deltaTime;
+        if(barFadeTime < maxBarFadeTime) {
+        	barFadeTime ++;
         	if(barFadeTime >=maxBarFadeTime)
-        		anim.SetState("Hide");
+        		anim.Play("Hide");
         }
     }
 
-    public void updateHealthbar(float percentage)
-    {
-    	barFadeTime = 0f;
+    public void updateHealthbar(float percentage) {
+    	barFadeTime = 0;
     	bar.fillAmount = percentage;
-    	anim.SetState(percentage > 0 ? "Show":"Hide");
+    	anim.Play(percentage > 0 ? "Show":"Hide");
 
     }
 }

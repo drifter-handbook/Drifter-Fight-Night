@@ -76,25 +76,22 @@ public class PlayerAttacks : MonoBehaviour {
 	[NonSerialized]
 	public int currentNeutralRecoveries;
 
-	Drifter drifter;
+	public Drifter drifter;
 
 	void Awake() {
 		foreach (SingleAttack attack in AttackMap) {
 			Attacks[attack.attack] = attack.attackData;
 			AttackVariants[attack.attack] = attack.hasAirVariant;
-
+			hitboxes = GetComponentsInChildren<HitboxCollision>();
 		}
 	}
 
 	// Start is called before the first frame update
 	void Start() {
-		drifter = GetComponent<Drifter>();
 		currentUpRecoveries = maxRecoveries;
 		currentDownRecoveries = maxRecoveries;
 		currentSideRecoveries = maxRecoveries;
 		currentNeutralRecoveries = maxRecoveries;
-
-		hitboxes = GetComponentsInChildren<HitboxCollision>();
 	}
 
 	// Update is called once per frame
@@ -103,7 +100,7 @@ public class PlayerAttacks : MonoBehaviour {
 		if (GameController.Instance.IsPaused)
 			return;
 
-		if(drifter.input[0].Pause && ! drifter.input[1].Pause) NetworkPlayers.Instance.rollemback();
+		//if(drifter.input[0].Pause && ! drifter.input[1].Pause) NetworkPlayers.Instance.rollemback();
 
 		if(AttackFrameDelay > 0 && !drifter.status.HasStatusEffect(PlayerStatusEffect.HITPAUSE)) {
 			AttackFrameDelay--;

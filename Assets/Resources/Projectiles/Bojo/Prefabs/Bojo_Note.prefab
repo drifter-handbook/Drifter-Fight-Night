@@ -61,8 +61,8 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.012482375, y: 0.049083497}
-  m_Size: {x: 0.18211862, y: 0.35608888}
+  m_Offset: {x: 0.0017185211, y: 0.036776103}
+  m_Size: {x: 0.13288906, y: 0.2973922}
   m_Direction: 0
 --- !u!1 &3221135864597261108
 GameObject:
@@ -186,10 +186,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ef945a1776594438c7a9223e2d7bb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  destoryState: 
   duration: 120
   rb: {fileID: 7953930119600870566}
   animator: {fileID: 4406789472043400565}
-  updateSelf: 0
+  pauseBehavior: 1
+  paused: 0
+  useHitpause: 0
+  DestroyOnExit: 1
 --- !u!95 &4406789472043400565
 Animator:
   serializedVersion: 4

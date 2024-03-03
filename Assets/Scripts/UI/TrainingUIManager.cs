@@ -48,7 +48,7 @@ public class TrainingUIManager : MonoBehaviour
         {
             if(attacker.HasStunEffect())
                 attackerFrame++;
-            if(defender.HasStunEffect())
+            if(defender.HasEnemyStunEffect())
                 defenderFrame++;
 
             int frame = defenderFrame - attackerFrame;
@@ -68,7 +68,7 @@ public class TrainingUIManager : MonoBehaviour
 
     public void readFrameAdvantage(PlayerStatus p_attacker, PlayerStatus p_defender)
     {
-        if(monitoringFrameAdvantage)
+        if(monitoringFrameAdvantage && p_defender == defender)
             combo++;
         else
         {

@@ -116,13 +116,15 @@ public class Drifter : MonoBehaviour
 		}
 	}
 
+	public void Awake(){
+		masterhit = GetComponentInChildren<MasterHit>();
+	}
+
 	public void Start() {
 		Stocks = !GameController.Instance.IsTraining ? 4:9999;
 		DamageTaken = 0f;
 
 		if(animOverrides != null && animOverrides.Length > 0)animOverrides[0] = new AnimatorOverrideController(animator.runtimeAnimatorController);
-		masterhit = GetComponentInChildren<MasterHit>();
-
 	}
 
 	public bool canSpecialCancel() {
