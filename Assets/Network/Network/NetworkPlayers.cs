@@ -52,7 +52,10 @@ public class NetworkPlayers : MonoBehaviour
 
 	// Update is called once per frame
 	void FixedUpdate() {
+		AdvanceFrame();
+	}
 
+	public void AdvanceFrame(){
 		Physics2D.Simulate(1f/60f);
 
 		// PlayerInputData input;

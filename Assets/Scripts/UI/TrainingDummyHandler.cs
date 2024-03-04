@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,34 +17,41 @@ public class TrainingDummyHandler : MonoBehaviour
 	public Dropdown r_Dropdown;
 	public Dropdown s_Dropdown;
 	public Dropdown b_Dropdown;
+	public Dropdown g_Dropdown;
 
 	public GameObject inputList;
-
-	GameObject[] frameList = new GameObject[16];
-
 	public Sprite[] images;
 
+	//Input buffer readout
+	GameObject[] frameList = new GameObject[16];
 	GameObject currentDisplay;
+	bool displayInput = true;
 
+	//Dummy Trigger
 	bool onHit = false;
 	bool onBlock = false;
 	bool onWakeup = false;
+	bool resetFlag = true;
+	int reset = 0;
+	int resetFrames = 28;
 
+	//Meter fill options
 	bool fillMeter = false;
 	bool emptyMeter = false;
 	bool meterReset = false;
-
-	bool displayInput = true;
-
-	bool controlDummy;
-	bool recording;
-
-	int reset = 0;
-
 	int meterResetFrames = 0;
 
-	int resetFrames = 28;
-	bool resetFlag = true;
+	//Record & Playback
+	string[] playbackBuffer = new String[]{"0,0,0,0,0,0,0,0:69", null};
+	bool controlDummy;
+	bool recording;
+	bool playback;
+	// bool triggerPlayback;
+	// bool playbackReaction;
+	PlayerInputData playbackInput;
+	int playbackFrame;
+	int playbackIndex;
+
 
 	PlayerInputData[] baseState     = new PlayerInputData[]
 		{
@@ -84,6 +92,10 @@ public class TrainingDummyHandler : MonoBehaviour
 
 		b_Dropdown.onValueChanged.AddListener(delegate {
 			BufferDropdownValueChanged(b_Dropdown);
+		});
+
+		g_Dropdown.onValueChanged.AddListener(delegate {
+			GamespeedDropdownValueChanged(g_Dropdown);
 		});
 	}
 
@@ -132,7 +144,8 @@ public class TrainingDummyHandler : MonoBehaviour
 			}
 			//Record and saved Dummy input for replay
 			else if(Player.input[0].MoveX == 0 && Player.input[0].MoveY == 0){
-
+				if(playback)
+					playbackIndex = 0;
 			}
 		}
 			
@@ -144,11 +157,14 @@ public class TrainingDummyHandler : MonoBehaviour
 				recordFrame(Player.input[0],currentInputFrameTime);
 			}
 			else {
-				UnityEngine.Debug.Log("RECORDING STARTED (Jk)");
+				UnityEngine.Debug.Log("RECORDING STARTED");
+				playbackBuffer = new string[512];
+				playbackIndex = 0;
+				currentInputFrameTime = 0;
 				recording = true;
 			}
+			
 		}
-		
 
 		//Input buffer display
 		if(displayInput || recording){
@@ -157,12 +173,12 @@ public class TrainingDummyHandler : MonoBehaviour
 
 			if(currentFrameData.Equals(prevFrameData)) {
 				if(currentInputFrameTime < 999) currentInputFrameTime++;
-				if(currentDisplay != null)currentDisplay.GetComponentInChildren<TextMeshProUGUI>().text = currentInputFrameTime.ToString();
+				if(currentDisplay != null && !currentFrameData.isEmpty())currentDisplay.GetComponentInChildren<TextMeshProUGUI>().text = currentInputFrameTime.ToString();
 
 			}
 			else{
 				if(recording)
-					recordFrame(currentFrameData,currentInputFrameTime);
+					recordFrame(prevFrameData,currentInputFrameTime);
 
 				currentInputFrameTime = 1;
 
@@ -208,37 +224,50 @@ public class TrainingDummyHandler : MonoBehaviour
 			Player.input[0] = new PlayerInputData();
 			NetworkPlayers.Instance.UpdateInput(Player.gameObject, true);
 		}
+		//else if(playback || playbackReaction){
+		else if(playback){
+			NetworkPlayers.Instance.UpdateInput(Dummy.gameObject, (PlayerInputData)playbackInput.Clone(), true);
+			playbackFrame--;
+
+			if(playbackFrame == 0){
+				getNextPlaybackFrame();
+			}
+
+		}
+		//Hard set dummy inputs
 		else {
-			NetworkPlayers.Instance.UpdateInput(Dummy.gameObject, true);
+			//NetworkPlayers.Instance.UpdateInput(Dummy.gameObject, true);
 			if(onWakeup && Dummy.knockedDown)
 			{
 				if(resetFlag)setDummyInput(reactionState);
 				resetFlag = false;
 				reset = resetFrames;
+				
 			}
-
 			if(onBlock && Dummy.status.HasEnemyStunEffect() && Dummy.guarding)
 			{
+			
 				if(resetFlag) setDummyInput(reactionState);
 				resetFlag = false;
 				reset = resetFrames;
+				
 			}
 
 			if(onHit && Dummy.status.HasEnemyStunEffect())
 			{
 				if(resetFlag) setDummyInput(reactionState);
 				resetFlag = false;
-				reset = resetFrames;
+				reset = resetFrames;	
 			}
 
-			if((onHit || onBlock)  && !Dummy.status.HasEnemyStunEffect() && reset <=0 )
-				 setDummyInput(baseState);
+			 if((onHit || onBlock)  && !Dummy.status.HasEnemyStunEffect() && reset == 0)
+			 	setDummyInput(baseState);
 
-			if(reset > 0)
-			{
+			Dummy.UpdateFrame();
+
+			if(reset > 0) {
 				reset--;
-				if(reset <=0)
-				{
+				if(reset == 0) {
 					resetFlag = true;
 					setDummyInput(baseState);
 					Dummy.SetCharge(300);
@@ -260,6 +289,9 @@ public class TrainingDummyHandler : MonoBehaviour
 		};
 		controlDummy = false;
 		recording = false;
+		playback = false;
+		// triggerPlayback = false;
+		// playbackReaction = false;
 		Player.setTrainingDummy(false);
 		switch(change.value)
 		{
@@ -293,7 +325,9 @@ public class TrainingDummyHandler : MonoBehaviour
 				break;
 
 			case 6:
-				//Dummy playback
+				playback = true;
+				playbackIndex = 0;
+				getNextPlaybackFrame();
 				break;
 
 			case 0:
@@ -344,6 +378,8 @@ public class TrainingDummyHandler : MonoBehaviour
 		};
 
 		resetFrames = 28;
+		// triggerPlayback = false;
+		// playbackReaction = false;
 		switch(change.value)
 		{
 			case 1:
@@ -375,6 +411,12 @@ public class TrainingDummyHandler : MonoBehaviour
 				//resetFrames = 5;
 				break;
 
+			// case 7:
+			// 	triggerPlayback = true;
+			// 	resetFrames = -1;
+			// 	getNextPlaybackFrame();
+			// 	break;
+
 			case 0:
 				reactionState[0] = new PlayerInputData();
 				reactionState[1] = new PlayerInputData();
@@ -391,7 +433,6 @@ public class TrainingDummyHandler : MonoBehaviour
 		meterReset = false;
 		switch(change.value)
 		{
-			
 			case 1:
 				fillMeter = true;
 				break;
@@ -404,6 +445,26 @@ public class TrainingDummyHandler : MonoBehaviour
 				break;
 			case 0:
 			default:
+				break;
+		};
+	}
+
+	void GamespeedDropdownValueChanged(Dropdown change)
+	{
+		switch(change.value)
+		{
+			case 1:
+				GameController.Instance.GameSpeed = .5f;
+				break;
+			case 2:
+				GameController.Instance.GameSpeed = .25f;
+				break;
+			case 3:
+				GameController.Instance.GameSpeed = .1f;
+				break;
+			case 0:
+			default:
+				GameController.Instance.GameSpeed = 1f;
 				break;
 		};
 	}
@@ -433,11 +494,37 @@ public class TrainingDummyHandler : MonoBehaviour
 	}
 
 	void setDummyInput(PlayerInputData[] p_input) {
-		for(int i = 0; i < p_input.Length; i++)
-			Dummy.input[i] = p_input[i];
+		// if(triggerPlayback)playbackReaction = true;
+		// else
+			for(int i = 0; i < p_input.Length; i++)
+				Dummy.input[i] = p_input[i];
 	}
 
 	void recordFrame(PlayerInputData data, int numFrames){
+		playbackBuffer[playbackIndex] = data.ToString() + ":" + numFrames.ToString();
+		playbackIndex++;
+
+		if(playbackIndex >= playbackBuffer.Length) {
+			UnityEngine.Debug.Log("MAX RECORDING LENGTH REACHED. STOPPING RECORDING");
+			recording = false;
+		}
+	}
+
+	void getNextPlaybackFrame(){
+		//Return to head if max len reached.
+		if(playbackBuffer[playbackIndex] == null || playbackIndex >= playbackBuffer.Length){
+			// if(triggerPlayback) {
+			// 	playbackReaction = false;
+			// 	reset = 0;
+			// }
+			playbackIndex = 0;
+		}
+
+		string[] frame = playbackBuffer[playbackIndex].Split(':');
+
+		playbackInput = PlayerInputData.FromString(frame[0]);
+		playbackFrame = Int32.Parse(frame[1]);
+		playbackIndex++;
 		
 	}
 

@@ -279,11 +279,20 @@ public class Drifter : MonoBehaviour
 		return effector;
 	}
 
+	//Training mode functions
 	public bool isTrainingDummy(){
 		return isDummy;
 	}
 	public void setTrainingDummy(bool dummy){
 		isDummy = dummy;
+	}
+
+	public bool hasActiveHitbox(){
+		Collider2D[] colliders = GetComponentsInChildren<Collider2D>();
+		foreach( Collider2D col in colliders){
+			if(col.enabled) return true;
+		}
+		return false;
 	}
 
 	//Command Input Detection

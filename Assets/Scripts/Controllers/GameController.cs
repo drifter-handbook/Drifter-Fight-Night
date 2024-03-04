@@ -52,9 +52,21 @@ public class GameController : MonoBehaviour
 
             toggleInuptSystem(value);
 
-            Time.timeScale = _IsPaused?0f:1f;
+            Time.timeScale = _IsPaused?0f:_GameSpeed;
         }
     }
+
+    private float _GameSpeed = 1f;
+    public float GameSpeed
+    {
+        get { return _GameSpeed;}
+        set {
+            _GameSpeed = value;
+
+            if(!_IsPaused) Time.timeScale = _GameSpeed;
+        }
+    }
+
     public int maxPlayerCount
     {
         get{ return inputManager.maxPlayerCount;}
@@ -245,6 +257,8 @@ public class GameController : MonoBehaviour
         // Yeet into world and allow playing the game
         //host?.SetScene("Endgame");
         canPause = false;
+        GameSpeed = 1f;
+        IsPaused = false;
 
         if(endingGame==null)endingGame=StartCoroutine(EndGameCoroutine(delay));
     }
