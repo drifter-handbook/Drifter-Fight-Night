@@ -29,8 +29,7 @@ public class NetworkPlayers : MonoBehaviour
 	public static NetworkPlayers Instance => GameObject.FindGameObjectWithTag("NetworkPlayers")?.GetComponent<NetworkPlayers>();
 
 	// Start is called before the first frame update
-	void Start()
-	{
+	void Start() {
 		stage = GameController.Instance.CreatePrefab(GameController.Instance.selectedStage);
 		GameObject.FindGameObjectWithTag("MainCamera").GetComponent<ScreenShake>().getParalax();
 
@@ -52,8 +51,7 @@ public class NetworkPlayers : MonoBehaviour
 	}
 
 	// Update is called once per frame
-	void FixedUpdate()
-	{
+	void FixedUpdate() {
 
 		Physics2D.Simulate(1f/60f);
 
@@ -63,13 +61,11 @@ public class NetworkPlayers : MonoBehaviour
 
 		DrifterRollbackFrame[] rollback2 = new DrifterRollbackFrame[CharacterMenu.charSelStates.Values.Count];
 
-		foreach (CharacterSelectState charSel in CharacterMenu.charSelStates.Values)
-		{
+		foreach (CharacterSelectState charSel in CharacterMenu.charSelStates.Values) {
 			//Link inputs to peer ids
 			// input = NetworkUtils.GetNetworkData<PlayerInputData>(syncFromClients["input", charSel.PeerID]);
 			// if (input != null)
 			// 	rollback2[q] = UpdateInput(players[charSel.PeerID], input);
-
 			// else 
 			if(GameController.Instance.controls.ContainsKey(charSel.PeerID))
 				 rollback2[q] = UpdateInput(players[charSel.PeerID], GetInput(GameController.Instance.controls[charSel.PeerID]));
@@ -81,8 +77,7 @@ public class NetworkPlayers : MonoBehaviour
 
 		}
 
-		for (int i = rollbackFrames -2; i >= 0; i--)
-		{
+		for (int i = rollbackFrames -2; i >= 0; i--) {
 			rollbackTest[i + 1,0] = rollbackTest[i,0];
 			rollbackTest[i + 1,1] = rollbackTest[i,1];
 
@@ -94,11 +89,9 @@ public class NetworkPlayers : MonoBehaviour
 		//Physics2D.Simulate(1f/60f);
 	}
 
-	GameObject CreatePlayer(int peerID)
-	{
+	GameObject CreatePlayer(int peerID) {
 		DrifterType drifter = DrifterType.None;
-		foreach (CharacterSelectState state in CharacterMenu.charSelStates.Values)
-		{
+		foreach (CharacterSelectState state in CharacterMenu.charSelStates.Values) {
 			if (state.PeerID == peerID)
 				drifter = state.PlayerType;
 		}
@@ -115,17 +108,21 @@ public class NetworkPlayers : MonoBehaviour
 		return obj;
 	}
 
-	public static DrifterRollbackFrame UpdateInput(GameObject player, PlayerInputData input)
-	{
+	public DrifterRollbackFrame UpdateInput(GameObject player, PlayerInputData input, bool updateDummy = false) {
 		if (player == null)
 			return null;
 
 		Drifter playerDrifter = player.GetComponent<Drifter>();
 
-		for (int i = player.GetComponent<Drifter>().input.Length - 2; i >= 0; i--)
-		{
-			playerDrifter.input[i + 1] = (PlayerInputData)playerDrifter.input[i].Clone();
+		if(playerDrifter.isTrainingDummy() && !updateDummy) {
+			playerDrifter.input[0] = input;
+			return null;
 		}
+
+		//UnityEngine.Debug.Log(playerDrifter);
+
+		for (int i = player.GetComponent<Drifter>().input.Length - 2; i >= 0; i--)
+			playerDrifter.input[i + 1] = (PlayerInputData)playerDrifter.input[i].Clone();
 
 		playerDrifter.input[0] = input;
 		playerDrifter.UpdateFrame();
@@ -134,16 +131,12 @@ public class NetworkPlayers : MonoBehaviour
 
 	}
 
-	public static DrifterRollbackFrame UpdateInput(GameObject player)
-	{
-		if(player == null)return null;
-		player.GetComponent<Drifter>().UpdateFrame();
-
-		 return player.GetComponent<Drifter>().SerializeFrame();
+	//If no input is recieved, assume a player kept doing what they were doing last frame
+	public DrifterRollbackFrame UpdateInput(GameObject player, bool updateDummy = false) {
+		return UpdateInput(player, player.GetComponent<Drifter>().input[0], updateDummy);
 	}
 
-	public static PlayerInputData GetInput(PlayerInput playerInput)
-	{
+	public static PlayerInputData GetInput(PlayerInput playerInput) {
 		InputActionMap playerInputAction = playerInput.currentActionMap;
 		PlayerInputData input = new PlayerInputData();
 
@@ -164,16 +157,19 @@ public class NetworkPlayers : MonoBehaviour
 		return input;
 	}
 
-	public void rollemback()
-	{
+	public void rollemback() {
+		rollemback(rollbackFrames);
+
+	}
+
+	public void rollemback(int frames){
 		int z = 0;
 		foreach (CharacterSelectState charSel in CharacterMenu.charSelStates.Values){
 		
-			players[charSel.PeerID].GetComponent<Drifter>().DeserializeFrame(rollbackTest[rollbackFrames -1,z]);
-			rollbackTest[0,z] = rollbackTest[rollbackFrames -1,z];
+			players[charSel.PeerID].GetComponent<Drifter>().DeserializeFrame(rollbackTest[frames -1,z]);
+			rollbackTest[0,z] = rollbackTest[frames -1,z];
 			z++;
 		}
-
 	}
 
 	
@@ -238,6 +234,35 @@ public class PlayerInputData :INetworkData, ICloneable, IEquatable<PlayerInputDa
 			Guard == false &&
 			Grab == false 
 			);
+	}
+
+	public override String ToString(){
+		return 
+			MoveX 					+ "," +
+			MoveY 					+ "," + 
+			(Jump		? "1":"0") 	+ "," +
+			(Light		? "1":"0") 	+ "," +
+			(Special	? "1":"0") 	+ "," +
+			(Super		? "1":"0") 	+ "," +
+			(Guard		? "1":"0") 	+ "," +
+			(Grab		? "1":"0");
+
+	}
+
+	public static PlayerInputData FromString(String data){
+		string[] buttons = data.Split(',');
+		if(buttons.Length <8) return new PlayerInputData();
+
+		return new PlayerInputData{
+			MoveX 		= Int32.Parse(buttons[0]),
+			MoveY 		= Int32.Parse(buttons[1]),
+			Jump		= buttons[2].Equals("1"),	
+			Light		= buttons[3].Equals("1"),
+			Special		= buttons[4].Equals("1"),
+			Super		= buttons[5].Equals("1"),
+			Guard		= buttons[6].Equals("1"),
+			Grab		= buttons[7].Equals("1")
+		};
 	}
 
 	public void CopyFrom(PlayerInputData data) {

@@ -609,6 +609,7 @@ public class PlayerMovement : MonoBehaviour
 	public void GrabLedge(Vector3 pos) {
 		if(!drifter.CanGrabLedge) return;
 		drifter.status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,5);
+		drifter.status.clearVelocity();
 		cancelJump();
 		gravityPaused = false;
 		jumping = false;

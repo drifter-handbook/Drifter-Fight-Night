@@ -104,6 +104,8 @@ public class Drifter : MonoBehaviour
 	private int cancelTimer = 0;
 	private bool _canSpecialCancel = false;
 
+	private bool isDummy = false;
+
 	//Cancel Normals into Specials Logic
 	public bool listenForSpecialCancel
 	{
@@ -118,9 +120,6 @@ public class Drifter : MonoBehaviour
 
 	public void Awake(){
 		masterhit = GetComponentInChildren<MasterHit>();
-	}
-
-	public void Start() {
 		Stocks = !GameController.Instance.IsTraining ? 4:9999;
 		DamageTaken = 0f;
 
@@ -152,6 +151,7 @@ public class Drifter : MonoBehaviour
 	//Stes Peerid for networking
 	public void SetPeerId(int id){
 		peerID = id;
+		if(peerID == 8) isDummy = true;
 	}
 
 	//Sets the character's outline color
@@ -277,6 +277,13 @@ public class Drifter : MonoBehaviour
 		effector.transform.SetParent(transform);
 
 		return effector;
+	}
+
+	public bool isTrainingDummy(){
+		return isDummy;
+	}
+	public void setTrainingDummy(bool dummy){
+		isDummy = dummy;
 	}
 
 	//Command Input Detection

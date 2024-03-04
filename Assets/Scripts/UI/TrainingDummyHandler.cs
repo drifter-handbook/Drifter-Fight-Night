@@ -36,8 +36,7 @@ public class TrainingDummyHandler : MonoBehaviour
 	bool displayInput = true;
 
 	bool controlDummy;
-
-	bool record;
+	bool recording;
 
 	int reset = 0;
 
@@ -90,11 +89,127 @@ public class TrainingDummyHandler : MonoBehaviour
 
 	void FixedUpdate() {
 		if(!GameController.Instance.IsTraining) return;
-		if(controlDummy){
-			Dummy.input[0] = (PlayerInputData)Player.input[0].Clone();
-			Player.input[0] = new PlayerInputData();
+
+		if(Player == null || Dummy == null) return;
+		
+		//Meter Settings
+
+		if(fillMeter) Player.SetCharge(500);
+		else if (emptyMeter)  Player.SetCharge(0);
+		else if(meterReset && meterResetFrames >0){
+			meterResetFrames--;
+			if(meterResetFrames == 0)
+				Player.SetCharge(500);
 		}
-		else{
+
+		if(meterReset && Dummy.status.HasEnemyStunEffect()){
+			meterResetFrames = 200;
+		}
+
+		//Command Button
+
+		if(Player.input[0].Pause && Player.input[1].Pause && !Player.input[2].Pause){
+			
+			if(Player.input[0].MoveY > 0 && Player.input[0].MoveX ==0)
+				clearBuffer();
+			else if(Player.input[0].MoveY < 0 && Player.input[0].MoveX ==0)
+				Dummy.transform.position = new Vector3(0,4);
+			else if(Player.input[0].MoveY <0 && Player.input[0].MoveX > 0){
+				Dummy.movement.setFacing(-1);
+				Dummy.transform.position = NetworkPlayers.Instance.spawnPoints[0].transform.position;
+			}
+			else if(Player.input[0].MoveY <0 && Player.input[0].MoveX < 0){
+				Dummy.movement.setFacing(1);
+				Dummy.transform.position = NetworkPlayers.Instance.spawnPoints[1].transform.position;
+			}
+			else if(Player.input[0].MoveX > 0){
+				Dummy.movement.setFacing(-1);
+				Dummy.transform.position = NetworkPlayers.Instance.spawnPoints[2].transform.position;
+			}
+			else if(Player.input[0].MoveX < 0){
+				Dummy.movement.setFacing(1);
+				Dummy.transform.position = NetworkPlayers.Instance.spawnPoints[3].transform.position;
+			}
+			//Record and saved Dummy input for replay
+			else if(Player.input[0].MoveX == 0 && Player.input[0].MoveY == 0){
+
+			}
+		}
+			
+		//Command Button in Dummy mode
+		if(controlDummy && Dummy.input[0].Pause && Dummy.input[1].Pause && !Dummy.input[2].Pause && Dummy.input[0].MoveX == 0 && Dummy.input[0].MoveY == 0){
+			if(recording == true){
+				UnityEngine.Debug.Log("RECORDING STOPPED AND SAVED ;)");
+				recording = false;
+				recordFrame(Player.input[0],currentInputFrameTime);
+			}
+			else {
+				UnityEngine.Debug.Log("RECORDING STARTED (Jk)");
+				recording = true;
+			}
+		}
+		
+
+		//Input buffer display
+		if(displayInput || recording){
+
+			PlayerInputData currentFrameData = Player.input[0];
+
+			if(currentFrameData.Equals(prevFrameData)) {
+				if(currentInputFrameTime < 999) currentInputFrameTime++;
+				if(currentDisplay != null)currentDisplay.GetComponentInChildren<TextMeshProUGUI>().text = currentInputFrameTime.ToString();
+
+			}
+			else{
+				if(recording)
+					recordFrame(currentFrameData,currentInputFrameTime);
+
+				currentInputFrameTime = 1;
+
+				if(!currentFrameData.isEmpty()){
+
+					currentDisplay = addButtonFrame();
+					currentDisplay.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = currentInputFrameTime.ToString();
+
+					if(currentFrameData.Light && currentFrameData.Special) addButton(buttonIcon.THROW);
+					else {
+						if(currentFrameData.Light) addButton(buttonIcon.NORMAL);
+						if(currentFrameData.Special) addButton(buttonIcon.SPECIAL);
+					}
+					if(currentFrameData.Guard) addButton(buttonIcon.GUARD);
+					if(currentFrameData.Super) addButton(buttonIcon.BYZANTINE);
+					if(currentFrameData.Jump) addButton(buttonIcon.JUMP);
+
+					if(currentFrameData.MoveX > 0 && currentFrameData.MoveY >0) addButton(buttonIcon.UPRIGHT);
+					else if(currentFrameData.MoveX < 0 && currentFrameData.MoveY >0) addButton(buttonIcon.UPLEFT);
+					else if(currentFrameData.MoveX > 0 && currentFrameData.MoveY <0) addButton(buttonIcon.DOWNRIGHT);
+					else if(currentFrameData.MoveX < 0 && currentFrameData.MoveY <0) addButton(buttonIcon.DOWNLEFT);
+					else if(currentFrameData.MoveY > 0) addButton(buttonIcon.UP);
+					else if(currentFrameData.MoveY < 0) addButton(buttonIcon.DOWN);
+					else if(currentFrameData.MoveX > 0) addButton(buttonIcon.RIGHT);
+					else if(currentFrameData.MoveX < 0) addButton(buttonIcon.LEFT);
+
+					//clear the oldest frame
+					if(frameList[15] != null) Destroy(frameList[15]);
+
+					for (int i = frameList.Length - 2; i >= 0; i--)
+						frameList[i + 1] = frameList[i];
+			
+					frameList[0] = currentDisplay;
+					
+				}
+				prevFrameData = currentFrameData;
+			}
+		}
+
+		//Do this by swapping input systems when that is easier
+		if(controlDummy){
+			NetworkPlayers.Instance.UpdateInput(Dummy.gameObject, (PlayerInputData)Player.input[0].Clone(), true);
+			Player.input[0] = new PlayerInputData();
+			NetworkPlayers.Instance.UpdateInput(Player.gameObject, true);
+		}
+		else {
+			NetworkPlayers.Instance.UpdateInput(Dummy.gameObject, true);
 			if(onWakeup && Dummy.knockedDown)
 			{
 				if(resetFlag)setDummyInput(reactionState);
@@ -130,88 +245,6 @@ public class TrainingDummyHandler : MonoBehaviour
 				}
 			}
 		}
-		
-		//Meter Settings
-
-		if(fillMeter) Player.SetCharge(500);
-		else if (emptyMeter)  Player.SetCharge(0);
-		else if(meterReset && meterResetFrames >0){
-			meterResetFrames--;
-			if(meterResetFrames == 0)
-				Player.SetCharge(500);
-		}
-
-		if(meterReset && Dummy.status.HasEnemyStunEffect()){
-			meterResetFrames = 200;
-		}
-
-		//Command Button
-
-		if(Player != null && Player.input[0].Pause && Player.input[1].Pause && !Player.input[2].Pause){
-			
-			if(Player.input[0].MoveY > 0 && Player.input[0].MoveX ==0)
-				clearBuffer();
-			else if(Player.input[0].MoveY < 0 && Player.input[0].MoveX ==0)
-				Dummy.transform.position = new Vector3(0,5);
-			else if(Player.input[0].MoveY <0 && Player.input[0].MoveX > 0)
-				Dummy.transform.position = NetworkPlayers.Instance.spawnPoints[0].transform.position;
-			else if(Player.input[0].MoveY <0 && Player.input[0].MoveX < 0)
-				Dummy.transform.position = NetworkPlayers.Instance.spawnPoints[1].transform.position;
-			else if(Player.input[0].MoveX > 0)
-				Dummy.transform.position = NetworkPlayers.Instance.spawnPoints[2].transform.position;
-			else if(Player.input[0].MoveX < 0)
-				Dummy.transform.position = NetworkPlayers.Instance.spawnPoints[3].transform.position;
-
-			
-		}
-
-		//Input buffer display
-		if(displayInput && Player != null){
-
-			PlayerInputData currentFrameData = Player.input[0];
-
-			if(currentFrameData.Equals(prevFrameData)) {
-				if(currentInputFrameTime < 999) currentInputFrameTime++;
-				if(currentDisplay != null)currentDisplay.GetComponentInChildren<TextMeshProUGUI>().text = currentInputFrameTime.ToString();
-
-			}
-			else if(!currentFrameData.isEmpty()){
-				currentInputFrameTime = 1;
-				currentDisplay = addButtonFrame();
-
-				if(currentFrameData.Light && currentFrameData.Special) addButton(buttonIcon.THROW);
-				else {
-					if(currentFrameData.Light) addButton(buttonIcon.NORMAL);
-					if(currentFrameData.Special) addButton(buttonIcon.SPECIAL);
-				}
-				if(currentFrameData.Guard) addButton(buttonIcon.GUARD);
-				if(currentFrameData.Super) addButton(buttonIcon.BYZANTINE);
-				if(currentFrameData.Jump) addButton(buttonIcon.JUMP);
-
-				if(currentFrameData.MoveX > 0 && currentFrameData.MoveY >0) addButton(buttonIcon.UPRIGHT);
-				else if(currentFrameData.MoveX < 0 && currentFrameData.MoveY >0) addButton(buttonIcon.UPLEFT);
-				else if(currentFrameData.MoveX > 0 && currentFrameData.MoveY <0) addButton(buttonIcon.DOWNRIGHT);
-				else if(currentFrameData.MoveX < 0 && currentFrameData.MoveY <0) addButton(buttonIcon.DOWNLEFT);
-				else if(currentFrameData.MoveY > 0) addButton(buttonIcon.UP);
-				else if(currentFrameData.MoveY < 0) addButton(buttonIcon.DOWN);
-				else if(currentFrameData.MoveX > 0) addButton(buttonIcon.RIGHT);
-				else if(currentFrameData.MoveX < 0) addButton(buttonIcon.LEFT);
-
-				//if(currentFrameData.MoveX == 0 && currentFrameData.MoveY == 0) addButton(buttonIcon.NONE);
-
-				currentDisplay.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "1";
-
-				//clear the oldest frame
-				if(frameList[15] != null) Destroy(frameList[15]);
-
-				for (int i = frameList.Length - 2; i >= 0; i--)
-            		frameList[i + 1] = frameList[i];
-        
-        		frameList[0] = currentDisplay;
-        		prevFrameData = currentFrameData;
-			}
-
-		}
 
 	}
 
@@ -226,6 +259,8 @@ public class TrainingDummyHandler : MonoBehaviour
 			new PlayerInputData()
 		};
 		controlDummy = false;
+		recording = false;
+		Player.setTrainingDummy(false);
 		switch(change.value)
 		{
 			case 1:
@@ -253,6 +288,12 @@ public class TrainingDummyHandler : MonoBehaviour
 
 			case 5:
 				controlDummy = true;
+				clearBuffer();
+				Player.setTrainingDummy(true);
+				break;
+
+			case 6:
+				//Dummy playback
 				break;
 
 			case 0:
@@ -376,8 +417,7 @@ public class TrainingDummyHandler : MonoBehaviour
 
 	}
 
-	void BufferDropdownValueChanged(Dropdown change)
-	{
+	void BufferDropdownValueChanged(Dropdown change) {
 		switch(change.value)
 		{
 			case 1:
@@ -392,12 +432,13 @@ public class TrainingDummyHandler : MonoBehaviour
 		};
 	}
 
-	void setDummyInput(PlayerInputData[] p_input)
-	{
+	void setDummyInput(PlayerInputData[] p_input) {
 		for(int i = 0; i < p_input.Length; i++)
-		{
 			Dummy.input[i] = p_input[i];
-		}
+	}
+
+	void recordFrame(PlayerInputData data, int numFrames){
+		
 	}
 
 	GameObject addButton(buttonIcon icon){
