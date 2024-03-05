@@ -118,11 +118,6 @@ public class PlayerStatus : MonoBehaviour {
 	public bool isInCombo = false;
 	public Drifter drifter;
 
-	// Start is called before the first frame update
-	void Start() {
-		if(!GameController.Instance.IsTraining)ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,111);
-	}
-	
 	// Update is called once per frame
 	public void UpdateFrame() {
 		if(grabPoint!=null && HasStatusEffect(PlayerStatusEffect.GRABBED) && grabPoint.enabled) {

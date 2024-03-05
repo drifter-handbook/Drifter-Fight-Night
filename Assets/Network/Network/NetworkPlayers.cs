@@ -31,6 +31,7 @@ public class NetworkPlayers : MonoBehaviour
 	// Start is called before the first frame update
 	void Start() {
 		stage = GameController.Instance.CreatePrefab(GameController.Instance.selectedStage);
+
 		GameObject.FindGameObjectWithTag("MainCamera").GetComponent<ScreenShake>().getParalax();
 
 		//populate spawn points
@@ -45,6 +46,8 @@ public class NetworkPlayers : MonoBehaviour
 			CreatePlayer(charSel.PeerID);
 
 
+		//if(GameController.Instance.IsTraining) 
+			unlockPlayers();
 		rollbackTest = new DrifterRollbackFrame[rollbackFrames,2];
 
 		//br.makeLobby();//InitializeRollbackSession();
@@ -106,9 +109,16 @@ public class NetworkPlayers : MonoBehaviour
 
 		if(GameController.Instance.controls.ContainsKey(peerID))obj.GetComponent<Drifter>().playerInputController = GameController.Instance.controls[peerID];
 		obj.GetComponent<Drifter>().SetPeerId(peerID);
-		obj.GetComponent<PlayerMovement>().setFacing((peerID+1 % 2) * 2 - 1);
+		obj.GetComponent<PlayerMovement>().setFacing(-1 *((peerID+1 % 2) * 2 - 1));
 		players[peerID] = obj;
 		return obj;
+	}
+
+	public void unlockPlayers(){
+		foreach (CharacterSelectState charSel in CharacterMenu.charSelStates.Values) {
+			if(GameController.Instance.controls.ContainsKey(charSel.PeerID))
+				 players[charSel.PeerID].GetComponent<Drifter>().setTrainingDummy(false);
+		}
 	}
 
 	public DrifterRollbackFrame UpdateInput(GameObject player, PlayerInputData input, bool updateDummy = false) {

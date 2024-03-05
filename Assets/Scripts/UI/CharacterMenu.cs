@@ -160,8 +160,6 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
         // for(int i = -1; i < GameController.Instance.controls.Count-1; i++)
         //     AddCharSelState(i);
 
-        if(GameController.Instance.IsTraining) AddCharSelState(8,GameController.Instance.Trainee);
-
     }
     IEnumerator delayJoining()
     {
@@ -256,12 +254,6 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
     void FixedUpdate()
     {
         SyncToCharSelectState();
-    }
-
-
-    void Update()
-    {
-
         //Maybe remove?
         checkReturnToMenuConditions();
 
@@ -465,6 +457,16 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver
             p_cursor.StageType = (p_cursor.StageType == BattleStage.None || p_cursor.StageType != selected)?selected:BattleStage.None;
             //This might need some work if it needs to be more flashy
             playerCards[p_cursor.PeerID].GetComponent<CharacterCard>().SetStage(matrix[p_cursor.y][p_cursor.x].GetComponent<CharacterSelectPortrait>().portrait.sprite);
+        }
+        //Select dummy character on super press if n training mode
+        else if(GameController.Instance.IsTraining && input.Super && !p_cursor.prevInput.Super && phase <2)
+        {
+            DrifterType selected = matrix[p_cursor.y][p_cursor.x].GetComponent<CharacterSelectPortrait>().drifterType;
+            charSelStates[8].PlayerType = selected;
+            playerCards[8].GetComponent<CharacterCard>().SetCharacter(charSelStates[8].PlayerType);
+            charSelStates[8].x = p_cursor.x;
+            charSelStates[8].y = p_cursor.y;
+            charSelStates[8].Cursor.transform.position = characterRows[p_cursor.y][p_cursor.x].transform.position;
         }
         
         //Deselect on special press

@@ -104,7 +104,7 @@ public class Drifter : MonoBehaviour
 	private int cancelTimer = 0;
 	private bool _canSpecialCancel = false;
 
-	private bool isDummy = false;
+	private bool isDummy = true;
 
 	//Cancel Normals into Specials Logic
 	public bool listenForSpecialCancel
@@ -151,7 +151,6 @@ public class Drifter : MonoBehaviour
 	//Stes Peerid for networking
 	public void SetPeerId(int id){
 		peerID = id;
-		if(peerID == 8) isDummy = true;
 	}
 
 	//Sets the character's outline color

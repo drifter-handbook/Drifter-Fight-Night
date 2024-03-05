@@ -28,7 +28,7 @@ public class PlayerCardArtHolder : MonoBehaviour
             playerCards = new PlayerCard[drifters.Length];
 
              //i know i know i just like foreach ok
-            for(int i = drifters.Length -1; i >=0; i--)
+            for(int i = 0; i < drifters.Length; i++)
             {
 
                 GameObject newCard;

@@ -29,8 +29,6 @@ public class GameController : MonoBehaviour
     public bool IsOnline;
     public bool IsTraining;
 
-    public DrifterType Trainee = DrifterType.Sandbag;
-
     //public const int MAX_PLAYERS = 4;
 
     // Evans's horrid hack, please help me fix this Lyn
@@ -161,6 +159,8 @@ public class GameController : MonoBehaviour
 
         playerInput.ActivateInput();
 
+        if(IsTraining) FindObjectOfType<CharacterMenu>()?.AddCharSelState(8,DrifterType.Sandbag);
+
         DontDestroyOnLoad(playerInput);
 
         if(controls.Count >= 1 && IsTraining)
@@ -246,6 +246,7 @@ public class GameController : MonoBehaviour
         // Create player characters & give them an input
         // Yeet into world and allow playing the game
         canPause = true;
+        //GameSpeed = 1f;
         host?.SetScene("Combat");
     }
 
@@ -257,7 +258,7 @@ public class GameController : MonoBehaviour
         // Yeet into world and allow playing the game
         //host?.SetScene("Endgame");
         canPause = false;
-        GameSpeed = 1f;
+        //GameSpeed = .5f;
         IsPaused = false;
 
         if(endingGame==null)endingGame=StartCoroutine(EndGameCoroutine(delay));
