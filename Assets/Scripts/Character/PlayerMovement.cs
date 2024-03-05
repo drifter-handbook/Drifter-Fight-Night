@@ -62,7 +62,7 @@ public class PlayerMovement : MonoBehaviour
 	public bool dashing = false;
 	[NonSerialized]
 	public bool gravityPaused = false;
-	[NonSerialized]
+	//[NonSerialized]
 	public bool ledgeHanging = false;
 
 	[NonSerialized]
@@ -102,7 +102,6 @@ public class PlayerMovement : MonoBehaviour
 	GameObjectShake shake;
 
 	public GameObject PushBox;
-	public GameObject LedgeGrabBox;
  	GameObject Pusher;
  	GameObject smoketrail;
 
@@ -180,7 +179,7 @@ public class PlayerMovement : MonoBehaviour
 		if(ledgeGrabLockout > 0){
 			ledgeGrabLockout --;
 			if(ledgeGrabLockout ==0)
-				LedgeGrabBox.SetActive(true);
+				drifter.CanGrabLedge = true;
 		}
 
 		//Unpause gravity when hit
@@ -444,17 +443,21 @@ public class PlayerMovement : MonoBehaviour
 
 		//Ledgegrabs Stuff
 		else if(canAct && ledgeHanging) {
-			rb.velocity = Vector2.zero;
+			//rb.velocity = Vector2.zero;
 
 			//Jump away from ledge
-			if((drifter.input[0].MoveX  * Facing < 0))
+			if((drifter.input[0].MoveX  * Facing < 0)){
 				JumpFromLedge();
+				UnityEngine.Debug.Log("Ledge Jump");
+			}
 	
 			//Neutral Getup
 			else if((drifter.input[0].MoveX  * Facing > 0)  || drifter.input[0].MoveY > 0 || drifter.input[0].Guard ){
 				DropLedge();
 				drifter.status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,18);
 				drifter.PlayAnimation("Ledge_Climb");
+
+				UnityEngine.Debug.Log("Ledge Climb");
 
 				rb.position = new Vector3(rb.position.x + (rb.position.x > 0 ? -1 :1) *2f, rb.position.y + 5f - ledgeClimbOffset);
 			}
@@ -463,6 +466,8 @@ public class PlayerMovement : MonoBehaviour
 			else if(drifter.input[0].MoveY < 0 && drifter.input[1].MoveY < 0 && ledgeHanging){
 				DropLedge();
 				drifter.returnToIdle();
+				drifter.CanGrabLedge = false;
+				UnityEngine.Debug.Log("Drop");
 			}
 
 		}
@@ -484,7 +489,7 @@ public class PlayerMovement : MonoBehaviour
 		}
 
 		//Drop through platforms && fastfall
-		if(drifter.doubleTappedY() && drifter.input[0].MoveY < 0 && !gravityPaused && canFastFall && !jumping && !drifter.status.HasEnemyStunEffect()) {
+		if(drifter.doubleTappedY() && drifter.input[0].MoveY < 0 && !gravityPaused && canFastFall && !ledgeHanging && !jumping && !drifter.status.HasEnemyStunEffect()) {
 			//If you are not in an attack, play the landing animation when you hit the ground
 			if(!drifter.status.HasStatusEffect(PlayerStatusEffect.END_LAG))canLandingCancel = true;
 			gameObject.layer = 13;
@@ -493,7 +498,6 @@ public class PlayerMovement : MonoBehaviour
 		}
 
 		//Terminal velocity
-
 		if(rb.velocity.y < -terminalVelocity && (!drifter.status.HasEnemyStunEffect() || drifter.guarding || drifter.status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN))){
 			rb.velocity = new Vector2(rb.velocity.x,-terminalVelocity);
 		}
@@ -599,7 +603,7 @@ public class PlayerMovement : MonoBehaviour
 
 	public void pauseGravity() {
 		cancelJump();
-		gravityPaused= true;
+		gravityPaused = true;
 		rb.gravityScale = 0f;
 		rb.velocity = Vector2.zero;
 		drifter.status.clearVelocity();
@@ -607,16 +611,15 @@ public class PlayerMovement : MonoBehaviour
 
 	//Sets many movement flags to specific vlaues to allow for ledge hanging
 	public void GrabLedge(Vector3 pos) {
-		if(!drifter.CanGrabLedge) return;
+		if(!canGrabLedge())	return; 
+
+		UnityEngine.Debug.Log("Grabbed Ledge");
 		drifter.status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,5);
-		drifter.status.clearVelocity();
-		cancelJump();
-		gravityPaused = false;
+		pauseGravity();
 		jumping = false;
 		dashing = false;
 		drifter.clearGuardFlags();
 		ledgeHanging = true;
-		rb.gravityScale = 0f;
 		if(strongLedgeGrab)drifter.status.ApplyStatusEffect(PlayerStatusEffect.INVULN,150);
 		drifter.PlayAnimation("Ledge_Grab");
 
@@ -628,23 +631,28 @@ public class PlayerMovement : MonoBehaviour
 		
 		currentJumps = numberOfJumps;
 		currentDashes = numberOfDashes;
-
-		rb.velocity = Vector2.zero;
 	}
 
 	//Manages all the things that need to happen when a ledge is released
-	public void DropLedge(bool grantInvuln = true){
+	public void DropLedge(bool grantInvuln = true, int lockoutTime = 30){
 		//Apply ledge invuln if the play is currently invuln
 		if(drifter.status.HasStatusEffect(PlayerStatusEffect.INVULN) && grantInvuln)drifter.status.ApplyStatusEffect(PlayerStatusEffect.INVULN,20);
 		ledgeHanging = false;
 		resetGravity();
 		strongLedgeGrab = false;
-		ledgeGrabLockout = 30;
-		LedgeGrabBox.SetActive(false);
+		ledgeGrabLockout = lockoutTime;
+		drifter.CanGrabLedge = false;
+		UnityEngine.Debug.Log("Drop Ledge");
 	}
+
+	public bool canGrabLedge(){
+		return drifter.CanGrabLedge && ledgeGrabLockout ==0;
+	}	
+
 	public void JumpFromLedge(){
-		 DropLedge();
-		 drifter.returnToIdle();
+		DropLedge();
+		drifter.returnToIdle();
+		drifter.CanGrabLedge = false;
 		rb.velocity = new Vector3(Facing  * -25f,25f);
 	}
 

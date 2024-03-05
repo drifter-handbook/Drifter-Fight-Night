@@ -55,7 +55,6 @@ public class InstantiatedEntityCleanup : MonoBehaviour{
 	public void UpdateFrame() {
 		if(freezeDuration > 0){
 			freezeDuration--;
-			UnityEngine.Debug.Log(freezeDuration);
 			if(useHitpause && freezeDuration <= 0)
 				unfreeze();
 		}
@@ -87,42 +86,50 @@ public class InstantiatedEntityCleanup : MonoBehaviour{
 		
 	}
 
-	public void ApplyFreeze(int frames, bool gated = true){
+	public void ApplyFreeze(int frames){
 		if(useHitpause)
-			applyFreeze(frames, gated);
+			applyFreeze(frames);
 	}
 
 	public void PlayAnimation(string state){
 		animator.Play(state);
 	}
 
-	public void stopMovement() {
+	public void setDelayedVelocity(Vector2 p_savedVelocity) {
 		rb.gravityScale = 0;
 		rb.velocity = Vector2.zero;
+		if(p_savedVelocity != Vector2.zero){
+			savedVelocity = p_savedVelocity;
+			dataSaved = true;
+		}
 	}
 
-	private void applyFreeze(int frames, bool gated = true){
-		if(pauseBehavior && (!dataSaved || !gated)){
-				UnityEngine.Debug.Log("iec: " + frames);
-				if(animator !=null) animator.enabled = false;
-				if(rb != null){
-					savedVelocity = rb.velocity;
-					savedGravity = rb.gravityScale;
-					rb.velocity = Vector2.zero;
-					rb.gravityScale = 0;
-					dataSaved = true;
-				}
-				freezeDuration = frames;
-			}
-			paused = true;
+	public void stopMovement() {
+		setDelayedVelocity(Vector2.zero);
+	}
 
+	private void applyFreeze(int frames){
+		if(pauseBehavior){
+			if(animator !=null) animator.enabled = false;
+			if(rb != null && !dataSaved){
+				UnityEngine.Debug.Log(rb.velocity + " : " + gameObject);
+				savedVelocity = rb.velocity;
+				savedGravity = rb.gravityScale;
+				rb.velocity = Vector2.zero;
+				rb.gravityScale = 0;
+				dataSaved = true;
+			}
+			freezeDuration = frames;
+			paused = true;
+		}
+		
 	}
 
 	public void unfreeze(){
 		if(pauseBehavior && dataSaved) {
-			UnityEngine.Debug.Log("Unfroze");
 			if(animator !=null) animator.enabled = true;
 			if(rb != null) {
+				UnityEngine.Debug.Log(savedVelocity + " : " + gameObject);
 				rb.velocity = savedVelocity;
 				rb.gravityScale = savedGravity;
 				savedVelocity = Vector2.zero;

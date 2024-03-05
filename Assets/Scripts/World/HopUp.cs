@@ -8,20 +8,31 @@ public enum LedgeLockState{
 
 public class HopUp : MonoBehaviour {
 	public LedgeLockState ledgeLock = LedgeLockState.Open;
-	PlayerMovement lockingPlayer;
+	public PlayerMovement lockingPlayer;
 
 	void OnTriggerStay2D(Collider2D col) {
 		if (col.gameObject.tag == "LedgeGrabBox") {
 			switch(ledgeLock){
 				case(LedgeLockState.Open):
-					ledgeLock = LedgeLockState.Locked;
-					lockingPlayer = col.gameObject.GetComponent<LedgeGrabCollision>().movement;
+					PlayerMovement candidate = col.gameObject.GetComponent<LedgeGrabCollision>().movement;
+					if(candidate.canGrabLedge()){
+						ledgeLock = LedgeLockState.Locked;
+						lockingPlayer = candidate;
+					}
 					break;
 				case(LedgeLockState.Tethered):
 					if(col.gameObject.GetComponent<LedgeGrabCollision>().movement != lockingPlayer){
 						forceDrop();
 						ledgeLock = LedgeLockState.Locked;
 						lockingPlayer = col.gameObject.GetComponent<LedgeGrabCollision>().movement;
+					}
+					else
+						ledgeLock = LedgeLockState.Open;
+					break;
+				case(LedgeLockState.Locked):
+					if(!lockingPlayer.ledgeHanging){
+						ledgeLock = LedgeLockState.Open;
+						lockingPlayer = null;
 					}
 					break;
 				default:
@@ -33,6 +44,7 @@ public class HopUp : MonoBehaviour {
 	void OnTriggerExit2D(Collider2D col) {
 		if(col.gameObject.tag == "LedgeGrabBox" && col.gameObject.GetComponent<LedgeGrabCollision>().movement == lockingPlayer && ledgeLock != LedgeLockState.Open){
 			ledgeLock = LedgeLockState.Open;
+			lockingPlayer = null;
 		}
 	}
 

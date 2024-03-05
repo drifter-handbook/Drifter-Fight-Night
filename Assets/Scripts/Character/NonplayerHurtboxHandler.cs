@@ -30,7 +30,7 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
 	}
 
 	protected int HitstunDuration = 0;
-	// protected int HitPauseDuration = 0;
+	protected int HitPauseDuration = 0;
 	protected Vector3 delayedVelocity = Vector3.zero;
 	protected InstantiatedEntityCleanup entity;
 	protected string hurtState = "";
@@ -39,21 +39,27 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
 
 	public SummonHealthbarHandler healthBar;
 
-	new void Start() {
-		base.Start();
+	void Awake () {
 		entity = GetComponent<InstantiatedEntityCleanup>();
 		rb = GetComponent<Rigidbody2D>();
 	}
+	
 
 	public override void UpdateFrame() {
 		
 		base.UpdateFrame();
+		if(HitPauseDuration != 0 && !entity.paused){
+			entity.ApplyFreeze(HitPauseDuration);
+			HitPauseDuration = 0;
+		}
 		entity.UpdateFrame();
 
 		if(!entity.paused && HitstunDuration > 0) {
 			HitstunDuration--;
 			if(HitstunDuration < 0)	HitstunDuration = 0;
 		}
+
+
 	}
 
 	public override AttackHitType RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, SingleAttackData attackData) {
@@ -113,7 +119,7 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
 			Vector2 hitSparkScale =  new Vector2(facingDir *10f, 10f);
 
 			//apply hitpause
-			int HitPauseDuration = attackData.HitStop >=0 ? attackData.HitStop : HitstunDuration;
+			HitPauseDuration = attackData.HitStop >=0 ? attackData.HitStop : HitstunDuration;
 
 			//Cause the screen to shake slightly on hit, as long as the move has knockback
 			if(Shake != null && attackData.Knockback !=0){
@@ -123,7 +129,7 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
 			//If the defender is grounded, use the absolute value of the y component of the velocity
 			//This prevents grounded opponents from getting stuck when spiked on the ground
 			if(attackData.Knockback > 0 && attackData.AngleOfImpact > -361 && takesKnockback)
-				rb.velocity = new Vector2(forceDir.normalized.x * KB, forceDir.normalized.y * KB);
+				entity.setDelayedVelocity(new Vector2(forceDir.normalized.x * KB, forceDir.normalized.y * KB));
 
 			if(hurtState != "") entity.animator.Play(hurtState);
 
@@ -132,8 +138,6 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
 					attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(attackData.AttackDamage <=2f ? 1 : Mathf.Max(HitPauseDuration,2)));
 				else
 					hitbox.gameObject.GetComponentInParent<InstantiatedEntityCleanup>()?.ApplyFreeze(HitPauseDuration);
-
-				entity?.ApplyFreeze(HitPauseDuration, false);
 			}
 
 			//Autolink angle (<361) scales its magnitude with distacne from said point, further scaled with the attacker's velocity
@@ -163,7 +167,7 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
 			Percentage = percentage,
 			Facing = facing,
 			HitstunDuration = this.HitstunDuration,
-			// HitPauseDuration = this.HitstunDuration,
+			HitPauseDuration = this.HitstunDuration,
 			DelayedVelocity = delayedVelocity,
 			Entity = entity.SerializeFrame(),
 		};
@@ -176,7 +180,7 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
 		percentage = p_frame.Percentage;
 		facing =p_frame.Facing;
 		HitstunDuration = p_frame.HitstunDuration;
-		// HitPauseDuration = p_frame.HitPauseDuration;
+		HitPauseDuration = p_frame.HitPauseDuration;
 		delayedVelocity = p_frame.DelayedVelocity;
 		entity.DeserializeFrame(p_frame.Entity);
 	}
@@ -189,7 +193,7 @@ public class NPCHurtboxRollbackFrame: INetworkData
 	public bool TakesKnockback;
 	public float Percentage;  
 	public int HitstunDuration;
-	// public int HitPauseDuration;
+	public int HitPauseDuration;
 	public Vector3 DelayedVelocity;
 	public int Facing;
 	public BasicProjectileRollbackFrame Entity;

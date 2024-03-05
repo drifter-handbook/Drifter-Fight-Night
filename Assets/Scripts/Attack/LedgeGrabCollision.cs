@@ -17,7 +17,7 @@ public class LedgeGrabCollision : MonoBehaviour
 
 	void OnTriggerStay2D(Collider2D col){
 
-		if(col.gameObject.tag == "Ledge" && col.GetComponent<HopUp>().ledgeLock != LedgeLockState.Locked && !status.HasEnemyStunEffect() && !movement.ledgeHanging){
+		if(col.gameObject.tag == "Ledge" && col.GetComponent<HopUp>().ledgeLock != LedgeLockState.Locked && !status.HasEnemyStunEffect()){
 			movement.GrabLedge(col.gameObject.transform.position);
 		}
 

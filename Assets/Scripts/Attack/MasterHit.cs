@@ -425,6 +425,10 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 	}
 
 	public void returnToIdle() {
+		if(drifter.blockRTI > 0) {
+			UnityEngine.Debug.Log("RTI BLOCKED FOR: " + drifter.gameObject);
+			return;
+		}
 		movement.jumping = false;
 		unpauseGravity();
 		status.clearVelocity();

@@ -106,6 +106,10 @@ public class Drifter : MonoBehaviour
 
 	private bool isDummy = true;
 
+
+	[NonSerialized]
+	public int blockRTI = 0;
+
 	//Cancel Normals into Specials Logic
 	public bool listenForSpecialCancel
 	{
@@ -187,11 +191,13 @@ public class Drifter : MonoBehaviour
 
 	//Replaces the animator state transition function
 	public void PlayAnimation(string p_state, float p_normalizedTime = -1, bool p_gate = false) {
+
 		if(p_gate && Animator.StringToHash(p_state) == animator.GetCurrentAnimatorStateInfo(0).shortNameHash) {
 			UnityEngine.Debug.Log("Animation state " +p_state + " was gated!");
 		}
 		else {
 			animator.Play(Animator.StringToHash(p_state),0,p_normalizedTime < 0 ? 0: p_normalizedTime);
+			blockRTI = 2;
 		}
 	}
 
@@ -220,7 +226,7 @@ public class Drifter : MonoBehaviour
 
 	//Return to idle is called anytime the player regains control
 	public void returnToIdle() {
-		//UnityEngine.Debug.Log("DRIFTER: RETURNING TO IDLE: " + state);
+		UnityEngine.Debug.Log("DRIFTER: RETURNING TO IDLE");
 		movement.canLandingCancel = false;
 		movement.jumping = false;
 		movement.dashing = false;
@@ -256,7 +262,13 @@ public class Drifter : MonoBehaviour
 		usingSuper = SuperState;
 		entity.pauseBehavior = !SuperState;
 		//Unpause the animatior if using a super
-		if(SuperState)ToggleAnimator(SuperState);
+		ToggleAnimator(SuperState);
+		if(SuperState){
+			movement.DropLedge(false,0);
+			CanGrabLedge = false;
+			masterhit.pauseGravity();
+			masterhit.clearMasterhitVars();
+		}
 	}
 
 	public bool CanUseSuper(){
@@ -384,6 +396,7 @@ public class Drifter : MonoBehaviour
 			ListenForSpecialCancel = listenForSpecialCancel,
 			SparkleMode = sparkleMode,
 			UsingSuper = usingSuper,
+			BlockRTI = blockRTI,
 			//Animation
 			AnimationOverrideIndex = overrideIndex,
 			AnimationSpeed = animator.speed,
@@ -424,6 +437,8 @@ public class Drifter : MonoBehaviour
 		sparkleMode = p_frame.SparkleMode;
 		usingSuper = p_frame.UsingSuper;
 
+		blockRTI = p_frame.BlockRTI;
+
 		//Animation
 		//animator.enabled = p_frame.AnimatorEnabled;
 		SetAnimationOverride(p_frame.AnimationOverrideIndex); 
@@ -442,6 +457,8 @@ public class Drifter : MonoBehaviour
 
 	public void UpdateFrame() {
 
+		//if(!isDummy)UnityEngine.Debug.Log("UpdateFrame");
+
 		if(GameController.Instance.IsPaused)
             return;
 
@@ -453,10 +470,11 @@ public class Drifter : MonoBehaviour
 				canSpecialCancelFlag = false;
 			}
 		}
+
+		if(blockRTI > 0) blockRTI--;
 		
 		//Do not update components if in super freeze
 		if(!entity.paused) {
-			
 			//entity.UpdateFrame();
 			movement.UpdateFrame();
 			attacks.UpdateFrame();
@@ -489,6 +507,8 @@ public class DrifterRollbackFrame: INetworkData
 	public bool ListenForSpecialCancel;
 	public bool SparkleMode;
 	public bool UsingSuper;
+
+	public int BlockRTI;
 
 	public int AnimationOverrideIndex; 
 	public float AnimationSpeed;
