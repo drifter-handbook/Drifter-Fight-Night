@@ -36,7 +36,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
 	public bool following = true;
 	public int beanMovementDelay = 100;
 	public bool canAct = false;
-	public bool alive = false;
+	public bool alive = true;
 	public float prevHitstunDuration;
 
 	BeanState targetPos;
@@ -49,66 +49,65 @@ public class BeanWrangler : NonplayerHurtboxHandler
 		//Movement Stuff
 		targetPos = new BeanState(rb.position, facing);
 		attacks = gameObject.GetComponentInChildren<HitboxCollision>().parent.GetComponent<PlayerAttacks>();
+		hurtState = "Hitstun";
+		takesKnockback = true;
 
 	}
 
 	public override void UpdateFrame() {
 
 		base.UpdateFrame();
+			
+		if(HitstunDuration > 0) {
 			prevHitstunDuration = HitstunDuration;
-		
-			if(HitstunDuration >0) 
-				return;
-			else if(prevHitstunDuration != HitstunDuration && HitstunDuration <=0 && alive)
-				returnToNeutral();
-			else {
-				//Get the next state for bean to move towards
-				targetPos = state;
-
-				//If bean is currently following orro,
-				if(following && canAct) {
-					facing = targetPos.Facing;
-
-					if(!alive) {
-						//Heal bean if he is dead
-						if(percentage > 0) percentage -= .06f;
-						if(percentage <= 0)	{
-							percentage = 0;
-							alive = true;
-							PlayAnimation("Bean_Spawn");
-						}
-					}
-
-					//Return to orro
-					//If bean is too far away (more than 3 stage lengths, he will immediately teleport to orro.
-					if(Vector3.Distance(rb.position,targetPos.Pos) > 100f) {
-						rb.position = targetPos.Pos;
-						transform.localScale = new Vector3(targetPos.Facing * Mathf.Abs(transform.localScale.x),
-							transform.localScale.y, transform.localScale.z);
-					}
-
-					//If bean is returning to orro, he will move at a slower speed and not heal
-					if(Vector3.Distance(rb.position,targetPos.Pos) > 3.8f) {
-						rb.position =  Vector3.MoveTowards(rb.position,targetPos.Pos,RETURN_SPEED/60f);
-						transform.localScale = new Vector3((targetPos.Pos.x > rb.position.x ? 1f : -1f) * Mathf.Abs(transform.localScale.x),
-							transform.localScale.y, transform.localScale.z); 
-							beanMovementDelay = 50;
-					}
-					//Follow orro while attatched
-					//Bean follows more closely while attatched to not get left behind
-					else {
-						//Tick down beans damage when he is attatched to orro
-						if(percentage > 0) percentage -=.02f;
-
-						//Follow Logic
-						rb.position =  Vector3.Lerp(rb.position,targetPos.Pos, .25f * beanMovementDelay / 100f);
-						transform.localScale = new Vector3(targetPos.Facing * Mathf.Abs(transform.localScale.x),
-							transform.localScale.y, transform.localScale.z); 
-						if(beanMovementDelay < 100) beanMovementDelay++;
+			return;
+		}
+		else if(prevHitstunDuration != HitstunDuration && alive){
+			prevHitstunDuration = 0;
+			returnToNeutral();
+		}
+		else {
+			//Get the next state for bean to move towards
+			targetPos = state;
+			//If bean is currently following orro,
+			if(following && canAct) {
+				facing = targetPos.Facing;
+				if(!alive) {
+					//Heal bean if he is dead
+					if(percentage > 0) percentage -= .06f;
+					if(percentage <= 0)	{
+						percentage = 0;
+						alive = true;
+						PlayAnimation("Bean_Spawn");
 					}
 				}
-
+				//Return to orro
+				//If bean is too far away (more than 3 stage lengths, he will immediately teleport to orro.
+				if(Vector3.Distance(rb.position,targetPos.Pos) > 100f) {
+					rb.position = targetPos.Pos;
+					transform.localScale = new Vector3(targetPos.Facing * Mathf.Abs(transform.localScale.x),
+						transform.localScale.y, transform.localScale.z);
+				}
+				//If bean is returning to orro, he will move at a slower speed and not heal
+				if(Vector3.Distance(rb.position,targetPos.Pos) > 3.8f) {
+					rb.position =  Vector3.MoveTowards(rb.position,targetPos.Pos,RETURN_SPEED/60f);
+					transform.localScale = new Vector3((targetPos.Pos.x > rb.position.x ? 1f : -1f) * Mathf.Abs(transform.localScale.x),
+						transform.localScale.y, transform.localScale.z); 
+						beanMovementDelay = 50;
+				}
+				//Follow orro while attatched
+				//Bean follows more closely while attatched to not get left behind
+				else {
+					//Tick down beans damage when he is attatched to orro
+					if(percentage > 0) percentage -=.02f;
+					//Follow Logic
+					rb.position =  Vector3.Lerp(rb.position,targetPos.Pos, .25f * beanMovementDelay / 100f);
+					transform.localScale = new Vector3(targetPos.Facing * Mathf.Abs(transform.localScale.x),
+						transform.localScale.y, transform.localScale.z); 
+					if(beanMovementDelay < 100) beanMovementDelay++;
+				}
 			}
+		}
 	}
 
 	public void PlayAnimation(string p_state, float p_normalizedTime = -1) {
@@ -229,8 +228,6 @@ public class BeanWrangler : NonplayerHurtboxHandler
 
 				returnCode =  base.RegisterAttackHit(hitbox,hurtbox,attackID,attackData);
 				oldAttacks[attackID] = MAX_ATTACK_DURATION;
-
-				if(returnCode >= 0)PlayAnimation("Hitstun");
 
 			if(percentage > maxPercentage) {
 					alive = false;

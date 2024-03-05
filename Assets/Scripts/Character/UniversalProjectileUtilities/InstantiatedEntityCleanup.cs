@@ -55,6 +55,7 @@ public class InstantiatedEntityCleanup : MonoBehaviour{
 	public void UpdateFrame() {
 		if(freezeDuration > 0){
 			freezeDuration--;
+			UnityEngine.Debug.Log(freezeDuration);
 			if(useHitpause && freezeDuration <= 0)
 				unfreeze();
 		}
@@ -64,8 +65,7 @@ public class InstantiatedEntityCleanup : MonoBehaviour{
 			if(duration <=0) {
 				if(destoryState != "" ) animator.Play(destoryState);
 				else Destroy(gameObject);
-			}
-				
+			}	
 		}
 	}
 
@@ -87,9 +87,9 @@ public class InstantiatedEntityCleanup : MonoBehaviour{
 		
 	}
 
-	public void ApplyFreeze(int frames){
+	public void ApplyFreeze(int frames, bool gated = true){
 		if(useHitpause)
-			applyFreeze(frames);
+			applyFreeze(frames, gated);
 	}
 
 	public void PlayAnimation(string state){
@@ -101,8 +101,9 @@ public class InstantiatedEntityCleanup : MonoBehaviour{
 		rb.velocity = Vector2.zero;
 	}
 
-	private void applyFreeze(int frames){
-		if(pauseBehavior && !dataSaved){
+	private void applyFreeze(int frames, bool gated = true){
+		if(pauseBehavior && (!dataSaved || !gated)){
+				UnityEngine.Debug.Log("iec: " + frames);
 				if(animator !=null) animator.enabled = false;
 				if(rb != null){
 					savedVelocity = rb.velocity;
@@ -119,6 +120,7 @@ public class InstantiatedEntityCleanup : MonoBehaviour{
 
 	public void unfreeze(){
 		if(pauseBehavior && dataSaved) {
+			UnityEngine.Debug.Log("Unfroze");
 			if(animator !=null) animator.enabled = true;
 			if(rb != null) {
 				rb.velocity = savedVelocity;

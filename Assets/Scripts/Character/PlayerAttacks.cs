@@ -111,7 +111,7 @@ public class PlayerAttacks : MonoBehaviour {
 		}
 
 		bool canAct = !drifter.status.HasStunEffect() && !drifter.guarding && !drifter.movement.ledgeHanging;
-		bool canSpecial = !drifter.status.HasStunEffect() && !drifter.movement.ledgeHanging;
+		//bool canSpecial = !drifter.status.HasStunEffect() && !drifter.movement.ledgeHanging;
 
 		if((drifter.movement.grounded && !drifter.status.HasStatusEffect(PlayerStatusEffect.END_LAG)) || drifter.status.HasEnemyStunEffect()) resetRecovery();
 		
@@ -119,7 +119,7 @@ public class PlayerAttacks : MonoBehaviour {
 		
 		else if (grabPressed() && canAct) useGrab();
 
-		else if(specialPressed() && canSpecial) useSpecial();
+		else if(specialPressed() && canAct) useSpecial();
 
 		else if (lightPressed() && canAct) useNormal();
 	}
@@ -166,7 +166,7 @@ public class PlayerAttacks : MonoBehaviour {
 
 		if(isCancel) {
 			AttackFrameDelay = 4;
-			//drifter.status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, 2);
+			drifter.status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, 2);
 			drifter.masterhit.clearMasterhitVars();
 			drifter.canFeint = true;
 			drifter.canSpecialCancelFlag = false;

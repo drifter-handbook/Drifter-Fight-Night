@@ -263,7 +263,6 @@ public class Drifter : MonoBehaviour
 		return (!entity.paused && !usingSuper);
 	}
 
-
 	//Clears all flags associated with guard state
 	public void clearGuardFlags() {
 		guarding = false;

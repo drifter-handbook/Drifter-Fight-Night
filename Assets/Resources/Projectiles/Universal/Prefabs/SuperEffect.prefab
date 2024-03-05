@@ -312,12 +312,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ef945a1776594438c7a9223e2d7bb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  destoryState: 
   duration: -1
   rb: {fileID: 6187845524770775536}
   animator: {fileID: 315034053413878420}
+  pauseBehavior: 0
   paused: 0
-  savedVelocity: {x: 0, y: 0}
-  updateSelf: 0
+  useHitpause: 0
+  DestroyOnExit: 1
 --- !u!50 &6187845524770775536
 Rigidbody2D:
   serializedVersion: 4

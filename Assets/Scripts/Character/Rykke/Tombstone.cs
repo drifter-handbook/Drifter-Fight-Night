@@ -35,13 +35,13 @@ public class Tombstone : NonplayerHurtboxHandler
 		animator = GetComponent<Animator>();
 		physicsCollider = GetComponentInChildren<PolygonCollider2D>();
 		ledgeDetector = GetComponentInChildren<WalkOff>();
-		entity = GetComponent<InstantiatedEntityCleanup>();
+		entity = GetComponent<InstantiatedEntityCleanup>(); 
 	}
 
 	// // Update is called once per frame
 	public override void UpdateFrame() {
 		base.UpdateFrame();
-		entity.UpdateFrame();
+		//entity.UpdateFrame();
 
 		if(listeningForGrounded && IsGrounded()) {
 			listeningForGrounded = false;

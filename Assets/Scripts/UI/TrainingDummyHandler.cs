@@ -126,20 +126,20 @@ public class TrainingDummyHandler : MonoBehaviour
 				clearBuffer();
 			else if(Player.input[0].MoveY < 0 && Player.input[0].MoveX ==0)
 				Dummy.transform.position = new Vector3(0,4);
-			else if(Player.input[0].MoveY <0 && Player.input[0].MoveX > 0){
-				Dummy.movement.setFacing(-1);
-				Dummy.transform.position = NetworkPlayers.Instance.spawnPoints[0].transform.position;
-			}
 			else if(Player.input[0].MoveY <0 && Player.input[0].MoveX < 0){
 				Dummy.movement.setFacing(1);
-				Dummy.transform.position = NetworkPlayers.Instance.spawnPoints[1].transform.position;
+				Dummy.transform.position = NetworkPlayers.Instance.spawnPoints[0].transform.position;
 			}
-			else if(Player.input[0].MoveX > 0){
+			else if(Player.input[0].MoveY <0 && Player.input[0].MoveX > 0){
 				Dummy.movement.setFacing(-1);
-				Dummy.transform.position = NetworkPlayers.Instance.spawnPoints[2].transform.position;
+				Dummy.transform.position = NetworkPlayers.Instance.spawnPoints[1].transform.position;
 			}
 			else if(Player.input[0].MoveX < 0){
 				Dummy.movement.setFacing(1);
+				Dummy.transform.position = NetworkPlayers.Instance.spawnPoints[2].transform.position;
+			}
+			else if(Player.input[0].MoveX > 0){
+				Dummy.movement.setFacing(-1);
 				Dummy.transform.position = NetworkPlayers.Instance.spawnPoints[3].transform.position;
 			}
 			//Record and saved Dummy input for replay

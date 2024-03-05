@@ -391,6 +391,7 @@ public class OrroReworkMasterHit : MasterHit {
 	public new void returnToIdle() {
 		base.returnToIdle();
 		specialCharge = 0;
+		beanIsCharging = false;
 		listeningForDirection = false;
 	}
 

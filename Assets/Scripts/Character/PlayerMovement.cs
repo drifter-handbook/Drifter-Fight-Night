@@ -741,21 +741,21 @@ public class PlayerMovement : MonoBehaviour
 			drifter.ToggleAnimator(true);
 			hitstun = false;
 			drifter.status.clearStunStatus();
-			spawnSuperParticle(CancelType.Hyper_Guard_Burst,100,8);
 			drifter.attacks.useSuper();
+			spawnSuperParticle(CancelType.Hyper_Guard_Burst,100,8);
 			
 		}
 		
 		//Offensive Cancel
 		else if(drifter.status.HasStatusEffect(PlayerStatusEffect.END_LAG) && drifter.superCharge >= 100) {
 			if(drifter.superCharge >= 200 && !drifter.canFeint) {
-				spawnSuperParticle(CancelType.Offensive_Cancel,200,20);
 				drifter.attacks.useSuper();
+				spawnSuperParticle(CancelType.Offensive_Cancel,200,20);
 				
 			}
 			else if(drifter.canFeint) {
-				spawnSuperParticle(CancelType.Feint_Cancel,100,8);
 				drifter.attacks.useSuper();
+				spawnSuperParticle(CancelType.Feint_Cancel,100,8);
 			}
 		}
 
@@ -765,15 +765,14 @@ public class PlayerMovement : MonoBehaviour
 			hitstun = false;
 			drifter.status.clearStunStatus();
 			drifter.status.ApplyStatusEffect(PlayerStatusEffect.INVULN,8);
-			
-			spawnSuperParticle(CancelType.Defensive_Cancel,200,8);
 			drifter.attacks.useSuper();
+			spawnSuperParticle(CancelType.Defensive_Cancel,200,8);
 			if(currentJumps+1 < numberOfJumps) currentJumps++;
 			
 		}
 		else if (!drifter.guarding && drifter.superCharge >= 100 && !drifter.status.HasStunEffect()) {
-			spawnSuperParticle(CancelType.Time_Cancel,100,8);
 			drifter.attacks.useSuper();
+			spawnSuperParticle(CancelType.Time_Cancel,100,8);
 		}
 
 	}

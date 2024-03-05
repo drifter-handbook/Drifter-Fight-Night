@@ -617,7 +617,6 @@ MonoBehaviour:
   _percentage: 0
   rb: {fileID: 6932556643919112318}
   healthBar: {fileID: 6735839145750309103}
-  color: 0
   following: 1
   beanMovementDelay: 100
   canAct: 1
@@ -672,11 +671,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ef945a1776594438c7a9223e2d7bb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  destoryState: 
   duration: -1
   rb: {fileID: 6932556643919112318}
   animator: {fileID: 8477712233780534944}
   pauseBehavior: 1
   paused: 0
+  useHitpause: 1
   DestroyOnExit: 0
 --- !u!1 &7018911611265777531
 GameObject:
