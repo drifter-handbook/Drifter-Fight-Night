@@ -1,25 +1,7 @@
 fileFormatVersion: 2
-guid: 3b2f426ff41870a48923e83da0788372
+guid: 66d1f24aee480274cae2e9f0a26c7aa0
 TextureImporter:
-  internalIDToNameTable:
-  - first:
-      213: 8282534985273828294
-    second: sparkburst_hyperguard_0
-  - first:
-      213: 2908109676356860912
-    second: sparkburst_hyperguard_1
-  - first:
-      213: -5597247321796660238
-    second: sparkburst_hyperguard_2
-  - first:
-      213: -5336984724984505051
-    second: sparkburst_hyperguard_3
-  - first:
-      213: 462789386101063241
-    second: sparkburst_hyperguard_4
-  - first:
-      213: 3971726901336809371
-    second: sparkburst_hyperguard_5
+  internalIDToNameTable: []
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -106,11 +88,47 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: sparkburst_hyperguard_0
+      name: block_burst_start_0
       rect:
         serializedVersion: 2
         x: 0
@@ -124,14 +142,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6c3edf4bfa971f270800000000000000
-      internalID: 8282534985273828294
+      spriteID: fdd658cd48d09494ca9a1db7ee48a15c
+      internalID: 1867639541
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sparkburst_hyperguard_1
+      name: block_burst_start_1
       rect:
         serializedVersion: 2
         x: 192
@@ -145,14 +163,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0fb7023c75eab5820800000000000000
-      internalID: 2908109676356860912
+      spriteID: fa83a0583898f4945906719630ef0460
+      internalID: 736667378
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sparkburst_hyperguard_2
+      name: block_burst_start_2
       rect:
         serializedVersion: 2
         x: 384
@@ -166,14 +184,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2f3bd4067359252b0800000000000000
-      internalID: -5597247321796660238
+      spriteID: 30780b9daf337224fac68d8895918339
+      internalID: 452186567
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sparkburst_hyperguard_3
+      name: block_burst_start_3
       rect:
         serializedVersion: 2
         x: 576
@@ -187,14 +205,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 52ddc9f4ba83fe5b0800000000000000
-      internalID: -5336984724984505051
+      spriteID: 3695798b062e46e43b1bf7ee6390ce20
+      internalID: -1386319650
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sparkburst_hyperguard_4
+      name: block_burst_start_4
       rect:
         serializedVersion: 2
         x: 768
@@ -208,8 +226,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 94eff54ae782c6600800000000000000
-      internalID: 462789386101063241
+      spriteID: f03ce6a41bc5f7e4ca552cfd0ee0be52
+      internalID: -1739819442
       vertices: []
       indices: 
       edges: []
@@ -225,11 +243,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      sparkburst_hyperguard_1: 2908109676356860912
-      sparkburst_hyperguard_4: 462789386101063241
-      sparkburst_hyperguard_3: -5336984724984505051
-      sparkburst_hyperguard_2: -5597247321796660238
-      sparkburst_hyperguard_0: 8282534985273828294
+      block_burst_start_0: 1867639541
+      block_burst_start_3: -1386319650
+      block_burst_start_2: 452186567
+      block_burst_start_1: 736667378
+      block_burst_start_4: -1739819442
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

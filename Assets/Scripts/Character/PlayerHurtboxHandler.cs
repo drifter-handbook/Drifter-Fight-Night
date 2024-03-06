@@ -127,7 +127,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
 					//Blocking damage Reduction
 					//0 chip damage on perfect guard
-					  * ((drifter.guarding && attackData.hitType!=HitType.GRAB && !crossUp) ? (drifter.perfectGuarding || drifter.parrying? 0 : .2f): 1f)
+					  * ((drifter.guarding && attackData.hitType!=HitType.GRAB && !crossUp) ?  .2f : 1f)
 
 					//Defense Buff damage reduction
 					  * (status.HasStatusEffect(PlayerStatusEffect.DEFENSEUP) ? 0.7f:1f)
@@ -186,7 +186,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 				status?.ApplyStatusEffect(attackData.StatusEffect,attackData.StatusDuration);
 				returnCode = 0;
 			}
-			else if (status != null && (attackData.hitType==HitType.GRAB || !drifter.guarding || crossUp) && !drifter.parrying){
+			else if (status != null && (attackData.hitType==HitType.GRAB || !drifter.guarding || crossUp) ){
 
 				drifter.knockedDown = false;
 				//drifter.clearGuardFlags();
@@ -288,25 +288,18 @@ public class PlayerHurtboxHandler : MonoBehaviour
 				returnCode = (attackData.StatusEffect == PlayerStatusEffect.GRABBED)?AttackHitType.GRAB : AttackHitType.HIT;             
 			}
 			//Normal guarding behavior
-			else if(drifter.guarding && !drifter.parrying) {
+			else if(drifter.guarding) {
 
 				drifter.movement.updateFacing();
-				//if(attackData.hitType==HitType.GUARD_CRUSH)drifter.guardBreaking = true;
+
 				//push both players back on guarrd
-				
 				if(hitbox.gameObject.tag != "Projectile")
 					 hitbox.parent.GetComponent<Rigidbody2D>().velocity = new Vector2(-Mathf.Sign(forceDir.normalized.x) * attackData.pushBlock, hitbox.parent.GetComponent<Rigidbody2D>().velocity.y);
 
-				//hitbox.parent.GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(HitstunDuration,.2f,1f) * hitbox.Facing *-15f, hitbox.parent.GetComponent<Rigidbody2D>().velocity.y);
-			   
-				//No pushback on perfect guard
-				if(!drifter.perfectGuarding) {
-					// Get new particle for prefect guarda
-					GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Sign(forceDir.normalized.x) * attackData.pushBlock, GetComponent<Rigidbody2D>().velocity.y);
+				//Defeander Pushblock
+				GetComponent<Rigidbody2D>().velocity = new Vector2( (drifter.movement.grounded ? 1f : .5f) * Mathf.Sign(forceDir.normalized.x) * attackData.pushBlock, drifter.movement.grounded ? GetComponent<Rigidbody2D>().velocity.y : 20f);
 
-				}
-
-				else drifter.movement.spawnJuiceParticle(hitSparkPos, MovementParticleMode.Parry);
+				//else drifter.movement.spawnJuiceParticle(hitSparkPos, MovementParticleMode.Parry);
 				//put defender in blockstun
 				if(HitstunDuration > 0){
 						// status?.calculateFrameAdvantage(HitstunDuration, attacker.getRemainingAttackTime());
@@ -327,30 +320,30 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
 			}
 			//Parrying a guardbreaker
-			else if(drifter.parrying && attackData.hitType==HitType.GRAB && hitbox.gameObject.tag != "Projectile") {
+			// else if(drifter.parrying && attackData.hitType==HitType.GRAB && hitbox.gameObject.tag != "Projectile") {
 
-				//STODO Shit out lots of particles here
-				if(hitbox.gameObject.tag != "Projectile")hitbox.parent.GetComponent<Rigidbody2D>().velocity = new Vector2(hitbox.Facing *-35f, hitbox.parent.GetComponent<Rigidbody2D>().velocity.y);
+			// 	//STODO Shit out lots of particles here
+			// 	if(hitbox.gameObject.tag != "Projectile")hitbox.parent.GetComponent<Rigidbody2D>().velocity = new Vector2(hitbox.Facing *-35f, hitbox.parent.GetComponent<Rigidbody2D>().velocity.y);
 			   
-				GetComponent<Rigidbody2D>().velocity = new Vector2(35f * hitbox.Facing , GetComponent<Rigidbody2D>().velocity.y);
-				returnCode = AttackHitType.PARRY;
+			// 	GetComponent<Rigidbody2D>().velocity = new Vector2(35f * hitbox.Facing , GetComponent<Rigidbody2D>().velocity.y);
+			// 	returnCode = AttackHitType.PARRY;
 
-			}
-			//Parrying a normal attack
-			else if(drifter.parrying && hitbox.gameObject.tag != "Projectile") {
-				//TODO Shit out more paricles
-				//TODO Make this work better in air
+			// }
+			// //Parrying a normal attack
+			// else if(drifter.parrying && hitbox.gameObject.tag != "Projectile") {
+			// 	//TODO Shit out more paricles
+			// 	//TODO Make this work better in air
 
-				drifter.movement.spawnJuiceParticle(hitSparkPos, MovementParticleMode.Parry);
+			// 	drifter.movement.spawnJuiceParticle(hitSparkPos, MovementParticleMode.Parry);
 
-				attackerStatus.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,60);
-				attackerStatus.ApplyStatusEffect(PlayerStatusEffect.CRINGE,60);
-				Shake.zoomEffect(36,Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),false);
-				attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,36);
-				drifter.movement.pauseGravity();
-				returnCode = AttackHitType.PARRY;
+			// 	attackerStatus.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,60);
+			// 	attackerStatus.ApplyStatusEffect(PlayerStatusEffect.CRINGE,60);
+			// 	Shake.zoomEffect(36,Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),false);
+			// 	attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,36);
+			// 	drifter.movement.pauseGravity();
+			// 	returnCode = AttackHitType.PARRY;
 
-			}
+			// }
 
 			trainingUI?.addDamage(damageDealt,HitstunDuration,status);
 			trainingUI?.readFrameAdvantage(attackerStatus,status);

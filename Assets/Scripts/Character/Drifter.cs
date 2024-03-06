@@ -73,9 +73,9 @@ public class Drifter : MonoBehaviour
 	[NonSerialized]
 	public bool guarding = false;
 	[NonSerialized]
-	public bool perfectGuarding = false;
+	public bool inspired = false;
 	[NonSerialized]
-	public bool parrying = false;
+	public bool inspiredRecover = false;
 	[NonSerialized]
 	public bool canFeint = true;
 	[NonSerialized]
@@ -106,9 +106,13 @@ public class Drifter : MonoBehaviour
 
 	private bool isDummy = true;
 
-
+	//Used to prevent certain animation events from firing if another animation was set to play in the current frame
+	//We have to do thsi becasue of the timing in whcih Unity processes animation events relative to the update loop
+	//Becasue of this ordering, we need to set this to 2 if the trigger is on a physics collision, as it will tick down before once before the event is fired
+	//For DFN:
+	//Physics -> Queue animation events -> Fixed Update -> Fire animation events
 	[NonSerialized]
-	public int blockRTI = 0;
+	public int blockEvent = 0;
 
 	//Cancel Normals into Specials Logic
 	public bool listenForSpecialCancel
@@ -190,14 +194,14 @@ public class Drifter : MonoBehaviour
 	}
 
 	//Replaces the animator state transition function
-	public void PlayAnimation(string p_state, float p_normalizedTime = -1, bool p_gate = false) {
+	public void PlayAnimation(string p_state, float p_normalizedTime = -1, bool p_gate = false, int eventBlockTime = 2) {
 
 		if(p_gate && Animator.StringToHash(p_state) == animator.GetCurrentAnimatorStateInfo(0).shortNameHash) {
 			UnityEngine.Debug.Log("Animation state " +p_state + " was gated!");
 		}
 		else {
 			animator.Play(Animator.StringToHash(p_state),0,p_normalizedTime < 0 ? 0: p_normalizedTime);
-			blockRTI = 2;
+			blockEvent = eventBlockTime;
 		}
 	}
 
@@ -278,8 +282,8 @@ public class Drifter : MonoBehaviour
 	//Clears all flags associated with guard state
 	public void clearGuardFlags() {
 		guarding = false;
-		parrying = false;
-		perfectGuarding = false;
+		// parrying = false;
+		// perfectGuarding = false;
 	}
 
 	public GameObject createParticleEffector(string name){
@@ -382,8 +386,8 @@ public class Drifter : MonoBehaviour
 
 			//Character State
 			Guarding = guarding,
-			PerfectGuarding = perfectGuarding,
-			Parrying = parrying,
+			// PerfectGuarding = perfectGuarding,
+			// Parrying = parrying,
 			CanFeint = canFeint,
 			// CanSuper = canSuper,
 			KnockedDown = knockedDown,
@@ -396,7 +400,7 @@ public class Drifter : MonoBehaviour
 			ListenForSpecialCancel = listenForSpecialCancel,
 			SparkleMode = sparkleMode,
 			UsingSuper = usingSuper,
-			BlockRTI = blockRTI,
+			BlockEvent = blockEvent,
 			//Animation
 			AnimationOverrideIndex = overrideIndex,
 			AnimationSpeed = animator.speed,
@@ -422,8 +426,8 @@ public class Drifter : MonoBehaviour
 
 		//Character State
 		guarding = p_frame.Guarding;
-		perfectGuarding = p_frame.PerfectGuarding;
-		parrying = p_frame.Parrying;
+		// perfectGuarding = p_frame.PerfectGuarding;
+		// parrying = p_frame.Parrying;
 		canFeint = p_frame.CanFeint;
 		// canSuper = p_frame.CanSuper;
 		knockedDown = p_frame.KnockedDown;
@@ -437,7 +441,7 @@ public class Drifter : MonoBehaviour
 		sparkleMode = p_frame.SparkleMode;
 		usingSuper = p_frame.UsingSuper;
 
-		blockRTI = p_frame.BlockRTI;
+		blockEvent = p_frame.BlockEvent;
 
 		//Animation
 		//animator.enabled = p_frame.AnimatorEnabled;
@@ -471,7 +475,7 @@ public class Drifter : MonoBehaviour
 			}
 		}
 
-		if(blockRTI > 0) blockRTI--;
+		if(blockEvent > 0) blockEvent--;
 		
 		//Do not update components if in super freeze
 		if(!entity.paused) {
@@ -493,8 +497,8 @@ public class DrifterRollbackFrame: INetworkData
 	public PlayerInputData[] InputBuffer;
 	
 	public bool Guarding;
-	public bool PerfectGuarding;
-	public bool Parrying;
+	// public bool PerfectGuarding;
+	// public bool Parrying;
 	public bool CanFeint;
 	// public bool CanSuper;
 	public bool KnockedDown;
@@ -508,7 +512,7 @@ public class DrifterRollbackFrame: INetworkData
 	public bool SparkleMode;
 	public bool UsingSuper;
 
-	public int BlockRTI;
+	public int BlockEvent;
 
 	public int AnimationOverrideIndex; 
 	public float AnimationSpeed;

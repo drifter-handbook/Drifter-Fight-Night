@@ -433,12 +433,12 @@ public class PlayerMovement : MonoBehaviour
 	  
 		//Disable Guarding
 		else if(!drifter.input[0].Guard && !drifter.status.HasStunEffect() && drifter.guarding) {
-			drifter.status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,18);
-			drifter.canSpecialCancelFlag = true;
-			drifter.listenForSpecialCancel = true;
-			drifter.guarding = false;
-			drifter.parrying = true;
-			drifter.PlayAnimation("Guard_Drop");
+			//drifter.status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,18);
+			//drifter.canSpecialCancelFlag = true;
+			//drifter.listenForSpecialCancel = true;
+			drifter.returnToIdle();
+			//drifter.parrying = true;
+			//drifter.PlayAnimation("Guard_Drop");
 		}
 
 		//Ledgegrabs Stuff
@@ -772,7 +772,7 @@ public class PlayerMovement : MonoBehaviour
 			drifter.ToggleAnimator(true);
 			hitstun = false;
 			drifter.status.clearStunStatus();
-			drifter.status.ApplyStatusEffect(PlayerStatusEffect.INVULN,8);
+			//drifter.status.ApplyStatusEffect(PlayerStatusEffect.INVULN,8);
 			drifter.attacks.useSuper();
 			spawnSuperParticle(CancelType.Defensive_Cancel,200,8);
 			if(currentJumps+1 < numberOfJumps) currentJumps++;

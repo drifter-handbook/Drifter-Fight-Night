@@ -166,7 +166,7 @@ public class PlayerAttacks : MonoBehaviour {
 
 		if(isCancel) {
 			AttackFrameDelay = 4;
-			drifter.status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, 2);
+			drifter.status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, 5);
 			drifter.masterhit.clearMasterhitVars();
 			drifter.canFeint = true;
 			drifter.canSpecialCancelFlag = false;
@@ -270,11 +270,11 @@ public class PlayerAttacks : MonoBehaviour {
 		drifter.movement.jumping = false;
 		drifter.status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,480);
 		if(!AttackVariants[attackType])
-			drifter.PlayAnimation(AnimatorStates[attackType]);
+			drifter.PlayAnimation(AnimatorStates[attackType],-1,false, 0);
 		else if(drifter.movement.grounded)
-			drifter.PlayAnimation(AnimatorStates[attackType] + "_Ground");
+			drifter.PlayAnimation(AnimatorStates[attackType] + "_Ground",-1,false, 0);
 		else
-			drifter.PlayAnimation(AnimatorStates[attackType] + "_Air");
+			drifter.PlayAnimation(AnimatorStates[attackType] + "_Air",-1,false, 0);
 		//Delay setting Attack key for 3 frames for special cancels
 		AttackFrameDelay = frameDelay;
 		AttackType = attackType;

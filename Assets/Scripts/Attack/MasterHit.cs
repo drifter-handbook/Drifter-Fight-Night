@@ -350,6 +350,10 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 	// }
 
 	public void setYVelocity(float y) {
+		if(drifter.blockEvent > 0) {
+			UnityEngine.Debug.Log("Y VELOCITY BLOCKED FOR: " + drifter.gameObject);
+			return;
+		}
 		rb.velocity = new Vector2(rb.velocity.x,y * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f));
 		status.saveYVelocity(y);
 	}
@@ -361,6 +365,10 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
 
 	public void setXVelocity(float x) {
+		if(drifter.blockEvent > 0) {
+			UnityEngine.Debug.Log("X VELOCITY BLOCKED FOR: " + drifter.gameObject);
+			return;
+		}
 
 		if(movement.grounded && x >0) movement.spawnKickoffDust();
 		rb.velocity = new Vector2(movement.Facing * x * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f),rb.velocity.y);
@@ -368,7 +376,10 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 	}
 
 	public void setXVelocityMin(float x) {
-
+		if(drifter.blockEvent > 0) {
+			UnityEngine.Debug.Log("X VELOCITY BLOCKED FOR: " + drifter.gameObject);
+			return;
+		}
 		if(movement.grounded && x >0) movement.spawnKickoffDust();
 		rb.velocity = new Vector2(movement.Facing * Mathf.Max(x,Mathf.Abs(rb.velocity.x)) * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f),rb.velocity.y);
 		status.saveXVelocity(rb.velocity.x);
@@ -425,7 +436,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 	}
 
 	public void returnToIdle() {
-		if(drifter.blockRTI > 0) {
+		if(drifter.blockEvent > 0) {
 			UnityEngine.Debug.Log("RTI BLOCKED FOR: " + drifter.gameObject);
 			return;
 		}
@@ -513,19 +524,19 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
 	public void beginGuard() {
 		applyEndLag(10);
-		drifter.perfectGuarding = true;
+		//drifter.perfectGuarding = true;
 	}
 
 	public void endPerfectGuard() {
-		drifter.perfectGuarding = false;
+		//drifter.perfectGuarding = false;
 		if(drifter.guarding)drifter.PlayAnimation("Guard");
 		listenForActiveCancel();
 		//listenForDashCancel();
 	}
 
-	public void endParry() {
-		drifter.parrying = false;
-	}
+	// public void endParry() {
+	// 	drifter.parrying = false;
+	// }
 
 	public void BounceParticle(float offset = 0) {
 		if(!movement.grounded)return;
