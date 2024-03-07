@@ -190,7 +190,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 			//You fucked up bro
 			else if(attackData.hitType != HitType.GRAB && status.HasStatusEffect(PlayerStatusEffect.INSPIRATION)){
 				returnCode = AttackHitType.PARRY;
-				drifter.setUsingInspiration();
+				drifter.movement.superCancel(true);
 			}
 			else if (status != null && (attackData.hitType==HitType.GRAB || !drifter.guarding || crossUp) ){
 
@@ -205,7 +205,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 				}
 
 				//As long as the defender isnt in superarmour, or they are being grabbed, apply knockback velocity
-				else if(!status.HasStatusEffect(PlayerStatusEffect.ARMOUR) || attackData.hitType==HitType.GRAB || (crossUp && drifter.guarding) ){
+				if(!status.HasStatusEffect(PlayerStatusEffect.ARMOUR) || attackData.hitType==HitType.GRAB || (crossUp && drifter.guarding) ){
 
 					status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0);
 					
@@ -214,8 +214,6 @@ public class PlayerHurtboxHandler : MonoBehaviour
 					//Cause the screen to shake slightly on hit, as long as the move has knockback
 					if(Shake != null && attackData.Knockback !=0){
 						Shake.Shake((willCollideWithBlastZone(GetComponent<Rigidbody2D>(), HitstunDuration)?18:9),Mathf.Clamp((((attackData.Knockback - 10)/100f + (damageDealt-10)/44f)) * attackData.KnockbackScale,.25f,.8f));
-
-						//Shake.startShakeCoroutine(.3f,2f);
 					}
 
 					//If the defender is grounded, use the absolute value of the y component of the velocity
@@ -272,8 +270,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
 				
 				//If hitstop is scaled, and one is proviced, sum the hitstun duuration and the hitpause duration
-				 
-				HitPauseDuration = (guardbroken || status.HasStatusEffect(PlayerStatusEffect.ARMOUR)) ? 30 : HitPauseDuration;
+				HitPauseDuration = ((guardbroken || status.HasStatusEffect(PlayerStatusEffect.ARMOUR)) && hitbox.gameObject.tag != "Projectile") ? 30 : HitPauseDuration;
 
 				//Apply defender hitpause
 				if(HitPauseDuration >0 && attackData.StatusEffect != PlayerStatusEffect.HITPAUSE )

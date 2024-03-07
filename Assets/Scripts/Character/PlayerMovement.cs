@@ -9,7 +9,8 @@ public enum CancelType
 	Offensive_Cancel,
 	Defensive_Cancel,
 	Hyper_Guard_Burst,
-	Time_Cancel
+	Time_Cancel,
+	Inspiration_Burst,
 }
 
 public class PlayerMovement : MonoBehaviour
@@ -483,7 +484,6 @@ public class PlayerMovement : MonoBehaviour
 			drifter.inspirationCharges--;
 			drifter.status.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,20 + drifter.status.remainingDuration(PlayerStatusEffect.KNOCKDOWN));
 			drifter.status.ApplyStatusEffect(PlayerStatusEffect.INSPIRATION,20);
-			
 		}
 
 		//Player is not trying to move, and is not in hitstun
@@ -656,7 +656,6 @@ public class PlayerMovement : MonoBehaviour
 		strongLedgeGrab = false;
 		ledgeGrabLockout = lockoutTime;
 		drifter.CanGrabLedge = false;
-		UnityEngine.Debug.Log("Drop Ledge");
 	}
 
 	public bool canGrabLedge(){
@@ -754,49 +753,59 @@ public class PlayerMovement : MonoBehaviour
 	}
 
 
-	public void superCancel() {
+	public void superCancel(bool inspiration = false) {
+		UnityEngine.Debug.Log("USED SUPER: " + inspiration);
 
-		if(drifter.superCharge < 1f || drifter.status.HasStatusEffect(PlayerStatusEffect.DEAD) || !drifter.CanUseSuper())return;
+		if(drifter.status.HasStatusEffect(PlayerStatusEffect.DEAD)) return;
 
-		//Hyperguard
-		if(drifter.status.HasStatusEffect(PlayerStatusEffect.KNOCKBACK) && drifter.guarding  && drifter.superCharge >= 100) {
+		else if(drifter.status.HasStatusEffect(PlayerStatusEffect.INSPIRATION) && inspiration) {
 			drifter.ToggleAnimator(true);
 			hitstun = false;
 			drifter.status.clearStunStatus();
 			drifter.attacks.useSuper();
-			spawnSuperParticle(CancelType.Hyper_Guard_Burst,100,8);
-			
+			spawnSuperParticle(CancelType.Inspiration_Burst,0,12);
 		}
-		
-		//Offensive Cancel
-		else if(drifter.status.HasStatusEffect(PlayerStatusEffect.END_LAG) && drifter.superCharge >= 100) {
-			if(drifter.superCharge >= 200 && !drifter.canFeint) {
+		else if(drifter.superCharge >= 100 && drifter.CanUseSuper()) {
+			//Hyperguard
+			if(drifter.status.HasStatusEffect(PlayerStatusEffect.KNOCKBACK) && drifter.guarding  && drifter.superCharge >= 100) {
+				drifter.ToggleAnimator(true);
+				hitstun = false;
+				drifter.status.clearStunStatus();
 				drifter.attacks.useSuper();
-				spawnSuperParticle(CancelType.Offensive_Cancel,200,20);
+				spawnSuperParticle(CancelType.Hyper_Guard_Burst,100,8);	
+			}
+			//Offensive Cancel
+			else if(drifter.status.HasStatusEffect(PlayerStatusEffect.END_LAG) && drifter.superCharge >= 100) {
+				if(drifter.superCharge >= 200 && !drifter.canFeint) {
+					drifter.attacks.useSuper();
+					spawnSuperParticle(CancelType.Offensive_Cancel,200,20);		
+				}
+				else if(drifter.canFeint) {
+					drifter.attacks.useSuper();
+					spawnSuperParticle(CancelType.Feint_Cancel,100,8);
+				}
+			}
+			//Burst/Defensive Cancel
+			else if(!drifter.guarding && drifter.superCharge >= 200 && drifter.status.HasEnemyStunEffect() && !drifter.status.HasStatusEffect(PlayerStatusEffect.GRABBED) && !drifter.status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN)) {
+				drifter.ToggleAnimator(true);
+				hitstun = false;
+				drifter.status.clearStunStatus();
+				//drifter.status.ApplyStatusEffect(PlayerStatusEffect.INVULN,8);
+				drifter.attacks.useSuper();
+				spawnSuperParticle(CancelType.Defensive_Cancel,200,8);
+				if(currentJumps+1 < numberOfJumps) currentJumps++;
 				
 			}
-			else if(drifter.canFeint) {
+			else if (!drifter.guarding && drifter.superCharge >= 100 && !drifter.status.HasStunEffect()) {
 				drifter.attacks.useSuper();
-				spawnSuperParticle(CancelType.Feint_Cancel,100,8);
+				spawnSuperParticle(CancelType.Time_Cancel,100,8);
 			}
 		}
 
-		//Burst/Defensive Cancel
-		else if(!drifter.guarding && drifter.superCharge >= 200 && drifter.status.HasEnemyStunEffect() && !drifter.status.HasStatusEffect(PlayerStatusEffect.GRABBED) && !drifter.status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN)) {
-			drifter.ToggleAnimator(true);
-			hitstun = false;
-			drifter.status.clearStunStatus();
-			//drifter.status.ApplyStatusEffect(PlayerStatusEffect.INVULN,8);
-			drifter.attacks.useSuper();
-			spawnSuperParticle(CancelType.Defensive_Cancel,200,8);
-			if(currentJumps+1 < numberOfJumps) currentJumps++;
-			
-		}
-		else if (!drifter.guarding && drifter.superCharge >= 100 && !drifter.status.HasStunEffect()) {
-			drifter.attacks.useSuper();
-			spawnSuperParticle(CancelType.Time_Cancel,100,8);
-		}
+	}
 
+	public void useInpiration(){
+		spawnSuperParticle(CancelType.Inspiration_Burst,0,12);
 	}
 
 	public void resetTerminalVelocity() {

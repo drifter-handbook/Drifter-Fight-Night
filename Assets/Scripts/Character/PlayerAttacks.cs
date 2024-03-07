@@ -170,6 +170,7 @@ public class PlayerAttacks : MonoBehaviour {
 			drifter.masterhit.clearMasterhitVars();
 			drifter.canFeint = true;
 			drifter.canSpecialCancelFlag = false;
+			drifter.listenForSpecialCancel = false;
 
 			//Cromatic abberation
 			GraphicalEffectManager.Instance.CreateSpecialCancel(drifter.gameObject);

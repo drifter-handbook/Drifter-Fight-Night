@@ -243,7 +243,6 @@ public class Drifter : MonoBehaviour
 		if(status.HasStatusEffect(PlayerStatusEffect.FLATTEN)) status.ApplyStatusEffect(PlayerStatusEffect.FLATTEN,0);
 		if(status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN))  status.ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,0);
 		if(status.HasStatusEffect(PlayerStatusEffect.TUMBLE))  status.ApplyStatusEffect(PlayerStatusEffect.TUMBLE,0);
-		if(status.HasStatusEffect(PlayerStatusEffect.INSPIRATION))  status.ApplyStatusEffect(PlayerStatusEffect.INSPIRATION,0);
 		movement.resetTerminalVelocity();
 		canSpecialCancelFlag = false;
 		listenForSpecialCancel = false;     
@@ -271,13 +270,6 @@ public class Drifter : MonoBehaviour
 			masterhit.pauseGravity();
 			masterhit.clearMasterhitVars();
 		}
-	}
-
-	public void setUsingInspiration() {
-		returnToIdle();
-		status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,120);
-		movement.pauseGravity();
-		PlayAnimation("Inspire");
 	}
 
 	public bool CanUseSuper(){
@@ -474,7 +466,7 @@ public class Drifter : MonoBehaviour
 			if(cancelTimer <=0) {
 				cancelTimer = 0;
 				listenForSpecialCancel = false;
-				canSpecialCancelFlag = false;
+				//canSpecialCancelFlag = false;
 			}
 		}
 

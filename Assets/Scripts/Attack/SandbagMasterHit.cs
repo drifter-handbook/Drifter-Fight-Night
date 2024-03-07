@@ -63,7 +63,7 @@ public class SandbagMasterHit : MasterHit
 
 	public void Neutral_Special() {
 
-		if(g_Sandblast!= null) g_Sandblast.GetComponent<InstantiatedEntityCleanup>().animator.Play("SandblastDetonate");
+		if(g_Sandblast != null) g_Sandblast.GetComponent<InstantiatedEntityCleanup>().animator.Play("Sandblast_Detonate");
 		CreateSandblast();
 	}
 

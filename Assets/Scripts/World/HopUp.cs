@@ -21,13 +21,9 @@ public class HopUp : MonoBehaviour {
 					}
 					break;
 				case(LedgeLockState.Tethered):
-					if(col.gameObject.GetComponent<LedgeGrabCollision>().movement != lockingPlayer){
-						forceDrop();
-						ledgeLock = LedgeLockState.Locked;
-						lockingPlayer = col.gameObject.GetComponent<LedgeGrabCollision>().movement;
-					}
-					else
-						ledgeLock = LedgeLockState.Open;
+					forceDrop();
+					ledgeLock = LedgeLockState.Locked;
+					lockingPlayer = col.gameObject.GetComponent<LedgeGrabCollision>().movement;
 					break;
 				case(LedgeLockState.Locked):
 					if(!lockingPlayer.ledgeHanging){

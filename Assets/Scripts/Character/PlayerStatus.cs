@@ -78,7 +78,7 @@ public class PlayerStatus : MonoBehaviour {
 		new PlayerStatusData("POISONED",icon:  0,remove: false)                             ,
 		new PlayerStatusData("BURNING",icon: 1,remove: false, hasParticle: true)            ,
 		new PlayerStatusData("ELECTRIFIED",icon: 4, decrement: false, hasParticle: true)    ,
-		new PlayerStatusData("FLIGHT",icon: 12, self: true)                                 ,
+		new PlayerStatusData("FLIGHT", self: true)                                 			,
 		new PlayerStatusData("INVULN",icon: 9, remove: false, self: true)                   ,
 		new PlayerStatusData("ARMOUR",icon: 10, remove: false, self: true)                  ,
 		new PlayerStatusData("EXPOSED",icon: 2,channel: 1)                                  ,
@@ -100,7 +100,7 @@ public class PlayerStatus : MonoBehaviour {
 		new PlayerStatusData("KNOCKDOWN", icon: 3,stun: true)                               ,
 		new PlayerStatusData("FLATTEN")                                                     ,
 		new PlayerStatusData("SUPER_SLOWMOTION",icon: 16, remove: false)                    ,
-		new PlayerStatusData("INSPIRATION", remove: false)                    				,
+		new PlayerStatusData("INSPIRATION", icon: 12, remove: false)                    	,
 	};
 
 	
