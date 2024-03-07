@@ -471,6 +471,20 @@ public class PlayerMovement : MonoBehaviour
 			}
 
 		}
+		//Inspiration
+		if(drifter.inspirationCharges > 0  
+			&& drifter.status.HasEnemyStunEffect()  
+			&& !drifter.status.HasStatusEffect(PlayerStatusEffect.HITPAUSE) 
+			&& !drifter.guarding 
+			&& !drifter.status.HasStatusEffect(PlayerStatusEffect.INSPIRATION) 
+			&& drifter.input[0].Guard 
+			&& drifter.input[0].Light){
+
+			drifter.inspirationCharges--;
+			drifter.status.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,20 + drifter.status.remainingDuration(PlayerStatusEffect.KNOCKDOWN));
+			drifter.status.ApplyStatusEffect(PlayerStatusEffect.INSPIRATION,20);
+			
+		}
 
 		//Player is not trying to move, and is not in hitstun
 		else if (!moving && canAct) {

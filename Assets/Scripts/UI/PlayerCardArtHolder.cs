@@ -52,6 +52,7 @@ public class PlayerCardArtHolder : MonoBehaviour
 
                 playerCards[i].setImages(stocks[imageIndex]);
                 playerCards[i].addStocks(stockPrefab, 4);
+                playerCards[i].addInspiration(stockPrefab,3);
 
                 //Add dummy and player to training UI
                 if(GameController.Instance.IsTraining){
@@ -75,6 +76,7 @@ public class PlayerCardArtHolder : MonoBehaviour
             if (drifters[i] != null)
             {
                 playerCards[i].removeToStock(drifters[i].Stocks);
+                playerCards[i].setInspiration(drifters[i].inspirationCharges);
                 playerCards[i].SetCharge(drifters[i].superCharge);
 
                 //Prolly remove this

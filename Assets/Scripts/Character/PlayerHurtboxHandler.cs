@@ -184,7 +184,13 @@ public class PlayerHurtboxHandler : MonoBehaviour
 			//Ignore knockback if invincible or armoured
 			if(attackData.hitType == HitType.TRANSCENDANT) {
 				status?.ApplyStatusEffect(attackData.StatusEffect,attackData.StatusDuration);
-				returnCode = 0;
+				returnCode = AttackHitType.HIT;
+			}
+
+			//You fucked up bro
+			else if(attackData.hitType != HitType.GRAB && status.HasStatusEffect(PlayerStatusEffect.INSPIRATION)){
+				returnCode = AttackHitType.PARRY;
+				drifter.setUsingInspiration();
 			}
 			else if (status != null && (attackData.hitType==HitType.GRAB || !drifter.guarding || crossUp) ){
 
@@ -196,12 +202,10 @@ public class PlayerHurtboxHandler : MonoBehaviour
 					HitstunDuration = 60;
 					guardbroken = true;
 					drifter.clearGuardFlags();
-					
 				}
-				//else drifter.guardBreaking = false;
 
 				//As long as the defender isnt in superarmour, or they are being grabbed, apply knockback velocity
-				if(!status.HasStatusEffect(PlayerStatusEffect.ARMOUR) || attackData.hitType==HitType.GRAB || (crossUp && drifter.guarding) ){
+				else if(!status.HasStatusEffect(PlayerStatusEffect.ARMOUR) || attackData.hitType==HitType.GRAB || (crossUp && drifter.guarding) ){
 
 					status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0);
 					

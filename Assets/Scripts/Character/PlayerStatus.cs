@@ -36,6 +36,7 @@ public enum PlayerStatusEffect {
 	KNOCKDOWN,
 	FLATTEN,
 	SUPER_SLOWMOTION,
+	INSPIRATION,
 }
 
 public class PlayerStatusData {
@@ -99,6 +100,7 @@ public class PlayerStatus : MonoBehaviour {
 		new PlayerStatusData("KNOCKDOWN", icon: 3,stun: true)                               ,
 		new PlayerStatusData("FLATTEN")                                                     ,
 		new PlayerStatusData("SUPER_SLOWMOTION",icon: 16, remove: false)                    ,
+		new PlayerStatusData("INSPIRATION", remove: false)                    				,
 	};
 
 	

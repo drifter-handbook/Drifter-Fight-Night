@@ -73,10 +73,6 @@ public class Drifter : MonoBehaviour
 	[NonSerialized]
 	public bool guarding = false;
 	[NonSerialized]
-	public bool inspired = false;
-	[NonSerialized]
-	public bool inspiredRecover = false;
-	[NonSerialized]
 	public bool canFeint = true;
 	[NonSerialized]
 	public bool knockedDown = false;
@@ -99,6 +95,7 @@ public class Drifter : MonoBehaviour
 
 	public int Stocks;
 	public float DamageTaken;
+	public int inspirationCharges = 3;
 	
 	private int overrideIndex = 0; 
 	private int cancelTimer = 0;
@@ -246,6 +243,7 @@ public class Drifter : MonoBehaviour
 		if(status.HasStatusEffect(PlayerStatusEffect.FLATTEN)) status.ApplyStatusEffect(PlayerStatusEffect.FLATTEN,0);
 		if(status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN))  status.ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,0);
 		if(status.HasStatusEffect(PlayerStatusEffect.TUMBLE))  status.ApplyStatusEffect(PlayerStatusEffect.TUMBLE,0);
+		if(status.HasStatusEffect(PlayerStatusEffect.INSPIRATION))  status.ApplyStatusEffect(PlayerStatusEffect.INSPIRATION,0);
 		movement.resetTerminalVelocity();
 		canSpecialCancelFlag = false;
 		listenForSpecialCancel = false;     
@@ -275,8 +273,15 @@ public class Drifter : MonoBehaviour
 		}
 	}
 
+	public void setUsingInspiration() {
+		returnToIdle();
+		status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,120);
+		movement.pauseGravity();
+		PlayAnimation("Inspire");
+	}
+
 	public bool CanUseSuper(){
-		return (!entity.paused && !usingSuper);
+		return (!entity.paused && !usingSuper && !status.HasStatusEffect(PlayerStatusEffect.INSPIRATION));
 	}
 
 	//Clears all flags associated with guard state
@@ -386,8 +391,7 @@ public class Drifter : MonoBehaviour
 
 			//Character State
 			Guarding = guarding,
-			// PerfectGuarding = perfectGuarding,
-			// Parrying = parrying,
+			InspirationCharges = inspirationCharges,
 			CanFeint = canFeint,
 			// CanSuper = canSuper,
 			KnockedDown = knockedDown,
@@ -426,8 +430,7 @@ public class Drifter : MonoBehaviour
 
 		//Character State
 		guarding = p_frame.Guarding;
-		// perfectGuarding = p_frame.PerfectGuarding;
-		// parrying = p_frame.Parrying;
+		inspirationCharges = p_frame.InspirationCharges;
 		canFeint = p_frame.CanFeint;
 		// canSuper = p_frame.CanSuper;
 		knockedDown = p_frame.KnockedDown;
@@ -497,8 +500,7 @@ public class DrifterRollbackFrame: INetworkData
 	public PlayerInputData[] InputBuffer;
 	
 	public bool Guarding;
-	// public bool PerfectGuarding;
-	// public bool Parrying;
+	public int InspirationCharges;
 	public bool CanFeint;
 	// public bool CanSuper;
 	public bool KnockedDown;
