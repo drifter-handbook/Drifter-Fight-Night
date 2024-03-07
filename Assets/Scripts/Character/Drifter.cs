@@ -254,6 +254,7 @@ public class Drifter : MonoBehaviour
 
 		if(input[0].Guard && !movement.ledgeHanging) {
 			guarding = true;
+			masterhit.listenForActiveCancel();
 			PlayAnimation(movement.hitstun?"Guard":"Guard_Start");
 		}
 		movement.hitstun = false;

@@ -128,7 +128,9 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 		}
 
 		else if(status.HasEnemyStunEffect() || movement.ledgeHanging ) {
-			clearMasterhitVars();
+			if(!drifter.guarding){
+				clearMasterhitVars();
+			}
 		}
 		else if(
 			(listeningForGroundedFlag && movement.grounded)||
@@ -381,7 +383,17 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 			return;
 		}
 		if(movement.grounded && x >0) movement.spawnKickoffDust();
-		rb.velocity = new Vector2(movement.Facing * Mathf.Max(x,Mathf.Abs(rb.velocity.x)) * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f),rb.velocity.y);
+
+		if((rb.velocity.x * movement.Facing) < 0) {
+			rb.velocity = new Vector2( Mathf.Sign(rb.velocity.x) * Mathf.Abs(x + rb.velocity.x) * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f),rb.velocity.y);
+			UnityEngine.Debug.Log("ALT VEL: " + rb.velocity.x);
+		}
+
+		else{
+			rb.velocity = new Vector2(movement.Facing * Mathf.Max(x,Mathf.Abs(rb.velocity.x)) * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f),rb.velocity.y);
+			UnityEngine.Debug.Log("Reg VEL: " + rb.velocity.x);
+		}
+
 		status.saveXVelocity(rb.velocity.x);
 	}
 
@@ -524,19 +536,13 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
 	public void beginGuard() {
 		applyEndLag(10);
-		//drifter.perfectGuarding = true;
 	}
 
 	public void endPerfectGuard() {
-		//drifter.perfectGuarding = false;
 		if(drifter.guarding)drifter.PlayAnimation("Guard");
 		listenForActiveCancel();
-		//listenForDashCancel();
 	}
 
-	// public void endParry() {
-	// 	drifter.parrying = false;
-	// }
 
 	public void BounceParticle(float offset = 0) {
 		if(!movement.grounded)return;

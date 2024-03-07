@@ -176,7 +176,7 @@ public class PlayerStatus : MonoBehaviour {
 							drifter.movement.hitstun = true;
 							drifter.knockedDown = false;
 							drifter.PlayAnimation("Jump_End");
-							ApplyStatusEffect(PlayerStatusEffect.INVULN,6);
+							ApplyStatusEffect(PlayerStatusEffect.INVULN,8);
 						}
 					}
 				}
