@@ -571,6 +571,7 @@ MonoBehaviour:
     Menu: 0
   Stocks: 0
   DamageTaken: 0
+  inspirationCharges: 3
 --- !u!114 &3106753082241659641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -598,8 +599,8 @@ MonoBehaviour:
   fullhopFrames: 10
   walkSpeed: 25
   terminalVelocity: 80
+  ledgeHanging: 0
   PushBox: {fileID: 7404139115897645622}
-  LedgeGrabBox: {fileID: 7136038149365406979}
 --- !u!114 &9142496942411782138
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -678,7 +679,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 1.5
   m_AngularDrag: 0.05
   m_GravityScale: 10
   m_Material: {fileID: 6200000, guid: fb13e85e8cd5db74c934ea1d0908ec67, type: 2}

@@ -10,6 +10,12 @@ public class TrainingDummyHandler : MonoBehaviour
 	public enum buttonIcon
 	{ UP, RIGHT, LEFT, DOWN, NORMAL, SPECIAL, THROW, GUARD, BYZANTINE, JUMP, UPLEFT, UPRIGHT, DOWNLEFT, DOWNRIGHT };
 
+	private enum DummyPlaybackState
+	{ NONE, WAITFORTRIGGER, WAITFORACTIONABLE, PLAYBACKREACTION, NONPLAYBACKREACTION };
+
+	private enum DummyTrigger
+	{ NONE, ON_HIT, ON_BLOCK, ON_WAKEUP };
+
 	public Drifter Dummy;
 	public Drifter Player;
 	public Dropdown d_Dropdown;
@@ -22,15 +28,18 @@ public class TrainingDummyHandler : MonoBehaviour
 	public GameObject inputList;
 	public Sprite[] images;
 
+	public GameObject recoridngIndicator;
+
 	//Input buffer readout
 	GameObject[] frameList = new GameObject[16];
 	GameObject currentDisplay;
 	bool displayInput = true;
 
 	//Dummy Trigger
-	bool onHit = false;
-	bool onBlock = false;
-	bool onWakeup = false;
+	// bool onHit = false;
+	// bool onBlock = false;
+	// bool onWakeup = false;
+	DummyTrigger trigger = DummyTrigger.NONE;
 	bool resetFlag = true;
 	int reset = 0;
 	int resetFrames = 28;
@@ -46,11 +55,20 @@ public class TrainingDummyHandler : MonoBehaviour
 	bool controlDummy;
 	bool recording;
 	bool playback;
-	// bool triggerPlayback;
-	// bool playbackReaction;
+	DummyPlaybackState reactionPlaybackState = DummyPlaybackState.NONE;
+	bool playbackReaction;
 	PlayerInputData playbackInput;
 	int playbackFrame;
 	int playbackIndex;
+
+
+	PlayerInputData[] emptyState    = new PlayerInputData[]
+		{
+			new PlayerInputData(),
+			new PlayerInputData(),
+			new PlayerInputData(),
+			new PlayerInputData()
+		};
 
 
 	PlayerInputData[] baseState     = new PlayerInputData[]
@@ -218,6 +236,13 @@ public class TrainingDummyHandler : MonoBehaviour
 			}
 		}
 
+		if(reactionPlaybackState == DummyPlaybackState.WAITFORACTIONABLE && !Dummy.status.HasEnemyStunEffect()){
+			setDummyInput(emptyState);
+			reactionPlaybackState = DummyPlaybackState.PLAYBACKREACTION;
+			playbackIndex = 0;
+			getNextPlaybackFrame();
+		}
+
 		//Do this by swapping input systems when that is easier
 		if(controlDummy){
 			NetworkPlayers.Instance.UpdateInput(Dummy.gameObject, (PlayerInputData)Player.input[0].Clone(), true);
@@ -225,7 +250,7 @@ public class TrainingDummyHandler : MonoBehaviour
 			NetworkPlayers.Instance.UpdateInput(Player.gameObject, true);
 		}
 		//else if(playback || playbackReaction){
-		else if(playback){
+		else if(playback || reactionPlaybackState == DummyPlaybackState.PLAYBACKREACTION){
 			NetworkPlayers.Instance.UpdateInput(Dummy.gameObject, (PlayerInputData)playbackInput.Clone(), true);
 			playbackFrame--;
 
@@ -237,30 +262,33 @@ public class TrainingDummyHandler : MonoBehaviour
 		//Hard set dummy inputs
 		else {
 			//NetworkPlayers.Instance.UpdateInput(Dummy.gameObject, true);
-			if(onWakeup && Dummy.knockedDown)
+			if(trigger == DummyTrigger.ON_WAKEUP && Dummy.knockedDown)
 			{
 				if(resetFlag)setDummyInput(reactionState);
 				resetFlag = false;
 				reset = resetFrames;
+				if(reactionPlaybackState == DummyPlaybackState.WAITFORTRIGGER) reactionPlaybackState = DummyPlaybackState.WAITFORACTIONABLE;
 				
 			}
-			if(onBlock && Dummy.status.HasEnemyStunEffect() && Dummy.guarding)
+			if(trigger == DummyTrigger.ON_BLOCK && Dummy.status.HasEnemyStunEffect() && Dummy.guarding)
 			{
 			
 				if(resetFlag) setDummyInput(reactionState);
 				resetFlag = false;
 				reset = resetFrames;
+				if(reactionPlaybackState == DummyPlaybackState.WAITFORTRIGGER) reactionPlaybackState = DummyPlaybackState.WAITFORACTIONABLE;
 				
 			}
 
-			if(onHit && Dummy.status.HasEnemyStunEffect())
+			if(trigger == DummyTrigger.ON_HIT && Dummy.status.HasEnemyStunEffect())
 			{
 				if(resetFlag) setDummyInput(reactionState);
 				resetFlag = false;
-				reset = resetFrames;	
+				reset = resetFrames;
+				if(reactionPlaybackState == DummyPlaybackState.WAITFORTRIGGER) reactionPlaybackState = DummyPlaybackState.WAITFORACTIONABLE;	
 			}
 
-			 if((onHit || onBlock)  && !Dummy.status.HasEnemyStunEffect() && reset == 0)
+			 if((trigger == DummyTrigger.ON_HIT || trigger == DummyTrigger.ON_BLOCK)  && !Dummy.status.HasEnemyStunEffect() && reset == 0)
 			 	setDummyInput(baseState);
 
 			Dummy.UpdateFrame();
@@ -274,6 +302,8 @@ public class TrainingDummyHandler : MonoBehaviour
 				}
 			}
 		}
+
+		recoridngIndicator.SetActive(recording);
 
 	}
 
@@ -345,23 +375,21 @@ public class TrainingDummyHandler : MonoBehaviour
 	//Ouput the new value of the Dropdown into Text
 	void TriggerDropdownValueChanged(Dropdown change)
 	{
-		onWakeup = false;
-		onHit = false;
-		onBlock = false;
 		resetFlag = true;
 		switch(change.value)
 		{
 			case 1:
-				onWakeup = true;
+				trigger = DummyTrigger.ON_WAKEUP;
 				break;
 			case 2:
-				onHit = true;
+				trigger = DummyTrigger.ON_BLOCK;
 				break;
 			case 3:
-				onBlock = true;
+				trigger = DummyTrigger.ON_HIT;
 				break;
 			case 0:
 			default:
+				trigger = DummyTrigger.NONE;
 				break;
 		};
 	}
@@ -378,8 +406,7 @@ public class TrainingDummyHandler : MonoBehaviour
 		};
 
 		resetFrames = 28;
-		// triggerPlayback = false;
-		// playbackReaction = false;
+		reactionPlaybackState = DummyPlaybackState.NONE;
 		switch(change.value)
 		{
 			case 1:
@@ -411,11 +438,10 @@ public class TrainingDummyHandler : MonoBehaviour
 				//resetFrames = 5;
 				break;
 
-			// case 7:
-			// 	triggerPlayback = true;
-			// 	resetFrames = -1;
-			// 	getNextPlaybackFrame();
-			// 	break;
+			case 7:
+				reactionPlaybackState = DummyPlaybackState.WAITFORTRIGGER;
+				resetFrames = -1;
+				break;
 
 			case 0:
 				reactionState[0] = new PlayerInputData();
@@ -494,10 +520,8 @@ public class TrainingDummyHandler : MonoBehaviour
 	}
 
 	void setDummyInput(PlayerInputData[] p_input) {
-		// if(triggerPlayback)playbackReaction = true;
-		// else
 			for(int i = 0; i < p_input.Length; i++)
-				Dummy.input[i] = p_input[i];
+				Dummy.input[i] = (PlayerInputData)p_input[i].Clone();
 	}
 
 	void recordFrame(PlayerInputData data, int numFrames){
@@ -513,11 +537,11 @@ public class TrainingDummyHandler : MonoBehaviour
 	void getNextPlaybackFrame(){
 		//Return to head if max len reached.
 		if(playbackBuffer[playbackIndex] == null || playbackIndex >= playbackBuffer.Length){
-			// if(triggerPlayback) {
-			// 	playbackReaction = false;
-			// 	reset = 0;
-			// }
 			playbackIndex = 0;
+			if(reactionPlaybackState == DummyPlaybackState.PLAYBACKREACTION) {
+				reactionPlaybackState = DummyPlaybackState.WAITFORTRIGGER;
+				setDummyInput(baseState);
+			}
 		}
 
 		string[] frame = playbackBuffer[playbackIndex].Split(':');

@@ -397,6 +397,18 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 		status.saveXVelocity(rb.velocity.x);
 	}
 
+	public void setXVelocityMax(float x) {
+		if(drifter.blockEvent > 0) {
+			UnityEngine.Debug.Log("X VELOCITY BLOCKED FOR: " + drifter.gameObject);
+			return;
+		}
+		rb.velocity = new Vector2(movement.Facing * Mathf.Min(x,Mathf.Abs(rb.velocity.x)) * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f),rb.velocity.y);
+		UnityEngine.Debug.Log("Reg VEL: " + rb.velocity.x);
+		
+
+		status.saveXVelocity(rb.velocity.x);
+	}
+
 	public void applyEndLag(int statusDuration) {
 		status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,statusDuration);
 	}

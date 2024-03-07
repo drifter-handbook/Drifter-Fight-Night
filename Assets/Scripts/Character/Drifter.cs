@@ -274,7 +274,7 @@ public class Drifter : MonoBehaviour
 	}
 
 	public bool CanUseSuper(){
-		return (!entity.paused && !usingSuper && !status.HasStatusEffect(PlayerStatusEffect.INSPIRATION));
+		return (!entity.paused && !usingSuper && !status.HasStatusEffect(PlayerStatusEffect.INSPIRATION) && !status.HasStatusEffect(PlayerStatusEffect.TUMBLE));
 	}
 
 	//Clears all flags associated with guard state
