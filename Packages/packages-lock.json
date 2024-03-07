@@ -245,22 +245,6 @@
         "com.unity.modules.imgui": "1.0.0"
       }
     },
-    "unityggpo.plugin": {
-      "version": "https://github.com/nykwil/UnityGGPO.git?path=/Unity/Packages/UnityGGPO",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "59108ef52f1c839bb1daed7675c33a45e91dec11"
-    },
-    "unityggpo.sharedgame": {
-      "version": "https://github.com/nykwil/UnityGGPO.git?path=/Unity/Packages/SharedGame",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {
-        "unityggpo.plugin": "1.0.1"
-      },
-      "hash": "645507dbae294adb220ae24ae3435327023da483"
-    },
     "com.unity.modules.ai": {
       "version": "1.0.0",
       "depth": 0,
