@@ -243,6 +243,7 @@ public class Drifter : MonoBehaviour
 		if(status.HasStatusEffect(PlayerStatusEffect.FLATTEN)) status.ApplyStatusEffect(PlayerStatusEffect.FLATTEN,0);
 		if(status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN))  status.ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,0);
 		if(status.HasStatusEffect(PlayerStatusEffect.TUMBLE))  status.ApplyStatusEffect(PlayerStatusEffect.TUMBLE,0);
+		if(status.HasStatusEffect(PlayerStatusEffect.SUPERBLOCKED))  status.ApplyStatusEffect(PlayerStatusEffect.SUPERBLOCKED,0);
 		movement.resetTerminalVelocity();
 		canSpecialCancelFlag = false;
 		listenForSpecialCancel = false;     
@@ -282,8 +283,8 @@ public class Drifter : MonoBehaviour
 	}
 
 	public bool CanUseSuper(){
-		return (!entity.paused && !usingSuper && !status.HasStatusEffect(PlayerStatusEffect.INSPIRATION) && !status.HasStatusEffect(PlayerStatusEffect.TUMBLE));
-	}
+		return (!entity.paused && !usingSuper && !status.HasSuperBlockingEffect());
+	} 
 
 	//Clears all flags associated with guard state
 	public void clearGuardFlags() {

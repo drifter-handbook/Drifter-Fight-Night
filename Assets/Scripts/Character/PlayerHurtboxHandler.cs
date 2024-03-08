@@ -250,7 +250,10 @@ public class PlayerHurtboxHandler : MonoBehaviour
 					if(attackData.StatusEffect == PlayerStatusEffect.GRABBED)	{
 						status.grabPoint = hitbox.gameObject.GetComponent<Collider2D>();
 						attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,5);
-
+					}
+					//Prevent characters from using supers if hit with a super blocking effect
+					if(attackData.StatusEffect == PlayerStatusEffect.GRABBED || attackData.StatusEffect == PlayerStatusEffect.TUMBLE){
+						status.ApplyStatusEffect(PlayerStatusEffect.SUPERBLOCKED,10);
 					}               
 				}
 				//Pop players out of the ground when they are already grounded

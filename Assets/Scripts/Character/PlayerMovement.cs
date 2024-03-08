@@ -476,7 +476,10 @@ public class PlayerMovement : MonoBehaviour
 			&& !drifter.guarding 
 			&& !drifter.status.HasStatusEffect(PlayerStatusEffect.INSPIRATION) 
 			&& drifter.input[0].Guard 
-			&& drifter.input[0].Light){
+			&& drifter.input[0].Light
+			&& !drifter.entity.paused 
+			&& !drifter.usingSuper
+			&& !drifter.status.HasSuperBlockingEffect()){
 
 			drifter.inspirationCharges--;
 			drifter.status.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,20 + drifter.status.remainingDuration(PlayerStatusEffect.KNOCKDOWN));
@@ -754,7 +757,7 @@ public class PlayerMovement : MonoBehaviour
 	public void superCancel(bool inspiration = false) {
 		UnityEngine.Debug.Log("USED SUPER: " + inspiration);
 
-		if(drifter.status.HasStatusEffect(PlayerStatusEffect.DEAD)) return;
+		if(drifter.status.HasStatusEffect(PlayerStatusEffect.DEAD) || !drifter.CanUseSuper()) return;
 
 		else if(drifter.status.HasStatusEffect(PlayerStatusEffect.INSPIRATION) && inspiration) {
 			drifter.ToggleAnimator(true);
@@ -763,7 +766,7 @@ public class PlayerMovement : MonoBehaviour
 			drifter.attacks.useSuper();
 			spawnSuperParticle(CancelType.Inspiration_Burst,0,12);
 		}
-		else if(drifter.superCharge >= 100 && drifter.CanUseSuper()) {
+		else if(drifter.superCharge >= 100 && drifter.CanUseSuper() && !drifter.status.HasStatusEffect(PlayerStatusEffect.INSPIRATION) ) {
 			//Hyperguard
 			if(drifter.status.HasStatusEffect(PlayerStatusEffect.KNOCKBACK) && drifter.guarding  && drifter.superCharge >= 100) {
 				drifter.ToggleAnimator(true);

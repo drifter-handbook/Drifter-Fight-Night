@@ -37,6 +37,7 @@ public enum PlayerStatusEffect {
 	FLATTEN,
 	SUPER_SLOWMOTION,
 	INSPIRATION,
+	SUPERBLOCKED,
 }
 
 public class PlayerStatusData {
@@ -72,7 +73,7 @@ public class PlayerStatus : MonoBehaviour {
 		new PlayerStatusData("PLANTED",icon: 3,stun:true)                                   ,
 		new PlayerStatusData("STUNNED",icon:  3,stun: true)                                 ,
 		new PlayerStatusData("PARALYZED",icon:  3,stun: true)                               ,
-		new PlayerStatusData("GRABBED",icon:  3,stun: true)                                 ,
+		new PlayerStatusData("GRABBED",stun: true)                                 			,
 		new PlayerStatusData("CRINGE",icon: 3,stun: true)                                   ,
 		new PlayerStatusData("DEAD",icon:  7,remove: false,stun: true)                      ,
 		new PlayerStatusData("POISONED",icon:  0,remove: false)                             ,
@@ -97,10 +98,11 @@ public class PlayerStatus : MonoBehaviour {
 		new PlayerStatusData("SLOWMOTION",icon: 16, remove: true)                           ,
 		new PlayerStatusData("HIDDEN",remove: false)                                        ,
 		new PlayerStatusData("TUMBLE")                                                      ,
-		new PlayerStatusData("KNOCKDOWN", icon: 3,stun: true)                               ,
+		new PlayerStatusData("KNOCKDOWN",stun: true)                               			,
 		new PlayerStatusData("FLATTEN")                                                     ,
 		new PlayerStatusData("SUPER_SLOWMOTION",icon: 16, remove: false)                    ,
 		new PlayerStatusData("INSPIRATION", icon: 12, remove: false)                    	,
+		new PlayerStatusData("SUPERBLOCKED", icon: 3, remove: false, decrement: false)      ,
 	};
 
 	
@@ -207,6 +209,12 @@ public class PlayerStatus : MonoBehaviour {
 	//Returns true if the player has the specified status and its duration is not zero
 	public bool HasStatusEffect(PlayerStatusEffect ef) {
 		return HasStatusEffect((int)ef);
+	}
+
+	public bool HasSuperBlockingEffect(){
+		return 
+				HasStatusEffect(PlayerStatusEffect.SUPERBLOCKED) ||
+				hasSloMoEffect();
 	}
 
 	private bool HasStatusEffect(int ef) {
