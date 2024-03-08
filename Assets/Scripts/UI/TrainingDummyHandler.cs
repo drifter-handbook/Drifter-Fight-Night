@@ -99,6 +99,7 @@ public class TrainingDummyHandler : MonoBehaviour
 		if(fillMeter) {
 			Player.SetCharge(500);
 			Dummy.SetCharge(500);
+			Player.inspirationCharges = 3;
 		}
 		else if (emptyMeter)  {
 			Player.SetCharge(0);
@@ -109,6 +110,7 @@ public class TrainingDummyHandler : MonoBehaviour
 			if(meterResetFrames == 0){
 				Player.SetCharge(500);
 				Dummy.SetCharge(500);
+				Player.inspirationCharges = 3;
 			}
 		}
 
