@@ -51,8 +51,8 @@ public class PlayerCardArtHolder : MonoBehaviour
                 playerCards[i].drifterIndex = imageIndex;
 
                 playerCards[i].setImages(stocks[imageIndex]);
-                playerCards[i].addStocks(stockPrefab, 4);
-                playerCards[i].addInspiration(stockPrefab,3);
+                playerCards[i].addStocks(4);
+                playerCards[i].addInspiration(3);
 
                 //Add dummy and player to training UI
                 if(GameController.Instance.IsTraining){

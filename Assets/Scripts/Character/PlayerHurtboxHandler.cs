@@ -12,7 +12,8 @@ public enum AttackHitType : short {
 	BLOCK = -1, // Hit was registered, but blocked
 	HIT = 0, // Hit was registered normally
 	GRAB = 1, // Hit was registered normally and has attatched the opponent to the players hitbox
-	SUMMON = 2//: hit was against a non-player object
+	SUMMON = 2,//: hit was against a non-player object
+	ARMOURED = 3// Move connected, but was armoured
 }
 
 public class PlayerHurtboxHandler : MonoBehaviour
@@ -205,7 +206,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 				}
 
 				//As long as the defender isnt in superarmour, or they are being grabbed, apply knockback velocity
-				if(!status.HasStatusEffect(PlayerStatusEffect.ARMOUR) || attackData.hitType==HitType.GRAB || (crossUp && drifter.guarding) ){
+				if(!status.HasStatusEffect(PlayerStatusEffect.ARMOUR) || attackData.hitType==HitType.BURST ||attackData.hitType==HitType.GRAB || (crossUp && drifter.guarding) ){
 
 					status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0);
 					
@@ -265,12 +266,11 @@ public class PlayerHurtboxHandler : MonoBehaviour
 				else if (willCollideWithBlastZone(GetComponent<Rigidbody2D>() , HitstunDuration) ) Mathf.Min(HitstunDuration*=2,3f);
 				
 				
-				if(status.HasStatusEffect(PlayerStatusEffect.ARMOUR) && attackData.hitType!=HitType.GRAB)
+				if(status.HasStatusEffect(PlayerStatusEffect.ARMOUR) && attackData.hitType != HitType.GRAB && attackData.hitType!=HitType.BURST)
 					Shake?.Darken(25);
-
 				
 				//If hitstop is scaled, and one is proviced, sum the hitstun duuration and the hitpause duration
-				HitPauseDuration = ((guardbroken || status.HasStatusEffect(PlayerStatusEffect.ARMOUR)) && hitbox.gameObject.tag != "Projectile") ? 30 : HitPauseDuration;
+				HitPauseDuration = ((guardbroken || (status.HasStatusEffect(PlayerStatusEffect.ARMOUR) && attackData.hitType!=HitType.BURST)) && hitbox.gameObject.tag != "Projectile") ? 30 : HitPauseDuration;
 
 				//Apply defender hitpause
 				if(HitPauseDuration >0 && attackData.StatusEffect != PlayerStatusEffect.HITPAUSE )
@@ -286,7 +286,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
 				drifter.GetComponentInChildren<GameObjectShake>().Shake(attackData.StatusEffect != PlayerStatusEffect.CRINGE?attackData.HitStop:attackData.StatusDuration,attackData.StatusEffect != PlayerStatusEffect.CRINGE?1.5f:2f);
 
-				returnCode = (attackData.StatusEffect == PlayerStatusEffect.GRABBED)?AttackHitType.GRAB : AttackHitType.HIT;             
+				returnCode = (attackData.StatusEffect == PlayerStatusEffect.GRABBED)?AttackHitType.GRAB : ((status.HasStatusEffect(PlayerStatusEffect.ARMOUR) && attackData.hitType!=HitType.BURST)?AttackHitType.ARMOURED:AttackHitType.HIT);             
 			}
 			//Normal guarding behavior
 			else if(drifter.guarding) {

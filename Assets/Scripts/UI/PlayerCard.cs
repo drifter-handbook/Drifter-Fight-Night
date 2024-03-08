@@ -28,6 +28,7 @@ public class PlayerCard : MonoBehaviour
 	public Image ribbons;
 
 	public GameObject bar;
+	public GameObject stock;
 
 	public GameObject inspoHolder;
 	public GameObject stockHolder;
@@ -55,10 +56,10 @@ public class PlayerCard : MonoBehaviour
 
 	}
 
-	public void addStock(GameObject stock) {
-		addStocks(stock, 1);
+	public void addStock() {
+		addStocks(1);
 	}
-	public void addStocks(GameObject stock, int num) {
+	public void addStocks( int num) {
 		if (currStocks + num > MAX_STOCKS) {
 			num = MAX_STOCKS - currStocks;
 		}
@@ -72,7 +73,7 @@ public class PlayerCard : MonoBehaviour
 		}
 	}
 
-	public void addInspiration(GameObject stock, int num) {
+	public void addInspiration( int num) {
 		for(int i = 0; i < num; i++) {
 			GameObject newStock = Instantiate(stock, new Vector3(0,0), Quaternion.identity);
 			newStock.transform.SetParent(inspoHolder.transform, false);
@@ -139,6 +140,9 @@ public class PlayerCard : MonoBehaviour
 		if (currInsp > insp) {
 			currInsp--;
 			Destroy(inspoHolder.transform.GetChild(0).gameObject);
+		}
+		else if (currInsp < insp) {
+			addInspiration(1);
 		}
 	}
 

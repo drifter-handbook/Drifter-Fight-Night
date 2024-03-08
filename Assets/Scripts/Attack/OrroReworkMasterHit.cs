@@ -393,11 +393,17 @@ public class OrroReworkMasterHit : MasterHit {
 		specialCharge = 0;
 		beanIsCharging = false;
 		listeningForDirection = false;
+		
 	}
 
 	public override void clearMasterhitVars() {
 		base.clearMasterhitVars();
 		listeningForDirection = false;
+		//removes all of oors projectile normals when he supers
+		for(int i =0; i < explosions.Length; i++){
+			Destroy(explosions[i]);
+			explosions[i] = null;
+		}
 	}
 
 	//Rollback
