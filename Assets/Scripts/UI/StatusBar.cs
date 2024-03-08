@@ -20,9 +20,9 @@ public class StatusBar : MonoBehaviour
     public void UpdateFrame() {
         if(status == null) Destroy(gameObject);
         if(duration < status.remainingDuration(ef)) duration = status.remainingDuration(ef);
-        //if(duration == 0) Destroy(gameObject);
-        bar.fillAmount = status.remainingDuration(ef)/duration;
-        //if(status.remainingDuration(ef) <= 0) Destroy(gameObject);
+
+        if(duration==0) bar.fillAmount = 1f;
+        else bar.fillAmount = status.remainingDuration(ef)/duration;
 
     } 
 

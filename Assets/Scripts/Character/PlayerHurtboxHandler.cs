@@ -253,7 +253,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 					}
 					//Prevent characters from using supers if hit with a super blocking effect
 					if(attackData.StatusEffect == PlayerStatusEffect.GRABBED || attackData.StatusEffect == PlayerStatusEffect.TUMBLE){
-						status.ApplyStatusEffect(PlayerStatusEffect.SUPERBLOCKED,10);
+						status.ApplyStatusEffect(PlayerStatusEffect.SUPERBLOCKED,100);
 					}               
 				}
 				//Pop players out of the ground when they are already grounded
