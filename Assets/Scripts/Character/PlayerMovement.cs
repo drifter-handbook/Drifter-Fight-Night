@@ -425,10 +425,7 @@ public class PlayerMovement : MonoBehaviour
 		//Guard
 		if(drifter.input[0].Guard && canGuard) {
 			//shift is guard
-			if(!drifter.guarding)
-				drifter.PlayAnimation("Guard_Start");
-		
-			drifter.guarding = true;
+			drifter.guard();
 			updateFacing();
 		}
 	  
@@ -449,7 +446,7 @@ public class PlayerMovement : MonoBehaviour
 			//Jump away from ledge
 			if((drifter.input[0].MoveX  * Facing < 0)){
 				JumpFromLedge();
-				UnityEngine.Debug.Log("Ledge Jump");
+				//UnityEngine.Debug.Log("Ledge Jump");
 			}
 	
 			//Neutral Getup
@@ -458,7 +455,7 @@ public class PlayerMovement : MonoBehaviour
 				drifter.status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,18);
 				drifter.PlayAnimation("Ledge_Climb");
 
-				UnityEngine.Debug.Log("Ledge Climb");
+				//UnityEngine.Debug.Log("Ledge Climb");
 
 				rb.position = new Vector3(rb.position.x + (rb.position.x > 0 ? -1 :1) *2f, rb.position.y + 5f - ledgeClimbOffset);
 			}
@@ -468,7 +465,7 @@ public class PlayerMovement : MonoBehaviour
 				DropLedge();
 				drifter.returnToIdle();
 				drifter.CanGrabLedge = false;
-				UnityEngine.Debug.Log("Drop");
+				//UnityEngine.Debug.Log("Drop");
 			}
 
 		}
@@ -522,7 +519,7 @@ public class PlayerMovement : MonoBehaviour
 		}
 
 
-		else if(canAct && drifter.doubleTappedX()) {
+		else if(canAct && (drifter.doubleTappedX() || drifter.input[0].Dash)) {
 			dash();
 		}
 
@@ -552,6 +549,7 @@ public class PlayerMovement : MonoBehaviour
 	}
 
     public void actionCancelParticle() {
+    	//UnityEngine.Debug.Log("CANCEL PARTICLE");
         spawnJuiceParticle(BodyCollider.bounds.center, MovementParticleMode.Cancel, Quaternion.Euler(0f,0f,0f),false);
     }
 

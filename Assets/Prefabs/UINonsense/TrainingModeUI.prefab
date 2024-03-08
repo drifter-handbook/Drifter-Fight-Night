@@ -550,6 +550,8 @@ MonoBehaviour:
       m_Image: {fileID: 0}
     - m_Text: On Block
       m_Image: {fileID: 0}
+    - m_Text: On Hit||Block
+      m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1792,7 +1794,12 @@ MonoBehaviour:
   - {fileID: -40051662, guid: 27d3c237a603bb14aaf3c511f14b56c9, type: 3}
   - {fileID: 174722357, guid: 27d3c237a603bb14aaf3c511f14b56c9, type: 3}
   - {fileID: -2076018764, guid: 27d3c237a603bb14aaf3c511f14b56c9, type: 3}
+  - {fileID: 205663229, guid: 27d3c237a603bb14aaf3c511f14b56c9, type: 3}
   recoridngIndicator: {fileID: 6023669997860159314}
+  BaseAction: 0
+  ReactionAction: 0
+  ReactionTrigger: 0
+  ReactionState: 0
 --- !u!1 &1949408855835765708
 GameObject:
   m_ObjectHideFlags: 0

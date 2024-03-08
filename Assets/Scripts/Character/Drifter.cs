@@ -227,7 +227,7 @@ public class Drifter : MonoBehaviour
 
 	//Return to idle is called anytime the player regains control
 	public void returnToIdle() {
-		UnityEngine.Debug.Log("DRIFTER: RETURNING TO IDLE");
+		//if(isTrainingDummy()) UnityEngine.Debug.Log("DRIFTER: RETURNING TO IDLE");
 		movement.canLandingCancel = false;
 		movement.jumping = false;
 		movement.dashing = false;
@@ -251,6 +251,7 @@ public class Drifter : MonoBehaviour
 		enforceFullDistance = false;
 		lastHitType = AttackHitType.NONE;
 		if(transform.position.z != -1) transform.position = new Vector3(transform.position.x,transform.position.y,-1);
+		masterhit.clearMasterhitVars();
 
 		if(input[0].Guard && !movement.ledgeHanging) {
 			guarding = true;
@@ -258,6 +259,13 @@ public class Drifter : MonoBehaviour
 			PlayAnimation(movement.hitstun?"Guard":"Guard_Start");
 		}
 		movement.hitstun = false;
+	}
+
+	public void guard(){
+		masterhit.listenForActiveCancel();
+		if(!guarding)
+			PlayAnimation("Guard_Start");
+		guarding = true;
 	}
 
 	public void SetUsingSuper(bool SuperState) {
@@ -446,12 +454,13 @@ public class Drifter : MonoBehaviour
 		//animator.Play(p_frame.AnimationClip,0,p_frame.AnimationTime);
 		
 		//Components
+		status.DeserializeFrame(p_frame.StatusFrame);
 		entity.DeserializeFrame(p_frame.EntityFrame);
 		movement.DeserializeFrame(p_frame.MovementFrame);
 		attacks.DeserializeFrame(p_frame.AttackFrame);
 		hurtbox.DeserializeFrame(p_frame.HurtboxhitFrame);
 		masterhit.DeserializeFrame(p_frame.MasterhitFrame);
-		status.DeserializeFrame(p_frame.StatusFrame);
+		
 		
 	}
 
@@ -473,12 +482,12 @@ public class Drifter : MonoBehaviour
 
 		if(blockEvent > 0) blockEvent--;
 		
+		entity.UpdateFrame();
 		//Do not update components if in super freeze
 		if(!entity.paused) {
-			//entity.UpdateFrame();
+			status.UpdateFrame();
 			movement.UpdateFrame();
 			attacks.UpdateFrame();
-			status.UpdateFrame();
 			hurtbox.UpdateFrame();
 			masterhit.UpdateFrame();
 		}

@@ -18,4 +18,6 @@ public class CustomControls : ScriptableObject
     [SerializeField] public KeyCode lightKey;
     [SerializeField] public KeyCode specialKey;
     [SerializeField] public KeyCode superKey;
+    [SerializeField] public KeyCode grabMacro;
+    [SerializeField] public KeyCode dashMacro;
 }

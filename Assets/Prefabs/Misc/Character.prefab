@@ -427,6 +427,7 @@ MonoBehaviour:
     Super: 0
     Guard: 0
     Pause: 0
+    Dash: 0
     Grab: 0
     Menu: 0
   - MoveX: 0
@@ -437,6 +438,7 @@ MonoBehaviour:
     Super: 0
     Guard: 0
     Pause: 0
+    Dash: 0
     Grab: 0
     Menu: 0
   - MoveX: 0
@@ -447,6 +449,7 @@ MonoBehaviour:
     Super: 0
     Guard: 0
     Pause: 0
+    Dash: 0
     Grab: 0
     Menu: 0
   - MoveX: 0
@@ -457,6 +460,7 @@ MonoBehaviour:
     Super: 0
     Guard: 0
     Pause: 0
+    Dash: 0
     Grab: 0
     Menu: 0
   - MoveX: 0
@@ -467,6 +471,7 @@ MonoBehaviour:
     Super: 0
     Guard: 0
     Pause: 0
+    Dash: 0
     Grab: 0
     Menu: 0
   - MoveX: 0
@@ -477,6 +482,7 @@ MonoBehaviour:
     Super: 0
     Guard: 0
     Pause: 0
+    Dash: 0
     Grab: 0
     Menu: 0
   - MoveX: 0
@@ -487,6 +493,7 @@ MonoBehaviour:
     Super: 0
     Guard: 0
     Pause: 0
+    Dash: 0
     Grab: 0
     Menu: 0
   - MoveX: 0
@@ -497,6 +504,7 @@ MonoBehaviour:
     Super: 0
     Guard: 0
     Pause: 0
+    Dash: 0
     Grab: 0
     Menu: 0
   - MoveX: 0
@@ -507,6 +515,7 @@ MonoBehaviour:
     Super: 0
     Guard: 0
     Pause: 0
+    Dash: 0
     Grab: 0
     Menu: 0
   - MoveX: 0
@@ -517,6 +526,7 @@ MonoBehaviour:
     Super: 0
     Guard: 0
     Pause: 0
+    Dash: 0
     Grab: 0
     Menu: 0
   - MoveX: 0
@@ -527,6 +537,7 @@ MonoBehaviour:
     Super: 0
     Guard: 0
     Pause: 0
+    Dash: 0
     Grab: 0
     Menu: 0
   - MoveX: 0
@@ -537,6 +548,7 @@ MonoBehaviour:
     Super: 0
     Guard: 0
     Pause: 0
+    Dash: 0
     Grab: 0
     Menu: 0
   - MoveX: 0
@@ -547,6 +559,7 @@ MonoBehaviour:
     Super: 0
     Guard: 0
     Pause: 0
+    Dash: 0
     Grab: 0
     Menu: 0
   - MoveX: 0
@@ -557,6 +570,7 @@ MonoBehaviour:
     Super: 0
     Guard: 0
     Pause: 0
+    Dash: 0
     Grab: 0
     Menu: 0
   - MoveX: 0
@@ -567,6 +581,7 @@ MonoBehaviour:
     Super: 0
     Guard: 0
     Pause: 0
+    Dash: 0
     Grab: 0
     Menu: 0
   Stocks: 0
@@ -679,7 +694,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 1.5
+  m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 10
   m_Material: {fileID: 6200000, guid: fb13e85e8cd5db74c934ea1d0908ec67, type: 2}

@@ -121,16 +121,11 @@ public class NetworkPlayers : MonoBehaviour
 		}
 	}
 
-	public DrifterRollbackFrame UpdateInput(GameObject player, PlayerInputData input, bool updateDummy = false) {
+	public DrifterRollbackFrame UpdateInput(GameObject player, PlayerInputData input) {
 		if (player == null)
 			return null;
 
 		Drifter playerDrifter = player.GetComponent<Drifter>();
-
-		if(playerDrifter.isTrainingDummy() && !updateDummy) {
-			playerDrifter.input[0] = input;
-			return null;
-		}
 
 		//UnityEngine.Debug.Log(playerDrifter);
 
@@ -138,15 +133,16 @@ public class NetworkPlayers : MonoBehaviour
 			playerDrifter.input[i + 1] = (PlayerInputData)playerDrifter.input[i].Clone();
 
 		playerDrifter.input[0] = input;
-		playerDrifter.UpdateFrame();
+
+		if(!playerDrifter.isTrainingDummy()) playerDrifter.UpdateFrame();
 
 		return playerDrifter.SerializeFrame();
 
 	}
 
 	//If no input is recieved, assume a player kept doing what they were doing last frame
-	public DrifterRollbackFrame UpdateInput(GameObject player, bool updateDummy = false) {
-		return UpdateInput(player, player.GetComponent<Drifter>().input[0], updateDummy);
+	public DrifterRollbackFrame UpdateInput(GameObject player) {
+		return UpdateInput(player, player.GetComponent<Drifter>().input[0]);
 	}
 
 	public static PlayerInputData GetInput(PlayerInput playerInput) {
@@ -162,6 +158,7 @@ public class NetworkPlayers : MonoBehaviour
 		input.MoveX = (int)playerInputAction.FindAction("Horizontal").ReadValue<float>();
 		input.MoveY = (int)playerInputAction.FindAction("Vertical").ReadValue<float>();
 		input.Grab = playerInputAction.FindAction("Grab").ReadValue<float>() > 0;
+		input.Dash = playerInputAction.FindAction("Dash").ReadValue<float>() > 0;
 
 		input.Pause = playerInputAction.FindAction("Start").ReadValue<float>()>0;
 
@@ -200,6 +197,7 @@ public class PlayerInputData :INetworkData, ICloneable, IEquatable<PlayerInputDa
 	public bool Super;
 	public bool Guard;
 	public bool Pause;
+	public bool Dash;
 	public bool Grab;
 	public bool Menu;
 
@@ -213,6 +211,7 @@ public class PlayerInputData :INetworkData, ICloneable, IEquatable<PlayerInputDa
 			Special = Special,
 			Super = Super,
 			Guard = Guard,
+			Dash = Dash,
 			Pause = Pause,
 			Grab = Grab,
 			Menu = Menu,
@@ -231,7 +230,8 @@ public class PlayerInputData :INetworkData, ICloneable, IEquatable<PlayerInputDa
 			Special == other.Special &&
 			Super == other.Super &&
 			Guard == other.Guard &&
-			Grab == other.Grab 
+			Grab == other.Grab &&
+			Dash == other.Dash
 			);
 	   
 	}
@@ -245,7 +245,8 @@ public class PlayerInputData :INetworkData, ICloneable, IEquatable<PlayerInputDa
 			Special == false &&
 			Super == false &&
 			Guard == false &&
-			Grab == false 
+			Grab == false &&
+			Dash == false
 			);
 	}
 
@@ -258,7 +259,8 @@ public class PlayerInputData :INetworkData, ICloneable, IEquatable<PlayerInputDa
 			(Special	? "1":"0") 	+ "," +
 			(Super		? "1":"0") 	+ "," +
 			(Guard		? "1":"0") 	+ "," +
-			(Grab		? "1":"0");
+			(Grab		? "1":"0")+ "," +
+			(Dash		? "1":"0");
 
 	}
 
@@ -274,7 +276,8 @@ public class PlayerInputData :INetworkData, ICloneable, IEquatable<PlayerInputDa
 			Special		= buttons[4].Equals("1"),
 			Super		= buttons[5].Equals("1"),
 			Guard		= buttons[6].Equals("1"),
-			Grab		= buttons[7].Equals("1")
+			Grab		= buttons[7].Equals("1"),
+			Dash		= buttons[8].Equals("1")
 		};
 	}
 
@@ -287,6 +290,7 @@ public class PlayerInputData :INetworkData, ICloneable, IEquatable<PlayerInputDa
 		Special = data.Special;
 		Super = data.Super;
 		Guard = data.Guard;
+		Dash = data.Dash;
 		Pause = data.Pause;
 		Grab = data.Grab;
 		Menu = data.Menu;

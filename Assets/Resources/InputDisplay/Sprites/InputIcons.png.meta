@@ -367,7 +367,7 @@ TextureImporter:
         width: 19
         height: 19
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -388,7 +388,7 @@ TextureImporter:
         width: 19
         height: 19
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -409,7 +409,7 @@ TextureImporter:
         width: 19
         height: 19
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -417,6 +417,27 @@ TextureImporter:
       bones: []
       spriteID: acfd4a515394bc041bdd427364a18fd7
       internalID: -2076018764
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InputIcons_14
+      rect:
+        serializedVersion: 2
+        x: 61
+        y: 23
+        width: 19
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 18288b0e448abc949af46a921169dc72
+      internalID: 205663229
       vertices: []
       indices: 
       edges: []
@@ -445,6 +466,7 @@ TextureImporter:
       InputIcons_2: 1711579605
       InputIcons_11: -40051662
       InputIcons_5: -1808857809
+      InputIcons_14: 205663229
       InputIcons_9: 749925986
   spritePackingTag: 
   pSDRemoveMatte: 0

@@ -8,13 +8,16 @@ using TMPro;
 public class TrainingDummyHandler : MonoBehaviour
 {
 	public enum buttonIcon
-	{ UP, RIGHT, LEFT, DOWN, NORMAL, SPECIAL, THROW, GUARD, BYZANTINE, JUMP, UPLEFT, UPRIGHT, DOWNLEFT, DOWNRIGHT };
+	{ UP, RIGHT, LEFT, DOWN, NORMAL, SPECIAL, THROW, GUARD, BYZANTINE, JUMP, UPLEFT, UPRIGHT, DOWNLEFT, DOWNRIGHT, DASH };
 
-	private enum DummyPlaybackState
-	{ NONE, WAITFORTRIGGER, WAITFORACTIONABLE, PLAYBACKREACTION, NONPLAYBACKREACTION };
+	public enum DummyReactionState
+	{ NONE, WAIT_FOR_TRIGGER, WAIT_FOR_ACTIONABLE, REACTION };
 
-	private enum DummyTrigger
-	{ NONE, ON_HIT, ON_BLOCK, ON_WAKEUP };
+	public enum DummyTrigger
+	{ NONE, ON_HIT, ON_BLOCK, ON_WAKEUP, ON_HIT_OR_BLOCK};
+
+	public enum DummyAction
+	{ NONE, GUARD, JUMP, LIGHT, SPECIAL, DASH, SUPER, CONTROL, PLAYBACK };
 
 	public Drifter Dummy;
 	public Drifter Player;
@@ -35,14 +38,10 @@ public class TrainingDummyHandler : MonoBehaviour
 	GameObject currentDisplay;
 	bool displayInput = true;
 
-	//Dummy Trigger
-	// bool onHit = false;
-	// bool onBlock = false;
-	// bool onWakeup = false;
-	DummyTrigger trigger = DummyTrigger.NONE;
-	bool resetFlag = true;
-	int reset = 0;
-	int resetFrames = 28;
+	public DummyAction BaseAction = DummyAction.NONE;
+	public DummyAction ReactionAction = DummyAction.NONE;
+	public DummyTrigger ReactionTrigger = DummyTrigger.NONE;
+	public DummyReactionState ReactionState = DummyReactionState.NONE;
 
 	//Meter fill options
 	bool fillMeter = false;
@@ -51,46 +50,19 @@ public class TrainingDummyHandler : MonoBehaviour
 	int meterResetFrames = 0;
 
 	//Record & Playback
-	string[] playbackBuffer = new String[]{"0,0,0,0,0,0,0,0:69", null};
-	bool controlDummy;
 	bool recording;
-	bool playback;
-	DummyPlaybackState reactionPlaybackState = DummyPlaybackState.NONE;
-	bool playbackReaction;
-	PlayerInputData playbackInput;
+	string[] recordedSequence = new String[]{"0,0,0,0,0,0,0,0:69", null};
+	string[] playbackBuffer = new String[]{"0,0,0,0,0,0,0,0:69", null};
+
+	int currentInputFrameTime = 1;
 	int playbackFrame;
 	int playbackIndex;
 
-
-	PlayerInputData[] emptyState    = new PlayerInputData[]
-		{
-			new PlayerInputData(),
-			new PlayerInputData(),
-			new PlayerInputData(),
-			new PlayerInputData()
-		};
-
-
-	PlayerInputData[] baseState     = new PlayerInputData[]
-		{
-			new PlayerInputData(),
-			new PlayerInputData(),
-			new PlayerInputData(),
-			new PlayerInputData()
-		};
-	PlayerInputData[] reactionState = new PlayerInputData[]
-		{
-			new PlayerInputData(),
-			new PlayerInputData(),
-			new PlayerInputData(),
-			new PlayerInputData()
-		};
-
+	PlayerInputData playbackInput = new PlayerInputData();
 	PlayerInputData prevFrameData = new PlayerInputData();
-	int currentInputFrameTime = 1;
+	
 
-	void Start()
-	{
+	void Start() {
 		//Add listener for when the value of the Dropdown changes, to take action
 		d_Dropdown.onValueChanged.AddListener(delegate {
 			BaseDropdownValueChanged(d_Dropdown);
@@ -124,12 +96,20 @@ public class TrainingDummyHandler : MonoBehaviour
 		
 		//Meter Settings
 
-		if(fillMeter) Player.SetCharge(500);
-		else if (emptyMeter)  Player.SetCharge(0);
+		if(fillMeter) {
+			Player.SetCharge(500);
+			Dummy.SetCharge(500);
+		}
+		else if (emptyMeter)  {
+			Player.SetCharge(0);
+			Dummy.SetCharge(0);
+		}
 		else if(meterReset && meterResetFrames >0){
 			meterResetFrames--;
-			if(meterResetFrames == 0)
+			if(meterResetFrames == 0){
 				Player.SetCharge(500);
+				Dummy.SetCharge(500);
+			}
 		}
 
 		if(meterReset && Dummy.status.HasEnemyStunEffect()){
@@ -160,23 +140,25 @@ public class TrainingDummyHandler : MonoBehaviour
 				Dummy.movement.setFacing(-1);
 				Dummy.transform.position = NetworkPlayers.Instance.spawnPoints[3].transform.position;
 			}
-			//Record and saved Dummy input for replay
-			else if(Player.input[0].MoveX == 0 && Player.input[0].MoveY == 0){
-				if(playback)
-					playbackIndex = 0;
-			}
+			// //Record and saved Dummy input for replay
+			// else if(Player.input[0].MoveX == 0 && Player.input[0].MoveY == 0){
+			// 	if(playback)
+			// 		playbackIndex = 0;
+			// }
 		}
 			
 		//Command Button in Dummy mode
-		if(controlDummy && Dummy.input[0].Pause && Dummy.input[1].Pause && !Dummy.input[2].Pause && Dummy.input[0].MoveX == 0 && Dummy.input[0].MoveY == 0){
+		if(BaseAction == DummyAction.CONTROL && Dummy.input[0].Pause && Dummy.input[1].Pause && !Dummy.input[2].Pause && Dummy.input[0].MoveX == 0 && Dummy.input[0].MoveY == 0){
 			if(recording == true){
 				UnityEngine.Debug.Log("RECORDING STOPPED AND SAVED ;)");
 				recording = false;
 				recordFrame(Player.input[0],currentInputFrameTime);
+				//Preserve null terminator to recorded sequence
+				recordedSequence[511] = null;
 			}
 			else {
 				UnityEngine.Debug.Log("RECORDING STARTED");
-				playbackBuffer = new string[512];
+				recordedSequence = new string[512];
 				playbackIndex = 0;
 				currentInputFrameTime = 0;
 				recording = true;
@@ -214,6 +196,8 @@ public class TrainingDummyHandler : MonoBehaviour
 					if(currentFrameData.Super) addButton(buttonIcon.BYZANTINE);
 					if(currentFrameData.Jump) addButton(buttonIcon.JUMP);
 
+					if(currentFrameData.Dash) addButton(buttonIcon.DASH);
+
 					if(currentFrameData.MoveX > 0 && currentFrameData.MoveY >0) addButton(buttonIcon.UPRIGHT);
 					else if(currentFrameData.MoveX < 0 && currentFrameData.MoveY >0) addButton(buttonIcon.UPLEFT);
 					else if(currentFrameData.MoveX > 0 && currentFrameData.MoveY <0) addButton(buttonIcon.DOWNRIGHT);
@@ -236,224 +220,149 @@ public class TrainingDummyHandler : MonoBehaviour
 			}
 		}
 
-		if(reactionPlaybackState == DummyPlaybackState.WAITFORACTIONABLE && !Dummy.status.HasEnemyStunEffect()){
-			setDummyInput(emptyState);
-			reactionPlaybackState = DummyPlaybackState.PLAYBACKREACTION;
-			playbackIndex = 0;
-			getNextPlaybackFrame();
-		}
-
 		//Do this by swapping input systems when that is easier
-		if(controlDummy){
-			NetworkPlayers.Instance.UpdateInput(Dummy.gameObject, (PlayerInputData)Player.input[0].Clone(), true);
+		if(BaseAction == DummyAction.CONTROL){
+			Dummy.input[0] =  (PlayerInputData)Player.input[0].Clone();
 			Player.input[0] = new PlayerInputData();
-			NetworkPlayers.Instance.UpdateInput(Player.gameObject, true);
+			//NetworkPlayers.Instance.UpdateInput(Player.gameObject);
+			Player.UpdateFrame();
+			Dummy.UpdateFrame();
 		}
-		//else if(playback || playbackReaction){
-		else if(playback || reactionPlaybackState == DummyPlaybackState.PLAYBACKREACTION){
-			NetworkPlayers.Instance.UpdateInput(Dummy.gameObject, (PlayerInputData)playbackInput.Clone(), true);
-			playbackFrame--;
 
-			if(playbackFrame == 0){
-				getNextPlaybackFrame();
-			}
+		else{
+			//Update input from previosu frame so we can have access to the next frame's state to pick our inputs
+			//Dummy.UpdateFrame();
 
-		}
-		//Hard set dummy inputs
-		else {
-			//NetworkPlayers.Instance.UpdateInput(Dummy.gameObject, true);
-			if(trigger == DummyTrigger.ON_WAKEUP && Dummy.knockedDown)
-			{
-				if(resetFlag)setDummyInput(reactionState);
-				resetFlag = false;
-				reset = resetFrames;
-				if(reactionPlaybackState == DummyPlaybackState.WAITFORTRIGGER) reactionPlaybackState = DummyPlaybackState.WAITFORACTIONABLE;
-				
+			switch(ReactionState){
+				case DummyReactionState.WAIT_FOR_TRIGGER:
+					if( (ReactionTrigger == DummyTrigger.ON_WAKEUP && Dummy.knockedDown) ||
+						(ReactionTrigger == DummyTrigger.ON_BLOCK && Dummy.status.HasEnemyStunEffect() && Dummy.guarding) ||
+						(ReactionTrigger == DummyTrigger.ON_HIT && Dummy.status.HasEnemyStunEffect() && !Dummy.guarding) ||
+						(ReactionTrigger == DummyTrigger.ON_HIT_OR_BLOCK && Dummy.status.HasEnemyStunEffect())){
+							UnityEngine.Debug.Log("REACTION TRIGGERED");
+							ReactionState = DummyReactionState.WAIT_FOR_ACTIONABLE;
+							setDummyInputSequence(ReactionAction);
+						}
+						else
+							playDummyInputFrame();
+					break;
+				case DummyReactionState.WAIT_FOR_ACTIONABLE:
+					if(!Dummy.status.HasEnemyStunEffect()){
+						UnityEngine.Debug.Log("REACTION PLAYED");
+						ReactionState = DummyReactionState.REACTION;
+						playbackIndex = 0;
+						playDummyInputFrame();
+					}
+					break;
+				case DummyReactionState.REACTION:
+				case DummyReactionState.NONE:
+				default:
+					playDummyInputFrame();
+					break;
 			}
-			if(trigger == DummyTrigger.ON_BLOCK && Dummy.status.HasEnemyStunEffect() && Dummy.guarding)
-			{
-			
-				if(resetFlag) setDummyInput(reactionState);
-				resetFlag = false;
-				reset = resetFrames;
-				if(reactionPlaybackState == DummyPlaybackState.WAITFORTRIGGER) reactionPlaybackState = DummyPlaybackState.WAITFORACTIONABLE;
-				
-			}
-
-			if(trigger == DummyTrigger.ON_HIT && Dummy.status.HasEnemyStunEffect())
-			{
-				if(resetFlag) setDummyInput(reactionState);
-				resetFlag = false;
-				reset = resetFrames;
-				if(reactionPlaybackState == DummyPlaybackState.WAITFORTRIGGER) reactionPlaybackState = DummyPlaybackState.WAITFORACTIONABLE;	
-			}
-
-			 if((trigger == DummyTrigger.ON_HIT || trigger == DummyTrigger.ON_BLOCK)  && !Dummy.status.HasEnemyStunEffect() && reset == 0)
-			 	setDummyInput(baseState);
 
 			Dummy.UpdateFrame();
-
-			if(reset > 0) {
-				reset--;
-				if(reset == 0) {
-					resetFlag = true;
-					setDummyInput(baseState);
-					Dummy.SetCharge(300);
-				}
-			}
+			
 		}
-
 		recoridngIndicator.SetActive(recording);
-
 	}
 
 	//Ouput the new value of the Dropdown into Text
-	void BaseDropdownValueChanged(Dropdown change)
-	{
-		baseState = new PlayerInputData[]
-		{
-			new PlayerInputData(),
-			new PlayerInputData(),
-			new PlayerInputData(),
-			new PlayerInputData()
-		};
-		controlDummy = false;
-		recording = false;
-		playback = false;
-		// triggerPlayback = false;
-		// playbackReaction = false;
+	void BaseDropdownValueChanged(Dropdown change) {
 		Player.setTrainingDummy(false);
+		//Dummy.setTrainingDummy(true);
 		switch(change.value)
 		{
 			case 1:
-				Dummy.input[0] = new PlayerInputData(){Guard = true};
-				Dummy.input[1] = new PlayerInputData(){Guard = true};
-				baseState[0] = new PlayerInputData(){Guard = true};
-				baseState[1] = new PlayerInputData(){Guard = true};
+				BaseAction = DummyAction.GUARD;
 				break;
 			case 2:
-				Dummy.input[0] = new PlayerInputData(){Jump = true};
-				baseState[0] = new PlayerInputData(){Jump = true};
+				BaseAction = DummyAction.JUMP;
 				break;
 			case 3:
-				Dummy.input[0] = new PlayerInputData(){Light = true};
-				baseState[0] = new PlayerInputData(){Light = true};
-				Dummy.input[1] = new PlayerInputData(){Light = true};
-				baseState[1] = new PlayerInputData(){Light = true};
+				BaseAction = DummyAction.LIGHT;
 				break;
 			case 4:
-				Dummy.input[0] = new PlayerInputData(){Special = true};
-				baseState[0] = new PlayerInputData(){Special = true};
-				Dummy.input[1] = new PlayerInputData(){Special = true};
-				baseState[1] = new PlayerInputData(){Special = true};
+				BaseAction = DummyAction.SPECIAL;
 				break;
-
 			case 5:
-				controlDummy = true;
+				BaseAction = DummyAction.CONTROL;
 				clearBuffer();
 				Player.setTrainingDummy(true);
+				//Dummy.setTrainingDummy(false);
 				break;
-
 			case 6:
-				playback = true;
-				playbackIndex = 0;
-				getNextPlaybackFrame();
+				BaseAction = DummyAction.PLAYBACK;
 				break;
-
 			case 0:
-				Dummy.input[0] = new PlayerInputData();
-				Dummy.input[1] = new PlayerInputData();
-				baseState[0] = new PlayerInputData();
-				baseState[1] = new PlayerInputData();
-				break;
-
 			default:
+				BaseAction = DummyAction.NONE;
+				break;
+		};
+		setDummyInputSequence(BaseAction);
+	}
+
+	void TriggerDropdownValueChanged(Dropdown change) {
+		ReactionState = DummyReactionState.WAIT_FOR_TRIGGER;
+		switch(change.value)
+		{
+			case 1:
+				ReactionTrigger = DummyTrigger.ON_WAKEUP;
+				break;
+			case 2:
+				ReactionTrigger = DummyTrigger.ON_HIT;
+				break;
+			case 3:
+				ReactionTrigger = DummyTrigger.ON_BLOCK;
+				break;
+			case 4:
+				ReactionTrigger = DummyTrigger.ON_HIT_OR_BLOCK;
+				break;
+			case 0:
+			default:
+				ReactionState = DummyReactionState.NONE;
+				ReactionTrigger = DummyTrigger.NONE;
 				break;
 		};
 	}
 
-	//Ouput the new value of the Dropdown into Text
-	void TriggerDropdownValueChanged(Dropdown change)
-	{
-		resetFlag = true;
+	void ReactionDropdownValueChanged(Dropdown change) {
+		// resetFrames = 28;
+		// reactionPlaybackState = DummyReactionState.NONE;
 		switch(change.value)
 		{
 			case 1:
-				trigger = DummyTrigger.ON_WAKEUP;
+				ReactionAction = DummyAction.GUARD;
 				break;
 			case 2:
-				trigger = DummyTrigger.ON_BLOCK;
+				ReactionAction = DummyAction.JUMP;
 				break;
 			case 3:
-				trigger = DummyTrigger.ON_HIT;
-				break;
-			case 0:
-			default:
-				trigger = DummyTrigger.NONE;
-				break;
-		};
-	}
-
-	//Ouput the new value of the Dropdown into Text
-	void ReactionDropdownValueChanged(Dropdown change)
-	{
-		reactionState = new PlayerInputData[]
-		{
-			new PlayerInputData(),
-			new PlayerInputData(),
-			new PlayerInputData(),
-			new PlayerInputData()
-		};
-
-		resetFrames = 28;
-		reactionPlaybackState = DummyPlaybackState.NONE;
-		switch(change.value)
-		{
-			case 1:
-				reactionState[0] = new PlayerInputData(){Guard = true};
-				resetFrames = 60;
-				break;
-			case 2:
-				reactionState[0] = new PlayerInputData(){Jump = true};
-				break;
-			case 3:
-				reactionState[0] = new PlayerInputData(){Light = true};
-				reactionState[1] = new PlayerInputData(){Light = true};
+				ReactionAction = DummyAction.LIGHT;
 				break;
 
 			case 4:
-				reactionState[0] = new PlayerInputData(){Special = true};
-				reactionState[1] = new PlayerInputData(){Special = true};     
+				ReactionAction = DummyAction.SPECIAL;   
 				break;
-
 			case 5:
-				reactionState[0] = new PlayerInputData(){MoveX = Dummy.movement.Facing};
-				reactionState[2] = new PlayerInputData(){MoveX = Dummy.movement.Facing};
-				resetFrames = 10;
+				ReactionAction = DummyAction.DASH;
 				break;
-
 			case 6:
-				reactionState[0] = new PlayerInputData(){Super = true};
-				reactionState[1] = new PlayerInputData(){Super = true};
-				//resetFrames = 5;
+				ReactionAction = DummyAction.SUPER;
 				break;
-
 			case 7:
-				reactionPlaybackState = DummyPlaybackState.WAITFORTRIGGER;
-				resetFrames = -1;
+				ReactionAction = DummyAction.PLAYBACK;
+				//resetFrames = -1;
 				break;
-
 			case 0:
-				reactionState[0] = new PlayerInputData();
-				reactionState[1] = new PlayerInputData();
-				break;
 			default:
+				ReactionAction = DummyAction.NONE;
 				break;
 		};
 	}
 
-	void MeterDropdownValueChanged(Dropdown change)
-	{
+
+	void MeterDropdownValueChanged(Dropdown change) {
 		fillMeter = false;
 		emptyMeter = false;
 		meterReset = false;
@@ -475,8 +384,7 @@ public class TrainingDummyHandler : MonoBehaviour
 		};
 	}
 
-	void GamespeedDropdownValueChanged(Dropdown change)
-	{
+	void GamespeedDropdownValueChanged(Dropdown change) {
 		switch(change.value)
 		{
 			case 1:
@@ -495,15 +403,6 @@ public class TrainingDummyHandler : MonoBehaviour
 		};
 	}
 
-	void clearBuffer(){
-		for(int i = 0; i < 16; i++){
-			Destroy(frameList[i]);
-			frameList[i] = null;
-		}
-		currentInputFrameTime = 0;
-
-	}
-
 	void BufferDropdownValueChanged(Dropdown change) {
 		switch(change.value)
 		{
@@ -519,16 +418,72 @@ public class TrainingDummyHandler : MonoBehaviour
 		};
 	}
 
-	void setDummyInput(PlayerInputData[] p_input) {
-			for(int i = 0; i < p_input.Length; i++)
-				Dummy.input[i] = (PlayerInputData)p_input[i].Clone();
+	//Clears the input buffer readout
+	void clearBuffer(){
+		for(int i = 0; i < 16; i++){
+			Destroy(frameList[i]);
+			frameList[i] = null;
+		}
+		currentInputFrameTime = 0;
+	}
+
+	void playDummyInputFrame(){
+		Dummy.input[0] = (PlayerInputData)playbackInput.Clone();
+		playbackFrame--;
+		if(playbackFrame == 0){
+			getNextPlaybackFrame();
+		}
+	}
+
+	void setDummyInputSequence(DummyAction action) {
+
+		//PlayerInputData thisFrame;
+		switch(action){
+			case DummyAction.GUARD:
+				playbackBuffer = new String[]{	"0,0,0,0,0,0,1,0,0:90", null};
+				break;
+			case DummyAction.JUMP:
+				playbackBuffer = new String[]{	"0,0,1,0,0,0,0,0,0:10",
+												"0,0,0,0,0,0,0,0,0:20", null};
+				break;
+			case DummyAction.LIGHT:
+				playbackBuffer = new String[]{	"0,0,0,1,0,0,0,0,0:2",
+												"0,0,0,0,0,0,0,0,0:10", null};
+				break;
+			case DummyAction.SPECIAL:
+				playbackBuffer = new String[]{	"0,0,0,0,1,0,0,0,0:2",
+												"0,0,0,0,0,0,0,0,0:10", null};
+				break;
+			case DummyAction.DASH:
+				playbackBuffer = new String[]{"0,0,0,0,0,0,0,0,1:2", null};	
+				break;
+			case DummyAction.SUPER:
+				Dummy.input[0] = new PlayerInputData(){Super = true};
+				playbackBuffer = new String[]{	"0,0,0,0,0,1,0,0,0:2",
+												"0,0,0,0,0,0,0,0,0:2", null};
+				break;
+			case DummyAction.CONTROL:
+				//This case probably shouldn't ever get called?
+				return;
+				break;
+			case DummyAction.PLAYBACK:
+				playbackBuffer = (string[])recordedSequence.Clone();
+				break;
+			case DummyAction.NONE:
+			default:
+				playbackBuffer = new string[]{"0,0,0,0,0,0,0,0,0:60", null};
+				break;
+		}
+
+		playbackIndex = 0;
+		getNextPlaybackFrame();
 	}
 
 	void recordFrame(PlayerInputData data, int numFrames){
-		playbackBuffer[playbackIndex] = data.ToString() + ":" + numFrames.ToString();
+		recordedSequence[playbackIndex] = data.ToString() + ":" + numFrames.ToString();
 		playbackIndex++;
 
-		if(playbackIndex >= playbackBuffer.Length) {
+		if(playbackIndex >= recordedSequence.Length) {
 			UnityEngine.Debug.Log("MAX RECORDING LENGTH REACHED. STOPPING RECORDING");
 			recording = false;
 		}
@@ -537,11 +492,13 @@ public class TrainingDummyHandler : MonoBehaviour
 	void getNextPlaybackFrame(){
 		//Return to head if max len reached.
 		if(playbackBuffer[playbackIndex] == null || playbackIndex >= playbackBuffer.Length){
-			playbackIndex = 0;
-			if(reactionPlaybackState == DummyPlaybackState.PLAYBACKREACTION) {
-				reactionPlaybackState = DummyPlaybackState.WAITFORTRIGGER;
-				setDummyInput(baseState);
+			//If the sequence was a reaction, go back to base state after frames run out
+			if(ReactionState == DummyReactionState.REACTION){
+				UnityEngine.Debug.Log("TRIGGER RESET");
+				ReactionState = DummyReactionState.WAIT_FOR_TRIGGER;
+				setDummyInputSequence(BaseAction);
 			}
+			playbackIndex = 0;
 		}
 
 		string[] frame = playbackBuffer[playbackIndex].Split(':');

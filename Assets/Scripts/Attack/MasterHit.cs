@@ -203,7 +203,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 			
 		}
 		//Dash Cancel a move
-		else if((activeCancelFlag || (dashCancelFlag && (short)drifter.lastHitType > -1)) && movement.currentDashes >0 && drifter.doubleTappedX()) {
+		else if((activeCancelFlag || (dashCancelFlag && (short)drifter.lastHitType > -1)) && movement.currentDashes >0 && (drifter.doubleTappedX() || drifter.input[0].Dash)) {
 			if(movement.dash(true)) {
 				MovementCancelParticle();
 				clearMasterhitVars();
@@ -386,12 +386,10 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
 		if((rb.velocity.x * movement.Facing) < 0) {
 			rb.velocity = new Vector2( Mathf.Sign(rb.velocity.x) * Mathf.Abs(x + rb.velocity.x) * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f),rb.velocity.y);
-			UnityEngine.Debug.Log("ALT VEL: " + rb.velocity.x);
 		}
 
 		else{
 			rb.velocity = new Vector2(movement.Facing * Mathf.Max(x,Mathf.Abs(rb.velocity.x)) * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f),rb.velocity.y);
-			UnityEngine.Debug.Log("Reg VEL: " + rb.velocity.x);
 		}
 
 		status.saveXVelocity(rb.velocity.x);
@@ -403,9 +401,6 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 			return;
 		}
 		rb.velocity = new Vector2(movement.Facing * Mathf.Min(x,Mathf.Abs(rb.velocity.x)) * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f),rb.velocity.y);
-		UnityEngine.Debug.Log("Reg VEL: " + rb.velocity.x);
-		
-
 		status.saveXVelocity(rb.velocity.x);
 	}
 
@@ -552,7 +547,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
 	public void endPerfectGuard() {
 		if(drifter.guarding)drifter.PlayAnimation("Guard");
-		listenForActiveCancel();
+		//listenForActiveCancel();
 	}
 
 
