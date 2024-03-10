@@ -16,11 +16,18 @@ public class EndgameImageHandler : MonoBehaviour
     //public GameObject rightPanel;
     //public GameObject sillyImagePrefab;
     public GameObject playAgainButton;
+    PlayerInput[] playerInputs;
 
     bool mouse = true;
 
     void Start()
     {
+        playerInputs = FindObjectsOfType<PlayerInput>();
+        foreach (PlayerInput input in GameController.Instance.controls.Values)
+        {
+            input.SwitchCurrentActionMap("UI");
+        }
+
         //isHost = GameController.Instance.IsHost;
         //Resources.UnloadUnusedAssets();
 
@@ -68,34 +75,42 @@ public class EndgameImageHandler : MonoBehaviour
 
     void FixedUpdate()
     {
-
-    	bool gamepadButtonPressed = false;
-        for (int i = 0; i < Gamepad.current.allControls.Count; i++)
+        playerInputs = FindObjectsOfType<PlayerInput>();
+        foreach(PlayerInput playerInput in playerInputs)
         {
-            var c = Gamepad.current.allControls[i];
-            if (c is ButtonControl)
+            bool gamepadButtonPressed = false;
+            if (Gamepad.current != null)
             {
-                if (((ButtonControl)c).wasPressedThisFrame)
+                for (int i = 0; i < Gamepad.current.allControls.Count; i++)
                 {
-                    gamepadButtonPressed = true;
+                    var c = Gamepad.current.allControls[i];
+                    if (c is ButtonControl)
+                    {
+                        if (((ButtonControl)c).wasPressedThisFrame)
+                        {
+                            gamepadButtonPressed = true;
+                        }
+                    }
                 }
+            }
+
+            if (playerInput != null && playerInput.currentActionMap.FindAction("Click").ReadValue<float>() > 0 || playerInput.currentActionMap.FindAction("RightClick").ReadValue<float>() > 0 || playerInput.currentActionMap.FindAction("MiddleClick").ReadValue<float>() > 0 && !mouse)
+            {
+                mouse = true;
+                //Cursor.visible = true;
+                EventSystem.current.SetSelectedGameObject(null);
+                return;
+
+            }
+            else if ((Keyboard.current.anyKey.isPressed || gamepadButtonPressed) && mouse && (!(playerInput.currentActionMap.FindAction("Click").ReadValue<float>() > 0) || !(playerInput.currentActionMap.FindAction("RightClick").ReadValue<float>() > 0) || !(playerInput.currentActionMap.FindAction("MiddleClick").ReadValue<float>() > 0)))
+            {
+                EventSystem.current.SetSelectedGameObject(GameObject.Find("MainMenu"));
+                mouse = false;
             }
         }
 
-        if(Keyboard.current.escapeKey.wasPressedThisFrame) backToMain();
-        
-        if((Mouse.current.leftButton.isPressed || Mouse.current.rightButton.isPressed || Mouse.current.middleButton.isPressed) && !mouse)
-        {
-            mouse = true;
-            //Cursor.visible = true;
-            EventSystem.current.SetSelectedGameObject(null);
-
-        }
-        if((Keyboard.current.anyKey.isPressed || gamepadButtonPressed)&& mouse && (!Mouse.current.leftButton.isPressed || !Mouse.current.rightButton.isPressed || !Mouse.current.middleButton.isPressed)){
-            EventSystem.current.SetSelectedGameObject(GameObject.Find("MainMenu"));
-            mouse = false;
-        }
-     
+        //TODO: commenting out, figure out wtf to do with this.
+        //if(Keyboard.current.escapeKey.wasPressedThisFrame) backToMain();  
     }
 
     public void backToMain()
