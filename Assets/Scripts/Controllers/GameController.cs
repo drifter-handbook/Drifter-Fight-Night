@@ -97,47 +97,9 @@ public class GameController : MonoBehaviour
 	}
 
 	void Start() {
-		//GameAnalytics.Initialize();
-		//GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, "startGame");
-		// this is horrid practice please dont do this but
-		// if(IsOnline)
-		// {
-		//     string server = Resources.Load<TextAsset>("Config/server_ip").text;
-		//     if (IPAddress.TryParse(server, out IPAddress address))
-		//     {
-		//     }
-		//     else
-		//     {
-		//         IPHostEntry host = Dns.GetHostEntry(server);
-		//         address = host.AddressList[0];
-		//     }
-		//     NatPunchServer = new IPEndPoint(address, NatPunchServer.Port);
-		//     MatchmakingServer = new IPEndPoint(address, MatchmakingServer.Port);
-		// }
 		aggregatePrefabs("Assets/Resources/");
+		inputManager.EnableJoining();
 	}
-
-	public void addUser(PlayerInput playerInput) {
-		int peerID = -1;
-		while(controls.ContainsKey(peerID))
-			peerID++;
-		controls.Add(peerID,playerInput);
-
-		FindObjectOfType<CharacterMenu>()?.AddCharSelState(peerID);
-
-		playerInput.ActivateInput();
-
-		if(IsTraining) FindObjectOfType<CharacterMenu>()?.AddCharSelState(8,DrifterType.Sandbag);
-
-		DontDestroyOnLoad(playerInput);
-
-        aggregatePrefabs("Assets/Resources/");
-        inputManager.EnableJoining();
-        //AssignInputAssest();
-
-        //AssignInputAssest();
-        
-    }
 
     public void addUser(PlayerInput playerInput)
     {
@@ -158,13 +120,10 @@ public class GameController : MonoBehaviour
             playerInput.SwitchCurrentActionMap("UI");
         }
 
+        if(IsTraining) FindObjectOfType<CharacterMenu>()?.AddCharSelState(8,DrifterType.Sandbag);
+
         playerInput.ActivateInput();
         DontDestroyOnLoad(playerInput);
-
-        if (controls.Count >= 1 && IsTraining)
-        {
-            DisableJoining();
-        }
     }
 
     public void removeUserByPeer(int peerID)
@@ -183,18 +142,56 @@ public class GameController : MonoBehaviour
         {
             FindObjectOfType<CharacterMenu>()?.RemoveCharSelState(peerID);
         }
-        if(peerID != -1) host.Peers.Remove(peerID);
+        if(peerID != -1) Peers.Remove(peerID);
         if(!clearingPeers && IsTraining && controls.Count == 0)
         {
             EnableJoining();
         }
     }
 
+    public void removeAllPeers()
+    {
+        clearingPeers = true;
+        List<int> peersToRemove = new List<int>();
+        foreach(int peerID in controls.Keys)
+            peersToRemove.Add(peerID);
+        foreach(int peer in peersToRemove)
+            removeUserByPeer(peer);
+        clearingPeers = false;
+    }
+
+    public void removeAllUIPeers()
+    {
+        foreach (int peer in controls.Keys)
+        {
+            controls[peer].DeactivateInput();
+            Destroy(controls[peer].gameObject);
+            controls.Remove(peer);
+            if (peer!= -1) Peers.Remove(peer);
+        }
+    }
+
+     //Wrap enable method
+    public void EnableJoining()
+    {
+        inputManager.EnableJoining();
+    }
+    //Wrap Disable method
+    public void DisableJoining()
+    {
+        inputManager.DisableJoining();
+    }
+
+    public bool CanJoin()
+    {
+        return inputManager.joiningEnabled;
+    }
+
 	// Only the host gets to see this guy
 	public void BeginMatch() {
 
 		canPause = true;
-		toggleInuptSystem(false);
+		toggleInputSystem(false);
 		gameState = GameState.COMBAT;
 		//GameSpeed = 1f;
 		SceneManager.LoadScene("Combat");
@@ -205,16 +202,20 @@ public class GameController : MonoBehaviour
 		IsPaused = false;
 
 		//Add delay here
+		//toggleInputSystem(true);
+		gameState = GameState.ENDSCREEN;
+		SceneManager.LoadScene("Endgame");
+	}
 
     public void toggleInputSystem(bool ui)
     {
         List<int> inputsToToggle = new List<int>();
         foreach(int peerID in controls.Keys)
             inputsToToggle.Add(peerID);
-		toggleInuptSystem(true);
-		gameState = GameState.ENDSCREEN;
-		 SceneManager.LoadScene("Endgame");
-	}
+
+        foreach(int peer in inputsToToggle)
+            controls[peer].gameObject.SetActive(!ui);
+    }
 
 	public void GoToCharacterSelect(){
 		UnityEngine.Debug.Log("LOAD SCENE");

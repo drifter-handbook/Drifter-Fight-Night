@@ -75,7 +75,7 @@ public class ViewManager : MonoBehaviour
         });
     }
 
-    void Update()
+    void FixedUpdate()
     {
         playerInputs = FindObjectsOfType<PlayerInput>();
         foreach(PlayerInput playerInput in playerInputs)
@@ -212,7 +212,7 @@ public class ViewManager : MonoBehaviour
             case UIMenuType.HostMenu:
                 {
                     if (!mouse) EventSystem.current.SetSelectedGameObject(GameObject.Find("Host Button"));
-                    roomNameObject.GetComponent<InputField>().text = GameController.Instance.Username;
+                    //roomNameObject.GetComponent<InputField>().text = GameController.Instance.Username;
                     break;
                 }
             case UIMenuType.JoinMenu:

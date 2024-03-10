@@ -46,7 +46,7 @@ public enum CharacterMenuState {
 [Serializable]
 
 // Shows players and selected character [View]
-public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver {
+public class CharacterMenu : MonoBehaviour {
     //-------------------------------------------------------------
     // START OF ITEMS ACCESSIBLE FROM SCENE COMPONENT
     //-------------------------------------------------------------
@@ -86,9 +86,6 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver {
         { PlayerColor.BLACK, new Color(0.3f, 0.3f, 0.3f) }
     };
 
-    NetworkSyncToHost syncFromClients;
-    NetworkSync sync;
-    //NetworkSyncToHost syncFromClients;
 
     float prevScreenTimer = 0;
     bool countingPrevScreen = false;
@@ -133,32 +130,16 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver {
         //syncFromClients = GetComponent<NetworkSyncToHost>();
 
         charSelStates = new Dictionary<int,CharacterSelectState>();
-    
-        if(GameController.Instance.IsOnline) {
-            sync = GetComponent<NetworkSync>();
-            sync["charSelState"] = new CharacterSelectSyncData() {
-                Type = typeof(CharacterSelectSyncData).Name
-            };
-            sync["location"] = false;
-
+  
         //     charSelStates = NetworkUtils.GetNetworkData<CharacterSelectSyncData>(sync["charSelState"]).charSelState;
         // }
         GameController.Instance.Peers =  new List<int>();
         // add host
 
-        //Delay this by 1/2 a second
-        StartCoroutine(delayJoining());
-
-        if (GameController.Instance.IsTraining)
-            AddCharSelState(8, GameController.Instance.Trainee);
-
         GameController.Instance.removeAllUIPeers();
-    }
-
-    IEnumerator delayJoining() {
-        yield return new WaitForSeconds(.25f);
         GameController.Instance.EnableJoining();
     }
+
 
     public Dictionary<int, int> GetPeerIDsToPlayerIDs() {
         Dictionary<int, int> peerIDsToPlayerIDs = new Dictionary<int, int>();
@@ -233,7 +214,9 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver {
     {
         //SyncToCharSelectState();
         //Maybe remove?
-        checkReturnToMenuConditions();
+        //checkReturnToMenuConditions();
+
+        bool isBeforeStageSelect = (phase == CharacterMenuState.CharSelect || phase == CharacterMenuState.AllCharsSelected || phase == CharacterMenuState.TransitionToStageSelect);
 
         //Update input on each active char select state
         PlayerInputData input;
@@ -275,9 +258,6 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver {
             backArrow.fillAmount = prevScreenTimer / 2.3f;
 
         countingPrevScreen = false;
-
-        if (GameController.Instance.IsOnline)
-            sync["location"] = (int)phase;
 
         switch(phase) {
             case CharacterMenuState.CharSelect: {
@@ -413,7 +393,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver {
             playerCards[p_cursor.PeerID].GetComponent<CharacterCard>().SetStage(matrix[p_cursor.y][p_cursor.x].GetComponent<CharacterSelectPortrait>().portrait.sprite);
         }
         //Select dummy character on super press if n training mode
-        else if(GameController.Instance.IsTraining && input.Super && !p_cursor.prevInput.Super && phase <2)
+        else if(GameController.Instance.IsTraining && input.Super && !p_cursor.prevInput.Super && isInStageSelect)
         {
             DrifterType selected = matrix[p_cursor.y][p_cursor.x].GetComponent<CharacterSelectPortrait>().drifterType;
             charSelStates[8].PlayerType = selected;
@@ -424,7 +404,7 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver {
         }
         
         //Deselect on special press
-        else if(input.Special && !p_cursor.prevInput.Special && p_cursor.PlayerType != DrifterType.None && phase < 2)
+        else if(input.Special && !p_cursor.prevInput.Special && p_cursor.PlayerType != DrifterType.None && isInStageSelect)
             p_cursor.PlayerType = DrifterType.None;
 
         //Return to previous screen if special is held
@@ -489,9 +469,6 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver {
         GameController.Instance.GoToMainMenu();
 
     }
-
-    public DrifterType getDrifterTypeFromString(string name) {
-        foreach(DrifterType drifter in Enum.GetValues(typeof(DrifterType))) {
 
     //TODO Below Here
 
@@ -601,10 +578,4 @@ public class CharacterMenu : MonoBehaviour, INetworkMessageReceiver {
     //         }
     //     }
     // }
-}
-
-public class CharacterSelectClientPacket : INetworkData
-{
-    public string Type { get; set; }
-    public DrifterType drifter { get; set; }
 }
