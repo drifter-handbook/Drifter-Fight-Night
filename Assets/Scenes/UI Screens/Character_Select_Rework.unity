@@ -1018,7 +1018,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a5def10baac49646866b155a83a5fe5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bottomPanel: {fileID: 184586107}
   roomCode: {fileID: 1917238807}
   topRow:
   - {fileID: 0}
@@ -1038,7 +1037,7 @@ MonoBehaviour:
   - {fileID: 2028133062}
   - {fileID: 888419829}
   - {fileID: 222001568}
-  - {fileID: 1518146353}
+  - {fileID: 0}
   - {fileID: 1332020673}
   - {fileID: 0}
   - {fileID: 0}
@@ -2670,12 +2669,6 @@ PrefabInstance:
 --- !u!4 &1518146352 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9113821722326303840, guid: dabd9ec98cf674042ae7f6d74eccf167,
-    type: 3}
-  m_PrefabInstance: {fileID: 1518146351}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1518146353 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7957583111170635559, guid: dabd9ec98cf674042ae7f6d74eccf167,
     type: 3}
   m_PrefabInstance: {fileID: 1518146351}
   m_PrefabAsset: {fileID: 0}

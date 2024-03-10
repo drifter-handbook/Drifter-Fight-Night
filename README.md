@@ -31,9 +31,14 @@ These instructions will get you a copy of the project up and running on your loc
 Prebuilt executable: Download Virtua Drifter from itch.io :)
 
 Source Code: 
-1. Make sure Unity 2019 LTS is installed and ready
+1. Make sure Unity 2021 LTS is installed and ready
 2. Download the repo onto your local machine and add it to Unity
 3. Launch Unity. You should be able to play the game from here. If not, file an issue!
+
+### Controls
+For keyboard, use Q to select and Enter to finalize
+This note is purely for Savvy, who had a Time trying to figure that out
+
 
 ## Usage <a name = "usage"></a>
 

@@ -1,10 +1,11 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.InputSystem.Controls;
 
 // TODO: Rename to Menu Manager
@@ -20,41 +21,44 @@ public class ViewManager : MonoBehaviour
     public GameObject savedIPObject;
     public GameObject roomNameObject;
 
-    string currentView;
-    Dictionary<string, Transform> views = new Dictionary<string, Transform>();
+    UIMenuType currentView;
+    Dictionary<UIMenuType, Transform> views = new Dictionary<UIMenuType, Transform>();
     bool mouse = true;
 
     public Toggle toggle1;
     public Toggle toggle2;
     public Toggle toggle3;
 
-    //public GameObject roomCodeBox;
+    PlayerInput[] playerInputs;
+    public List<UIMenuType> menuFlowHistory = new List<UIMenuType>();
 
+    [SerializeField]
+    public InputSystemUIInputModule uiInputModule;
     void Awake()
     {
         mouse = true;
-        views = new Dictionary<string, Transform>();
+        views = new Dictionary<UIMenuType, Transform>();
         if (views.Count <= 0)
         {
             foreach (var child in this.gameObject.GetComponentsInDirectChildren<Transform>())
             {
                 child.gameObject.SetActive(false);
 
-                if (views.ContainsKey(child.gameObject.name))
+                if (views.ContainsKey(child.gameObject.GetComponent<UIMenu>().currentMenu))
                 {
                     Debug.LogWarning("Views already contains key " + child.gameObject.name + "!");
                     continue;
                 }
-                views.Add(child.gameObject.name, child.transform);
+                views.Add(child.gameObject.GetComponent<UIMenu>().currentMenu, child.transform);
             }
         }
         startingMenu.gameObject.SetActive(true);
-        currentView = startingMenu.gameObject.name;
+        currentView = startingMenu.gameObject.GetComponent<UIMenu>().currentMenu;
 
         //Change this later to back out to the previous menu instead
-        ShowView("Main Menu");
+        ShowUIMenuTypeView(UIMenuType.MainMenu);
+        menuFlowHistory.Add(UIMenuType.MainMenu);
     }
-
     public void UpdateToggles()
     {
         toggle1.onValueChanged.RemoveAllListeners();
@@ -73,141 +77,167 @@ public class ViewManager : MonoBehaviour
 
     void Update()
     {
-        if (Keyboard.current.escapeKey.wasPressedThisFrame)
+        playerInputs = FindObjectsOfType<PlayerInput>();
+        foreach(PlayerInput playerInput in playerInputs)
         {
-            if (currentView == "Mode Menu")
+            if (playerInput != null && playerInput.currentActionMap.FindAction("Cancel").triggered)
             {
-                Application.Quit();
+                if (currentView == UIMenuType.MainMenu)
+                {
+                    Application.Quit();
+                    return;
+                }
+                else
+                {
+                    Debug.Log("Pressed back time to die: " + menuFlowHistory[menuFlowHistory.Count - 1] + "\n");
+                    mouse = false;
+                    menuFlowHistory.Remove(menuFlowHistory[menuFlowHistory.Count - 1]);
+                    ShowUIMenuTypeView(menuFlowHistory[menuFlowHistory.Count - 1]);
+                    return;
+                }
             }
-            else
+
+            bool gamepadButtonPressed = false;
+            if (Gamepad.current != null)
+            {
+                for (int i = 0; i < Gamepad.current.allControls.Count; i++)
+                {
+                    var c = Gamepad.current.allControls[i];
+                    if (c is ButtonControl)
+                    {
+                        if (((ButtonControl)c).wasPressedThisFrame)
+                        {
+                            gamepadButtonPressed = true;
+                        }
+                    }
+                }
+            }
+
+            //In the process of trying to remove hacks, I added another hack. Feels bad man.
+            //UI Input Module is bad and should feel bad. It only knows how to handle one playerInput mapping at a time.
+            //To get around this and allow all controllers to navigate initial UI menus before Character Select, we detect
+            //the input type and force set that player input map to the UI Input Module so Unity's bad single player-only UI system
+            //pretends like it is successfully working with multiple controllers.
+
+            //This limitation also means we should have the key rebinding menu in Character Select, NOT the ViewManager screens.
+            if((playerInput.currentControlScheme == "Gamepad" && gamepadButtonPressed) || (playerInput.currentControlScheme == "Keyboard" && Keyboard.current.anyKey.isPressed))
+            {
+                uiInputModule.actionsAsset = playerInput.actions;
+            }
+
+            if (playerInput != null && playerInput.currentActionMap.FindAction("Click").ReadValue<float>() > 0 || playerInput.currentActionMap.FindAction("RightClick").ReadValue<float>() > 0 || playerInput.currentActionMap.FindAction("MiddleClick").ReadValue<float>() > 0 && !mouse)
+            {
+                mouse = true;
+                //Cursor.visible = true;
+                EventSystem.current.SetSelectedGameObject(null);
+                return;
+
+            }
+            else if ((Keyboard.current.anyKey.isPressed || gamepadButtonPressed) && mouse && (!(playerInput.currentActionMap.FindAction("Click").ReadValue<float>() > 0) || !(playerInput.currentActionMap.FindAction("RightClick").ReadValue<float>() > 0) || !(playerInput.currentActionMap.FindAction("MiddleClick").ReadValue<float>() > 0)))
             {
                 mouse = false;
-                ShowView("Mode Menu");
+                //Cursor.visible = false;
+                switch (currentView)
+                {
+                    case UIMenuType.MainMenu: EventSystem.current.SetSelectedGameObject(GameObject.Find("Main Play")); break;
+                    case UIMenuType.ModeMenu: ShowUIMenuTypeView(UIMenuType.ModeMenu); break;
+                    case UIMenuType.LocalMenu: EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Local")); break;
+                    case UIMenuType.OnlineMenu: EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Online")); break;
+                    case UIMenuType.HostMenu: EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Host")); break;
+                    case UIMenuType.JoinMenu: EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Join")); break;
+                    case UIMenuType.SettingsMenu: EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Settings")); break;
+                    case UIMenuType.RebindMenu: EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Settings")); break;
+                    default:
+                        {
+                            Debug.Log("Unsupported UIMenuType " + currentView + "\n");
+                        }
+                        break;
+                }
+                return;
             }
         }
-
-        bool gamepadButtonPressed = false;
-        if(Gamepad.current != null)
-        {
-        	for (int i = 0; i < Gamepad.current.allControls.Count; i++)
-        	{
-            	var c = Gamepad.current.allControls[i];
-            	if (c is ButtonControl)
-            	{
-                	if (((ButtonControl)c).wasPressedThisFrame)
-                	{
-                    	gamepadButtonPressed = true;
-                	}
-            	}
-        	}
-        }
-        
-
-        if (Mouse.current.leftButton.isPressed || Mouse.current.rightButton.isPressed || Mouse.current.middleButton.isPressed && !mouse)
-        {
-            mouse = true;
-            //Cursor.visible = true;
-            EventSystem.current.SetSelectedGameObject(null);
-
-        }
-        else if((Keyboard.current.anyKey.isPressed || gamepadButtonPressed) && mouse && (!Mouse.current.leftButton.isPressed || !Mouse.current.rightButton.isPressed || !Mouse.current.middleButton.isPressed)){
-            mouse = false;
-            //Cursor.visible = false;
-            switch (currentView){
-            	case "Host Menu":
-                    EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Host"));
-                    break;
-                case "Join Menu":
-                    EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Join"));
-                    break;
-                case "Online Menu":
-                    EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Online"));
-                    break;
-                case "Local Menu":
-                    EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Local"));
-                    break;
-                case "Mode Menu":
-                    ShowView("Mode Menu");
-                    break;
-                case "Settings Menu":
-                    EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Settings"));
-                    break;
-                case "Main Menu":
-                    EventSystem.current.SetSelectedGameObject(GameObject.Find("Main Play"));
-                    break;
-                default:
-                    break;
-            }
-        }
-
     }
 
-    public Transform GetView(string name)
+    public Transform GetView(UIMenuType name)
     {
         return views[name];
     }
 
-    public void ShowView(string name)
+    [com.llamagod.EnumAction(typeof(UIMenuType))]
+    public void SetView(int view)
     {
-        
+        ShowUIMenuTypeView((UIMenuType)view);
+        menuFlowHistory.Add((UIMenuType)view);
+    }
+
+    [com.llamagod.EnumAction(typeof(UIMenuType))]
+    public void SetViewBack(int view)
+    {
+        menuFlowHistory.Remove(menuFlowHistory[menuFlowHistory.Count - 1]);
+        ShowUIMenuTypeView((UIMenuType)view);
+    }
+
+    public void ShowUIMenuTypeView(UIMenuType name)
+    { 
         views[currentView].gameObject.SetActive(false);
         currentView = name;
         views[name].gameObject.SetActive(true);
-
-
         // if(roomCodeBox.activeSelf && PlayerPrefs.GetInt("HideRoomCode") > 0)
         // {
         //     roomCodeBox.GetComponent<InputField>().contentType = InputField.ContentType.Password;
-        // } else if (roomCodeBox.activeSelf && PlayerPrefs.GetInt("HideRoomCode") == 0){
+        // }
+        // else if (roomCodeBox.activeSelf && PlayerPrefs.GetInt("HideRoomCode") == 0)
+        // {
         //     roomCodeBox.GetComponent<InputField>().contentType = InputField.ContentType.Standard;
         // }
 
-         if (name == "Local Menu" && !mouse)
+        switch(name)
         {
-            EventSystem.current.SetSelectedGameObject(GameObject.Find("Training"));
-        }
-
-        if (name == "Online Menu" && !mouse)
-        {
-            EventSystem.current.SetSelectedGameObject(GameObject.Find("Host"));
-        }
-        if(name == "Mode Menu" && !mouse)
-            EventSystem.current.SetSelectedGameObject(GameObject.Find("Local"));
-
-        if (name == "Main Menu" && !mouse)
-            EventSystem.current.SetSelectedGameObject(GameObject.Find("Main Play"));
-
-        if (name == "Join Menu")
-        {
-            if(!mouse)EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Join"));
-            // if (PlayerPrefs.GetInt("HideTextInput") > 0)
-            // {
-            //     savedIPObject.GetComponent<InputField>().contentType = InputField.ContentType.Password;
-            // } else
-            // {
-            //     savedIPObject.GetComponent<InputField>().contentType = InputField.ContentType.Standard;
-            // }
-
-            // if (PlayerPrefs.GetString("savedIP") != null)
-            // {
-            //     savedIPObject.GetComponent<InputField>().text = PlayerPrefs.GetString("savedIP");
-            // }
+            case UIMenuType.MainMenu: if (!mouse) EventSystem.current.SetSelectedGameObject(GameObject.Find("Main Play"));  break;
+            case UIMenuType.ModeMenu: if (!mouse) EventSystem.current.SetSelectedGameObject(GameObject.Find("Local"));      break;
+            case UIMenuType.OnlineMenu: if (!mouse) EventSystem.current.SetSelectedGameObject(GameObject.Find("Host"));     break;
+            case UIMenuType.RebindMenu: if (!mouse) EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Settings")); break;
+            case UIMenuType.LocalMenu:
+                {
+                    if (Debug.isDebugBuild)
+                    {
+                        if (!mouse) EventSystem.current.SetSelectedGameObject(GameObject.Find("Training"));
+                    }
+                    else
+                    {
+                        if (!mouse) EventSystem.current.SetSelectedGameObject(GameObject.Find("Fight Night"));
+                    }
+                    break;
+                }
+            case UIMenuType.HostMenu:
+                {
+                    if (!mouse) EventSystem.current.SetSelectedGameObject(GameObject.Find("Host Button"));
+                    roomNameObject.GetComponent<InputField>().text = GameController.Instance.Username;
+                    break;
+                }
+            case UIMenuType.JoinMenu:
+                {
+                    if (!mouse) EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Join"));
+                    // savedIPObject.GetComponent<InputField>().contentType = PlayerPrefs.GetInt("HideTextInput") > 0 ? InputField.ContentType.Password : InputField.ContentType.Standard;
+                    // if (PlayerPrefs.GetString("savedIP") != null)
+                    // {
+                    //     savedIPObject.GetComponent<InputField>().text = PlayerPrefs.GetString("savedIP");
+                    // }
+                    break;
+                }
+            case UIMenuType.SettingsMenu:
+                {
+                    UpdateToggles();
+                    if(!mouse) EventSystem.current.SetSelectedGameObject(GameObject.Find("IPToggle"));
+                    break;
+                }
+            default:
+                {
+                    Debug.Log("Unhandled UIMenuType type" + name + "\n");
+                    break;
+                }
         }
         
-
-        if (name == "Host Menu")
-        {
-            if(!mouse)EventSystem.current.SetSelectedGameObject(GameObject.Find("Host Button"));
-
-            //roomNameObject.GetComponent<InputField>().text = GameController.Instance.Username;
-        }
-
-        if(name == "Settings Menu")
-        {
-            UnityEngine.Debug.Log("Update toggles");
-            UpdateToggles();
-            if(!mouse)EventSystem.current.SetSelectedGameObject(GameObject.Find("Back"));
-        }
     }
 
     // May be moved to game controller?

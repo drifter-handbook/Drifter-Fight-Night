@@ -53,7 +53,7 @@ public class GameController : MonoBehaviour
 		set {
 			_IsPaused = value;
 
-			toggleInuptSystem(value);
+            //toggleInputSystem(value);
 
 			Time.timeScale = _IsPaused?0f:_GameSpeed;
 		}
@@ -131,63 +131,64 @@ public class GameController : MonoBehaviour
 
 		DontDestroyOnLoad(playerInput);
 
-		if(controls.Count >= 1 && IsTraining)
-			DisableJoining();
+        aggregatePrefabs("Assets/Resources/");
+        inputManager.EnableJoining();
+        //AssignInputAssest();
 
-	}
+        //AssignInputAssest();
+        
+    }
 
-	public void removeUserByPeer(int peerID) {
-		if(!controls.ContainsKey(peerID)) {
-			UnityEngine.Debug.Log("PEER ID " + peerID +" ATTEMPTED TO BE REMOVED BUT WAS NOT FOUND");
-			return;
-		}
-		
-		controls[peerID].DeactivateInput();
-		Destroy(controls[peerID].gameObject);
-		controls.Remove(peerID);
-		FindObjectOfType<CharacterMenu>()?.RemoveCharSelState(peerID);
-		if(peerID != -1) Peers.Remove(peerID);
-		if(!clearingPeers && IsTraining && controls.Count ==0)
-			EnableJoining();
-	}
+    public void addUser(PlayerInput playerInput)
+    {
+        int peerID = -1;
+        while (controls.ContainsKey(peerID))
+        {
+            peerID++;
+        }
+        controls.Add(peerID, playerInput);
 
-	public void removeAllPeers() {
-		clearingPeers = true;
-		DisableJoining();
-		List<int> peersToRemove = new List<int>();
-		foreach(int peerID in controls.Keys)
-			peersToRemove.Add(peerID);
+        if (FindObjectOfType<ViewManager>() == null)
+        {
+            playerInput.SwitchCurrentActionMap("Controls");
+            FindObjectOfType<CharacterMenu>()?.AddCharSelState(peerID);
+        }
+        else 
+        {
+            playerInput.SwitchCurrentActionMap("UI");
+        }
 
-		foreach(int peer in peersToRemove)
-			removeUserByPeer(peer);
-		clearingPeers = false;
-	}
+        playerInput.ActivateInput();
+        DontDestroyOnLoad(playerInput);
 
-	//Wrap enable method
-	public void EnableJoining()
-	{
-		inputManager.EnableJoining();
-	}
-	//Wrap Disable method
-	public void DisableJoining()
-	{
-		inputManager.DisableJoining();
-	}
+        if (controls.Count >= 1 && IsTraining)
+        {
+            DisableJoining();
+        }
+    }
 
-	public bool CanJoin()
-	{
-		return inputManager.joiningEnabled;
-	}
-
-	public void toggleInuptSystem(bool ui)
-	{
-		List<int> inputsToToggle = new List<int>();
-		foreach(int peerID in controls.Keys)
-			inputsToToggle.Add(peerID);
-
-		foreach(int peer in inputsToToggle)
-			controls[peer].gameObject.SetActive(!ui);
-	}
+    public void removeUserByPeer(int peerID)
+    {
+        if(!controls.ContainsKey(peerID))
+        {
+            UnityEngine.Debug.Log("PEER ID " + peerID +" ATTEMPTED TO BE REMOVED BUT WAS NOT FOUND");
+            return;
+        }
+        
+        controls[peerID].DeactivateInput();
+        //inputManager.Un
+        Destroy(controls[peerID].gameObject);
+        controls.Remove(peerID);
+        if (FindObjectOfType<ViewManager>() == null)
+        {
+            FindObjectOfType<CharacterMenu>()?.RemoveCharSelState(peerID);
+        }
+        if(peerID != -1) host.Peers.Remove(peerID);
+        if(!clearingPeers && IsTraining && controls.Count == 0)
+        {
+            EnableJoining();
+        }
+    }
 
 	// Only the host gets to see this guy
 	public void BeginMatch() {
@@ -205,6 +206,11 @@ public class GameController : MonoBehaviour
 
 		//Add delay here
 
+    public void toggleInputSystem(bool ui)
+    {
+        List<int> inputsToToggle = new List<int>();
+        foreach(int peerID in controls.Keys)
+            inputsToToggle.Add(peerID);
 		toggleInuptSystem(true);
 		gameState = GameState.ENDSCREEN;
 		 SceneManager.LoadScene("Endgame");
