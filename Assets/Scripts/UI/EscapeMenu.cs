@@ -22,20 +22,29 @@ public class EscapeMenu : MonoBehaviour
             {
                 if(input.currentActionMap.FindAction("Menu").ReadValue<float>()>0)
                 {
+                    input.SwitchCurrentActionMap("UI");
                     InputSystemUIInputModule uiInputModule = GameObject.Find("EventSystem")?.GetComponent<InputSystemUIInputModule>();
                     uiInputModule.actionsAsset = input.actions;
                     ToggleMenu();
                     return;
                 }
-
             }
-        }        
+        }
     }
 
     public void ToggleMenu()
     {
-        escapeMenu.SetActive(!(escapeMenu.activeSelf));
-        GameController.Instance.IsPaused = !GameController.Instance.IsPaused;
+        bool isPaused = GameController.Instance.IsPaused;
+        if (isPaused)
+        {
+            foreach (PlayerInput input in GameController.Instance.controls.Values)
+            {
+                input.SwitchCurrentActionMap("Controls");
+            }
+        }
+
+        escapeMenu.SetActive(!isPaused);
+        GameController.Instance.IsPaused = !isPaused;
         EventSystem.current.SetSelectedGameObject(GameObject.Find("Continue"));
     }
 

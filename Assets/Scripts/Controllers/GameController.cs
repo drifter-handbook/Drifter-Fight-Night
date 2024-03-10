@@ -50,7 +50,7 @@ public class GameController : MonoBehaviour
         set {
             _IsPaused = value;
 
-            toggleInuptSystem(value);
+            //toggleInputSystem(value);
 
             Time.timeScale = _IsPaused?0f:1f;
         }
@@ -229,7 +229,7 @@ public class GameController : MonoBehaviour
         return inputManager.joiningEnabled;
     }
 
-    public void toggleInuptSystem(bool ui)
+    public void toggleInputSystem(bool ui)
     {
         List<int> inputsToToggle = new List<int>();
         foreach(int peerID in controls.Keys)
