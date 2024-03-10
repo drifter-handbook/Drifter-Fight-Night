@@ -83,6 +83,7 @@ GameObject:
   - component: {fileID: 8974762523524711869}
   - component: {fileID: 5984712342439014923}
   - component: {fileID: 5760383977244830779}
+  - component: {fileID: 1687092102128797463}
   m_Layer: 8
   m_Name: Mytharius_Letter
   m_TagString: Untagged
@@ -235,3 +236,16 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0.01}
   m_Size: {x: 0.1, y: 0.05}
   m_Direction: 1
+--- !u!114 &1687092102128797463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4276033931692729659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7b12ef163997554cbbdbc51e4f062ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroyOnGrounded: 1

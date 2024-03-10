@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 1576000951810916565}
   - component: {fileID: 9019343211223352686}
   - component: {fileID: 4550118823054324563}
-  - component: {fileID: 7041983981326066779}
   - component: {fileID: 5957853834735361732}
   - component: {fileID: 1442517604385095941}
   m_Layer: 8
@@ -162,23 +161,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ef945a1776594438c7a9223e2d7bb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  destoryState: 
   duration: -1
   rb: {fileID: 1576000951810916565}
   animator: {fileID: 9019343211223352686}
-  updateSelf: 0
---- !u!114 &7041983981326066779
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4682737292410015420}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3733111730fd6144f88e05a0c9df77b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playStateWhenGrounded: 0
+  pauseBehavior: 1
+  paused: 0
+  useHitpause: 0
+  DestroyOnExit: 1
 --- !u!114 &5957853834735361732
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -315,3 +305,4 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: 2a578c65be6fca14ca7ebd9c380e0f40, type: 2}
   parent: {fileID: 4682737292410015420}
   projectilePriority: -2
+  FlagForDestruction: 0

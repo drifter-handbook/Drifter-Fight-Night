@@ -393,7 +393,7 @@ public class CharacterMenu : MonoBehaviour {
             playerCards[p_cursor.PeerID].GetComponent<CharacterCard>().SetStage(matrix[p_cursor.y][p_cursor.x].GetComponent<CharacterSelectPortrait>().portrait.sprite);
         }
         //Select dummy character on super press if n training mode
-        else if(GameController.Instance.IsTraining && input.Super && !p_cursor.prevInput.Super && isInStageSelect)
+        else if(GameController.Instance.IsTraining && input.Super && !p_cursor.prevInput.Super && isInCharacterSelect)
         {
             DrifterType selected = matrix[p_cursor.y][p_cursor.x].GetComponent<CharacterSelectPortrait>().drifterType;
             charSelStates[8].PlayerType = selected;

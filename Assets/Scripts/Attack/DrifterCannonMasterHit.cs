@@ -183,7 +183,6 @@ public class DrifterCannonMasterHit : MasterHit {
 	public void SpawnRanch(){
 		for(int i = (charge % 4); i < ranches.Length ; i += 4){
 			if(ranches[i] == null) SpawnRanch(charge, i);
-			return;
 		}
 	}
 

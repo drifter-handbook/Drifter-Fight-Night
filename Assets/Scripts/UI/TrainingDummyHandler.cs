@@ -467,7 +467,6 @@ public class TrainingDummyHandler : MonoBehaviour
 			case DummyAction.CONTROL:
 				//This case probably shouldn't ever get called?
 				return;
-				break;
 			case DummyAction.PLAYBACK:
 				playbackBuffer = (string[])recordedSequence.Clone();
 				break;

@@ -202,7 +202,7 @@ public class Drifter : MonoBehaviour
 
 
 	public void SetAnimationOverride(int p_index) {
-		if(animOverrides.Length == null || animOverrides.Length < p_index+1) {
+		if(animOverrides == null || animOverrides.Length < p_index+1) {
 			return;
 		}
 		animator.runtimeAnimatorController = animOverrides[p_index];

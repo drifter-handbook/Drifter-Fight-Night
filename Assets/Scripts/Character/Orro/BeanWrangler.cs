@@ -27,7 +27,6 @@ public class BeanWrangler : NonplayerHurtboxHandler
 	}
 
 	float RETURN_SPEED = 25f;
-	int BEAN_RESPAWN_DELAY = 180;
 
 	//Utility References
 	Animator animator;
