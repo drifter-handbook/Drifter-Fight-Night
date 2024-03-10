@@ -9111,7 +9111,9 @@ PrefabInstance:
       propertyPath: m_PlayerJoinedEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 328656672, guid: 21d3d693e1a1b2f4c922a311d6d70f92, type: 3}
+    - {fileID: 7244495401128679488, guid: 21d3d693e1a1b2f4c922a311d6d70f92, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 21d3d693e1a1b2f4c922a311d6d70f92, type: 3}
 --- !u!1 &789422631
 GameObject:
