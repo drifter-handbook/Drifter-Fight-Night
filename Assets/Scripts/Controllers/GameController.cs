@@ -227,7 +227,8 @@ public class GameController : MonoBehaviour
 	public void GoToMainMenu(){
 		removeAllPeers();
 		gameState = GameState.MENU;
-		 SceneManager.LoadScene("MenuScene");
+		EnableJoining();
+		SceneManager.LoadScene("MenuScene");
 	}
 
 	public void UpdateSFXVolume(float val)
