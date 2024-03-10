@@ -271,6 +271,10 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 	}
 
 	public void listenForDacus() {
+		if(drifter.blockEvent > 0) {
+			UnityEngine.Debug.Log("DASH BLOCKED FOR: " + drifter.gameObject);
+			return;
+		}
 		setXVelocity(movement.dashSpeed);
 		if(movement.dashLock <=0)status.ApplyStatusEffect(PlayerStatusEffect.INVULN,3);
 		if(!drifter.enforceFullDistance) dacusCancelFlag = true;

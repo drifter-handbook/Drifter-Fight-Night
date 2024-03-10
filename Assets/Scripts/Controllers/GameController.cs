@@ -240,9 +240,6 @@ public class GameController : MonoBehaviour
 	//Populates the Network Prefabs list in Lucille Johnson
 	private void aggregatePrefabs(string basePath)
 	{
-
-		//string[] networkPrefabs = Directory.GetFiles(basePath,"*.prefab",SearchOption.AllDirectories);
-
 		UnityEngine.Object[] networkPrefabs = Resources.LoadAll("", typeof(GameObject));
 
 		for(int i = 0; i < networkPrefabs.Length; i++)
