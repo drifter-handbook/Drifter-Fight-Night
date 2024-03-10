@@ -13,14 +13,12 @@ public class SFArrow : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if(!GameController.Instance.IsHost)return;
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
     }
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        if(!GameController.Instance.IsHost)return;
         if (col.gameObject.tag == "Ground" || col.gameObject.tag == "Platform")
         {
             foreach (HitboxCollision hitbox in gameObject.GetComponentsInChildren<HitboxCollision>(true))

@@ -7,12 +7,10 @@ public enum SyncedAudioType {
     SFX, MUSIC
 }
 
-public class AudioSystemManager : MonoBehaviour, INetworkMessageReceiver
+public class AudioSystemManager : MonoBehaviour
 {
 
     public static AudioSystemManager Instance => GameObject.FindGameObjectWithTag("AudioSystemManager").GetComponent<AudioSystemManager>();
-
-    NetworkSync sync;
 
     [SerializeField] private AudioSource source;
 
@@ -26,7 +24,6 @@ public class AudioSystemManager : MonoBehaviour, INetworkMessageReceiver
     // Start is called before the first frame update
     void Start()
     {
-        sync = GetComponent<NetworkSync>();
         audioLibrary.BuildLibrary();
     }
     
@@ -63,54 +60,11 @@ public class AudioSystemManager : MonoBehaviour, INetworkMessageReceiver
     }
 
     public void CreateSyncedSFX(string name) {
-        if (GameController.Instance.IsHost)
-        {
-            CreateAudioSFX(name);
-            sync.SendNetworkMessage(new AudioEffectPacket
-            {
-                audioType = (int)SyncedAudioType.SFX,
-                id = audioLibrary.FetchID(name)
-            }, LiteNetLib.DeliveryMethod.Unreliable);
-        }
+        CreateAudioSFX(name);
     }
 
     public void CreateSyncedMusic(string name) {
-        if (GameController.Instance.IsHost)
-        {
-            CreateAudioMusic(name);
-            sync.SendNetworkMessage(new AudioEffectPacket
-            {
-                audioType = (int)SyncedAudioType.MUSIC,
-                id = audioLibrary.FetchID(name)
-            }, LiteNetLib.DeliveryMethod.Unreliable);
-        }
+        CreateAudioMusic(name);
     }
-
-    public void ReceiveNetworkMessage(NetworkMessage message)
-    {
-        if (!GameController.Instance.IsHost)
-        {
-            AudioEffectPacket effect = NetworkUtils.GetNetworkData<AudioEffectPacket>(message.contents);
-            if (effect != null)
-            {
-                switch ((SyncedAudioType)effect.audioType)
-                {
-                    case SyncedAudioType.MUSIC:
-                        CreateAudioMusic(effect.id);
-                        break;
-                    case SyncedAudioType.SFX:
-                        CreateAudioSFX(effect.id);
-                        break;
-                }
-            }
-        }
-    }
-
 }
 
-public class AudioEffectPacket : INetworkData
-{
-    public string Type { get; set; }
-    public int audioType;
-    public short id;
-}

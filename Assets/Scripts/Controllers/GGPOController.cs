@@ -26,18 +26,18 @@ namespace DFN {
 	public struct DFNGame : IGame {
 
 		public const int INPUT_JUMP 	= (1 << 0);
-    	public const int INPUT_LIGHT 	= (1 << 1);
-    	public const int INPUT_SPECIAL 	= (1 << 2);
-    	public const int INPUT_SUPER 	= (1 << 3);
-    	public const int INPUT_GUARD 	= (1 << 4);
-    	public const int INPUT_GRAB 	= (1 << 5);
-    	public const int INPUT_DASH 	= (1 << 6);
-    	public const int INPUT_PAUSE 	= (1 << 7);
-    	public const int INPUT_MENU		= (1 << 8);
-    	public const int INPUT_LEFT 	= (1 << 9);
-    	public const int INPUT_RIGHT	= (1 << 10);
-    	public const int INPUT_UP 		= (1 << 11);
-    	public const int INPUT_DOWN		= (1 << 12);
+		public const int INPUT_LIGHT 	= (1 << 1);
+		public const int INPUT_SPECIAL 	= (1 << 2);
+		public const int INPUT_SUPER 	= (1 << 3);
+		public const int INPUT_GUARD 	= (1 << 4);
+		public const int INPUT_GRAB 	= (1 << 5);
+		public const int INPUT_DASH 	= (1 << 6);
+		public const int INPUT_PAUSE 	= (1 << 7);
+		public const int INPUT_MENU		= (1 << 8);
+		public const int INPUT_LEFT 	= (1 << 9);
+		public const int INPUT_RIGHT	= (1 << 10);
+		public const int INPUT_UP 		= (1 << 11);
+		public const int INPUT_DOWN		= (1 << 12);
 
 		public int Framenumber { get; private set; }
 
@@ -48,39 +48,45 @@ namespace DFN {
 		//public static Rect _bounds = new Rect(0, 0, 640, 480);
 
 		public void Serialize(BinaryWriter bw) {
-		    bw.Write(Framenumber);
-		    bw.Write(_drifters.Length);
-		    for (int i = 0; i < _drifters.Length; ++i) {
-		        _drifters[i].Serialize(bw);
-		    }
+			bw.Write(Framenumber);
+
+			GameController.Instance.Serialize(bw);
+
+			// bw.Write(_drifters.Length);
+			// for (int i = 0; i < _drifters.Length; ++i) {
+			//     _drifters[i].Serialize(bw);
+			// }
 		}
 
 		public void Deserialize(BinaryReader br) {
-		    Framenumber = br.ReadInt32();
-		    int length = br.ReadInt32();
-		    if (length != _drifters.Length) {
-		        _drifters = new Drifter[length];
-		    }
-		    for (int i = 0; i < _drifters.Length; ++i) {
-		        _drifters[i].Deserialize(br);
-		    }
+			Framenumber = br.ReadInt32();
+
+			GameController.Instance.Deserialize(br);
+
+			// int length = br.ReadInt32();
+			// if (length != _drifters.Length) {
+			//     _drifters = new Drifter[length];
+			// }
+			// for (int i = 0; i < _drifters.Length; ++i) {
+			//     _drifters[i].Deserialize(br);
+			// }
 		}
 
 		public NativeArray<byte> ToBytes() {
-		    using (var memoryStream = new MemoryStream()) {
-		        using (var writer = new BinaryWriter(memoryStream)) {
-		            Serialize(writer);
-		        }
-		        return new NativeArray<byte>(memoryStream.ToArray(), Allocator.Persistent);
-		    }
+			using (var memoryStream = new MemoryStream()) {
+				using (var writer = new BinaryWriter(memoryStream)) {
+					Serialize(writer);
+				}
+				return new NativeArray<byte>(memoryStream.ToArray(), Allocator.Persistent);
+			}
 		}
 
 		public void FromBytes(NativeArray<byte> bytes) {
-		    using (var memoryStream = new MemoryStream(bytes.ToArray())) {
-		        using (var reader = new BinaryReader(memoryStream)) {
-		            Deserialize(reader);
-		        }
-		    }
+			using (var memoryStream = new MemoryStream(bytes.ToArray())) {
+				using (var reader = new BinaryReader(memoryStream)) {
+					Deserialize(reader);
+				}
+			}
 		}
 
 		/*
@@ -202,24 +208,27 @@ namespace DFN {
 
 		public void Update(long[] inputs, int disconnect_flags) {
 			Framenumber++;
+
+			Physics2D.Simulate(1f/60f);
+
 			for (int i = 0; i < _drifters.Length; i++) {
-			    if ((disconnect_flags & (1 << i)) != 0) {
-			        //GetShipAI(i);
-			    }
-			    else {
-			        ParseDrifterInputs(inputs[i], i);
-			    }
+				if ((disconnect_flags & (1 << i)) != 0) {
+					//GetShipAI(i);
+				}
+				else {
+					ParseDrifterInputs(inputs[i], i);
+				}
 			}
 		}
 
 		public PlayerInputData ParseDrifterInputs(long inputs, int index) {
 
-		    PlayerInputData input = new PlayerInputData();
+			PlayerInputData input = new PlayerInputData();
 
-		    GGPORunner.LogGame($"parsing ship {index} inputs: {inputs}.");
+			GGPORunner.LogGame($"parsing ship {index} inputs: {inputs}.");
 
 
-		    input.Jump = ((inputs & INPUT_JUMP) !=0);
+			input.Jump = ((inputs & INPUT_JUMP) !=0);
 			input.Light = ((inputs & INPUT_LIGHT) !=0);
 			input.Special = ((inputs & INPUT_SPECIAL) !=0);
 			input.Super = ((inputs & INPUT_SUPER) !=0);
@@ -240,7 +249,7 @@ namespace DFN {
 			else if((inputs & INPUT_DOWN) != 0)
 				input.MoveY = -1;
 
-		    return input;
+			return input;
 		}
 
 		public long ReadInputs(int id) {
@@ -288,9 +297,9 @@ namespace DFN {
 		}
 
 		public void FreeBytes(NativeArray<byte> data) {
-		    if (data.IsCreated) {
-		        data.Dispose();
-		    }
+			if (data.IsCreated) {
+				data.Dispose();
+			}
 		}
 
 		// public override int GetHashCode() {

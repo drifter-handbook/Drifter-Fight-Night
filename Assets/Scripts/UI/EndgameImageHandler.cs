@@ -17,8 +17,6 @@ public class EndgameImageHandler : MonoBehaviour
     //public GameObject sillyImagePrefab;
     public GameObject playAgainButton;
 
-    NetworkSync sync;
-
     bool mouse = true;
 
     void Start()
@@ -102,9 +100,7 @@ public class EndgameImageHandler : MonoBehaviour
 
     public void backToMain()
     {
-
         GameController.Instance.GoToMainMenu();
-
     }
 
     public void playAgain()
@@ -130,14 +126,6 @@ public class EndgameImageHandler : MonoBehaviour
 
     public void Exit()
     {
-        if (GameController.Instance.GetComponent<NetworkClient>() != null)
-        {
-            SceneManager.LoadScene("MenuScene");
-        }
-
-        if (GameController.Instance.GetComponent<NetworkHost>() != null)
-        {
-            SceneManager.LoadScene("MenuScene");
-        }
+        GameController.Instance.GoToMainMenu();
     }
 }

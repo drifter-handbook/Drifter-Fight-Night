@@ -76,7 +76,7 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
 			if(hurtbox.gameObject.name == "Counter" &&  attackData.AttackDamage >0f && attackData.hitType!=HitType.GRAB) {
 				GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.STAR, hitSparkPos,0, new Vector2(10f, 10f));
 				attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,48);
-				gameObject.GetComponent<SyncAnimatorStateHost>().SetState("Counter_Success");
+				//gameObject.GetComponent<SyncAnimatorStateHost>().SetState("Counter_Success");
 				return AttackHitType.COUNTER;
 			}
 

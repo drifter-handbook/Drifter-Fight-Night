@@ -17,9 +17,6 @@ public class NetworkPlayers : MonoBehaviour
 
 	public int playerUnlockFrame = 111;
 
-	//public int rollbackFrames = 10;
-
-	//Dictionary<int, GameObject> clientPlayers = new Dictionary<int, GameObject>();
 
 	[NonSerialized]
 	public Dictionary<int, GameObject> players = new Dictionary<int, GameObject>();
@@ -28,15 +25,8 @@ public class NetworkPlayers : MonoBehaviour
 
 	// Start is called before the first frame update
 	void Start() {
-		stage = GameController.Instance.CreatePrefab(GameController.Instance.selectedStage,0);
-
-		GameObject.FindGameObjectWithTag("MainCamera").GetComponent<ScreenShake>().getParalax();
-
-		//populate spawn points
-		spawnPoints = new List<GameObject>();
-		for(int i = 0; i <4; i++)
-			spawnPoints.Add(GameObject.Find("SpawnPoint" + i));
-
+		
+		CreateStage(GameController.Instance.selectedStage);
 		//syncFromClients = GetComponent<NetworkSyncToHost>();
 
 		// create players
@@ -46,10 +36,6 @@ public class NetworkPlayers : MonoBehaviour
 
 		if(GameController.Instance.IsTraining) 
 			playerUnlockFrame = 1;
-			
-		//rollbackTest = new DrifterRollbackFrame[rollbackFrames,2];
-
-		//br.makeLobby();//InitializeRollbackSession();
 	}
 
 	// Update is called once per frame
@@ -72,6 +58,19 @@ public class NetworkPlayers : MonoBehaviour
 			else
 				 UpdateInput(players[charSel.PeerID]);
 		}
+	}
+
+	void CreateStage(BattleStage stageName) {
+
+		if(stage != null) Destroy(stage);
+		stage = GameController.Instance.CreatePrefab(stageName.ToString(), 0);
+		GameObject.FindGameObjectWithTag("MainCamera").GetComponent<ScreenShake>().getParalax();
+
+		//populate spawn points
+		spawnPoints = new List<GameObject>();
+		for(int i = 0; i <4; i++)
+			spawnPoints.Add(GameObject.Find("SpawnPoint" + i));
+
 	}
 
 	GameObject CreatePlayer(int peerID) {
@@ -99,6 +98,9 @@ public class NetworkPlayers : MonoBehaviour
 				 players[charSel.PeerID].GetComponent<Drifter>().setTrainingDummy(false);
 		}
 	}
+
+
+
 
 	public void UpdateInput(GameObject player, PlayerInputData input) {
 		if (player == null)
@@ -146,145 +148,4 @@ public class NetworkPlayers : MonoBehaviour
 
 		return input;
 	}	
-}
-
-
-[Serializable]
-public class PlayerInputData :INetworkData, ICloneable, IEquatable<PlayerInputData> {
-	public string Type { get; set; }
-	public int MoveX;
-	public int MoveY;
-	public bool Jump;
-	public bool Light;
-	public bool Special;
-	public bool Super;
-	public bool Guard;
-	public bool Pause;
-	public bool Dash;
-	public bool Grab;
-	public bool Menu;
-
-	public object Clone() {
-		return new PlayerInputData() {
-			Type = Type,
-			MoveX = MoveX,
-			MoveY = MoveY,
-			Jump = Jump,
-			Light = Light,
-			Special = Special,
-			Super = Super,
-			Guard = Guard,
-			Dash = Dash,
-			Pause = Pause,
-			Grab = Grab,
-			Menu = Menu,
-		};
-	}
-
-	public bool Equals(PlayerInputData other){
-		if(other == null) return false;
-		if( ReferenceEquals(this, other)) return true;
-
-		return(
-			MoveX == other.MoveX &&
-			MoveY == other.MoveY && 
-			Jump == other.Jump &&
-			Light == other.Light &&
-			Special == other.Special &&
-			Super == other.Super &&
-			Guard == other.Guard &&
-			Grab == other.Grab &&
-			Dash == other.Dash
-			);
-	   
-	}
-
-	public bool isEmpty(){
-		return(
-			MoveX == 0 &&
-			MoveY == 0 && 
-			Jump == false &&
-			Light == false &&
-			Special == false &&
-			Super == false &&
-			Guard == false &&
-			Grab == false &&
-			Dash == false
-			);
-	}
-
-	public override String ToString(){
-		return 
-			MoveX 					+ "," +
-			MoveY 					+ "," + 
-			(Jump		? "1":"0") 	+ "," +
-			(Light		? "1":"0") 	+ "," +
-			(Special	? "1":"0") 	+ "," +
-			(Super		? "1":"0") 	+ "," +
-			(Guard		? "1":"0") 	+ "," +
-			(Grab		? "1":"0")+ "," +
-			(Dash		? "1":"0");
-
-	}
-
-	public static PlayerInputData FromString(String data){
-		string[] buttons = data.Split(',');
-		if(buttons.Length <8) return new PlayerInputData();
-
-		return new PlayerInputData{
-			MoveX 		= Int32.Parse(buttons[0]),
-			MoveY 		= Int32.Parse(buttons[1]),
-			Jump		= buttons[2].Equals("1"),	
-			Light		= buttons[3].Equals("1"),
-			Special		= buttons[4].Equals("1"),
-			Super		= buttons[5].Equals("1"),
-			Guard		= buttons[6].Equals("1"),
-			Grab		= buttons[7].Equals("1"),
-			Dash		= buttons[8].Equals("1")
-		};
-	}
-
-
-	public void Serialize(BinaryWriter bw){
-		bw.Write(MoveX);
-		bw.Write(MoveY);
-		bw.Write(Jump);
-		bw.Write(Light);
-		bw.Write(Special);
-		bw.Write(Super);
-		bw.Write(Guard);
-		bw.Write(Grab);
-		bw.Write(Dash);
-		bw.Write(Pause);
-		bw.Write(Menu);
-	}
-
-	 public void Deserialize(BinaryReader br) {  
-		MoveX = br.ReadInt32();
-		MoveY = br.ReadInt32();
-		Jump = br.ReadBoolean();
-		Light = br.ReadBoolean();
-		Special = br.ReadBoolean();
-		Super = br.ReadBoolean();
-		Guard = br.ReadBoolean();
-		Grab = br.ReadBoolean();
-		Dash = br.ReadBoolean();
-		Pause = br.ReadBoolean();
-		Menu = br.ReadBoolean();	
-	}
-
-	public void CopyFrom(PlayerInputData data) {
-		Type = data.Type;
-		MoveX = data.MoveX;
-		MoveY = data.MoveY;
-		Jump = data.Jump;
-		Light = data.Light;
-		Special = data.Special;
-		Super = data.Super;
-		Guard = data.Guard;
-		Dash = data.Dash;
-		Pause = data.Pause;
-		Grab = data.Grab;
-		Menu = data.Menu;
-	}
 }

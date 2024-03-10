@@ -126,11 +126,7 @@ public class PlayerMovement : MonoBehaviour
 		baseTerminalVelocity = terminalVelocity;
 
 		baseGravity = rb.gravityScale;
-		jumpSpeed = (jumpHeight / jumpTime + .5f*(rb.gravityScale * jumpTime));
-		if (!GameController.Instance.IsHost) {
-			rb.isKinematic = true;
-		}
-		
+		jumpSpeed = (jumpHeight / jumpTime + .5f*(rb.gravityScale * jumpTime));		
 	}
 
 	//Restitution
@@ -307,7 +303,7 @@ public class PlayerMovement : MonoBehaviour
 			if(ringTime>= 6){
 				particleOffset = new Vector3(particleOffset.x * Facing ,particleOffset.y,0);
 
-				GameObject launchRing = GameController.Instance.host.CreateNetworkObject("LaunchRing", transform.position + particleOffset,  Quaternion.Euler(0,0,((rb.velocity.y>0)?1:-1) * Vector3.Angle(rb.velocity, new Vector3(1f,0,0))));
+				GameObject launchRing = GameController.Instance.CreatePrefab("LaunchRing", transform.position + particleOffset,  Quaternion.Euler(0,0,((rb.velocity.y>0)?1:-1) * Vector3.Angle(rb.velocity, new Vector3(1f,0,0))));
 
 				launchRing.transform.localScale = new Vector3(  7.5f* Facing ,7.5f,1);
 
@@ -755,8 +751,6 @@ public class PlayerMovement : MonoBehaviour
 
 
 	public void superCancel(bool inspiration = false) {
-		UnityEngine.Debug.Log("USED SUPER: " + inspiration);
-
 		if(drifter.status.HasStatusEffect(PlayerStatusEffect.DEAD) || !drifter.CanUseSuper()) return;
 
 		else if(drifter.status.HasStatusEffect(PlayerStatusEffect.INSPIRATION) && inspiration) {

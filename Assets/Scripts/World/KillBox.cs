@@ -13,16 +13,16 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
 
     public int[] playerList = new int[0];
 
-    NetworkHost host;
+    //NetworkHost host;
 
     void Awake()
     {
-        host = GameController.Instance.host;
+        //host = GameController.Instance.host;
     }
 
     void FixedUpdate()
     {
-        if (GameController.Instance.IsHost && NetworkPlayers.Instance != null && playerList.Length == 0)
+        if (NetworkPlayers.Instance != null && playerList.Length == 0)
         {
             GameController.Instance.winnerOrder = new int[0];
 
@@ -76,7 +76,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
     protected void killPlayer(Collider2D other)
     {
 
-    	if (other.gameObject.tag == "Player" && GameController.Instance.IsHost && other.GetType() == typeof(BoxCollider2D))
+    	if (other.gameObject.tag == "Player" && other.GetType() == typeof(BoxCollider2D))
         {
             while(Shake==null)Shake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<ScreenShake>();
             Drifter drifter = other.gameObject?.GetComponent<Drifter>();
@@ -115,7 +115,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
 
                         UnityEngine.Debug.Log("ENDING GAME");
                         
-                        GameController.Instance.EndMatch(.8f);
+                        GameController.Instance.EndMatch();
                     }     
                 }
             }

@@ -199,7 +199,7 @@ public class ViewManager : MonoBehaviour
         {
             if(!mouse)EventSystem.current.SetSelectedGameObject(GameObject.Find("Host Button"));
 
-            roomNameObject.GetComponent<InputField>().text = GameController.Instance.Username;
+            //roomNameObject.GetComponent<InputField>().text = GameController.Instance.Username;
         }
 
         if(name == "Settings Menu")
@@ -230,12 +230,12 @@ public class ViewManager : MonoBehaviour
 
     }
 
-    public void setRoomName()
-    {
+    // public void setRoomName()
+    // {
 
-        GameController.Instance.Username = roomNameObject.GetComponent<InputField>().text;
+    //     GameController.Instance.Username = roomNameObject.GetComponent<InputField>().text;
 
-    }
+    // }
 
     public void toggleDynamicCamera()
     {

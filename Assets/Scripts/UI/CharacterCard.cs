@@ -3,26 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Shows players and selected character [View]
-public class CharacterCard : MonoBehaviour , INetworkInit
+public class CharacterCard : MonoBehaviour
 {
     public SpriteRenderer stage;
     public SpriteRenderer flourish;
 
-    SyncAnimatorStateHost anim;
+    Animator anim;
 
     void Awake()
     {
-        anim = GetComponentInChildren<SyncAnimatorStateHost>();
-    }
-
-    public void OnNetworkInit()
-    {
-        NetworkUtils.RegisterChildObject("Card", transform.Find("Character").gameObject);
+        anim = GetComponentInChildren<Animator>();
     }
 
     public void SetCharacter(DrifterType drifter)
     {
-        anim.SetState(drifter.ToString().Replace("_", " "));
+        anim.Play(drifter.ToString().Replace("_", " "));
     }
 
     public void SetStage(Sprite sprite)

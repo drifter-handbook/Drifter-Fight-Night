@@ -22,9 +22,4 @@ public class RoomListButton : MonoBehaviour
 		roomCode = code;
 	}
 
-    public void joinGameAsClient()
-    {
-    	if(roomCode != "")GameController.Instance.StartNetworkClient(roomCode);
-    }
-    
 }

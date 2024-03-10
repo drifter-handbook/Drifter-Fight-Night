@@ -40,7 +40,7 @@ public class EscapeMenu : MonoBehaviour
     {
         ToggleMenu();
         GameController.Instance.IsPaused = false;
-        GameController.Instance.EndMatch(0);
+        GameController.Instance.EndMatch();
     }
 
     public void QuitGame()

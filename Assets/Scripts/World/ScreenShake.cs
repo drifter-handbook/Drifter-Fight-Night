@@ -10,7 +10,6 @@ public class ScreenShake : MonoBehaviour
 	float baseZoom;
 	Vector3 origPos;
 	bool killing = false;
-	bool isHost;
 	bool DynamicCamera;
 
 
@@ -26,7 +25,6 @@ public class ScreenShake : MonoBehaviour
 	List<GameObject> paralaxLayers;
 
 	void Awake() {
-		isHost = GameController.Instance.IsHost;
 		self = GetComponent<Camera>();
 		origPos = gameObject.transform.localPosition;
 		baseZoom = self.orthographicSize;
@@ -71,7 +69,7 @@ public class ScreenShake : MonoBehaviour
 	public void Darken(int p_duration) {
 		if(killing)return;
 		darkenDurr = p_duration;
-		GetComponentInChildren<SyncAnimatorStateHost>().SetState("Darken"); 
+		//GetComponentInChildren<SyncAnimatorStateHost>().SetState("Darken"); 
 	}
 
 	void UpdateShake() {
@@ -98,10 +96,10 @@ public class ScreenShake : MonoBehaviour
 		if(darkenDurr > -50)	{
 			int prevDurr = darkenDurr;
 			darkenDurr--;
-			if(darkenDurr <=0 && prevDurr >0)
-				GetComponentInChildren<SyncAnimatorStateHost>().SetState("Lighten");
-			else if(darkenDurr <=-50)
-				GetComponentInChildren<SyncAnimatorStateHost>().SetState("Hidden");
+			if(darkenDurr <=0 && prevDurr >0);
+				//GetComponentInChildren<SyncAnimatorStateHost>().SetState("Lighten");
+			else if(darkenDurr <=-50);
+				//GetComponentInChildren<SyncAnimatorStateHost>().SetState("Hidden");
 		}
 		
 	}

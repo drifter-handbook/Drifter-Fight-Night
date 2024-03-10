@@ -146,7 +146,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
 
 	//BEAN IS GONE :Crab:
 	public void die() {
-		if(!GameController.Instance.IsHost || !alive)return;
+		if(!alive)return;
 		canAct = false;
 		alive = false;
 		rb.velocity = Vector2.zero;
@@ -155,7 +155,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
 
 	//Sends bean out at a set speed.
 	public void setBean(float speed) {
-		if(!GameController.Instance.IsHost || HitstunDuration > 0f || !alive)return;
+		if(HitstunDuration > 0f || !alive)return;
 		state = null;
 		following = false;
 		transform.localScale = new Vector2(facing * Mathf.Abs(transform.localScale.x),
@@ -184,7 +184,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
 	//Plays a follow up state, ignoring if bean "can act" or not. 
 	//Still will not play if he is in hitstun
 	public void playFollowState(String stateName) {
-		if(!GameController.Instance.IsHost || !alive || HitstunDuration >0) return;
+		if(!alive || HitstunDuration >0) return;
 		canAct = false;
 		transform.localScale = new Vector2(targetState.Facing * Mathf.Abs(transform.localScale.x),
 					transform.localScale.y); 
@@ -194,7 +194,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
 
 	//Plays an animation for bean, if he can act and is alive
 	public void playState(String stateName) {
-		if(!GameController.Instance.IsHost || !canAct || !alive)return;
+		if(!canAct || !alive)return;
 
 		canAct = false;
 
@@ -206,7 +206,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
 
 	//Plays an animation for bean, if he can act and is alive
 	public void playChargeState(String stateName) {
-		if(!GameController.Instance.IsHost || HitstunDuration >0  || !canAct || !alive)return;
+		if(HitstunDuration >0  || !canAct || !alive)return;
 
 		transform.localScale = new Vector2(targetState.Facing * Mathf.Abs(transform.localScale.x),
 					transform.localScale.y); 
@@ -224,7 +224,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
 
 		AttackHitType returnCode = AttackHitType.NONE;
 
-		if(GameController.Instance.IsHost && hitbox.parent != hurtbox.parent && hurtbox.owner != hitbox.parent && CanHit(attackID)) {
+		if(hitbox.parent != hurtbox.parent && hurtbox.owner != hitbox.parent && CanHit(attackID)) {
 			if(following && Vector2.Distance(rb.position,targetState.Pos) <= 3.8f) return AttackHitType.NONE;
 
 				returnCode =  base.RegisterAttackHit(hitbox,hurtbox,attackID,attackData);
