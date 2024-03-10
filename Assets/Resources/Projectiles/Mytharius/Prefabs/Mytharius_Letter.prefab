@@ -64,7 +64,7 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: 53e0ab2405d31d44a932a924af3c76b1, type: 2}
   parent: {fileID: 4276033931692729659}
   projectilePriority: -2
-  victim: {fileID: 0}
+  FlagForDestruction: 0
   SuccessState: Letter_Disappear
   animator: {fileID: 8974762523524711869}
   playOnInvuln: 0
@@ -80,7 +80,6 @@ GameObject:
   - component: {fileID: 2045866823861699317}
   - component: {fileID: 7595830011012765965}
   - component: {fileID: 2514154947367174601}
-  - component: {fileID: 9160189872770240066}
   - component: {fileID: 8974762523524711869}
   - component: {fileID: 5984712342439014923}
   - component: {fileID: 5760383977244830779}
@@ -180,19 +179,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &9160189872770240066
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4276033931692729659}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3733111730fd6144f88e05a0c9df77b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playStateWhenGrounded: 1
 --- !u!95 &8974762523524711869
 Animator:
   serializedVersion: 4
@@ -225,10 +211,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ef945a1776594438c7a9223e2d7bb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  destoryState: 
   duration: -1
   rb: {fileID: 2514154947367174601}
   animator: {fileID: 8974762523524711869}
-  updateSelf: 0
+  pauseBehavior: 1
+  paused: 0
+  useHitpause: 0
+  DestroyOnExit: 1
 --- !u!70 &5760383977244830779
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

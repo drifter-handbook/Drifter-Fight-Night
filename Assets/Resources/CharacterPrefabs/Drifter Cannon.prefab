@@ -128,7 +128,7 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: 6a5c08b272bef7248a3a4768ebf45f36, type: 2}
   parent: {fileID: 4177941050432620837}
   projectilePriority: -2
-  victim: {fileID: 0}
+  FlagForDestruction: 0
   SuccessState: Grab_Yeet
   cancelable: 1
 --- !u!1 &619570592334435051
@@ -142,7 +142,6 @@ GameObject:
   - component: {fileID: 4679888305301968820}
   - component: {fileID: 8297476134770524628}
   - component: {fileID: 1359899022633693002}
-  - component: {fileID: 4689369262480674228}
   m_Layer: 9
   m_Name: Uair_Body
   m_TagString: Untagged
@@ -196,25 +195,7 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: 6d1f926c949ac7f47ac5603c07703bce, type: 2}
   parent: {fileID: 4177941050432620837}
   projectilePriority: -2
---- !u!114 &4689369262480674228
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 619570592334435051}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 824b53936bb9ee14f89527ff6f9879d8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  drifter: {fileID: 6885016365342199384}
-  GrabState: Aerial_Up_Bounce
-  victim: {fileID: 0}
-  playState: 1
-  applyVelocity: 1
-  xVelocity: 0
-  yVelocity: 1
+  FlagForDestruction: 0
 --- !u!1 &1063365500074826638
 GameObject:
   m_ObjectHideFlags: 0
@@ -279,6 +260,7 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: 5c73727998cd7b84a994b742bd10f862, type: 2}
   parent: {fileID: 4177941050432620837}
   projectilePriority: -2
+  FlagForDestruction: 0
 --- !u!1 &1308455860641037054
 GameObject:
   m_ObjectHideFlags: 0
@@ -327,6 +309,7 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: 2d31b07ce23490542a765e6faf76b6b1, type: 2}
   parent: {fileID: 4177941050432620837}
   projectilePriority: -2
+  FlagForDestruction: 0
 --- !u!70 &252108703764609688
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -391,6 +374,7 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: ec135bf3435fe5e48b96a041f6e240af, type: 2}
   parent: {fileID: 4177941050432620837}
   projectilePriority: -2
+  FlagForDestruction: 0
 --- !u!58 &1614913524323649010
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -471,7 +455,7 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: e35e6ae901d874f43bbfb83505639371, type: 2}
   parent: {fileID: 4177941050432620837}
   projectilePriority: -2
-  victim: {fileID: 0}
+  FlagForDestruction: 0
   SuccessState: W_Side_End_Early
   cancelable: 1
 --- !u!1 &3438973947884135838
@@ -538,7 +522,7 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: 987b9df1eaea101479deeba3fcf853e6, type: 2}
   parent: {fileID: 4177941050432620837}
   projectilePriority: -2
-  victim: {fileID: 0}
+  FlagForDestruction: 0
   SuccessState: W_Side_End_Early
   cancelable: 1
 --- !u!1 &4580088116423016764
@@ -605,6 +589,7 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: a44635e88bee7f54e967b27c6a7c24dd, type: 2}
   parent: {fileID: 4177941050432620837}
   projectilePriority: -2
+  FlagForDestruction: 0
 --- !u!1 &5718415541911671658
 GameObject:
   m_ObjectHideFlags: 0
@@ -669,7 +654,7 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: 289dd860f2eb3e64abfd43ed324d66cd, type: 2}
   parent: {fileID: 4177941050432620837}
   projectilePriority: -2
-  victim: {fileID: 0}
+  FlagForDestruction: 0
   SuccessState: Air_Grab_Success
   cancelable: 1
 --- !u!1 &6148917763082118807
@@ -720,6 +705,7 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: c144eaa902b2fe74a8c9980a03b6868f, type: 2}
   parent: {fileID: 4177941050432620837}
   projectilePriority: -2
+  FlagForDestruction: 0
 --- !u!70 &186805209066838100
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -800,6 +786,7 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: 81198b945ce93354eb899f4e8f3e7dcb, type: 2}
   parent: {fileID: 4177941050432620837}
   projectilePriority: -2
+  FlagForDestruction: 0
 --- !u!1 &6891648703138485795
 GameObject:
   m_ObjectHideFlags: 0
@@ -864,6 +851,7 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: e7103b7f30f672245b97044ebd9e1277, type: 2}
   parent: {fileID: 4177941050432620837}
   projectilePriority: -2
+  FlagForDestruction: 0
 --- !u!1 &6961074229309187192
 GameObject:
   m_ObjectHideFlags: 0
@@ -912,6 +900,7 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: 9311af463d3f2e842b0e584e5237929e, type: 2}
   parent: {fileID: 4177941050432620837}
   projectilePriority: -2
+  FlagForDestruction: 0
 --- !u!70 &6053815456983378693
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -992,6 +981,7 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: 77f85f83b0a00984998d36f2c0ec21c2, type: 2}
   parent: {fileID: 4177941050432620837}
   projectilePriority: -2
+  FlagForDestruction: 0
 --- !u!1 &9201719091513816550
 GameObject:
   m_ObjectHideFlags: 0
@@ -1040,6 +1030,7 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: dc88f74e27a6cbb4c8202d84d66fad2b, type: 2}
   parent: {fileID: 4177941050432620837}
   projectilePriority: -2
+  FlagForDestruction: 0
 --- !u!58 &4651093465131602029
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1560,24 +1551,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   assetPathName: DrifterCannon
+  dashCancelFlag: 0
+  jumpFlag: 0
 --- !u!1 &4177941050432620837 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3106753082241659636, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
     type: 3}
   m_PrefabInstance: {fileID: 1361881800289434577}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6885016365342199384 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5578303729342035337, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
-    type: 3}
-  m_PrefabInstance: {fileID: 1361881800289434577}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4177941050432620837}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e92d5051cfb5c649be7e9b52cc084df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &7719757392518279158 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8774267968347264039, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,

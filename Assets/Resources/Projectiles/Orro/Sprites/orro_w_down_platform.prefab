@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5963527861378560518}
   - component: {fileID: 8991508390288226923}
-  - component: {fileID: 2436469342317595209}
   - component: {fileID: 3876022055774118097}
   - component: {fileID: 6268208442412260603}
   m_Layer: 0
@@ -88,19 +87,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2436469342317595209
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1815388491033961523}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3733111730fd6144f88e05a0c9df77b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playStateWhenGrounded: 0
 --- !u!95 &3876022055774118097
 Animator:
   serializedVersion: 4
@@ -133,7 +119,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ef945a1776594438c7a9223e2d7bb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  destoryState: 
   duration: -1
   rb: {fileID: 0}
   animator: {fileID: 0}
-  updateSelf: 0
+  pauseBehavior: 1
+  paused: 0
+  useHitpause: 0
+  DestroyOnExit: 1

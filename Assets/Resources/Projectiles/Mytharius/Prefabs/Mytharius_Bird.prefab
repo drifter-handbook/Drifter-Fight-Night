@@ -11,11 +11,9 @@ GameObject:
   - component: {fileID: 8406458192590562712}
   - component: {fileID: 8199241879791780265}
   - component: {fileID: 879881011337439916}
-  - component: {fileID: 3840983981268116590}
   - component: {fileID: 7937498268225221338}
   - component: {fileID: 2893925107737900784}
   - component: {fileID: 3751571651596284442}
-  - component: {fileID: 5911208639283552791}
   - component: {fileID: 5790699530937847874}
   - component: {fileID: 7966964412105279380}
   - component: {fileID: 413439436474726149}
@@ -107,19 +105,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7b12ef163997554cbbdbc51e4f062ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3840983981268116590
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 73355092114067010}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c20a1139a9eaca438c79855ebb3b13b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  NetworkType: 
 --- !u!50 &7937498268225221338
 Rigidbody2D:
   serializedVersion: 4
@@ -177,19 +162,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &5911208639283552791
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 73355092114067010}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3733111730fd6144f88e05a0c9df77b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playStateWhenGrounded: 0
 --- !u!114 &5790699530937847874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202,10 +174,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ef945a1776594438c7a9223e2d7bb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  destoryState: 
   duration: -1
   rb: {fileID: 7937498268225221338}
   animator: {fileID: 3751571651596284442}
-  updateSelf: 0
+  pauseBehavior: 1
+  paused: 0
+  useHitpause: 0
+  DestroyOnExit: 1
 --- !u!114 &7966964412105279380
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -231,6 +207,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hit: {fileID: 0}
+  ProjectileIndex: 0
 --- !u!1 &282863971573671556
 GameObject:
   m_ObjectHideFlags: 0
@@ -295,7 +272,7 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: bebc58150d012524792039a761f21036, type: 2}
   parent: {fileID: 73355092114067010}
   projectilePriority: -2
-  victim: {fileID: 0}
+  FlagForDestruction: 0
   SuccessState: Bird_Fly
   animator: {fileID: 3751571651596284442}
   playOnInvuln: 0
