@@ -143,8 +143,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   destoryState: 
   duration: -1
-  rb: {fileID: 0}
-  animator: {fileID: 0}
+  rb: {fileID: 5419599164045220892}
+  animator: {fileID: 5727077204013000560}
   pauseBehavior: 1
   paused: 0
   useHitpause: 0
@@ -259,7 +259,7 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: 6610c2741f171ac44b8cc5dae7c30875, type: 2}
   parent: {fileID: 625069843417986663}
   projectilePriority: 0
-  victim: {fileID: 0}
+  FlagForDestruction: 0
   SuccessState: DC_Grenade_Detonate
   animator: {fileID: 5727077204013000560}
   playOnInvuln: 0
@@ -328,3 +328,4 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: eaf71c37fb381dc4f96592a946615332, type: 2}
   parent: {fileID: 625069843417986663}
   projectilePriority: -2
+  FlagForDestruction: 0

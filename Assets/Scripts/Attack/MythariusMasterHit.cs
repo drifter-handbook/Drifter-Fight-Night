@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 public enum ProjectileIndex
 {
-	Bird
+	BIRD
 }
 
 public class MythariusMasterHit : MasterHit
@@ -13,8 +14,8 @@ public class MythariusMasterHit : MasterHit
 	int neutralSpecialReleaseDelay = 0;
 	Vector2 heldDirection = Vector2.zero;
 
-	GameObject g_Bird;
-	GameObject g_Letter;
+	InstantiatedEntityCleanup bird;
+	InstantiatedEntityCleanup letter;
 
 	override public void UpdateFrame() {
 		base.UpdateFrame();
@@ -22,7 +23,8 @@ public class MythariusMasterHit : MasterHit
 		if(movement.ledgeHanging || status.HasEnemyStunEffect())
 			clearMasterhitVars();
 
-		if(g_Bird != null) g_Bird.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
+		bird?.UpdateFrame();
+		letter?.UpdateFrame();
 
 		if(listeningForDirection) {
 			if(!drifter.input[0].Special) neutralSpecialReleaseDelay++;
@@ -70,7 +72,7 @@ public class MythariusMasterHit : MasterHit
 
 	public override void TriggerRemoteSpawn(int index) {
 		switch((ProjectileIndex)index){
-			case ProjectileIndex.Bird:
+			case ProjectileIndex.BIRD:
 				CreateLetter();
 				break;
 			default:
@@ -80,103 +82,104 @@ public class MythariusMasterHit : MasterHit
 
 	//Move to particle system
 	public void ring() {
-		GameObject ring = GameController.Instance.CreatePrefab("LaunchRing", transform.position + new Vector3(0,1.4f),  transform.rotation);
+		GameObject ring = GameController.Instance.CreatePrefab("LaunchRing", transform.position + new Vector3(0,1.4f),  transform.rotation,drifter.peerID);
 	}
 
 	public void CreateBird() {
 
-		if(g_Bird != null) {
-			Destroy(g_Bird);
-		}
+		if(bird != null) 
+			Destroy(bird.gameObject);
 		
-		g_Bird = GameController.Instance.CreatePrefab("Mytharius_Bird", transform.position + new Vector3(movement.Facing * 1.4f,3f), transform.rotation);
-		g_Bird.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
-		foreach (HitboxCollision hitbox in g_Bird.GetComponentsInChildren<HitboxCollision>(true)) {
+		GameObject proj = GameController.Instance.CreatePrefab("Mytharius_Bird", transform.position + new Vector3(movement.Facing * 1.4f,3f), transform.rotation,drifter.peerID);
+		proj.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
+		foreach (HitboxCollision hitbox in proj.GetComponentsInChildren<HitboxCollision>(true)) {
 			hitbox.parent = drifter.gameObject;
 			hitbox.AttackID = attacks.NextID;
 			hitbox.Facing = movement.Facing;
 	   }
 
-	   SetObjectColor(g_Bird);
-	   g_Bird.GetComponent<RemoteProjectileUtil>().hit = this;
+	   SetObjectColor(proj);
+	   proj.GetComponent<RemoteProjectileUtil>().hit = this;
+
+	   bird = proj.GetComponent<InstantiatedEntityCleanup>();
 
 	}
 
 	public void CreateLetter() {
 
-		int birdFacing = g_Bird.GetComponentInChildren<HitboxCollision>().Facing;
+		int birdFacing = bird.GetComponentInChildren<HitboxCollision>().Facing;
 
-		g_Letter = GameController.Instance.CreatePrefab("Mytharius_Letter", g_Bird.transform.position, g_Bird.transform.rotation);
-		g_Letter.transform.localScale = new Vector3(birdFacing *10,10,1f);
-		foreach (HitboxCollision hitbox in g_Letter.GetComponentsInChildren<HitboxCollision>(true)) {
+		GameObject proj = GameController.Instance.CreatePrefab("Mytharius_Letter", bird.transform.position, bird.transform.rotation,drifter.peerID);
+		proj.transform.localScale = new Vector3(birdFacing *10,10,1f);
+		foreach (HitboxCollision hitbox in proj.GetComponentsInChildren<HitboxCollision>(true)) {
 			hitbox.parent = drifter.gameObject;
 			hitbox.AttackID = attacks.NextID;
 			hitbox.Facing = birdFacing;
 		}
 
-		SetObjectColor(g_Letter);
+		SetObjectColor(proj);
+
+		letter = proj.GetComponent<InstantiatedEntityCleanup>();
 	}
 
 	//Rollback
 	//=========================================
 
 	//Takes a snapshot of the current frame to rollback to
-	public override MasterhitRollbackFrame SerializeFrame() {
-		MasterhitRollbackFrame baseFrame = SerializeBaseFrame();
-		baseFrame.CharacterFrame = new MythariusRollbackFrame()  {
-			Bird = (g_Bird != null) ? g_Bird.GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null,
-			Letter = (g_Letter != null) ? g_Letter.GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null,
-			ListeningForDirection = listeningForDirection,
-			HeldDirection = heldDirection,
-			NeutralSpecialReleaseDelay = neutralSpecialReleaseDelay,
-		};
+	public override void Serialize(BinaryWriter bw) {
+		base.Serialize(bw);
 
+		bw.Write(listeningForDirection);
+		
+		bw.Write(neutralSpecialReleaseDelay);
 
-		return baseFrame;
+		bw.Write(heldDirection.x);
+		bw.Write(heldDirection.y);
+
+		if(bird == null)
+			bw.Write(false);
+		else{
+			bw.Write(true);
+			bird.Serialize(bw);
+		}
+
+		if(letter == null)
+			bw.Write(false);
+		else{
+			bw.Write(true);
+			letter.Serialize(bw);
+		}
 	}
 
 	//Rolls back the entity to a given frame state
-	public override void DeserializeFrame(MasterhitRollbackFrame p_frame) {
-		DeserializeBaseFrame(p_frame);
+	public override void Deserialize(BinaryReader br) {
 
-		MythariusRollbackFrame myth_frame = (MythariusRollbackFrame)p_frame.CharacterFrame;
+		base.Deserialize(br);
 
-		//Bird reset
-		if(myth_frame.Bird != null) {
-			if(g_Bird == null)CreateBird();
-			g_Bird.GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(myth_frame.Bird);
+		listeningForDirection = br.ReadBoolean();
+		
+		neutralSpecialReleaseDelay = br.ReadInt32();
+
+		heldDirection.x = br.ReadSingle();
+		heldDirection.y = br.ReadSingle();
+
+		if(br.ReadBoolean()){
+			if(bird == null) CreateBird();
+			bird.Deserialize(br);
 		}
-		//Projectile does not exist in rollback frame
-		else {
-			Destroy(g_Bird);
-			g_Bird = null;
+		else if(bird != null){
+			Destroy(bird.gameObject);
+			bird = null;
 		}
 
-		//Letter reset
-		if(myth_frame.Letter != null) {
-			if(g_Letter == null)CreateLetter();
-			g_Letter.GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(myth_frame.Letter);
+		if(br.ReadBoolean()){
+			if(letter == null) CreateLetter();
+			letter.Deserialize(br);
 		}
-		//Projectile does not exist in rollback frame
-		else {
-			Destroy(g_Letter);
-			g_Letter = null;
-		}  
-		listeningForDirection = myth_frame.ListeningForDirection;
-		heldDirection = myth_frame.HeldDirection;
-		neutralSpecialReleaseDelay = myth_frame.NeutralSpecialReleaseDelay;
+		else if(letter != null){
+			Destroy(letter.gameObject);
+			letter = null;
+		}
 	}
 
-}
-
-public class MythariusRollbackFrame: ICharacterRollbackFrame
-{
-	public string Type { get; set; }
-	
-	public BasicProjectileRollbackFrame Bird;
-	public BasicProjectileRollbackFrame Letter;
-	public bool ListeningForDirection;
-	public Vector2 HeldDirection;
-	public int NeutralSpecialReleaseDelay;
-	
 }

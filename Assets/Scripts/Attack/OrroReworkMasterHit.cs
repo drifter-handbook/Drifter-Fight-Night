@@ -1,24 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System.IO;
 
 public class OrroReworkMasterHit : MasterHit {
 	const int MAX_BOOKS = 3;
 	const int BOOK_BOLT_DELAY = 10;
 
 	//For orros porjectile normals
-	GameObject[] explosions = new GameObject[17];
+	InstantiatedEntityCleanup[] explosions = new InstantiatedEntityCleanup[17];
 
 	//W_Down data
-	GameObject[] books = new GameObject[] {null,null,null};
-	GameObject[] bookBolts = new GameObject[] {null,null,null};
+	InstantiatedEntityCleanup[] books = new InstantiatedEntityCleanup[] {null,null,null};
+	InstantiatedEntityCleanup[] bookBolts = new InstantiatedEntityCleanup[] {null,null,null};
 	int bookBoltTimer = 0;
-	Drifter boltTarget = null;
+	string boltTarget = "";
 
 	//Bean data
 	BeanWrangler bean;
-	GameObject beanObject;
 	bool beanIsCharging = false;
 	bool beanFollowing = true;   
 	Vector3 targetPos;
@@ -76,13 +75,13 @@ public class OrroReworkMasterHit : MasterHit {
 		//If orro dies, kill bean
 		if(status.HasStatusEffect(PlayerStatusEffect.DEAD)) {
 			bean.die();
-			beanObject = null;
+			bean = null;
 			Empowered = false;
 		}
-		//Make a new bean projectile when orro respawns
-		else if(beanObject == null) {
+		else if(bean == null) {
 			spawnBean();
 		}
+
 		//Send bean orros position and direction so he can follow on a delay
 		else {
 			targetPos = rb.position - new Vector2(-1f * movement.Facing,3f);
@@ -91,10 +90,10 @@ public class OrroReworkMasterHit : MasterHit {
 			Empowered = !beanFollowing || Vector3.Distance(targetPos,bean.rb.position) > 3.8f;
 		}
 
-		bean.UpdateFrame();
+		bean?.UpdateFrame();
 
-		foreach(GameObject exp in explosions)
-			if(exp != null) exp.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
+		foreach(InstantiatedEntityCleanup exp in explosions)
+			exp?.UpdateFrame();
 
 	}
 
@@ -174,29 +173,28 @@ public class OrroReworkMasterHit : MasterHit {
 		
 		Empowered = false;
 
-		beanObject = GameController.Instance.CreatePrefab("Bean", transform.position - new Vector3(-1f * movement.Facing, 1f), transform.rotation);
+		GameObject beanObject = GameController.Instance.CreatePrefab("Bean", transform.position - new Vector3(-1f * movement.Facing, 1f), transform.rotation,drifter.peerID);
 		foreach (HitboxCollision hitbox in beanObject.GetComponentsInChildren<HitboxCollision>(true)) {
 			hitbox.parent = drifter.gameObject;
 			hitbox.AttackID = attacks.AttackID;
 			hitbox.Facing = movement.Facing;
 		}
 
-		bean = beanObject.GetComponent<BeanWrangler>();
-
 		foreach (HurtboxCollision hurtbox in beanObject.GetComponentsInChildren<HurtboxCollision>(true))
 			hurtbox.owner = drifter.gameObject;
 		
-		bean.facing = movement.Facing;
 		SetObjectColor(beanObject);
-		bean.color = drifter.GetColor();
 
+		bean = beanObject.GetComponent<BeanWrangler>();
+		bean.facing = movement.Facing;
+		bean.color = drifter.GetColor();
 	}
 
 	//Refreshes each of beans hitbox ids so he can keep doing damage
 	private void refreshBeanHitboxes() {
 		bean.facing = movement.Facing;
 
-		foreach (HitboxCollision hitbox in beanObject.GetComponentsInChildren<HitboxCollision>(true)) {
+		foreach (HitboxCollision hitbox in bean.gameObject.GetComponentsInChildren<HitboxCollision>(true)) {
 			hitbox.parent = drifter.gameObject;
 			hitbox.AttackID = attacks.AttackID;
 			hitbox.Facing = bean.facing;
@@ -211,7 +209,7 @@ public class OrroReworkMasterHit : MasterHit {
 
 	private GameObject _Create_Book(Vector2 pos){
 		GameObject projectile;
-		projectile = GameController.Instance.CreatePrefab("Orro_Book", pos, transform.rotation);
+		projectile = GameController.Instance.CreatePrefab("Orro_Book", pos, transform.rotation,drifter.peerID);
 		projectile.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
 	   	SetObjectColor(projectile);
 	   	projectile.transform.SetParent(drifter.gameObject.transform);
@@ -220,7 +218,7 @@ public class OrroReworkMasterHit : MasterHit {
 	}
 
 	private GameObject _Create_Book_Bolt(Vector2 pos){
-		GameObject projectile = GameController.Instance.CreatePrefab("Orro_Book_Bolt", pos, transform.rotation);
+		GameObject projectile = GameController.Instance.CreatePrefab("Orro_Book_Bolt", pos, transform.rotation,drifter.peerID);
 		projectile.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
 		SetObjectColor(projectile);
 
@@ -244,15 +242,13 @@ public class OrroReworkMasterHit : MasterHit {
 		
 		float angle = bookIndex * 2f/MAX_BOOKS * Mathf.PI;
 
-		GameObject projectile = _Create_Book(transform.position + new Vector3(Mathf.Sin(angle) * movement.Facing * BOOK_RADIUS ,Mathf.Cos(angle) *BOOK_RADIUS + 3f,0));
-
-	   	books[bookIndex] = projectile;
+	   	books[bookIndex] = _Create_Book(transform.position + new Vector3(Mathf.Sin(angle) * movement.Facing * BOOK_RADIUS ,Mathf.Cos(angle) *BOOK_RADIUS + 3f,0)).GetComponent<InstantiatedEntityCleanup>();
 	}
 
 	void removeAllBooks() {
 		for(int i = 0; i < MAX_BOOKS; i++)
 			if(books[i] != null){
-				Destroy(books[i]);
+				Destroy(books[i].gameObject);
 				books[i] = null;
 			}
 	}
@@ -277,12 +273,12 @@ public class OrroReworkMasterHit : MasterHit {
 			hitbox.Facing = movement.Facing;
 		}
 
-		FireAtTarget(projectile,boltTarget.gameObject.transform.position,books[bookIndex].transform.position,40f);
+		FireAtTarget(projectile,GameObject.Find(boltTarget).transform.position,books[bookIndex].transform.position,40f);
 
-		bookBolts[bookIndex] = projectile;
+		bookBolts[bookIndex] = projectile.GetComponent<InstantiatedEntityCleanup>();
 		bookBoltTimer = BOOK_BOLT_DELAY;
 
-		Destroy(books[bookIndex]);
+		Destroy(books[bookIndex].gameObject);
 		books[bookIndex] = null;
 		
 	}
@@ -290,7 +286,7 @@ public class OrroReworkMasterHit : MasterHit {
 	public override void TriggerOnHit(Drifter target_drifter, bool isProjectle, AttackHitType hitType){
 		if(hitType != AttackHitType.HIT) return;
 		bookBoltTimer = BOOK_BOLT_DELAY;
-		boltTarget = target_drifter;
+		boltTarget = target_drifter.gameObject.name;
 	}
 
 
@@ -301,19 +297,22 @@ public class OrroReworkMasterHit : MasterHit {
 	//Creates a normal projectile
 	private void Create_Explosion(DrifterAttackType p_attack) {
 
+		//Let Orro have only one of any given attack projectile on screen at a time
+		if(explosions[(int)p_attack] != null) return;
+
 		GameObject projectile;
 
 		switch(p_attack) {
 			case DrifterAttackType.Ground_Q_Neutral:
-				projectile = GameController.Instance.CreatePrefab("Orro_Jab_Explosion", transform.position + new Vector3(3f * movement.Facing,3f,0), transform.rotation);
+				projectile = GameController.Instance.CreatePrefab("Orro_Jab_Explosion", transform.position + new Vector3(3f * movement.Facing,3f,0), transform.rotation,drifter.peerID);
 				break;
 
 			case DrifterAttackType.Ground_Q_Up:
-				projectile = GameController.Instance.CreatePrefab("Orro_Up_Ground_Explosion", transform.position + new Vector3(2f * movement.Facing,6.7f,0), transform.rotation);
+				projectile = GameController.Instance.CreatePrefab("Orro_Up_Ground_Explosion", transform.position + new Vector3(2f * movement.Facing,6.7f,0), transform.rotation,drifter.peerID);
 				break;
 
 			case DrifterAttackType.Ground_Q_Side:
-				projectile = GameController.Instance.CreatePrefab("Orro_Side_Ground_Explosion", transform.position + new Vector3(.6f *movement.Facing,3f,0), transform.rotation);
+				projectile = GameController.Instance.CreatePrefab("Orro_Side_Ground_Explosion", transform.position + new Vector3(.6f *movement.Facing,3f,0), transform.rotation,drifter.peerID);
 				break;
 
 			default:
@@ -328,61 +327,25 @@ public class OrroReworkMasterHit : MasterHit {
 			hitbox.Facing = movement.Facing;
 	   }
 	   SetObjectColor(projectile);
-	   explosions[(int)p_attack] = projectile;
+	   explosions[(int)p_attack] = projectile.GetComponent<InstantiatedEntityCleanup>();
 
 	}
-
-	// //Creates a side air projectile
-	// public void SpawnSideAir() {
-
-	// 	Vector3 pos = new Vector3(7f * movement.Facing,2.7f,0);
-		
-	// 	GameObject scratch = GameController.Instance.CreatePrefab("Orro_Sair_Proj", transform.position + pos, transform.rotation);
-	// 	scratch.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
-	// 	foreach (HitboxCollision hitbox in scratch.GetComponentsInChildren<HitboxCollision>(true)) {
-	// 		hitbox.parent = drifter.gameObject;
-	// 		hitbox.AttackID = attacks.AttackID;
-	// 		hitbox.Facing = movement.Facing;
-	//    }
-	// }
-
-	// //Creates a side air projectile
-	// public void SpawnNeutralAir() {
-
-	// 	RaycastHit2D ray = Physics2D.Raycast(transform.position+ new Vector3(0,1f),new Vector3(movement.Facing * 7f/5f,-5f/5f,0),5f,1);
-		
-	// 	Vector3 pos = new Vector3((ray.distance +1) * movement.Facing,-1* ray.distance +1f,0);
-	// 	if(ray.distance ==0)pos = new Vector3(8* movement.Facing,-4,0);
-		
-	// 	GameObject scratch = GameController.Instance.CreatePrefab("Orro_Nair_Proj", transform.position + pos, transform.rotation);
-	// 	scratch.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
-	// 	foreach (HitboxCollision hitbox in scratch.GetComponentsInChildren<HitboxCollision>(true)) {
-	// 		hitbox.parent = drifter.gameObject;
-	// 		hitbox.AttackID = attacks.AttackID;
-	// 		hitbox.Facing = movement.Facing;
-	//    }
-
-	// }
-
 	/*
 		Unique particle spawn Functions
 	*/
 
 	//Spawns a page particle behind orro
 	public void page() {
-
 		movement.spawnJuiceParticle(transform.position + new Vector3(0,1,0),MovementParticleMode.Orro_Page, false);
 	}
 
 	//Spawns a page particle in front of orro
 	public void pageFlip() {
-		
 		movement.spawnJuiceParticle(transform.position + new Vector3(movement.Facing * 1.5f,1,0),MovementParticleMode.Orro_Page, true);
 	}
 
 	//Spawns a boost ring particle for orros up special
 	public void boost() {
-
 		movement.spawnJuiceParticle(transform.position + new Vector3(0,2,0),MovementParticleMode.Orro_Boost, false);
 	}
 
@@ -399,131 +362,123 @@ public class OrroReworkMasterHit : MasterHit {
 	public override void clearMasterhitVars() {
 		base.clearMasterhitVars();
 		listeningForDirection = false;
-		//removes all of oors projectile normals when he supers
-		for(int i =0; i < explosions.Length; i++){
-			Destroy(explosions[i]);
-			explosions[i] = null;
-		}
 	}
 
 	//Rollback
 	//=========================================
 
 	//Takes a snapshot of the current frame to rollback to
-	public override MasterhitRollbackFrame SerializeFrame() {
-		MasterhitRollbackFrame baseFrame = SerializeBaseFrame();
+	public override void Serialize(BinaryWriter bw) {
+		base.Serialize(bw);
 
-		BasicProjectileRollbackFrame[] p_Explosions = new BasicProjectileRollbackFrame[17];
-		BasicProjectileRollbackFrame[] p_Books = new BasicProjectileRollbackFrame[MAX_BOOKS];
-		BasicProjectileRollbackFrame[] p_BookBolts = new BasicProjectileRollbackFrame[MAX_BOOKS];
+		bw.Write(listeningForDirection);
+		bw.Write(beanIsCharging);
+		bw.Write(beanFollowing);
+		
+		bw.Write(neutralSpecialReleaseDelay);
+		
+		bw.Write(heldDirection.x);
+		bw.Write(heldDirection.y);
+		bw.Write(targetPos.x);
+		bw.Write(targetPos.y);
 
-		for(int i = 0; i < 17; i++)
-			p_Explosions[i] = (explosions[i] != null) ? explosions[i].GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null;
+		bw.Write(boltTarget);
 
-		for(int i = 0; i < MAX_BOOKS; i++) {
-			p_Books[i] = (books[i] != null) ? books[i].GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null;
-			p_BookBolts[i] = (bookBolts[i] != null) ? bookBolts[i].GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null;
+
+		if(bean == null)
+			bw.Write(false);
+		else{
+			bw.Write(true);
+			bean.Serialize(bw);
 		}
 
-		baseFrame.CharacterFrame = new OrroRollbackFrame()  {
-			Bean = (bean != null) ? bean.SerializeFrame(): null,
-			ListeningForDirection = listeningForDirection,
-			HeldDirection = heldDirection,
-			BeanIsCharging = beanIsCharging,
-			BeanFollowing = beanFollowing,
-			TargetPos = targetPos,
-			NeutralSpecialReleaseDelay = neutralSpecialReleaseDelay,
-			Explosions = p_Explosions,
-			BoltTarget = boltTarget,
-		};
+		for(int i = 0; i <17; i++){
+			if(explosions[i] == null)
+				bw.Write(false);
+			else{
+				bw.Write(true);
+				explosions[i].Serialize(bw);
+			}
+		}
 
+		for(int i = 0; i < MAX_BOOKS; i++){
+			if(books[i] == null)
+				bw.Write(false);
+			else{
+				bw.Write(true);
+				books[i].Serialize(bw);
+			}
+		}
 
-		return baseFrame;
+		for(int i = 0; i < MAX_BOOKS; i++){
+			if(bookBolts[i] == null)
+				bw.Write(false);
+			else{
+				bw.Write(true);
+				bookBolts[i].Serialize(bw);
+			}
+		}
 	}
 
 	//Rolls back the entity to a given frame state
-	public override void DeserializeFrame(MasterhitRollbackFrame p_frame) {
-		DeserializeBaseFrame(p_frame);
+	public override void Deserialize(BinaryReader br) {
 
-		OrroRollbackFrame orro_frame = (OrroRollbackFrame)p_frame.CharacterFrame;
+		base.Deserialize(br);
 
+		listeningForDirection = br.ReadBoolean();
+		beanIsCharging = br.ReadBoolean();
+		beanFollowing = br.ReadBoolean();
 		
-		listeningForDirection = orro_frame.ListeningForDirection;
-		heldDirection = orro_frame.HeldDirection;
-		beanIsCharging = orro_frame.BeanIsCharging;
-		beanFollowing = orro_frame.BeanFollowing;
-		targetPos = orro_frame.TargetPos;
-		neutralSpecialReleaseDelay = orro_frame.NeutralSpecialReleaseDelay;
-		boltTarget = orro_frame.BoltTarget;
+		neutralSpecialReleaseDelay = br.ReadInt32();
+		
+		heldDirection.x = br.ReadSingle();
+		heldDirection.y = br.ReadSingle();
+		targetPos.x = br.ReadSingle();
+		targetPos.y = br.ReadSingle();
 
-		//handle each normal projectile
-		for(int i = 0; i < 17; i++) {
+		boltTarget = br.ReadString();
 
-			if(orro_frame.Explosions[i] != null) {
+		if(br.ReadBoolean()){
+				if(bean == null)spawnBean();
+				bean.Deserialize(br);
+			}
+			else if(bean != null){
+				Destroy(bean.gameObject);
+				bean = null;
+			}
+
+
+		for(int i = 0; i <17; i++){
+			if(br.ReadBoolean()){
 				if(explosions[i] == null)Create_Explosion((DrifterAttackType)i);
-				explosions[i].GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(orro_frame.Explosions[i]);
-				}
-				//Projectile does not exist in rollback frame
-			else {
-				Destroy(explosions[i]);
+				explosions[i].Deserialize(br);
+			}
+			else if(explosions[i] != null){
+				Destroy(explosions[i].gameObject);
 				explosions[i] = null;
 			}
 		}
 
-		//Handle each W_Down projectile
-
-		for(int i = 0; i < MAX_BOOKS; i++) {
-
-			if(orro_frame.Books[i] != null) {
-				if(books[i] == null)_Create_Book(transform.position);
-				books[i].GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(orro_frame.Books[i]);
+		for(int i = 0; i <MAX_BOOKS; i++){
+			if(br.ReadBoolean()){
+				if(books[i] == null) books[i] = _Create_Book(transform.position).GetComponent<InstantiatedEntityCleanup>();
+				books[i].Deserialize(br);
 			}
-			else {
-				Destroy(books[i]);
+			else if(books[i] != null){
+				Destroy(books[i].gameObject);
 				books[i] = null;
 			}
+		}
 
-			if(orro_frame.BookBolts[i] != null) {
-				if(bookBolts[i] == null)_Create_Book_Bolt(transform.position);
-				bookBolts[i].GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(orro_frame.BookBolts[i]);
+		for(int i = 0; i <MAX_BOOKS; i++){
+			if(br.ReadBoolean()){
+				if(bookBolts[i] == null) bookBolts[i] = _Create_Book_Bolt(transform.position).GetComponent<InstantiatedEntityCleanup>();
+				bookBolts[i].Deserialize(br);
 			}
-			else {
-				Destroy(bookBolts[i]);
+			else if(bookBolts[i] != null){
+				Destroy(bookBolts[i].gameObject);
 				bookBolts[i] = null;
 			}
 		}
-
-
-		//Hnadle Bean
-		if(orro_frame.Bean != null) {
-			if(beanObject == null)spawnBean();
-			bean.DeserializeFrame(orro_frame.Bean);
-		}
-		//Projectile does not exist in rollback frame
-		else {
-			Destroy(beanObject);
-			bean = null;
-			beanObject = null;
-		}
-
 	}
-
-}
-
-public class OrroRollbackFrame: ICharacterRollbackFrame
-{
-	public string Type { get; set; }
-	
-	public BeanRollbackFrame Bean;
-	public bool ListeningForDirection;
-	public Vector2 HeldDirection;
-	public bool BeanIsCharging;
-	public bool BeanFollowing;   
-	public Vector3 TargetPos;
-	public int NeutralSpecialReleaseDelay;
-	public BasicProjectileRollbackFrame[] Explosions;
-	public BasicProjectileRollbackFrame[] Books;
-	public BasicProjectileRollbackFrame[] BookBolts;
-	public Drifter BoltTarget;
-	
 }

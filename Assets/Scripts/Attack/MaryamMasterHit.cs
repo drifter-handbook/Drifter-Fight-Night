@@ -27,19 +27,6 @@ public class MaryamMasterHit : MasterHit
         }
     }
 
-    //Takes a snapshot of the current frame to rollback to
-    public override MasterhitRollbackFrame SerializeFrame()
-    {
-        MasterhitRollbackFrame baseFrame = SerializeBaseFrame();
-        return baseFrame;
-    }
-
-    //Rolls back the entity to a given frame state
-    public override void DeserializeFrame(MasterhitRollbackFrame p_frame)
-    {
-        DeserializeBaseFrame(p_frame);
-    }
-
     //Flips the direction the charactr is movement.Facing mid move)
     public void invertDirection()
     {
@@ -96,7 +83,7 @@ public class MaryamMasterHit : MasterHit
         
         Vector3 pos = new Vector3(1.8f * movement.Facing,2.5f,0);
         
-        GameObject explosion = GameController.Instance.CreatePrefab("ExplosionSide", transform.position + pos, transform.rotation);
+        GameObject explosion = GameController.Instance.CreatePrefab("ExplosionSide", transform.position + pos, transform.rotation,drifter.peerID);
         explosion.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in explosion.GetComponentsInChildren<HitboxCollision>(true))
         {
@@ -111,7 +98,7 @@ public class MaryamMasterHit : MasterHit
         
         Vector3 pos = new Vector3(0f * movement.Facing,3.3f,0);
         
-        GameObject explosion = GameController.Instance.CreatePrefab("Explosion_Diagonal", transform.position + pos, transform.rotation);
+        GameObject explosion = GameController.Instance.CreatePrefab("Explosion_Diagonal", transform.position + pos, transform.rotation,drifter.peerID);
         explosion.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in explosion.GetComponentsInChildren<HitboxCollision>(true))
         {
@@ -126,7 +113,7 @@ public class MaryamMasterHit : MasterHit
         
         Vector3 pos = new Vector3(0f * movement.Facing,3f,0);
         
-        GameObject explosion = GameController.Instance.CreatePrefab("Explosion_Diagonal_Uair", transform.position + pos, transform.rotation);
+        GameObject explosion = GameController.Instance.CreatePrefab("Explosion_Diagonal_Uair", transform.position + pos, transform.rotation,drifter.peerID);
         explosion.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in explosion.GetComponentsInChildren<HitboxCollision>(true))
         {
@@ -141,7 +128,7 @@ public class MaryamMasterHit : MasterHit
         
         Vector3 pos = new Vector3(-.5f * movement.Facing,3.6f,0);
         
-        GameObject explosion = GameController.Instance.CreatePrefab("UairExplosion_Maryam", transform.position + pos, transform.rotation);
+        GameObject explosion = GameController.Instance.CreatePrefab("UairExplosion_Maryam", transform.position + pos, transform.rotation,drifter.peerID);
         explosion.transform.localScale = new Vector3(-10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in explosion.GetComponentsInChildren<HitboxCollision>(true))
         {
@@ -157,7 +144,7 @@ public class MaryamMasterHit : MasterHit
         
         Vector3 pos = new Vector3(-1f * movement.Facing,3f,0);
         
-        GameObject explosion = GameController.Instance.CreatePrefab("Explosion_Diagonal_Uair", transform.position + pos, transform.rotation);
+        GameObject explosion = GameController.Instance.CreatePrefab("Explosion_Diagonal_Uair", transform.position + pos, transform.rotation,drifter.peerID);
         explosion.transform.localScale = new Vector3(-10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in explosion.GetComponentsInChildren<HitboxCollision>(true))
         {
@@ -172,7 +159,7 @@ public class MaryamMasterHit : MasterHit
         
         Vector3 pos = new Vector3(2.5f * movement.Facing,4f,0);
         
-        GameObject explosion = GameController.Instance.CreatePrefab("ExplosionSide", transform.position + pos, transform.rotation);
+        GameObject explosion = GameController.Instance.CreatePrefab("ExplosionSide", transform.position + pos, transform.rotation,drifter.peerID);
         explosion.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in explosion.GetComponentsInChildren<HitboxCollision>(true))
         {
@@ -187,7 +174,7 @@ public class MaryamMasterHit : MasterHit
         
         Vector3 pos = new Vector3(.5f * movement.Facing,1f,0);
         
-        GameObject explosion = GameController.Instance.CreatePrefab("ExplosionDiagonalDown", transform.position + pos, transform.rotation);
+        GameObject explosion = GameController.Instance.CreatePrefab("ExplosionDiagonalDown", transform.position + pos, transform.rotation,drifter.peerID);
         explosion.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
         foreach (HitboxCollision hitbox in explosion.GetComponentsInChildren<HitboxCollision>(true))
         {

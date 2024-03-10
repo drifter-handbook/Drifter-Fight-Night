@@ -64,6 +64,7 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: 334b18b1d18367442aeb2f7a0fd4aada, type: 2}
   parent: {fileID: 3946304139060986358}
   projectilePriority: 1
+  FlagForDestruction: 0
 --- !u!1 &3946304139060986358
 GameObject:
   m_ObjectHideFlags: 0
@@ -206,7 +207,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ef945a1776594438c7a9223e2d7bb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  duration: -1
+  destoryState: 
+  duration: 45
   rb: {fileID: -3747653733243285403}
   animator: {fileID: -8727128515047333086}
-  updateSelf: 0
+  pauseBehavior: 1
+  paused: 0
+  useHitpause: 0
+  DestroyOnExit: 1

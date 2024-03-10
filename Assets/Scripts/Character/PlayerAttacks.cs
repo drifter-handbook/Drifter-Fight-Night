@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 
 [Serializable]
 public enum DrifterAttackType {
@@ -307,51 +308,26 @@ public class PlayerAttacks : MonoBehaviour {
 		}
 	}
 
-	public AttackRollbackFrame SerializeFrame() {
-		HitboxRollbackFrame[] HitboxFrames = new HitboxRollbackFrame[hitboxes.Length];
-		//Searialize each hitbox
-		for(int i = 0; i < hitboxes.Length; i++) {
-			HitboxFrames[i] = hitboxes[i].SerializeFrame();
-		}
+	public void Serialize(BinaryWriter bw) {
 
-		return new AttackRollbackFrame() {
-			AttackID = this.AttackID,
-			nextID = PlayerAttacks.nextID,
-			AttackType = this.AttackType,
-			CurrentUpRecoveries = currentUpRecoveries,
-			CurrentDownRecoveries = currentDownRecoveries,
-			CurrentSideRecoveries = currentSideRecoveries,
-			CurrentNeutralRecoveries = currentNeutralRecoveries,
-			//Hitboxes = HitboxFrames
-		};
+		bw.Write(AttackID);
+		bw.Write(nextID);
+		bw.Write((int)AttackType);
+		bw.Write(currentUpRecoveries);
+		bw.Write(currentDownRecoveries);
+		bw.Write(currentSideRecoveries);
+		bw.Write(currentNeutralRecoveries);
 	}
 
 	//Rolls back the entity to a given frame state
-	public  void DeserializeFrame(AttackRollbackFrame p_frame) {
-			AttackID = p_frame.AttackID;
-			nextID = p_frame.nextID;
-			AttackType = p_frame.AttackType;
-			currentUpRecoveries = p_frame.CurrentUpRecoveries;
-			currentDownRecoveries = p_frame.CurrentDownRecoveries;
-			currentSideRecoveries = p_frame.CurrentSideRecoveries;
-			currentNeutralRecoveries = p_frame.CurrentNeutralRecoveries;
-
-			// for(int i = 0; i < p_frame.Hitboxes.Length; i++) {
-			// 	hitboxes[i].DeserializeFrame(p_frame.Hitboxes[i]);
-			// }
+	public void Deserialize(BinaryReader br) {
+		AttackID = br.ReadInt32();
+		nextID = br.ReadInt32();
+		AttackType = (DrifterAttackType)br.ReadInt32();
+		currentUpRecoveries = br.ReadInt32();
+		currentDownRecoveries = br.ReadInt32();
+		currentSideRecoveries = br.ReadInt32();
+		currentNeutralRecoveries = br.ReadInt32();
 
 	}
-}
-
-public class AttackRollbackFrame: INetworkData
-{
-	public string Type { get; set; }
-	public int AttackID;
-	public int nextID;
-	public DrifterAttackType AttackType;
-	public int CurrentUpRecoveries;
-	public int CurrentDownRecoveries;
-	public int CurrentSideRecoveries;
-	public int CurrentNeutralRecoveries;
-	//public HitboxRollbackFrame[] Hitboxes;
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 public enum CancelType
 {
@@ -71,12 +72,12 @@ public class PlayerMovement : MonoBehaviour
 	[NonSerialized]
 	public int accelerationFrames = 6;
 	[NonSerialized]
-	public float dashLock = 0;
+	public int dashLock = 0;
 	[NonSerialized]
 	public float jumpTimer = 30f;
 
-	GameObject SuperCancel;
-	CancelType canceltype = CancelType.Feint_Cancel;
+	InstantiatedEntityCleanup SuperCancel;
+	CancelType cancelType = CancelType.Feint_Cancel;
 
 	//Situational Iteration variables
 	int ledgeGrabLockout = 0;
@@ -216,7 +217,7 @@ public class PlayerMovement : MonoBehaviour
 			if(delayedFacingFlip) {
 				delayedFacingFlip = false;
 				drifter.SetIndicatorDirection(Facing);
-				transform.localScale = new Vector3(Facing * Mathf.Abs(transform.localScale.x),transform.localScale.y, transform.localScale.z);
+				transform.localScale = new Vector2(Facing * Mathf.Abs(transform.localScale.x),transform.localScale.y);
 			}
 		}
 
@@ -382,8 +383,8 @@ public class PlayerMovement : MonoBehaviour
 			if(IsGrounded()) {
 
 				if(!jumping) {
-					if(drifter.input[0].MoveX !=0 && drifter.input[1].MoveX == 0)
-						drifter.PlayAnimation("Walk");
+					//if(drifter.input[0].MoveX !=0 && drifter.input[1].MoveX == 0)
+						drifter.PlayAnimation("Walk", -1, true);
 
 					//Spawn dust clouds as characters walk, every 20 frames
 					if(groundFrictionPosition) {
@@ -565,21 +566,20 @@ public class PlayerMovement : MonoBehaviour
 		else if(drifter.input[0].MoveX < 0) Facing = -1;
 
 		drifter.SetIndicatorDirection(Facing);
-		transform.localScale = new Vector3(Facing * Mathf.Abs(transform.localScale.x),
-		transform.localScale.y, transform.localScale.z);
+		transform.localScale = new Vector2(Facing * Mathf.Abs(transform.localScale.x), transform.localScale.y);
 	}
 
 	//Used to forcibly invert the players direction
 	public void flipFacing(){
 		Facing *= -1;
 		drifter.SetIndicatorDirection(Facing);
-		transform.localScale = new Vector3(Facing * Mathf.Abs(transform.localScale.x),transform.localScale.y, transform.localScale.z);
+		transform.localScale = new Vector2(Facing * Mathf.Abs(transform.localScale.x), transform.localScale.y);
 	}
 
 	public void setFacing(int dir){
 		Facing = Math.Sign(dir);
 		drifter.SetIndicatorDirection(Facing);
-		transform.localScale = new Vector3(Facing * Mathf.Abs(transform.localScale.x),transform.localScale.y, transform.localScale.z);
+		transform.localScale = new Vector2(Facing * Mathf.Abs(transform.localScale.x), transform.localScale.y);
 	}
 
 	public void setFacingDelayed(int dir){
@@ -818,10 +818,10 @@ public class PlayerMovement : MonoBehaviour
 	}
 
 	private void spawnSuperParticle(CancelType mode,int cost,int darkentime) {
-		if(SuperCancel!= null)
-			Destroy(SuperCancel);
+		if(SuperCancel != null)
+			Destroy(SuperCancel.gameObject);
 
-		canceltype = mode;
+		cancelType = mode;
 		canLandingCancel = false;
 		mainCamera.Darken(darkentime);
 		drifter.attacks.SetMultiHitAttackID();
@@ -829,14 +829,16 @@ public class PlayerMovement : MonoBehaviour
 		
 		drifter.superCharge -= cost;
 
-		SuperCancel = GameController.Instance.CreatePrefab("SuperEffect", transform.position , transform.rotation);
-		foreach (HitboxCollision hitbox in SuperCancel.GetComponentsInChildren<HitboxCollision>(true)) {
+		GameObject proj = GameController.Instance.CreatePrefab("SuperEffect", transform.position , transform.rotation,drifter.peerID);
+		foreach (HitboxCollision hitbox in proj.GetComponentsInChildren<HitboxCollision>(true)) {
 			hitbox.parent = drifter.gameObject;
 			hitbox.AttackID = drifter.attacks.NextID;
 			hitbox.isActive = true;
 			hitbox.Facing = Facing;
 		}
-		SuperCancel.GetComponent<InstantiatedEntityCleanup>().animator.Play(canceltype.ToString());
+
+		SuperCancel = proj.GetComponent<InstantiatedEntityCleanup>();
+		SuperCancel.animator.Play(cancelType.ToString());
 		
 	}
 
@@ -844,117 +846,86 @@ public class PlayerMovement : MonoBehaviour
 	//====================================
 	
 	//Takes a snapshot of the current frame to rollback to
-	public MovementRollbackFrame SerializeFrame() {
-		return new MovementRollbackFrame() {
-			//Rigid body
-			// Velocity = rb.velocity,
-			// Gravity = rb.gravityScale,
-			// Position = rb.position,
+	public void Serialize(BinaryWriter bw) {
+		//Bool
+		bw.Write(grounded);
+		bw.Write(hitstun);
+		bw.Write(canLandingCancel);
+		bw.Write(canFastFall);
+		bw.Write(jumping);
+		bw.Write(dashing);
+		bw.Write(gravityPaused);
+		bw.Write(ledgeHanging);
+		bw.Write(strongLedgeGrab);
+		bw.Write(delayedFacingFlip);
 
-			//Flags
-			Facing = this.Facing,
-			LedgeGrabLockout = ledgeGrabLockout,
-			TerminalVelocity = terminalVelocity,
-			CurrentJumps = currentJumps,
-			CurrentDashes = currentDashes,
-			Grounded = grounded,
-			Hitstun = hitstun,
-			CanLandingCancel = canLandingCancel,
-			CanFastFall = canFastFall,
-			Jumping = jumping,
-			Dashing = dashing,
-			GravityPaused = gravityPaused,
-			LedgeHanging = ledgeHanging,
-			StrongLedgeGrab = strongLedgeGrab,
-			AccelerationFrames = accelerationFrames,
-			DashLock = dashLock,
-			JumpTimer = jumpTimer,
-			DropThroughTime = dropThroughTime,
-			PrevVelocity = prevVelocity,
-			CurrentSpeed = currentSpeed,
-			DelayedFacingFlip = delayedFacingFlip,
-			SuperCancel = this.SuperCancel != null ? SuperCancel.GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null,
-			CancelType = canceltype
+		//Int
+		bw.Write(accelerationFrames);
+		bw.Write(dropThroughTime);
+		bw.Write(Facing);
+		bw.Write(currentJumps);
+		bw.Write(currentDashes);
+		bw.Write(ledgeGrabLockout);
+		bw.Write(dashLock);
+		bw.Write((int)cancelType);
 
-		};
+		//Float
+		bw.Write(terminalVelocity);
+		bw.Write(jumpTimer);
+		bw.Write(currentSpeed);
+
+		bw.Write(prevVelocity.x);
+		bw.Write(prevVelocity.y);
+
+		//Child
+		if(SuperCancel != null){
+			bw.Write(true);
+			SuperCancel.Serialize(bw);
+		}
+		else
+			bw.Write(false);
 	}
 
 	//Rolls back the entity to a given frame state
-	public void DeserializeFrame(MovementRollbackFrame p_frame) {
-		//Rigid body
-		// rb.velocity = p_frame.Velocity;
-		// rb.gravityScale = p_frame.Gravity;
-		// rb.position = p_frame.Position;
+	public void Deserialize(BinaryReader br) {
+		
+		//Bool
+		grounded = br.ReadBoolean();
+		hitstun = br.ReadBoolean();
+		canLandingCancel = br.ReadBoolean();
+		canFastFall = br.ReadBoolean();
+		jumping = br.ReadBoolean();
+		dashing = br.ReadBoolean();
+		gravityPaused = br.ReadBoolean();
+		ledgeHanging = br.ReadBoolean();
+		strongLedgeGrab = br.ReadBoolean();
+		delayedFacingFlip = br.ReadBoolean();
 
-		//Flags
-		Facing = p_frame.Facing;
-		ledgeGrabLockout = p_frame.LedgeGrabLockout;
-		terminalVelocity = p_frame.TerminalVelocity;
-		currentJumps = p_frame.CurrentJumps;
-		currentDashes = p_frame.CurrentDashes;
-		grounded = p_frame.Grounded;
-		hitstun = p_frame.Hitstun;
-		canLandingCancel = p_frame.CanLandingCancel;
-		canFastFall = p_frame.CanFastFall;
-		jumping = p_frame.Jumping;
-		dashing = p_frame.Dashing;
-		gravityPaused = p_frame.GravityPaused;
-		ledgeHanging = p_frame.LedgeHanging;
-		strongLedgeGrab = p_frame.StrongLedgeGrab;
-		accelerationFrames = p_frame.AccelerationFrames;
-		dashLock = p_frame.DashLock;
-		jumpTimer = p_frame.JumpTimer;
-		dropThroughTime = p_frame.DropThroughTime;
-		prevVelocity = p_frame.PrevVelocity;
-		currentSpeed = p_frame.CurrentSpeed;
-		delayedFacingFlip = p_frame.DelayedFacingFlip;
-		canceltype = p_frame.CancelType;
+		//Int
+		accelerationFrames = br.ReadInt32();
+		dropThroughTime = br.ReadInt32();
+		Facing = br.ReadInt32();
+		currentJumps = br.ReadInt32();
+		currentDashes = br.ReadInt32();
+		ledgeGrabLockout = br.ReadInt32();
+		dashLock = br.ReadInt32();
+		cancelType = (CancelType)br.ReadInt32();
 
-		//Super Particle reset
-		if(p_frame.SuperCancel != null) {
-			if(SuperCancel == null)spawnSuperParticle(canceltype,0,8);
-			SuperCancel.GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(p_frame.SuperCancel);
+		//Float
+		terminalVelocity = br.ReadSingle();
+		jumpTimer = br.ReadSingle();
+		currentSpeed = br.ReadSingle();
+
+		prevVelocity.x = br.ReadSingle();
+		prevVelocity.y = br.ReadSingle();
+
+		if(br.ReadBoolean()){
+			if(SuperCancel == null)spawnSuperParticle(cancelType,0,8);
+			SuperCancel.Deserialize(br);
 		}
-		//Projectile does not exist in rollback frame
-		else if(p_frame.SuperCancel == null) {
-			Destroy(SuperCancel);
+		else if(SuperCancel != null){
+			Destroy(SuperCancel.gameObject);
 			SuperCancel = null;
 		}
-
 	}
-}
-
-public class MovementRollbackFrame: INetworkData
-{
-	public string Type { get; set; }
-
-	//public Vector2 Velocity;
-	//public float Gravity;
-	//public Vector2 Position;
-
-	public int Facing;
-	public float TerminalVelocity;
-	public int CurrentJumps;
-	public int CurrentDashes;
-	public int LedgeGrabLockout;
-	public bool Grounded;
-	public bool Hitstun;
-	public bool CanLandingCancel;
-	public bool CanFastFall;
-	public bool Jumping;
-	public bool Dashing;
-	public bool GravityPaused;
-	public bool LedgeHanging;
-	public bool StrongLedgeGrab;
-	public int AccelerationFrames;
-	public float DashLock;
-	public float JumpTimer;
-	public int DropThroughTime;
-	public float WalkTime;
-	public Vector2 PrevVelocity;
-	public float CurrentSpeed;
-	public bool DelayedFacingFlip;
-	public BasicProjectileRollbackFrame SuperCancel;
-	public CancelType CancelType;
-
 }

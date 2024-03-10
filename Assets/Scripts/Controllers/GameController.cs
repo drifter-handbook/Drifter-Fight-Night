@@ -23,6 +23,14 @@ public class GameController : MonoBehaviour
         SFX
     };
 
+    public enum GameScene
+    {
+        MENU,
+        CHARACTER_SELECT,
+        COMBAT,
+        ENDSCREEN
+    };
+
     //* Serialized members
     [Header("Check box if hosting")]
     public bool IsHost;
@@ -53,6 +61,8 @@ public class GameController : MonoBehaviour
             Time.timeScale = _IsPaused?0f:_GameSpeed;
         }
     }
+
+    public GameScene gameScene = GameScene.CHARACTER_SELECT; 
 
     private float _GameSpeed = 1f;
     public float GameSpeed
@@ -246,6 +256,8 @@ public class GameController : MonoBehaviour
         // Create player characters & give them an input
         // Yeet into world and allow playing the game
         canPause = true;
+        toggleInuptSystem(false);
+        gameScene = GameScene.COMBAT;
         //GameSpeed = 1f;
         host?.SetScene("Combat");
     }
@@ -264,11 +276,26 @@ public class GameController : MonoBehaviour
         if(endingGame==null)endingGame=StartCoroutine(EndGameCoroutine(delay));
     }
 
+    public void GoToCharacterSelect(){
+        removeAllPeers();
+        gameScene = GameScene.CHARACTER_SELECT;
+        host?.SetScene("Character_Select_Rework");
+    }
+
+    public void GoToMainMenu(){
+        removeAllPeers();
+        gameScene = GameScene.MENU;
+        host?.SetScene("MenuScene");
+    }
+
     IEnumerator EndGameCoroutine(float delay)
     {
-        removeAllPeers();
+        //removeAllPeers();
+
         yield return new WaitForSeconds(delay);
 
+        toggleInuptSystem(true);
+        gameScene = GameScene.ENDSCREEN;
         host?.SetScene("Endgame");
         endingGame = null;
         yield break;
@@ -368,16 +395,18 @@ public class GameController : MonoBehaviour
 
     }
 
-    public GameObject CreatePrefab(string networkType)
+    public GameObject CreatePrefab(string networkType, int peerId = 0)
     {
         GameObject obj = Instantiate(NetworkTypePrefabs.Find(x => x.name == networkType));
+        obj.name = networkType + "_" + peerId;
         return obj;
     }
 
-    public GameObject CreatePrefab(string networkType, Vector3 position, Quaternion rotation)
+    public GameObject CreatePrefab(string networkType, Vector3 position, Quaternion rotation, int peerId = 0)
     {
         GameObject obj = Instantiate(NetworkTypePrefabs.Find(x => x.name == networkType),position,rotation);
-        
+
+        obj.name = networkType + "_" + peerId;
         return obj;
     }
 }

@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,14 +6,10 @@ public class GrabHitboxCollision : HitboxCollision
 {
     // Start is called before the first frame update
 
-    public HurtboxCollision victim;
-
 	public string SuccessState = "";
     public bool cancelable = true;
 
-
-    void OnTriggerStay2D(Collider2D collider)
-    {
+    void OnTriggerStay2D(Collider2D collider) {
         if(collider.gameObject.layer != 10) return;
         //Debug.Log("name " + name + " " + (gameObject.activeSelf || gameObject.activeInHierarchy));
         HurtboxCollision hurtbox = collider.GetComponent<HurtboxCollision>();
@@ -27,7 +23,6 @@ public class GrabHitboxCollision : HitboxCollision
                 hitResult = (int)hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, OverrideData);
                 if(hitResult == 1 || hitResult == 0)
                 {
-                	victim = hurtbox;
                     if(SuccessState != ""){
                         parent.GetComponent<Drifter>().movement.canLandingCancel = false;
                         parent.GetComponent<Drifter>().PlayAnimation(SuccessState,-1,true);

@@ -1,9 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
-public class RyykeMasterHit : MasterHit
-{
+public class RyykeMasterHit : MasterHit {
 	//Static values
 	static int maxBurrowTime = 120;
 	static float zombieRadius = 3.5f;
@@ -16,9 +17,13 @@ public class RyykeMasterHit : MasterHit
 
 	//Tether References
 	//Tether Recovery Range object
+
+	//TO DO: COnfirm that tether is actice correctly after a rollback
 	public TetherRange tether;
-	GameObject g_Tether_Arm;
-	GameObject g_Tether_Hand;
+	InstantiatedEntityCleanup tether_Arm;
+	InstantiatedEntityCleanup tether_Hand;
+	LineRenderer tether_Arm_Line;
+
 	bool armRetracting = false;
 
 	//Gamestate sync
@@ -89,18 +94,18 @@ public class RyykeMasterHit : MasterHit
 
 		isNearStone();
 
-		if(g_Tether_Arm != null && g_Tether_Hand != null) {
+		if(tether_Arm != null && tether_Hand != null) {
 			if(tetherPoint != Vector3.zero)
-				g_Tether_Hand.GetComponent<Rigidbody2D>().position = Vector2.MoveTowards(g_Tether_Hand.GetComponent<Rigidbody2D>().position, tetherPoint,3);
+				tether_Hand.GetComponent<Rigidbody2D>().position = Vector2.MoveTowards(tether_Hand.GetComponent<Rigidbody2D>().position, tetherPoint,3);
 
 			else if(armRetracting)
-				g_Tether_Hand.GetComponent<Rigidbody2D>().position = Vector2.MoveTowards(g_Tether_Hand.GetComponent<Rigidbody2D>().position, g_Tether_Arm.transform.position,3);
+				tether_Hand.GetComponent<Rigidbody2D>().position = Vector2.MoveTowards(tether_Hand.GetComponent<Rigidbody2D>().position, tether_Arm.transform.position,3);
 			
-			g_Tether_Arm.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
-			g_Tether_Hand.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
+			tether_Arm.UpdateFrame();
+			tether_Hand.UpdateFrame();
 
-			g_Tether_Arm.GetComponentInChildren<LineRenderer>().SetPosition(0,g_Tether_Arm.transform.position);
-			g_Tether_Arm.GetComponentInChildren<LineRenderer>().SetPosition(1,g_Tether_Hand.transform.position);
+			tether_Arm_Line?.SetPosition(0,tether_Arm.transform.position);
+			tether_Arm_Line?.SetPosition(1,tether_Hand.transform.position);
 		}
 		else {
 			armRetracting = false;
@@ -108,7 +113,7 @@ public class RyykeMasterHit : MasterHit
 
 		for(int i = 0; i <3; i++)
 			 if(tombstones[i] != null)
-			 	tombstones[i].GetComponent<Tombstone>().UpdateFrame();
+				tombstones[i].GetComponent<Tombstone>().UpdateFrame();
 	  
 	}
 
@@ -147,7 +152,7 @@ public class RyykeMasterHit : MasterHit
 		
 		bool stonesFull = true;
 		
-		GameObject stone = GameController.Instance.CreatePrefab("Tombstone", transform.position + new Vector3(1 * movement.Facing,.5f,0), transform.rotation);
+		GameObject stone = GameController.Instance.CreatePrefab("Tombstone", transform.position + new Vector3(1 * movement.Facing,.5f,0), transform.rotation, drifter.peerID);
 		stone.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
 		foreach (HitboxCollision hitbox in stone.GetComponentsInChildren<HitboxCollision>(true)) {
 			hitbox.parent = drifter.gameObject;
@@ -173,6 +178,7 @@ public class RyykeMasterHit : MasterHit
 	   }
 
 	   SetObjectColor(stone);
+	   stone.name = stone.name + "_" + tombstoneIndex;
 	   tombstones[tombstoneIndex] = stone.GetComponent<Tombstone>().setup(tombstoneIndex,movement.Facing,drifter.gameObject,zombieRadius,(PlayerColor)drifter.GetColor());
 	   tombstones[tombstoneIndex].throwStone(mode);
 	}
@@ -231,22 +237,26 @@ public class RyykeMasterHit : MasterHit
 	//W Up Methods
 	void CreateArm(Vector3 pos, float angle) {
 
-		g_Tether_Arm = GameController.Instance.CreatePrefab("Ryyke_Arm", pos, Quaternion.Euler(0,0,angle));
-		g_Tether_Arm.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
+		GameObject arm = GameController.Instance.CreatePrefab("Ryyke_Arm", pos, Quaternion.Euler(0,0,angle),drifter.peerID);
+		arm.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
+		
+		arm.transform.SetParent(drifter.gameObject.transform);
+		SetObjectColor(arm);
 
-		SetObjectColor(g_Tether_Arm);
-
-		g_Tether_Arm.transform.SetParent(drifter.gameObject.transform);
+		tether_Arm = arm.GetComponent<InstantiatedEntityCleanup>();
+		tether_Arm_Line = tether_Arm.GetComponentInChildren<LineRenderer>();
 	}
 
 	void CreateHand(Vector3 pos, float angle) {
 
-		g_Tether_Hand = GameController.Instance.CreatePrefab("Ryyke_Hand", pos, Quaternion.Euler(0,0,angle));
-		g_Tether_Hand.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
+		GameObject hand = GameController.Instance.CreatePrefab("Ryyke_Hand", pos, Quaternion.Euler(0,0,angle),drifter.peerID);
+		hand.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
 
-		SetObjectColor(g_Tether_Hand);
+		SetObjectColor(hand);
 
-		g_Tether_Hand.GetComponent<RemoteProjectileUtil>().hit = this;
+		hand.GetComponent<RemoteProjectileUtil>().hit = this;
+
+		tether_Hand = hand.GetComponent<InstantiatedEntityCleanup>();
 	}
 
 	public void SpawnTether() {
@@ -270,21 +280,21 @@ public class RyykeMasterHit : MasterHit
 		CreateHand(transform.position + pos, angle);
 
 		//If the arm is not targeting a ledge, fire it as a projectile
-		if(tetherPoint == Vector3.zero) g_Tether_Hand.GetComponent<Rigidbody2D>().velocity = rb.velocity + new Vector2(80f * movement.Facing * Mathf.Cos((angle*movement.Facing* Mathf.PI)/180),80f *Mathf.Sin((angle*movement.Facing * Mathf.PI)/180));
+		if(tetherPoint == Vector3.zero) tether_Hand.GetComponent<Rigidbody2D>().velocity = rb.velocity + new Vector2(80f * movement.Facing * Mathf.Cos((angle*movement.Facing* Mathf.PI)/180),80f *Mathf.Sin((angle*movement.Facing * Mathf.PI)/180));
 		else {
-			foreach (HitboxCollision hitbox in g_Tether_Hand.GetComponentsInChildren<HitboxCollision>(true))
+			foreach (HitboxCollision hitbox in tether_Hand.GetComponentsInChildren<HitboxCollision>(true))
 				hitbox.isActive = false;
 			tether.g_obj.GetComponent<HopUp>().ledgeLock = LedgeLockState.Tethered;
 		}
 
-		foreach (HitboxCollision hitbox in g_Tether_Hand.GetComponentsInChildren<HitboxCollision>(true)) {
+		foreach (HitboxCollision hitbox in tether_Hand.GetComponentsInChildren<HitboxCollision>(true)) {
 			hitbox.parent = drifter.gameObject;
 			hitbox.AttackID = attacks.AttackID;
 			hitbox.Facing = movement.Facing;
 		}
 	
-		g_Tether_Arm.GetComponentInChildren<LineRenderer>().SetPosition(0, g_Tether_Arm.transform.position);
-		g_Tether_Arm.GetComponentInChildren<LineRenderer>().SetPosition(1, g_Tether_Hand.transform.position);
+		tether_Arm_Line.SetPosition(0, tether_Arm.transform.position);
+		tether_Arm_Line.SetPosition(1, tether_Hand.transform.position);
 
 	}
 
@@ -303,11 +313,11 @@ public class RyykeMasterHit : MasterHit
 	}
 
 	public void DeleteArm() {
-		if(g_Tether_Arm!= null) Destroy(g_Tether_Arm);
-		if(g_Tether_Hand!= null) Destroy(g_Tether_Hand);
-		g_Tether_Arm = null;
-		g_Tether_Hand = null;
-
+		if(tether_Arm!= null) Destroy(tether_Arm.gameObject);
+		if(tether_Hand!= null) Destroy(tether_Hand.gameObject);
+		tether_Arm = null;
+		tether_Arm_Line = null;
+		tether_Hand = null;
 	}
 
 	public override void TriggerRemoteSpawn(int index) {
@@ -404,93 +414,89 @@ public class RyykeMasterHit : MasterHit
 	//=========================================
 
 	//Takes a snapshot of the current frame to rollback to
-	public override MasterhitRollbackFrame SerializeFrame() {
-		MasterhitRollbackFrame baseFrame = SerializeBaseFrame();
+	public override void Serialize(BinaryWriter bw) {
 
-		TombstoneRollbackFrame[] p_Tombstones = new TombstoneRollbackFrame[] {null,null,null};
+		base.Serialize(bw);
 
-		for(int i = 0; i <3; i++)
-			 p_Tombstones[i] = tombstones[i] != null ? tombstones[i].GetComponent<Tombstone>().SerializeFrame(): null;
+		bw.Write(armRetracting);
+		bw.Write(listeningForDirection);
+		bw.Write(listeningForMovement);
+		bw.Write(burrowing);
 
-		baseFrame.CharacterFrame = new RyykeRollbackFrame() {
-			Tombstones = p_Tombstones,
-			ArmRetracting = armRetracting,
-			ListeningForDirection = listeningForDirection, 
-			ListeningForMovement = listeningForMovement,
-			Burrowing = burrowing,
-			BurrowTime = burrowTime, 
-			TetherPoint = this.tetherPoint,
-			TombstoneIndex = tombstoneIndex,
-			Hand = (g_Tether_Hand != null) ? g_Tether_Hand.GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null,
-			Arm = (g_Tether_Arm != null) ? g_Tether_Arm.GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null,
-		};
+		bw.Write(burrowTime);
+		bw.Write(tombstoneIndex);
 
-		 return baseFrame;
+		bw.Write(tetherPoint.x);
+		bw.Write(tetherPoint.y);
+
+		for(int i = 0; i <3; i++){
+			if(tombstones[i] == null)
+				bw.Write(false);
+			else{
+				bw.Write(true);
+				tombstones[i].Serialize(bw);
+			}
+		}
+
+		if(tether_Hand == null)
+			bw.Write(false);
+		else{
+			bw.Write(true);
+			tether_Hand.Serialize(bw);
+		}
+
+		if(tether_Arm == null)
+			bw.Write(false);
+		else{
+			bw.Write(true);
+			tether_Arm.Serialize(bw);
+		}
 	}
 
 	//Rolls back the entity to a given frame state
-	public override void DeserializeFrame(MasterhitRollbackFrame p_frame) {
-		DeserializeBaseFrame(p_frame);
+	public override void Deserialize(BinaryReader br) {
+		base.Deserialize(br);
 
-		RyykeRollbackFrame ryyke_frame = (RyykeRollbackFrame)p_frame.CharacterFrame;
+		armRetracting = br.ReadBoolean();
+		listeningForDirection = br.ReadBoolean();
+		listeningForMovement = br.ReadBoolean();
+		burrowing = br.ReadBoolean();
 
-		armRetracting = ryyke_frame.ArmRetracting;
-		listeningForDirection = ryyke_frame.ListeningForDirection;
-		listeningForMovement = ryyke_frame.ListeningForMovement;
-		burrowing = ryyke_frame.Burrowing;
-		burrowTime = ryyke_frame.BurrowTime;
-		tetherPoint = ryyke_frame.TetherPoint;
-		tombstoneIndex = ryyke_frame.TombstoneIndex;
+		burrowTime = br.ReadInt32();
+		tombstoneIndex = br.ReadInt32();
 
-		//Tombstone reset
-		for(int i = 0; i <3; i++) {
-			if(ryyke_frame.Tombstones[i] != null) {
-				if(tombstones[i] == null) SpawnTombstone(i);
-				tombstones[i].GetComponent<Tombstone>().DeserializeFrame(ryyke_frame.Tombstones[i]);
+		tetherPoint.x = br.ReadSingle();
+		tetherPoint.y = br.ReadSingle();
+
+		for(int i = 0; i <3; i++){
+			if(br.ReadBoolean()){
+				if(tombstones[i] == null)SpawnTombstone(i);
+				tombstones[i].Deserialize(br);
 			}
-			//Projectile does not exist in rollback frame
-			else if (tombstones[i] != null) {
+			else if(tombstones[i] != null){
 				Destroy(tombstones[i].gameObject);
 				tombstones[i] = null;
-			}  
+			}
 		}
 
-		//Hand reset
-		if(ryyke_frame.Hand != null) {
-			if(g_Tether_Hand == null)CreateHand(transform.position, 55f * movement.Facing);
-			g_Tether_Hand.GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(ryyke_frame.Hand);
+
+		if(br.ReadBoolean()){
+			if(tether_Hand == null)CreateHand(transform.position, 55f * movement.Facing);
+			tether_Hand.Deserialize(br);
 		}
-		//Projectile does not exist in rollback frame
-		else {
-			Destroy(g_Tether_Hand);
-			g_Tether_Hand = null;
+		else if(tether_Hand != null){
+			Destroy(tether_Hand.gameObject);
+			tether_Hand = null;
 		}
 
-		//Arm reset
-		if(ryyke_frame.Arm != null) {
-			if(g_Tether_Arm == null)CreateArm(transform.position, 55f * movement.Facing);
-			g_Tether_Arm.GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(ryyke_frame.Arm);
+		if(br.ReadBoolean()){
+			if(tether_Arm == null)CreateArm(transform.position, 55f * movement.Facing);
+			tether_Arm.Deserialize(br);
 		}
-		else {
-			Destroy(g_Tether_Arm);
-			g_Tether_Arm = null;
+		else if(tether_Arm != null){
+			Destroy(tether_Arm.gameObject);
+			tether_Arm = null;
 		}
-
 	}
 
-}
-
-public class RyykeRollbackFrame: ICharacterRollbackFrame
-{
-	public string Type { get; set; }
-	public bool ListeningForDirection;
-	public bool ListeningForMovement;
-	public bool Burrowing;
-	public int BurrowTime;
-	public bool ArmRetracting;
-	public Vector3 TetherPoint;
-	public int TombstoneIndex;
-	public TombstoneRollbackFrame[] Tombstones;
-	public BasicProjectileRollbackFrame Arm;
-	public BasicProjectileRollbackFrame Hand;
 }

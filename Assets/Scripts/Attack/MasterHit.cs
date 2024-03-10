@@ -2,38 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public interface ICharacterRollbackFrame : INetworkData
-{
-
-}
-
-public class MasterhitRollbackFrame: INetworkData
-{
-	public string Type { get; set; }
-
-	public bool Empowered;
-	public Vector3 SavedVelocity;
-	public bool SavingVelocity ;
-	public bool SpecialTappedFlag;
-	public bool SpecialReleasedFlag;
-	public bool LightTappedFlag;
-	public bool VerticalCancelFlag;
-	public bool dashCancelFlag;
-	public bool ActiveCancelFlag;
-	public bool ListeningForGroundedFlag;
-	public bool QueuedStateTrigger;
-	public bool JumpFlag;
-	public int SpecialCharge;
-	public int SpecialLimit;
-	public string QueuedState;
-	public bool AttackWasCanceled;
-	public bool DacusCancelFlag;
-	public bool KnockdownFlag;
-
-	public ICharacterRollbackFrame CharacterFrame = null;
-	
-}
+using System.IO;
 
 public abstract class MasterHit : MonoBehaviour, IMasterHit
 {
@@ -235,9 +204,9 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 		GraphicalEffectManager.Instance.CreateSpecialCancel(drifter.gameObject);
 		//BC drift
 		if(drifter.input[0].MoveY == drifter.input[1].MoveY)
-			rb.velocity = new Vector2(rb.velocity.x,18*drifter.input[0].MoveY);
+			rb.velocity = new Vector2(rb.velocity.x,22*drifter.input[0].MoveY);
 		if(drifter.input[0].MoveX == drifter.input[1].MoveX)
-			rb.velocity = new Vector2(18*drifter.input[0].MoveX,rb.velocity.y);
+			rb.velocity = new Vector2(22*drifter.input[0].MoveX,rb.velocity.y);
 	}
 
 	//Flag the character to begin listen for a given event
@@ -585,60 +554,61 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
 	}
 
-
 	//Rollback
 	//============================
 
-	public abstract MasterhitRollbackFrame SerializeFrame();
-	public abstract void DeserializeFrame(MasterhitRollbackFrame p_frame);
-
 	//Takes a snapshot of the current frame to rollback to
-	protected MasterhitRollbackFrame SerializeBaseFrame() {
+	public virtual void Serialize(BinaryWriter bw) {
 
-		return new MasterhitRollbackFrame()  {
-			Empowered = this.Empowered,
-			SavedVelocity = savedVelocity,
-			SavingVelocity = savingVelocity, 
-			SpecialTappedFlag = specialTappedFlag,
-			SpecialReleasedFlag = specialReleasedFlag,
-			LightTappedFlag = lightTappedFlag,
-			VerticalCancelFlag = verticalCancelFlag,
-			dashCancelFlag = dashCancelFlag,
-			ActiveCancelFlag = activeCancelFlag,
-			ListeningForGroundedFlag = listeningForGroundedFlag,
-			QueuedStateTrigger = queuedStateTrigger,
-			JumpFlag = jumpFlag,
-			SpecialCharge = specialCharge,
-			SpecialLimit = specialLimit,
-			QueuedState = queuedState,
-			AttackWasCanceled = attackWasCanceled,
-			DacusCancelFlag = dacusCancelFlag,
-			KnockdownFlag = knockdownFlag,
-			
-		};
+		bw.Write(Empowered);  
+		bw.Write(savingVelocity); 
+		bw.Write(specialTappedFlag); 
+		bw.Write(specialReleasedFlag); 
+		bw.Write(lightTappedFlag); 
+		bw.Write(verticalCancelFlag); 
+		bw.Write(dashCancelFlag); 
+		bw.Write(activeCancelFlag); 
+		bw.Write(listeningForGroundedFlag); 
+		bw.Write(queuedStateTrigger); 
+		bw.Write(jumpFlag); 
+		bw.Write(attackWasCanceled); 
+		bw.Write(dacusCancelFlag); 
+		bw.Write(knockdownFlag); 
+
+		bw.Write(specialCharge);
+		bw.Write(specialLimit); 
+
+		bw.Write(savedVelocity.x); 
+		bw.Write(savedVelocity.y);
+
+		bw.Write(queuedState); 
 	}
 
 	//Rolls back the entity to a given frame state
-	protected void DeserializeBaseFrame(MasterhitRollbackFrame p_frame) {
+	public virtual void Deserialize(BinaryReader br) {
 
-		Empowered = p_frame.Empowered; 
-		savedVelocity = p_frame.SavedVelocity; 
-		savingVelocity = p_frame.SavingVelocity; 
-		specialTappedFlag = p_frame.SpecialTappedFlag; 
-		specialReleasedFlag = p_frame.SpecialReleasedFlag; 
-		lightTappedFlag = p_frame.LightTappedFlag; 
-		verticalCancelFlag = p_frame.VerticalCancelFlag; 
-		dashCancelFlag = p_frame.dashCancelFlag; 
-		activeCancelFlag = p_frame.ActiveCancelFlag; 
-		listeningForGroundedFlag = p_frame.ListeningForGroundedFlag; 
-		queuedStateTrigger = p_frame.QueuedStateTrigger; 
-		jumpFlag = p_frame.JumpFlag; 
-		specialCharge = p_frame.SpecialCharge; 
-		specialLimit = p_frame.SpecialLimit; 
-		queuedState = p_frame.QueuedState;
-		attackWasCanceled = p_frame.AttackWasCanceled; 
-		dacusCancelFlag = p_frame.DacusCancelFlag; 
-		knockdownFlag = p_frame.KnockdownFlag; 
+		Empowered = br.ReadBoolean();  
+		savingVelocity = br.ReadBoolean(); 
+		specialTappedFlag = br.ReadBoolean(); 
+		specialReleasedFlag = br.ReadBoolean(); 
+		lightTappedFlag = br.ReadBoolean(); 
+		verticalCancelFlag = br.ReadBoolean(); 
+		dashCancelFlag = br.ReadBoolean(); 
+		activeCancelFlag = br.ReadBoolean(); 
+		listeningForGroundedFlag = br.ReadBoolean(); 
+		queuedStateTrigger = br.ReadBoolean(); 
+		jumpFlag = br.ReadBoolean(); 
+		attackWasCanceled = br.ReadBoolean(); 
+		dacusCancelFlag = br.ReadBoolean(); 
+		knockdownFlag = br.ReadBoolean(); 
+
+		specialCharge = br.ReadInt32();
+		specialLimit = br.ReadInt32(); 
+
+		savedVelocity.x = br.ReadSingle(); 
+		savedVelocity.y = br.ReadSingle(); 
+
+		queuedState = br.ReadString(); 
 
 	}
 }

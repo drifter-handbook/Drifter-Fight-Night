@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using System.IO;
 
+[Serializable]
 public enum AttackHitType : short {
     INVULN = -5,//hit registered againat an invulnerable enemy
 	COUNTER = -4,// Hit was a registered as a counter
@@ -90,7 +92,9 @@ public class PlayerHurtboxHandler : MonoBehaviour
 				//Whiff grabs and command grabs on jumping opponents
 				((drifter.movement.dashing || status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN)) && attackData.hitType == HitType.GRAB ) || 
 				//Whiff non-OTG moves on otg opponents
-				(!attackData.canHitKnockedDown && status.HasStatusEffect(PlayerStatusEffect.FLATTEN))
+				(!attackData.canHitKnockedDown && status.HasStatusEffect(PlayerStatusEffect.FLATTEN) ||
+				//Wait until superfreeze is done to register attack hits	
+				drifter.entity.paused)
 			) return AttackHitType.NONE;
 
 			if(status.HasStatusEffect(PlayerStatusEffect.INVULN)) return AttackHitType.NONE;
@@ -247,8 +251,9 @@ public class PlayerHurtboxHandler : MonoBehaviour
 					status.ApplyStatusEffect(attackData.StatusEffect, attackData.StatusDuration);
 
 					//Attatch Defender to attacker's hitbox for grab moves.
-					if(attackData.StatusEffect == PlayerStatusEffect.GRABBED)	{
-						status.grabPoint = hitbox.gameObject.GetComponent<Collider2D>();
+					if(attackData.StatusEffect == PlayerStatusEffect.GRABBED) {
+						status.grabbingHitboxName = hitbox.gameObject.name;
+						status.grabbingEntity = hitbox.gameObject.transform.root.name;
 						attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,5);
 					}
 					//Prevent characters from using supers if hit with a super blocking effect
@@ -323,31 +328,6 @@ public class PlayerHurtboxHandler : MonoBehaviour
 				returnCode = AttackHitType.BLOCK; 
 
 			}
-			//Parrying a guardbreaker
-			// else if(drifter.parrying && attackData.hitType==HitType.GRAB && hitbox.gameObject.tag != "Projectile") {
-
-			// 	//STODO Shit out lots of particles here
-			// 	if(hitbox.gameObject.tag != "Projectile")hitbox.parent.GetComponent<Rigidbody2D>().velocity = new Vector2(hitbox.Facing *-35f, hitbox.parent.GetComponent<Rigidbody2D>().velocity.y);
-			   
-			// 	GetComponent<Rigidbody2D>().velocity = new Vector2(35f * hitbox.Facing , GetComponent<Rigidbody2D>().velocity.y);
-			// 	returnCode = AttackHitType.PARRY;
-
-			// }
-			// //Parrying a normal attack
-			// else if(drifter.parrying && hitbox.gameObject.tag != "Projectile") {
-			// 	//TODO Shit out more paricles
-			// 	//TODO Make this work better in air
-
-			// 	drifter.movement.spawnJuiceParticle(hitSparkPos, MovementParticleMode.Parry);
-
-			// 	attackerStatus.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,60);
-			// 	attackerStatus.ApplyStatusEffect(PlayerStatusEffect.CRINGE,60);
-			// 	Shake.zoomEffect(36,Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f),false);
-			// 	attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,36);
-			// 	drifter.movement.pauseGravity();
-			// 	returnCode = AttackHitType.PARRY;
-
-			// }
 
 			trainingUI?.addDamage(damageDealt,HitstunDuration,status);
 			trainingUI?.readFrameAdvantage(attackerStatus,status);
@@ -414,7 +394,6 @@ public class PlayerHurtboxHandler : MonoBehaviour
 				default:
 					break;
 			}
-
 
 		}
 
@@ -525,11 +504,6 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
 		float g = rigidbody.gravityScale * Physics2D.gravity.y;
 
-		// if (Mathf.Sign(rigidbody.velocity.y) == -1)
-		// {
-		//     g *= -1;
-		// }
-
 		//Dont play kill if youre gonna hit the stage
 		if(rigidbody.velocity.y < 0) {
 			 RaycastHit2D[] hits = new RaycastHit2D[10];
@@ -547,28 +521,19 @@ public class PlayerHurtboxHandler : MonoBehaviour
 	}
 
 	//Takes a snapshot of the current frame to rollback to
-	public HurtboxRollbackFrame SerializeFrame()	{
-		int[] p_Attacks = new int[128];
+	public virtual void Serialize(BinaryWriter bw) {
+		for(int i = 0; i <128; i++)
+			bw.Write(oldAttacks[i]);
 
-		Array.Copy(oldAttacks,p_Attacks,128);
-
-		return new HurtboxRollbackFrame() {
-			OldAttacks = p_Attacks,
-			FramesSinceCleaned = framesSinceCleaned,
-		};
+		bw.Write(framesSinceCleaned);
+		
 	}
 
 	//Rolls back the entity to a given frame state
-	public  void DeserializeFrame(HurtboxRollbackFrame p_frame)	{
-			Array.Copy(p_frame.OldAttacks,oldAttacks,128);
-			framesSinceCleaned = p_frame.FramesSinceCleaned;
+	public virtual void Deserialize(BinaryReader br)	{
+		for(int i = 0; i <128; i++){
+			oldAttacks[i] = br.ReadInt32();
+			framesSinceCleaned = br.ReadInt32();
+		}
 	}
-}
-
-public class HurtboxRollbackFrame: INetworkData
-{
-	public string Type { get; set; }
-	public int[] OldAttacks;
-	public int FramesSinceCleaned;
-
 }

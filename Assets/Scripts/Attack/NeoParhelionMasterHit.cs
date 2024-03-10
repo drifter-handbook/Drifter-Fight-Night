@@ -1,18 +1,18 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
-public class NeoParhelionMasterHit : MasterHit
-{
-	GameObject g_staticField;
-	GameObject g_burst;
-	Drifter staticBurstTarget = null;
+public class NeoParhelionMasterHit : MasterHit {
+	
+	string staticBurstTarget = "";
 	int staticBurstTimer = 0;
 	int numBursts = -1;
 	int staticCycles = 0;
-	//bool onBlock = false;
 
-	GameObject zap;
+	InstantiatedEntityCleanup staticField;
+	InstantiatedEntityCleanup[] aftershocks = new InstantiatedEntityCleanup[5];
 
 	GameObject dashTrail;
 
@@ -24,39 +24,48 @@ public class NeoParhelionMasterHit : MasterHit
 	override public void UpdateFrame() {
 		base.UpdateFrame();
 
-		if(drifter.status.HasEnemyStunEffect() || movement.ledgeHanging){
+		if(drifter.status.HasEnemyStunEffect() || movement.ledgeHanging) {
 			deleteStaticField();
 			Remove_Dash_Trail();
 		}
 
-		if(drifter.status.HasEnemyStunEffect()){
+		if(drifter.status.HasEnemyStunEffect()) {
 			staticBurstTimer = 0;
-			staticBurstTarget = null;
+			staticBurstTarget = "";
 			staticCycles = 0;
 		}
 
-		if(staticBurstTimer > 0 && !status.HasStatusEffect(PlayerStatusEffect.HITPAUSE) && !drifter.usingSuper && staticBurstTarget != null){
+		if(staticBurstTimer > 0 && !status.HasStatusEffect(PlayerStatusEffect.HITPAUSE) && !drifter.usingSuper && staticBurstTarget != "") {
 			staticBurstTimer--;
-			if(staticBurstTimer == 0){
-				if(numBursts > 1){
-					numBursts--;
-					staticBurstTimer = 4;
-					Create_Burst(staticBurstTarget.gameObject.transform.position + new Vector3(Random.Range(-1.75f, 1.75f), Random.Range(-1.75f, 1.75f)));
+			GameObject staticBurstTargetObject = GameObject.Find(staticBurstTarget);
+			if(staticBurstTargetObject != null) {
+				if(staticBurstTimer == 0) {
+					if(numBursts > 1) {
+						numBursts--;
+						staticBurstTimer = 4;
+
+						Create_Aftershock(staticBurstTargetObject.transform.position + new Vector3(1.75f *Mathf.Cos(numBursts/5f), 1.75f *Mathf.Sin(numBursts/5f)), numBursts);
+					}
+					else
+						Create_Aftershock(staticBurstTargetObject.transform.position, numBursts);
 				}
-				else
-					Create_Burst(staticBurstTarget.gameObject.transform.position);
 			}
+			else
+				staticBurstTarget = "";	
 		}
 
-		if(g_burst != null) g_burst.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
-		if(g_staticField!= null) g_staticField.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
+		foreach(InstantiatedEntityCleanup aftershock in aftershocks)
+			aftershock?.UpdateFrame();
+
+		staticField?.UpdateFrame();
+
 		ledgeDetector.UpdateFrame();
 	}
 
-	public void Create_Static_Field(int launcher){
+	public void Create_Static_Field(int launcher) {
 		deleteStaticField();
 		GameObject projectile;
-		projectile = GameController.Instance.CreatePrefab("Parhelion_Static", transform.position + new Vector3(0,2f), transform.rotation);
+		projectile = GameController.Instance.CreatePrefab("Parhelion_Static", transform.position + new Vector3(0,2f), transform.rotation,drifter.peerID);
 		projectile.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
 		SetObjectColor(projectile);
 		projectile.transform.SetParent(drifter.gameObject.transform);
@@ -69,19 +78,15 @@ public class NeoParhelionMasterHit : MasterHit
 
 		staticCycles++;
 
+		staticField = projectile.GetComponent<InstantiatedEntityCleanup>();
 		if(launcher != 0)
-			projectile.GetComponent<InstantiatedEntityCleanup>().PlayAnimation("Parhelion_Static_End");
-
-		g_staticField = projectile;
+			staticField.PlayAnimation("Parhelion_Static_End");
 	}
 
-	private void Create_Burst(Vector2 pos){
-		GameObject projectile;
-		projectile = GameController.Instance.CreatePrefab("Parhelion_Burst", pos, transform.rotation);
+	private void Create_Aftershock(Vector2 pos, int index) {
+		GameObject projectile = GameController.Instance.CreatePrefab("Parhelion_Burst", pos, transform.rotation,drifter.peerID);
 		projectile.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
 		SetObjectColor(projectile);
-
-
 
 		foreach (HitboxCollision hitbox in projectile.GetComponentsInChildren<HitboxCollision>(true)) {
 			hitbox.parent = drifter.gameObject;
@@ -89,30 +94,26 @@ public class NeoParhelionMasterHit : MasterHit
 			hitbox.Facing = movement.Facing;
 		}
 
-		g_burst = projectile;
+		aftershocks[index] = projectile.GetComponent<InstantiatedEntityCleanup>();;
 	}
 
-	public void Loop_W_Down(){
-
-		if(!status.HasStatusEffect(PlayerStatusEffect.ELECTRIFIED)){
+	public void Loop_W_Down() {
+		if(!status.HasStatusEffect(PlayerStatusEffect.ELECTRIFIED)) {
 			status.AddStatusBar(PlayerStatusEffect.ELECTRIFIED, MAX_STATIC_CHARGE_DURATION);
 			status.AddStatusDuration(PlayerStatusEffect.ELECTRIFIED, 99, MAX_STATIC_CHARGE_DURATION);
-
 		}
 		else status.AddStatusDuration(PlayerStatusEffect.ELECTRIFIED, 100, MAX_STATIC_CHARGE_DURATION);
 
-		if(!drifter.input[0].Special || staticCycles >3){
+		if(!drifter.input[0].Special || staticCycles >3) {
 			staticCycles = 0;
-
 			playState("W_Down_End");
 		}
 	}
 
 	public void Create_Dash_Trail() {
 		dashTrail = drifter.createParticleEffector("PARHELION_DASH_Particle");
-		GameObject projectile = GameController.Instance.CreatePrefab("Parhelion_Dash", transform.position, transform.rotation);
+		GameObject projectile = GameController.Instance.CreatePrefab("Parhelion_Dash", transform.position, transform.rotation,drifter.peerID);
 		projectile.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
-
 	}
 
 	public void Remove_Dash_Trail() {
@@ -121,14 +122,14 @@ public class NeoParhelionMasterHit : MasterHit
 		dashTrail = null;
 	}
 
-
-
 	private void deleteStaticField() {
-		Destroy(g_staticField);
-		g_staticField = null;
+		if(staticField != null) {
+			Destroy(staticField.gameObject);
+			staticField = null;
+		}
 	}
 
-	public override void TriggerOnHit(Drifter target_drifter, bool isProjectle, AttackHitType hitType){
+	public override void TriggerOnHit(Drifter target_drifter, bool isProjectle, AttackHitType hitType) {
 		
 		if(isProjectle || (hitType != AttackHitType.HIT && hitType != AttackHitType.BLOCK) || !status.HasStatusEffect(PlayerStatusEffect.ELECTRIFIED) || staticCycles >0)return;
 		//If a burst is already charging, reset timer instead and dont consume moe juice
@@ -136,32 +137,31 @@ public class NeoParhelionMasterHit : MasterHit
 			staticBurstTimer = 8;
 			return;
 		}
-
-		if(hitType == AttackHitType.BLOCK){
+		if(hitType == AttackHitType.BLOCK) {
 			numBursts = 1;
 			status.AddStatusDuration(PlayerStatusEffect.ELECTRIFIED, -100);
 		}
-		else{
+		else {
 			numBursts = status.remainingDuration(PlayerStatusEffect.ELECTRIFIED)/100;
 			status.ApplyStatusEffect(PlayerStatusEffect.ELECTRIFIED,0);
 		}
 		staticBurstTimer = 8;
-		staticBurstTarget = target_drifter;
+		staticBurstTarget = target_drifter.gameObject.name;
 	}
 
 	public new void returnToIdle() {
 		base.returnToIdle();
-		Up_W_Grab.victim = null;
+		//Up_W_Grab.victim = null;
 		deleteStaticField();
 		staticCycles = 0;
 	}
 
-	public override void clearMasterhitVars(){
+	public override void clearMasterhitVars() {
 		base.clearMasterhitVars();
 		deleteStaticField();
 		staticCycles = 0;
 		Remove_Dash_Trail();
-		//staticBurstTarget = null;
+		//staticBurstTarget = "";
 		//numBursts = 0;
 	}
 
@@ -171,7 +171,6 @@ public class NeoParhelionMasterHit : MasterHit
 	}
 
 	public void dust() {
-
 		if(movement.grounded)movement.spawnJuiceParticle(transform.position + new Vector3(4f * movement.Facing,0,0),MovementParticleMode.Dash_Cloud, true);
 	}
 
@@ -179,23 +178,63 @@ public class NeoParhelionMasterHit : MasterHit
 	//=========================================
 
 	//Takes a snapshot of the current frame to rollback to
-	public override MasterhitRollbackFrame SerializeFrame() {
-		MasterhitRollbackFrame baseFrame = SerializeBaseFrame();
-		baseFrame.CharacterFrame = new ParhelionRollbackFrame() {};
+	public override void Serialize(BinaryWriter bw) {
+		base.Serialize(bw);
 
-		return baseFrame;
+		bw.Write(staticBurstTimer);
+		bw.Write(numBursts);
+		bw.Write(staticCycles);
+
+		bw.Write(staticBurstTarget);
+
+		for(int i = 0; i < aftershocks.Length; i++) {
+			if(aftershocks[i] == null)
+				bw.Write(false);
+			else{
+				bw.Write(true);
+				aftershocks[i].Serialize(bw);
+			}
+		}
+
+		if(staticField == null)
+			bw.Write(false);
+		else{
+			bw.Write(true);
+			staticField.Serialize(bw);
+		}
+
 	}
 
 	//Rolls back the entity to a given frame state
-	public override void DeserializeFrame(MasterhitRollbackFrame p_frame) {
-		DeserializeBaseFrame(p_frame);
+	public override void Deserialize(BinaryReader br) {
+		base.Deserialize(br);
+
+		staticBurstTimer = br.ReadInt32();
+		numBursts = br.ReadInt32();
+		staticCycles = br.ReadInt32();
+
+		staticBurstTarget = br.ReadString();
+
+		for(int i = 0; i < aftershocks.Length; i++) {
+			if(br.ReadBoolean()) {
+				if(aftershocks[i] == null) Create_Aftershock(transform.position, i);
+				aftershocks[i].Deserialize(br);
+			}
+			else if(aftershocks[i] != null) {
+				Destroy(aftershocks[i].gameObject);
+				aftershocks[i] = null;
+			}
+		}
+
+		if(br.ReadBoolean()) {
+			if(staticField == null) Create_Static_Field(0);
+			staticField.Deserialize(br);
+		}
+		else if(staticField != null) {
+			Destroy(staticField.gameObject);
+			staticField = null;
+		}
+
 	}
 
 }
-
-public class ParhelionRollbackFrame: ICharacterRollbackFrame
-{
-	public string Type { get; set; }
-	
-}
-

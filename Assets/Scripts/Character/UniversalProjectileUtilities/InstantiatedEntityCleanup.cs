@@ -2,32 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class BasicProjectileRollbackFrame: INetworkData
-{
-	public string Type { get; set; }
-
-	public Vector2 Velocity;
-	public Vector2 Position;
-	public float Rotation;
-	public int Duration;
-	public int AnimatorState;
-	public float AnimatorTime;
-	public bool AnimatorActive;
-
-	//Hitpause
-	public int FreezeDuration;
-	public bool UseHitpause;
-
-	//Super Freeze
-	public bool PauseBehavior;
-	public bool Paused;	
-	public Vector2 SavedVelocity;
-	public float SavedGravity;
-	public bool DataSaved;
-
-	public HitboxRollbackFrame[] Hitboxes;    
-}
+using System.IO;
 
 public class InstantiatedEntityCleanup : MonoBehaviour{
 
@@ -46,6 +21,8 @@ public class InstantiatedEntityCleanup : MonoBehaviour{
 	private bool dataSaved = false;
 	private int freezeDuration = 0;
 
+	//Padded to support consistency with binary serialization
+	//As of now, characters cannot have more than this number of hitbox collision objects on their prefab
 	HitboxCollision[] hitboxes;
 
 	//Destroy if the projectile leaves play
@@ -65,6 +42,12 @@ public class InstantiatedEntityCleanup : MonoBehaviour{
 				if(destoryState != "" ) animator.Play(destoryState);
 				else Destroy(gameObject);
 			}	
+		}
+		foreach(HitboxCollision hb in hitboxes){
+			if(hb.FlagForDestruction){
+				if(destoryState != "" ) animator.Play(destoryState);
+				else Destroy(gameObject);
+			}
 		}
 	}
 
@@ -145,61 +128,84 @@ public class InstantiatedEntityCleanup : MonoBehaviour{
 	}
 
 	//Takes a snapshot of the current frame to rollback to
-	public BasicProjectileRollbackFrame SerializeFrame() {
-		HitboxRollbackFrame[] HitboxFrames = new HitboxRollbackFrame[hitboxes.Length];
-		//Searialize each hitbox
-		for(int i = 0; i < hitboxes.Length; i++) {
-			HitboxFrames[i] = hitboxes[i].SerializeFrame();
+	public void Serialize(BinaryWriter bw) {
+
+		bw.Write(duration);
+
+		bw.Write(transform.localScale.x);
+		bw.Write(transform.position.z);
+
+		if(rb != null) {
+			bw.Write(rb.velocity.x);
+			bw.Write(rb.velocity.y);
+			bw.Write(rb.position.x);
+			bw.Write(rb.position.y);
+			bw.Write(rb.rotation);
 		}
 
-		return new BasicProjectileRollbackFrame()  {
-			Duration = duration,
+		bw.Write(savedVelocity.x);
+		bw.Write(savedVelocity.y);
+		bw.Write(savedGravity);
 
-			Velocity = rb !=null ? rb.velocity: Vector2.zero,
-			Position = rb !=null ? rb.position: Vector2.zero,
-			Rotation = rb !=null ? rb.rotation: 0,
-			AnimatorState = animator !=null ?animator.GetCurrentAnimatorStateInfo(0).shortNameHash : -1,
-			AnimatorTime = animator !=null ? animator.GetCurrentAnimatorStateInfo(0).normalizedTime : -1,
-			AnimatorActive = animator !=null ? animator.enabled : false,
-			Hitboxes = HitboxFrames,
+		if(animator !=null){
+			bw.Write(animator.GetCurrentAnimatorStateInfo(0).shortNameHash);
+			bw.Write(animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+			bw.Write(animator.enabled);
+		}
 
-			PauseBehavior = pauseBehavior,
-			Paused = paused,
-			SavedVelocity = savedVelocity,
-			SavedGravity = savedGravity,
-			DataSaved = dataSaved,
-			FreezeDuration = freezeDuration,
-			UseHitpause = useHitpause,
-		};
+		bw.Write(freezeDuration);
+
+		bw.Write(pauseBehavior);
+		bw.Write(paused);
+		bw.Write(dataSaved);
+		bw.Write(useHitpause);
+
+		for(int i = 0; i < hitboxes.Length; i++)
+			hitboxes[i].Serialize(bw);
 	}
 
 	//Rolls back the entity to a given frame state
-	public void DeserializeFrame(BasicProjectileRollbackFrame p_frame) {
+	public void Deserialize(BinaryReader br) {
 		
-		duration = p_frame.Duration;
+		duration = br.ReadInt32();
+
+		transform.localScale 	= new Vector2(br.ReadSingle(),transform.localScale.y);
+		transform.position 		= new Vector3(transform.position.x,transform.position.y,br.ReadSingle());
+
 		if(rb != null) {
-			rb.velocity = p_frame.Velocity;
-			rb.position = p_frame.Position;
-			rb.rotation = p_frame.Rotation;
+			Vector2 Velocity = Vector2.zero;
+			Vector3 Position = Vector3.zero;
+
+			Velocity.x 		= br.ReadSingle();
+			Velocity.y 		= br.ReadSingle();
+			rb.velocity 	= Velocity;
+			Position.x 		= br.ReadSingle();
+			Position.y 		= br.ReadSingle();
+			rb.position		= Position;
+			rb.rotation 	= br.ReadSingle();
 		}
+
+		Vector2 SavedVelocity = Vector2.zero;
+		SavedVelocity.x = br.ReadSingle();
+		SavedVelocity.y = br.ReadSingle();
+		savedVelocity = SavedVelocity;
+		savedGravity = br.ReadSingle();
 		
 		if(animator != null) {
-			animator.enabled = p_frame.AnimatorActive;
-			animator.Play(p_frame.AnimatorState,0,p_frame.AnimatorTime);
+			int AnimatorHash = br.ReadInt32();
+			float AnimatorTime = br.ReadSingle();
+			animator.Play(AnimatorHash,0,AnimatorTime);
+			animator.enabled = br.ReadBoolean();
 		}
 
-		for(int i = 0; i < p_frame.Hitboxes.Length; i++) {
-			hitboxes[i].DeserializeFrame(p_frame.Hitboxes[i]);
-		}
+		freezeDuration = br.ReadInt32();
 
-		pauseBehavior = p_frame.PauseBehavior;
-		paused = p_frame.Paused;
-		savedVelocity = p_frame.SavedVelocity;
-		savedGravity = p_frame.SavedGravity;
-		dataSaved = p_frame.DataSaved;
-		useHitpause = p_frame.UseHitpause;
-		freezeDuration = p_frame.FreezeDuration;
+		pauseBehavior = br.ReadBoolean();
+		paused = br.ReadBoolean();
+		dataSaved = br.ReadBoolean();
+		useHitpause = br.ReadBoolean();
 
+		for(int i = 0; i < hitboxes.Length; i++)
+			hitboxes[i].Deserialize(br);
 	}
-
 }

@@ -7,16 +7,15 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 
-public enum PlayerColor
-{
+public enum PlayerColor {
     RED, GOLD, GREEN, BLUE, PURPLE, MAGENTA, ORANGE, CYAN, GREY, WHITE, BLACK, DARK_GREY
 }
 
 
 [Serializable]
-public enum BattleStage
-{
+public enum BattleStage {
     None,Random,Training,Moosejaw,Mendys,Treefell,Driftwood,Neo_Tokyo,Amber_River,Hadal_Keep
 }
 

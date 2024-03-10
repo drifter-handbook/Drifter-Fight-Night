@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -178,7 +179,7 @@ public class Drifter : MonoBehaviour
 
 	//Flips text-based objects attacked to characters to keep them readable as the character turns
 	public void SetIndicatorDirection(float facing) {
-		transform.GetChild(0).localScale = new Vector2(Mathf.Abs(transform.GetChild(0).localScale.x) * facing,transform.GetChild(0).localScale.y);
+		transform.GetChild(0).localScale = new Vector2(Mathf.Abs(transform.GetChild(0).localScale.x) * facing, transform.GetChild(0).transform.localScale.y);
 		//transform.GetChild(3).localScale = new Vector2(Mathf.Abs(transform.GetChild(3).localScale.x) * facing,transform.GetChild(3).localScale.y);
 	}
 
@@ -193,10 +194,7 @@ public class Drifter : MonoBehaviour
 	//Replaces the animator state transition function
 	public void PlayAnimation(string p_state, float p_normalizedTime = -1, bool p_gate = false, int eventBlockTime = 2) {
 
-		if(p_gate && Animator.StringToHash(p_state) == animator.GetCurrentAnimatorStateInfo(0).shortNameHash) {
-			UnityEngine.Debug.Log("Animation state " +p_state + " was gated!");
-		}
-		else {
+		if(!p_gate || Animator.StringToHash(p_state) != animator.GetCurrentAnimatorStateInfo(0).shortNameHash) {
 			animator.Play(Animator.StringToHash(p_state),0,p_normalizedTime < 0 ? 0: p_normalizedTime);
 			blockEvent = eventBlockTime;
 		}
@@ -294,7 +292,7 @@ public class Drifter : MonoBehaviour
 	}
 
 	public GameObject createParticleEffector(string name){
-		GameObject effector = GameController.Instance.CreatePrefab(name, ParticlePoint.transform.position, transform.rotation);
+		GameObject effector = GameController.Instance.CreatePrefab(name, ParticlePoint.transform.position, transform.rotation,peerID);
 		effector.transform.SetParent(transform);
 
 		return effector;
@@ -385,89 +383,85 @@ public class Drifter : MonoBehaviour
 	//====================================
 
 	//Takes a snapshot of the current frame to rollback to
-	public DrifterRollbackFrame SerializeFrame() {
-		return new DrifterRollbackFrame() {
+	public void Serialize(BinaryWriter bw) {
 
-			//Input buffer
-			InputBuffer = input,
+		//Input buffer
+		foreach(PlayerInputData inputFrame in input)
+			inputFrame.Serialize(bw);
+		
 
-			//Character State
-			Guarding = guarding,
-			InspirationCharges = inspirationCharges,
-			CanFeint = canFeint,
-			// CanSuper = canSuper,
-			KnockedDown = knockedDown,
-			CanSpecialCancel = _canSpecialCancel, 
-			Hidden = hiddenFlag,
-			SuperCharge = superCharge,
-			Stocks = this.Stocks,
-			DamageTaken = this.DamageTaken,
-			CancelTimer = cancelTimer,
-			ListenForSpecialCancel = listenForSpecialCancel,
-			SparkleMode = sparkleMode,
-			UsingSuper = usingSuper,
-			BlockEvent = blockEvent,
-			//Animation
-			AnimationOverrideIndex = overrideIndex,
-			AnimationSpeed = animator.speed,
-			//AnimationClip = animator.GetCurrentAnimatorStateInfo(0).shortNameHash,
-			//AnimationTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime,
-			//AnimatorEnabled = animator.enabled,
+		//Bools
+		bw.Write(canFeint);
+		bw.Write(_canSpecialCancel);
+		bw.Write(guarding);
+		bw.Write(hiddenFlag);
+		bw.Write(knockedDown);
+		bw.Write(listenForSpecialCancel);
+		bw.Write(sparkleMode);
+		bw.Write(usingSuper);
 
-			//Components
-			MovementFrame = movement.SerializeFrame(),
-			AttackFrame = attacks.SerializeFrame(),
-			MasterhitFrame =  masterhit.SerializeFrame(),
-			StatusFrame = status.SerializeFrame(),
-			HurtboxhitFrame = hurtbox.SerializeFrame(),
-			EntityFrame = entity.SerializeFrame(),
-		};
+		//Ints
+		bw.Write(overrideIndex);
+		bw.Write(blockEvent);
+		bw.Write(cancelTimer);
+		bw.Write(inspirationCharges);
+		bw.Write(Stocks);
+		bw.Write(superCharge);
+
+		//Floats
+		bw.Write(animator.speed);
+		bw.Write(DamageTaken);
+
+		//Children
+		entity.Serialize(bw);
+		status.Serialize(bw);
+		movement.Serialize(bw);
+		attacks.Serialize(bw);
+		hurtbox.Serialize(bw);
+		masterhit.Serialize(bw);
 	}
 
 	//Rolls back the entity to a given frame state
-	public  void DeserializeFrame(DrifterRollbackFrame p_frame) {
+	public void Deserialize(BinaryReader br) {
 
-		//Input buffer
-		input = p_frame.InputBuffer;
-
-		//Character State
-		guarding = p_frame.Guarding;
-		inspirationCharges = p_frame.InspirationCharges;
-		canFeint = p_frame.CanFeint;
-		// canSuper = p_frame.CanSuper;
-		knockedDown = p_frame.KnockedDown;
-		_canSpecialCancel = p_frame.CanSpecialCancel; 
-		hiddenFlag = p_frame.Hidden;
-		superCharge = p_frame.SuperCharge;
-		Stocks = p_frame.Stocks;
-		DamageTaken = p_frame.DamageTaken;
-		cancelTimer = p_frame.CancelTimer;
-		listenForSpecialCancel = p_frame.ListenForSpecialCancel;
-		sparkleMode = p_frame.SparkleMode;
-		usingSuper = p_frame.UsingSuper;
-
-		blockEvent = p_frame.BlockEvent;
-
-		//Animation
-		//animator.enabled = p_frame.AnimatorEnabled;
-		SetAnimationOverride(p_frame.AnimationOverrideIndex); 
-		animator.speed = p_frame.AnimationSpeed;
-		//animator.Play(p_frame.AnimationClip,0,p_frame.AnimationTime);
+		//input buffer
+		foreach(PlayerInputData inputFrame in input)
+			inputFrame.Deserialize(br);
 		
-		//Components
-		status.DeserializeFrame(p_frame.StatusFrame);
-		entity.DeserializeFrame(p_frame.EntityFrame);
-		movement.DeserializeFrame(p_frame.MovementFrame);
-		attacks.DeserializeFrame(p_frame.AttackFrame);
-		hurtbox.DeserializeFrame(p_frame.HurtboxhitFrame);
-		masterhit.DeserializeFrame(p_frame.MasterhitFrame);
+		//Bools
+		canFeint = br.ReadBoolean();
+		_canSpecialCancel = br.ReadBoolean();
+		guarding = br.ReadBoolean();
+		hiddenFlag = br.ReadBoolean();
+		knockedDown = br.ReadBoolean();
+		listenForSpecialCancel = br.ReadBoolean();
+		sparkleMode = br.ReadBoolean();
+		usingSuper = br.ReadBoolean();
+
+		//Ints
+		overrideIndex = br.ReadInt32();
+		blockEvent = br.ReadInt32();
+		cancelTimer = br.ReadInt32();
+		inspirationCharges = br.ReadInt32();
+		Stocks = br.ReadInt32();
+		superCharge = br.ReadInt32();
+
+		//Floats
+		animator.speed = br.ReadSingle();
+		DamageTaken = br.ReadSingle();
+
+		//Children
+		entity.Deserialize(br);
+		status.Deserialize(br);
+		movement.Deserialize(br);
+		attacks.Deserialize(br);
+		hurtbox.Deserialize(br);
+		masterhit.Deserialize(br);
 		
 		
 	}
 
 	public void UpdateFrame() {
-
-		//if(!isDummy)UnityEngine.Debug.Log("UpdateFrame");
 
 		if(GameController.Instance.IsPaused)
             return;
@@ -495,42 +489,4 @@ public class Drifter : MonoBehaviour
 		
 		
 	}
-}
-
-public class DrifterRollbackFrame: INetworkData
-{
-	public string Type { get; set; }
-	public PlayerInputData[] InputBuffer;
-	
-	public bool Guarding;
-	public int InspirationCharges;
-	public bool CanFeint;
-	// public bool CanSuper;
-	public bool KnockedDown;
-	public bool CanSpecialCancel; 
-	public bool Hidden;
-	public int SuperCharge;
-	public int Stocks;
-	public float DamageTaken;
-	public int CancelTimer;
-	public bool ListenForSpecialCancel;
-	public bool SparkleMode;
-	public bool UsingSuper;
-
-	public int BlockEvent;
-
-	public int AnimationOverrideIndex; 
-	public float AnimationSpeed;
-	
-	// public int AnimationClip;
-	// public float AnimationTime;
-	// public bool AnimatorEnabled;
-
-	public MovementRollbackFrame MovementFrame;
-	public AttackRollbackFrame AttackFrame;
-	public MasterhitRollbackFrame MasterhitFrame;
-	public StatusRollbackFrame StatusFrame;
-	public HurtboxRollbackFrame HurtboxhitFrame;
-	public BasicProjectileRollbackFrame EntityFrame;
-	
 }

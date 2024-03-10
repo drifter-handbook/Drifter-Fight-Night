@@ -1,34 +1,36 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
-public class NeoBojoMasterHit : MasterHit
-{
+public class NeoBojoMasterHit : MasterHit {
 
-	GameObject g_centaur;
-	GameObject g_note;
-	GameObject g_soundwave;
+	InstantiatedEntityCleanup centaur;
+	InstantiatedEntityCleanup note;
+	InstantiatedEntityCleanup soundwave;
 	int power = 0;
 
 	override public void UpdateFrame() {
 		base.UpdateFrame();
-		if(g_centaur != null) g_centaur.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
-		if(g_soundwave != null) g_soundwave.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
-		if(g_note != null) g_note.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
+		centaur?.UpdateFrame();
+		soundwave?.UpdateFrame();
+		note?.UpdateFrame();
 	}
 
 	public void SpawnSoundwave() {
-		g_soundwave = GameController.Instance.CreatePrefab("BojoDTiltWave", transform.position , transform.rotation);
-		g_soundwave.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
+		GameObject proj = GameController.Instance.CreatePrefab("BojoDTiltWave", transform.position , transform.rotation,drifter.peerID);
+		proj.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
 
-		g_soundwave.GetComponent<Rigidbody2D>().velocity = new Vector3(movement.Facing * 33,-22);
-		foreach (HitboxCollision hitbox in g_soundwave.GetComponentsInChildren<HitboxCollision>(true)) {
+		proj.GetComponent<Rigidbody2D>().velocity = new Vector3(movement.Facing * 33,-22);
+		foreach (HitboxCollision hitbox in proj.GetComponentsInChildren<HitboxCollision>(true)) {
 			hitbox.parent = drifter.gameObject;
 			hitbox.AttackID = attacks.AttackID;
 			hitbox.Facing = movement.Facing;
 	   }
 
-	   SetObjectColor(g_soundwave);
+	   SetObjectColor(proj);
+
+	   soundwave =  proj.GetComponent<InstantiatedEntityCleanup>();
 	}
 
 	public void whirl() {
@@ -36,55 +38,59 @@ public class NeoBojoMasterHit : MasterHit
 	}
 
 	public void SpawnNote() {
-		if(g_note != null)  {
+		if(note != null)  {
 				//Detonate here;
 			return;
 		}
 
-		g_note = GameController.Instance.CreatePrefab("Bojo_Note", transform.position + new Vector3(1.5f * movement.Facing, 4f), transform.rotation);
-		g_note.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
-		foreach (HitboxCollision hitbox in g_note.GetComponentsInChildren<HitboxCollision>(true)) {
+		GameObject proj = GameController.Instance.CreatePrefab("Bojo_Note", transform.position + new Vector3(1.5f * movement.Facing, 4f), transform.rotation,drifter.peerID);
+		proj.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
+		foreach (HitboxCollision hitbox in proj.GetComponentsInChildren<HitboxCollision>(true)) {
 			hitbox.parent = drifter.gameObject;
 			hitbox.AttackID = attacks.AttackID;
 			hitbox.Facing = movement.Facing;
 		}
-		SetObjectColor(g_note);
-		g_note.GetComponent<Rigidbody2D>().velocity = new Vector3(movement.Facing * 18f,0,0);
+		SetObjectColor(proj);
+		proj.GetComponent<Rigidbody2D>().velocity = new Vector3(movement.Facing * 18f,0,0);
+
+		note = proj.GetComponent<InstantiatedEntityCleanup>();
 	}
 
 
 	public void SpawnCentaur() {
-		if(g_centaur == null) {
-			g_centaur = GameController.Instance.CreatePrefab("Centaur", transform.position , transform.rotation);
-			g_centaur.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
-			g_centaur.GetComponent<Rigidbody2D>().velocity = new Vector3(movement.Facing * 15,0);
+		if(centaur == null) {
+			GameObject proj = GameController.Instance.CreatePrefab("Centaur", transform.position , transform.rotation,drifter.peerID);
+			proj.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
+			proj.GetComponent<Rigidbody2D>().velocity = new Vector3(movement.Facing * 15,0);
 			int id = attacks.NextID;
-			foreach (HitboxCollision hitbox in g_centaur.GetComponentsInChildren<HitboxCollision>(true)) {
+			foreach (HitboxCollision hitbox in proj.GetComponentsInChildren<HitboxCollision>(true)) {
 					hitbox.parent = drifter.gameObject;
 					hitbox.AttackID = id;
 					hitbox.Facing = movement.Facing;
 			}
 
-			foreach (HurtboxCollision hurtbox in g_centaur.GetComponentsInChildren<HurtboxCollision>(true))
+			foreach (HurtboxCollision hurtbox in proj.GetComponentsInChildren<HurtboxCollision>(true))
 				hurtbox.owner = drifter.gameObject;
 	   
 
-			SetObjectColor(g_centaur);
+			SetObjectColor(proj);
+
+			centaur = proj.GetComponent<InstantiatedEntityCleanup>();
 			UnityEngine.Debug.Log("PLACING CENTAUR");
-			g_centaur.GetComponent<Animator>().Play("Centaur_" + power);
+			centaur.PlayAnimation("Centaur_" + power);
 			UnityEngine.Debug.Log("Centaur_" + power);
 		}
 	}
 
 	public void fireCentaur() {
-		if(g_centaur != null) {
+		if(centaur != null) {
 			int id = attacks.NextID;
-			foreach (HitboxCollision hitbox in g_centaur.GetComponentsInChildren<HitboxCollision>(true)) {
+			foreach (HitboxCollision hitbox in centaur.GetComponentsInChildren<HitboxCollision>(true)) {
 				hitbox.parent = drifter.gameObject;
 				hitbox.AttackID = id;
 				hitbox.Facing = movement.Facing;
 			}
-			g_centaur.GetComponent<Animator>().Play("Centaur_Fire_" + power);
+			centaur.PlayAnimation("Centaur_Fire_" + power);
 			UnityEngine.Debug.Log("Centaur_Fire_" + power);
 			
 		}
@@ -92,7 +98,7 @@ public class NeoBojoMasterHit : MasterHit
 	}
 
 	public void fireCentaurState() {
-		if(g_centaur != null)
+		if(centaur != null)
 			playState("W_Down_Fire");
 	}
 
@@ -104,67 +110,65 @@ public class NeoBojoMasterHit : MasterHit
 	//=========================================
 
 	//Takes a snapshot of the current frame to rollback to
-	public override MasterhitRollbackFrame SerializeFrame() {
-		MasterhitRollbackFrame baseFrame = SerializeBaseFrame();
-		baseFrame.CharacterFrame= new BojoRollbackFrame()  {
-			Centaur = g_centaur != null ? g_centaur.GetComponent<NonplayerHurtboxHandler>().SerializeFrame(): null,
-			Note = g_note != null ? g_note.GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null,
-			Soundwave = g_soundwave != null ? g_soundwave.GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null,
-			Power = power
-		};
+	public override void Serialize(BinaryWriter bw) {
+		base.Serialize(bw);
 
-		return baseFrame;
+		bw.Write(power);
+
+		if(centaur == null)
+			bw.Write(false);
+		else{
+			bw.Write(true);
+			centaur.Serialize(bw);
+		}
+
+		if(note == null)
+			bw.Write(false);
+		else{
+			bw.Write(true);
+			note.Serialize(bw);
+		}
+
+		if(soundwave == null)
+			bw.Write(false);
+		else{
+			bw.Write(true);
+			soundwave.Serialize(bw);
+		}
+
 	}
 
 	//Rolls back the entity to a given frame state
-	public override void DeserializeFrame(MasterhitRollbackFrame p_frame) {
-		DeserializeBaseFrame(p_frame);
+	public override void Deserialize(BinaryReader br) {
+		base.Deserialize(br);
 
-		BojoRollbackFrame bj_frame = (BojoRollbackFrame)p_frame.CharacterFrame;
+		power = br.ReadInt32();
 
-		power = bj_frame.Power;
-
-		//Sandblast reset
-		if(bj_frame.Centaur != null) {
-			if(g_centaur == null)SpawnCentaur();
-			g_centaur.GetComponent<NonplayerHurtboxHandler>().DeserializeFrame(bj_frame.Centaur);
+		if(br.ReadBoolean()){
+			if(centaur == null) SpawnCentaur();
+			centaur.Deserialize(br);
 		}
-		//Projectile does not exist in rollback frame
-		else {
-			Destroy(g_centaur);
-			g_centaur = null;
-		}  
-
-		if(bj_frame.Soundwave != null) {
-			if(g_soundwave == null)SpawnSoundwave();
-			g_soundwave.GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(bj_frame.Soundwave);
+		else if(centaur != null){
+			Destroy(centaur.gameObject);
+			centaur = null;
 		}
-		//Projectile does not exist in rollback frame
-		else {
-			Destroy(g_soundwave);
-			g_soundwave = null;
-		} 
 
-		if(bj_frame.Note != null) {
-			if(g_note == null)SpawnNote();
-			g_note.GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(bj_frame.Note);
+		if(br.ReadBoolean()){
+			if(note == null) SpawnNote();
+			note.Deserialize(br);
 		}
-		//Projectile does not exist in rollback frame
-		else {
-			Destroy(g_note);
-			g_note = null;
-		} 
+		else if(note != null){
+			Destroy(note.gameObject);
+			note = null;
+		}
+
+		if(br.ReadBoolean()){
+			if(soundwave == null) SpawnSoundwave();
+			soundwave.Deserialize(br);
+		}
+		else if(soundwave != null){
+			Destroy(soundwave.gameObject);
+			soundwave = null;
+		}
 	}
-
-}
-
-public class BojoRollbackFrame: ICharacterRollbackFrame
-{
-	public string Type { get; set; }
-
-	public NPCHurtboxRollbackFrame Centaur;
-	public BasicProjectileRollbackFrame Soundwave;
-	public BasicProjectileRollbackFrame Note;
-	public int Power;
-	
 }

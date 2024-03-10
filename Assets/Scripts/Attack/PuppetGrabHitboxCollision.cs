@@ -5,8 +5,6 @@ using UnityEngine;
 public class PuppetGrabHitboxCollision : HitboxCollision
 {
 
-    public HurtboxCollision victim;
-
     public string SuccessState = "";
     public Animator animator = null;
     public bool playOnInvuln = false;
@@ -27,7 +25,6 @@ public class PuppetGrabHitboxCollision : HitboxCollision
                 hitResult = (int)hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID + 64, OverrideData);
                 if((hitResult == 0  || hitResult == 1) && SuccessState != "" && animator != null)
                 {
-                    victim = hurtbox;
                     animator.Play(SuccessState);
                 }
                 else if((playOnInvuln && hitResult == -5))

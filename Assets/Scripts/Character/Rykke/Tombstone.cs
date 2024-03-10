@@ -1,11 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System.IO;
 
 public class Tombstone : NonplayerHurtboxHandler
 {
-
 	//Synced Flags
 	public bool canAct = false;
 	public bool active = false;
@@ -238,7 +237,7 @@ public class Tombstone : NonplayerHurtboxHandler
 
 	//Spawns a flame burst effect
 	public void burst(int mode = 0) {
-		GameObject burst = GameController.Instance.CreatePrefab("Zombie_Burst", transform.position + new Vector3(2f * facing,0), transform.rotation);
+		GameObject burst = GameController.Instance.CreatePrefab("Zombie_Burst", transform.position + new Vector3(2f * facing,0), transform.rotation,drifter.GetComponent<Drifter>().peerID);
 		burst.transform.localScale = new Vector3(facing *10,10,1f);
 
 		burst.GetComponent<Animator>().Play(mode ==0? "Vertical":"Horizontal");
@@ -249,44 +248,26 @@ public class Tombstone : NonplayerHurtboxHandler
 	//=========================================
 
 	//Takes a snapshot of the current frame to rollback to
-	public TombstoneRollbackFrame SerializeFrame() {
-		return new TombstoneRollbackFrame() {
-			NPCFrame = base.SerializeFrame(),
-			CanAct = canAct,
-			Active = active,
-			Projectile = projectile,
-			Attacking = attacking,
-			ListeningForGrounded = listeningForGrounded,
-			Breaking = breaking,
-		};
+	public override void Serialize(BinaryWriter br) {
+		base.Serialize(br);
+		br.Write(canAct);
+		br.Write(active);
+		br.Write(projectile);
+		br.Write(attacking);
+		br.Write(listeningForGrounded);
+		br.Write(breaking);
 	}
 
 	//Rolls back the entity to a given frame state
-	public void DeserializeFrame(TombstoneRollbackFrame p_frame) {
+	public override void Deserialize(BinaryReader br) {
 
-		DeserializeFrame(p_frame.NPCFrame);
-		canAct = p_frame.CanAct;
-		active = p_frame.Active;
-		projectile = p_frame.Projectile;
-		attacking = p_frame.Attacking;
-		listeningForGrounded = p_frame.ListeningForGrounded;
-		breaking = p_frame.Breaking;
+		base.Deserialize(br);
+		canAct = br.ReadBoolean();
+		active = br.ReadBoolean();
+		projectile = br.ReadBoolean();
+		attacking = br.ReadBoolean();
+		listeningForGrounded = br.ReadBoolean();
+		breaking = br.ReadBoolean();
 	}
 
-}
-
-public class TombstoneRollbackFrame: INetworkData
-{
-
-	public NPCHurtboxRollbackFrame NPCFrame;
-
-	public bool CanAct;
-	public bool Active;
-	public bool Projectile;
-	public bool Attacking;
-	public bool ListeningForGrounded;
-	public bool Breaking;
-
-	public string Type { get; set; }
-	
 }

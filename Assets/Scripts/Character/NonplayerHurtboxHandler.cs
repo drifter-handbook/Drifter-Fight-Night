@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 
 public class NonplayerHurtboxHandler : PlayerHurtboxHandler
 {
@@ -58,8 +59,6 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
 			HitstunDuration--;
 			if(HitstunDuration < 0)	HitstunDuration = 0;
 		}
-
-
 	}
 
 	public override AttackHitType RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, SingleAttackData attackData) {
@@ -160,44 +159,36 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
 	}
 
 	//Takes a snapshot of the current frame to rollback to
-	public NPCHurtboxRollbackFrame SerializeFrame() {
-		return new NPCHurtboxRollbackFrame() {
-			HurtboxFrame = base.SerializeFrame(),
-			TakesKnockback = takesKnockback,
-			Percentage = percentage,
-			Facing = facing,
-			HitstunDuration = this.HitstunDuration,
-			HitPauseDuration = this.HitstunDuration,
-			DelayedVelocity = delayedVelocity,
-			Entity = entity.SerializeFrame(),
-		};
+	public override void Serialize(BinaryWriter bw) {
+		base.Serialize(bw);
+
+		bw.Write(takesKnockback);
+
+		bw.Write(HitstunDuration);
+		bw.Write(HitPauseDuration);
+		bw.Write(facing);
+
+		bw.Write(percentage);
+		bw.Write(delayedVelocity.x);
+		bw.Write(delayedVelocity.y);
+
+		entity.Serialize(bw);
 	}
 
 	//Rolls back the entity to a given frame state
-	public  void DeserializeFrame(NPCHurtboxRollbackFrame p_frame) {
-		base.DeserializeFrame(p_frame.HurtboxFrame);
-		takesKnockback = p_frame.TakesKnockback;
-		percentage = p_frame.Percentage;
-		facing =p_frame.Facing;
-		HitstunDuration = p_frame.HitstunDuration;
-		HitPauseDuration = p_frame.HitPauseDuration;
-		delayedVelocity = p_frame.DelayedVelocity;
-		entity.DeserializeFrame(p_frame.Entity);
+	public override void Deserialize(BinaryReader br) {
+		base.Deserialize(br);
+		
+		takesKnockback = br.ReadBoolean();
+
+		HitstunDuration = br.ReadInt32();
+		HitPauseDuration = br.ReadInt32();
+		facing = br.ReadInt32();
+
+		percentage  = br.ReadSingle();
+		delayedVelocity.x = br.ReadSingle();
+		delayedVelocity.y = br.ReadSingle();
+
+		entity.Deserialize(br);
 	}
-}
-
-public class NPCHurtboxRollbackFrame: INetworkData
-{
-	public HurtboxRollbackFrame HurtboxFrame;
-
-	public bool TakesKnockback;
-	public float Percentage;  
-	public int HitstunDuration;
-	public int HitPauseDuration;
-	public Vector3 DelayedVelocity;
-	public int Facing;
-	public BasicProjectileRollbackFrame Entity;
-
-	public string Type { get; set; }
-
 }

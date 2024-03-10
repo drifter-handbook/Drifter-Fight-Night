@@ -1,20 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 public class NeoSwordFrogMasterHit : MasterHit
 {
-	public int W_Down_Projectiles = 3;
+	public const int W_DOWN_PROJECTILES = 3;
+	public TetherRange tether;
 	public GameObject GrabConnectionPoint;
+
 	Vector2 HeldDirection = Vector2.zero; 
 
-	public TetherRange tether;
-	GameObject g_Tether_Tongue;
-	GameObject g_Tether_Head;
+	InstantiatedEntityCleanup tether_Tongue;
+	InstantiatedEntityCleanup tether_Head;
+	LineRenderer tether_Tongue_Line;
 	bool tongueRetracting = false;
 	Vector3 tetherPoint = Vector3.zero;
 
-	GameObject[] kunais = new GameObject[3];
+	InstantiatedEntityCleanup[] kunais = new InstantiatedEntityCleanup[3];
 
 	bool listeningForDirection = false;
 	int delaytime = 0;
@@ -44,27 +47,23 @@ public class NeoSwordFrogMasterHit : MasterHit
 			if(HeldDirection != Vector2.zero || delaytime > 5) NeutralSpecialSlash();
 		}
 
-		if(projnum >0) {
-			fireKunaiGroundLine(projnum); 
-			projnum--;
-		}
-		else if(projnum <0) {
-			fireKunaiAirLine(projnum);
-			projnum++;
+		if(projnum != 0) {
+			fireKunai(projnum);
+			projnum += (projnum > 0) ? -1 : 1;
 		}
 
-		if(g_Tether_Tongue != null) {
-			g_Tether_Tongue.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
+
+		if(tether_Tongue != null) {
+			tether_Tongue.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
 
 			if(tetherPoint != Vector3.zero)
-				g_Tether_Tongue.GetComponent<Rigidbody2D>().position = Vector2.MoveTowards(g_Tether_Tongue.GetComponent<Rigidbody2D>().position, tetherPoint,3);
+				tether_Tongue.GetComponent<Rigidbody2D>().position = Vector2.MoveTowards(tether_Tongue.GetComponent<Rigidbody2D>().position, tetherPoint,3);
 
 			else if(tongueRetracting)
-				g_Tether_Tongue.GetComponent<Rigidbody2D>().position = Vector2.MoveTowards(g_Tether_Tongue.GetComponent<Rigidbody2D>().position, (g_Tether_Head != null) ?g_Tether_Head.transform.position:GrabConnectionPoint.transform.position,1);
+				tether_Tongue.GetComponent<Rigidbody2D>().position = Vector2.MoveTowards(tether_Tongue.GetComponent<Rigidbody2D>().position, (tether_Head != null) ?tether_Head.transform.position:GrabConnectionPoint.transform.position,1);
 
-
-			g_Tether_Tongue.GetComponentInChildren<LineRenderer>().SetPosition(0,g_Tether_Tongue.transform.position);
-			g_Tether_Tongue.GetComponentInChildren<LineRenderer>().SetPosition(1,(g_Tether_Head != null) ?g_Tether_Head.transform.position:GrabConnectionPoint.transform.position);
+			tether_Tongue_Line.SetPosition(0,tether_Tongue.transform.position);
+			tether_Tongue_Line.SetPosition(1,(tether_Head != null) ?tether_Head.transform.position:GrabConnectionPoint.transform.position);
 		}
 		else {
 			tongueRetracting = false;
@@ -72,9 +71,8 @@ public class NeoSwordFrogMasterHit : MasterHit
 
 
 		//Update Child Frames
-		foreach(GameObject kunai in kunais)
-			if(kunai != null)
-				kunai.GetComponent<InstantiatedEntityCleanup>().UpdateFrame();
+		foreach(InstantiatedEntityCleanup kunai in kunais)
+			kunai?.UpdateFrame();
 	
 	}
 
@@ -115,39 +113,43 @@ public class NeoSwordFrogMasterHit : MasterHit
 
 	void CreateTongue(Vector3 pos, float angle) {
 
-		g_Tether_Tongue = GameController.Instance.CreatePrefab("SwordFrog_Tongue", pos, Quaternion.Euler(0,0,angle));
-		g_Tether_Tongue.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
+		GameObject proj = GameController.Instance.CreatePrefab("SwordFrog_Tongue", pos, Quaternion.Euler(0,0,angle),drifter.peerID);
+		proj.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
 
-		g_Tether_Tongue.GetComponent<Rigidbody2D>().velocity = rb.velocity + new Vector2(movement.Facing * 75f, 0f);
+		proj.GetComponent<Rigidbody2D>().velocity = rb.velocity + new Vector2(movement.Facing * 75f, 0f);
 
-		foreach (PuppetGrabHitboxCollision hitbox in g_Tether_Tongue.GetComponentsInChildren<PuppetGrabHitboxCollision>(true)) {
+		foreach (PuppetGrabHitboxCollision hitbox in proj.GetComponentsInChildren<PuppetGrabHitboxCollision>(true)) {
 			hitbox.parent = drifter.gameObject;
 			hitbox.AttackID = attacks.AttackID;
 			hitbox.Facing = movement.Facing;
 			hitbox.OverrideData = attacks.Attacks[attacks.AttackType];
 		}
 
-		SetObjectColor(g_Tether_Tongue);
+		SetObjectColor(proj);
 
-		g_Tether_Tongue.GetComponent<RemoteProjectileUtil>().hit = this;
+		proj.GetComponent<RemoteProjectileUtil>().hit = this;
+
+		tether_Tongue = proj.GetComponent<InstantiatedEntityCleanup>();
+		tether_Tongue_Line = tether_Tongue.GetComponentInChildren<LineRenderer>();
 	}
 
 	void CreateHead(Vector3 pos, float angle) {
 
-		g_Tether_Head = GameController.Instance.CreatePrefab("SwordFrog_Head", pos, Quaternion.Euler(0,0,angle));
-		g_Tether_Head.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
+		GameObject proj = GameController.Instance.CreatePrefab("SwordFrog_Head", pos, Quaternion.Euler(0,0,angle),drifter.peerID);
+		proj.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
 
-		SetObjectColor(g_Tether_Head);
+		SetObjectColor(proj);
 
-		g_Tether_Head.transform.SetParent(drifter.gameObject.transform);
+		proj.transform.SetParent(drifter.gameObject.transform);
 
+		tether_Head = proj.GetComponent<InstantiatedEntityCleanup>();
 	}
 
 	public void DeleteTongue() {
-		if(g_Tether_Tongue!= null) Destroy(g_Tether_Tongue);
-		if(g_Tether_Head!= null) Destroy(g_Tether_Head);
-		g_Tether_Tongue = null;
-		g_Tether_Head = null;
+		if(tether_Tongue!= null) Destroy(tether_Tongue.gameObject);
+		if(tether_Head!= null) Destroy(tether_Head.gameObject);
+		tether_Tongue = null;
+		tether_Head = null;
 
 	}
 
@@ -156,8 +158,8 @@ public class NeoSwordFrogMasterHit : MasterHit
 
 		CreateTongue(GrabConnectionPoint.transform.position, 0);
 	
-		g_Tether_Tongue.GetComponentInChildren<LineRenderer>().SetPosition(0, g_Tether_Tongue.transform.position);
-		g_Tether_Tongue.GetComponentInChildren<LineRenderer>().SetPosition(1, GrabConnectionPoint.transform.position);
+		tether_Tongue_Line.SetPosition(0, tether_Tongue.transform.position);
+		tether_Tongue_Line.SetPosition(1, GrabConnectionPoint.transform.position);
 
 	}
 
@@ -183,16 +185,14 @@ public class NeoSwordFrogMasterHit : MasterHit
 		CreateTongue(transform.position,angle);
 		CreateHead(transform.position,angle);
 
-		if(tetherPoint == Vector3.zero) g_Tether_Tongue.GetComponent<Rigidbody2D>().velocity = rb.velocity + new Vector2(75f * movement.Facing * Mathf.Cos((angle*movement.Facing* Mathf.PI)/180),75f *Mathf.Sin((angle*movement.Facing * Mathf.PI)/180));
+		if(tetherPoint == Vector3.zero) tether_Tongue.GetComponent<Rigidbody2D>().velocity = rb.velocity + new Vector2(75f * movement.Facing * Mathf.Cos((angle*movement.Facing* Mathf.PI)/180),75f *Mathf.Sin((angle*movement.Facing * Mathf.PI)/180));
 		else {
-			foreach (HitboxCollision hitbox in g_Tether_Tongue.GetComponentsInChildren<HitboxCollision>(true))
+			foreach (HitboxCollision hitbox in tether_Tongue.GetComponentsInChildren<HitboxCollision>(true))
 				hitbox.isActive = false;
 			tether.g_obj.GetComponent<HopUp>().ledgeLock = LedgeLockState.Tethered;
 		}
 
-		g_Tether_Tongue.GetComponent<RemoteProjectileUtil>().ProjectileIndex = -1;
-
-
+		tether_Tongue.GetComponent<RemoteProjectileUtil>().ProjectileIndex = -1;
 	}
 
 	public void pullToLedge() {
@@ -226,166 +226,142 @@ public class NeoSwordFrogMasterHit : MasterHit
 	}
 
 	public void downSpecialProjectile() {
-		projnum = W_Down_Projectiles;
+		projnum = W_DOWN_PROJECTILES;
 	}
 
 	public void downSpecialProjectileAir() {
-		projnum = -1 * W_Down_Projectiles;
+		projnum = -1 * W_DOWN_PROJECTILES;
 	}
 
-	void fireKunaiGroundLine(int index) {
-		
-		Vector3 size = new Vector3(10f * movement.Facing, 10f, 1f);
-		Vector3 pos = new Vector3(.2f * movement.Facing, 2.7f, 1f);
+	void fireKunai(int index) {
+		if(index == 0) return;
 
+		Vector2 size;
+		Vector3 pos = new Vector3(.2f * movement.Facing, 2.7f,1f);
 
-		GameObject kunai = GameController.Instance.CreatePrefab("Kunai", transform.position + new Vector3(1.5f * movement.Facing, 1.5f + W_Down_Projectiles/5f + (W_Down_Projectiles - index) * .6f, 0), transform.rotation);
+		GameObject kunai;
 
-		kunai.transform.localScale = size;
-		kunai.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + 50f * movement.Facing, 0);
-
-		foreach (HitboxCollision hitbox in kunai.GetComponentsInChildren<HitboxCollision>(true)) {
-			hitbox.parent = drifter.gameObject;
-			hitbox.AttackID = attacks.AttackID;              
-			hitbox.Facing = movement.Facing;
+		if(index>0){
+			size = new Vector2(10f * movement.Facing, 10f);
+		 	kunai =  GameController.Instance.CreatePrefab("Kunai", transform.position + new Vector3(1.5f * movement.Facing, 1.5f + W_DOWN_PROJECTILES/5f + (W_DOWN_PROJECTILES - index) * .6f, 0), transform.rotation,drifter.peerID);
+		 	kunai.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + 50f * movement.Facing, 0);
+		 	kunai.transform.localScale = size;
 		}
-
-		refreshHitboxID();
-		kunais[Mathf.Abs(index) - 1] = kunai;
-
-	}
-
-
-	void fireKunaiAirLine(int index) {
-
-		Vector3 size = new Vector3(10f, 10f, 1f);
-		Vector3 pos = new Vector3(.2f * movement.Facing, 2.7f, 1f);
-
-	
-		float degreesA = movement.Facing >0 ? (335f  + index * 4f) : (215f  - index * 4f);
-		float radiansA = degreesA * Mathf.PI/180f;
-		float posDegrees = (movement.Facing >0 ? 335f  : 215f);
-		float posRadians = posDegrees * Mathf.PI/180f;
-
-		GameObject kunai = GameController.Instance.CreatePrefab("Kunai", transform.position + new Vector3(movement.Facing * (-.5f - index/2f), index/-2f -.9f)
+		else{
+		 	size = new Vector2(10f, 10f);
+		 	float degreesA = movement.Facing >0 ? (335f  + index * 4f) : (215f  - index * 4f);
+			float radiansA = degreesA * Mathf.PI/180f;
+			float posDegrees = (movement.Facing >0 ? 335f  : 215f);
+			float posRadians = posDegrees * Mathf.PI/180f;
+			kunai = GameController.Instance.CreatePrefab("Kunai", transform.position + new Vector3(movement.Facing * (-.5f - index/2f), index/-2f -.9f)
 																 + pos, 
-																 Quaternion.Euler(0,0,posDegrees));
+																 Quaternion.Euler(0,0,posDegrees),drifter.peerID);
 
-
-		kunai.transform.localScale = size;
-		kunai.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + (Mathf.Cos(posRadians) *50f), Mathf.Sin(posRadians)*50f);
+			kunai.GetComponent<Rigidbody2D>().velocity = new Vector2(rb.velocity.x + (Mathf.Cos(posRadians) *50f), Mathf.Sin(posRadians)*50f);
+			kunai.transform.localScale = size;
+		}
 
 		foreach (HitboxCollision hitbox in kunai.GetComponentsInChildren<HitboxCollision>(true)) {
 			hitbox.parent = drifter.gameObject;
-			hitbox.AttackID = attacks.AttackID;
+			hitbox.AttackID = attacks.NextID;
 			hitbox.Facing = movement.Facing;
 		}
 
-		refreshHitboxID();
-		kunais[Mathf.Abs(index) - 1] = kunai;
+		kunais[Mathf.Abs(index) - 1] = kunai.GetComponent<InstantiatedEntityCleanup>();
 	}
-
-	GameObject createKunai() {
-		GameObject kunai = GameController.Instance.CreatePrefab("Kunai", transform.position,transform.rotation);
-		kunai.transform.localScale = new Vector3(10f, 10f, 1f);
-
-		foreach (HitboxCollision hitbox in kunai.GetComponentsInChildren<HitboxCollision>(true)) {
-			hitbox.parent = drifter.gameObject;
-			hitbox.AttackID = attacks.AttackID;
-			hitbox.Facing = movement.Facing;
-		}
-
-		refreshHitboxID();
-		return kunai;
-	}
-
 
 	//Rollback
 	//=========================================
 
 	//Takes a snapshot of the current frame to rollback to
-	public override MasterhitRollbackFrame SerializeFrame() {
-		MasterhitRollbackFrame baseFrame = SerializeBaseFrame();
+	public override void Serialize(BinaryWriter bw) {
+		base.Serialize(bw);
 
-		BasicProjectileRollbackFrame[] kunaiList = new BasicProjectileRollbackFrame[3];
+		bw.Write(tongueRetracting);
+		bw.Write(listeningForDirection);
 
-		for(int i = 0; i < kunaiList.Length; i++)// (GameObject kunai in kunais)
-			kunaiList[i] = (kunais[i] != null ? kunais[i].GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null);
+		bw.Write(delaytime);
+		bw.Write(projnum);
 
-		baseFrame.CharacterFrame = new SwordfrogRollbackFrame()  {
-			ListeningForDirection = listeningForDirection,
-			Delaytime = delaytime,
-			Projnum = projnum,
-			Kunais = kunaiList,
-			TongueRetracting = tongueRetracting,
+		bw.Write(HeldDirection.x);
+		bw.Write(HeldDirection.y);  
+		bw.Write(tetherPoint.x);
+		bw.Write(tetherPoint.y);
 
-			Tongue = (g_Tether_Tongue != null) ? g_Tether_Tongue.GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null,
-			Head = (g_Tether_Head != null) ? g_Tether_Head.GetComponent<InstantiatedEntityCleanup>().SerializeFrame(): null,
+		for(int i = 0; i < kunais.Length; i++){
+			if(kunais[i] == null)
+				bw.Write(false);
+			else{
+				bw.Write(true);
+				kunais[i].Serialize(bw);
+			}
+		}
 
-		};
+		if(tether_Head == null)
+			bw.Write(false);
+		else{
+			bw.Write(true);
+			tether_Head.Serialize(bw);
+		}
 
-		return baseFrame;
+		if(tether_Tongue == null)
+			bw.Write(false);
+		else{
+			bw.Write(true);
+			tether_Tongue.Serialize(bw);
+		}
 	}
 
 	//Rolls back the entity to a given frame state
-	public override void DeserializeFrame(MasterhitRollbackFrame p_frame) {
-		DeserializeBaseFrame(p_frame);
-		SwordfrogRollbackFrame sf_frame = ((SwordfrogRollbackFrame)p_frame.CharacterFrame);
-
-		listeningForDirection = sf_frame.ListeningForDirection;
-		delaytime = sf_frame.Delaytime;
-		projnum = sf_frame.Projnum;
-		tongueRetracting = sf_frame.TongueRetracting;
+	public override void Deserialize(BinaryReader br) {
+		base.Deserialize(br);
 
 
-		//Tongue reset
-		if(sf_frame.Tongue != null) {
-			if(g_Tether_Tongue == null)CreateTongue(transform.position,0);
-			g_Tether_Tongue.GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(sf_frame.Tongue);
-		}
-		//Projectile does not exist in rollback frame
-		else {
-			Destroy(g_Tether_Tongue);
-			g_Tether_Tongue = null;
-		}
+		tongueRetracting =  br.ReadBoolean();
+		listeningForDirection =  br.ReadBoolean();
 
-		//Head reset
-		if(sf_frame.Head != null) {
-			if(g_Tether_Head == null)CreateHead(transform.position,0);
-			g_Tether_Head.GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(sf_frame.Head);
-		}
-		//Projectile does not exist in rollback frame
-		else {
-			Destroy(g_Tether_Head);
-			g_Tether_Head = null;
-		}
+		delaytime = br.ReadInt32();
+		projnum = br.ReadInt32();
+
+		HeldDirection.x = br.ReadSingle();
+		HeldDirection.y = br.ReadSingle();  
+		tetherPoint.x = br.ReadSingle();
+		tetherPoint.y = br.ReadSingle();
 
 
-		for(int i = 0; i <3; i++) {
-			if(sf_frame.Kunais[i] != null){
-				if(kunais[i] == null)kunais[i] = createKunai();
-				kunais[i].GetComponent<InstantiatedEntityCleanup>().DeserializeFrame(sf_frame.Kunais[i]);
+
+		for(int i = 0; i < kunais.Length; i++){
+			if(br.ReadBoolean()){
+				if(kunais[i] == null)fireKunai(i);
+				kunais[i].Deserialize(br);
 			}
-			else {
-				Destroy(kunais[i]);
+			else if(kunais[i] != null){
+				Destroy(kunais[i].gameObject);
 				kunais[i] = null;
-			}  
-		} 
+			}
+		}
+
+		if(br.ReadBoolean()){
+			if(tether_Head == null)CreateHead(transform.position, 65f * movement.Facing);
+			tether_Head.Deserialize(br);
+		}
+		else if(tether_Head != null){
+			Destroy(tether_Head.gameObject);
+			tether_Head = null;
+		}
+
+		if(br.ReadBoolean()){
+			if(tether_Tongue == null)CreateTongue(transform.position, 65f * movement.Facing);
+			tether_Tongue.Deserialize(br);
+		}
+		else if(tether_Tongue != null){
+			Destroy(tether_Tongue.gameObject);
+			tether_Tongue = null;
+		}
+			
+
+		
 	}
 
-}
-
-public class SwordfrogRollbackFrame: ICharacterRollbackFrame
-{
-	public string Type { get; set; }
-	public bool ListeningForDirection;
-	public int Delaytime;
-	public int Projnum;
-
-	public bool TongueRetracting;
-
-	public BasicProjectileRollbackFrame Tongue;
-	public BasicProjectileRollbackFrame Head;
-	public BasicProjectileRollbackFrame[] Kunais;
 }
 	

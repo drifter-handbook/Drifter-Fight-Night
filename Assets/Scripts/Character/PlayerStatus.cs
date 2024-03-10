@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
+[Serializable]
 public enum PlayerStatusEffect {
 	AMBERED,
 	PLANTED,
@@ -113,8 +115,10 @@ public class PlayerStatus : MonoBehaviour {
 	int delayedEffectDuration;
 
 	[NonSerialized]
-	public Collider2D grabPoint = null;
-	
+	public string grabbingHitboxName = "";
+	[NonSerialized]
+	public string grabbingEntity = "";
+	Vector3 grabPoint;
 
 	[NonSerialized]
 	public PlayerCard card;
@@ -124,16 +128,16 @@ public class PlayerStatus : MonoBehaviour {
 
 	// Update is called once per frame
 	public void UpdateFrame() {
-		if(grabPoint!=null && HasStatusEffect(PlayerStatusEffect.GRABBED) && grabPoint.enabled) {
-			//drifter.movement.rb.position = grabPoint.bounds.center;
-			drifter.transform.position = grabPoint.bounds.center;
-		}
 
-		else if(HasStatusEffect(PlayerStatusEffect.GRABBED) && (grabPoint== null || !grabPoint.enabled)) {
-			grabPoint=null;
-			statusDataMap[(int)PlayerStatusEffect.GRABBED].duration = 0;
-			drifter.movement.rb.velocity = delayedVelocity;
-			delayedVelocity = Vector2.zero;
+		if(HasStatusEffect(PlayerStatusEffect.GRABBED)){
+			getGrabPoint();
+			if(grabbingHitboxName != "")
+				drifter.transform.position = grabPoint;
+			else{
+				statusDataMap[(int)PlayerStatusEffect.GRABBED].duration = 0;
+				drifter.movement.rb.velocity = delayedVelocity;
+				delayedVelocity = Vector2.zero;
+			}
 		}
 		
 		//Hitpause pauses all other statuses for its duration
@@ -292,7 +296,8 @@ public class PlayerStatus : MonoBehaviour {
 				statusDataMap[i].duration = 0;
 		
 		drifter.SetAnimationSpeed(1f);
-		grabPoint = null;
+		grabbingHitboxName = "";
+		grabbingEntity = "";
 	}
 
 	public bool hasSloMoEffect(){
@@ -306,7 +311,8 @@ public class PlayerStatus : MonoBehaviour {
 			if(statusDataMap[i].isStun)
 				statusDataMap[i].duration = 0;
 	
-		grabPoint = null;
+		grabbingHitboxName = "";
+		grabbingEntity = "";
 	}
 
 	//Clears ALL status effects    
@@ -314,7 +320,8 @@ public class PlayerStatus : MonoBehaviour {
 		for(int i = 0; i < statusDataMap.Length; i++)
 			statusDataMap[i].duration = 0;
 
-		grabPoint = null;
+		grabbingHitboxName = "";
+		grabbingEntity = "";
 		drifter.SetAnimationSpeed(1f);
 	}
 
@@ -355,6 +362,22 @@ public class PlayerStatus : MonoBehaviour {
 		statusDataMap[(int)ef].statusBar = addStatusBar(ef,duration);
 
 		ApplyStatusEffect(ef,1);
+	}
+
+	void getGrabPoint(){
+		if(grabbingHitboxName != "" && grabbingEntity != ""){
+			GameObject grabbingDrifter=GameObject.Find(grabbingEntity);
+			if(grabbingDrifter != null){
+				foreach(HitboxCollision hitbox in grabbingDrifter.GetComponentsInChildren<HitboxCollision>(true)){
+					if(hitbox.gameObject.name == grabbingHitboxName && hitbox.gameObject.GetComponent<Collider2D>().enabled){
+						grabPoint = hitbox.gameObject.GetComponent<Collider2D>().bounds.center;
+						return;
+					}
+				}
+			}
+		}
+		grabbingHitboxName = "";
+		grabbingEntity = "";
 	}
 
 	//IDK fam. do we want to keep this?
@@ -440,44 +463,50 @@ public class PlayerStatus : MonoBehaviour {
 	//====================================
 
 	//Takes a snapshot of the current frame to rollback to
-	public StatusRollbackFrame SerializeFrame() {
-		int[] statusList = new int[statusDataMap.Length];
-		for(int i = 0; i < statusDataMap.Length;i++)
-			statusList[i] = statusDataMap[i].duration;
+	public void Serialize(BinaryWriter bw) {
+		for(int i = 0; i < statusDataMap.Length; i++)
+			bw.Write(statusDataMap[i].duration);
 
-		return new StatusRollbackFrame() {
-			StatusList = statusList,
-			DelayedVelocity = delayedVelocity,
-			DelayedEffect = delayedEffect,
-			DelayedEffectDuration = delayedEffectDuration,
-			GrabPoint = grabPoint,
+		bw.Write((int)delayedEffect);
+		bw.Write(delayedEffectDuration);
+
+		bw.Write(delayedVelocity.x);
+		bw.Write(delayedVelocity.y);
 			
+		bw.Write(grabbingHitboxName);
+		bw.Write(grabbingEntity);
 
-		};
 	}
 
 	//Rolls back the entity to a given frame state
-	public  void DeserializeFrame(StatusRollbackFrame p_frame) {
+	public  void Deserialize(BinaryReader br) {
+		for(int i = 0; i < statusDataMap.Length; i++)
+			statusDataMap[i].duration = br.ReadInt32();
 
-		delayedVelocity = p_frame.DelayedVelocity;
-		delayedEffect = (PlayerStatusEffect)p_frame.DelayedEffect;
-		delayedEffectDuration = p_frame.DelayedEffectDuration;
-		grabPoint = p_frame.GrabPoint;
-		for(int i = 0; i < statusDataMap.Length;i++)
-			statusDataMap[i].duration = p_frame.StatusList[i];
+		delayedEffect = (PlayerStatusEffect)br.ReadInt32();
+		delayedEffectDuration = br.ReadInt32();
+
+		delayedVelocity.x = br.ReadSingle();
+		delayedVelocity.y = br.ReadSingle();
+
+		grabbingHitboxName = br.ReadString();
+		grabbingEntity = br.ReadString();
 
 	}
 
 }
 
-public class StatusRollbackFrame: INetworkData {
-	public string Type { get; set; }
+// [Serializable]
+// public class StatusRollbackFrame: INetworkData {
+// 	public string Type { get; set; }
 
-	public Vector2 DelayedVelocity;
-	public PlayerStatusEffect DelayedEffect;
-	public int DelayedEffectDuration;
-	public Collider2D GrabPoint = null;
+// 	public Vector2 DelayedVelocity;
+// 	public PlayerStatusEffect DelayedEffect;
+// 	public int DelayedEffectDuration;
+// 	public string GrabbingHitboxName;
+// 	public string GrabbingEntity;
+// 	//public Collider2D GrabPoint = null;
 
-	public int[] StatusList;
+// 	public int[] StatusList;
 
-}
+// }

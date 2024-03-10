@@ -99,7 +99,7 @@ public class MatchmakingUI : MonoBehaviour
         GameController.Instance.IsTraining = (mode == 2);
         GameController.Instance.StartNetworkHost();
         StopCoroutine(getRoomsCoroutine);
-        GameController.Instance.host.SetScene("Character_Select_Rework");
+        GameController.Instance.GoToCharacterSelect();
     }
 
     public void refresh()

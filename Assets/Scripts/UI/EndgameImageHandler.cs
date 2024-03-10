@@ -24,18 +24,18 @@ public class EndgameImageHandler : MonoBehaviour
     void Start()
     {
         //isHost = GameController.Instance.IsHost;
-        Resources.UnloadUnusedAssets();
+        //Resources.UnloadUnusedAssets();
 
-        if(GameController.Instance.IsHost)
-        {
+        // if(GameController.Instance.IsHost)
+        // {
 
-        	sync = GetComponent<NetworkSync>();
+        // 	sync = GetComponent<NetworkSync>();
 
-        	sync.SendNetworkMessage(new CharacterSelectSyncData() {charSelState = CharacterMenu.charSelStates});
-            playAgainButton.SetActive(true);
+        // 	sync.SendNetworkMessage(new CharacterSelectSyncData() {charSelState = CharacterMenu.charSelStates});
+        //     playAgainButton.SetActive(true);
 
-        }
-        else playAgainButton.SetActive(false);
+        // }
+        // else playAgainButton.SetActive(false);
 
 
         if( GameController.Instance.winnerOrder.Length ==0) UnityEngine.Debug.Log("NO CONTEST");
@@ -68,7 +68,7 @@ public class EndgameImageHandler : MonoBehaviour
         }
     }
 
-    void Update()
+    void FixedUpdate()
     {
 
     	bool gamepadButtonPressed = false;
@@ -103,19 +103,29 @@ public class EndgameImageHandler : MonoBehaviour
     public void backToMain()
     {
 
-        GameController.Instance.CleanupNetwork();
-        SceneManager.LoadSceneAsync("MenuScene");
+        GameController.Instance.GoToMainMenu();
 
     }
 
     public void playAgain()
     {
-        if(GameController.Instance.IsHost)GameController.Instance.host.SetScene("Character_Select_Rework");
-        else 
-        {
-            GameController.Instance.CleanupNetwork();
-            GameController.Instance.StartNetworkClient();
-        }
+        GameController.Instance.BeginMatch();
+        // if(.IsHost)GameController.Instance.host.SetScene("Character_Select_Rework");
+        // else 
+        // {
+        //     GameController.Instance.CleanupNetwork();
+        //     GameController.Instance.StartNetworkClient();
+        // }
+    }
+
+    public void returnToCharacterSelect()
+    {
+        GameController.Instance.GoToCharacterSelect();
+        // else 
+        // {
+        //     GameController.Instance.CleanupNetwork();
+        //     GameController.Instance.StartNetworkClient();
+        // }
     }
 
     public void Exit()
