@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 8676352996291465654}
   - component: {fileID: 8676352996291465653}
   - component: {fileID: 328656671}
-  - component: {fileID: 328656672}
   - component: {fileID: 9200205062672912384}
   m_Layer: 0
   m_Name: LucilleJohnson
@@ -30,6 +29,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 23.711435, y: -10.508894, z: -163.84622}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5827925292894077093}
   m_Father: {fileID: 0}
@@ -47,21 +47,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 728bac8c0153ea64db36c3294a7de50f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsHost: 0
-  IsOnline: 0
-  IsTraining: 0
-  selectedStage: 
-  winnerOrder: 
-  characterCardPrefab: {fileID: 4003946031545901092, guid: d6b1f0eec583ffb43bd3b968435124d3,
-    type: 3}
-  deathExplosionPrefab: {fileID: 7721718320186116860, guid: 197c918cda771a64b9604a408f542ce6,
-    type: 3}
-  Username: New Room
-  PlayerID: -1
   volume:
   - -1
   - -1
   - -1
+  IsTraining: 0
+  selectedStage: 0
+  winnerOrder: 
+  gameState: 1
+  canPause: 0
+  NetworkTypePrefabs: []
+  Peers: 
 --- !u!82 &328656671
 AudioSource:
   m_ObjectHideFlags: 0
@@ -158,19 +154,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &328656672
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8676352996291465652}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4e05d941834db64682216baee93c3d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  NetworkTypePrefabs: []
 --- !u!114 &9200205062672912384
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -191,6 +174,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 8676352996291465653}
+        m_TargetAssemblyTypeName: 
         m_MethodName: addUser
         m_Mode: 0
         m_Arguments:
@@ -230,6 +214,7 @@ MonoBehaviour:
         m_Groups: 
         m_Action: Join
         m_Flags: 0
+      m_Flags: 0
     m_Reference: {fileID: 0}
   m_PlayerPrefab: {fileID: 1559094768925924026, guid: 69f3bbd5367425242880cd60d54fa1d1,
     type: 3}
@@ -256,6 +241,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2331440860127928928, guid: 0ca2181e794a09f44b14126a526cef88,
         type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2331440860127928928, guid: 0ca2181e794a09f44b14126a526cef88,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -271,6 +261,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2331440860127928928, guid: 0ca2181e794a09f44b14126a526cef88,
         type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2331440860127928928, guid: 0ca2181e794a09f44b14126a526cef88,
+        type: 3}
       propertyPath: m_LocalRotation.x
       value: -0
       objectReference: {fileID: 0}
@@ -283,16 +278,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalRotation.z
       value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2331440860127928928, guid: 0ca2181e794a09f44b14126a526cef88,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2331440860127928928, guid: 0ca2181e794a09f44b14126a526cef88,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2331440860127928928, guid: 0ca2181e794a09f44b14126a526cef88,
         type: 3}

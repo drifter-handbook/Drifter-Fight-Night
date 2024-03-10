@@ -3707,8 +3707,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2066802099}
   - component: {fileID: 2066802098}
-  - component: {fileID: 2066802097}
-  - component: {fileID: 2066802096}
   - component: {fileID: 2066802095}
   m_Layer: 5
   m_Name: Text
@@ -3760,7 +3758,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -3772,9 +3770,9 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
-  m_textAlignment: 514
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
   m_lineSpacing: 0
@@ -3810,22 +3808,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 2066802098}
   m_maskType: 0
---- !u!222 &2066802096
-CanvasRenderer:
-  m_ObjectHideFlags: 2
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2066802094}
-  m_CullTransparentMesh: 0
---- !u!33 &2066802097
-MeshFilter:
-  m_ObjectHideFlags: 2
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2066802094}
-  m_Mesh: {fileID: 0}
 --- !u!23 &2066802098
 MeshRenderer:
   m_ObjectHideFlags: 0
