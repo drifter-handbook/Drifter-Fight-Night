@@ -7,7 +7,7 @@ public class MovingProjectileUtil : MonoBehaviour
 {
     // Start is called before the first frame update
 
-    public bool destroyOnGrounded = false;
+    public bool playStateOnGrounded = false;
 
     Rigidbody2D rb;
 
@@ -43,7 +43,7 @@ public class MovingProjectileUtil : MonoBehaviour
         {
             if(collider.gameObject.tag == "Ground") {
                 GraphicalEffectManager.Instance.CreateMovementParticle(MovementParticleMode.Restitution,collider.contacts[0].point,((rb.velocity.x < 0)?1:-1 ) * Vector3.Angle(Vector3.up,collider.contacts[0].normal),Vector3.one);
-                if(destroyOnGrounded)Destroy(gameObject);
+                if(playStateOnGrounded)GetComponent<Animator>().Play("OnGroundState");
             }
         }
         catch(NullReferenceException)

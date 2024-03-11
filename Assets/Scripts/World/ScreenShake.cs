@@ -69,7 +69,7 @@ public class ScreenShake : MonoBehaviour
 	public void Darken(int p_duration) {
 		if(killing)return;
 		darkenDurr = p_duration;
-		//GetComponentInChildren<SyncAnimatorStateHost>().SetState("Darken"); 
+		GetComponentInChildren<Animator>().Play("Darken"); 
 	}
 
 	void UpdateShake() {
@@ -96,10 +96,10 @@ public class ScreenShake : MonoBehaviour
 		if(darkenDurr > -50)	{
 			int prevDurr = darkenDurr;
 			darkenDurr--;
-			if(darkenDurr <=0 && prevDurr >0);
-				//GetComponentInChildren<SyncAnimatorStateHost>().SetState("Lighten");
-			else if(darkenDurr <=-50);
-				//GetComponentInChildren<SyncAnimatorStateHost>().SetState("Hidden");
+			if(darkenDurr <=0 && prevDurr >0)
+				GetComponentInChildren<Animator>().Play("Lighten");
+			else if(darkenDurr <=-50)
+				GetComponentInChildren<Animator>().Play("Hidden");
 		}
 		
 	}
