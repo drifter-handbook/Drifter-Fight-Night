@@ -10,6 +10,7 @@ public class EndScreenManager : UIMenuManager {
     public GameObject playAgainButton;
 
     void Start() {
+        //Set input to UI action map (was at gameplay action map until reaching this screen) and set initial selected game object.
         PlayerInput[] playerInputs = FindObjectsOfType<PlayerInput>();
         foreach (PlayerInput input in GameController.Instance.controls.Values) {
             input.SwitchCurrentActionMap("UI");
@@ -33,6 +34,7 @@ public class EndScreenManager : UIMenuManager {
     }
 
     public void FixedUpdate() {
+        //call to base class.
         PlayerInput[] playerInputs = FindObjectsOfType<PlayerInput>();
         foreach (PlayerInput playerInput in playerInputs) {
             UpdateActivePlayerInputs(playerInput);
