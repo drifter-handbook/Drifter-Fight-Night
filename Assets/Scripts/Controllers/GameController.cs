@@ -110,7 +110,7 @@ public class GameController : MonoBehaviour
         }
         controls.Add(peerID, playerInput);
 
-        if (FindObjectOfType<MainMenuScreensManager>() == null && FindObjectOfType<EndgameImageHandler>() == null)
+        if (FindObjectOfType<MainMenuScreensManager>() == null && FindObjectOfType<EndScreenManager>() == null)
         {
             playerInput.SwitchCurrentActionMap("Controls");
             FindObjectOfType<CharacterMenu>()?.AddCharSelState(peerID);
@@ -138,7 +138,7 @@ public class GameController : MonoBehaviour
         //inputManager.Un
         Destroy(controls[peerID].gameObject);
         controls.Remove(peerID);
-        if (FindObjectOfType<MainMenuScreensManager>() == null && FindObjectOfType<EndgameImageHandler>() == null)
+        if (FindObjectOfType<MainMenuScreensManager>() == null && FindObjectOfType<EndScreenManager>() == null)
         {
             FindObjectOfType<CharacterMenu>()?.RemoveCharSelState(peerID);
         }

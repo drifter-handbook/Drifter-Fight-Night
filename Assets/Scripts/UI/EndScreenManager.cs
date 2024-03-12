@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class EndgameImageHandler : UIMenuManager {
+public class EndScreenManager : UIMenuManager {
     
     public Sprite[] sprites;
     public GameObject[] winnerSetups;
