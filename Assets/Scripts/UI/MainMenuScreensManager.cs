@@ -2,11 +2,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
-using UnityEngine.InputSystem.Controls;
 
-// TODO: Rename to a name specific to initial main menu flow before Character Select
-// Handles the menu logic flow and sends important stuff back to the game controller to disseminate
-public class ViewManager : UIMenuManager
+// Handles the main menu screens before entering character select
+public class MainMenuScreensManager : UIMenuManager
 {
     public GameObject savedIPObject;
     public GameObject roomNameObject;
@@ -67,9 +65,7 @@ public class ViewManager : UIMenuManager
 
     // public void setRoomName()
     // {
-
     //     GameController.Instance.Username = roomNameObject.GetComponent<InputField>().text;
-
     // }
 
     public void toggleDynamicCamera() {

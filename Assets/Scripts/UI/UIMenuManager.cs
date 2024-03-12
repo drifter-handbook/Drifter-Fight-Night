@@ -23,6 +23,7 @@ public class UIMenuManager : MonoBehaviour {
     public UIMenuType activeMenu = UIMenuType.Invalid;
     [HideInInspector]
     public List<UIMenuType> menuFlowHistory = new List<UIMenuType>();
+    
     public void InitializeMenus() {
         for (int index = 0; index < menuItemStates.Count; index++) {
             if (menuGameObjects.Count > index) {
@@ -43,14 +44,6 @@ public class UIMenuManager : MonoBehaviour {
         menuList.Clear();
     }
 
-    public virtual void UpdateToggles() {
-        //intentionally empty, overridden in viewManager so the menuManager logic can be used for other scenes.
-    }
-
-    public Transform GetView(UIMenuType name) {
-        return menuList[name].transform;
-    }
-
     [com.llamagod.EnumAction(typeof(UIMenuType))]
     public void SetView(int view) {
         ShowUIMenuTypeView((UIMenuType)view);
@@ -61,6 +54,10 @@ public class UIMenuManager : MonoBehaviour {
     public void SetViewBack(int view) {
         menuFlowHistory.Remove(menuFlowHistory[menuFlowHistory.Count - 1]);
         ShowUIMenuTypeView((UIMenuType)view);
+    }
+
+    public Transform GetView(UIMenuType name) {
+        return menuList[name].transform;
     }
 
     public void ReturnToPriorMenu() {
@@ -124,7 +121,7 @@ public class UIMenuManager : MonoBehaviour {
         //the input type and force set that player input map to the UI Input Module so Unity's bad single player-only UI system
         //pretends like it is successfully working with multiple controllers.
 
-        //This limitation also means we should have the key rebinding menu in Character Select, NOT the ViewManager screens.
+        //This limitation also means we should have the key rebinding menu in Character Select, NOT the MainMenuScreensManager screens.
         if ((playerInput.currentControlScheme == "Gamepad" && gamepadButtonPressed) || (playerInput.currentControlScheme == "Keyboard" && Keyboard.current.anyKey.isPressed)) {
             InputSystemUIInputModule uiInputModule = FindObjectOfType<InputSystemUIInputModule>();
             uiInputModule.actionsAsset = playerInput.actions;
@@ -133,5 +130,9 @@ public class UIMenuManager : MonoBehaviour {
 
     public virtual void Exit() {
         Application.Quit();
+    }
+
+    public virtual void UpdateToggles() {
+        //intentionally empty, overridden in MainMenuScreensManager so the menuManager logic can be used for other scenes.
     }
 }
