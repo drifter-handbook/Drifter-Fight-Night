@@ -25,15 +25,18 @@ public class UIMenuManager : MonoBehaviour {
     public List<UIMenuType> menuFlowHistory = new List<UIMenuType>();
     
     public void InitializeMenus() {
+        //HACK: Could not figure out serializable dictionaries in a reasonable time, so doing this nonsense.
+        //Afterwards, initialize the first default menu view.
+        if(menuItemStates.Count != menuGameObjects.Count) {
+            Debug.LogWarning("Size mismatch between Menu Item States and Menu Game Objects, fatal error!");
+            return;
+        }
+
         for (int index = 0; index < menuItemStates.Count; index++) {
             if (menuGameObjects.Count > index) {
                 menuList.Add(menuItemStates[index], menuGameObjects[index]);
             }
-            else {
-                Debug.LogWarning("Size mismatch! Index " + index + "!");
-            }
         }
-
         ShowUIMenuTypeView(startingMenu);
         menuFlowHistory.Add(startingMenu);
     }
@@ -52,6 +55,7 @@ public class UIMenuManager : MonoBehaviour {
 
     [com.llamagod.EnumAction(typeof(UIMenuType))]
     public void SetViewBack(int view) {
+        //user pressed the back button, so remove option in menuFlowHistory rather than add to it.
         menuFlowHistory.Remove(menuFlowHistory[menuFlowHistory.Count - 1]);
         ShowUIMenuTypeView((UIMenuType)view);
     }
@@ -61,11 +65,13 @@ public class UIMenuManager : MonoBehaviour {
     }
 
     public void ReturnToPriorMenu() {
+        //use the stored flow history to go to the previous menu view.
         menuFlowHistory.Remove(menuFlowHistory[menuFlowHistory.Count - 1]);
         ShowUIMenuTypeView(menuFlowHistory[menuFlowHistory.Count - 1]);
     }
 
     public void ShowUIMenuTypeView(UIMenuType name) {
+        //swap to new menu view defined by parameter "name" and set the selected game object. Disable the prior view if valid. 
         if (!menuList.ContainsKey(name)) {
             Debug.LogWarning("Invalid Menu for Screen, fatal error! Menu " + name + "!");
             return;
@@ -101,7 +107,7 @@ public class UIMenuManager : MonoBehaviour {
     }
 
     public void UpdateActivePlayerInputs(PlayerInput playerInput) {
-        //check for any gamepad input.
+        //check for any gamepad input. If it exists, adjust UI input assigment. See explanation below.
         bool gamepadButtonPressed = false;
         if (Gamepad.current != null) {
             for (int i = 0; i < Gamepad.current.allControls.Count; i++) {
