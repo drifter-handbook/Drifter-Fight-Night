@@ -10,7 +10,7 @@ public class SimpleScroll : MonoBehaviour
     public RectTransform scrollRect;
     public RectTransform oldRect;
     public RectTransform contentPanel;
-    public ViewManager viewManager;
+    public UIMenuManager uiMenuManager;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,7 +20,7 @@ public class SimpleScroll : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(viewManager.menuFlowHistory[viewManager.menuFlowHistory.Count - 1] == UIMenuType.RebindMenu)
+        if(uiMenuManager.menuFlowHistory[uiMenuManager.menuFlowHistory.Count - 1] == UIMenuType.RebindMenu)
         {
             GameObject currentGameObject = EventSystem.current.currentSelectedGameObject;
             if(currentGameObject!= null && currentGameObject.name != "Back Settings")
