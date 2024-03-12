@@ -93,14 +93,22 @@ public class CharacterMenu : MonoBehaviour {
 
 	static int prevScreenTimer = 0;
 	static bool countingPrevScreen = false;
-	static CharacterMenuState phase = CharacterMenuState.CharSelect;
+	public CharacterMenuState phase = CharacterMenuState.CharSelect;
 	
 	public static CharacterSelectState[] charSelStates;
 
 	Dictionary<int,GameObject> playerCards = new Dictionary<int,GameObject>();
-	public static CharacterMenu Instance => GameObject.FindGameObjectWithTag("CharacterMenu")?.GetComponent<CharacterMenu>();
+	public static CharacterMenu Instance { get; private set; }
 	
+	void Awake() {
+		if (Instance != null && Instance != this) 
+			Destroy(gameObject);
+		else 
+			Instance = this;
+	}
+
 	void Start() {
+
 		characterRows[0] = topRow;
 		characterRows[1] = middleRow;
 		characterRows[2] = bottomRow;
@@ -111,7 +119,7 @@ public class CharacterMenu : MonoBehaviour {
 		self = gameObject;
 
 		//Peer ID 8 is always the training dummy
-		charSelStates = new CharacterSelectState[9];
+		charSelStates = new CharacterSelectState[10];
   
 		GameController.Instance.Peers =  new List<int>();
 
@@ -124,7 +132,7 @@ public class CharacterMenu : MonoBehaviour {
 		Dictionary<int, int> peerIDsToPlayerIDs = new Dictionary<int, int>();
 
 		foreach (CharacterSelectState charSelState in charSelStates)
-			peerIDsToPlayerIDs[charSelState.PeerID] = (charSelState.PeerID+1);
+			peerIDsToPlayerIDs[charSelState.PeerID] = charSelState.PeerID;
 
 		return peerIDsToPlayerIDs;
 	}
@@ -137,14 +145,14 @@ public class CharacterMenu : MonoBehaviour {
 		int maxPlayer = GameController.Instance.maxPlayerCount;
 		bool training = GameController.Instance.IsTraining;
 
-		if (charSelStates.Length >= (training ? 2 : maxPlayer))
-			return;
+		// if (charSelStates.Length >= (training ? 2 : maxPlayer))
+		// 	return;
 
 		int[] drifterLoc = findDrifterMatrixPosition(drifter);
 		GameObject cursor = GameController.Instance.CreatePrefab("CharacterCursor",characterRows[drifterLoc[0]][drifterLoc[1]].transform.position, transform.rotation);
-		cursor.GetComponent<SpriteRenderer>().color = ColorFromEnum[(PlayerColor)(peerID+1)];
+		cursor.GetComponent<SpriteRenderer>().color = ColorFromEnum[(PlayerColor)peerID];
 
-		GameObject card = GameController.Instance.CreatePrefab("CharacterSelectCard",new Vector2(-20 + 13.5f * ((peerID +1) % 4),-9), transform.rotation);
+		GameObject card = GameController.Instance.CreatePrefab("CharacterSelectCard",new Vector2(-20 + 13.5f * (peerID % 4),-9), transform.rotation);
 
 		charSelStates[peerID] = new CharacterSelectState(){
 			PeerID = peerID,
@@ -160,8 +168,8 @@ public class CharacterMenu : MonoBehaviour {
 		playerCards.Add(peerID,card);
 
 		//TODO: Fix this for multiple input devices
-		if(peerID != -1)
-			GameController.Instance.Peers.Add(peerID);
+		//if(peerID != -1)
+		GameController.Instance.Peers.Add(peerID);
 	}
 
 	public void RemoveCharSelState(int peerID) {
@@ -228,6 +236,7 @@ public class CharacterMenu : MonoBehaviour {
 					GameController.Instance.DisableJoining();
 					self.transform.position = new Vector2(0, 18);
 					foreach (CharacterSelectState charSelState in charSelStates) {
+						if(charSelState == null) continue;
 						if (charSelState.PeerID < 8) {
 							charSelState.x = 3;
 							charSelState.y = 0;
@@ -243,6 +252,7 @@ public class CharacterMenu : MonoBehaviour {
 					self.transform.position = Vector2.zero;
 					GameController.Instance.EnableJoining();
 					foreach (CharacterSelectState charSelState in charSelStates) {
+						if(charSelState == null) continue;
 						int[] arr = findDrifterMatrixPosition(charSelState.PlayerType);
 						charSelState.x = arr[1];
 						charSelState.y = arr[0];
@@ -256,6 +266,7 @@ public class CharacterMenu : MonoBehaviour {
 					break;
 				}             
 			case CharacterMenuState.AllStagesSelected: {
+					UnityEngine.Debug.Log("ALL SelectED");
 					phase = !checkStageSelectReadiness() ? CharacterMenuState.StageSelect : phase;
 					break;
 				}
@@ -263,6 +274,7 @@ public class CharacterMenu : MonoBehaviour {
 			case CharacterMenuState.GameStart: {
 				List<BattleStage> randomStage = new List<BattleStage>();
 				foreach (CharacterSelectState charSelState in charSelStates) {
+					if(charSelState == null) continue;
 					//Random Character sync
 					if (charSelState.PlayerType == DrifterType.Random)
 						charSelState.PlayerType = (DrifterType)UnityEngine.Random.Range(3, DrifterType.GetValues(typeof(DrifterType)).Length - 1);
@@ -308,7 +320,7 @@ public class CharacterMenu : MonoBehaviour {
 			CharacterSelectState p_cursor = charSelStates[j];
 
 			//Skip empty states and the dummy
-			if(p_cursor == null || j == 8) continue;
+			if(p_cursor == null || j == 9) continue;
 
 			//If no previous input yet, populate it
 			if (p_cursor.prevInput == null) {
@@ -353,11 +365,11 @@ public class CharacterMenu : MonoBehaviour {
 			//Select dummy character on super press if n training mode
 			else if(GameController.Instance.IsTraining && input[j].Super && !p_cursor.prevInput.Super && isInCharacterSelect) {
 				DrifterType selected = matrix[p_cursor.y][p_cursor.x].GetComponent<CharacterSelectPortrait>().drifterType;
-				charSelStates[8].PlayerType = selected;
-				playerCards[8].GetComponent<CharacterCard>().SetCharacter(charSelStates[8].PlayerType);
-				charSelStates[8].x = p_cursor.x;
-				charSelStates[8].y = p_cursor.y;
-				charSelStates[8].Cursor.transform.position = characterRows[p_cursor.y][p_cursor.x].transform.position;
+				charSelStates[9].PlayerType = selected;
+				playerCards[9].GetComponent<CharacterCard>().SetCharacter(charSelStates[9].PlayerType);
+				charSelStates[9].x = p_cursor.x;
+				charSelStates[9].y = p_cursor.y;
+				charSelStates[9].Cursor.transform.position = characterRows[p_cursor.y][p_cursor.x].transform.position;
 			}
 			
 			//Deselect on special press
@@ -384,35 +396,37 @@ public class CharacterMenu : MonoBehaviour {
 
 	//Checks to make sure each player has selected a character
 	bool checkCharacterSelectReadiness() {
+		int playersReady = 0;
 		foreach (CharacterSelectState charSelState in charSelStates) {
-			if(charSelState.PlayerType == DrifterType.None) {
-				Banner.SetActive(false);
-				return false;
-			}
+			if(charSelState == null) continue;
+			if(charSelState != null && charSelState.PlayerType != DrifterType.None) 
+				playersReady++;
 		}
-
-		if (charSelStates.Length >= 2 && !Banner.activeInHierarchy)
+			
+		
+		if (playersReady >= 2 && !Banner.activeInHierarchy)
 			Banner.SetActive(true);
-		else if (charSelStates.Length < 2 && Banner.activeInHierarchy)
+		else if (playersReady < 2 && Banner.activeInHierarchy)
 			Banner.SetActive(false);
 
-		return charSelStates.Length >=2;
+		return playersReady >=2;
 	}
 
 	//checks if each active player has selected a stage
 	bool checkStageSelectReadiness() {
+		int playersReady = 0;
 		foreach (CharacterSelectState charSelState in charSelStates) {
-			if(charSelState.StageType == BattleStage.None && charSelState.PeerID < 8) {
-				Banner.SetActive(false);
-				return false;
-			}
+			if(charSelState == null) continue;
+			if(charSelState.StageType != BattleStage.None || charSelState.PeerID >= 8) 
+				playersReady++;
 		}
 
-		if (charSelStates.Length >= 2) {
+		if (playersReady >= 2 && !Banner.activeInHierarchy)
 			Banner.SetActive(true);
-			return true;
-		}
-		return false;
+		else if (playersReady < 2 && Banner.activeInHierarchy)
+			Banner.SetActive(false);
+
+		return playersReady >=2;
 	}
 
 	public DrifterType getDrifterTypeFromString(string name) {

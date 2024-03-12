@@ -86,14 +86,13 @@ public class GameController : MonoBehaviour
 
 	public DFNGameManager GGPO;
 
-	void Awake()
-	{
-		if (Instance != null && Instance != this) {
+	void Awake() {
+		if (Instance != null && Instance != this)
 			Destroy(gameObject);
-		}
-		else {
+
+		else 
 			Instance = this;
-		}
+		
 		inputManager = GetComponent<PlayerInputManager>();
 		DontDestroyOnLoad(gameObject);
 	}
@@ -105,7 +104,7 @@ public class GameController : MonoBehaviour
 
     public void addUser(PlayerInput playerInput)
     {
-        int peerID = -1;
+        int peerID = 0;
         while (controls.ContainsKey(peerID))
         {
             peerID++;
@@ -122,7 +121,7 @@ public class GameController : MonoBehaviour
             playerInput.SwitchCurrentActionMap("UI");
         }
 
-        if(IsTraining) FindObjectOfType<CharacterMenu>()?.AddCharSelState(8,DrifterType.Sandbag);
+        if(IsTraining) FindObjectOfType<CharacterMenu>()?.AddCharSelState(9,DrifterType.Sandbag);
 
         playerInput.ActivateInput();
         DontDestroyOnLoad(playerInput);
@@ -144,7 +143,7 @@ public class GameController : MonoBehaviour
         {
             FindObjectOfType<CharacterMenu>()?.RemoveCharSelState(peerID);
         }
-        if(peerID != -1) Peers.Remove(peerID);
+        Peers.Remove(peerID);
         if(!clearingPeers && IsTraining && controls.Count == 0)
         {
             EnableJoining();
@@ -169,7 +168,7 @@ public class GameController : MonoBehaviour
             controls[peer].DeactivateInput();
             Destroy(controls[peer].gameObject);
             controls.Remove(peer);
-            if (peer!= -1) Peers.Remove(peer);
+            Peers.Remove(peer);
         }
     }
 
@@ -237,15 +236,13 @@ public class GameController : MonoBehaviour
 		GGPO.StartLocalGame();
 	}
 
-	public void UpdateSFXVolume(float val)
-	{
+	public void UpdateSFXVolume(float val) {
 		AudioSource source = GetComponent<AudioSource>();
 		source.volume = val;
 	}
 
 	//Populates the Network Prefabs list in Lucille Johnson
-	private void aggregatePrefabs(string basePath)
-	{
+	private void aggregatePrefabs(string basePath) {
 		UnityEngine.Object[] networkPrefabs = Resources.LoadAll("", typeof(GameObject));
 
 		for(int i = 0; i < networkPrefabs.Length; i++)
@@ -256,15 +253,14 @@ public class GameController : MonoBehaviour
 
 	}
 
-	public GameObject CreatePrefab(string networkType, int peerId = 0)
-	{
+	public GameObject CreatePrefab(string networkType, int peerId = 0) {
+		UnityEngine.Debug.Log(networkType);
 		GameObject obj = Instantiate(NetworkTypePrefabs.Find(x => x.name == networkType));
 		obj.name = networkType + "_" + peerId;
 		return obj;
 	}
 
-	public GameObject CreatePrefab(string networkType, Vector3 position, Quaternion rotation, int peerId = 0)
-	{
+	public GameObject CreatePrefab(string networkType, Vector3 position, Quaternion rotation, int peerId = 0) {
 		GameObject obj = Instantiate(NetworkTypePrefabs.Find(x => x.name == networkType),position,rotation);
 
 		obj.name = networkType + "_" + peerId;

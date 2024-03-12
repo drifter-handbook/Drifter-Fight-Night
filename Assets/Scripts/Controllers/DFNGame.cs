@@ -181,6 +181,7 @@ public struct DFNGame : IGame {
 		PlayerInputData[] inputsParsed = new PlayerInputData[inputsLong.Length];
 		for(int i = 0; i < inputsLong.Length; i++){
 			GGPORunner.LogGame($"parsing drifter {i} inputs: {inputsLong[i]}.");
+			inputsParsed[i] = new PlayerInputData();
 			inputsParsed[i].Jump = ((inputsLong[i] & INPUT_JUMP) !=0);
 			inputsParsed[i].Light = ((inputsLong[i] & INPUT_LIGHT) !=0);
 			inputsParsed[i].Special = ((inputsLong[i] & INPUT_SPECIAL) !=0);
@@ -203,7 +204,12 @@ public struct DFNGame : IGame {
 	}
 	public long ReadInputs(int id) {
 		long input = 0;
-		InputActionMap playerInputAction = GameController.Instance.controls[id].currentActionMap;
+		InputActionMap playerInputAction ;
+		if(GameController.Instance.controls.ContainsKey(id)) playerInputAction = GameController.Instance.controls[id].currentActionMap;
+		//Return empty input if key is not present
+		else
+			return input;
+		
 		//Binary Buttons
 		if(playerInputAction.FindAction("Jump").ReadValue<float>() > 0)
 			input |= INPUT_JUMP;

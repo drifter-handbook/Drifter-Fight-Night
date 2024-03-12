@@ -16,15 +16,23 @@ public class CombatManager : MonoBehaviour {
 	public int playerUnlockFrame = 111;
 	public Drifter[] Drifters;
 
-	public static CombatManager Instance => GameObject.FindGameObjectWithTag("CombatManager")?.GetComponent<CombatManager>();
+	public static CombatManager Instance { get; private set; }
+
+	void Awake(){
+		if (Instance != null && Instance != this) 
+			Destroy(gameObject);
+		else 
+			Instance = this;
+	}
 
 	void Start(){
+		
 		Drifters = new Drifter[CharacterMenu.charSelStates.Length];
 
 		CreateStage(GameController.Instance.selectedStage);
 		// create players
 		foreach (CharacterSelectState charSel in CharacterMenu.charSelStates)
-			CreatePlayer(charSel.PeerID, charSel.PlayerType);
+			if(charSel!=null) CreatePlayer(charSel.PeerID, charSel.PlayerType);
 
 		if(GameController.Instance.IsTraining) 
 			playerUnlockFrame = 1;
@@ -34,11 +42,14 @@ public class CombatManager : MonoBehaviour {
 		Physics2D.Simulate(1f/60f);
 
 		for(int i = 0; i < Drifters.Length; i++){
+			if(Drifters[i] == null) continue;
 			for (int j = Drifters[i].input.Length - 2; j >= 0; j--)
 				Drifters[i].input[j + 1] = (PlayerInputData)Drifters[i].input[j].Clone();
-
-			Drifters[i].input[0] = inputs[i];
-			if(!Drifters[i].isTrainingDummy()) Drifters[i].UpdateFrame();
+			
+			if(!Drifters[i].isTrainingDummy()) 
+				Drifters[i].input[0] = inputs[i];
+	
+			Drifters[i].UpdateFrame();
 		}
 
 		if(playerUnlockFrame >0){
@@ -67,18 +78,18 @@ public class CombatManager : MonoBehaviour {
 
 		//Same here
 		GameObject obj = GameController.Instance.CreatePrefab(drifter.ToString().Replace("_", " "),
-			spawnPoints[(peerID +1) % spawnPoints.Count].transform.position, Quaternion.identity, peerID);
-		obj.GetComponent<Drifter>().SetColor((peerID +1));
+			spawnPoints[peerID % spawnPoints.Count].transform.position, Quaternion.identity, peerID);
+		obj.GetComponent<Drifter>().SetColor(peerID);
 
 		if(GameController.Instance.controls.ContainsKey(peerID))obj.GetComponent<Drifter>().playerInputController = GameController.Instance.controls[peerID];
 		obj.GetComponent<Drifter>().SetPeerId(peerID);
-		obj.GetComponent<PlayerMovement>().setFacing(-1 *((peerID+1 % 2) * 2 - 1));
+		obj.GetComponent<PlayerMovement>().setFacing(-2 * (peerID % 2) + 1);
 		Drifters[peerID] = obj.GetComponent<Drifter>();
 	}
 
 	public void unlockPlayers(){
 		foreach (CharacterSelectState charSel in CharacterMenu.charSelStates) {
-			if(charSel!= null && GameController.Instance.controls.ContainsKey(charSel.PeerID))
+			if(charSel != null && GameController.Instance.controls.ContainsKey(charSel.PeerID))
 				 Drifters[charSel.PeerID].setTrainingDummy(false);
 		}
 	}

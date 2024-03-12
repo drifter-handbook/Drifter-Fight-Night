@@ -40,6 +40,14 @@ public class ScreenShake : MonoBehaviour
 		//Get cneterpoint once per frame to save on performance.
 		Vector3 centerpoint = CalculateCenter();
 
+		transform.localPosition = Vector3.Lerp(centerpoint,transform.localPosition,Time.deltaTime/1.5f);
+		for(int i = 0; i < paralaxLayers.Count; i++)	{
+			//If the paralax layer at index i exists, adjust its position accordingly
+			if(paralaxLayers[i] != null)
+				paralaxLayers[i].transform.localPosition = Vector3.Lerp(centerpoint/(7.5f-1.5f*i),transform.localPosition,Time.deltaTime/1.5f);
+		}
+		
+
 		if(!killing) self.orthographicSize = CalculateZoom();
 
 		UpdateDarken();

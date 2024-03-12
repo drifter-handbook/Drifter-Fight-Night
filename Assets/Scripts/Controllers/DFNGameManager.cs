@@ -5,7 +5,6 @@ using UnityGGPO;
 public class DFNGameManager : GameManager {
 
 	public override void StartLocalGame() {
-		UnityEngine.Debug.Log("STARTING GAME");
 		StartGame(new LocalRunner(new DFNGame(2)));
 	}
 
