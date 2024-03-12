@@ -84,6 +84,8 @@ public class GameController : MonoBehaviour
 
 	public List<int> Peers = new List<int>();
 
+	public DFNGameManager GGPO;
+
 	void Awake()
 	{
 		if (Instance != null && Instance != this) {
@@ -231,6 +233,10 @@ public class GameController : MonoBehaviour
 		SceneManager.LoadScene("MenuScene");
 	}
 
+	public void StartGGPO() {
+		GGPO.StartLocalGame();
+	}
+
 	public void UpdateSFXVolume(float val)
 	{
 		AudioSource source = GetComponent<AudioSource>();
@@ -263,6 +269,21 @@ public class GameController : MonoBehaviour
 
 		obj.name = networkType + "_" + peerId;
 		return obj;
+	}
+
+	public void UpdateFrame(PlayerInputData[] inputs){
+		switch(gameState){
+			case GameState.CHARACTER_SELECT:
+				CharacterMenu.Instance.UpdateFrame(inputs);
+				break;
+			case GameState.COMBAT:
+				CombatManager.Instance.UpdateFrame(inputs);
+				break;
+			case GameState.ENDSCREEN:
+				break;
+			default:
+				break;
+		 }  
 	}
 
 	public void Serialize(BinaryWriter bw) {

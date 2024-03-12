@@ -11,7 +11,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
     int startingPlayers;
     public int currentPlayers;
 
-    public int[] playerList = new int[0];
+    //public int[] playerList = new int[0];
 
     //NetworkHost host;
 
@@ -20,20 +20,9 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
         //host = GameController.Instance.host;
     }
 
-    void FixedUpdate()
-    {
-        if (NetworkPlayers.Instance != null && playerList.Length == 0)
-        {
-            GameController.Instance.winnerOrder = new int[0];
-
-            playerList = new int[NetworkPlayers.Instance.players.Count]; 
-            foreach (KeyValuePair<int, GameObject> kvp in NetworkPlayers.Instance.players)
-                if(kvp.Key <=4) playerList[kvp.Key +1] = 1;
-    
-
-            startingPlayers = NetworkPlayers.Instance.players.Count;
-            currentPlayers = startingPlayers;
-        }
+    void Start(){
+        startingPlayers = CombatManager.Instance.Drifters.Length;
+        currentPlayers = startingPlayers;
     }
 
     GameObject CreateExplosion(Collider2D other, int playerIndex)
@@ -102,7 +91,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                 else
                 {
                     //UnityEngine.Debug.Log(drifter.peerID);
-                    playerList[drifter.peerID + 1] = currentPlayers;
+                    //playerList[drifter.peerID + 1] = currentPlayers;
 
                     currentPlayers--;
 
@@ -111,7 +100,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
                     if(currentPlayers <= 1)
                     {
 
-                        GameController.Instance.winnerOrder = playerList;
+                        //GameController.Instance.winnerOrder = playerList;
 
                         UnityEngine.Debug.Log("ENDING GAME");
                         

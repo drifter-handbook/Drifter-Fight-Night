@@ -14,17 +14,16 @@ public class CombatManager : MonoBehaviour {
 	List<GameObject> spawnPoints;
 
 	public int playerUnlockFrame = 111;
-
 	public Drifter[] Drifters;
 
 	public static CombatManager Instance => GameObject.FindGameObjectWithTag("CombatManager")?.GetComponent<CombatManager>();
 
 	void Start(){
-		Drifters = new Drifter[CharacterMenu.charSelStates.Values.Count];
+		Drifters = new Drifter[CharacterMenu.charSelStates.Length];
 
 		CreateStage(GameController.Instance.selectedStage);
 		// create players
-		foreach (CharacterSelectState charSel in CharacterMenu.charSelStates.Values)
+		foreach (CharacterSelectState charSel in CharacterMenu.charSelStates)
 			CreatePlayer(charSel.PeerID, charSel.PlayerType);
 
 		if(GameController.Instance.IsTraining) 
@@ -78,8 +77,8 @@ public class CombatManager : MonoBehaviour {
 	}
 
 	public void unlockPlayers(){
-		foreach (CharacterSelectState charSel in CharacterMenu.charSelStates.Values) {
-			if(GameController.Instance.controls.ContainsKey(charSel.PeerID))
+		foreach (CharacterSelectState charSel in CharacterMenu.charSelStates) {
+			if(charSel!= null && GameController.Instance.controls.ContainsKey(charSel.PeerID))
 				 Drifters[charSel.PeerID].setTrainingDummy(false);
 		}
 	}

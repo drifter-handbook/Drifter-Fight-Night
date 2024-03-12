@@ -51,7 +51,7 @@ public class EndgameImageHandler : MonoBehaviour
 
             //Todo Cleanup
             if(GameController.Instance.winnerOrder[i] == 1)
-                foreach (CharacterSelectState state in CharacterMenu.charSelStates.Values)
+                foreach (CharacterSelectState state in CharacterMenu.charSelStates)
                     if (state.PeerID == (i - 1))
                         setWinnerPic(state.PlayerType,CharacterMenu.ColorFromEnum[(PlayerColor)(state.PeerID+1)]);
         }

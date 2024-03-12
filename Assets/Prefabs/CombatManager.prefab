@@ -9,10 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6368815245258981779}
-  - component: {fileID: 6368815245258981772}
+  - component: {fileID: 5256135482202124997}
   m_Layer: 0
-  m_Name: NetworkPlayers
-  m_TagString: NetworkPlayers
+  m_Name: CombatManager
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6368815245258981772
+--- !u!114 &5256135482202124997
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,15 +41,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6368815245258981778}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87587b9b88437db43a94207c6e185bdd, type: 3}
+  m_Script: {fileID: 11500000, guid: 40dee94aa8de2004e8992237704855f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  playerInputPrefab: {fileID: 1559094768925924026, guid: 69f3bbd5367425242880cd60d54fa1d1,
-    type: 3}
-  stage: {fileID: 0}
-  rollbackFrames: 10
+  playerInputPrefab: {fileID: 0}

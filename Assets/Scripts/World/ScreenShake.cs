@@ -12,11 +12,7 @@ public class ScreenShake : MonoBehaviour
 	bool killing = false;
 	bool DynamicCamera;
 
-
-	Coroutine CurrentShake;
-	Coroutine CurrentDarken;
-
-	int zoomDurr = 0;
+	//int zoomDurr = 0;
 	int shakeDurr = 0;
 	int darkenDurr = 0;
 	float magnitude = 0f;
@@ -43,16 +39,6 @@ public class ScreenShake : MonoBehaviour
 		if(drifters == null || !DynamicCamera || killing) return;
 		//Get cneterpoint once per frame to save on performance.
 		Vector3 centerpoint = CalculateCenter();
-
-		if(CurrentShake == null) 
-		{
-			transform.localPosition = Vector3.Lerp(centerpoint,transform.localPosition,Time.deltaTime/1.5f);
-			for(int i = 0; i < paralaxLayers.Count; i++)	{
-				//If the paralax layer at index i exists, adjust its position accordingly
-				if(paralaxLayers[i] != null)
-					paralaxLayers[i].transform.localPosition = Vector3.Lerp(centerpoint/(7.5f-1.5f*i),transform.localPosition,Time.deltaTime/1.5f);
-			}
-		}
 
 		if(!killing) self.orthographicSize = CalculateZoom();
 

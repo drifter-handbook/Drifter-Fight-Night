@@ -128,19 +128,19 @@ public class TrainingDummyHandler : MonoBehaviour
 				Dummy.transform.position = new Vector3(0,4);
 			else if(Player.input[0].MoveY <0 && Player.input[0].MoveX < 0){
 				Dummy.movement.setFacing(1);
-				Dummy.transform.position = NetworkPlayers.Instance.spawnPoints[0].transform.position;
+				Dummy.transform.position = GameObject.Find("SpawnPoint0").transform.position;
 			}
 			else if(Player.input[0].MoveY <0 && Player.input[0].MoveX > 0){
 				Dummy.movement.setFacing(-1);
-				Dummy.transform.position = NetworkPlayers.Instance.spawnPoints[1].transform.position;
+				Dummy.transform.position = GameObject.Find("SpawnPoint1").transform.position;
 			}
 			else if(Player.input[0].MoveX < 0){
 				Dummy.movement.setFacing(1);
-				Dummy.transform.position = NetworkPlayers.Instance.spawnPoints[2].transform.position;
+				Dummy.transform.position = GameObject.Find("SpawnPoint2").transform.position;
 			}
 			else if(Player.input[0].MoveX > 0){
 				Dummy.movement.setFacing(-1);
-				Dummy.transform.position = NetworkPlayers.Instance.spawnPoints[3].transform.position;
+				Dummy.transform.position = GameObject.Find("SpawnPoint3").transform.position;
 			}
 			// //Record and saved Dummy input for replay
 			// else if(Player.input[0].MoveX == 0 && Player.input[0].MoveY == 0){
@@ -226,7 +226,7 @@ public class TrainingDummyHandler : MonoBehaviour
 		if(BaseAction == DummyAction.CONTROL){
 			Dummy.input[0] =  (PlayerInputData)Player.input[0].Clone();
 			Player.input[0] = new PlayerInputData();
-			//NetworkPlayers.Instance.UpdateInput(Player.gameObject);
+			//CombatManager.Instance.UpdateInput(Player.gameObject);
 			Player.UpdateFrame();
 			Dummy.UpdateFrame();
 		}

@@ -266,12 +266,13 @@ public class PlayerHurtboxHandler : MonoBehaviour
 					status.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,30);
 
 
-				//Extend hitpause on kill
-				if (willCollideWithBlastZoneAccurate(GetComponent<Rigidbody2D>(), HitstunDuration) && drifter.Stocks <= 1 && NetworkPlayers.Instance.players.Values.Where(x => x != null).ToList().Count <=2) {
-					HitstunDuration = 180;
-					//drifter.movement.techWindowElapsed = 2f;
-				} 
-				else if (willCollideWithBlastZone(GetComponent<Rigidbody2D>() , HitstunDuration) ) Mathf.Min(HitstunDuration*=2,3f);
+				// //Extend hitpause on kill
+				// if (willCollideWithBlastZoneAccurate(GetComponent<Rigidbody2D>(), HitstunDuration) && drifter.Stocks <= 1 && CombatManager.Instance.Drifters.Where(x => x != null).ToList().Count <=2) {
+				// 	HitstunDuration = 180;
+				// 	//drifter.movement.techWindowElapsed = 2f;
+				// } 
+				// else 
+				if (willCollideWithBlastZone(GetComponent<Rigidbody2D>() , HitstunDuration) ) Mathf.Min(HitstunDuration*=2,3f);
 				
 				
 				if(status.HasStatusEffect(PlayerStatusEffect.ARMOUR) && attackData.hitType != HitType.GRAB && attackData.hitType!=HitType.BURST)

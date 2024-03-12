@@ -22,11 +22,6 @@ public class MatchmakingUI : MonoBehaviour
     //     getRoomsCoroutine = StartCoroutine(GetRoomsCoroutine());
     // }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     // IEnumerator GetRoomsCoroutine()
     // {
@@ -99,7 +94,9 @@ public class MatchmakingUI : MonoBehaviour
         GameController.Instance.IsTraining = (mode == 2);
         //GameController.Instance.StartNetworkHost();
         //StopCoroutine(getRoomsCoroutine);
+
         GameController.Instance.GoToCharacterSelect();
+        GameController.Instance.StartGGPO();
     }
 
     public void refresh()

@@ -56,17 +56,21 @@ public class CharacterMenu : MonoBehaviour {
 	public GameObject[] topRow;
 	public GameObject[] middleRow;
 	public GameObject[] bottomRow;
-	GameObject[][] characterRows = new GameObject[3][];
+	static GameObject[][] characterRows = new GameObject[3][];
 
 	//Stage Matrix
 	public GameObject[] topStageRow;
 	public GameObject[] middleStageRow;
 	public GameObject[] bottomStageRow;
-	GameObject[][] stageRows = new GameObject[3][];
+	static GameObject[][] stageRows = new GameObject[3][];
 
 	public GameObject playerInputPrefab;
+
 	public GameObject Banner;
-	public Image[] backArrows;
+
+	public Image[] BackArrows;
+
+	static GameObject self;
 	//-------------------------------------------------------------
 	// END OF ITEMS ACCESSIBLE FROM SCENE COMPONENT
 	//-------------------------------------------------------------
@@ -87,14 +91,13 @@ public class CharacterMenu : MonoBehaviour {
 	};
 
 
-	float prevScreenTimer = 0;
-	bool countingPrevScreen = false;
+	static int prevScreenTimer = 0;
+	static bool countingPrevScreen = false;
+	static CharacterMenuState phase = CharacterMenuState.CharSelect;
+	
+	public static CharacterSelectState[] charSelStates;
 
 	Dictionary<int,GameObject> playerCards = new Dictionary<int,GameObject>();
-	public static Dictionary<int, CharacterSelectState> charSelStates;
-
-	CharacterMenuState phase = CharacterMenuState.CharSelect;
-
 	public static CharacterMenu Instance => GameObject.FindGameObjectWithTag("CharacterMenu")?.GetComponent<CharacterMenu>();
 	
 	void Start() {
@@ -105,20 +108,22 @@ public class CharacterMenu : MonoBehaviour {
 		stageRows[1] = middleStageRow;
 		stageRows[2] = bottomStageRow;
 
-		charSelStates = new Dictionary<int,CharacterSelectState>();
+		self = gameObject;
+
+		//Peer ID 8 is always the training dummy
+		charSelStates = new CharacterSelectState[9];
   
 		GameController.Instance.Peers =  new List<int>();
-		// add host
 
 		GameController.Instance.removeAllUIPeers();
 		GameController.Instance.EnableJoining();
 	}
 
-
+	//Deprecate this
 	public Dictionary<int, int> GetPeerIDsToPlayerIDs() {
 		Dictionary<int, int> peerIDsToPlayerIDs = new Dictionary<int, int>();
 
-		foreach (CharacterSelectState charSelState in charSelStates.Values)
+		foreach (CharacterSelectState charSelState in charSelStates)
 			peerIDsToPlayerIDs[charSelState.PeerID] = (charSelState.PeerID+1);
 
 		return peerIDsToPlayerIDs;
@@ -132,7 +137,7 @@ public class CharacterMenu : MonoBehaviour {
 		int maxPlayer = GameController.Instance.maxPlayerCount;
 		bool training = GameController.Instance.IsTraining;
 
-		if (charSelStates.Count >= (training ? 2 : maxPlayer))
+		if (charSelStates.Length >= (training ? 2 : maxPlayer))
 			return;
 
 		int[] drifterLoc = findDrifterMatrixPosition(drifter);
@@ -141,14 +146,14 @@ public class CharacterMenu : MonoBehaviour {
 
 		GameObject card = GameController.Instance.CreatePrefab("CharacterSelectCard",new Vector2(-20 + 13.5f * ((peerID +1) % 4),-9), transform.rotation);
 
-		charSelStates.Add(peerID,new CharacterSelectState() {
+		charSelStates[peerID] = new CharacterSelectState(){
 			PeerID = peerID,
 			Cursor = cursor,
 			PlayerType = drifter,
 			x = drifterLoc[1],
 			y = drifterLoc[0],
-			StageType = BattleStage.None,
-		});
+			StageType = BattleStage.None
+		};
 
 		card.transform.SetParent(gameObject.transform , false);
 		card.GetComponent<CharacterCard>().SetCharacter(drifter);
@@ -160,14 +165,14 @@ public class CharacterMenu : MonoBehaviour {
 	}
 
 	public void RemoveCharSelState(int peerID) {
-		if(!charSelStates.ContainsKey(peerID)) {
+		if(charSelStates[peerID] == null) {
 			UnityEngine.Debug.Log("PEER NOT FOUND FOR REMOVAL: " + peerID);
 			return;
 		}
 	
 		UnityEngine.Debug.Log("PEER REMOVED");
 		Destroy(charSelStates[peerID].Cursor);
-		charSelStates.Remove(peerID);
+		charSelStates[peerID] = null;
 		Destroy(playerCards[peerID]);
 		playerCards.Remove(peerID);
 	}
@@ -183,33 +188,18 @@ public class CharacterMenu : MonoBehaviour {
 		return new int[] {1,7};
 	}
 
-	void FixedUpdate() {
+	public void UpdateFrame(PlayerInputData[] inputs) {
+
 		bool isBeforeStageSelect = (phase == CharacterMenuState.CharSelect || phase == CharacterMenuState.AllCharsSelected || phase == CharacterMenuState.TransitionToStageSelect);
 
-		//Update input on each active char select state
-		PlayerInputData input;
-
-		List<int> peersToRemove = new List<int>();
-		foreach (KeyValuePair<int, CharacterSelectState> kvp in charSelStates) {
-			//Link inputs to peer ids
-			bool remove = false;
-
-			if(GameController.Instance.controls.ContainsKey(kvp.Value.PeerID))
-				 remove = UpdateInput(charSelStates[kvp.Key], NetworkPlayers.GetInput(GameController.Instance.controls[kvp.Value.PeerID]));
-
-			if (remove)
-				peersToRemove.Add(kvp.Value.PeerID);
-		}
-
-		foreach (int peerToRemove in peersToRemove)
-			GameController.Instance.removeUserByPeer(peerToRemove);
+		UpdateInput(inputs);
 
 		//Return to title if the special button is helf for 1.5 consecutive seconds
 		if(countingPrevScreen) {
-			prevScreenTimer += Time.deltaTime;
-			if(prevScreenTimer > 1.5f) {
+			prevScreenTimer++;
+			if(prevScreenTimer > 90) {
 				if (isBeforeStageSelect)
-					ReturnToTitle();
+					GameController.Instance.GoToMainMenu();
 				else {
 					phase = CharacterMenuState.TransitionToCharSelectFromStageSelect;
 					prevScreenTimer = 0;
@@ -219,11 +209,12 @@ public class CharacterMenu : MonoBehaviour {
 		else
 			prevScreenTimer = 0;
 
-		foreach (Image backArrow in backArrows)
-			backArrow.fillAmount = prevScreenTimer / 2.3f;
+		foreach (Image backArrow in BackArrows)
+			backArrow.fillAmount = prevScreenTimer / (2.3f * 60f);
 
 		countingPrevScreen = false;
 
+		//State Machine for handling transitions between phases of character selection
 		switch(phase) {
 			case CharacterMenuState.CharSelect: {
 					phase = checkCharacterSelectReadiness() ? CharacterMenuState.AllCharsSelected : phase;
@@ -235,8 +226,8 @@ public class CharacterMenu : MonoBehaviour {
 				}
 			case CharacterMenuState.TransitionToStageSelect: {
 					GameController.Instance.DisableJoining();
-					gameObject.transform.position = new Vector2(0, 18);
-					foreach (CharacterSelectState charSelState in charSelStates.Values) {
+					self.transform.position = new Vector2(0, 18);
+					foreach (CharacterSelectState charSelState in charSelStates) {
 						if (charSelState.PeerID < 8) {
 							charSelState.x = 3;
 							charSelState.y = 0;
@@ -249,9 +240,9 @@ public class CharacterMenu : MonoBehaviour {
 					break;
 				}
 			case CharacterMenuState.TransitionToCharSelectFromStageSelect: {
-					gameObject.transform.position = Vector2.zero;
+					self.transform.position = Vector2.zero;
 					GameController.Instance.EnableJoining();
-					foreach (CharacterSelectState charSelState in charSelStates.Values) {
+					foreach (CharacterSelectState charSelState in charSelStates) {
 						int[] arr = findDrifterMatrixPosition(charSelState.PlayerType);
 						charSelState.x = arr[1];
 						charSelState.y = arr[0];
@@ -271,7 +262,7 @@ public class CharacterMenu : MonoBehaviour {
 
 			case CharacterMenuState.GameStart: {
 				List<BattleStage> randomStage = new List<BattleStage>();
-				foreach (CharacterSelectState charSelState in charSelStates.Values) {
+				foreach (CharacterSelectState charSelState in charSelStates) {
 					//Random Character sync
 					if (charSelState.PlayerType == DrifterType.Random)
 						charSelState.PlayerType = (DrifterType)UnityEngine.Random.Range(3, DrifterType.GetValues(typeof(DrifterType)).Length - 1);
@@ -308,117 +299,120 @@ public class CharacterMenu : MonoBehaviour {
 	}
 
 	//Updates input commands for a given cursor object
-	public bool UpdateInput(CharacterSelectState p_cursor,PlayerInputData input) {
+	void UpdateInput(PlayerInputData[] input) {
 		bool isInStageSelect = (phase != CharacterMenuState.CharSelect && phase != CharacterMenuState.AllCharsSelected && phase != CharacterMenuState.TransitionToStageSelect);
 		bool isInCharacterSelect = (phase == CharacterMenuState.CharSelect || phase == CharacterMenuState.AllCharsSelected);
 		bool isBeforeStageSelect = (isInCharacterSelect || phase == CharacterMenuState.TransitionToStageSelect);
 
-		//If no previous input yet, populate it
-		if (p_cursor.prevInput == null) {
-		   p_cursor.prevInput = input;
-		   return false; 
+		for(int j = 0; j < charSelStates.Length; j++){
+			CharacterSelectState p_cursor = charSelStates[j];
+
+			//Skip empty states and the dummy
+			if(p_cursor == null || j == 8) continue;
+
+			//If no previous input yet, populate it
+			if (p_cursor.prevInput == null) {
+			   p_cursor.prevInput = input[j];
+			   return; 
+			}
+
+			GameObject[][] matrix = (isInStageSelect) ? stageRows : characterRows;
+
+			//Wrap around the horizontal arrays
+			if(p_cursor.prevInput.MoveX ==0 && input[j].MoveX != 0) {
+				p_cursor.x = WrapIndex(p_cursor.x + (int)input[j].MoveX ,matrix[0].Length);
+			
+				while(matrix[p_cursor.y][p_cursor.x] == null)
+					p_cursor.x = WrapIndex(p_cursor.x + (int)input[j].MoveX, matrix[0].Length);
+			}
+			
+			//Wrap around the vertical arrays
+			//Todo: make hanging edges work
+			if(p_cursor.prevInput.MoveY ==0 && input[j].MoveY != 0) {
+				p_cursor.y = WrapIndex(p_cursor.y + (int)input[j].MoveY ,matrix.Length);
+
+				while(matrix[p_cursor.y][p_cursor.x] == null)
+					p_cursor.y = WrapIndex(p_cursor.y + (int)input[j].MoveY, matrix.Length);
+			}
+			
+			//Sets the cursor's location to that of the current character icon
+			p_cursor.Cursor.transform.localPosition = matrix[p_cursor.y][p_cursor.x].transform.position;
+
+			//Select or deselelect on light press
+			if (input[j].Light && !p_cursor.prevInput.Light && isInCharacterSelect) {
+				DrifterType selected = matrix[p_cursor.y][p_cursor.x].GetComponent<CharacterSelectPortrait>().drifterType;
+				p_cursor.PlayerType = (p_cursor.PlayerType == DrifterType.None || p_cursor.PlayerType != selected)?selected:DrifterType.None;
+				playerCards[p_cursor.PeerID].GetComponent<CharacterCard>().SetCharacter(p_cursor.PlayerType);
+			}
+			else if(input[j].Light && !p_cursor.prevInput.Light && isInStageSelect) {
+				BattleStage selected = matrix[p_cursor.y][p_cursor.x].GetComponent<CharacterSelectPortrait>().StageType;
+				p_cursor.StageType = (p_cursor.StageType == BattleStage.None || p_cursor.StageType != selected)?selected:BattleStage.None;
+				//This might need some work if it needs to be more flashy
+				playerCards[p_cursor.PeerID].GetComponent<CharacterCard>().SetStage(matrix[p_cursor.y][p_cursor.x].GetComponent<CharacterSelectPortrait>().portrait.sprite);
+			}
+			//Select dummy character on super press if n training mode
+			else if(GameController.Instance.IsTraining && input[j].Super && !p_cursor.prevInput.Super && isInCharacterSelect) {
+				DrifterType selected = matrix[p_cursor.y][p_cursor.x].GetComponent<CharacterSelectPortrait>().drifterType;
+				charSelStates[8].PlayerType = selected;
+				playerCards[8].GetComponent<CharacterCard>().SetCharacter(charSelStates[8].PlayerType);
+				charSelStates[8].x = p_cursor.x;
+				charSelStates[8].y = p_cursor.y;
+				charSelStates[8].Cursor.transform.position = characterRows[p_cursor.y][p_cursor.x].transform.position;
+			}
+			
+			//Deselect on special press
+			else if(input[j].Special && !p_cursor.prevInput.Special && p_cursor.PlayerType != DrifterType.None && isInStageSelect)
+				p_cursor.PlayerType = DrifterType.None;
+
+			//Return to previous screen if special is held
+			if(input[j].Special && p_cursor.prevInput.Special)
+				countingPrevScreen = true;
+
+			//Remove this probably
+			if(!p_cursor.prevInput.Pause && input[j].Pause && phase == CharacterMenuState.AllCharsSelected)
+				phase = CharacterMenuState.TransitionToStageSelect;
+			else if(!p_cursor.prevInput.Pause && input[j].Pause && phase == CharacterMenuState.AllStagesSelected)
+				phase = CharacterMenuState.GameStart;
+
+			//Saves previous input
+			p_cursor.prevInput = input[j];
+
+			if(input[j].Menu && (phase == 0 || phase == CharacterMenuState.AllCharsSelected))
+				GameController.Instance.removeUserByPeer(j);
 		}
-
-		GameObject[][] matrix = (isInStageSelect) ? stageRows : characterRows;
-
-		//Wrap around the horizontal arrays
-		if(p_cursor.prevInput.MoveX ==0 && input.MoveX != 0) {
-			p_cursor.x = WrapIndex(p_cursor.x + (int)input.MoveX ,matrix[0].Length);
-		
-			while(matrix[p_cursor.y][p_cursor.x] == null)
-				p_cursor.x = WrapIndex(p_cursor.x + (int)input.MoveX, matrix[0].Length);
-		}
-		
-		//Wrap around the vertical arrays
-		//Todo: make hanging edges work
-		if(p_cursor.prevInput.MoveY ==0 && input.MoveY != 0) {
-			p_cursor.y = WrapIndex(p_cursor.y + (int)input.MoveY ,matrix.Length);
-
-			while(matrix[p_cursor.y][p_cursor.x] == null)
-				p_cursor.y = WrapIndex(p_cursor.y + (int)input.MoveY, matrix.Length);
-		}
-		
-		//Sets the cursor's location to that of the current character icon
-		p_cursor.Cursor.transform.localPosition = matrix[p_cursor.y][p_cursor.x].transform.position;
-
-		//Select or deselelect on light press
-		if (input.Light && !p_cursor.prevInput.Light && isInCharacterSelect) {
-			DrifterType selected = matrix[p_cursor.y][p_cursor.x].GetComponent<CharacterSelectPortrait>().drifterType;
-			p_cursor.PlayerType = (p_cursor.PlayerType == DrifterType.None || p_cursor.PlayerType != selected)?selected:DrifterType.None;
-			playerCards[p_cursor.PeerID].GetComponent<CharacterCard>().SetCharacter(p_cursor.PlayerType);
-		}
-		else if(input.Light && !p_cursor.prevInput.Light && isInStageSelect) {
-			BattleStage selected = matrix[p_cursor.y][p_cursor.x].GetComponent<CharacterSelectPortrait>().StageType;
-			p_cursor.StageType = (p_cursor.StageType == BattleStage.None || p_cursor.StageType != selected)?selected:BattleStage.None;
-			//This might need some work if it needs to be more flashy
-			playerCards[p_cursor.PeerID].GetComponent<CharacterCard>().SetStage(matrix[p_cursor.y][p_cursor.x].GetComponent<CharacterSelectPortrait>().portrait.sprite);
-		}
-		//Select dummy character on super press if n training mode
-		else if(GameController.Instance.IsTraining && input.Super && !p_cursor.prevInput.Super && isInCharacterSelect) {
-			DrifterType selected = matrix[p_cursor.y][p_cursor.x].GetComponent<CharacterSelectPortrait>().drifterType;
-			charSelStates[8].PlayerType = selected;
-			playerCards[8].GetComponent<CharacterCard>().SetCharacter(charSelStates[8].PlayerType);
-			charSelStates[8].x = p_cursor.x;
-			charSelStates[8].y = p_cursor.y;
-			charSelStates[8].Cursor.transform.position = characterRows[p_cursor.y][p_cursor.x].transform.position;
-		}
-		
-		//Deselect on special press
-		else if(input.Special && !p_cursor.prevInput.Special && p_cursor.PlayerType != DrifterType.None && isInStageSelect)
-			p_cursor.PlayerType = DrifterType.None;
-
-		//Return to previous screen if special is held
-		if(input.Special && p_cursor.prevInput.Special)
-			countingPrevScreen = true;
-
-		//Remove this probably
-		if(!p_cursor.prevInput.Pause && input.Pause && phase == CharacterMenuState.AllCharsSelected)
-			phase = CharacterMenuState.TransitionToStageSelect;
-		else if(!p_cursor.prevInput.Pause && input.Pause && phase == CharacterMenuState.AllStagesSelected)
-			phase = CharacterMenuState.GameStart;
-
-		//Saves previous input
-		p_cursor.prevInput = input;
-
-		return input.Menu && (phase == 0 || phase == CharacterMenuState.AllCharsSelected);
 	}
 
 	//Checks to make sure each player has selected a character
 	bool checkCharacterSelectReadiness() {
-		foreach (CharacterSelectState charSelState in charSelStates.Values) {
+		foreach (CharacterSelectState charSelState in charSelStates) {
 			if(charSelState.PlayerType == DrifterType.None) {
 				Banner.SetActive(false);
 				return false;
 			}
 		}
 
-		if (charSelStates.Count >= 2 && !Banner.activeInHierarchy)
+		if (charSelStates.Length >= 2 && !Banner.activeInHierarchy)
 			Banner.SetActive(true);
-		else if (charSelStates.Count < 2 && Banner.activeInHierarchy)
+		else if (charSelStates.Length < 2 && Banner.activeInHierarchy)
 			Banner.SetActive(false);
 
-		return charSelStates.Count >=2;
+		return charSelStates.Length >=2;
 	}
 
 	//checks if each active player has selected a stage
 	bool checkStageSelectReadiness() {
-		foreach (CharacterSelectState charSelState in charSelStates.Values) {
+		foreach (CharacterSelectState charSelState in charSelStates) {
 			if(charSelState.StageType == BattleStage.None && charSelState.PeerID < 8) {
 				Banner.SetActive(false);
 				return false;
 			}
 		}
 
-		if (charSelStates.Count >= 2) {
+		if (charSelStates.Length >= 2) {
 			Banner.SetActive(true);
 			return true;
 		}
 		return false;
-	}
-
-	//Backs out to the tile screen and disconnects clients if there plaeyr is host
-	public void ReturnToTitle() {
-		GameController.Instance.GoToMainMenu();
 	}
 
 	public DrifterType getDrifterTypeFromString(string name) {
@@ -431,10 +425,32 @@ public class CharacterMenu : MonoBehaviour {
 
 
 	public void Serialize(BinaryWriter bw) {
-			  
+
+		bw.Write(countingPrevScreen);
+		bw.Write(prevScreenTimer);
+		bw.Write((int)phase);
+	
+		for(int i = 0; i < charSelStates.Length; i++){
+			if(charSelStates[i] !=  null){
+				bw.Write(true);
+				charSelStates[i].Serialize(bw);
+			}
+		}
+
 	}
 
 	public void Deserialize(BinaryReader br) {
-		 
+
+		countingPrevScreen = br.ReadBoolean();
+		prevScreenTimer = br.ReadInt32();
+		phase = (CharacterMenuState)br.ReadInt32();
+	
+		for(int i = 0; i < charSelStates.Length; i++){
+			if(br.ReadBoolean()){
+				if(charSelStates[i] ==  null) AddCharSelState(i,DrifterType.None);
+				charSelStates[i].Deserialize(br);
+			}
+			else if(charSelStates[i] !=  null) RemoveCharSelState(i);
+		}
 	}
 }
