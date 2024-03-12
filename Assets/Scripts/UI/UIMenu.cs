@@ -1,7 +1,6 @@
 using UnityEngine;
 
-public enum UIMenuType
-{
+public enum UIMenuType {
     MainMenu,
     ModeMenu,
     LocalMenu,
@@ -16,8 +15,7 @@ public enum UIMenuType
     Invalid
 }
 
-public class UIMenu : MonoBehaviour
-{
+public class UIMenu : MonoBehaviour {
     [SerializeField]
     public UIMenuType currentMenu;
 }
