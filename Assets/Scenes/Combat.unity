@@ -146,6 +146,11 @@ PrefabInstance:
       propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
       value: 32992772945088512
       objectReference: {fileID: 0}
+    - target: {fileID: 1932422646358358036, guid: 1d81fc5acbe173b4a844698424d472d0,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: TogglePauseMenuPanel
+      objectReference: {fileID: 0}
     - target: {fileID: 1932422648210643516, guid: 1d81fc5acbe173b4a844698424d472d0,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName

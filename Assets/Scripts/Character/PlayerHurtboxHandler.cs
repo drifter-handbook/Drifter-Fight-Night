@@ -92,9 +92,10 @@ public class PlayerHurtboxHandler : MonoBehaviour
 				//Whiff grabs and command grabs on jumping opponents
 				((drifter.movement.dashing || status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN)) && attackData.hitType == HitType.GRAB ) || 
 				//Whiff non-OTG moves on otg opponents
-				(!attackData.canHitKnockedDown && status.HasStatusEffect(PlayerStatusEffect.FLATTEN) ||
-				//Wait until superfreeze is done to register attack hits	
-				drifter.entity.paused)
+				(!attackData.canHitKnockedDown && status.HasStatusEffect(PlayerStatusEffect.FLATTEN)) ||
+				//Wait until superfreeze is done to register non-super attack hits	
+				(drifter.entity.paused && attackData.hitType != HitType.BURST)
+
 			) return AttackHitType.NONE;
 
 			if(status.HasStatusEffect(PlayerStatusEffect.INVULN)) return AttackHitType.NONE;

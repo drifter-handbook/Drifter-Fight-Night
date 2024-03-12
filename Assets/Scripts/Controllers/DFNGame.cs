@@ -202,43 +202,52 @@ public struct DFNGame : IGame {
 		}
 		return inputsParsed;
 	}
+
 	public long ReadInputs(int id) {
 		long input = 0;
-		InputActionMap playerInputAction ;
+		InputActionMap playerInputAction;
 		if(GameController.Instance.controls.ContainsKey(id)) playerInputAction = GameController.Instance.controls[id].currentActionMap;
 		//Return empty input if key is not present
 		else
 			return input;
-		
-		//Binary Buttons
-		if(playerInputAction.FindAction("Jump").ReadValue<float>() > 0)
-			input |= INPUT_JUMP;
-		if(playerInputAction.FindAction("Light").ReadValue<float>() > 0)
-			input |= INPUT_LIGHT;
-		if(playerInputAction.FindAction("Special").ReadValue<float>() > 0)
-			input |= INPUT_SPECIAL;
-		if(playerInputAction.FindAction("Super").ReadValue<float>() > 0)
-			input |= INPUT_SUPER;
-		if(playerInputAction.FindAction("Guard 1").ReadValue<float>() > 0)
-			input |= INPUT_GUARD;
-		if(playerInputAction.FindAction("Grab").ReadValue<float>() > 0)
-			input |= INPUT_GRAB;
-		if(playerInputAction.FindAction("Dash").ReadValue<float>() > 0)
-			input |= INPUT_DASH;
-		if(playerInputAction.FindAction("Start").ReadValue<float>() > 0)
-			input |= INPUT_PAUSE;
-		if(playerInputAction.FindAction("Menu").ReadValue<float>() > 0)
-			input |= INPUT_MENU;
-		//Directional Movement
-		if((int)playerInputAction.FindAction("Horizontal").ReadValue<float>() > 0)
-			input |= INPUT_RIGHT;
-		if((int)playerInputAction.FindAction("Horizontal").ReadValue<float>() < 0)
-			input |= INPUT_LEFT;
-		if((int)playerInputAction.FindAction("Vertical").ReadValue<float>() > 0)
-			input |= INPUT_UP;
-		if((int)playerInputAction.FindAction("Vertical").ReadValue<float>() < 0)
-			input |= INPUT_DOWN;
-		return input;
+
+		switch(GameController.Instance.controlGroup){
+			case ControlGroup.UI:
+				UnityEngine.Debug.Log("UI MODE; IMPLEMENT ME");
+				return 0;
+
+			case ControlGroup.Controls:
+			default:
+				//Binary Buttons
+				if(playerInputAction.FindAction("Jump").ReadValue<float>() > 0)
+					input |= INPUT_JUMP;
+				if(playerInputAction.FindAction("Light").ReadValue<float>() > 0)
+					input |= INPUT_LIGHT;
+				if(playerInputAction.FindAction("Special").ReadValue<float>() > 0)
+					input |= INPUT_SPECIAL;
+				if(playerInputAction.FindAction("Super").ReadValue<float>() > 0)
+					input |= INPUT_SUPER;
+				if(playerInputAction.FindAction("Guard 1").ReadValue<float>() > 0)
+					input |= INPUT_GUARD;
+				if(playerInputAction.FindAction("Grab").ReadValue<float>() > 0)
+					input |= INPUT_GRAB;
+				if(playerInputAction.FindAction("Dash").ReadValue<float>() > 0)
+					input |= INPUT_DASH;
+				if(playerInputAction.FindAction("Start").ReadValue<float>() > 0)
+					input |= INPUT_PAUSE;
+				if(playerInputAction.FindAction("Menu").ReadValue<float>() > 0)
+					input |= INPUT_MENU;
+				//Directional Movement
+				if((int)playerInputAction.FindAction("Horizontal").ReadValue<float>() > 0)
+					input |= INPUT_RIGHT;
+				if((int)playerInputAction.FindAction("Horizontal").ReadValue<float>() < 0)
+					input |= INPUT_LEFT;
+				if((int)playerInputAction.FindAction("Vertical").ReadValue<float>() > 0)
+					input |= INPUT_UP;
+				if((int)playerInputAction.FindAction("Vertical").ReadValue<float>() < 0)
+					input |= INPUT_DOWN;
+				return input;
+		}
 	}
 	public void LogInfo(string str){
 	}

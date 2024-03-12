@@ -16,9 +16,9 @@ public class PlayerCardArtHolder : MonoBehaviour
 
     public GameObject mainCamera;
 
+    //Theoretically this can stay in fixed update since its jsut reading data from synced componenets and doesnt have any gameplay effect
     void FixedUpdate() {
-        if (drifters == null || drifters.Length == 0)
-        {
+        if (drifters == null || drifters.Length == 0) {
 
             if(!GameController.Instance.IsTraining)
                 trainingUI.gameObject.SetActive(false);
@@ -57,7 +57,7 @@ public class PlayerCardArtHolder : MonoBehaviour
                 //Add dummy and player to training UI
                 if(GameController.Instance.IsTraining){
                     drifters[i].GetComponent<PlayerHurtboxHandler>().trainingUI = trainingUI;
-                    if(drifters[i].peerID == 8) trainingUI.DummyHandler.Dummy = drifters[i];
+                    if(drifters[i].peerID == 9) TrainingDummyHandler.Instance.Dummy = drifters[i];
                     else
                         trainingUI.DummyHandler.Player= drifters[i];
                 }

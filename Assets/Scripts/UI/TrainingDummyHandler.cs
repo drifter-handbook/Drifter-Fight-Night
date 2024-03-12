@@ -7,17 +7,50 @@ using TMPro;
 
 public class TrainingDummyHandler : MonoBehaviour
 {
-	public enum buttonIcon
-	{ UP, RIGHT, LEFT, DOWN, NORMAL, SPECIAL, THROW, GUARD, BYZANTINE, JUMP, UPLEFT, UPRIGHT, DOWNLEFT, DOWNRIGHT, DASH };
+	public enum buttonIcon { 
+		UP,
+	 	RIGHT,
+	 	LEFT,
+	 	DOWN, 
+	 	NORMAL, 
+	 	SPECIAL, 
+	 	THROW, 
+	 	GUARD, 
+	 	BYZANTINE, 
+	 	JUMP, 
+	 	UPLEFT, 
+	 	UPRIGHT, 
+	 	DOWNLEFT, 
+	 	DOWNRIGHT, 
+	 	DASH 
+	}
 
-	public enum DummyReactionState
-	{ NONE, WAIT_FOR_TRIGGER, WAIT_FOR_ACTIONABLE, REACTION };
+	public enum DummyReactionState { 
+		NONE, 
+		WAIT_FOR_TRIGGER, 
+		WAIT_FOR_ACTIONABLE, 
+		REACTION 
+	}
 
-	public enum DummyTrigger
-	{ NONE, ON_HIT, ON_BLOCK, ON_WAKEUP, ON_HIT_OR_BLOCK};
+	public enum DummyTrigger { 
+		NONE, 
+		ON_HIT, 
+		ON_BLOCK, 
+		ON_WAKEUP, 
+		ON_HIT_OR_BLOCK
+	}
 
-	public enum DummyAction
-	{ NONE, GUARD, JUMP, LIGHT, SPECIAL, DASH, SUPER, CONTROL, PLAYBACK };
+	public enum DummyAction { 
+		NONE, 
+		GUARD, 
+		JUMP, 
+		LIGHT, 
+		SPECIAL, 
+		DASH, 
+		SUPER, 
+		CONTROL, 
+		PLAYBACK 
+	}
 
 	public Drifter Dummy;
 	public Drifter Player;
@@ -61,6 +94,14 @@ public class TrainingDummyHandler : MonoBehaviour
 	PlayerInputData playbackInput = new PlayerInputData();
 	PlayerInputData prevFrameData = new PlayerInputData();
 	
+	public static TrainingDummyHandler Instance { get; private set; }
+
+	void Awake(){
+		if (Instance != null && Instance != this) 
+			Destroy(gameObject);
+		else 
+			Instance = this;
+	}
 
 	void Start() {
 		//Add listener for when the value of the Dropdown changes, to take action
@@ -89,13 +130,16 @@ public class TrainingDummyHandler : MonoBehaviour
 		});
 	}
 
-	void FixedUpdate() {
-		if(!GameController.Instance.IsTraining) return;
+	//Probably should update this to use the standard input reading system
+	public void UpdateFrame() {
+		if(
+			!GameController.Instance.IsTraining || 
+			GameController.Instance.IsPaused || 
+			Player == null || 
+			Dummy == null) 
+		return;
 
-		if(Player == null || Dummy == null) return;
-		
 		//Meter Settings
-
 		if(fillMeter) {
 			Player.SetCharge(500);
 			Dummy.SetCharge(500);
@@ -114,12 +158,11 @@ public class TrainingDummyHandler : MonoBehaviour
 			}
 		}
 
-		if(meterReset && Dummy.status.HasEnemyStunEffect()){
+		if(meterReset && Dummy.status.HasEnemyStunEffect())
 			meterResetFrames = 200;
-		}
+		
 
 		//Command Button
-
 		if(Player.input[0].Pause && Player.input[1].Pause && !Player.input[2].Pause){
 			
 			if(Player.input[0].MoveY > 0 && Player.input[0].MoveX ==0)

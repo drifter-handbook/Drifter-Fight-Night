@@ -5,7 +5,17 @@ using UnityGGPO;
 public class DFNGameManager : GameManager {
 
 	public override void StartLocalGame() {
-		StartGame(new LocalRunner(new DFNGame(2)));
+		StartGame(new LocalRunner(new DFNGame(GameController.Instance.maxPlayerCount)));
+	}
+
+	public void StopGame(){
+		Shutdown();
+	}
+
+	public void DisconnectGGPOGame(){
+		//Disconnect each player from the game, then shutdown
+		//DisconnectPlayer(1);
+		Shutdown();
 	}
 
 	public override void StartGGPOGame(IPerfUpdate perfPanel, IList<Connections> connections, int playerIndex) {

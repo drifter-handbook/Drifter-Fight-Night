@@ -14,7 +14,17 @@ using GameAnalyticsSDK;
 using UnityEngine.EventSystems;
 using System.IO;
 
+
+
+public enum ControlGroup
+{
+	UI,
+	Controls
+}
+
+
 [DisallowMultipleComponent]
+
 public class GameController : MonoBehaviour
 {
 	public enum VolumeType
@@ -22,7 +32,7 @@ public class GameController : MonoBehaviour
 		MASTER,
 		MUSIC,
 		SFX
-	};
+	}
 
 	public enum GameState
 	{
@@ -30,7 +40,7 @@ public class GameController : MonoBehaviour
 		CHARACTER_SELECT,
 		COMBAT,
 		ENDSCREEN
-	};
+	}
 
 	public float[] volume = { -1f, -1f, -1f };
 
@@ -47,13 +57,14 @@ public class GameController : MonoBehaviour
 
 	public bool canPause = false;
 	private bool _IsPaused = false;
+	public ControlGroup controlGroup = ControlGroup.UI;
 
 	public bool IsPaused {
 		get { return _IsPaused;}
 		set {
 			_IsPaused = value;
 
-            //toggleInputSystem(value);
+			//toggleInputSystem(value);
 
 			Time.timeScale = _IsPaused?0f:_GameSpeed;
 		}
@@ -102,95 +113,103 @@ public class GameController : MonoBehaviour
 		inputManager.EnableJoining();
 	}
 
-    public void addUser(PlayerInput playerInput)
-    {
-        int peerID = 0;
-        while (controls.ContainsKey(peerID))
-        {
-            peerID++;
-        }
-        controls.Add(peerID, playerInput);
+	//-------------------------------------------------------------
+	// START OF USER MANAGEMENT
+	//-------------------------------------------------------------
 
-        if (FindObjectOfType<MainMenuScreensManager>() == null && FindObjectOfType<EndScreenManager>() == null)
-        {
-            playerInput.SwitchCurrentActionMap("Controls");
-            FindObjectOfType<CharacterMenu>()?.AddCharSelState(peerID);
-        }
-        else 
-        {
-            playerInput.SwitchCurrentActionMap("UI");
-        }
+	public void addUser(PlayerInput playerInput) {
+		int peerID = 0;
+		while (controls.ContainsKey(peerID))
+			peerID++;
+		
+		controls.Add(peerID, playerInput);
 
-        if(IsTraining) FindObjectOfType<CharacterMenu>()?.AddCharSelState(9,DrifterType.Sandbag);
+		if (FindObjectOfType<MainMenuScreensManager>() == null && FindObjectOfType<EndScreenManager>() == null)	{
+			playerInput.SwitchCurrentActionMap("Controls");
+			controlGroup = ControlGroup.Controls;
+			FindObjectOfType<CharacterMenu>()?.AddCharSelState(peerID);
+		}
 
-        playerInput.ActivateInput();
-        DontDestroyOnLoad(playerInput);
-    }
+		else {
+			controlGroup = ControlGroup.UI;
+			playerInput.SwitchCurrentActionMap("UI");
+		}
+		
 
-    public void removeUserByPeer(int peerID)
-    {
-        if(!controls.ContainsKey(peerID))
-        {
-            UnityEngine.Debug.Log("PEER ID " + peerID +" ATTEMPTED TO BE REMOVED BUT WAS NOT FOUND");
-            return;
-        }
-        
-        controls[peerID].DeactivateInput();
-        //inputManager.Un
-        Destroy(controls[peerID].gameObject);
-        controls.Remove(peerID);
-        if (FindObjectOfType<MainMenuScreensManager>() == null && FindObjectOfType<EndScreenManager>() == null)
-        {
-            FindObjectOfType<CharacterMenu>()?.RemoveCharSelState(peerID);
-        }
-        Peers.Remove(peerID);
-        if(!clearingPeers && IsTraining && controls.Count == 0)
-        {
-            EnableJoining();
-        }
-    }
+		if(IsTraining) FindObjectOfType<CharacterMenu>()?.AddCharSelState(9,DrifterType.Sandbag);
 
-    public void removeAllPeers()
-    {
-        clearingPeers = true;
-        List<int> peersToRemove = new List<int>();
-        foreach(int peerID in controls.Keys)
-            peersToRemove.Add(peerID);
-        foreach(int peer in peersToRemove)
-            removeUserByPeer(peer);
-        clearingPeers = false;
-    }
+		playerInput.ActivateInput();
+		DontDestroyOnLoad(playerInput);
+	}
 
-    public void removeAllUIPeers()
-    {
-        foreach (int peer in controls.Keys)
-        {
-            controls[peer].DeactivateInput();
-            Destroy(controls[peer].gameObject);
-            controls.Remove(peer);
-            Peers.Remove(peer);
-        }
-    }
+	public void removeUserByPeer(int peerID) {
+		if(!controls.ContainsKey(peerID)) {
+			UnityEngine.Debug.Log("PEER ID " + peerID +" ATTEMPTED TO BE REMOVED BUT WAS NOT FOUND");
+			return;
+		}
+		
+		controls[peerID].DeactivateInput();
+		//inputManager.Un
+		Destroy(controls[peerID].gameObject);
+		controls.Remove(peerID);
+		if (FindObjectOfType<MainMenuScreensManager>() == null && FindObjectOfType<EndScreenManager>() == null) {
+			FindObjectOfType<CharacterMenu>()?.RemoveCharSelState(peerID);
+		}
+		Peers.Remove(peerID);
+		if(!clearingPeers && IsTraining && controls.Count == 0) {
+			EnableJoining();
+		}
+	}
 
-     //Wrap enable method
-    public void EnableJoining()
-    {
-        inputManager.EnableJoining();
-    }
-    //Wrap Disable method
-    public void DisableJoining()
-    {
-        inputManager.DisableJoining();
-    }
+	public void removeAllPeers() {
+		clearingPeers = true;
+		List<int> peersToRemove = new List<int>();
+		foreach(int peerID in controls.Keys)
+			peersToRemove.Add(peerID);
+		foreach(int peer in peersToRemove)
+			removeUserByPeer(peer);
+		clearingPeers = false;
+	}
 
-    public bool CanJoin()
-    {
-        return inputManager.joiningEnabled;
-    }
+	public void removeAllUIPeers() {
+		foreach (int peer in controls.Keys) {
+			controls[peer].DeactivateInput();
+			Destroy(controls[peer].gameObject);
+			controls.Remove(peer);
+			Peers.Remove(peer);
+		}
+	}
 
-	// Only the host gets to see this guy
+	 //Wrap enable method
+	public void EnableJoining() {
+		inputManager.EnableJoining();
+	}
+	//Wrap Disable method
+	public void DisableJoining() {
+		inputManager.DisableJoining();
+	}
+
+	public bool CanJoin() {
+		return inputManager.joiningEnabled;
+	}
+
+	//-------------------------------------------------------------
+	// START OF GAMESTATE MANAGEMENT
+	//-------------------------------------------------------------
+
+	//Begin a GGPO Local Game
+	public void StartGGPO() {
+		GGPO.StartLocalGame();
+	}
+
+	//End a GGPO Game
+	public void StopGGPO(){
+		GGPO.StopGame();
+	}
+
+	// Move to Combat Scene and core gameplay loop
 	public void BeginMatch() {
-
+		UnityEngine.Debug.Log("BEGIN COMBAT");
 		canPause = true;
 		toggleInputSystem(false);
 		gameState = GameState.COMBAT;
@@ -198,6 +217,7 @@ public class GameController : MonoBehaviour
 		SceneManager.LoadScene("Combat");
 	}
 
+	//Finish a Combat round and move to Endgame
 	public void EndMatch() {
 		canPause = false;
 		IsPaused = false;
@@ -208,38 +228,38 @@ public class GameController : MonoBehaviour
 		SceneManager.LoadScene("Endgame");
 	}
 
-    public void toggleInputSystem(bool ui)
-    {
-        List<int> inputsToToggle = new List<int>();
-        foreach(int peerID in controls.Keys)
-            inputsToToggle.Add(peerID);
-
-        foreach(int peer in inputsToToggle)
-            controls[peer].gameObject.SetActive(!ui);
-    }
-
+	//Move to Character Select from the main menu or Endgame
 	public void GoToCharacterSelect(){
-		UnityEngine.Debug.Log("LOAD SCENE");
+		UnityEngine.Debug.Log("LOAD CHARACTER SELECT");
 		removeAllPeers();
 		gameState = GameState.CHARACTER_SELECT;
 		SceneManager.LoadScene("Character_Select_Rework");
 	}
 
+	//Returns to the DFN Main Menu
 	public void GoToMainMenu(){
+		UnityEngine.Debug.Log("LOAD MAIN MENU");
 		removeAllPeers();
+		StopGGPO();
 		gameState = GameState.MENU;
 		EnableJoining();
 		SceneManager.LoadScene("MenuScene");
 	}
 
-	public void StartGGPO() {
-		GGPO.StartLocalGame();
+	public void toggleInputSystem(bool ui) {
+		controlGroup = (ui ? ControlGroup.UI : ControlGroup.Controls);
+		foreach(PlayerInput input in controls.Values) 
+			input.SwitchCurrentActionMap(ui?"UI":"Controls");
 	}
 
 	public void UpdateSFXVolume(float val) {
 		AudioSource source = GetComponent<AudioSource>();
 		source.volume = val;
 	}
+
+	//-------------------------------------------------------------
+	// START OF ITEMS PREFAB AGGREGATION AND CREATION
+	//-------------------------------------------------------------
 
 	//Populates the Network Prefabs list in Lucille Johnson
 	private void aggregatePrefabs(string basePath) {
@@ -267,15 +287,22 @@ public class GameController : MonoBehaviour
 		return obj;
 	}
 
+	//-------------------------------------------------------------
+	// START OF SERIALIZATION AND UPDATE GAMELOOP
+	//-------------------------------------------------------------
+
 	public void UpdateFrame(PlayerInputData[] inputs){
 		switch(gameState){
 			case GameState.CHARACTER_SELECT:
-				CharacterMenu.Instance.UpdateFrame(inputs);
+				CharacterMenu.Instance?.UpdateFrame(inputs);
 				break;
 			case GameState.COMBAT:
-				CombatManager.Instance.UpdateFrame(inputs);
+				EscapeMenu.Instance?.UpdateFrame(inputs);
+				CombatManager.Instance?.UpdateFrame(inputs);
+				TrainingDummyHandler.Instance?.UpdateFrame();
 				break;
 			case GameState.ENDSCREEN:
+				EndScreenManager.Instance?.UpdateFrame(inputs);
 				break;
 			default:
 				break;
@@ -287,6 +314,7 @@ public class GameController : MonoBehaviour
 		//bw.Write(clearingPeers);
 
 		bw.Write((int)selectedStage);
+		bw.Write((int)controlGroup);
 
 		bw.Write((int)gameState);
 		switch(gameState){
@@ -308,6 +336,7 @@ public class GameController : MonoBehaviour
 		//clearingPeers = br.ReadBoolean();
 
 		selectedStage = (BattleStage)br.ReadInt32();
+		controlGroup = (ControlGroup)br.ReadInt32();
 
 		gameState = (GameState)br.ReadInt32();
 		switch(gameState){

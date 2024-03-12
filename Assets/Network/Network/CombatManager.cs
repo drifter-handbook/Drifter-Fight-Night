@@ -26,41 +26,26 @@ public class CombatManager : MonoBehaviour {
 	}
 
 	void Start(){
-		
+
 		Drifters = new Drifter[CharacterMenu.charSelStates.Length];
 
+		//Create combat stage
 		CreateStage(GameController.Instance.selectedStage);
 		// create players
 		foreach (CharacterSelectState charSel in CharacterMenu.charSelStates)
 			if(charSel!=null) CreatePlayer(charSel.PeerID, charSel.PlayerType);
 
+		//Ignore countdown and unlock players after 1 frame in training mode
 		if(GameController.Instance.IsTraining) 
 			playerUnlockFrame = 1;
 	}
 
-	public void UpdateFrame(PlayerInputData[] inputs){
-		Physics2D.Simulate(1f/60f);
+	//-------------------------------------------------------------
+	// START OF DRIFTER AND STAGE MANAGEMENT
+	//-------------------------------------------------------------
 
-		for(int i = 0; i < Drifters.Length; i++){
-			if(Drifters[i] == null) continue;
-			for (int j = Drifters[i].input.Length - 2; j >= 0; j--)
-				Drifters[i].input[j + 1] = (PlayerInputData)Drifters[i].input[j].Clone();
-			
-			if(!Drifters[i].isTrainingDummy()) 
-				Drifters[i].input[0] = inputs[i];
-	
-			Drifters[i].UpdateFrame();
-		}
-
-		if(playerUnlockFrame >0){
-			playerUnlockFrame--;
-			if(playerUnlockFrame <= 0)
-				unlockPlayers();
-		}
-	}
-
+	//Spawns the stage prefab combat will take place on
 	void CreateStage(BattleStage p_stageName) {
-
 		if(stage != null) Destroy(stage);
 
 		stageName = p_stageName;
@@ -74,9 +59,8 @@ public class CombatManager : MonoBehaviour {
 
 	}
 
+	//Creates a Drifter player character for a given Peer
 	void CreatePlayer(int peerID, DrifterType drifter) {
-
-		//Same here
 		GameObject obj = GameController.Instance.CreatePrefab(drifter.ToString().Replace("_", " "),
 			spawnPoints[peerID % spawnPoints.Count].transform.position, Quaternion.identity, peerID);
 		obj.GetComponent<Drifter>().SetColor(peerID);
@@ -87,10 +71,37 @@ public class CombatManager : MonoBehaviour {
 		Drifters[peerID] = obj.GetComponent<Drifter>();
 	}
 
+	//Activates players inputs once the countdown has finished
 	public void unlockPlayers(){
 		foreach (CharacterSelectState charSel in CharacterMenu.charSelStates) {
 			if(charSel != null && GameController.Instance.controls.ContainsKey(charSel.PeerID))
 				 Drifters[charSel.PeerID].setTrainingDummy(false);
+		}
+	}
+
+	//-------------------------------------------------------------
+	// START OF SERIALIZATION AND UPDATE GAMELOOP
+	//-------------------------------------------------------------
+
+	public void UpdateFrame(PlayerInputData[] inputs){
+		if(GameController.Instance.IsPaused) return;
+		Physics2D.Simulate(1f/60f);
+
+		for(int i = 0; i < Drifters.Length; i++){
+			if(Drifters[i] == null) continue;
+			for (int j = Drifters[i].input.Length - 2; j >= 0; j--)
+				Drifters[i].input[j + 1] = (PlayerInputData)Drifters[i].input[j].Clone();
+			
+			if(!Drifters[i].isTrainingDummy()) {
+				Drifters[i].input[0] = inputs[i];
+				Drifters[i].UpdateFrame();
+			}
+		}
+
+		if(playerUnlockFrame >0){
+			playerUnlockFrame--;
+			if(playerUnlockFrame <= 0)
+				unlockPlayers();
 		}
 	}
 

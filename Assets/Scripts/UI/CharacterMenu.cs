@@ -69,8 +69,6 @@ public class CharacterMenu : MonoBehaviour {
 	public GameObject Banner;
 
 	public Image[] BackArrows;
-
-	static GameObject self;
 	//-------------------------------------------------------------
 	// END OF ITEMS ACCESSIBLE FROM SCENE COMPONENT
 	//-------------------------------------------------------------
@@ -116,9 +114,7 @@ public class CharacterMenu : MonoBehaviour {
 		stageRows[1] = middleStageRow;
 		stageRows[2] = bottomStageRow;
 
-		self = gameObject;
-
-		//Peer ID 8 is always the training dummy
+		//Peer ID 9 is always the training dummy
 		charSelStates = new CharacterSelectState[10];
   
 		GameController.Instance.Peers =  new List<int>();
@@ -234,7 +230,7 @@ public class CharacterMenu : MonoBehaviour {
 				}
 			case CharacterMenuState.TransitionToStageSelect: {
 					GameController.Instance.DisableJoining();
-					self.transform.position = new Vector2(0, 18);
+					gameObject.transform.position = new Vector2(0, 18);
 					foreach (CharacterSelectState charSelState in charSelStates) {
 						if(charSelState == null) continue;
 						if (charSelState.PeerID < 8) {
@@ -249,7 +245,7 @@ public class CharacterMenu : MonoBehaviour {
 					break;
 				}
 			case CharacterMenuState.TransitionToCharSelectFromStageSelect: {
-					self.transform.position = Vector2.zero;
+					gameObject.transform.position = Vector2.zero;
 					GameController.Instance.EnableJoining();
 					foreach (CharacterSelectState charSelState in charSelStates) {
 						if(charSelState == null) continue;
@@ -266,7 +262,6 @@ public class CharacterMenu : MonoBehaviour {
 					break;
 				}             
 			case CharacterMenuState.AllStagesSelected: {
-					UnityEngine.Debug.Log("ALL SelectED");
 					phase = !checkStageSelectReadiness() ? CharacterMenuState.StageSelect : phase;
 					break;
 				}
@@ -292,6 +287,7 @@ public class CharacterMenu : MonoBehaviour {
 				GameController.Instance.selectedStage = randomStage[UnityEngine.Random.Range(0,(randomStage.Count -1))];
 
 				GameController.Instance.BeginMatch();
+				phase = CharacterMenuState.CharSelect;
 				break;
 			}
 			default:
@@ -348,7 +344,7 @@ public class CharacterMenu : MonoBehaviour {
 			}
 			
 			//Sets the cursor's location to that of the current character icon
-			p_cursor.Cursor.transform.localPosition = matrix[p_cursor.y][p_cursor.x].transform.position;
+			if(p_cursor.Cursor != null) p_cursor.Cursor.transform.localPosition = matrix[p_cursor.y][p_cursor.x].transform.position;
 
 			//Select or deselelect on light press
 			if (input[j].Light && !p_cursor.prevInput.Light && isInCharacterSelect) {
@@ -450,7 +446,6 @@ public class CharacterMenu : MonoBehaviour {
 				charSelStates[i].Serialize(bw);
 			}
 		}
-
 	}
 
 	public void Deserialize(BinaryReader br) {
