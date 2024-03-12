@@ -502,7 +502,10 @@ public class PlayerMovement : MonoBehaviour
 		//Drop through platforms && fastfall
 		if(drifter.doubleTappedY() && drifter.input[0].MoveY < 0 && !gravityPaused && canFastFall && !ledgeHanging && !jumping && !drifter.status.HasEnemyStunEffect()) {
 			//If you are not in an attack, play the landing animation when you hit the ground
-			if(!drifter.status.HasStatusEffect(PlayerStatusEffect.END_LAG))canLandingCancel = true;
+			if(!drifter.status.HasStatusEffect(PlayerStatusEffect.END_LAG)){
+				drifter.PlayAnimation("Hang",-1,true);
+				canLandingCancel = true;
+			}
 			gameObject.layer = 13;
 			rb.velocity = new Vector2(rb.velocity.x,Mathf.Min(-terminalVelocity /2f,rb.velocity.y));
 			dropThroughTime = 0;
