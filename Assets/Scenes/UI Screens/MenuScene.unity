@@ -19855,13 +19855,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53ffdedab73c1c8498bc9cb5cb9b08d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingMenu: {fileID: 283253440}
+  startingMenu: 0
+  menuItemStates: 0000000001000000020000000300000004000000050000000600000007000000
+  menuGameObjects:
+  - {fileID: 283253436}
+  - {fileID: 563687454}
+  - {fileID: 1973634004}
+  - {fileID: 852107253}
+  - {fileID: 1992637740}
+  - {fileID: 234751729}
+  - {fileID: 689346284}
+  - {fileID: 1114508370}
+  activeMenu: 9
+  menuFlowHistory: 
+  mouse: 1
   savedIPObject: {fileID: 0}
   roomNameObject: {fileID: 722390018}
   toggle1: {fileID: 121563509}
   toggle2: {fileID: 1231892839}
   toggle3: {fileID: 805484986}
-  menuFlowHistory: 
   uiInputModule: {fileID: 1426556192}
 --- !u!114 &1714775444
 MonoBehaviour:

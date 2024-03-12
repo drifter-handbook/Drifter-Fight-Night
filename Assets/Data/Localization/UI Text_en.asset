@@ -22,7 +22,8 @@ MonoBehaviour:
   - m_Id: 4112352858112
     m_Localized: Local
     m_Metadata:
-      m_Items: []
+      m_Items:
+      - rid: 5642534491764817983
   - m_Id: 426348243111936
     m_Localized: Back
     m_Metadata:
@@ -107,10 +108,30 @@ MonoBehaviour:
     m_Localized: 'Grab:'
     m_Metadata:
       m_Items: []
+  - m_Id: 32992602555682816
+    m_Localized: Continue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32992730855247872
+    m_Localized: Options
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32992772945088512
+    m_Localized: Return to title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32993016218914816
+    m_Localized: Quit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32993094077779968
+    m_Localized: Training options
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
     - rid: 5642534491764817983
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 00d0d4d1d7020000
+        m_Entries: 00d0d4d1d702000000d0547bbd030000

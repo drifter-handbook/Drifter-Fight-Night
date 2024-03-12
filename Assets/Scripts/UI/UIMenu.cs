@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public enum UIMenuType
@@ -11,7 +9,11 @@ public enum UIMenuType
     HostMenu,
     JoinMenu,
     SettingsMenu,
-    RebindMenu
+    RebindMenu,
+    InGamePauseMenu,
+    InGameSettingsMenu,
+    InGameTrainingOptionsMenu,
+    Invalid
 }
 
 public class UIMenu : MonoBehaviour
