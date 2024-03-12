@@ -7,45 +7,24 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.InputSystem.Controls;
 
-public class EndgameImageHandler : MonoBehaviour
-{
+public class EndgameImageHandler : UIMenuManager {
     
     public Sprite[] sprites;
     public GameObject[] winnerSetups;
-
-    //public GameObject rightPanel;
-    //public GameObject sillyImagePrefab;
     public GameObject playAgainButton;
-    PlayerInput[] playerInputs;
 
-    bool mouse = true;
-
-    void Start()
-    {
-        playerInputs = FindObjectsOfType<PlayerInput>();
-        foreach (PlayerInput input in GameController.Instance.controls.Values)
-        {
+    void Start() {
+        PlayerInput[] playerInputs = FindObjectsOfType<PlayerInput>();
+        foreach (PlayerInput input in GameController.Instance.controls.Values) {
             input.SwitchCurrentActionMap("UI");
         }
 
-        //isHost = GameController.Instance.IsHost;
-        //Resources.UnloadUnusedAssets();
+        EventSystem.current.SetSelectedGameObject(GameObject.Find("MainMenu"));
 
-        // if(GameController.Instance.IsHost)
-        // {
+        //NOTE: used to have some isHost and sendNetworkMessage logic here (see mouse removal revision for commented out code if necessary)
 
-        // 	sync = GetComponent<NetworkSync>();
-
-        // 	sync.SendNetworkMessage(new CharacterSelectSyncData() {charSelState = CharacterMenu.charSelStates});
-        //     playAgainButton.SetActive(true);
-
-        // }
-        // else playAgainButton.SetActive(false);
-
-
-        if( GameController.Instance.winnerOrder.Length ==0) UnityEngine.Debug.Log("NO CONTEST");
-        for(int i = 0; i< GameController.Instance.winnerOrder.Length; i++)
-        {
+        if ( GameController.Instance.winnerOrder.Length == 0) UnityEngine.Debug.Log("NO CONTEST");
+        for(int i = 0; i< GameController.Instance.winnerOrder.Length; i++) {
 
             UnityEngine.Debug.Log("Player " + (i + 1) + " came in " + GameController.Instance.winnerOrder[i] + "th place!");
 
@@ -57,90 +36,39 @@ public class EndgameImageHandler : MonoBehaviour
         }
     }
 
-    public void setWinnerPic(DrifterType type,Color color)
-    {
+    public void FixedUpdate() {
+        PlayerInput[] playerInputs = FindObjectsOfType<PlayerInput>();
+        foreach (PlayerInput playerInput in playerInputs) {
+            UpdateActivePlayerInputs(playerInput);
+        }
+    }
 
-        foreach(GameObject setup in winnerSetups)
-        {
-            if (setup.name.Contains(type.ToString()))
-            {
+    public void setWinnerPic(DrifterType type,Color color) {
+        foreach(GameObject setup in winnerSetups) {
+            if (setup.name.Contains(type.ToString())) {
                 setup.SetActive(true);
                 setup.transform.GetChild(0).GetComponent<Text>().color = color; //sets player Color on shadow text
-            } else
-            {
+            } 
+            else {
                 setup.SetActive(false);
             }
         }
     }
-
-    void FixedUpdate()
-    {
-        playerInputs = FindObjectsOfType<PlayerInput>();
-        foreach(PlayerInput playerInput in playerInputs)
-        {
-            bool gamepadButtonPressed = false;
-            if (Gamepad.current != null)
-            {
-                for (int i = 0; i < Gamepad.current.allControls.Count; i++)
-                {
-                    var c = Gamepad.current.allControls[i];
-                    if (c is ButtonControl)
-                    {
-                        if (((ButtonControl)c).wasPressedThisFrame)
-                        {
-                            gamepadButtonPressed = true;
-                        }
-                    }
-                }
-            }
-
-            if (playerInput != null && playerInput.currentActionMap.FindAction("Click").ReadValue<float>() > 0 || playerInput.currentActionMap.FindAction("RightClick").ReadValue<float>() > 0 || playerInput.currentActionMap.FindAction("MiddleClick").ReadValue<float>() > 0 && !mouse)
-            {
-                mouse = true;
-                //Cursor.visible = true;
-                EventSystem.current.SetSelectedGameObject(null);
-                return;
-
-            }
-            else if ((Keyboard.current.anyKey.isPressed || gamepadButtonPressed) && mouse && (!(playerInput.currentActionMap.FindAction("Click").ReadValue<float>() > 0) || !(playerInput.currentActionMap.FindAction("RightClick").ReadValue<float>() > 0) || !(playerInput.currentActionMap.FindAction("MiddleClick").ReadValue<float>() > 0)))
-            {
-                EventSystem.current.SetSelectedGameObject(GameObject.Find("MainMenu"));
-                mouse = false;
-            }
-        }
-
-        //TODO: commenting out, figure out wtf to do with this.
-        //if(Keyboard.current.escapeKey.wasPressedThisFrame) backToMain();  
-    }
-
-    public void backToMain()
-    {
+    public void backToMain() {
         GameController.Instance.GoToMainMenu();
     }
 
-    public void playAgain()
-    {
+    public void playAgain() {
         GameController.Instance.BeginMatch();
-        // if(.IsHost)GameController.Instance.host.SetScene("Character_Select_Rework");
-        // else 
-        // {
-        //     GameController.Instance.CleanupNetwork();
-        //     GameController.Instance.StartNetworkClient();
-        // }
+        //NOTE: used to have some network cleanup and start client calls here (see mouse removal revision for commented out code if necessary)
     }
 
-    public void returnToCharacterSelect()
-    {
+    public void returnToCharacterSelect() {
         GameController.Instance.GoToCharacterSelect();
-        // else 
-        // {
-        //     GameController.Instance.CleanupNetwork();
-        //     GameController.Instance.StartNetworkClient();
-        // }
+        //NOTE: used to have some network cleanup and start client calls here (see mouse removal revision for commented out code if necessary)
     }
 
-    public void Exit()
-    {
+    public override void Exit() {
         GameController.Instance.GoToMainMenu();
     }
 }
