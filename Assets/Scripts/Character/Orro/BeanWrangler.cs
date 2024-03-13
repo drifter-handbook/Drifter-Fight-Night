@@ -42,9 +42,9 @@ public class BeanWrangler : NonplayerHurtboxHandler
 	BeanState targetState;
 	BeanState state;
 
-	new void Start() {
+	void Awake() {
 		entity = GetComponent<InstantiatedEntityCleanup>();
-		base.Start();
+		//base.Start();
 		animator = GetComponent<Animator>();
 		//Movement Stuff
 		targetState = new BeanState(rb.position, facing);

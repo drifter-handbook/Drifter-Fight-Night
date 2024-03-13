@@ -36,6 +36,18 @@ public class OrroReworkMasterHit : MasterHit {
 	override public void UpdateFrame() {
 		base.UpdateFrame();
 
+		//If orro dies, kill bean
+		if(status.HasStatusEffect(PlayerStatusEffect.DEAD)) {
+			bean.die();
+			Empowered = false;
+			listeningForDirection = false;  
+		}
+		else if(bean == null) 
+			spawnBean();
+
+		if(status.HasEnemyStunEffect() || movement.ledgeHanging) 
+			listeningForDirection = false;  
+
 		if(drifter.status.HasEnemyStunEffect())
 			removeAllBooks();
 
@@ -47,47 +59,31 @@ public class OrroReworkMasterHit : MasterHit {
 		}
 
 		//reset bean when he dies
-		if(bean != null && !bean.alive) {
+		if(!bean.alive) {
 			beanFollowing = true;
 			Empowered = false;
 		}
 
 		drifter.Sparkle(bean.alive && bean.canAct);
 
-		if(status.HasEnemyStunEffect() || movement.ledgeHanging) {
-			listeningForDirection = false;  
-		}
-
 		//Otherwise, use a stance move 
 		if(listeningForDirection) {
-
 			if(!drifter.input[0].Special) neutralSpecialReleaseDelay++;
 			heldDirection += new Vector2(drifter.input[0].MoveX,drifter.input[0].MoveY);
 			if(heldDirection != Vector2.zero || neutralSpecialReleaseDelay > 5) beanCommand();
 		}
 
 		//If orro cancels, or is hit out of a move where bean charges, cancel that move
-		//Note, bean continues doing the move if orro Byzantine Cancels the move
+		//Note, bean continues doing the move even if orro Byzantine Cancels
 		if(beanIsCharging && (status.HasEnemyStunEffect() || movement.ledgeHanging || attackWasCanceled)) {
 			beanIsCharging = false;
 			bean.returnToNeutral();
 		}
 
-		//If orro dies, kill bean
-		if(status.HasStatusEffect(PlayerStatusEffect.DEAD)) {
-			bean.die();
-			//bean = null;
-			Empowered = false;
-		}
-		else if(bean == null) {
-			spawnBean();
-		}
-
 		//Send bean orros position and direction so he can follow on a delay
-		else {
+		else if(bean !=null && !status.HasStatusEffect(PlayerStatusEffect.DEAD)) {
 			targetPos = rb.position - new Vector2(-1f * movement.Facing,3f);
 			bean.addBeanState(targetPos,movement.Facing);
-
 			Empowered = !beanFollowing || Vector3.Distance(targetPos,bean.rb.position) > 3.8f;
 		}
 
