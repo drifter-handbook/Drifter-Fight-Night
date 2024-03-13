@@ -353,4 +353,25 @@ public class GameController : MonoBehaviour
 				break;
 		 } 		
 	}
+
+	public override int GetHashCode() {
+		int hashCode = 1858597544;
+		hashCode = hashCode * -1521134295 + selectedStage.GetHashCode();
+		hashCode = hashCode * -1521134295 + controlGroup.GetHashCode();
+
+		switch(gameState){
+			case GameState.CHARACTER_SELECT:
+				hashCode = hashCode * -1521134295 + CharacterMenu.Instance.GetHashCode();
+				break;
+			case GameState.COMBAT:
+				hashCode = hashCode * -1521134295 + CombatManager.Instance.GetHashCode();
+				break;
+			case GameState.ENDSCREEN:
+				break;
+			default:
+				break;
+		}
+
+		return hashCode;
+	}
 }

@@ -25,25 +25,14 @@ public struct DFNGame : IGame {
 	public int Framenumber { get; private set; }
 	public int Checksum => GetHashCode();
 	public int numPlayers;
-	//public static Rect _bounds = new Rect(0, 0, 640, 480);
+
 	public void Serialize(BinaryWriter bw) {
 		bw.Write(Framenumber);
 		GameController.Instance.Serialize(bw);
-		// bw.Write(_drifters.Length);
-		// for (int i = 0; i < _drifters.Length; ++i) {
-		//     _drifters[i].Serialize(bw);
-		// }
 	}
 	public void Deserialize(BinaryReader br) {
 		Framenumber = br.ReadInt32();
 		GameController.Instance.Deserialize(br);
-		// int length = br.ReadInt32();
-		// if (length != _drifters.Length) {
-		//     _drifters = new Drifter[length];
-		// }
-		// for (int i = 0; i < _drifters.Length; ++i) {
-		//     _drifters[i].Deserialize(br);
-		// }
 	}
 	public NativeArray<byte> ToBytes() {
 		using (var memoryStream = new MemoryStream()) {
@@ -71,100 +60,7 @@ public struct DFNGame : IGame {
 		numPlayers = num_players;
 		UnityEngine.Debug.Log("New Game made");
 	}
-	// public void MoveShip(int index, float heading, float thrust, int fire) {
-	//     var ship = _ships[index];
-	//     GGPORunner.LogGame($"calculation of new ship coordinates: (thrust:{thrust} heading:{heading}).");
-	//     ship.heading = heading;
-	//     if (ship.cooldown == 0) {
-	//         if (fire != 0) {
-	//             GGPORunner.LogGame("firing bullet.");
-	//             for (int i = 0; i < ship.bullets.Length; i++) {
-	//                 float dx = Mathf.Cos(DegToRad(ship.heading));
-	//                 float dy = Mathf.Sin(DegToRad(ship.heading));
-	//                 if (!ship.bullets[i].active) {
-	//                     ship.bullets[i].active = true;
-	//                     ship.bullets[i].position.x = ship.position.x + (ship.radius * dx);
-	//                     ship.bullets[i].position.y = ship.position.y + (ship.radius * dy);
-	//                     ship.bullets[i].velocity.x = ship.velocity.x + (BULLET_SPEED * dx);
-	//                     ship.bullets[i].velocity.y = ship.velocity.y + (BULLET_SPEED * dy);
-	//                     ship.cooldown = BULLET_COOLDOWN;
-	//                     break;
-	//                 }
-	//             }
-	//         }
-	//     }
-	//     if (thrust != 0) {
-	//         float dx = thrust * Mathf.Cos(DegToRad(heading));
-	//         float dy = thrust * Mathf.Sin(DegToRad(heading));
-	//         ship.velocity.x += dx;
-	//         ship.velocity.y += dy;
-	//         float mag = Mathf.Sqrt(ship.velocity.x * ship.velocity.x +
-	//                          ship.velocity.y * ship.velocity.y);
-	//         if (mag > SHIP_MAX_THRUST) {
-	//             ship.velocity.x = (ship.velocity.x * SHIP_MAX_THRUST) / mag;
-	//             ship.velocity.y = (ship.velocity.y * SHIP_MAX_THRUST) / mag;
-	//         }
-	//     }
-	//     GGPORunner.LogGame($"new ship velocity: (dx:{ship.velocity.x} dy:{ship.velocity.y}).");
-	//     ship.position.x += ship.velocity.x;
-	//     ship.position.y += ship.velocity.y;
-	//     GGPORunner.LogGame($"new ship position: (dx:{ship.position.x} dy:{ship.position.y}).");
-	//     if (ship.position.x - ship.radius < _bounds.xMin ||
-	//         ship.position.x + ship.radius > _bounds.xMax) {
-	//         ship.velocity.x *= -1;
-	//         ship.position.x += (ship.velocity.x * 2);
-	//     }
-	//     if (ship.position.y - ship.radius < _bounds.yMin ||
-	//         ship.position.y + ship.radius > _bounds.yMax) {
-	//         ship.velocity.y *= -1;
-	//         ship.position.y += (ship.velocity.y * 2);
-	//     }
-	//     for (int i = 0; i < ship.bullets.Length; i++) {
-	//         if (ship.bullets[i].active) {
-	//             ship.bullets[i].position.x += ship.bullets[i].velocity.x;
-	//             ship.bullets[i].position.y += ship.bullets[i].velocity.y;
-	//             if (ship.bullets[i].position.x < _bounds.xMin ||
-	//                 ship.bullets[i].position.y < _bounds.yMin ||
-	//                 ship.bullets[i].position.x > _bounds.xMax ||
-	//                 ship.bullets[i].position.y > _bounds.yMax) {
-	//                 ship.bullets[i].active = false;
-	//             }
-	//             else {
-	//                 for (int j = 0; j < _ships.Length; j++) {
-	//                     var other = _ships[j];
-	//                     if (Distance(ship.bullets[i].position, other.position) < other.radius) {
-	//                         ship.score++;
-	//                         other.health -= BULLET_DAMAGE;
-	//                         ship.bullets[i].active = false;
-	//                         break;
-	//                     }
-	//                 }
-	//             }
-	//         }
-	//     }
-	// }
-	// public void LogInfo(string filename) {
-	//     string fp = "";
-	//     fp += "GameState object.\n";
-	//     fp += string.Format("  bounds: {0},{1} x {2},{3}.\n", _bounds.xMin, _bounds.yMin, _bounds.xMax, _bounds.yMax);
-	//     fp += string.Format("  num_ships: {0}.\n", _ships.Length);
-	//     for (int i = 0; i < _ships.Length; i++) {
-	//         var ship = _ships[i];
-	//         fp += string.Format("  ship {0} position:  %.4f, %.4f\n", i, ship.position.x, ship.position.y);
-	//         fp += string.Format("  ship {0} velocity:  %.4f, %.4f\n", i, ship.velocity.x, ship.velocity.y);
-	//         fp += string.Format("  ship {0} radius:    %d.\n", i, ship.radius);
-	//         fp += string.Format("  ship {0} heading:   %d.\n", i, ship.heading);
-	//         fp += string.Format("  ship {0} health:    %d.\n", i, ship.health);
-	//         fp += string.Format("  ship {0} cooldown:  %d.\n", i, ship.cooldown);
-	//         fp += string.Format("  ship {0} score:     {1}.\n", i, ship.score);
-	//         for (int j = 0; j < ship.bullets.Length; j++) {
-	//             fp += string.Format("  ship {0} bullet {1}: {2} {3} -> {4} {5}.\n", i, j,
-	//                     ship.bullets[j].position.x, ship.bullets[j].position.y,
-	//                     ship.bullets[j].velocity.x, ship.bullets[j].velocity.y);
-	//         }
-	//     }
-	//     File.WriteAllText(filename, fp);
-	// }
+
 	public void Update(long[] inputsLong, int disconnect_flags) {
 		Framenumber++;
 		for (int i = 0; i < numPlayers; i++) {
@@ -255,5 +151,12 @@ public struct DFNGame : IGame {
 		if (data.IsCreated) {
 			data.Dispose();
 		}
+	}
+
+	public override int GetHashCode() {
+		int hashCode = -1214587014;
+		hashCode = hashCode * -1521134295 + Framenumber.GetHashCode();
+		hashCode = hashCode * -1521134295 + GameController.Instance.GetHashCode();
+		return hashCode;
 	}
 }
