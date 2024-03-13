@@ -111,8 +111,6 @@ public class PlayerStatus : MonoBehaviour {
 
 
 	Vector2 delayedVelocity;
-	PlayerStatusEffect delayedEffect;
-	int delayedEffectDuration;
 
 	[NonSerialized]
 	public string grabbingHitboxName = "";
@@ -145,10 +143,6 @@ public class PlayerStatus : MonoBehaviour {
 			statusDataMap[(int)PlayerStatusEffect.HITPAUSE].duration--;
 			if(!HasStatusEffect(PlayerStatusEffect.HITPAUSE) && !hasSloMoEffect()) {
 				if(delayedVelocity != Vector2.zero)drifter.movement.rb.velocity = delayedVelocity;
-				if(delayedEffect != PlayerStatusEffect.HIT)	{
-					ApplyStatusEffect(delayedEffect,delayedEffectDuration);
-					delayedEffect = PlayerStatusEffect.HIT;
-				}
 			}
 		}
 		//Otherwise, tick down all active statuses
@@ -278,15 +272,6 @@ public class PlayerStatus : MonoBehaviour {
 
 	public void ApplyStatusEffect(PlayerStatusEffect ef, int duration) {
 		ApplyStatusEffectFor(ef, duration);
-	}
-
-	public void ApplyDelayedStatusEffect(PlayerStatusEffect p_ef, int p_duration) {
-		if(!HasStatusEffect(PlayerStatusEffect.HITPAUSE) && !hasSloMoEffect())ApplyStatusEffectFor(p_ef, p_duration);
-		else {
-			delayedEffect = p_ef;
-			delayedEffectDuration = p_duration;
-		}
-		
 	}
 
 	//Clears all removable Status effects
@@ -467,9 +452,6 @@ public class PlayerStatus : MonoBehaviour {
 		for(int i = 0; i < statusDataMap.Length; i++)
 			bw.Write(statusDataMap[i].duration);
 
-		bw.Write((int)delayedEffect);
-		bw.Write(delayedEffectDuration);
-
 		bw.Write(delayedVelocity.x);
 		bw.Write(delayedVelocity.y);
 			
@@ -483,9 +465,6 @@ public class PlayerStatus : MonoBehaviour {
 		for(int i = 0; i < statusDataMap.Length; i++)
 			statusDataMap[i].duration = br.ReadInt32();
 
-		delayedEffect = (PlayerStatusEffect)br.ReadInt32();
-		delayedEffectDuration = br.ReadInt32();
-
 		delayedVelocity.x = br.ReadSingle();
 		delayedVelocity.y = br.ReadSingle();
 
@@ -495,18 +474,3 @@ public class PlayerStatus : MonoBehaviour {
 	}
 
 }
-
-// [Serializable]
-// public class StatusRollbackFrame: INetworkData {
-// 	public string Type { get; set; }
-
-// 	public Vector2 DelayedVelocity;
-// 	public PlayerStatusEffect DelayedEffect;
-// 	public int DelayedEffectDuration;
-// 	public string GrabbingHitboxName;
-// 	public string GrabbingEntity;
-// 	//public Collider2D GrabPoint = null;
-
-// 	public int[] StatusList;
-
-// }
