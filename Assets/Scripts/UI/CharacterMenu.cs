@@ -69,6 +69,8 @@ public class CharacterMenu : MonoBehaviour {
 	public GameObject Banner;
 
 	public Image[] BackArrows;
+
+	const int PEER_REMOVAL_TIME = 30;
 	//-------------------------------------------------------------
 	// END OF ITEMS ACCESSIBLE FROM SCENE COMPONENT
 	//-------------------------------------------------------------
@@ -141,8 +143,8 @@ public class CharacterMenu : MonoBehaviour {
 		int maxPlayer = GameController.Instance.maxPlayerCount;
 		bool training = GameController.Instance.IsTraining;
 
-		// if (charSelStates.Length >= (training ? 2 : maxPlayer))
-		// 	return;
+		if (charSelStates[peerID] != null)
+			return;
 
 		int[] drifterLoc = findDrifterMatrixPosition(drifter);
 		GameObject cursor = GameController.Instance.CreatePrefab("CharacterCursor",characterRows[drifterLoc[0]][drifterLoc[1]].transform.position, transform.rotation);
@@ -156,6 +158,7 @@ public class CharacterMenu : MonoBehaviour {
 			PlayerType = drifter,
 			x = drifterLoc[1],
 			y = drifterLoc[0],
+			removalTimer = PEER_REMOVAL_TIME,
 			StageType = BattleStage.None
 		};
 
@@ -385,8 +388,13 @@ public class CharacterMenu : MonoBehaviour {
 			//Saves previous input
 			p_cursor.prevInput = input[j];
 
-			if(input[j].Menu && (phase == 0 || phase == CharacterMenuState.AllCharsSelected))
-				GameController.Instance.removeUserByPeer(j);
+			if(input[j].Menu && (phase == 0 || phase == CharacterMenuState.AllCharsSelected)){
+				p_cursor.removalTimer++;
+				if(p_cursor.removalTimer == PEER_REMOVAL_TIME)
+					GameController.Instance.removeUserByPeer(j);
+			}
+			else
+				p_cursor.removalTimer = 0;
 		}
 	}
 

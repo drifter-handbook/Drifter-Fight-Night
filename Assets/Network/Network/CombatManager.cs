@@ -91,9 +91,11 @@ public class CombatManager : MonoBehaviour {
 			if(Drifters[i] == null) continue;
 			for (int j = Drifters[i].input.Length - 2; j >= 0; j--)
 				Drifters[i].input[j + 1] = (PlayerInputData)Drifters[i].input[j].Clone();
+
+			//Avoids breaking on training dummy; TODO do this in a less hacky way
+			if(inputs.Length > i) Drifters[i].input[0] = inputs[i];
 			
 			if(!Drifters[i].isTrainingDummy()) {
-				Drifters[i].input[0] = inputs[i];
 				Drifters[i].UpdateFrame();
 			}
 		}

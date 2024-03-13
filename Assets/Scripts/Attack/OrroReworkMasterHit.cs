@@ -8,7 +8,8 @@ public class OrroReworkMasterHit : MasterHit {
 	const int BOOK_BOLT_DELAY = 10;
 
 	//For orros porjectile normals
-	InstantiatedEntityCleanup[] explosions = new InstantiatedEntityCleanup[17];
+	DrifterAttackType[] explosionTypes = new DrifterAttackType[10];
+	InstantiatedEntityCleanup[] explosions = new InstantiatedEntityCleanup[10];
 
 	//W_Down data
 	InstantiatedEntityCleanup[] books = new InstantiatedEntityCleanup[] {null,null,null};
@@ -298,8 +299,6 @@ public class OrroReworkMasterHit : MasterHit {
 	private void Create_Explosion(DrifterAttackType p_attack) {
 
 		//Let Orro have only one of any given attack projectile on screen at a time
-		if(explosions[(int)p_attack] != null) return;
-
 		GameObject projectile;
 
 		switch(p_attack) {
@@ -327,7 +326,13 @@ public class OrroReworkMasterHit : MasterHit {
 			hitbox.Facing = movement.Facing;
 	   }
 	   SetObjectColor(projectile);
-	   explosions[(int)p_attack] = projectile.GetComponent<InstantiatedEntityCleanup>();
+	   for(int i = 0; i < explosions.Length; i++){
+	   		if(explosions[i] == null){
+	   			explosions[i] = projectile.GetComponent<InstantiatedEntityCleanup>();
+	   			explosionTypes[i] = p_attack;
+	   		}
+	   }
+	  
 
 	}
 	/*
@@ -392,11 +397,12 @@ public class OrroReworkMasterHit : MasterHit {
 			bean.Serialize(bw);
 		}
 
-		for(int i = 0; i <17; i++){
+		for(int i = 0; i <explosions.Length; i++){
 			if(explosions[i] == null)
 				bw.Write(false);
 			else{
 				bw.Write(true);
+				bw.Write((int)explosionTypes[i]);
 				explosions[i].Serialize(bw);
 			}
 		}
@@ -448,9 +454,10 @@ public class OrroReworkMasterHit : MasterHit {
 			}
 
 
-		for(int i = 0; i <17; i++){
+		for(int i = 0; i < explosions.Length; i++){
 			if(br.ReadBoolean()){
-				if(explosions[i] == null)Create_Explosion((DrifterAttackType)i);
+				explosionTypes[i] = (DrifterAttackType) br.ReadInt32();
+				if(explosions[i] == null)Create_Explosion(explosionTypes[i]);
 				explosions[i].Deserialize(br);
 			}
 			else if(explosions[i] != null){

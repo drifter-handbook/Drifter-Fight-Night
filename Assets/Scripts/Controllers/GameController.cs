@@ -118,6 +118,7 @@ public class GameController : MonoBehaviour
 	//-------------------------------------------------------------
 
 	public void addUser(PlayerInput playerInput) {
+		UnityEngine.Debug.Log("ADD PEER");
 		int peerID = 0;
 		while (controls.ContainsKey(peerID))
 			peerID++;
