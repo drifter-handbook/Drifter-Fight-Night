@@ -47,8 +47,8 @@ public class OrroReworkMasterHit : MasterHit {
 		}
 
 		//reset bean when he dies
-		if(!bean.alive) {
-			beanFollowing= true;
+		if(bean != null && !bean.alive) {
+			beanFollowing = true;
 			Empowered = false;
 		}
 
@@ -76,7 +76,7 @@ public class OrroReworkMasterHit : MasterHit {
 		//If orro dies, kill bean
 		if(status.HasStatusEffect(PlayerStatusEffect.DEAD)) {
 			bean.die();
-			bean = null;
+			//bean = null;
 			Empowered = false;
 		}
 		else if(bean == null) {

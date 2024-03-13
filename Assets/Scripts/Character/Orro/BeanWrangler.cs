@@ -70,7 +70,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
 			//Get the next state for bean to move towards
 			targetState = state;
 			//If bean is currently following orro,
-			if(following && canAct) {
+			if(following && canAct && targetState != null) {
 				facing = targetState.Facing;
 				if(!alive) {
 					//Heal bean if he is dead
