@@ -192,6 +192,7 @@ public class Drifter : MonoBehaviour
 	}
 
 	public void die(){
+		if(status.isDead()) return;
 		Stocks--;
         DamageTaken = 0f;
         superCharge = 200;

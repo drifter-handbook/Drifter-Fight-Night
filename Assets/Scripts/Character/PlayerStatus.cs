@@ -6,7 +6,7 @@ using System.IO;
 
 [Serializable]
 public enum PlayerStatusEffect {
-	AMBERED,
+	BANISHED,
 	PLANTED,
 	STUNNED,
 	PARALYZED,
@@ -71,44 +71,41 @@ public class PlayerStatusData {
 public class PlayerStatus : MonoBehaviour {
 
 	public PlayerStatusData[] statusDataMap = new PlayerStatusData[] {
-		new PlayerStatusData("AMBERED",icon: 3,stun: true)                                  ,
-		new PlayerStatusData("PLANTED",icon: 3,stun:true)                                   ,
-		new PlayerStatusData("STUNNED",icon:  3,stun: true)                                 ,
-		new PlayerStatusData("PARALYZED",icon:  3,stun: true)                               ,
-		new PlayerStatusData("GRABBED",stun: true)                                 			,
-		new PlayerStatusData("CRINGE",icon: 3,stun: true)                                   ,
-		new PlayerStatusData("DEAD",icon:  7,remove: false,stun: true)                      ,
-		new PlayerStatusData("POISONED",icon:  0,remove: false)                             ,
-		new PlayerStatusData("BURNING",icon: 1,remove: false, hasParticle: true)            ,
-		new PlayerStatusData("ELECTRIFIED",icon: 4, decrement: false, hasParticle: true)    ,
-		new PlayerStatusData("FLIGHT", self: true)                                 			,
-		new PlayerStatusData("INVULN",icon: 9, remove: false, self: true)                   ,
-		new PlayerStatusData("ARMOUR",icon: 10, remove: false, self: true)                  ,
-		new PlayerStatusData("EXPOSED",icon: 2,channel: 1)                                  ,
-		new PlayerStatusData("FEATHERWEIGHT",icon: 2,remove: false, channel: 1)             ,
-		new PlayerStatusData("SLOWED",icon: 11,remove: false,channel: 3)                    ,
-		new PlayerStatusData("SPEEDUP",icon: 5,remove: false,self: true, channel: 3)        ,
-		new PlayerStatusData("DAMAGEUP",icon: 6,remove: false,self: true, channel: 4)       ,
-		new PlayerStatusData("DEFENSEUP",icon: 13,remove: false,self :true, channel: 5)     ,
-		new PlayerStatusData("DEFENSEDOWN",icon: 8,remove: false, channel: 5)               ,
-		new PlayerStatusData("HIT")                                                         ,
-		new PlayerStatusData("END_LAG",stun: true, self: true)                              ,
-		new PlayerStatusData("KNOCKBACK",remove: false, stun: true)                         ,
-		new PlayerStatusData("HITPAUSE",stun: true, self:true)                              ,
-		new PlayerStatusData("GUARDCRUSHED",icon: 14)                                       ,
-		new PlayerStatusData("STANCE",remove: false,self: true)                             ,
-		new PlayerStatusData("SLOWMOTION",icon: 16, remove: true)                           ,
-		new PlayerStatusData("HIDDEN",remove: false)                                        ,
-		new PlayerStatusData("TUMBLE")                                                      ,
-		new PlayerStatusData("KNOCKDOWN",stun: true)                               			,
-		new PlayerStatusData("FLATTEN")                                                     ,
-		new PlayerStatusData("SUPER_SLOWMOTION",icon: 16, remove: false)                    ,
-		new PlayerStatusData("INSPIRATION", icon: 12, remove: false)                    	,
-		new PlayerStatusData("SUPERBLOCKED", icon: 3, remove: false, decrement: false)      ,
+		new PlayerStatusData("BANISHED",icon: 7, remove: false,stun: true, decrement: false)                	,
+		new PlayerStatusData("PLANTED",icon: 3,stun:true)                                   					,
+		new PlayerStatusData("STUNNED",icon:  3,stun: true)                                 					,
+		new PlayerStatusData("PARALYZED",icon:  3,stun: true)                               					,
+		new PlayerStatusData("GRABBED",stun: true)                                 								,
+		new PlayerStatusData("CRINGE",icon: 3,stun: true)                                   					,
+		new PlayerStatusData("DEAD",icon:  7,remove: false,stun: true)                      					,
+		new PlayerStatusData("POISONED",icon:  0,remove: false)                             					,
+		new PlayerStatusData("BURNING",icon: 1,remove: false, hasParticle: true)            					,
+		new PlayerStatusData("ELECTRIFIED",icon: 4, decrement: false, hasParticle: true)    					,
+		new PlayerStatusData("FLIGHT", self: true)                                 								,
+		new PlayerStatusData("INVULN",icon: 9, remove: false, self: true)                   					,
+		new PlayerStatusData("ARMOUR",icon: 10, remove: false, self: true)                  					,
+		new PlayerStatusData("EXPOSED",icon: 2,channel: 1)                                  					,
+		new PlayerStatusData("FEATHERWEIGHT",icon: 2,remove: false, channel: 1)             					,
+		new PlayerStatusData("SLOWED",icon: 11,remove: false,channel: 3)                    					,
+		new PlayerStatusData("SPEEDUP",icon: 5,remove: false,self: true, channel: 3)        					,
+		new PlayerStatusData("DAMAGEUP",icon: 6,remove: false,self: true, channel: 4)       					,
+		new PlayerStatusData("DEFENSEUP",icon: 13,remove: false,self :true, channel: 5)     					,
+		new PlayerStatusData("DEFENSEDOWN",icon: 8,remove: false, channel: 5)               					,
+		new PlayerStatusData("HIT")                                                         					,
+		new PlayerStatusData("END_LAG",stun: true, self: true)                              					,
+		new PlayerStatusData("KNOCKBACK",remove: false, stun: true)                         					,
+		new PlayerStatusData("HITPAUSE",stun: true, self:true)                              					,
+		new PlayerStatusData("GUARDCRUSHED",icon: 14)                                       					,
+		new PlayerStatusData("STANCE",remove: false,self: true)                             					,
+		new PlayerStatusData("SLOWMOTION",icon: 16, remove: true)                           					,
+		new PlayerStatusData("HIDDEN",remove: false)                                        					,
+		new PlayerStatusData("TUMBLE")                                                      					,
+		new PlayerStatusData("KNOCKDOWN",stun: true)                               								,
+		new PlayerStatusData("FLATTEN")                                                     					,
+		new PlayerStatusData("SUPER_SLOWMOTION",icon: 16, remove: false)                    					,
+		new PlayerStatusData("INSPIRATION", icon: 12, remove: false)                    						,
+		new PlayerStatusData("SUPERBLOCKED", icon: 3, remove: false, decrement: false)      					,
 	};
-
-	
-
 
 	Vector2 delayedVelocity;
 
@@ -218,7 +215,12 @@ public class PlayerStatus : MonoBehaviour {
 	public bool HasSuperBlockingEffect(){
 		return 
 				HasStatusEffect(PlayerStatusEffect.SUPERBLOCKED) ||
+				isDead() ||
 				hasSloMoEffect();
+	}
+
+	public bool isDead(){
+		return 	HasStatusEffect(PlayerStatusEffect.DEAD) || HasStatusEffect(PlayerStatusEffect.BANISHED);
 	}
 
 	private bool HasStatusEffect(int ef) {
@@ -378,26 +380,9 @@ public class PlayerStatus : MonoBehaviour {
 	}
 
 	void CreateHalo() {
-        GameObject proj = GameController.Instance.CreatePrefab("HaloPlatform", new Vector2(0, 23), Quaternion.identity);
-        proj.transform.localScale = new Vector2(10f, 10f);
-        halo = proj.GetComponent<InstantiatedEntityCleanup>();
-    }
-
-
-	//IDK fam. do we want to keep this?
-	public int GetStatusToRender() {
-		//UnityEngine.Debug.Log("ASKED");
-		if(HasStatusEffect(PlayerStatusEffect.AMBERED))return 1;
-		if(HasStatusEffect(PlayerStatusEffect.PLANTED))return 2;
-		if(HasStatusEffect(PlayerStatusEffect.PARALYZED))return 3;
-		if(HasStatusEffect(PlayerStatusEffect.EXPOSED))return 4;
-		if(HasStatusEffect(PlayerStatusEffect.FEATHERWEIGHT))return 5;
-		if(HasStatusEffect(PlayerStatusEffect.ELECTRIFIED))return 6;
-		if(HasStatusEffect(PlayerStatusEffect.SLOWED))return 7;
-		if(HasStatusEffect(PlayerStatusEffect.INVULN))return 8;
-		if(HasStatusEffect(PlayerStatusEffect.GRABBED))return 9;
-		if(HasStatusEffect(PlayerStatusEffect.DEFENSEDOWN))return 10;
-		return 0;
+		GameObject proj = GameController.Instance.CreatePrefab("HaloPlatform", new Vector2(0, 23), Quaternion.identity);
+		proj.transform.localScale = new Vector2(10f, 10f);
+		halo = proj.GetComponent<InstantiatedEntityCleanup>();
 	}
 
 	//initialize a status bar on the players summary card.
@@ -425,7 +410,7 @@ public class PlayerStatus : MonoBehaviour {
 		if(!HasStatusEffect(ef) && data.statusEffector== null && statusDataMap[(int)ef].hasParticle) data.statusEffector = addStatusEffector(ef);
 
 		//Ignores hitstun if in superarmour or invuln
-		if(ef == PlayerStatusEffect.DEAD){
+		if(ef == PlayerStatusEffect.DEAD || ef == PlayerStatusEffect.BANISHED){
 			clearAllStatus();
 			data.duration = duration;
 			return;

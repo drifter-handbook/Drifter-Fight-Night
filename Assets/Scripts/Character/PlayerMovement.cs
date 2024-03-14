@@ -320,7 +320,7 @@ public class PlayerMovement : MonoBehaviour
 		//Pauses you in place if you have a corresponding status effect.
 		if(drifter.status.HasStatusEffect(PlayerStatusEffect.STUNNED)
 		 || drifter.status.HasStatusEffect(PlayerStatusEffect.PLANTED)
-		 || drifter.status.HasStatusEffect(PlayerStatusEffect.DEAD) 
+		 || drifter.status.isDead()
 		 || drifter.status.HasStatusEffect(PlayerStatusEffect.HITPAUSE) 
 		 || drifter.status.HasStatusEffect(PlayerStatusEffect.GRABBED)
 		 || drifter.status.HasStatusEffect(PlayerStatusEffect.CRINGE)
@@ -745,7 +745,7 @@ public class PlayerMovement : MonoBehaviour
 
 
 	public void superCancel(bool inspiration = false) {
-		if(drifter.status.HasStatusEffect(PlayerStatusEffect.DEAD) || !drifter.CanUseSuper()) return;
+		if( !drifter.CanUseSuper()) return;
 
 		else if(drifter.status.HasStatusEffect(PlayerStatusEffect.INSPIRATION) && inspiration) {
 			drifter.ToggleAnimator(true);

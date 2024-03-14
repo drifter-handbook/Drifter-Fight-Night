@@ -49,8 +49,6 @@ public class GameController : MonoBehaviour
 
 	public bool IsTraining;
 	public BattleStage selectedStage;
-	public int[] winnerOrder;
-
 	public GameState gameState = GameState.CHARACTER_SELECT; 
 
 	bool clearingPeers = false;

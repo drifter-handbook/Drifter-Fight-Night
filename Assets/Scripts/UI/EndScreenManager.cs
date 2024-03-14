@@ -42,17 +42,17 @@ public class EndScreenManager : UIMenuManager {
 		//EventSystem.current.SetSelectedGameObject(GameObject.Find("MainMenu"));
 
 		//NOTE: used to have some isHost and sendNetworkMessage logic here (see mouse removal revision for commented out code if necessary)
+		if(GameController.Instance.IsTraining) {
+			UnityEngine.Debug.Log("NO CONTEST");
+		}
 
-		if ( GameController.Instance.winnerOrder.Length == 0) UnityEngine.Debug.Log("NO CONTEST");
-		for(int i = 0; i< GameController.Instance.winnerOrder.Length; i++) {
-
-			UnityEngine.Debug.Log("Player " + (i + 1) + " came in " + GameController.Instance.winnerOrder[i] + "th place!");
-
-			//Todo Cleanup
-			if(GameController.Instance.winnerOrder[i] == 1)
-				foreach (CharacterSelectState state in CharacterMenu.charSelStates)
-					if (state.PeerID == (i - 1))
-						setWinnerPic(state.PlayerType,CharacterMenu.ColorFromEnum[(PlayerColor)(state.PeerID+1)]);
+		else{
+			foreach(CharacterSelectState css in CharacterMenu.charSelStates){
+				if(css != null){
+					UnityEngine.Debug.Log("Player " + css.PeerID + " came in " + css.GameStandings + "th place!");
+					if(css.GameStandings == 1) setWinnerPic(css.PlayerType,CharacterMenu.ColorFromEnum[(PlayerColor)css.PeerID]);
+				}
+			}
 		}
 	}
 

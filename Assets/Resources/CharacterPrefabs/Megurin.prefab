@@ -48,6 +48,7 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: ac3aec30241ab9c4e8cabce865a57f3d, type: 2}
   parent: {fileID: 968483548776588903}
   projectilePriority: -2
+  FlagForDestruction: 0
 --- !u!70 &3271884188819075952
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -338,6 +339,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5578303729342035337, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
+      propertyPath: masterhit
+      value: 
+      objectReference: {fileID: 3604626181780336435}
+    - target: {fileID: 5578303729342035337, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
       propertyPath: drifterType
       value: 9
       objectReference: {fileID: 0}
@@ -402,7 +408,7 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 2769108901067379859}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1098401203493434869
+--- !u!114 &3604626181780336435
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -415,6 +421,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   assetPathName: Megurin
+  dashCancelFlag: 0
+  jumpFlag: 0
 --- !u!1 &968483548776588903 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3106753082241659636, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,

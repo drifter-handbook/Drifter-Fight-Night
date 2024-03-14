@@ -177,7 +177,8 @@ public class CharacterMenu : MonoBehaviour {
 			x = drifterLoc[1],
 			y = drifterLoc[0],
 			removalTimer = PEER_REMOVAL_TIME,
-			StageType = BattleStage.None
+			StageType = BattleStage.None,
+			GameStandings = -1,
 		};
 
 		card.transform.SetParent(gameObject.transform , false);
@@ -299,6 +300,7 @@ public class CharacterMenu : MonoBehaviour {
 				List<BattleStage> randomStage = new List<BattleStage>();
 				foreach (CharacterSelectState charSelState in charSelStates) {
 					if(charSelState == null) continue;
+					UnityEngine.Debug.Log(charSelState);
 					//Random Character sync
 					if (charSelState.PlayerType == DrifterType.Random)
 						charSelState.PlayerType = (DrifterType)UnityEngine.Random.Range(3, DrifterType.GetValues(typeof(DrifterType)).Length - 1);
@@ -340,6 +342,8 @@ public class CharacterMenu : MonoBehaviour {
 		bool isInStageSelect = (phase != CharacterMenuState.CharSelect && phase != CharacterMenuState.AllCharsSelected && phase != CharacterMenuState.TransitionToStageSelect);
 		bool isInCharacterSelect = (phase == CharacterMenuState.CharSelect || phase == CharacterMenuState.AllCharsSelected);
 		bool isBeforeStageSelect = (isInCharacterSelect || phase == CharacterMenuState.TransitionToStageSelect);
+
+		if(charSelStates == null) return;
 
 		for(int j = 0; j < charSelStates.Length; j++){
 			CharacterSelectState p_cursor = charSelStates[j];
@@ -427,6 +431,7 @@ public class CharacterMenu : MonoBehaviour {
 	//Checks to make sure each player has selected a character
 	bool checkCharacterSelectReadiness() {
 		int playersReady = 0;
+		if(charSelStates == null) return false;
 		foreach (CharacterSelectState charSelState in charSelStates) {
 			if(charSelState == null) continue;
 			if(charSelState != null && charSelState.PlayerType != DrifterType.None) 
