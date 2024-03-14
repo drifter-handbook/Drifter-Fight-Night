@@ -110,7 +110,23 @@ public struct DFNGame : IGame {
 		switch(GameController.Instance.controlGroup){
 			case ControlGroup.UI:
 				UnityEngine.Debug.Log("UI MODE; IMPLEMENT ME");
-				return 0;
+				Vector2 nav = playerInputAction.FindAction("Navigate").ReadValue<Vector2>();
+				if(nav.x > 0)
+					input |= INPUT_RIGHT;
+				if(nav.x < 0)
+					input |= INPUT_LEFT;
+				if(nav.y > 0)
+					input |= INPUT_UP;
+				if(nav.y < 0)
+					input |= INPUT_DOWN;
+
+				if(playerInputAction.FindAction("Submit").ReadValue<float>() > 0)
+					input |= INPUT_LIGHT;
+
+				if(playerInputAction.FindAction("Cancel").ReadValue<float>() > 0)
+					input |= INPUT_SPECIAL;
+
+				return input;
 
 			case ControlGroup.Controls:
 			default:

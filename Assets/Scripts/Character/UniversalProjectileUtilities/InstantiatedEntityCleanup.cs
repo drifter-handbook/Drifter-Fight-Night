@@ -124,6 +124,7 @@ public class InstantiatedEntityCleanup : MonoBehaviour{
 	}
 
 	public void Cleanup() {
+		duration = -1;
 		Destroy(gameObject);
 	}
 
