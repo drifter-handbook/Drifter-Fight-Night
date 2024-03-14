@@ -66,7 +66,7 @@ public class SandbagMasterHit : MasterHit
 	}
 
 	public void Neutral_Special() {
-		Sandblast?.animator.Play("Sandblast_Detonate");
+		if(Sandblast != null) Sandblast.animator.Play("Sandblast_Detonate");
 		CreateSandblast();
 	}
 

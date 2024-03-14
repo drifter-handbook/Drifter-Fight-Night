@@ -358,7 +358,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 		if(movement.grounded && x >0) movement.spawnKickoffDust();
 
 		if((rb.velocity.x * movement.Facing) < 0) {
-			rb.velocity = new Vector2( Mathf.Sign(rb.velocity.x) * Mathf.Abs(x + rb.velocity.x) * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f),rb.velocity.y);
+			rb.velocity = new Vector2( Mathf.Sign(rb.velocity.x) * (Mathf.Abs(rb.velocity.x) - x) * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f),rb.velocity.y);
 		}
 
 		else{
