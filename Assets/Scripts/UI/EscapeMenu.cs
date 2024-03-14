@@ -44,11 +44,11 @@ public class EscapeMenu : UIMenuManager {
             GameController.Instance.controlGroup = ControlGroup.Controls;
             GameController.Instance.toggleInputSystem(false);
             ClearMenus();
-            RegisterRebindMenuCallbacks(false);
+            //RegisterRebindMenuCallbacks(false);
         }
         else {
             InitializeMenus();
-            RegisterRebindMenuCallbacks(true);
+            //RegisterRebindMenuCallbacks(true);
         }
     }
 
