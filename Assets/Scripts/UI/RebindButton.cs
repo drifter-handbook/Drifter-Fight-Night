@@ -13,15 +13,14 @@ public class RebindButton : MonoBehaviour {
     private static Action<InputUser, InputUserChange, InputDevice> userChangeCallback;
     string bindingName = "";
 
-    public void Awake() {
-        //Uncomment when not broken
-        //userChangeCallback = OnUserChange;
-        //InputUser.onChange += userChangeCallback;
-    }
-
-    public void OnDestroy()
-    {
-        //InputUser.onChange -= userChangeCallback;
+    public void RegisterRebindCallbacks(bool register) {
+        if(register) {
+            userChangeCallback = OnUserChange;
+            InputUser.onChange += userChangeCallback;
+        }
+        else {
+            InputUser.onChange -= userChangeCallback;
+        }
     }
 
     public void RemapButtonClicked()
