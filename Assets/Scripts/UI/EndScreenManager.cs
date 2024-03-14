@@ -9,6 +9,7 @@ public enum EndgameVote{
 	NO_SELECTION,
 	PLAY_AGAIN,
 	CHARACTER_SELECT,
+	STAGE_SELECT,
 	DISCONNECT
 }
 
@@ -95,6 +96,7 @@ public class EndScreenManager : UIMenuManager {
 
 	void GoToNextScreen(){
 		bool returnToCharacterSelect = false;
+
 		foreach(EndgameVote vote in EndgameVotes){
 			switch(vote){
 				case EndgameVote.NO_SELECTION:
@@ -105,6 +107,10 @@ public class EndScreenManager : UIMenuManager {
 					backToMain(); //Replace this with actual DC code
 					return;
 					//break;
+				case EndgameVote.STAGE_SELECT:
+					UnityEngine.Debug.Log("IMPLEMENT ME");
+					returnToCharacterSelect = true;
+					break;
 				case EndgameVote.CHARACTER_SELECT:
 				//A player wants to change characters or stages
 					returnToCharacterSelect = true;

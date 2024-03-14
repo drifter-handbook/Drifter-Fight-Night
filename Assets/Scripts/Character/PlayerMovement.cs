@@ -72,8 +72,6 @@ public class PlayerMovement : MonoBehaviour
 	[NonSerialized]
 	public int accelerationFrames = 6;
 	[NonSerialized]
-	public int dashLock = 0;
-	[NonSerialized]
 	public float jumpTimer = 30f;
 
 	InstantiatedEntityCleanup SuperCancel;
@@ -163,8 +161,6 @@ public class PlayerMovement : MonoBehaviour
 	public void UpdateFrame() {
 
 		if(SuperCancel != null) SuperCancel.GetComponentInChildren<InstantiatedEntityCleanup>().UpdateFrame();
-
-		if(dashLock >0) dashLock--;
 
 		bool jumpPressed = !drifter.input[1].Jump && drifter.input[0].Jump;
 		bool canAct = !drifter.status.HasStunEffect() && !drifter.guarding;// && !drifter.input[0].Guard;
@@ -522,7 +518,7 @@ public class PlayerMovement : MonoBehaviour
 		}
 
 
-		else if(canAct && (drifter.doubleTappedX() || drifter.input[0].Dash)) {
+		else if(canAct && (drifter.doubleTappedX() || (!drifter.input[2].Dash && drifter.input[0].Dash))) {
 			dash();
 		}
 
@@ -703,10 +699,6 @@ public class PlayerMovement : MonoBehaviour
 			else
 				spawnJuiceParticle(transform.position + particleOffset +new Vector3(0,-1,0), MovementParticleMode.DoubleJump);
 			
-			//jump needs a little delay so character animations can spend
-			//a frame or two preparing to jump
-			//jumpCoroutine = StartCoroutine(DelayedJump());
-
 			jumpTimer = -5f;
 			return true;
 		}
@@ -718,7 +710,6 @@ public class PlayerMovement : MonoBehaviour
 		if(currentDashes > 0 && !dashing) {
 			updateFacing();
 			accelerationFrames = 120;
-			dashLock = 60;
 			dashing = true;
 			spawnJuiceParticle(BodyCollider.bounds.center + new Vector3(Facing * 1.5f,0), MovementParticleMode.Dash_Ring, Quaternion.Euler(0f,0f,0f), false);
 			drifter.status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,480);
@@ -863,7 +854,6 @@ public class PlayerMovement : MonoBehaviour
 		bw.Write(currentJumps);
 		bw.Write(currentDashes);
 		bw.Write(ledgeGrabLockout);
-		bw.Write(dashLock);
 		bw.Write((int)cancelType);
 
 		//Float
@@ -905,7 +895,6 @@ public class PlayerMovement : MonoBehaviour
 		currentJumps = br.ReadInt32();
 		currentDashes = br.ReadInt32();
 		ledgeGrabLockout = br.ReadInt32();
-		dashLock = br.ReadInt32();
 		cancelType = (CancelType)br.ReadInt32();
 
 		//Float

@@ -117,12 +117,9 @@ public class CharacterMenu : MonoBehaviour {
 		stageRows[2] = bottomStageRow;
 
 		//Peer ID 9 is always the training dummy
-		charSelStates = new CharacterSelectState[10];
-  
-		GameController.Instance.Peers =  new List<int>();
+		//charSelStates = new CharacterSelectState[10];
 
-		GameController.Instance.removeAllUIPeers();
-		GameController.Instance.EnableJoining();
+		initializeCharacterSelect();
 	}
 
 	//Deprecate this
@@ -139,13 +136,34 @@ public class CharacterMenu : MonoBehaviour {
 		AddCharSelState(peerID,DrifterType.None);
 	}
 
-	public void AddCharSelState(int peerID, DrifterType drifter) {
-		int maxPlayer = GameController.Instance.maxPlayerCount;
-		bool training = GameController.Instance.IsTraining;
+	public void initializeCharacterSelect() {
 
-		if (charSelStates[peerID] != null)
-			return;
+		if(charSelStates == null){
+			UnityEngine.Debug.Log("RESET");
+			charSelStates = new CharacterSelectState[10];
+			GameController.Instance.Peers =  new List<int>();
+			GameController.Instance.removeAllUIPeers();
+		}  
+		else{
+			for(int i = 0 ;i < charSelStates.Length; i++)
+				if(charSelStates[i] != null)
+					ConfigureCharSelState(charSelStates[i].PeerID,charSelStates[i].PlayerType);
+		}
 
+		GameController.Instance.EnableJoining();
+	}
+
+	public void setCharacterSelectPhase(CharacterMenuState p_phase){
+		phase = p_phase;
+	}
+
+	public void ResetCharacterSelect() {
+		foreach(int peerID in GameController.Instance.Peers)
+			RemoveCharSelState(peerID);
+		charSelStates = null;
+	}
+
+	public void ConfigureCharSelState(int peerID, DrifterType drifter){
 		int[] drifterLoc = findDrifterMatrixPosition(drifter);
 		GameObject cursor = GameController.Instance.CreatePrefab("CharacterCursor",characterRows[drifterLoc[0]][drifterLoc[1]].transform.position, transform.rotation);
 		cursor.GetComponent<SpriteRenderer>().color = ColorFromEnum[(PlayerColor)peerID];
@@ -165,9 +183,17 @@ public class CharacterMenu : MonoBehaviour {
 		card.transform.SetParent(gameObject.transform , false);
 		card.GetComponent<CharacterCard>().SetCharacter(drifter);
 		playerCards.Add(peerID,card);
+	}
 
-		//TODO: Fix this for multiple input devices
-		//if(peerID != -1)
+	public void AddCharSelState(int peerID, DrifterType drifter) {
+		int maxPlayer = GameController.Instance.maxPlayerCount;
+		bool training = GameController.Instance.IsTraining;
+
+		if (charSelStates[peerID] != null)
+			return;
+
+		ConfigureCharSelState(peerID,drifter);
+
 		GameController.Instance.Peers.Add(peerID);
 	}
 

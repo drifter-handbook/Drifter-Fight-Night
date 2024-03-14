@@ -48,6 +48,7 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: ec851d1eeac07d74fa811b4f630a0985, type: 2}
   parent: {fileID: 0}
   projectilePriority: -2
+  FlagForDestruction: 0
 --- !u!58 &4109603421563800839
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -128,6 +129,7 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: ec851d1eeac07d74fa811b4f630a0985, type: 2}
   parent: {fileID: 0}
   projectilePriority: -2
+  FlagForDestruction: 0
 --- !u!1 &5200170305971518944
 GameObject:
   m_ObjectHideFlags: 0
@@ -377,6 +379,7 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: ec851d1eeac07d74fa811b4f630a0985, type: 2}
   parent: {fileID: 5200170305971518944}
   projectilePriority: -2
+  FlagForDestruction: 0
 --- !u!58 &5576716975290080321
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -441,6 +444,7 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: ec851d1eeac07d74fa811b4f630a0985, type: 2}
   parent: {fileID: 0}
   projectilePriority: -2
+  FlagForDestruction: 0
 --- !u!58 &1118914186755957427
 CircleCollider2D:
   m_ObjectHideFlags: 0

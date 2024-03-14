@@ -124,6 +124,8 @@ public class PlayerStatus : MonoBehaviour {
 	public bool isInCombo = false;
 	public Drifter drifter;
 
+	InstantiatedEntityCleanup halo;
+
 	// Update is called once per frame
 	public void UpdateFrame() {
 
@@ -155,6 +157,9 @@ public class PlayerStatus : MonoBehaviour {
 					//Damage player if they are on fire
 					if(i == (int)PlayerStatusEffect.BURNING) drifter.DamageTaken += Time.fixedDeltaTime;
 
+					//Respawn when not dead
+					if(i == (int)PlayerStatusEffect.DEAD && !HasStatusEffect(PlayerStatusEffect.DEAD)) Respawn();
+					
 					if(i == (int)PlayerStatusEffect.KNOCKDOWN && !HasStatusEffect(PlayerStatusEffect.KNOCKDOWN) && !HasStatusEffect(PlayerStatusEffect.FLATTEN)){
 						if(HasStatusEffect(PlayerStatusEffect.FLATTEN)) ApplyStatusEffect(PlayerStatusEffect.FLATTEN,0);
 						if(HasEnemyStunEffect())clearStunStatus();
@@ -201,7 +206,8 @@ public class PlayerStatus : MonoBehaviour {
 		if(delayedVelocity != Vector2.zero && !(HasStatusEffect(PlayerStatusEffect.HITPAUSE) || HasStatusEffect(PlayerStatusEffect.CRINGE) || HasStatusEffect(PlayerStatusEffect.GRABBED) || hasSloMoEffect())) delayedVelocity = Vector2.zero;
 
 		if(isInCombo && !HasEnemyStunEffect()) isInCombo = false; 
-		
+
+		halo?.UpdateFrame();
 	}
 
 	//Returns true if the player has the specified status and its duration is not zero
@@ -365,6 +371,19 @@ public class PlayerStatus : MonoBehaviour {
 		grabbingEntity = "";
 	}
 
+	void Respawn(){
+		CreateHalo();
+		drifter.transform.position = new Vector2(0f, 27f);
+		drifter.movement.rb.velocity = Vector2.zero;
+	}
+
+	void CreateHalo() {
+        GameObject proj = GameController.Instance.CreatePrefab("HaloPlatform", new Vector2(0, 23), Quaternion.identity);
+        proj.transform.localScale = new Vector2(10f, 10f);
+        halo = proj.GetComponent<InstantiatedEntityCleanup>();
+    }
+
+
 	//IDK fam. do we want to keep this?
 	public int GetStatusToRender() {
 		//UnityEngine.Debug.Log("ASKED");
@@ -457,6 +476,12 @@ public class PlayerStatus : MonoBehaviour {
 			
 		bw.Write(grabbingHitboxName);
 		bw.Write(grabbingEntity);
+		if(halo != null){
+			bw.Write(true);
+			halo.Serialize(bw);
+		}
+		else
+			bw.Write(false);
 
 	}
 
@@ -470,6 +495,15 @@ public class PlayerStatus : MonoBehaviour {
 
 		grabbingHitboxName = br.ReadString();
 		grabbingEntity = br.ReadString();
+		if(br.ReadBoolean()){
+			if(halo == null)CreateHalo();
+			halo.Deserialize(br);
+		}
+		else if( halo != null){
+			Destroy(halo.gameObject);
+			halo = null;
+		}
+		
 
 	}
 

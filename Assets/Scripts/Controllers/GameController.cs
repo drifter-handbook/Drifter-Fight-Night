@@ -243,6 +243,7 @@ public class GameController : MonoBehaviour
 		removeAllPeers();
 		StopGGPO();
 		gameState = GameState.MENU;
+		CharacterMenu.Instance?.ResetCharacterSelect();
 		EnableJoining();
 		SceneManager.LoadScene("MenuScene");
 	}

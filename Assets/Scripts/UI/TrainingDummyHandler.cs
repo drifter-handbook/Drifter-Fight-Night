@@ -500,7 +500,8 @@ public class TrainingDummyHandler : MonoBehaviour
 												"0,0,0,0,0,0,0,0,0:10", null};
 				break;
 			case DummyAction.DASH:
-				playbackBuffer = new String[]{"0,0,0,0,0,0,0,0,1:2", null};	
+				playbackBuffer = new String[]{	"0,0,0,0,0,0,0,0,1:1",
+												"0,0,0,0,0,0,0,0,0:10", null};	
 				break;
 			case DummyAction.SUPER:
 				Dummy.input[0] = new PlayerInputData(){Super = true};

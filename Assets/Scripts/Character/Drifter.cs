@@ -191,6 +191,15 @@ public class Drifter : MonoBehaviour
 		sparkle.Play(p_mode?"ChargeIndicator":"Hide");
 	}
 
+	public void die(){
+		Stocks--;
+        DamageTaken = 0f;
+        superCharge = 200;
+        status.ApplyStatusEffect(PlayerStatusEffect.DEAD, 120);
+        status.ApplyStatusEffect(PlayerStatusEffect.INVULN, 420);
+        transform.position = new Vector2(0f, 150f);
+	}
+
 	//Replaces the animator state transition function
 	public void PlayAnimation(string p_state, float p_normalizedTime = -1, bool p_gate = false, int eventBlockTime = 2) {
 

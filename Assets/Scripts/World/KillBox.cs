@@ -25,8 +25,7 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
         currentPlayers = startingPlayers;
     }
 
-    GameObject CreateExplosion(Collider2D other, int playerIndex)
-    {
+    GameObject CreateExplosion(Collider2D other, int playerIndex) {
         GameObject deathExplosion = GameController.Instance.CreatePrefab("DeathExplosion", other.transform.position, Quaternion.identity);
         deathExplosion.transform.position =
             ClampObjectToScreenSpace.FindPosition(deathExplosion.transform);
@@ -35,61 +34,25 @@ public class KillBox : MonoBehaviour    //TODO: Refactored, needs verification
         return deathExplosion;    
     }
 
-    void CreateHalo()
-    {
-        GameObject halo = GameController.Instance.CreatePrefab("HaloPlatform",
-            new Vector2(0, 23),
-            Quaternion.identity
-        );
-        halo.transform.localScale = new Vector2(10f, 10f);
-    }
-
-
-    IEnumerator Respawn(Collider2D other)
-    {
-        yield return new WaitForSeconds(.083f);
-        other.transform.position = new Vector2(0f, 150f);
-        yield return new WaitForSeconds(2f);
-        CreateHalo();
-        other.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        other.transform.position = new Vector2(0f, 27f);
-        yield break;
-    }
-
-    void OnTriggerExit2D(Collider2D other)
-    {
+    void OnTriggerExit2D(Collider2D other) {
         killPlayer(other);
     }
 
 
-    protected void killPlayer(Collider2D other)
-    {
+    protected void killPlayer(Collider2D other) {
 
     	if (other.gameObject.tag == "Player" && other.GetType() == typeof(BoxCollider2D))
         {
             while(Shake==null)Shake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<ScreenShake>();
             Drifter drifter = other.gameObject?.GetComponent<Drifter>();
-            if (!drifter.status.HasStatusEffect(PlayerStatusEffect.DEAD))
-            {   
+            if (!drifter.status.HasStatusEffect(PlayerStatusEffect.DEAD)) {   
 
                 Shake?.Shake(18, 1.5f);
                 Shake?.Darken(6);
-
-                drifter.Stocks--;
-                drifter.DamageTaken = 0f;
-                drifter.superCharge = 200;
-                drifter.status.ApplyStatusEffect(PlayerStatusEffect.DEAD, 118);
-                drifter.status.ApplyStatusEffect(PlayerStatusEffect.INVULN, 420);
-
                 CreateExplosion(other, -1);
-                           
+                drifter.die();
 
-                if (other.gameObject.GetComponent<Drifter>().Stocks > 0)
-                {
-                    StartCoroutine(Respawn(other));
-                }
-                else
-                {
+                if (other.gameObject.GetComponent<Drifter>().Stocks <= 0) {
                     //UnityEngine.Debug.Log(drifter.peerID);
                     //playerList[drifter.peerID + 1] = currentPlayers;
 
