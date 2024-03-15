@@ -1125,7 +1125,7 @@ PrefabInstance:
         type: 3}
       propertyPath: rebindMenuButtons
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1881580815}
     - target: {fileID: 4469006628266558518, guid: 1d81fc5acbe173b4a844698424d472d0,
         type: 3}
       propertyPath: m_Name
@@ -1210,6 +1210,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5744339498633864389, guid: 1d81fc5acbe173b4a844698424d472d0,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 176992867}
+    - target: {fileID: 5744339498633864389, guid: 1d81fc5acbe173b4a844698424d472d0,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5744339498633864389, guid: 1d81fc5acbe173b4a844698424d472d0,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetViewBack
+      objectReference: {fileID: 0}
+    - target: {fileID: 5744339498633864389, guid: 1d81fc5acbe173b4a844698424d472d0,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5744339498633864394, guid: 1d81fc5acbe173b4a844698424d472d0,
         type: 3}
@@ -3142,4 +3162,10 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8308863690101463978, guid: 99f00dda964e6054cb2af4c05ec2139d,
     type: 3}
   m_PrefabInstance: {fileID: 1648782106}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1881580815 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7738239312375855438, guid: 1d81fc5acbe173b4a844698424d472d0,
+    type: 3}
+  m_PrefabInstance: {fileID: 176992865}
   m_PrefabAsset: {fileID: 0}

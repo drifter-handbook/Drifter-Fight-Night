@@ -17,6 +17,7 @@ public class RebindButton : MonoBehaviour {
         if(register) {
             userChangeCallback = OnUserChange;
             InputUser.onChange += userChangeCallback;
+            mappingString.text = actionReference.action.GetBindingDisplayString();
         }
         else {
             InputUser.onChange -= userChangeCallback;
