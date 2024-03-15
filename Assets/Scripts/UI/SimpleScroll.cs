@@ -16,6 +16,8 @@ public class SimpleScroll : MonoBehaviour {
     private float viewportBottomY;
     private Vector2 originalContentPanelYPos;
 
+    //This scroll functionality only works for vertical lists at the moment. Will need to add horizontal support if need arises.
+
     private void Awake() {
         viewportBottomY = scrollRect.position.y + bottomBuffer;
         viewportTopY = scrollRect.position.y + (scrollRect.rect.height) + topBuffer;
@@ -26,25 +28,22 @@ public class SimpleScroll : MonoBehaviour {
         if(uiMenuManager.menuFlowHistory[uiMenuManager.menuFlowHistory.Count - 1] == targetMenu) {
             GameObject currentGameObject = EventSystem.current.currentSelectedGameObject;
             if(currentGameObject != null) {
-                SnapTo();
+                TargetOutOfViewHighlightedItem();
             }
         }
     }
 
-    public void SnapTo() {
+    public void TargetOutOfViewHighlightedItem() {
         GameObject rect = EventSystem.current.currentSelectedGameObject;      
         bool inView = rect.transform.position.y > viewportBottomY && rect.transform.position.y < viewportTopY;
 
         if (!inView) { //If the selected Item is not visible.
             float buttonHeight = rect.GetComponent<RectTransform>().rect.height;
 
-            if (rect.name == "Back Settings") { //scroll looped back to top.
-                contentPanel.anchoredPosition = originalContentPanelYPos;    
-            }
-            else if (rect.transform.position.y < viewportBottomY) { //Out of range at top of the panel
+            if (rect.transform.position.y < viewportBottomY) { //Highlighted button is out of view at bottom of the panel
                 contentPanel.anchoredPosition += new Vector2(0, buttonHeight);
             }
-            else if (rect.transform.position.y > viewportTopY) { //Out of range at bottom of the panel
+            else if (rect.transform.position.y > viewportTopY) { //Highlighted button is of view at top of the panel
                 contentPanel.anchoredPosition += new Vector2(0, -buttonHeight);
             }
         }
