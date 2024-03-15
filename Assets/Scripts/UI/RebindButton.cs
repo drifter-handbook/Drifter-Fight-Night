@@ -13,15 +13,9 @@ public class RebindButton : MonoBehaviour {
     private static Action<InputUser, InputUserChange, InputDevice> userChangeCallback;
     string bindingName = "";
 
-    public void RegisterRebindCallbacks(bool register) {
-        if(register) {
-            userChangeCallback = OnUserChange;
-            InputUser.onChange += userChangeCallback;
-            mappingString.text = actionReference.action.GetBindingDisplayString();
-        }
-        else {
-            InputUser.onChange -= userChangeCallback;
-        }
+    public void InitializeBindingControlScheme(PlayerInput input) {
+        bindingName = input.currentControlScheme;
+        mappingString.text = actionReference.action.GetBindingDisplayString();
     }
 
     public void RemapButtonClicked()
@@ -30,19 +24,7 @@ public class RebindButton : MonoBehaviour {
         var rebindOperation = actionReference.action.PerformInteractiveRebinding().WithBindingGroup(bindingName).Start();
         rebindOperation.OnComplete(operation => {
             actionReference.action.Enable();
+            mappingString.text = actionReference.action.GetBindingDisplayString();
         });
-    }
-
-    public void UpdateMappingString(string name) {
-        bindingName = name;
-        mappingString.text = actionReference.action.GetBindingDisplayString();
-    }
-
-    public void OnUserChange(InputUser user, InputUserChange change, InputDevice device)
-    {
-        if(user.controlScheme.HasValue)
-        {
-            UpdateMappingString(user.controlScheme.Value.name);
-        }
     }
 }

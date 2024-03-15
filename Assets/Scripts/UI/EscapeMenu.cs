@@ -28,6 +28,7 @@ public class EscapeMenu : UIMenuManager {
                     //Only the player who pressed pause gets menu privs
                     uiInputModule.actionsAsset = GameController.Instance.controls[i].actions;
                     TogglePauseMenuPanel();
+                    InitializeRebindMenuControlScheme(GameController.Instance.controls[i]);
                     return;
                 }
             }
@@ -44,11 +45,9 @@ public class EscapeMenu : UIMenuManager {
             GameController.Instance.controlGroup = ControlGroup.Controls;
             GameController.Instance.toggleInputSystem(false);
             ClearMenus();
-            RegisterRebindMenuCallbacks(false);
         }
         else {
             InitializeMenus();
-            RegisterRebindMenuCallbacks(true);
         }
     }
 
@@ -58,9 +57,9 @@ public class EscapeMenu : UIMenuManager {
         GameController.Instance.EndMatch();
     }
 
-    public void RegisterRebindMenuCallbacks(bool register) {
+    public void InitializeRebindMenuControlScheme(PlayerInput input) {
         foreach (var child in rebindMenuButtons.GetComponentsInDirectChildren<RebindButton>()) {
-            child.RegisterRebindCallbacks(register);
+            child.InitializeBindingControlScheme(input);
         }
     }
 }
