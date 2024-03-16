@@ -20,19 +20,23 @@ public class MainMenuScreensManager : UIMenuManager
     void Awake() {
         InitializeMenus();
     }
-    public override void UpdateToggles() {
-        toggle1.onValueChanged.RemoveAllListeners();
-        toggle2.onValueChanged.RemoveAllListeners();
-        toggle3.onValueChanged.RemoveAllListeners();
+    public override void OnMenuActivated(UIMenuType type) {
+        if (type == UIMenuType.SettingsMenu) {
+            toggle1.onValueChanged.RemoveAllListeners();
+            toggle2.onValueChanged.RemoveAllListeners();
+            toggle3.onValueChanged.RemoveAllListeners();
 
-        toggle1.isOn = PlayerPrefs.GetInt("dynamicCamera") > 0;
-        toggle2.isOn = PlayerPrefs.GetInt("HidePing") > 0;
-        toggle3.isOn = PlayerPrefs.GetInt("HideTextInput") > 0;
-        //   ^ toggles the code too. Why? idk, unity makes interesting decisions sometimes
+            toggle1.isOn = PlayerPrefs.GetInt("dynamicCamera") > 0;
+            toggle2.isOn = PlayerPrefs.GetInt("HidePing") > 0;
+            toggle3.isOn = PlayerPrefs.GetInt("HideTextInput") > 0;
+            //   ^ toggles the code too. Why? idk, unity makes interesting decisions sometimes
 
-        toggle2.onValueChanged.AddListener(delegate {
-            togglePing();
-        });
+            toggle2.onValueChanged.AddListener(delegate {
+                togglePing();
+            });
+        }
+
+        base.OnMenuActivated(type);
     }
 
     void FixedUpdate() {

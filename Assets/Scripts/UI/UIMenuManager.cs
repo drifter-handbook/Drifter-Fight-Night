@@ -23,11 +23,13 @@ public class UIMenuManager : MonoBehaviour {
     public UIMenuType activeMenu = UIMenuType.Invalid;
     [HideInInspector]
     public List<UIMenuType> menuFlowHistory = new List<UIMenuType>();
-    
+    [HideInInspector]
+    public PlayerInput activePlayerInput;
+
     public void InitializeMenus() {
         //HACK: Could not figure out serializable dictionaries in a reasonable time, so doing this nonsense.
         //Afterwards, initialize the first default menu view.
-        if(menuItemStates.Count != menuGameObjects.Count) {
+        if (menuItemStates.Count != menuGameObjects.Count) {
             Debug.LogWarning("Size mismatch between Menu Item States and Menu Game Objects, fatal error!");
             return;
         }
@@ -94,16 +96,15 @@ public class UIMenuManager : MonoBehaviour {
             case UIMenuType.JoinMenu: EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Join")); break;
             case UIMenuType.InGamePauseMenu: EventSystem.current.SetSelectedGameObject(GameObject.Find("Continue")); break;
             case UIMenuType.InGameSettingsMenu: EventSystem.current.SetSelectedGameObject(GameObject.Find("Back")); break;
-            case UIMenuType.SettingsMenu: {
-                    UpdateToggles();
-                    EventSystem.current.SetSelectedGameObject(GameObject.Find("IPToggle"));
-                    break;
-            }
+            case UIMenuType.SettingsMenu: EventSystem.current.SetSelectedGameObject(GameObject.Find("IPToggle")); break;
             default: {
                     Debug.Log("Unhandled UIMenuType type" + name + "\n");
-                    break;
-            }
+                    return;
+                }
         }
+        
+        //no early return, success! Trigger callback.
+        OnMenuActivated(name);
     }
 
     public void UpdateActivePlayerInputs(PlayerInput playerInput) {
@@ -131,6 +132,7 @@ public class UIMenuManager : MonoBehaviour {
         if ((playerInput.currentControlScheme == "Gamepad" && gamepadButtonPressed) || (playerInput.currentControlScheme == "Keyboard" && Keyboard.current.anyKey.isPressed)) {
             InputSystemUIInputModule uiInputModule = FindObjectOfType<InputSystemUIInputModule>();
             uiInputModule.actionsAsset = playerInput.actions;
+            activePlayerInput = playerInput;
         }
     }
 
@@ -138,7 +140,17 @@ public class UIMenuManager : MonoBehaviour {
         Application.Quit();
     }
 
-    public virtual void UpdateToggles() {
-        //intentionally empty, overridden in MainMenuScreensManager so the menuManager logic can be used for other scenes.
+    public virtual void OnMenuActivated(UIMenuType type) {
+        switch (type) {
+            case UIMenuType.RebindMenu: {
+                if (type == UIMenuType.RebindMenu) {
+                    foreach (GameObject gameObject in menuList[type].GetComponent<UIMenu>().gameObjects) {
+                        gameObject.GetComponent<RebindButton>().InitializeBindingControlScheme(activePlayerInput);
+                    }
+                }
+                break;
+            }
+            default: break;
+        }
     }
 }

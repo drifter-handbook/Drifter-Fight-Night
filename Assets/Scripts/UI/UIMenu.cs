@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum UIMenuType {
@@ -18,4 +19,6 @@ public enum UIMenuType {
 public class UIMenu : MonoBehaviour {
     [SerializeField]
     public UIMenuType currentMenu;
+    [SerializeField]
+    public List<GameObject> gameObjects;
 }

@@ -4,7 +4,6 @@ using UnityEngine.InputSystem.UI;
 
 public class EscapeMenu : UIMenuManager {
     public GameObject escapeMenu;
-    public GameObject rebindMenuButtons;
 
     //This menu should onyl be accessible in local games (probably)
     //Doesnt need its own serialize/deserialize becasue its state is entirely based on other components
@@ -26,9 +25,9 @@ public class EscapeMenu : UIMenuManager {
                     GameController.Instance.toggleInputSystem(true);
                     InputSystemUIInputModule uiInputModule = GameObject.Find("EventSystem")?.GetComponent<InputSystemUIInputModule>();
                     //Only the player who pressed pause gets menu privs
+                    activePlayerInput = GameController.Instance.controls[i];
                     uiInputModule.actionsAsset = GameController.Instance.controls[i].actions;
                     TogglePauseMenuPanel();
-                    InitializeRebindMenuControlScheme(GameController.Instance.controls[i]);
                     return;
                 }
             }
@@ -55,11 +54,5 @@ public class EscapeMenu : UIMenuManager {
         TogglePauseMenuPanel();
         GameController.Instance.IsPaused = false;
         GameController.Instance.EndMatch();
-    }
-
-    public void InitializeRebindMenuControlScheme(PlayerInput input) {
-        foreach (var child in rebindMenuButtons.GetComponentsInDirectChildren<RebindButton>()) {
-            child.InitializeBindingControlScheme(input);
-        }
     }
 }
