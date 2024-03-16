@@ -1484,7 +1484,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentMenu: 5
-  gameObjects: []
 --- !u!1 &279582204
 GameObject:
   m_ObjectHideFlags: 0
@@ -1678,7 +1677,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentMenu: 0
-  gameObjects: []
 --- !u!1001 &300694202
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7335,7 +7333,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentMenu: 1
-  gameObjects: []
 --- !u!1 &603270114
 GameObject:
   m_ObjectHideFlags: 0
@@ -7606,7 +7603,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentMenu: 6
-  gameObjects: []
 --- !u!114 &690028328 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2653818583982220587, guid: 584b9d917f40606479b7600a25ef8a72,
@@ -8837,7 +8833,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentMenu: 3
-  gameObjects: []
 --- !u!1 &878268818
 GameObject:
   m_ObjectHideFlags: 0
@@ -10055,6 +10050,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6337766235464429980, guid: 7c38672ed6be394499e2104f60e49387,
+        type: 3}
+      propertyPath: topBuffer
+      value: -83
+      objectReference: {fileID: 0}
+    - target: {fileID: 6337766235464429980, guid: 7c38672ed6be394499e2104f60e49387,
+        type: 3}
+      propertyPath: bottomBuffer
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: 6337766235464429980, guid: 7c38672ed6be394499e2104f60e49387,
         type: 3}
@@ -19279,7 +19284,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentMenu: 2
-  gameObjects: []
 --- !u!1 &1992637740
 GameObject:
   m_ObjectHideFlags: 0
@@ -19395,7 +19399,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentMenu: 4
-  gameObjects: []
 --- !u!1 &2026310945
 GameObject:
   m_ObjectHideFlags: 0

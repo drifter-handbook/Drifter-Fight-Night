@@ -8,23 +8,23 @@ using TMPro;
 
 public class RebindButton : MonoBehaviour {
     [SerializeField]
-    public InputActionReference actionReference;
+    public InputAction action;
+    public TextMeshProUGUI labelString;
     public TextMeshProUGUI mappingString;
-    private static Action<InputUser, InputUserChange, InputDevice> userChangeCallback;
     string bindingName = "";
 
     public void InitializeBindingControlScheme(PlayerInput input) {
         bindingName = input.currentControlScheme;
-        mappingString.text = actionReference.action.GetBindingDisplayString();
+        mappingString.text = action.GetBindingDisplayString();
     }
 
     public void RemapButtonClicked()
     {
-        actionReference.action.Disable();
-        var rebindOperation = actionReference.action.PerformInteractiveRebinding().WithBindingGroup(bindingName).Start();
+        action.Disable();
+        var rebindOperation = action.PerformInteractiveRebinding().WithBindingGroup(bindingName).Start();
         rebindOperation.OnComplete(operation => {
-            actionReference.action.Enable();
-            mappingString.text = actionReference.action.GetBindingDisplayString();
+            action.Enable();
+            mappingString.text = action.GetBindingDisplayString();
         });
     }
 }

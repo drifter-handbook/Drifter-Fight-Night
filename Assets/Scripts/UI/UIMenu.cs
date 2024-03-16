@@ -19,6 +19,4 @@ public enum UIMenuType {
 public class UIMenu : MonoBehaviour {
     [SerializeField]
     public UIMenuType currentMenu;
-    [SerializeField]
-    public List<GameObject> gameObjects;
 }

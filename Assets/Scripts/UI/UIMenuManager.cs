@@ -90,7 +90,7 @@ public class UIMenuManager : MonoBehaviour {
             case UIMenuType.MainMenu: EventSystem.current.SetSelectedGameObject(GameObject.Find("Main Play")); break;
             case UIMenuType.ModeMenu: EventSystem.current.SetSelectedGameObject(GameObject.Find("Local")); break;
             case UIMenuType.OnlineMenu: EventSystem.current.SetSelectedGameObject(GameObject.Find("Host")); break;
-            case UIMenuType.RebindMenu: EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Settings")); break;
+            case UIMenuType.RebindMenu: EventSystem.current.SetSelectedGameObject(GameObject.Find("Back")); break;
             case UIMenuType.LocalMenu: EventSystem.current.SetSelectedGameObject(Debug.isDebugBuild ? GameObject.Find("Training") : GameObject.Find("Fight Night")); break;
             case UIMenuType.HostMenu: EventSystem.current.SetSelectedGameObject(GameObject.Find("Host Button")); break;
             case UIMenuType.JoinMenu: EventSystem.current.SetSelectedGameObject(GameObject.Find("Back Join")); break;
@@ -141,16 +141,6 @@ public class UIMenuManager : MonoBehaviour {
     }
 
     public virtual void OnMenuActivated(UIMenuType type) {
-        switch (type) {
-            case UIMenuType.RebindMenu: {
-                if (type == UIMenuType.RebindMenu) {
-                    foreach (GameObject gameObject in menuList[type].GetComponent<UIMenu>().gameObjects) {
-                        gameObject.GetComponent<RebindButton>().InitializeBindingControlScheme(activePlayerInput);
-                    }
-                }
-                break;
-            }
-            default: break;
-        }
+        //intentionally empty for override purposes.
     }
 }
