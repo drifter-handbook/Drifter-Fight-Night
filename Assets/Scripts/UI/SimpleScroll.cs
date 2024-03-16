@@ -36,7 +36,7 @@ public class SimpleScroll : MonoBehaviour {
     public void TargetOutOfViewHighlightedItem() {
         GameObject rect = EventSystem.current.currentSelectedGameObject;      
         bool inView = rect.transform.position.y > viewportBottomY && rect.transform.position.y < viewportTopY;
-
+        Debug.Log("is in view? " + inView + ", y pos: " + rect.transform.position.y + ", min: " + viewportBottomY + "max: " + viewportTopY);
         if (!inView) { //If the selected Item is not visible.
             float buttonHeight = rect.GetComponent<RectTransform>().rect.height;
 
