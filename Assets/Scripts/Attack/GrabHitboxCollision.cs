@@ -23,7 +23,7 @@ public class GrabHitboxCollision : HitboxCollision
                 hitResult = (int)hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, OverrideData);
                 if(hitResult == 1 || hitResult == 0)
                 {
-                    if(SuccessState != ""){
+                    if(SuccessState != "" && parent.GetComponent<Drifter>().blockEvent <=0 && !parent.GetComponent<Drifter>().usingSuper){
                         parent.GetComponent<Drifter>().movement.canLandingCancel = false;
                         parent.GetComponent<Drifter>().PlayAnimation(SuccessState,-1,true);
                     }

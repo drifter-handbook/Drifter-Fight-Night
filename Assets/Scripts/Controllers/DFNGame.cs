@@ -109,7 +109,6 @@ public struct DFNGame : IGame {
 
 		switch(GameController.Instance.controlGroup){
 			case ControlGroup.UI:
-				UnityEngine.Debug.Log("UI MODE; IMPLEMENT ME");
 				Vector2 nav = playerInputAction.FindAction("Navigate").ReadValue<Vector2>();
 				if(nav.x > 0)
 					input |= INPUT_RIGHT;
