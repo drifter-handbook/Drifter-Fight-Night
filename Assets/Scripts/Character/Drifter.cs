@@ -283,6 +283,7 @@ public class Drifter : MonoBehaviour
 		//Unpause the animatior if using a super
 		ToggleAnimator(SuperState);
 		if(SuperState){
+			blockEvent = 10;
 			movement.DropLedge(false,0);
 			CanGrabLedge = false;
 			masterhit.pauseGravity();

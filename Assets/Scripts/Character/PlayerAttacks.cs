@@ -203,8 +203,8 @@ public class PlayerAttacks : MonoBehaviour {
 
 	public void useSuper() {
 		drifter.status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,0);
-		drifter.SetUsingSuper(true);
 		StartAttack(DrifterAttackType.Super_Cancel);
+		drifter.SetUsingSuper(true);
 		drifter.movement.pauseGravity();
 	}
 

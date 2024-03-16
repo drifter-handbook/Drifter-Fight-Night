@@ -95,7 +95,7 @@ public class InstantiatedEntityCleanup : MonoBehaviour{
 		if(pauseBehavior){
 			if(animator !=null) animator.enabled = false;
 			if(rb != null && !dataSaved){
-				UnityEngine.Debug.Log(rb.velocity + " : " + gameObject);
+				//UnityEngine.Debug.Log(rb.velocity + " : " + gameObject);
 				savedVelocity = rb.velocity;
 				savedGravity = rb.gravityScale;
 				rb.velocity = Vector2.zero;
@@ -112,7 +112,7 @@ public class InstantiatedEntityCleanup : MonoBehaviour{
 		if(pauseBehavior && dataSaved) {
 			if(animator !=null) animator.enabled = true;
 			if(rb != null) {
-				UnityEngine.Debug.Log(savedVelocity + " : " + gameObject);
+				//UnityEngine.Debug.Log(savedVelocity + " : " + gameObject);
 				rb.velocity = savedVelocity;
 				rb.gravityScale = savedGravity;
 				savedVelocity = Vector2.zero;
