@@ -150,13 +150,13 @@ public struct DFNGame : IGame {
 				if(playerInputAction.FindAction("Menu").ReadValue<float>() > 0)
 					input |= INPUT_MENU;
 				//Directional Movement
-				if((int)playerInputAction.FindAction("Horizontal").ReadValue<float>() > 0)
+				if((int)playerInputAction.FindAction("Right").ReadValue<float>() > 0)
 					input |= INPUT_RIGHT;
-				if((int)playerInputAction.FindAction("Horizontal").ReadValue<float>() < 0)
+				if((int)playerInputAction.FindAction("Left").ReadValue<float>() > 0)
 					input |= INPUT_LEFT;
-				if((int)playerInputAction.FindAction("Vertical").ReadValue<float>() > 0)
+				if((int)playerInputAction.FindAction("Up").ReadValue<float>() > 0)
 					input |= INPUT_UP;
-				if((int)playerInputAction.FindAction("Vertical").ReadValue<float>() < 0)
+				if((int)playerInputAction.FindAction("Down").ReadValue<float>() > 0)
 					input |= INPUT_DOWN;
 				return input;
 		}
