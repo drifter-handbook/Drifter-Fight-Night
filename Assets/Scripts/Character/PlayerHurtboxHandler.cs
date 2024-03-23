@@ -77,8 +77,8 @@ public class PlayerHurtboxHandler : MonoBehaviour
 			Drifter drifter = GetComponent<Drifter>();
 			PlayerStatus status = drifter.status;
 
-			Drifter attacker = hitbox.parent.GetComponent<Drifter>();
-			PlayerStatus attackerStatus = attacker.status;
+			Drifter attacker = hitbox.parent?.GetComponent<Drifter>();
+			PlayerStatus attackerStatus = attacker?.status;
 
 			float damageDealt = 0f;
 
@@ -107,7 +107,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 			
 			if(status.HasStatusEffect(PlayerStatusEffect.PLANTED) && attackData.StatusEffect == PlayerStatusEffect.GRABBED) return AttackHitType.NONE;
 
-			attacker.canFeint = false;
+			if(attacker !=null) attacker.canFeint = false;
 
 			Vector2 hitSparkPos = hurtbox.capsule.ClosestPoint(hitbox.parent.transform.position);
 			
@@ -115,7 +115,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 			if(hurtbox.gameObject.name == "Counter" &&  attackData.AttackDamage >0f && attackData.hitType!=HitType.GRAB) {
 				Shake?.Darken(25);
 				GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.STAR, hitSparkPos,0, new Vector2(10f, 10f));
-				attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,30);
+				attackerStatus?.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,30);
 				drifter.PlayAnimation("Counter_Success");
 				status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,15);
 				return AttackHitType.COUNTER;
@@ -136,10 +136,10 @@ public class PlayerHurtboxHandler : MonoBehaviour
 					  * ((drifter.guarding && attackData.hitType!=HitType.GRAB && !crossUp) ?  .2f : 1f)
 
 					//Defense Buff damage reduction
-					  * (status.HasStatusEffect(PlayerStatusEffect.DEFENSEUP) ? 0.7f:1f)
+					  * (status.HasStatusEffect(PlayerStatusEffect.DEFENSEUP) ? 0.7f:1f);
 
 					//Attacker damage buff)
-					  * (attackerStatus.HasStatusEffect(PlayerStatusEffect.DAMAGEUP)?1.5f:1f);
+					//  * (attackerStatus.HasStatusEffect(PlayerStatusEffect.DAMAGEUP)?1.5f:1f);
 
 				drifter.DamageTaken += damageDealt;
 
@@ -171,7 +171,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 									attackData);
 
 			//Calculate hitstun duration
-			int HitstunDuration = GetHitStun(drifter, attacker, attackData);
+			int HitstunDuration = GetHitStun(drifter, attackData);
 			int HitPauseDuration = attackData.HitStop >=0 ? attackData.HitStop : HitstunDuration;
 
 			//Flags a guradbreak for BIGG HITSPARKS
@@ -255,7 +255,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 					if(attackData.StatusEffect == PlayerStatusEffect.GRABBED) {
 						status.grabbingHitboxName = hitbox.gameObject.name;
 						status.grabbingEntity = hitbox.gameObject.transform.root.name;
-						attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,5);
+						attackerStatus?.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,5);
 					}
 					//Prevent characters from using supers if hit with a super blocking effect
 					if(attackData.StatusEffect == PlayerStatusEffect.GRABBED || attackData.StatusEffect == PlayerStatusEffect.TUMBLE){
@@ -289,7 +289,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 				//apply attacker hitpause
 				if(HitPauseDuration >0) {
 					if(hitbox.gameObject.tag != "Projectile")
-						attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,HitPauseDuration);
+						attackerStatus?.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,HitPauseDuration);
 					else
 						hitbox.gameObject.GetComponentInParent<InstantiatedEntityCleanup>()?.ApplyFreeze(HitPauseDuration);
 				}
@@ -325,14 +325,14 @@ public class PlayerHurtboxHandler : MonoBehaviour
 				
 				//apply attacker hitpause
 				if (HitPauseDuration >0 && hitbox.gameObject.tag != "Projectile")
-					attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,HitPauseDuration);
+					attackerStatus?.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,HitPauseDuration);
 
 				returnCode = AttackHitType.BLOCK; 
 
 			}
 
 			trainingUI?.addDamage(damageDealt,HitstunDuration,status);
-			trainingUI?.readFrameAdvantage(attackerStatus,status);
+			if(attacker !=null )trainingUI?.readFrameAdvantage(attackerStatus,status);
 
 			// create hit sparks
 
@@ -373,18 +373,18 @@ public class PlayerHurtboxHandler : MonoBehaviour
 				// -1: Hit was registered, but blocked
 				// 0: Hit was registered normally
 				// 1: hit was against a non-player object
-			attacker.TriggerOnHit(drifter,(hitbox.gameObject.tag == "Projectile"), returnCode);
+			attacker?.TriggerOnHit(drifter,(hitbox.gameObject.tag == "Projectile"), returnCode);
 			
 			switch(returnCode) {
 				case AttackHitType.GRAB:
-					attacker.gainSuperMeter(4);
+					attacker?.gainSuperMeter(4);
 					break;
 				case AttackHitType.HIT:
-					attacker.gainSuperMeter((int)damageDealt * 2);
+					attacker?.gainSuperMeter((int)damageDealt * 2);
 					drifter.gainSuperMeter(5);
 					break;
 				case AttackHitType.BLOCK:
-					attacker.gainSuperMeter(6);
+					attacker?.gainSuperMeter(6);
 					drifter.gainSuperMeter(6);
 					break;
 				case AttackHitType.PARRY:
@@ -443,7 +443,7 @@ public class PlayerHurtboxHandler : MonoBehaviour
 						 (strong?1.5f:1)) * attackData.KnockbackScale + attackData.Knockback);
 	}
 
-	protected int GetHitStun(Drifter defender, Drifter attacker, SingleAttackData attackData) {
+	protected int GetHitStun(Drifter defender, SingleAttackData attackData) {
 		int adv = attackData.HitStun;
 		if (defender != null && defender.guarding)
 			adv = attackData.ShieldStun;

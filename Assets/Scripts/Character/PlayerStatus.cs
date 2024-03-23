@@ -375,7 +375,10 @@ public class PlayerStatus : MonoBehaviour {
 
 	void Respawn(){
 		CreateHalo();
-		drifter.transform.position = new Vector2(0f, 27f);
+		//Spawn characters at a slight offset top prevent the ZOOMIES
+		float respawnOffset = (drifter.peerID % 2 - .5f) *.2f * drifter.peerID;
+		UnityEngine.Debug.Log(respawnOffset);
+		drifter.transform.position = new Vector2(respawnOffset, 27f);
 		drifter.movement.rb.velocity = Vector2.zero;
 	}
 

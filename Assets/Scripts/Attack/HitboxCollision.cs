@@ -55,7 +55,7 @@ public class HitboxCollision : MonoBehaviour
 				hitResult = (int)hurtbox.parent.GetComponent<PlayerHurtboxHandler>().RegisterAttackHit(this, hurtbox, AttackID, drifter.attacks.GetCurrentAttackData());
 			}
 			if(hitResult == 1) isActive = false;
-			if(hitResult >= -1 && drifter.canSpecialCancelFlag)drifter.listenForSpecialCancel = true;
+			if(drifter!= null && hitResult >= -1 && drifter.canSpecialCancelFlag)drifter.listenForSpecialCancel = true;
 		}
 		else if(hitbox != null && projectilePriority >= 0 && hitbox.projectilePriority>=-1) {
 			if((projectilePriority ==0 && projectilePriority >= hitbox.projectilePriority) || (projectilePriority != 0  && projectilePriority <= hitbox.projectilePriority))
