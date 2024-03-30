@@ -363,7 +363,7 @@ public class PlayerStatus : MonoBehaviour {
 			if(grabbingDrifter != null){
 				foreach(HitboxCollision hitbox in grabbingDrifter.GetComponentsInChildren<HitboxCollision>(true)){
 					if(hitbox.gameObject.name == grabbingHitboxName && hitbox.gameObject.GetComponent<Collider2D>().enabled){
-						grabPoint = hitbox.gameObject.GetComponent<Collider2D>().bounds.center;
+						grabPoint = new Vector3(0,0,hitbox.gameObject.transform.localPosition.z) + hitbox.gameObject.GetComponent<Collider2D>().bounds.center;
 						return;
 					}
 				}

@@ -20,7 +20,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
 	//Listener Bools
 
-	protected bool Empowered = false;
+	public bool Empowered { get;  protected set; } = false;
 
 	protected Vector3 savedVelocity;
 
@@ -185,6 +185,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 			lightTappedFlag = false;
 		}
 		else if(drifter.canSpecialCancel() && !attacks.grabPressed() && attacks.specialPressed() && !status.HasEnemyStunEffect()) {
+			returnToIdle();
 			attacks.useSpecial(true);
 		}
 		else
@@ -213,6 +214,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 	public void listenForGrounded(string stateName) {
 		queueState(stateName);
 		listeningForGroundedFlag = true;
+		movement.canLandingCancel = false;
 	}
 
 	public void listenForSpecialTapped(string stateName) {
@@ -245,6 +247,10 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
 	public void listenForJumpCancel() {
 		jumpFlag = true;
+	}
+
+	public void endJump() {
+		movement.jumping = false;
 	}
 
 	public void setCanLedgeGrab(int state = 0) {
@@ -445,6 +451,10 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 	}
 
 	public void playState(string state) {
+		if(drifter.blockEvent > 0) {
+			UnityEngine.Debug.Log("STATE TRANSITION TO " + state + " BLOCKED FOR: " + drifter.gameObject);
+			return;
+		}
 		drifter.PlayAnimation(state);
 	}
 

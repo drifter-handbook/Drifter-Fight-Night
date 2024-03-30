@@ -90,6 +90,8 @@ public class RyykeMasterHit : MasterHit {
 		//Tick down the burrow timer
 		if(burrowing && burrowTime >0) {
 			burrowTime--;
+			//Pop ryyke out of the ground if she becomes airborn
+			if(!movement.grounded) returnToIdle();
 		}
 
 		isNearStone();
@@ -381,6 +383,8 @@ public class RyykeMasterHit : MasterHit {
 
 	public void burrow() {
 		burrowing = true;
+		//Force ryyke to the ground when burrowing
+		rb.velocity =  new Vector2(rb.velocity.x, -100);
 		burrowTime = maxBurrowTime;
 		listenForLedge(true);
 		movement.cancelJump();

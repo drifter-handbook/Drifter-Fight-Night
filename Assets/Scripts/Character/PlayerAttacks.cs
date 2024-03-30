@@ -19,6 +19,7 @@ public class SingleAttack {
 	public DrifterAttackType attack;
 	public SingleAttackData attackData;
 	public bool hasAirVariant;
+	public bool hasEmpoweredVariant;
 }
 
 public class PlayerAttacks : MonoBehaviour {
@@ -54,6 +55,7 @@ public class PlayerAttacks : MonoBehaviour {
 
 	public Dictionary<DrifterAttackType,SingleAttackData> Attacks = new Dictionary<DrifterAttackType,SingleAttackData>();
 	public Dictionary<DrifterAttackType,bool> AttackVariants = new Dictionary<DrifterAttackType,bool>();
+	public Dictionary<DrifterAttackType,bool> EmpoweredVariants = new Dictionary<DrifterAttackType,bool>();
    
 	//[Help("Declares if any specials other than Up-W consume and require a recovery charge", UnityEditor.MessageType.Info)]
 	public bool W_Neutral_Is_Recovery = false;
@@ -83,6 +85,7 @@ public class PlayerAttacks : MonoBehaviour {
 		foreach (SingleAttack attack in AttackMap) {
 			Attacks[attack.attack] = attack.attackData;
 			AttackVariants[attack.attack] = attack.hasAirVariant;
+			EmpoweredVariants[attack.attack] = attack.hasEmpoweredVariant;
 			hitboxes = GetComponentsInChildren<HitboxCollision>();
 		}
 	}
@@ -166,12 +169,14 @@ public class PlayerAttacks : MonoBehaviour {
 		drifter.movement.canLandingCancel = false;
 
 		if(isCancel) {
+			UnityEngine.Debug.Log("SPECIAL CANCELED");
 			AttackFrameDelay = 4;
 			drifter.status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, 5);
-			drifter.masterhit.clearMasterhitVars();
-			drifter.canFeint = true;
-			drifter.canSpecialCancelFlag = false;
-			drifter.listenForSpecialCancel = false;
+			//drifter.masterhit.clearMasterhitVars();
+			//drifter.canFeint = true;
+			//drifter.canSpecialCancelFlag = false;
+			//drifter.listenForSpecialCancel = false;
+			drifter.blockEvent = 2;
 
 			//Cromatic abberation
 			GraphicalEffectManager.Instance.CreateSpecialCancel(drifter.gameObject);
@@ -191,8 +196,7 @@ public class PlayerAttacks : MonoBehaviour {
 			else if(drifter.input[0].MoveX!=0)StartAttack(DrifterAttackType.Ground_Q_Side);
 			else StartAttack(DrifterAttackType.Ground_Q_Neutral);
 		}
-		else
-		{   
+		else {   
 			drifter.movement.canLandingCancel = true;    
 			if(drifter.input[0].MoveY > 0)StartAttack(DrifterAttackType.Aerial_Q_Up);
 			else if(drifter.input[0].MoveY < 0)StartAttack(DrifterAttackType.Aerial_Q_Down);
@@ -206,6 +210,7 @@ public class PlayerAttacks : MonoBehaviour {
 		StartAttack(DrifterAttackType.Super_Cancel);
 		drifter.SetUsingSuper(true);
 		drifter.movement.pauseGravity();
+		drifter.blockEvent = 2;
 	}
 
 	public void useGrab() {
@@ -271,12 +276,20 @@ public class PlayerAttacks : MonoBehaviour {
 		drifter.gainSuperMeter(5);
 		drifter.movement.jumping = false;
 		drifter.status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,480);
-		if(!AttackVariants[attackType])
-			drifter.PlayAnimation(AnimatorStates[attackType],-1,false, 0);
-		else if(drifter.movement.grounded)
-			drifter.PlayAnimation(AnimatorStates[attackType] + "_Ground",-1,false, 0);
-		else
-			drifter.PlayAnimation(AnimatorStates[attackType] + "_Air",-1,false, 0);
+
+		string animationState = AnimatorStates[attackType];
+
+		//Handle Variants
+		if(AttackVariants[attackType] && drifter.movement.grounded)
+			animationState += "_Ground";
+		else if(AttackVariants[attackType])
+			animationState += "_Air";
+
+		if(EmpoweredVariants[attackType] && drifter.isEmpowered())
+			animationState += "_Empowered";
+
+		drifter.PlayAnimation(animationState,-1,false, 0);
+		
 		//Delay setting Attack key for 3 frames for special cancels
 		AttackFrameDelay = frameDelay;
 		AttackType = attackType;

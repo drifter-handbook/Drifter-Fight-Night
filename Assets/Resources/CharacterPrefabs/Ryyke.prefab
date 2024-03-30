@@ -64,6 +64,7 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: 129930b437737ce4f9571647c1b6a429, type: 2}
   parent: {fileID: 8002174525866203191}
   projectilePriority: -2
+  FlagForDestruction: 0
 --- !u!1 &626732986203311705
 GameObject:
   m_ObjectHideFlags: 0
@@ -113,6 +114,7 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: 7fdccd5f6ebf9e3469c2de98e214c76e, type: 2}
   parent: {fileID: 8002174525866203191}
   projectilePriority: -2
+  FlagForDestruction: 0
 --- !u!70 &3171627824841989897
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -193,6 +195,7 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: df00242206b1fe440bc810722547fce9, type: 2}
   parent: {fileID: 8002174525866203191}
   projectilePriority: -2
+  FlagForDestruction: 0
 --- !u!1 &948784546017497995
 GameObject:
   m_ObjectHideFlags: 0
@@ -241,6 +244,7 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: a49f65f22c655284481df50534ce5089, type: 2}
   parent: {fileID: 8002174525866203191}
   projectilePriority: -2
+  FlagForDestruction: 0
 --- !u!70 &3244451886575771800
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -322,6 +326,7 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: fb7ba28a1e665fe4eaa406e665e0565a, type: 2}
   parent: {fileID: 8002174525866203191}
   projectilePriority: -2
+  FlagForDestruction: 0
 --- !u!1 &1306371808821346267
 GameObject:
   m_ObjectHideFlags: 0
@@ -370,7 +375,7 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: 91b82da629913d6438bfabef00c1421f, type: 2}
   parent: {fileID: 8002174525866203191}
   projectilePriority: -2
-  victim: {fileID: 0}
+  FlagForDestruction: 0
   SuccessState: Grab_Ground_Success
   cancelable: 1
 --- !u!58 &291203137378617692
@@ -437,6 +442,7 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: 812892f2fc9c88e448bc74441f7ea970, type: 2}
   parent: {fileID: 8002174525866203191}
   projectilePriority: -2
+  FlagForDestruction: 0
 --- !u!70 &7250771204955656737
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -501,7 +507,7 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: 57a7440e5ac660742a8db9b8198e8e4b, type: 2}
   parent: {fileID: 8002174525866203191}
   projectilePriority: -2
-  victim: {fileID: 0}
+  FlagForDestruction: 0
   SuccessState: Ground_Side_Pull
   cancelable: 1
 --- !u!70 &147131941970974439
@@ -568,6 +574,7 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: 53ca74d4b8f982541a6d5caf647d5922, type: 2}
   parent: {fileID: 8002174525866203191}
   projectilePriority: -2
+  FlagForDestruction: 0
 --- !u!70 &8000324652183888153
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -632,6 +639,7 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: ed506049f6d1d9a4e860318d3bb4ad97, type: 2}
   parent: {fileID: 8002174525866203191}
   projectilePriority: -2
+  FlagForDestruction: 0
 --- !u!70 &2810117765393602758
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -696,7 +704,7 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: 075429f38a54a314f9fcf04845e95fc9, type: 2}
   parent: {fileID: 8002174525866203191}
   projectilePriority: -2
-  victim: {fileID: 0}
+  FlagForDestruction: 0
   SuccessState: Grab_Air_Success
   cancelable: 1
 --- !u!58 &7633428700937911498
@@ -745,7 +753,7 @@ PrefabInstance:
     - target: {fileID: 785854478039269059, guid: a56daa2c59f9eff47b1cd82b77375907,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 785854478039269059, guid: a56daa2c59f9eff47b1cd82b77375907,
         type: 3}
@@ -1389,6 +1397,26 @@ PrefabInstance:
       propertyPath: AttackMap.Array.data[4].hasAirVariant
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[3].hasEmpoweredVariant
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[4].hasEmpoweredVariant
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[5].hasEmpoweredVariant
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9142496942411782138, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
+      propertyPath: AttackMap.Array.data[6].hasEmpoweredVariant
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 495573942941966675, guid: 03006bf76a5e1274aaf3da8b9c69d8f9, type: 3}
     - {fileID: 220688096834324308, guid: 03006bf76a5e1274aaf3da8b9c69d8f9, type: 3}
@@ -1424,6 +1452,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   assetPathName: Ryyke
+  dashCancelFlag: 0
+  jumpFlag: 0
   tether: {fileID: 7144613492704200374}
 --- !u!1 &8002174525866203191 stripped
 GameObject:

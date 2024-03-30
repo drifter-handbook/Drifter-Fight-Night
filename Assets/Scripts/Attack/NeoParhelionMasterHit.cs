@@ -12,6 +12,7 @@ public class NeoParhelionMasterHit : MasterHit {
 	int staticCycles = 0;
 
 	InstantiatedEntityCleanup staticField;
+	InstantiatedEntityCleanup dragonSwipe;
 	InstantiatedEntityCleanup[] aftershocks = new InstantiatedEntityCleanup[5];
 
 	GameObject dashTrail;
@@ -25,7 +26,7 @@ public class NeoParhelionMasterHit : MasterHit {
 		base.UpdateFrame();
 
 		if(drifter.status.HasEnemyStunEffect() || movement.ledgeHanging) {
-			deleteStaticField();
+			deleteParentedProjectiles();
 			Remove_Dash_Trail();
 		}
 
@@ -63,7 +64,7 @@ public class NeoParhelionMasterHit : MasterHit {
 	}
 
 	public void Create_Static_Field(int launcher) {
-		deleteStaticField();
+		deleteParentedProjectiles();
 		GameObject projectile;
 		projectile = GameController.Instance.CreatePrefab("Parhelion_Static", transform.position + new Vector3(0,2f), transform.rotation,drifter.peerID);
 		projectile.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
@@ -94,7 +95,22 @@ public class NeoParhelionMasterHit : MasterHit {
 			hitbox.Facing = movement.Facing;
 		}
 
-		aftershocks[index] = projectile.GetComponent<InstantiatedEntityCleanup>();;
+		aftershocks[index] = projectile.GetComponent<InstantiatedEntityCleanup>();
+	}
+
+	private void Create_DragonSwipe() {
+		GameObject projectile = GameController.Instance.CreatePrefab("Parhelion_Dragon_Swipe", transform.position + new Vector3(.5f * movement.Facing,2f,-2f), transform.rotation,drifter.peerID);
+		projectile.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
+		SetObjectColor(projectile);
+		projectile.transform.SetParent(drifter.gameObject.transform);
+
+		foreach (HitboxCollision hitbox in projectile.GetComponentsInChildren<HitboxCollision>(true)) {
+			hitbox.parent = drifter.gameObject;
+			hitbox.AttackID = attacks.AttackID;
+			hitbox.Facing = movement.Facing;
+		}
+
+		dragonSwipe= projectile.GetComponent<InstantiatedEntityCleanup>();
 	}
 
 	public void Loop_W_Down() {
@@ -122,10 +138,14 @@ public class NeoParhelionMasterHit : MasterHit {
 		dashTrail = null;
 	}
 
-	private void deleteStaticField() {
+	private void deleteParentedProjectiles() {
 		if(staticField != null) {
 			Destroy(staticField.gameObject);
 			staticField = null;
+		}
+		if(dragonSwipe != null) {
+			Destroy(dragonSwipe.gameObject);
+			dragonSwipe = null;
 		}
 	}
 
@@ -152,13 +172,13 @@ public class NeoParhelionMasterHit : MasterHit {
 	public new void returnToIdle() {
 		base.returnToIdle();
 		//Up_W_Grab.victim = null;
-		deleteStaticField();
+		deleteParentedProjectiles();
 		staticCycles = 0;
 	}
 
 	public override void clearMasterhitVars() {
 		base.clearMasterhitVars();
-		deleteStaticField();
+		deleteParentedProjectiles();
 		staticCycles = 0;
 		Remove_Dash_Trail();
 		//staticBurstTarget = "";
@@ -203,6 +223,13 @@ public class NeoParhelionMasterHit : MasterHit {
 			staticField.Serialize(bw);
 		}
 
+		if(dragonSwipe == null)
+			bw.Write(false);
+		else{
+			bw.Write(true);
+			dragonSwipe.Serialize(bw);
+		}
+
 	}
 
 	//Rolls back the entity to a given frame state
@@ -233,6 +260,15 @@ public class NeoParhelionMasterHit : MasterHit {
 		else if(staticField != null) {
 			Destroy(staticField.gameObject);
 			staticField = null;
+		}
+
+		if(br.ReadBoolean()) {
+			if(dragonSwipe == null) Create_DragonSwipe();
+			dragonSwipe.Deserialize(br);
+		}
+		else if(dragonSwipe != null) {
+			Destroy(dragonSwipe.gameObject);
+			dragonSwipe = null;
 		}
 
 	}

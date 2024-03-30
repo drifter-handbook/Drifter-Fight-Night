@@ -206,6 +206,7 @@ public class Drifter : MonoBehaviour
 
 		if(!p_gate || Animator.StringToHash(p_state) != animator.GetCurrentAnimatorStateInfo(0).shortNameHash) {
 			animator.Play(Animator.StringToHash(p_state),0,p_normalizedTime < 0 ? 0: p_normalizedTime);
+			if(!isTrainingDummy())UnityEngine.Debug.Log(p_state);
 			blockEvent = eventBlockTime;
 		}
 	}
@@ -277,6 +278,10 @@ public class Drifter : MonoBehaviour
 		guarding = true;
 	}
 
+	public bool isEmpowered() {
+		return masterhit.Empowered;
+	}
+
 	public void SetUsingSuper(bool SuperState) {
 		usingSuper = SuperState;
 		entity.pauseBehavior = !SuperState;
@@ -288,6 +293,8 @@ public class Drifter : MonoBehaviour
 			CanGrabLedge = false;
 			masterhit.pauseGravity();
 			masterhit.clearMasterhitVars();
+			listenForSpecialCancel = false;
+			canSpecialCancelFlag = false;
 		}
 	}
 
