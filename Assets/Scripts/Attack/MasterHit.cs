@@ -440,7 +440,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 		}
 		movement.jumping = false;
 		unpauseGravity();
-		status.clearVelocity();
+		//status.clearVelocity();
 		movement.terminalVelocity = movement.baseTerminalVelocity * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f);
 		clearMasterhitVars();
 		drifter.returnToIdle();

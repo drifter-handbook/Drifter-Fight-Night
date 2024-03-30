@@ -206,7 +206,7 @@ public class Drifter : MonoBehaviour
 
 		if(!p_gate || Animator.StringToHash(p_state) != animator.GetCurrentAnimatorStateInfo(0).shortNameHash) {
 			animator.Play(Animator.StringToHash(p_state),0,p_normalizedTime < 0 ? 0: p_normalizedTime);
-			if(!isTrainingDummy())UnityEngine.Debug.Log(p_state);
+			//if(!isTrainingDummy())UnityEngine.Debug.Log(p_state);
 			blockEvent = eventBlockTime;
 		}
 	}
