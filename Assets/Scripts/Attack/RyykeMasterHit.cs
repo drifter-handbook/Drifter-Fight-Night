@@ -65,7 +65,7 @@ public class RyykeMasterHit : MasterHit {
 				if(drifter.input[0].MoveY > 0) targetStone = 0;
 				else if(drifter.input[0].MoveY < 0) targetStone = 2;
 				else targetStone = 1;
-				playState("W_Down_Emerge_Empowered");
+				drifter.PlayAnimation("W_Down_Emerge_Empowered",0,false);
 			}
 			
 		}
@@ -78,7 +78,7 @@ public class RyykeMasterHit : MasterHit {
 			ledgeDetector.UpdateFrame();
 			if((!drifter.input[1].Jump && drifter.input[0].Jump) || burrowTime <=0) {
 				attacks.SetMultiHitAttackID();
-				playState("W_Down_Emerge");
+				drifter.PlayAnimation("W_Down_Emerge",0,false);
 				listeningForMovement = false;
 			}
 			else if(drifter.input[0].MoveX !=0)

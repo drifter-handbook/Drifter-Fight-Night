@@ -171,13 +171,13 @@ public class PlayerAttacks : MonoBehaviour {
 		if(isCancel) {
 			UnityEngine.Debug.Log("SPECIAL CANCELED");
 			AttackFrameDelay = 4;
+			drifter.blockEvent = 6;
 			drifter.status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, 5);
 			//drifter.masterhit.clearMasterhitVars();
 			//drifter.canFeint = true;
 			//drifter.canSpecialCancelFlag = false;
 			//drifter.listenForSpecialCancel = false;
-			drifter.blockEvent = 2;
-
+			
 			//Cromatic abberation
 			GraphicalEffectManager.Instance.CreateSpecialCancel(drifter.gameObject);
 			//Creates Afterimage
