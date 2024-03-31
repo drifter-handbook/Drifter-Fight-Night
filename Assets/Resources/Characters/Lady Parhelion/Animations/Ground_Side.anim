@@ -262,16 +262,14 @@ AnimationClip:
       value: {fileID: 8234614394976429541, guid: 2ecec31ee50f45c4fb0b1992abe1123c,
         type: 3}
     - time: 1.0833334
-      value: {fileID: -4286100003322615818, guid: 56b2ff1312627e34fa887642c6fc9d9e,
+      value: {fileID: 5458545529521250663, guid: 56b2ff1312627e34fa887642c6fc9d9e,
         type: 3}
     - time: 1.25
-      value: {fileID: -6959395722507903517, guid: 56b2ff1312627e34fa887642c6fc9d9e,
+      value: {fileID: -6149666402989174623, guid: 56b2ff1312627e34fa887642c6fc9d9e,
         type: 3}
     - time: 1.4166666
-      value: {fileID: -8283821505858007159, guid: 56b2ff1312627e34fa887642c6fc9d9e,
+      value: {fileID: 3852364366735669348, guid: 56b2ff1312627e34fa887642c6fc9d9e,
         type: 3}
-    - time: 1.5833334
-      value: {fileID: 440352332, guid: 56b2ff1312627e34fa887642c6fc9d9e, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -331,16 +329,15 @@ AnimationClip:
     - {fileID: -8523551252608707418, guid: 2ecec31ee50f45c4fb0b1992abe1123c, type: 3}
     - {fileID: 1379973047819104651, guid: 2ecec31ee50f45c4fb0b1992abe1123c, type: 3}
     - {fileID: 8234614394976429541, guid: 2ecec31ee50f45c4fb0b1992abe1123c, type: 3}
-    - {fileID: -4286100003322615818, guid: 56b2ff1312627e34fa887642c6fc9d9e, type: 3}
-    - {fileID: -6959395722507903517, guid: 56b2ff1312627e34fa887642c6fc9d9e, type: 3}
-    - {fileID: -8283821505858007159, guid: 56b2ff1312627e34fa887642c6fc9d9e, type: 3}
-    - {fileID: 440352332, guid: 56b2ff1312627e34fa887642c6fc9d9e, type: 3}
+    - {fileID: 5458545529521250663, guid: 56b2ff1312627e34fa887642c6fc9d9e, type: 3}
+    - {fileID: -6149666402989174623, guid: 56b2ff1312627e34fa887642c6fc9d9e, type: 3}
+    - {fileID: 3852364366735669348, guid: 56b2ff1312627e34fa887642c6fc9d9e, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 1.75
+    m_StopTime: 1.5833334
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -660,14 +657,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 1.4166666
-    functionName: setLandingCancel
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 1.75
+  - time: 1.5833334
     functionName: returnToIdle
     data: 
     objectReferenceParameter: {fileID: 0}
