@@ -13,6 +13,7 @@ public class NeoParhelionMasterHit : MasterHit {
 
 	InstantiatedEntityCleanup staticField;
 	InstantiatedEntityCleanup dragonSwipe;
+	InstantiatedEntityCleanup nineBlast;
 	InstantiatedEntityCleanup[] aftershocks = new InstantiatedEntityCleanup[5];
 
 	GameObject dashTrail;
@@ -113,6 +114,15 @@ public class NeoParhelionMasterHit : MasterHit {
 		dragonSwipe= projectile.GetComponent<InstantiatedEntityCleanup>();
 	}
 
+	private void Create_Nineblast() {
+		GameObject projectile = GameController.Instance.CreatePrefab("Parhelion_Neutral_Air", transform.position, transform.rotation,drifter.peerID);
+		projectile.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
+		SetObjectColor(projectile);
+		projectile.transform.SetParent(drifter.gameObject.transform);
+
+		nineBlast = projectile.GetComponent<InstantiatedEntityCleanup>();
+	}
+
 	public void Loop_W_Down() {
 		if(!status.HasStatusEffect(PlayerStatusEffect.ELECTRIFIED)) {
 			status.AddStatusBar(PlayerStatusEffect.ELECTRIFIED, MAX_STATIC_CHARGE_DURATION);
@@ -146,6 +156,10 @@ public class NeoParhelionMasterHit : MasterHit {
 		if(dragonSwipe != null) {
 			Destroy(dragonSwipe.gameObject);
 			dragonSwipe = null;
+		}
+		if(nineBlast != null) {
+			Destroy(nineBlast.gameObject);
+			nineBlast = null;
 		}
 	}
 
@@ -230,6 +244,13 @@ public class NeoParhelionMasterHit : MasterHit {
 			dragonSwipe.Serialize(bw);
 		}
 
+		if(nineBlast == null)
+			bw.Write(false);
+		else{
+			bw.Write(true);
+			nineBlast.Serialize(bw);
+		}
+
 	}
 
 	//Rolls back the entity to a given frame state
@@ -269,6 +290,15 @@ public class NeoParhelionMasterHit : MasterHit {
 		else if(dragonSwipe != null) {
 			Destroy(dragonSwipe.gameObject);
 			dragonSwipe = null;
+		}
+
+		if(br.ReadBoolean()) {
+			if(nineBlast == null) Create_Nineblast();
+			nineBlast.Deserialize(br);
+		}
+		else if(nineBlast != null) {
+			Destroy(nineBlast.gameObject);
+			nineBlast = null;
 		}
 
 	}

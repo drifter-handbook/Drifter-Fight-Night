@@ -64,6 +64,7 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: b2b25fd8d1efd374b8d90fcbd7c55fa3, type: 2}
   parent: {fileID: 0}
   projectilePriority: -2
+  FlagForDestruction: 0
 --- !u!1 &2457683698880642733
 GameObject:
   m_ObjectHideFlags: 0
@@ -129,6 +130,7 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: 4f0736beb11c8ef4ba63d3c30336031b, type: 2}
   parent: {fileID: 0}
   projectilePriority: -2
+  FlagForDestruction: 0
 --- !u!1 &8264009051469335284
 GameObject:
   m_ObjectHideFlags: 0
@@ -204,7 +206,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 1915176673, guid: 1b80dc2e2df97fe4dbcf60363ce6c312, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
