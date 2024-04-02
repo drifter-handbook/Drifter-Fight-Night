@@ -51,6 +51,7 @@ public class NeoParhelionMasterHit : MasterHit {
 					}
 					else
 						Create_Aftershock(staticBurstTargetObject.transform.position, numBursts);
+					status.AddStatusDuration(PlayerStatusEffect.ELECTRIFIED, -100);
 				}
 			}
 			else
@@ -179,9 +180,16 @@ public class NeoParhelionMasterHit : MasterHit {
 
 	public override void TriggerOnHit(Drifter target_drifter, bool isProjectle, AttackHitType hitType) {
 		
-		if(isProjectle || (hitType != AttackHitType.HIT && hitType != AttackHitType.BLOCK) || !status.HasStatusEffect(PlayerStatusEffect.ELECTRIFIED) || staticCycles >0)return;
+		if(isProjectle || (hitType != AttackHitType.HIT && hitType != AttackHitType.BLOCK && hitType != AttackHitType.GRAB) || !status.HasStatusEffect(PlayerStatusEffect.ELECTRIFIED) || staticCycles >0)return;
+
+		//pause aftershocks on grab
+		if(hitType == AttackHitType.GRAB) {
+			staticBurstTimer = 0;
+			return;
+		}
+
 		//If a burst is already charging, reset timer instead and dont consume moe juice
-		if(staticBurstTimer >0)	{
+		if(staticBurstTimer > 0)	{
 			staticBurstTimer = 8;
 			return;
 		}
@@ -191,7 +199,7 @@ public class NeoParhelionMasterHit : MasterHit {
 		}
 		else {
 			numBursts = status.remainingDuration(PlayerStatusEffect.ELECTRIFIED)/100;
-			status.ApplyStatusEffect(PlayerStatusEffect.ELECTRIFIED,0);
+			//status.ApplyStatusEffect(PlayerStatusEffect.ELECTRIFIED,0);
 		}
 		staticBurstTimer = 8;
 		staticBurstTarget = target_drifter.gameObject.name;
