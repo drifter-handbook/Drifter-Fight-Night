@@ -344,6 +344,11 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 		setYVelocity(y);
 	}
 
+	public void setYVelocityIfAirborne(float y) {
+		if(movement.grounded)return;
+		setYVelocity(y);
+	}
+
 
 	public void setXVelocity(float x) {
 		if(drifter.blockEvent > 0) {
