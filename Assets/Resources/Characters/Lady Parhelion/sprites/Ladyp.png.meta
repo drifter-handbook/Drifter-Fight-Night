@@ -1008,7 +1008,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 512
-        y: 513
+        y: 512
         width: 64
         height: 64
       alignment: 7
@@ -1033,7 +1033,7 @@ TextureImporter:
         width: 64
         height: 64
       alignment: 9
-      pivot: {x: 0.59375, y: 0}
+      pivot: {x: 0.5625, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1093,10 +1093,10 @@ TextureImporter:
         serializedVersion: 2
         x: 128
         y: 448
-        width: 64
+        width: 128
         height: 64
       alignment: 9
-      pivot: {x: 0.5, y: -0.25}
+      pivot: {x: 0.25, y: -0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1112,8 +1112,8 @@ TextureImporter:
       name: Ladyp_49
       rect:
         serializedVersion: 2
-        x: 192
-        y: 448
+        x: 384
+        y: 320
         width: 64
         height: 64
       alignment: 9
@@ -1155,11 +1155,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 384
-        y: 448
-        width: 96
-        height: 64
+        y: 416
+        width: 64
+        height: 96
       alignment: 9
-      pivot: {x: 0.25, y: 0}
+      pivot: {x: 0.375, y: 0.33333334}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1280,12 +1280,12 @@ TextureImporter:
       name: Ladyp_57
       rect:
         serializedVersion: 2
-        x: 480
-        y: 448
-        width: 96
-        height: 64
+        x: 448
+        y: 416
+        width: 128
+        height: 96
       alignment: 9
-      pivot: {x: 0.25, y: 0}
+      pivot: {x: 0.4375, y: 0.33333334}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2179,6 +2179,69 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Ladyp_27
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 288
+        width: 95
+        height: 96
+      alignment: 9
+      pivot: {x: 0.25263157, y: 0.33333334}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fc6cf253c450a784fb87595be13bcf2a
+      internalID: -815756408532126736
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ladyp_28
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 576
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.25, y: 0.25}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ec7a4e865ec7cf244803d8e1a916a965
+      internalID: 150830388653141286
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ladyp_29
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 576
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.25, y: 0.25}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cfd6b2341353bd04b8fbe3ac65dedfbd
+      internalID: -5190075194153027995
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -2222,13 +2285,13 @@ TextureImporter:
       Ladyp_52: -6939517794459602932
       Ladyp_51: 7081077086015249456
       Ladyp_27: -815756408532126736
+      Ladyp_37: 8937701990072231099
       Ladyp_35: 8045591254537533222
-      Ladyp_11: 1359910208400679166
       Ladyp_86: 4440043537252130893
-      Ladyp_21: 6862673841973606055
+      Ladyp_11: 1359910208400679166
       Ladyp_71: 854181731537135237
       Ladyp_48: -8283821505858007159
-      Ladyp_37: 8937701990072231099
+      Ladyp_21: 6862673841973606055
       Ladyp_77: -3069044435195778743
       Ladyp_87: -473401700601820311
       Ladyp_64: 5816016034809048200
