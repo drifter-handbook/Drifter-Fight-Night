@@ -13,6 +13,10 @@ public class NeoBojoMasterHit : MasterHit {
 	override public void UpdateFrame() {
 		base.UpdateFrame();
 		if(centaur != null) centaur.UpdateFrame();
+		else{
+			drifter.Sparkle(false);
+			Empowered = false;
+		}
 		if(soundwave != null) soundwave.UpdateFrame();
 		if(note != null) note.UpdateFrame();
 	}
@@ -29,6 +33,7 @@ public class NeoBojoMasterHit : MasterHit {
 	   }
 
 	   SetObjectColor(proj);
+	   Empowered = true;
 
 	   soundwave =  proj.GetComponent<InstantiatedEntityCleanup>();
 	}
@@ -59,6 +64,9 @@ public class NeoBojoMasterHit : MasterHit {
 
 	public void SpawnCentaur() {
 		if(centaur == null) {
+
+			Empowered = true;
+			drifter.Sparkle(true);
 			GameObject proj = GameController.Instance.CreatePrefab("Centaur", transform.position , transform.rotation,drifter.peerID);
 			proj.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
 			proj.GetComponent<Rigidbody2D>().velocity = new Vector3(movement.Facing * 15,0);
@@ -84,6 +92,8 @@ public class NeoBojoMasterHit : MasterHit {
 
 	public void fireCentaur() {
 		if(centaur != null) {
+			Empowered = false;
+			drifter.Sparkle(false);
 			int id = attacks.NextID;
 			foreach (HitboxCollision hitbox in centaur.GetComponentsInChildren<HitboxCollision>(true)) {
 				hitbox.parent = drifter.gameObject;
@@ -95,11 +105,6 @@ public class NeoBojoMasterHit : MasterHit {
 			
 		}
 		power = 0;
-	}
-
-	public void fireCentaurState() {
-		if(centaur != null)
-			playState("W_Down_Fire");
 	}
 
 	public void setCentaurPower(int pow) {
