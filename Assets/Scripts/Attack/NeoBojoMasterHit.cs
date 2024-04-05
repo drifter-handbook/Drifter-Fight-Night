@@ -12,9 +12,9 @@ public class NeoBojoMasterHit : MasterHit {
 
 	override public void UpdateFrame() {
 		base.UpdateFrame();
-		centaur?.UpdateFrame();
-		soundwave?.UpdateFrame();
-		note?.UpdateFrame();
+		if(centaur != null) centaur.UpdateFrame();
+		if(soundwave != null) soundwave.UpdateFrame();
+		if(note != null) note.UpdateFrame();
 	}
 
 	public void SpawnSoundwave() {

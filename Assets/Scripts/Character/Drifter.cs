@@ -273,13 +273,19 @@ public class Drifter : MonoBehaviour
 
 	public void guard(){
 		masterhit.listenForActiveCancel();
-		if(!guarding)
+		if(!guarding){
+			status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,10);
 			PlayAnimation("Guard_Start");
+		}
 		guarding = true;
 	}
 
 	public bool isEmpowered() {
 		return masterhit.Empowered;
+	}
+
+	public void clearMasterhitVars() {
+		masterhit.clearMasterhitVars();
 	}
 
 	public void SetUsingSuper(bool SuperState) {

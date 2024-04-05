@@ -26,9 +26,9 @@ public class SandbagMasterHit : MasterHit
 			dustCount +=1;
 		}
 
-		Sandblast?.UpdateFrame();
-		Sandspear1?.UpdateFrame();
-		Sandspear2?.UpdateFrame();
+		if(Sandblast != null) Sandblast.UpdateFrame();
+		if(Sandspear1 != null) Sandspear1.UpdateFrame();
+		if(Sandspear2 != null) Sandspear2.UpdateFrame();
 
 	}
 

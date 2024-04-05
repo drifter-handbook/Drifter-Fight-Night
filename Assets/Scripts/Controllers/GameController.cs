@@ -298,8 +298,10 @@ public class GameController : MonoBehaviour
 				break;
 			case GameState.COMBAT:
 				EscapeMenu.Instance?.UpdateFrame(inputs);
-				CombatManager.Instance?.UpdateFrame(inputs);
-				TrainingDummyHandler.Instance?.UpdateFrame();
+				if(!IsTraining)
+					CombatManager.Instance?.UpdateFrame(inputs);
+				else
+					TrainingDummyHandler.Instance?.UpdateFrame(inputs);
 				break;
 			case GameState.ENDSCREEN:
 				EndScreenManager.Instance?.UpdateFrame(inputs);

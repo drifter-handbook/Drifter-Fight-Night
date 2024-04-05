@@ -93,6 +93,8 @@ public class TrainingDummyHandler : MonoBehaviour
 
 	PlayerInputData playbackInput = new PlayerInputData();
 	PlayerInputData prevFrameData = new PlayerInputData();
+
+	PlayerInputData[] inputFromGGPO;
 	
 	public static TrainingDummyHandler Instance { get; private set; }
 
@@ -130,15 +132,16 @@ public class TrainingDummyHandler : MonoBehaviour
 		});
 	}
 
-	//Probably should update this to use the standard input reading system
-	public void UpdateFrame() {
+	public void FixedUpdate(){
 		if(
 			!GameController.Instance.IsTraining || 
 			GameController.Instance.IsPaused || 
 			Player == null || 
-			Dummy == null) 
+			Dummy == null ||
+			inputFromGGPO == null) 
 		return;
 
+		CombatManager.Instance?.UpdateFrame(inputFromGGPO);
 		//Meter Settings
 		if(fillMeter) {
 			Player.SetCharge(500);
@@ -310,6 +313,11 @@ public class TrainingDummyHandler : MonoBehaviour
 			
 		}
 		recoridngIndicator.SetActive(recording);
+	}
+
+	//Probably should update this to use the standard input reading system
+	public void UpdateFrame(PlayerInputData[] inputs) {
+		inputFromGGPO = inputs;
 	}
 
 	//Ouput the new value of the Dropdown into Text

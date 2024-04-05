@@ -64,7 +64,7 @@ MonoBehaviour:
   OverrideData: {fileID: 11400000, guid: 1f29ecafbdf0aee47be5fb9066123809, type: 2}
   parent: {fileID: 6393105525490921081}
   projectilePriority: 2
-  victim: {fileID: 0}
+  FlagForDestruction: 0
   SuccessState: Sandblast_Detonate
   animator: {fileID: 6438198135666115965}
   playOnInvuln: 1
@@ -190,7 +190,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ef945a1776594438c7a9223e2d7bb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destoryState: Sandblast_Detonate
+  destoryState: Destroy
   duration: 60
   rb: {fileID: 6764413425641248834}
   animator: {fileID: 6438198135666115965}

@@ -87,10 +87,10 @@ public class OrroReworkMasterHit : MasterHit {
 			Empowered = !beanFollowing || Vector3.Distance(targetPos,bean.rb.position) > 3.8f;
 		}
 
-		bean?.UpdateFrame();
+		if( bean != null) bean.UpdateFrame();
 
 		foreach(InstantiatedEntityCleanup exp in explosions)
-			exp?.UpdateFrame();
+			if(exp != null) exp.UpdateFrame();
 
 	}
 

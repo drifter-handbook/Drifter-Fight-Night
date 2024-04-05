@@ -23,8 +23,8 @@ public class MythariusMasterHit : MasterHit
 		if(movement.ledgeHanging || status.HasEnemyStunEffect())
 			clearMasterhitVars();
 
-		bird?.UpdateFrame();
-		letter?.UpdateFrame();
+		if(bird != null) bird.UpdateFrame();
+		if(letter != null) letter?.UpdateFrame();
 
 		if(listeningForDirection) {
 			if(!drifter.input[0].Special) neutralSpecialReleaseDelay++;

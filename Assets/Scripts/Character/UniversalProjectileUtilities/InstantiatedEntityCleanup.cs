@@ -47,6 +47,7 @@ public class InstantiatedEntityCleanup : MonoBehaviour{
 			if(hb.FlagForDestruction){
 				if(destoryState != "" ) animator.Play(destoryState);
 				else Destroy(gameObject);
+				break;
 			}
 		}
 	}

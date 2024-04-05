@@ -59,9 +59,10 @@ public class NeoParhelionMasterHit : MasterHit {
 		}
 
 		foreach(InstantiatedEntityCleanup aftershock in aftershocks)
-			aftershock?.UpdateFrame();
+			if(aftershock != null) aftershock.UpdateFrame();
 
-		staticField?.UpdateFrame();
+		if(staticField != null) staticField.UpdateFrame();
+		if(dragonSwipe != null) dragonSwipe.UpdateFrame();
 
 		ledgeDetector.UpdateFrame();
 	}

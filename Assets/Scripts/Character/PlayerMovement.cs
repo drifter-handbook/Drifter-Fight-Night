@@ -215,6 +215,7 @@ public class PlayerMovement : MonoBehaviour
 
 		//Cancel aerials on landing + landing animation
 		if(!grounded && IsGrounded() && !drifter.status.HasEnemyStunEffect() && !jumping && !drifter.guarding && (!drifter.status.HasStatusEffect(PlayerStatusEffect.END_LAG) || canLandingCancel)) {
+			drifter.clearMasterhitVars();
 			drifter.PlayAnimation("Jump_End");
 			//Remove armour on landing 
 			//TODO determine if there are more things that need to be removed on actionable landing
@@ -498,7 +499,7 @@ public class PlayerMovement : MonoBehaviour
 		//Drop through platforms && fastfall
 		if(drifter.doubleTappedY() && drifter.input[0].MoveY < 0 && !gravityPaused && canFastFall && !ledgeHanging && !jumping && !drifter.status.HasEnemyStunEffect()) {
 			//If you are not in an attack, play the landing animation when you hit the ground
-			if(!drifter.status.HasStatusEffect(PlayerStatusEffect.END_LAG)){
+			if(!drifter.status.HasStatusEffect(PlayerStatusEffect.END_LAG) && !drifter.guarding){
 				drifter.PlayAnimation("Hang",-1,true);
 				canLandingCancel = true;
 			}

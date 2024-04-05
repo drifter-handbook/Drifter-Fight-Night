@@ -213,9 +213,9 @@ public class BeanWrangler : NonplayerHurtboxHandler
 	}
  
 	//Refreshes beans hitboxes so he can multihit
-	public void multihit() {
-		attacks.SetMultiHitAttackID();
-	}
+	// public void multihit() {
+	// 	attacks.SetMultiHitAttackID();
+	// }
 
 	//Registers a hit on bean, and handles his counter.
 	//If bean has taken over 40%, he becomes inactive untill he can heal

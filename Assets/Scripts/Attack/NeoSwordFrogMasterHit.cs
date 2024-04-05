@@ -72,7 +72,7 @@ public class NeoSwordFrogMasterHit : MasterHit
 
 		//Update Child Frames
 		foreach(InstantiatedEntityCleanup kunai in kunais)
-			kunai?.UpdateFrame();
+			if(kunai != null) kunai.UpdateFrame();
 	
 	}
 

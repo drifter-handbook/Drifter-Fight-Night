@@ -65,12 +65,12 @@ public class DrifterCannonMasterHit : MasterHit {
 		}
 
 		foreach(InstantiatedEntityCleanup ranch in ranches)
-			ranch?.UpdateFrame();
+			if(ranch != null) ranch.UpdateFrame();
 
 		foreach(InstantiatedEntityCleanup grenade in grenades)
-			grenade?.UpdateFrame();
+			if(grenade != null) grenade.UpdateFrame();
 
-		explosion?.UpdateFrame();
+		if(explosion != null) explosion.UpdateFrame();
 
 	}
 
