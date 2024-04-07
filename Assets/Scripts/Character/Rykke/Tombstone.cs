@@ -99,7 +99,8 @@ public class Tombstone : NonplayerHurtboxHandler
 		breaking = true;
 		canAct = false;
 		active = false;
-		entity.unfreeze();
+		//takesKnockback = false;
+		//entity.unfreeze();
 		PlayAnimation(tombstoneType + "_Break");
 	}	
 
