@@ -501,9 +501,6 @@ AnimatorStateMachine:
     m_State: {fileID: 3981577489784419156}
     m_Position: {x: 1130, y: 10, z: 0}
   - serializedVersion: 1
-    m_State: {fileID: -3259644164094470137}
-    m_Position: {x: 1340, y: 10, z: 0}
-  - serializedVersion: 1
     m_State: {fileID: -3825225846518131101}
     m_Position: {x: 500, y: -90, z: 0}
   - serializedVersion: 1
@@ -622,32 +619,6 @@ AnimatorState:
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: 7400000, guid: f5e98730d342f7e44b77b02281bd53d6, type: 2}
-  m_Tag: 
-  m_SpeedParameter: 
-  m_MirrorParameter: 
-  m_CycleOffsetParameter: 
-  m_TimeParameter: 
---- !u!1102 &-3259644164094470137
-AnimatorState:
-  serializedVersion: 6
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Aerial_Down_Success
-  m_Speed: 1
-  m_CycleOffset: 0
-  m_Transitions: []
-  m_StateMachineBehaviours: []
-  m_Position: {x: 50, y: 50, z: 0}
-  m_IKOnFeet: 0
-  m_WriteDefaultValues: 1
-  m_Mirror: 0
-  m_SpeedParameterActive: 0
-  m_MirrorParameterActive: 0
-  m_CycleOffsetParameterActive: 0
-  m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: cb0bd656dcb75364eabbb467c16be834, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
