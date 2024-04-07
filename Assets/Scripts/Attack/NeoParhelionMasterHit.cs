@@ -12,9 +12,10 @@ public class NeoParhelionMasterHit : MasterHit {
 	int staticCycles = 0;
 
 	InstantiatedEntityCleanup staticField;
-	InstantiatedEntityCleanup dragonSwipe;
+	InstantiatedEntityCleanup Aerial_Up_Effect;
 	InstantiatedEntityCleanup nineBlast;
-	InstantiatedEntityCleanup dragonRise;
+	InstantiatedEntityCleanup W_Up_Effect;
+	InstantiatedEntityCleanup Ground_Up_Effect;
 	InstantiatedEntityCleanup[] aftershocks = new InstantiatedEntityCleanup[5];
 
 	GameObject dashTrail;
@@ -62,7 +63,7 @@ public class NeoParhelionMasterHit : MasterHit {
 			if(aftershock != null) aftershock.UpdateFrame();
 
 		if(staticField != null) staticField.UpdateFrame();
-		if(dragonSwipe != null) dragonSwipe.UpdateFrame();
+		if(Aerial_Up_Effect != null) Aerial_Up_Effect.UpdateFrame();
 
 		ledgeDetector.UpdateFrame();
 	}
@@ -102,7 +103,7 @@ public class NeoParhelionMasterHit : MasterHit {
 		aftershocks[index] = projectile.GetComponent<InstantiatedEntityCleanup>();
 	}
 
-	private void Create_DragonSwipe() {
+	private void Create_Aerial_Up_Effect() {
 		GameObject projectile = GameController.Instance.CreatePrefab("Parhelion_Dragon_Swipe", transform.position + new Vector3(.5f * movement.Facing,2f,-2f), transform.rotation,drifter.peerID);
 		projectile.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
 		SetObjectColor(projectile);
@@ -114,7 +115,7 @@ public class NeoParhelionMasterHit : MasterHit {
 			hitbox.Facing = movement.Facing;
 		}
 
-		dragonSwipe= projectile.GetComponent<InstantiatedEntityCleanup>();
+		Aerial_Up_Effect= projectile.GetComponent<InstantiatedEntityCleanup>();
 	}
 
 	private void Create_Nineblast() {
@@ -126,13 +127,28 @@ public class NeoParhelionMasterHit : MasterHit {
 		nineBlast = projectile.GetComponent<InstantiatedEntityCleanup>();
 	}
 
-	private void Create_DragonRise() {
+	private void Create_W_Up_Effect() {
 		GameObject projectile = GameController.Instance.CreatePrefab("Parhelion_Dragon_Rise", transform.position, transform.rotation,drifter.peerID);
 		projectile.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
 		SetObjectColor(projectile);
 		projectile.transform.SetParent(drifter.gameObject.transform);
 
-		dragonRise = projectile.GetComponent<InstantiatedEntityCleanup>();
+		W_Up_Effect = projectile.GetComponent<InstantiatedEntityCleanup>();
+	}
+
+	private void Create_Ground_Up_Effect() {
+		GameObject projectile = GameController.Instance.CreatePrefab("Parhelion_Dragon_Sweep", transform.position, transform.rotation,drifter.peerID);
+		projectile.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
+		SetObjectColor(projectile);
+		projectile.transform.SetParent(drifter.gameObject.transform);
+
+		foreach (HitboxCollision hitbox in projectile.GetComponentsInChildren<HitboxCollision>(true)) {
+			hitbox.parent = drifter.gameObject;
+			hitbox.AttackID = attacks.AttackID;
+			hitbox.Facing = movement.Facing;
+		}
+
+		W_Up_Effect = projectile.GetComponent<InstantiatedEntityCleanup>();
 	}
 
 	public void Loop_W_Down() {
@@ -165,17 +181,22 @@ public class NeoParhelionMasterHit : MasterHit {
 			Destroy(staticField.gameObject);
 			staticField = null;
 		}
-		if(dragonSwipe != null) {
-			Destroy(dragonSwipe.gameObject);
-			dragonSwipe = null;
-		}
+		
 		if(nineBlast != null) {
 			Destroy(nineBlast.gameObject);
 			nineBlast = null;
 		}
-		if(dragonRise != null) {
-			Destroy(dragonRise.gameObject);
-			dragonRise = null;
+		if(Aerial_Up_Effect != null) {
+			Destroy(Aerial_Up_Effect.gameObject);
+			Aerial_Up_Effect = null;
+		}
+		if(W_Up_Effect != null) {
+			Destroy(W_Up_Effect.gameObject);
+			W_Up_Effect = null;
+		}
+		if(Ground_Up_Effect != null) {
+			Destroy(Ground_Up_Effect.gameObject);
+			Ground_Up_Effect = null;
 		}
 	}
 
@@ -194,14 +215,11 @@ public class NeoParhelionMasterHit : MasterHit {
 			staticBurstTimer = 8;
 			return;
 		}
-		if(hitType == AttackHitType.BLOCK) {
+		if(hitType == AttackHitType.BLOCK) 
 			numBursts = 1;
-			status.AddStatusDuration(PlayerStatusEffect.ELECTRIFIED, -100);
-		}
-		else {
+		else 
 			numBursts = status.remainingDuration(PlayerStatusEffect.ELECTRIFIED)/100;
 			//status.ApplyStatusEffect(PlayerStatusEffect.ELECTRIFIED,0);
-		}
 		staticBurstTimer = 8;
 		staticBurstTarget = target_drifter.gameObject.name;
 	}
@@ -260,11 +278,18 @@ public class NeoParhelionMasterHit : MasterHit {
 			staticField.Serialize(bw);
 		}
 
-		if(dragonSwipe == null)
+		if(Aerial_Up_Effect == null)
 			bw.Write(false);
 		else{
 			bw.Write(true);
-			dragonSwipe.Serialize(bw);
+			Aerial_Up_Effect.Serialize(bw);
+		}
+
+		if(Ground_Up_Effect == null)
+			bw.Write(false);
+		else{
+			bw.Write(true);
+			Ground_Up_Effect.Serialize(bw);
 		}
 	}
 
@@ -299,13 +324,23 @@ public class NeoParhelionMasterHit : MasterHit {
 		}
 
 		if(br.ReadBoolean()) {
-			if(dragonSwipe == null) Create_DragonSwipe();
-			dragonSwipe.Deserialize(br);
+			if(Aerial_Up_Effect == null) Create_Aerial_Up_Effect();
+			Aerial_Up_Effect.Deserialize(br);
 		}
-		else if(dragonSwipe != null) {
-			Destroy(dragonSwipe.gameObject);
-			dragonSwipe = null;
+		else if(Aerial_Up_Effect != null) {
+			Destroy(Aerial_Up_Effect.gameObject);
+			Aerial_Up_Effect = null;
 		}
+
+		if(br.ReadBoolean()) {
+			if(Ground_Up_Effect == null) Create_Ground_Up_Effect();
+			Ground_Up_Effect.Deserialize(br);
+		}
+		else if(Ground_Up_Effect != null) {
+			Destroy(Ground_Up_Effect.gameObject);
+			Ground_Up_Effect = null;
+		}
+
 	}
 
 }
