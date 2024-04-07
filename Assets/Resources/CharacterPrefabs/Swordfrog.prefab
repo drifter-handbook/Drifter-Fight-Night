@@ -31,7 +31,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5180070245103689804}
-  m_RootOrder: 9
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4030958141635760036
 MonoBehaviour:
@@ -47,7 +47,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: 29576565b8802aa4f9563461155c1319, type: 2}
   parent: {fileID: 1529639735558506143}
-  projectilePriority: -2
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
 --- !u!70 &8566005374848877752
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -127,7 +130,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: 2db7829c949c56e49a073c7f8a264a1a, type: 2}
   parent: {fileID: 1529639735558506143}
-  projectilePriority: -2
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
 --- !u!1 &2747170511321268442
 GameObject:
   m_ObjectHideFlags: 0
@@ -162,7 +168,7 @@ Transform:
   - {fileID: 8832248496886902388}
   - {fileID: 3933128490031965101}
   m_Father: {fileID: 5180070245103689804}
-  m_RootOrder: 8
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3354306740604093828
 GameObject:
@@ -227,7 +233,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: 901ad01b25c60c54e9c1cf2e1544bf2a, type: 2}
   parent: {fileID: 1529639735558506143}
-  projectilePriority: -2
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
 --- !u!1 &4071932813430323094
 GameObject:
   m_ObjectHideFlags: 0
@@ -259,7 +268,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5180070245103689804}
-  m_RootOrder: 6
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!70 &6640195269984095940
 CapsuleCollider2D:
@@ -291,7 +300,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: 6ca6dea5c6c35494a8d6de7a886abc4f, type: 2}
   parent: {fileID: 1529639735558506143}
-  projectilePriority: -2
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
 --- !u!1 &4132256652347617111
 GameObject:
   m_ObjectHideFlags: 0
@@ -355,71 +367,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: b80957aebb9bfba4aa9b4bd1aae027d3, type: 2}
   parent: {fileID: 1529639735558506143}
-  projectilePriority: -2
---- !u!1 &4310407241929829709
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7999128313239508260}
-  - component: {fileID: 5813128068857348538}
-  - component: {fileID: 1795239558532739777}
-  m_Layer: 9
-  m_Name: W_Neutral_Setup
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7999128313239508260
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4310407241929829709}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5180070245103689804}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5813128068857348538
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4310407241929829709}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 366a1f2c5e90cb041bf397c745ab185b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OverrideData: {fileID: 11400000, guid: 69b23d18bc4fe79409c3d2317ab87702, type: 2}
-  parent: {fileID: 1529639735558506143}
-  projectilePriority: -2
---- !u!58 &1795239558532739777
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4310407241929829709}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
 --- !u!1 &4819292497155786830
 GameObject:
   m_ObjectHideFlags: 0
@@ -483,7 +434,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: 5957a49b76214454da789f2f7df30a70, type: 2}
   parent: {fileID: 1529639735558506143}
-  projectilePriority: -2
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
 --- !u!1 &4958860365626917445
 GameObject:
   m_ObjectHideFlags: 0
@@ -547,71 +501,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: 0dbbea018df4b8c48bb8c667aeb295ab, type: 2}
   parent: {fileID: 1529639735558506143}
-  projectilePriority: -2
---- !u!1 &6423110134256161442
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 9204671817959485162}
-  - component: {fileID: 963560771097939434}
-  - component: {fileID: 6943932101241356779}
-  m_Layer: 9
-  m_Name: Jab_1
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &9204671817959485162
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6423110134256161442}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5180070245103689804}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!70 &963560771097939434
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6423110134256161442}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.10545492, y: 0.24208246}
-  m_Size: {x: 0.30751392, y: 0.26683328}
-  m_Direction: 1
---- !u!114 &6943932101241356779
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6423110134256161442}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OverrideData: {fileID: 11400000, guid: 8099fee01f4e8a24b8111d7ff51035b2, type: 2}
-  parent: {fileID: 1529639735558506143}
-  projectilePriority: -2
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
 --- !u!1 &6478341789373416271
 GameObject:
   m_ObjectHideFlags: 0
@@ -642,7 +535,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8611618340408276260}
-  m_RootOrder: 5
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!58 &5730834999899463487
 CircleCollider2D:
@@ -669,8 +562,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7414766527294523131}
-  - component: {fileID: 6812431134502577840}
   - component: {fileID: 3905949668525891492}
+  - component: {fileID: 5508185688287656914}
   m_Layer: 9
   m_Name: Grab_Air
   m_TagString: Untagged
@@ -691,26 +584,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5180070245103689804}
-  m_RootOrder: 7
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6812431134502577840
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7392062597308714465}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5628fe228e8be043b618c6647ceb161, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OverrideData: {fileID: 11400000, guid: 507e00187e05dbb4f89c951a2d4d9364, type: 2}
-  parent: {fileID: 1529639735558506143}
-  projectilePriority: -2
-  victim: {fileID: 0}
-  SuccessState: Grab_Air_Success
-  cancelable: 1
 --- !u!58 &3905949668525891492
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -727,6 +602,24 @@ CircleCollider2D:
   m_Offset: {x: 0.07149754, y: 0.378121}
   serializedVersion: 2
   m_Radius: 0.036901284
+--- !u!114 &5508185688287656914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7392062597308714465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OverrideData: {fileID: 11400000, guid: 507e00187e05dbb4f89c951a2d4d9364, type: 2}
+  parent: {fileID: 1529639735558506143}
+  priority: 0
+  projectileStrength: -2
+  cancelable: 0
+  OnHitAnimationState: Grab_Air_Success
 --- !u!1 &9151540173873759485
 GameObject:
   m_ObjectHideFlags: 0
@@ -758,7 +651,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5180070245103689804}
-  m_RootOrder: 5
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -35}
 --- !u!114 &1020997380646151809
 MonoBehaviour:
@@ -774,7 +667,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: 45a955ab58dd13441aa664369eca3036, type: 2}
   parent: {fileID: 1529639735558506143}
-  projectilePriority: -2
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
 --- !u!70 &363259347589699710
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -1321,9 +1217,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   assetPathName: SwordFrog
-  W_Down_Projectiles: 3
-  GrabConnectionPoint: {fileID: 6478341789373416271}
+  dashCancelFlag: 0
+  jumpFlag: 0
   tether: {fileID: 1301097304255865158}
+  GrabConnectionPoint: {fileID: 6478341789373416271}
 --- !u!4 &5180070245103689804 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8774267968347264039, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,

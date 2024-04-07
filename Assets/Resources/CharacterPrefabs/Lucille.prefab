@@ -47,7 +47,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: 96f3a467e1d34be4dbc71f327a30b6e0, type: 2}
   parent: {fileID: 1016780505216394531}
-  projectilePriority: -2
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
   FlagForDestruction: 0
 --- !u!58 &2027308584083928141
 CircleCollider2D:
@@ -75,7 +83,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3225446237103845269}
   - component: {fileID: 3583266292178252170}
-  - component: {fileID: 2977661900219340561}
   m_Layer: 9
   m_Name: W_Up_Grab
   m_TagString: Untagged
@@ -114,24 +121,6 @@ CircleCollider2D:
   m_Offset: {x: 0.03, y: 0.32}
   serializedVersion: 2
   m_Radius: 0.2
---- !u!114 &2977661900219340561
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1538771525442498559}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5628fe228e8be043b618c6647ceb161, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OverrideData: {fileID: 11400000, guid: e99c3be6d9b11134693cd3e95210f798, type: 2}
-  parent: {fileID: 1016780505216394531}
-  projectilePriority: -2
-  FlagForDestruction: 0
-  SuccessState: 
-  cancelable: 1
 --- !u!1 &1984659130060929855
 GameObject:
   m_ObjectHideFlags: 0
@@ -195,7 +184,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: 19185f65a6c374e42adea4d178e1451f, type: 2}
   parent: {fileID: 1016780505216394531}
-  projectilePriority: -2
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
   FlagForDestruction: 0
 --- !u!1 &2166231271144079544
 GameObject:
@@ -260,7 +257,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: 7397b9f5b26c5824ba3e1752de60bf74, type: 2}
   parent: {fileID: 1016780505216394531}
-  projectilePriority: -2
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
   FlagForDestruction: 0
 --- !u!1 &2521337173894318894
 GameObject:
@@ -325,7 +330,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 0}
   parent: {fileID: 1016780505216394531}
-  projectilePriority: -2
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
   FlagForDestruction: 0
 --- !u!1 &2633055041584761636
 GameObject:
@@ -374,7 +387,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: 9741d4d33fb326f48981b6cbbce9142d, type: 2}
   parent: {fileID: 1016780505216394531}
-  projectilePriority: -2
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
   FlagForDestruction: 0
 --- !u!58 &8611019586544154644
 CircleCollider2D:
@@ -439,7 +460,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: 17595244b09e98b4c876d08077e14052, type: 2}
   parent: {fileID: 1016780505216394531}
-  projectilePriority: -2
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
   FlagForDestruction: 0
 --- !u!58 &3285330935848828464
 CircleCollider2D:
@@ -467,7 +496,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8936619961583540242}
   - component: {fileID: 8636112319358836473}
-  - component: {fileID: 5119545086114383772}
   m_Layer: 9
   m_Name: W_Side_Grab
   m_TagString: Lucille_Portal_Grab
@@ -510,24 +538,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0.163377, y: 0.29411182}
   m_Size: {x: 0.17324601, y: 0.41177636}
   m_Direction: 0
---- !u!114 &5119545086114383772
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4293394734762300295}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5628fe228e8be043b618c6647ceb161, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OverrideData: {fileID: 11400000, guid: 5c0b2f7b1ffb2d8439d37356a4933dee, type: 2}
-  parent: {fileID: 1016780505216394531}
-  projectilePriority: -2
-  FlagForDestruction: 0
-  SuccessState: W_Side_Success
-  cancelable: 0
 --- !u!1 &5414513178597892174
 GameObject:
   m_ObjectHideFlags: 0
@@ -575,7 +585,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: 5d1ee00dcbe85ef4e9363ad2a733907e, type: 2}
   parent: {fileID: 1016780505216394531}
-  projectilePriority: -2
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
   FlagForDestruction: 0
 --- !u!58 &425396033668364635
 CircleCollider2D:
@@ -603,7 +621,6 @@ GameObject:
   m_Component:
   - component: {fileID: 873225741377281816}
   - component: {fileID: 6434575574763220051}
-  - component: {fileID: 176680989921783973}
   m_Layer: 9
   m_Name: Air_Grab
   m_TagString: Untagged
@@ -643,24 +660,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.5, y: 1}
   m_Direction: 0
---- !u!114 &176680989921783973
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5598103207612506632}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5628fe228e8be043b618c6647ceb161, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OverrideData: {fileID: 11400000, guid: 6e6bf865ac6482c418a56876ad7e4522, type: 2}
-  parent: {fileID: 1016780505216394531}
-  projectilePriority: -2
-  FlagForDestruction: 0
-  SuccessState: Air_Grab_Success
-  cancelable: 1
 --- !u!1 &6481242988241810244
 GameObject:
   m_ObjectHideFlags: 0
@@ -670,7 +669,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2823797462662981916}
-  - component: {fileID: 2694884117981561616}
   - component: {fileID: 8648839510337501001}
   m_Layer: 9
   m_Name: Grab_Start
@@ -694,24 +692,6 @@ Transform:
   m_Father: {fileID: 6684825320623129584}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 25}
---- !u!114 &2694884117981561616
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6481242988241810244}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5628fe228e8be043b618c6647ceb161, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OverrideData: {fileID: 11400000, guid: fe696afe4fa18c24b8210cd207f7c456, type: 2}
-  parent: {fileID: 1016780505216394531}
-  projectilePriority: -2
-  FlagForDestruction: 0
-  SuccessState: Grab_Success
-  cancelable: 1
 --- !u!70 &8648839510337501001
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -775,7 +755,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 0}
   parent: {fileID: 1016780505216394531}
-  projectilePriority: -2
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
   FlagForDestruction: 0
 --- !u!58 &1995964523054667879
 CircleCollider2D:
@@ -856,7 +844,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: c41638e5b681888469dd2a34a29d341b, type: 2}
   parent: {fileID: 1016780505216394531}
-  projectilePriority: -2
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
   FlagForDestruction: 0
 --- !u!1 &7341602148812435504
 GameObject:
@@ -921,7 +917,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: 90961d8f58df57e4bb7efbedcf036577, type: 2}
   parent: {fileID: 1016780505216394531}
-  projectilePriority: -2
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
   FlagForDestruction: 0
 --- !u!1 &7356855737826804681
 GameObject:
@@ -986,7 +990,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: 5db84aea2e8c1094dbcd134edcc86dad, type: 2}
   parent: {fileID: 1016780505216394531}
-  projectilePriority: -2
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
   FlagForDestruction: 0
 --- !u!1 &7644345229185873005
 GameObject:
@@ -1038,7 +1050,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: 9236cb711f11e3a439e01f22b2ceac3f, type: 2}
   parent: {fileID: 1016780505216394531}
-  projectilePriority: -2
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
   FlagForDestruction: 0
 --- !u!70 &5551978776291050127
 CapsuleCollider2D:
@@ -1103,7 +1123,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: 5d67d3d7f7128924fbaff60bca4a80e7, type: 2}
   parent: {fileID: 1016780505216394531}
-  projectilePriority: -2
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
   FlagForDestruction: 0
 --- !u!58 &5068458955625516899
 CircleCollider2D:

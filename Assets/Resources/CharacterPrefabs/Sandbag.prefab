@@ -47,7 +47,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: 557d84405ef606e4699a8964a1866361, type: 2}
   parent: {fileID: 5494752818666650690}
-  projectilePriority: -2
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
   FlagForDestruction: 0
 --- !u!70 &6204943898317555974
 CapsuleCollider2D:
@@ -75,7 +83,7 @@ GameObject:
   m_Component:
   - component: {fileID: 800763335491168469}
   - component: {fileID: 7767405943627190276}
-  - component: {fileID: 6857133101844428203}
+  - component: {fileID: 744227820261991289}
   m_Layer: 9
   m_Name: Grab_Air
   m_TagString: Untagged
@@ -114,7 +122,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &6857133101844428203
+--- !u!114 &744227820261991289
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -123,15 +131,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 4675775249262252097}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5628fe228e8be043b618c6647ceb161, type: 3}
+  m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: ad99b93a962cf49409c7ee1fd8a667f6, type: 2}
   parent: {fileID: 5494752818666650690}
-  projectilePriority: -2
+  priority: 0
+  projectileStrength: -2
+  cancelable: 0
+  OnHitAnimationState: Grab_Air_Success
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
   FlagForDestruction: 0
-  SuccessState: Grab_Air_Success
-  cancelable: 1
 --- !u!1 &4910785314865046868
 GameObject:
   m_ObjectHideFlags: 0
@@ -195,7 +209,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: 018a84f61a0bfaa40996634f967982c5, type: 2}
   parent: {fileID: 5494752818666650690}
-  projectilePriority: -2
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
   FlagForDestruction: 0
 --- !u!1 &5126908284875591264
 GameObject:
@@ -207,7 +229,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4625985820776147867}
   - component: {fileID: 4720618342854566110}
-  - component: {fileID: 2336940380088552935}
+  - component: {fileID: 5651465788333323453}
   m_Layer: 9
   m_Name: Grab_Ground
   m_TagString: Untagged
@@ -247,7 +269,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &2336940380088552935
+--- !u!114 &5651465788333323453
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -256,15 +278,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 5126908284875591264}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5628fe228e8be043b618c6647ceb161, type: 3}
+  m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: ad99b93a962cf49409c7ee1fd8a667f6, type: 2}
   parent: {fileID: 5494752818666650690}
-  projectilePriority: -2
-  FlagForDestruction: 0
-  SuccessState: Grab_Ground_Success
+  priority: 0
+  projectileStrength: -2
   cancelable: 1
+  OnHitAnimationState: Grab_Ground_Success
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
+  FlagForDestruction: 0
 --- !u!1 &5992161604254009577
 GameObject:
   m_ObjectHideFlags: 0
@@ -312,7 +340,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: 93f24021425336e438bf038057a6f10f, type: 2}
   parent: {fileID: 5494752818666650690}
-  projectilePriority: -2
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
   FlagForDestruction: 0
 --- !u!58 &1288435986614012965
 CircleCollider2D:
@@ -340,7 +376,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2684981513885652191}
   - component: {fileID: 5944939432065707131}
-  - component: {fileID: 5581310304590292980}
+  - component: {fileID: 2257307997498873769}
   m_Layer: 9
   m_Name: Projectile Eater
   m_TagString: Untagged
@@ -379,7 +415,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &5581310304590292980
+--- !u!114 &2257307997498873769
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -388,12 +424,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 6257423812668327868}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 366a1f2c5e90cb041bf397c745ab185b, type: 3}
+  m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: 92c53fd00a4cd724ea02d388fb248ec0, type: 2}
   parent: {fileID: 5494752818666650690}
-  projectilePriority: -1
+  priority: -99
+  projectileStrength: -1
+  cancelable: 0
+  OnHitAnimationState: 
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
   FlagForDestruction: 0
 --- !u!1 &6663714860830001265
 GameObject:
@@ -443,7 +487,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: 82e6a848ea845e147ab9b12240a3d498, type: 2}
   parent: {fileID: 5494752818666650690}
-  projectilePriority: -2
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
   FlagForDestruction: 0
 --- !u!70 &5222896270453657277
 CapsuleCollider2D:
@@ -508,7 +560,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: 3bd2ebedc3c43c841aba1646fbddac62, type: 2}
   parent: {fileID: 5494752818666650690}
-  projectilePriority: -2
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
   FlagForDestruction: 0
 --- !u!70 &7031304890290109403
 CapsuleCollider2D:
@@ -535,8 +595,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3920872395517776611}
-  - component: {fileID: 1290825132928378032}
   - component: {fileID: 2881376278076504325}
+  - component: {fileID: 5945114724799400902}
   m_Layer: 9
   m_Name: Ground_Grab_Hide
   m_TagString: Untagged
@@ -559,22 +619,6 @@ Transform:
   m_Father: {fileID: 4625985820776147867}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1290825132928378032
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8987977859378671239}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 366a1f2c5e90cb041bf397c745ab185b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OverrideData: {fileID: 11400000, guid: 619c6f49c2a231145b39fd0de06a61f1, type: 2}
-  parent: {fileID: 5494752818666650690}
-  projectilePriority: -2
-  FlagForDestruction: 0
 --- !u!58 &2881376278076504325
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -591,6 +635,30 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &5945114724799400902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8987977859378671239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OverrideData: {fileID: 11400000, guid: 619c6f49c2a231145b39fd0de06a61f1, type: 2}
+  parent: {fileID: 5494752818666650690}
+  priority: 0
+  projectileStrength: -2
+  cancelable: 0
+  OnHitAnimationState: 
+  isPuppet: 1
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
+  FlagForDestruction: 0
 --- !u!1001 &7447880543064985270
 PrefabInstance:
   m_ObjectHideFlags: 0

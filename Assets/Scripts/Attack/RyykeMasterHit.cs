@@ -181,7 +181,7 @@ public class RyykeMasterHit : MasterHit {
 
 	   SetObjectColor(stone);
 	   stone.name = stone.name + "_" + tombstoneIndex;
-	   tombstones[tombstoneIndex] = stone.GetComponent<Tombstone>().setup(tombstoneIndex,movement.Facing,drifter.gameObject,zombieRadius,(PlayerColor)drifter.GetColor());
+	   tombstones[tombstoneIndex] = stone.GetComponent<Tombstone>().setup(tombstoneIndex,movement.Facing,drifter,zombieRadius,(PlayerColor)drifter.GetColor());
 	   tombstones[tombstoneIndex].throwStone(mode);
 	}
 
@@ -320,10 +320,6 @@ public class RyykeMasterHit : MasterHit {
 		tether_Arm = null;
 		tether_Arm_Line = null;
 		tether_Hand = null;
-	}
-
-	public override void TriggerRemoteSpawn(int index) {
-		playState("W_Up_Drifter");
 	}
 
 	//Flips the direction the character is movement.Facing mid move)

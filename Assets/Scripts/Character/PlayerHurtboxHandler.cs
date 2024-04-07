@@ -7,7 +7,7 @@ using System.IO;
 
 [Serializable]
 public enum AttackHitType : short {
-    INVULN = -5,//hit registered againat an invulnerable enemy
+	INVULN = -5,//hit registered againat an invulnerable enemy
 	COUNTER = -4,// Hit was a registered as a counter
 	NONE = -3,// Hit did not register at all; ID was already present in dict, or target was invulnerable.
 	PARRY = -2,// Hit was registerted, but Parried, dealing no damage
@@ -18,14 +18,32 @@ public enum AttackHitType : short {
 	ARMOURED = 3// Move connected, but was armoured
 }
 
-public class PlayerHurtboxHandler : MonoBehaviour
-{
+public class HitData {
+	public HitboxCollision hitbox;
+	public HurtboxCollision hurtbox;
+	public SingleAttackData attackData;
+	public int attackID;
+
+	public HitData(HitboxCollision p_hitbox, HurtboxCollision p_hurtbox, SingleAttackData p_attackData, int p_attackID) { 
+		hitbox = p_hitbox;
+		hurtbox = p_hurtbox;
+		attackData = p_attackData;
+		attackID = p_attackID;
+	}
+}
+
+public class PlayerHurtboxHandler : MonoBehaviour {
 	// keep track of what attacks we've already processed
 	// AttackID -> Timestamp
 	public int[] oldAttacks = new int[128];
 	public int framesSinceCleaned = 0; 
 
+	protected HitData currentHit;
+
 	protected const int MAX_ATTACK_DURATION = 240;
+
+	protected Drifter drifter;
+	private PlayerStatus status;
 
 	// for creating hitsparks
 
@@ -38,8 +56,9 @@ public class PlayerHurtboxHandler : MonoBehaviour
 	protected void Start()	{
 
 		Shake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<ScreenShake>();
-		//entity = GetComponent<InstantiatedEntityCleanup>();
-		// StartCoroutine(CleanupOldAttacks());
+
+		drifter = GetComponent<Drifter>();
+		if(drifter!= null) status = drifter.status;
 	}
 
 	public bool CanHit(int attackID)	{
@@ -55,6 +74,10 @@ public class PlayerHurtboxHandler : MonoBehaviour
 	}
 
 	public virtual void UpdateFrame() {
+		if(currentHit != null){
+			ApplyAttackHit();
+			currentHit = null;
+		}
 		framesSinceCleaned++;
 		if(framesSinceCleaned > MAX_ATTACK_DURATION)CleanupOldAttacks(); 
 	}
@@ -69,43 +92,54 @@ public class PlayerHurtboxHandler : MonoBehaviour
 	// 1: Hit was registered normally and has attatched the opponent to the players hitbox
 	// 2: hit was against a non-player object
 
-	public virtual AttackHitType RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID,  SingleAttackData attackData)	{
+	public virtual void RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, SingleAttackData attackData){
+
+		//Whiff on based on state and hit type
+		if(
+			//Whiff air only moves against grounded opponenets
+			(!attackData.canHitGrounded && drifter.movement.grounded) ||
+			//Whiff ground only moves on aerial opponenets
+			(!attackData.canHitAerial && !drifter.movement.grounded) ||
+			//Whiff grabs and command grabs on jumping opponents
+			((drifter.movement.dashing || status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN)) && attackData.hitType == HitType.GRAB ) || 
+			//Whiff non-OTG moves on otg opponents
+			(!attackData.canHitKnockedDown && status.HasStatusEffect(PlayerStatusEffect.FLATTEN)) ||
+			//Wait until superfreeze is done to register non-super attack hits	
+			(drifter.entity.paused && attackData.hitType != HitType.BURST) ||
+			//Ignore attack hit if invuln
+			status.HasStatusEffect(PlayerStatusEffect.INVULN) ||
+			//Cant be grabbed when planted
+			(status.HasStatusEffect(PlayerStatusEffect.PLANTED) && attackData.StatusEffect == PlayerStatusEffect.GRABBED)
+
+			) return;
+
+
+		if(currentHit == null || hitbox.priority >= currentHit.hitbox.priority)
+			currentHit = new HitData(hitbox,hurtbox,attackData,attackID);
+	}
+
+	public virtual AttackHitType ApplyAttackHit() {
+
+		HitboxCollision hitbox = currentHit.hitbox;
+		HurtboxCollision hurtbox = currentHit.hurtbox;
+		int attackID = currentHit.attackID;
+		SingleAttackData attackData = currentHit.attackData;
+
 		AttackHitType returnCode = AttackHitType.NONE;
 
 		if (hitbox.parent != hurtbox.parent && CanHit(attackID)) {
 			// register new attack
-			Drifter drifter = GetComponent<Drifter>();
-			PlayerStatus status = drifter.status;
+			//Drifter drifter = GetComponent<Drifter>();
+			//PlayerStatus status = drifter.status;
 
 			Drifter attacker = hitbox.parent?.GetComponent<Drifter>();
 			PlayerStatus attackerStatus = attacker?.status;
 
 			float damageDealt = 0f;
 
-
-			//Whiff on based on state and hit type
-			if(
-				//Whiff air only moves against grounded opponenets
-				(!attackData.canHitGrounded && drifter.movement.grounded) ||
-				//Whiff ground only moves on aerial opponenets
-				(!attackData.canHitAerial && !drifter.movement.grounded) ||
-				//Whiff grabs and command grabs on jumping opponents
-				((drifter.movement.dashing || status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN)) && attackData.hitType == HitType.GRAB ) || 
-				//Whiff non-OTG moves on otg opponents
-				(!attackData.canHitKnockedDown && status.HasStatusEffect(PlayerStatusEffect.FLATTEN)) ||
-				//Wait until superfreeze is done to register non-super attack hits	
-				(drifter.entity.paused && attackData.hitType != HitType.BURST)
-
-			) return AttackHitType.NONE;
-
-			if(status.HasStatusEffect(PlayerStatusEffect.INVULN)) return AttackHitType.NONE;
 			oldAttacks[attackID] = MAX_ATTACK_DURATION;
 
-			if((drifter.guarding && status.HasStunEffect()) &&  attackData.hitType == HitType.GRAB) return AttackHitType.BLOCK;
-
-			//Ignore the collision if invulnerable or You try to grab a planted opponenet
-			
-			if(status.HasStatusEffect(PlayerStatusEffect.PLANTED) && attackData.StatusEffect == PlayerStatusEffect.GRABBED) return AttackHitType.NONE;
+			if((drifter.guarding && status.HasStunEffect()) && attackData.hitType == HitType.GRAB) return AttackHitType.BLOCK;
 
 			if(attacker !=null) attacker.canFeint = false;
 
@@ -148,8 +182,6 @@ public class PlayerHurtboxHandler : MonoBehaviour
 
 			//Calculate the direction for knockback
 			float facingDir = attackData.mirrorKnockback? (hurtbox.capsule.bounds.center.x > hitbox.gameObject.GetComponent<Collider2D>().bounds.center.x ? 1: -1) : Mathf.Sign(hitbox.Facing) == 0 ? 1 : Mathf.Sign(hitbox.Facing);
-
-			
 
 			// rotate direction by angle of impact
 			//Do we still need all this math?
@@ -283,13 +315,17 @@ public class PlayerHurtboxHandler : MonoBehaviour
 				HitPauseDuration = ((guardbroken || (status.HasStatusEffect(PlayerStatusEffect.ARMOUR) && attackData.hitType!=HitType.BURST)) && hitbox.gameObject.tag != "Projectile") ? 30 : HitPauseDuration;
 
 				//Apply defender hitpause
-				if(HitPauseDuration >0 && attackData.StatusEffect != PlayerStatusEffect.HITPAUSE )
+				if(HitPauseDuration >0 && attackData.StatusEffect != PlayerStatusEffect.HITPAUSE ){
 					status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE, HitPauseDuration * (hadSlowmo?2:1));
+				}
 				
 				//apply attacker hitpause
 				if(HitPauseDuration >0) {
-					if(hitbox.gameObject.tag != "Projectile")
+					if(hitbox.gameObject.tag != "Projectile"){
 						attackerStatus?.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,HitPauseDuration);
+						foreach(InstantiatedEntityCleanup childEntity in attacker.gameObject.GetComponentsInChildren<InstantiatedEntityCleanup>())
+							childEntity?.ApplyFreeze(HitPauseDuration);
+					}
 					else
 						hitbox.gameObject.GetComponentInParent<InstantiatedEntityCleanup>()?.ApplyFreeze(HitPauseDuration);
 				}
@@ -374,7 +410,26 @@ public class PlayerHurtboxHandler : MonoBehaviour
 				// 0: Hit was registered normally
 				// 1: hit was against a non-player object
 			attacker?.TriggerOnHit(drifter,(hitbox.gameObject.tag == "Projectile"), returnCode);
-			
+
+			//Migrated from hitbox collision
+			if((int)returnCode == 1) hitbox.isActive = false;
+			if((int)returnCode >= -1 && attacker != null && hitbox.cancelable && attacker.canSpecialCancelFlag)attacker.listenForSpecialCancel = true;
+
+			if(hitbox.OnHitAnimationState != "" && attacker.blockEvent <= 0 && !attacker.usingSuper){
+				if((int)returnCode == 1 || (int)returnCode == 0){
+					attacker.movement.canLandingCancel = false;
+					attacker.PlayAnimation(hitbox.OnHitAnimationState,-1,true);
+				}
+			}
+			if(hitbox.isPuppet && hitbox.PuppetOnHitAnimationState != "") {
+				if(
+					((int)returnCode == 0  || (int)returnCode == 1) || 
+					(hitbox.playOnBlock && ((int)returnCode == -2 || (int)returnCode == -1)) || 
+					(hitbox.playOnInvuln && (int)returnCode == -5) )	{
+						hitbox.entity.PlayAnimation(hitbox.PuppetOnHitAnimationState);
+				}
+			}
+			//Meter gain
 			switch(returnCode) {
 				case AttackHitType.GRAB:
 					attacker?.gainSuperMeter(4);

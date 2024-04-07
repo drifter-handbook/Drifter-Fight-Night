@@ -14,7 +14,6 @@ public class Tombstone : NonplayerHurtboxHandler
 	public bool breaking = false;
 
 	//Utility References
-	GameObject drifter;
 	Collider2D physicsCollider; 
 	Animator animator;
 	WalkOff ledgeDetector;
@@ -60,7 +59,7 @@ public class Tombstone : NonplayerHurtboxHandler
 	}
 
 	//sets necessary fields to make spawning cleaner
-	public Tombstone setup(int p_tombstoneIndex, int p_facing,GameObject p_drifter,float p_radius,PlayerColor color) {
+	public Tombstone setup(int p_tombstoneIndex, int p_facing, Drifter p_drifter,float p_radius,PlayerColor color) {
 	   tombstoneType = p_tombstoneIndex;
 	   facing = p_facing;
 	   drifter = p_drifter;
@@ -69,24 +68,10 @@ public class Tombstone : NonplayerHurtboxHandler
 	   return this;
 	}
 
-	//Registers a hit on the stone, and handles his counter.
-	//
-	public override AttackHitType RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, SingleAttackData attackData) {
-
-		AttackHitType returnCode = AttackHitType.NONE;
-
-		if(takesKnockback)takesKnockback = false;
-
-		if(hitbox.parent != hurtbox.parent && hurtbox.owner != hitbox.parent && CanHit(attackID)) {
-			returnCode =  base.RegisterAttackHit(hitbox,hurtbox,attackID,attackData);
-
-			oldAttacks[attackID] = MAX_ATTACK_DURATION;
-
-			if(percentage >= maxPercentage)breakStone();
-		}
-
+	public override AttackHitType ApplyAttackHit() { 
+		AttackHitType returnCode =  base.ApplyAttackHit();
+		if(percentage >= maxPercentage)breakStone();
 		return returnCode;
-
 	}
 
 	void OnTriggerEnter2D(Collider2D collider) {
@@ -237,7 +222,7 @@ public class Tombstone : NonplayerHurtboxHandler
 
 	//Spawns a flame burst effect
 	public void burst(int mode = 0) {
-		GameObject burst = GameController.Instance.CreatePrefab("Zombie_Burst", transform.position + new Vector3(2f * facing,0), transform.rotation,drifter.GetComponent<Drifter>().peerID);
+		GameObject burst = GameController.Instance.CreatePrefab("Zombie_Burst", transform.position + new Vector3(2f * facing,0), transform.rotation,drifter.peerID);
 		burst.transform.localScale = new Vector3(facing *10,10,1f);
 
 		burst.GetComponent<Animator>().Play(mode ==0? "Vertical":"Horizontal");

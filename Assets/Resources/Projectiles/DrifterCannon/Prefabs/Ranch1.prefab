@@ -63,7 +63,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: 334b18b1d18367442aeb2f7a0fd4aada, type: 2}
   parent: {fileID: 3946304139060986358}
-  projectilePriority: 1
+  priority: 0
+  projectileStrength: 1
+  cancelable: 0
+  OnHitAnimationState: 
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
   FlagForDestruction: 0
 --- !u!1 &3946304139060986358
 GameObject:

@@ -14,8 +14,8 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
 		get{ return _percentage;}
 		set {
 			if(_percentage != value) {
-					_percentage = value;
-					healthBar?.updateHealthbar((maxPercentage - _percentage) / maxPercentage);
+				_percentage = value;
+				healthBar?.updateHealthbar((maxPercentage - _percentage) / maxPercentage);
 			}
 		}
 	}
@@ -26,7 +26,7 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
 		set {
 			_facing = value;
 			if(healthBar!=null)
-				healthBar.facing = value;
+			healthBar.facing = value;
 		}
 	}
 
@@ -61,98 +61,105 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
 		}
 	}
 
-	public override AttackHitType RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, SingleAttackData attackData) {
-
+	public override void RegisterAttackHit(HitboxCollision hitbox, HurtboxCollision hurtbox, int attackID, SingleAttackData attackData) {
 		if (hitbox.parent != hurtbox.parent && hurtbox.owner != hitbox.parent && CanHit(attackID)) {
-			
-			// register new attack
-			oldAttacks[attackID] = MAX_ATTACK_DURATION;
+			if(currentHit == null || hitbox.priority >= currentHit.hitbox.priority)
+				currentHit = new HitData(hitbox,hurtbox,attackData,attackID);
+		}
+	}
 
-			Vector3 hitSparkPos = hurtbox.capsule.ClosestPoint(hitbox.parent.transform.position);
+	public override AttackHitType ApplyAttackHit() { 
 
-			PlayerStatus attackerStatus = hitbox.parent.GetComponent<PlayerStatus>();
+		HitboxCollision hitbox = currentHit.hitbox;
+		HurtboxCollision hurtbox = currentHit.hurtbox;
+		int attackID = currentHit.attackID;
+		SingleAttackData attackData = currentHit.attackData;
+
+		oldAttacks[attackID] = MAX_ATTACK_DURATION;
+
+		Vector3 hitSparkPos = hurtbox.capsule.ClosestPoint(hitbox.parent.transform.position);
+
+		PlayerStatus attackerStatus = hitbox.parent.GetComponent<PlayerStatus>();
 
 
-			if(hurtbox.gameObject.name == "Counter" &&  attackData.AttackDamage >0f && attackData.hitType!=HitType.GRAB) {
-				GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.STAR, hitSparkPos,0, new Vector2(10f, 10f));
-				attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,48);
-				entity.animator.Play("Counter_Success");
-				return AttackHitType.COUNTER;
-			}
+		if(hurtbox.gameObject.name == "Counter" &&  attackData.AttackDamage >0f && attackData.hitType!=HitType.GRAB) {
+			GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.STAR, hitSparkPos,0, new Vector2(10f, 10f));
+			attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,48);
+			entity.animator.Play("Counter_Success");
+			return AttackHitType.COUNTER;
+		}
 
-			percentage += attackData.AttackDamage;
+		percentage += attackData.AttackDamage;
 
 		   //Calculate the direction for knockback
-			float facingDir = Mathf.Sign(hitbox.Facing) == 0 ? 1 : Mathf.Sign(hitbox.Facing);
+		float facingDir = Mathf.Sign(hitbox.Facing) == 0 ? 1 : Mathf.Sign(hitbox.Facing);
 
 			// rotate direction by angle of impact
 			//Do we still need all this math?
 			//calculated angle
 
 
-			float angle = Mathf.Sign(attackData.AngleOfImpact) * Mathf.Atan2(hurtbox.parent.transform.position.y-hitbox.parent.transform.position.y, hurtbox.parent.transform.position.x-hitbox.parent.transform.position.x)*180 / Mathf.PI;
+		float angle = Mathf.Sign(attackData.AngleOfImpact) * Mathf.Atan2(hurtbox.parent.transform.position.y-hitbox.parent.transform.position.y, hurtbox.parent.transform.position.x-hitbox.parent.transform.position.x)*180 / Mathf.PI;
 
 			//KILL DI
 			//float pro = drifter.input.MoveY < 0 ? 360f - Vector3.Angle(facingDir * Vector3.right,new Vector2(drifter.input.MoveX,drifter.input.MoveY)): Vector3.Angle(facingDir * Vector3.right,new Vector2(drifter.input.MoveX,drifter.input.MoveY));
 
-			Vector3 adjustedAngle = Quaternion.Euler(0, 0, attackData.AngleOfImpact * facingDir)  * Vector2.right * facingDir;
+		Vector3 adjustedAngle = Quaternion.Euler(0, 0, attackData.AngleOfImpact * facingDir)  * Vector2.right * facingDir;
 
-			float horizontalComponent = facingDir * Mathf.Cos(attackData.AngleOfImpact *Mathf.Deg2Rad);
-			float verticalComponent = Mathf.Sin(attackData.AngleOfImpact *Mathf.Deg2Rad);
+		float horizontalComponent = facingDir * Mathf.Cos(attackData.AngleOfImpact *Mathf.Deg2Rad);
+		float verticalComponent = Mathf.Sin(attackData.AngleOfImpact *Mathf.Deg2Rad);
 
 
 
-			Vector2 forceDir = Mathf.Abs(attackData.AngleOfImpact) <= 360?
-									adjustedAngle:
-									Quaternion.Euler(0, 0, angle) * Vector2.right;
+		Vector2 forceDir = Mathf.Abs(attackData.AngleOfImpact) <= 360?
+		adjustedAngle:
+		Quaternion.Euler(0, 0, angle) * Vector2.right;
 
 
 			//Calculate knockback magnitude
-			float KB = GetKnockBack(percentage, 80, false, attackData);
+		float KB = GetKnockBack(percentage, 80, false, attackData);
 
 			//Calculate hitstun duration
-			HitstunDuration = GetHitStun(null, attackData);
+		HitstunDuration = GetHitStun(null, attackData);
 
 			//Vector3.Lerp(hurtbox.parent.transform.position, hitbox.parent.transform.position, 0.1f);
-			AttackFXSystem attackFX = attackData.HitFX;
-			Vector2 hitSparkScale =  new Vector2(facingDir *10f, 10f);
+		AttackFXSystem attackFX = attackData.HitFX;
+		Vector2 hitSparkScale =  new Vector2(facingDir *10f, 10f);
 
 			//apply hitpause
-			HitPauseDuration = attackData.HitStop >=0 ? attackData.HitStop : HitstunDuration;
+		HitPauseDuration = attackData.HitStop >=0 ? attackData.HitStop : HitstunDuration;
 
 			//Cause the screen to shake slightly on hit, as long as the move has knockback
-			if(Shake != null && attackData.Knockback !=0){
-				Shake.Shake((willCollideWithBlastZone(GetComponent<Rigidbody2D>(), HitstunDuration)?18:6),Mathf.Clamp((((attackData.Knockback - 10)/100f + (attackData.AttackDamage -10)/44f)) * attackData.KnockbackScale,.07f,.8f));
-			}
+		if(Shake != null && attackData.Knockback !=0){
+			Shake.Shake((willCollideWithBlastZone(GetComponent<Rigidbody2D>(), HitstunDuration)?18:6),Mathf.Clamp((((attackData.Knockback - 10)/100f + (attackData.AttackDamage -10)/44f)) * attackData.KnockbackScale,.07f,.8f));
+		}
 
 			//If the defender is grounded, use the absolute value of the y component of the velocity
 			//This prevents grounded opponents from getting stuck when spiked on the ground
-			if(attackData.Knockback > 0 && attackData.AngleOfImpact > -361 && takesKnockback)
-				entity.setDelayedVelocity(new Vector2(forceDir.normalized.x * KB, forceDir.normalized.y * KB));
+		if(attackData.Knockback > 0 && attackData.AngleOfImpact > -361 && takesKnockback)
+		entity.setDelayedVelocity(new Vector2(forceDir.normalized.x * KB, forceDir.normalized.y * KB));
 
-			if(hurtState != "") entity.animator.Play(hurtState);
+		if(hurtState != "") entity.animator.Play(hurtState);
 
-			if(HitPauseDuration >0) {
-				if(hitbox.gameObject.tag != "Projectile")
-					attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(attackData.AttackDamage <=2f ? 1 : Mathf.Max(HitPauseDuration,2)));
-				else
-					hitbox.gameObject.GetComponentInParent<InstantiatedEntityCleanup>()?.ApplyFreeze(HitPauseDuration);
-			}
+		if(HitPauseDuration >0) {
+			if(hitbox.gameObject.tag != "Projectile")
+			attackerStatus.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,(attackData.AttackDamage <=2f ? 1 : Mathf.Max(HitPauseDuration,2)));
+			else
+			hitbox.gameObject.GetComponentInParent<InstantiatedEntityCleanup>()?.ApplyFreeze(HitPauseDuration);
+		}
 
 			//Autolink angle (<361) scales its magnitude with distacne from said point, further scaled with the attacker's velocity
-			else if(attackData.Knockback > 0 && attackData.AngleOfImpact <= -361 && takesKnockback){
-				rb.velocity = hitbox.parent.GetComponent<Rigidbody2D>().velocity * (1 + attackData.KnockbackScale);
-			}
+		else if(attackData.Knockback > 0 && attackData.AngleOfImpact <= -361 && takesKnockback){
+			rb.velocity = hitbox.parent.GetComponent<Rigidbody2D>().velocity * (1 + attackData.KnockbackScale);
+		}
 
-			float hitSparkAngle = facingDir * ((Mathf.Abs(attackData.AngleOfImpact) > 65f) ? Mathf.Sign(attackData.AngleOfImpact) * 90f : 0f);
-			if (attackFX != null)
-				attackFX.TriggerFXSystem(attackData.AttackDamage, HitstunDuration, hitSparkPos,attackData.AngleOfImpact * facingDir, adjustedAngle,  hitSparkScale);
+		float hitSparkAngle = facingDir * ((Mathf.Abs(attackData.AngleOfImpact) > 65f) ? Mathf.Sign(attackData.AngleOfImpact) * 90f : 0f);
+		if (attackFX != null)
+		attackFX.TriggerFXSystem(attackData.AttackDamage, HitstunDuration, hitSparkPos,attackData.AngleOfImpact * facingDir, adjustedAngle,  hitSparkScale);
 
 			// Ancillary Hitsparks
-			if (attackData.AttackDamage > 0f && attackFX != null)
-				StartCoroutine(delayHitsparks(attackFX, hitSparkPos, attackData.AngleOfImpact, attackData.AttackDamage, HitstunDuration *.25f));
-
-		}
+		if (attackData.AttackDamage > 0f && attackFX != null)
+		StartCoroutine(delayHitsparks(attackFX, hitSparkPos, attackData.AngleOfImpact, attackData.AttackDamage, HitstunDuration *.25f));
 
 		return AttackHitType.SUMMON;
 

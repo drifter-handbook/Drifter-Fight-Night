@@ -47,7 +47,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: fdeee784495f8f14f8a37223df079659, type: 2}
   parent: {fileID: 0}
-  projectilePriority: -1
+  priority: 0
+  projectileStrength: 0
+  cancelable: 1
+  OnHitAnimationState: 
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
   FlagForDestruction: 0
 --- !u!70 &7634709408129535598
 CapsuleCollider2D:

@@ -181,6 +181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7b12ef163997554cbbdbc51e4f062ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playStateOnGrounded: 0
 --- !u!114 &1442517604385095941
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -251,7 +252,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7460612017416100793}
   - component: {fileID: 6156902622553632106}
-  - component: {fileID: 8894955618871078010}
+  - component: {fileID: 398411240776114688}
   m_Layer: 9
   m_Name: Hitbox
   m_TagString: Projectile
@@ -290,7 +291,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.2
---- !u!114 &8894955618871078010
+--- !u!114 &398411240776114688
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -299,10 +300,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 8147057835182221622}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 366a1f2c5e90cb041bf397c745ab185b, type: 3}
+  m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: 2a578c65be6fca14ca7ebd9c380e0f40, type: 2}
   parent: {fileID: 4682737292410015420}
-  projectilePriority: -2
+  priority: 0
+  projectileStrength: -2
+  cancelable: 0
+  OnHitAnimationState: 
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
   FlagForDestruction: 0

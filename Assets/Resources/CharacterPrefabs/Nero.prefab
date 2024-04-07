@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 693689921993284610}
   - component: {fileID: 673106651567225303}
-  - component: {fileID: 2435973589925715243}
   m_Layer: 9
   m_Name: Grab
   m_TagString: Untagged
@@ -49,24 +48,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &2435973589925715243
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 92702318407962414}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5628fe228e8be043b618c6647ceb161, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OverrideData: {fileID: 11400000, guid: fc463da64cb2c2744bf090b42bd25603, type: 2}
-  parent: {fileID: 7577635449158724588}
-  projectilePriority: -2
-  victim: {fileID: 0}
-  SuccessState: Grab_Throw_2
-  cancelable: 1
 --- !u!1 &5587848663700586938
 GameObject:
   m_ObjectHideFlags: 0
@@ -130,7 +111,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: d5ac6f251fe783344a1e81c9c4a88060, type: 2}
   parent: {fileID: 7577635449158724588}
-  projectilePriority: -2
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
+  FlagForDestruction: 0
 --- !u!1001 &4770521729353013528
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -537,6 +527,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   assetPathName: Nero
+  dashCancelFlag: 0
+  jumpFlag: 0
 --- !u!1 &7577635449158724588 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3106753082241659636, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,

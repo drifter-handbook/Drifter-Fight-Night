@@ -105,6 +105,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7b12ef163997554cbbdbc51e4f062ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playStateOnGrounded: 0
 --- !u!50 &7937498268225221338
 Rigidbody2D:
   serializedVersion: 4
@@ -194,6 +195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7b12ef163997554cbbdbc51e4f062ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playStateOnGrounded: 0
 --- !u!114 &413439436474726149
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -218,7 +220,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5524966230113536995}
   - component: {fileID: 2088055986262488960}
-  - component: {fileID: 2698750310947886898}
+  - component: {fileID: 2670018253766716157}
   m_Layer: 9
   m_Name: Hitboxes
   m_TagString: Projectile
@@ -257,7 +259,7 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.3, y: 0.4}
   m_Direction: 0
---- !u!114 &2698750310947886898
+--- !u!114 &2670018253766716157
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -266,14 +268,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 282863971573671556}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65c4d126f18c9ca47b80033f0cb0d909, type: 3}
+  m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: bebc58150d012524792039a761f21036, type: 2}
   parent: {fileID: 73355092114067010}
-  projectilePriority: -2
-  FlagForDestruction: 0
-  SuccessState: Bird_Fly
-  animator: {fileID: 3751571651596284442}
+  priority: 0
+  projectileStrength: -2
+  cancelable: 0
+  OnHitAnimationState: 
+  isPuppet: 1
+  PuppetOnHitAnimationState: Bird_Fly
   playOnInvuln: 0
   playOnBlock: 1
+  entity: {fileID: 0}
+  FlagForDestruction: 0

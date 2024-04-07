@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8584037417074550998}
   - component: {fileID: 3405403819724867481}
-  - component: {fileID: 2112072638064609575}
+  - component: {fileID: 4595032849830141918}
   m_Layer: 9
   m_Name: Hitbox
   m_TagString: Projectile
@@ -49,7 +49,7 @@ CircleCollider2D:
   m_Offset: {x: -0.03599301, y: 0}
   serializedVersion: 2
   m_Radius: 0.1213536
---- !u!114 &2112072638064609575
+--- !u!114 &4595032849830141918
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -58,17 +58,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 83554484007641018}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65c4d126f18c9ca47b80033f0cb0d909, type: 3}
+  m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: 1f29ecafbdf0aee47be5fb9066123809, type: 2}
   parent: {fileID: 6393105525490921081}
-  projectilePriority: 2
-  FlagForDestruction: 0
-  SuccessState: Sandblast_Detonate
-  animator: {fileID: 6438198135666115965}
-  playOnInvuln: 1
+  priority: 0
+  projectileStrength: 2
+  cancelable: 0
+  OnHitAnimationState: 
+  isPuppet: 1
+  PuppetOnHitAnimationState: Sandblast_Detonate
+  playOnInvuln: 0
   playOnBlock: 1
+  entity: {fileID: 0}
+  FlagForDestruction: 0
 --- !u!1 &6393105525490921081
 GameObject:
   m_ObjectHideFlags: 0

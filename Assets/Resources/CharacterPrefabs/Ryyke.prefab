@@ -63,8 +63,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: 129930b437737ce4f9571647c1b6a429, type: 2}
   parent: {fileID: 8002174525866203191}
-  projectilePriority: -2
-  FlagForDestruction: 0
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
 --- !u!1 &626732986203311705
 GameObject:
   m_ObjectHideFlags: 0
@@ -113,8 +115,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: 7fdccd5f6ebf9e3469c2de98e214c76e, type: 2}
   parent: {fileID: 8002174525866203191}
-  projectilePriority: -2
-  FlagForDestruction: 0
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
 --- !u!70 &3171627824841989897
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -194,8 +198,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: df00242206b1fe440bc810722547fce9, type: 2}
   parent: {fileID: 8002174525866203191}
-  projectilePriority: -2
-  FlagForDestruction: 0
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
 --- !u!1 &948784546017497995
 GameObject:
   m_ObjectHideFlags: 0
@@ -243,8 +249,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: a49f65f22c655284481df50534ce5089, type: 2}
   parent: {fileID: 8002174525866203191}
-  projectilePriority: -2
-  FlagForDestruction: 0
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
 --- !u!70 &3244451886575771800
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -325,8 +333,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: fb7ba28a1e665fe4eaa406e665e0565a, type: 2}
   parent: {fileID: 8002174525866203191}
-  projectilePriority: -2
-  FlagForDestruction: 0
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
 --- !u!1 &1306371808821346267
 GameObject:
   m_ObjectHideFlags: 0
@@ -336,8 +346,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2100103136374214824}
-  - component: {fileID: 6159129066958413921}
   - component: {fileID: 291203137378617692}
+  - component: {fileID: 6188454038582274778}
   m_Layer: 9
   m_Name: Grab_Ground
   m_TagString: Untagged
@@ -360,24 +370,6 @@ Transform:
   m_Father: {fileID: 4455324573363027684}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6159129066958413921
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1306371808821346267}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5628fe228e8be043b618c6647ceb161, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OverrideData: {fileID: 11400000, guid: 91b82da629913d6438bfabef00c1421f, type: 2}
-  parent: {fileID: 8002174525866203191}
-  projectilePriority: -2
-  FlagForDestruction: 0
-  SuccessState: Grab_Ground_Success
-  cancelable: 1
 --- !u!58 &291203137378617692
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -394,6 +386,24 @@ CircleCollider2D:
   m_Offset: {x: 0.2981471, y: 0.4177091}
   serializedVersion: 2
   m_Radius: 0.12618098
+--- !u!114 &6188454038582274778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1306371808821346267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OverrideData: {fileID: 11400000, guid: 91b82da629913d6438bfabef00c1421f, type: 2}
+  parent: {fileID: 8002174525866203191}
+  priority: 0
+  projectileStrength: -2
+  cancelable: 0
+  OnHitAnimationState: Grab_Ground_Success
 --- !u!1 &3092523760129151376
 GameObject:
   m_ObjectHideFlags: 0
@@ -441,8 +451,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: 812892f2fc9c88e448bc74441f7ea970, type: 2}
   parent: {fileID: 8002174525866203191}
-  projectilePriority: -2
-  FlagForDestruction: 0
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
 --- !u!70 &7250771204955656737
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -468,8 +480,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5245862386684633299}
-  - component: {fileID: 4236816454864724890}
   - component: {fileID: 147131941970974439}
+  - component: {fileID: 7899476230952868780}
   m_Layer: 9
   m_Name: Ground_Side_Sweet
   m_TagString: Untagged
@@ -492,24 +504,6 @@ Transform:
   m_Father: {fileID: 4455324573363027684}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4236816454864724890
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5003767269622312760}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5628fe228e8be043b618c6647ceb161, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OverrideData: {fileID: 11400000, guid: 57a7440e5ac660742a8db9b8198e8e4b, type: 2}
-  parent: {fileID: 8002174525866203191}
-  projectilePriority: -2
-  FlagForDestruction: 0
-  SuccessState: Ground_Side_Pull
-  cancelable: 1
 --- !u!70 &147131941970974439
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -526,6 +520,24 @@ CapsuleCollider2D:
   m_Offset: {x: 0.6822077, y: 0.33370668}
   m_Size: {x: 0.1942402, y: 0.29615957}
   m_Direction: 0
+--- !u!114 &7899476230952868780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5003767269622312760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OverrideData: {fileID: 11400000, guid: 57a7440e5ac660742a8db9b8198e8e4b, type: 2}
+  parent: {fileID: 8002174525866203191}
+  priority: 1
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: Ground_Side_Pull
 --- !u!1 &5581216453176714689
 GameObject:
   m_ObjectHideFlags: 0
@@ -573,8 +585,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: 53ca74d4b8f982541a6d5caf647d5922, type: 2}
   parent: {fileID: 8002174525866203191}
-  projectilePriority: -2
-  FlagForDestruction: 0
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
 --- !u!70 &8000324652183888153
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -638,8 +652,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: ed506049f6d1d9a4e860318d3bb4ad97, type: 2}
   parent: {fileID: 8002174525866203191}
-  projectilePriority: -2
-  FlagForDestruction: 0
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
 --- !u!70 &2810117765393602758
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -665,8 +681,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7062568388969194074}
-  - component: {fileID: 786430365882536032}
   - component: {fileID: 7633428700937911498}
+  - component: {fileID: 2659462965872457173}
   m_Layer: 9
   m_Name: Grab_Air
   m_TagString: Untagged
@@ -689,24 +705,6 @@ Transform:
   m_Father: {fileID: 4455324573363027684}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &786430365882536032
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7693040150200749323}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5628fe228e8be043b618c6647ceb161, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OverrideData: {fileID: 11400000, guid: 075429f38a54a314f9fcf04845e95fc9, type: 2}
-  parent: {fileID: 8002174525866203191}
-  projectilePriority: -2
-  FlagForDestruction: 0
-  SuccessState: Grab_Air_Success
-  cancelable: 1
 --- !u!58 &7633428700937911498
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -723,6 +721,24 @@ CircleCollider2D:
   m_Offset: {x: 0.29058266, y: 0.37902078}
   serializedVersion: 2
   m_Radius: 0.10112534
+--- !u!114 &2659462965872457173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7693040150200749323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OverrideData: {fileID: 11400000, guid: 075429f38a54a314f9fcf04845e95fc9, type: 2}
+  parent: {fileID: 8002174525866203191}
+  priority: 0
+  projectileStrength: -2
+  cancelable: 0
+  OnHitAnimationState: Grab_Air_Success
 --- !u!1001 &4254278167421801934
 PrefabInstance:
   m_ObjectHideFlags: 0

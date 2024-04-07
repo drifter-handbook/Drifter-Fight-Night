@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6244860934285896802}
   - component: {fileID: 4627934691465795362}
-  - component: {fileID: 2331776818312109217}
+  - component: {fileID: 8036528559900114787}
   m_Layer: 9
   m_Name: Hitbox
   m_TagString: Projectile
@@ -49,7 +49,7 @@ CapsuleCollider2D:
   m_Offset: {x: -0.005, y: 0.005}
   m_Size: {x: 0.2, y: 0.15}
   m_Direction: 1
---- !u!114 &2331776818312109217
+--- !u!114 &8036528559900114787
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -58,17 +58,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 3710560361080292922}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65c4d126f18c9ca47b80033f0cb0d909, type: 3}
+  m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: 53e0ab2405d31d44a932a924af3c76b1, type: 2}
   parent: {fileID: 4276033931692729659}
-  projectilePriority: -2
+  priority: 0
+  projectileStrength: -2
+  cancelable: 0
+  OnHitAnimationState: 
+  isPuppet: 1
+  PuppetOnHitAnimationState: Letter_Disappear
+  playOnInvuln: 1
+  playOnBlock: 1
+  entity: {fileID: 0}
   FlagForDestruction: 0
-  SuccessState: Letter_Disappear
-  animator: {fileID: 8974762523524711869}
-  playOnInvuln: 0
-  playOnBlock: 0
 --- !u!1 &4276033931692729659
 GameObject:
   m_ObjectHideFlags: 0

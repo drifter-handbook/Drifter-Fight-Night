@@ -197,7 +197,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 0}
   parent: {fileID: 3895342381183620223}
-  projectilePriority: -2
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
+  FlagForDestruction: 0
 --- !u!58 &6524529362684198223
 CircleCollider2D:
   m_ObjectHideFlags: 0

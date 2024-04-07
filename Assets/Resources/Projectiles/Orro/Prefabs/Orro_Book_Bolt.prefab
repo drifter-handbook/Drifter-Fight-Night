@@ -159,7 +159,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5013637548384932198}
   - component: {fileID: 690663039766260789}
-  - component: {fileID: 4228991214658927297}
+  - component: {fileID: 7559723463954244936}
   m_Layer: 9
   m_Name: Hitbox
   m_TagString: Projectile
@@ -198,7 +198,7 @@ CapsuleCollider2D:
   m_Offset: {x: -0.046876244, y: 0.025044534}
   m_Size: {x: 0.5363829, y: 0.19733714}
   m_Direction: 1
---- !u!114 &4228991214658927297
+--- !u!114 &7559723463954244936
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -207,14 +207,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 5446052880042297975}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65c4d126f18c9ca47b80033f0cb0d909, type: 3}
+  m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: f6a2538f3a72edc44a15cd53f54d15d0, type: 2}
   parent: {fileID: 5200170305971518944}
-  projectilePriority: -2
-  victim: {fileID: 0}
-  SuccessState: Book_Bolt_Detonate
-  animator: {fileID: 2248057894238533756}
-  playOnInvuln: 1
+  priority: 0
+  projectileStrength: -2
+  cancelable: 0
+  OnHitAnimationState: 
+  isPuppet: 1
+  PuppetOnHitAnimationState: Book_Bolt_Detonate
+  playOnInvuln: 0
   playOnBlock: 1
+  entity: {fileID: 0}
+  FlagForDestruction: 0

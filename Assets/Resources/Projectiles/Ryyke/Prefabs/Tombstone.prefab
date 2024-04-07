@@ -99,7 +99,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: 4cbd808f5309afc4f98fd7d66019d21c, type: 2}
   parent: {fileID: 9091461624587303316}
-  projectilePriority: -2
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
   FlagForDestruction: 0
 --- !u!1 &2918908799003735742
 GameObject:
@@ -164,7 +172,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: 7e7a95404c186eb4fa6bdaae5b37e865, type: 2}
   parent: {fileID: 9091461624587303316}
-  projectilePriority: -2
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
   FlagForDestruction: 0
 --- !u!1 &3013779264580500651
 GameObject:
@@ -175,8 +191,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3665819236218916491}
-  - component: {fileID: 695123941777981383}
   - component: {fileID: 1406875387026951124}
+  - component: {fileID: 5524995841450968882}
   m_Layer: 9
   m_Name: W_Neutral_Quake
   m_TagString: Projectile
@@ -199,22 +215,6 @@ Transform:
   m_Father: {fileID: 2203175589226038922}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &695123941777981383
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3013779264580500651}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 366a1f2c5e90cb041bf397c745ab185b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OverrideData: {fileID: 11400000, guid: f34c666bef11796478c15f13e2c13845, type: 2}
-  parent: {fileID: 9091461624587303316}
-  projectilePriority: -2
-  FlagForDestruction: 0
 --- !u!70 &1406875387026951124
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -231,6 +231,30 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.5, y: 1}
   m_Direction: 1
+--- !u!114 &5524995841450968882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3013779264580500651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OverrideData: {fileID: 11400000, guid: f34c666bef11796478c15f13e2c13845, type: 2}
+  parent: {fileID: 9091461624587303316}
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
+  isPuppet: 1
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
+  FlagForDestruction: 0
 --- !u!1 &3498539775666741865
 GameObject:
   m_ObjectHideFlags: 0
@@ -241,7 +265,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2203175589226038922}
   - component: {fileID: 8824409187147794279}
-  - component: {fileID: 5911460939465224694}
+  - component: {fileID: 4766423256631345565}
   m_Layer: 9
   m_Name: W_Neutral
   m_TagString: Projectile
@@ -281,7 +305,7 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.5, y: 1}
   m_Direction: 0
---- !u!114 &5911460939465224694
+--- !u!114 &4766423256631345565
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -290,12 +314,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 3498539775666741865}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 366a1f2c5e90cb041bf397c745ab185b, type: 3}
+  m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: 74a28a012f9c06046a9d111c7f04ed3d, type: 2}
   parent: {fileID: 9091461624587303316}
-  projectilePriority: -1
+  priority: 0
+  projectileStrength: -1
+  cancelable: 1
+  OnHitAnimationState: 
+  isPuppet: 1
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
   FlagForDestruction: 0
 --- !u!1 &4061571360135781240
 GameObject:
@@ -307,7 +339,7 @@ GameObject:
   m_Component:
   - component: {fileID: 770296423634838496}
   - component: {fileID: 6849608939064890457}
-  - component: {fileID: 7718607510071968221}
+  - component: {fileID: 8435290334684743959}
   m_Layer: 9
   m_Name: W_Up
   m_TagString: Projectile
@@ -347,7 +379,7 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.5, y: 1}
   m_Direction: 0
---- !u!114 &7718607510071968221
+--- !u!114 &8435290334684743959
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -356,17 +388,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 4061571360135781240}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65c4d126f18c9ca47b80033f0cb0d909, type: 3}
+  m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: 234c8791425e57e4fa48b40e7b2179ef, type: 2}
   parent: {fileID: 9091461624587303316}
-  projectilePriority: -2
-  FlagForDestruction: 0
-  SuccessState: W_Up_Throw
-  animator: {fileID: -2992456591029251249}
+  priority: 0
+  projectileStrength: -2
+  cancelable: 0
+  OnHitAnimationState: 
+  isPuppet: 1
+  PuppetOnHitAnimationState: W_Up_Throw
   playOnInvuln: 0
-  playOnBlock: 0
+  playOnBlock: 1
+  entity: {fileID: 0}
+  FlagForDestruction: 0
 --- !u!1 &5430352776943473637
 GameObject:
   m_ObjectHideFlags: 0
@@ -376,8 +412,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1644493141080903878}
-  - component: {fileID: 5741362088739738200}
   - component: {fileID: 2877071784615842992}
+  - component: {fileID: 1978953032146744181}
   m_Layer: 9
   m_Name: W_Down
   m_TagString: Projectile
@@ -400,22 +436,6 @@ Transform:
   m_Father: {fileID: 280044265494317489}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5741362088739738200
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5430352776943473637}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 366a1f2c5e90cb041bf397c745ab185b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OverrideData: {fileID: 11400000, guid: b893b5dd0fe0c1a459abbd36404d3951, type: 2}
-  parent: {fileID: 9091461624587303316}
-  projectilePriority: -2
-  FlagForDestruction: 0
 --- !u!70 &2877071784615842992
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -432,6 +452,30 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.5, y: 1}
   m_Direction: 1
+--- !u!114 &1978953032146744181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5430352776943473637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OverrideData: {fileID: 11400000, guid: b893b5dd0fe0c1a459abbd36404d3951, type: 2}
+  parent: {fileID: 9091461624587303316}
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
+  isPuppet: 1
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
+  FlagForDestruction: 0
 --- !u!1 &5855288326791216161
 GameObject:
   m_ObjectHideFlags: 0
@@ -619,7 +663,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: c25eda7d6fd9b4247a5c77f64fccacfc, type: 2}
   parent: {fileID: 9091461624587303316}
-  projectilePriority: -2
+  priority: -1
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
   FlagForDestruction: 0
 --- !u!1 &9071377762134712091
 GameObject:
@@ -631,7 +683,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6891396035538571691}
   - component: {fileID: 8822076253711229886}
-  - component: {fileID: 5975175110478395340}
+  - component: {fileID: 3643829805910568283}
   m_Layer: 9
   m_Name: W_Side
   m_TagString: Projectile
@@ -671,7 +723,7 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.5, y: 1}
   m_Direction: 0
---- !u!114 &5975175110478395340
+--- !u!114 &3643829805910568283
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -680,17 +732,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 9071377762134712091}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65c4d126f18c9ca47b80033f0cb0d909, type: 3}
+  m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: 642a72b4faa3ea24cb09a89f47794585, type: 2}
   parent: {fileID: 9091461624587303316}
-  projectilePriority: -1
-  FlagForDestruction: 0
-  SuccessState: W_Side_Hit
-  animator: {fileID: -2992456591029251249}
+  priority: 0
+  projectileStrength: -2
+  cancelable: 0
+  OnHitAnimationState: 
+  isPuppet: 1
+  PuppetOnHitAnimationState: W_Side_Hit
   playOnInvuln: 0
   playOnBlock: 0
+  entity: {fileID: 0}
+  FlagForDestruction: 0
 --- !u!1 &9091461624587303316
 GameObject:
   m_ObjectHideFlags: 0
@@ -884,6 +940,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7b12ef163997554cbbdbc51e4f062ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playStateOnGrounded: 0
 --- !u!70 &756313759623369397
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

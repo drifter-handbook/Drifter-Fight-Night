@@ -118,7 +118,7 @@ public class NeoSwordFrogMasterHit : MasterHit
 
 		proj.GetComponent<Rigidbody2D>().velocity = rb.velocity + new Vector2(movement.Facing * 75f, 0f);
 
-		foreach (PuppetGrabHitboxCollision hitbox in proj.GetComponentsInChildren<PuppetGrabHitboxCollision>(true)) {
+		foreach (HitboxCollision hitbox in proj.GetComponentsInChildren<HitboxCollision>(true)) {
 			hitbox.parent = drifter.gameObject;
 			hitbox.AttackID = attacks.AttackID;
 			hitbox.Facing = movement.Facing;
@@ -127,7 +127,7 @@ public class NeoSwordFrogMasterHit : MasterHit
 
 		SetObjectColor(proj);
 
-		proj.GetComponent<RemoteProjectileUtil>().hit = this;
+		//proj.GetComponent<RemoteProjectileUtil>().hit = this;
 
 		tether_Tongue = proj.GetComponent<InstantiatedEntityCleanup>();
 		tether_Tongue_Line = tether_Tongue.GetComponentInChildren<LineRenderer>();
@@ -191,8 +191,6 @@ public class NeoSwordFrogMasterHit : MasterHit
 				hitbox.isActive = false;
 			tether.g_obj.GetComponent<HopUp>().ledgeLock = LedgeLockState.Tethered;
 		}
-
-		tether_Tongue.GetComponent<RemoteProjectileUtil>().ProjectileIndex = -1;
 	}
 
 	public void pullToLedge() {
@@ -208,17 +206,6 @@ public class NeoSwordFrogMasterHit : MasterHit
 	public void RetractTongue() {
 		tongueRetracting = true;
 	}
-
-	public override void TriggerRemoteSpawn(int index) {
-		switch(index){
-			case(0):
-				playState("Grab_Ground_Success");
-				break;
-			default:
-				break;
-		}
-	}
-
 
 	 //Flips the direction the charactr is movement.Facing mid move)
 	public void invertDirection() {

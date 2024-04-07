@@ -47,7 +47,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 11400000, guid: 632b9e6a8b55cd14da79d387e150e43f, type: 2}
   parent: {fileID: 1110211681013022850}
-  projectilePriority: -2
+  priority: 0
+  projectileStrength: -2
+  cancelable: 0
+  OnHitAnimationState: 
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
+  FlagForDestruction: 0
 --- !u!70 &7976103684887440196
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -219,7 +228,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ef945a1776594438c7a9223e2d7bb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  destoryState: 
   duration: 0
   rb: {fileID: 7032405268176996302}
   animator: {fileID: 7371036035436488851}
-  updateSelf: 0
+  pauseBehavior: 1
+  paused: 0
+  useHitpause: 0
+  DestroyOnExit: 1

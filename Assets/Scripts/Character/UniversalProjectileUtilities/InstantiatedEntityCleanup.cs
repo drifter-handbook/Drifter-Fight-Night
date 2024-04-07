@@ -54,6 +54,8 @@ public class InstantiatedEntityCleanup : MonoBehaviour{
 
 	void Awake() {
 		hitboxes = GetComponentsInChildren<HitboxCollision>();
+		foreach(HitboxCollision hitbox in hitboxes)
+			hitbox.entity = this;
 	}
 
 	void OnTriggerExit2D(Collider2D other) {
@@ -110,16 +112,16 @@ public class InstantiatedEntityCleanup : MonoBehaviour{
 	}
 
 	public void unfreeze(){
-		if(pauseBehavior && dataSaved) {
+		if(pauseBehavior) {
 			if(animator !=null) animator.enabled = true;
-			if(rb != null) {
+			if(rb != null && dataSaved) {
 				//UnityEngine.Debug.Log(savedVelocity + " : " + gameObject);
 				rb.velocity = savedVelocity;
 				rb.gravityScale = savedGravity;
 				savedVelocity = Vector2.zero;
 				savedGravity = 0;
+				dataSaved = false;
 			}
-			dataSaved = false;
 		}
 		paused = false;
 	}

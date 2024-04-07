@@ -309,6 +309,9 @@ public class OrroReworkMasterHit : MasterHit {
 			case DrifterAttackType.Ground_Q_Side:
 				projectile = GameController.Instance.CreatePrefab("Orro_Side_Ground_Explosion", transform.position + new Vector3(.6f *movement.Facing,3f,0), transform.rotation,drifter.peerID);
 				break;
+			case DrifterAttackType.Aerial_Q_Down:
+				projectile = GameController.Instance.CreatePrefab("Orro_Down_Aerial_Explosion", transform.position + new Vector3(1.2f *movement.Facing,-.3f,0), transform.rotation,drifter.peerID);
+				break;
 
 			default:
 				return;

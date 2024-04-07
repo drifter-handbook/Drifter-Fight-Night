@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3646204031276327435}
-  - component: {fileID: 3986554618354429929}
   - component: {fileID: 7320764111433505532}
+  - component: {fileID: 9052976930911366964}
   m_Layer: 9
   m_Name: Hitboxes
   m_TagString: Untagged
@@ -33,26 +33,6 @@ Transform:
   m_Father: {fileID: 3791893272685448953}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
---- !u!114 &3986554618354429929
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6140406932810793803}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65c4d126f18c9ca47b80033f0cb0d909, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OverrideData: {fileID: 11400000, guid: 1391cfd47cbf5c24caee6f40a0bac65b, type: 2}
-  parent: {fileID: 8423933562066253471}
-  projectilePriority: -2
-  victim: {fileID: 0}
-  SuccessState: Tongue_Hit
-  animator: {fileID: 7266719946964603533}
-  playOnInvuln: 0
-  playOnBlock: 0
 --- !u!70 &7320764111433505532
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -69,6 +49,30 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0.1}
   m_Size: {x: 0.1, y: 0.3}
   m_Direction: 0
+--- !u!114 &9052976930911366964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6140406932810793803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4bfdd4f0c4bbbb43948ec9eb2bd1a3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OverrideData: {fileID: 11400000, guid: 1391cfd47cbf5c24caee6f40a0bac65b, type: 2}
+  parent: {fileID: 8423933562066253471}
+  priority: 0
+  projectileStrength: -2
+  cancelable: 0
+  OnHitAnimationState: Grab_Ground_Success
+  isPuppet: 1
+  PuppetOnHitAnimationState: Tongue_Hit
+  playOnInvuln: 0
+  playOnBlock: 1
+  entity: {fileID: 0}
+  FlagForDestruction: 0
 --- !u!1 &6516056022066303506
 GameObject:
   m_ObjectHideFlags: 0
@@ -211,9 +215,9 @@ GameObject:
   - component: {fileID: 3791893272685448953}
   - component: {fileID: 5138135857387232328}
   - component: {fileID: 4339928017742487846}
-  - component: {fileID: 1638484618004515026}
   - component: {fileID: 4325476462579216424}
   - component: {fileID: 7266719946964603533}
+  - component: {fileID: 4075867066820594800}
   m_Layer: 0
   m_Name: SwordFrog_Tongue
   m_TagString: Untagged
@@ -311,20 +315,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1638484618004515026
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8423933562066253471}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 583d4a47fd0020f4e8654d7c91a65aca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hit: {fileID: 0}
-  ProjectileIndex: 0
 --- !u!50 &4325476462579216424
 Rigidbody2D:
   serializedVersion: 4
@@ -366,6 +356,26 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &4075867066820594800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8423933562066253471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1ef945a1776594438c7a9223e2d7bb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destoryState: 
+  duration: -1
+  rb: {fileID: 4325476462579216424}
+  animator: {fileID: 7266719946964603533}
+  pauseBehavior: 1
+  paused: 0
+  useHitpause: 0
+  DestroyOnExit: 1
 --- !u!1 &8441463159561412506
 GameObject:
   m_ObjectHideFlags: 0
