@@ -24,7 +24,11 @@ public class HitSparks : MonoBehaviour
     public void SetAnimation(HitSpark ef)
     {
         Effect = (int)ef; 
-     }
+    }
+
+    public void Remove(){
+        Destroy(gameObject);
+    }
 
     IEnumerator DestroyAfter(float duration)
     {

@@ -28,7 +28,7 @@ public class NeoBojoMasterHit : MasterHit {
 		proj.GetComponent<Rigidbody2D>().velocity = new Vector3(movement.Facing * 33,-22);
 		foreach (HitboxCollision hitbox in proj.GetComponentsInChildren<HitboxCollision>(true)) {
 			hitbox.parent = drifter.gameObject;
-			hitbox.AttackID = attacks.AttackID;
+			hitbox.AttackID = attacks.NextID;
 			hitbox.Facing = movement.Facing;
 	   }
 

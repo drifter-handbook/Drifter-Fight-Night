@@ -256,8 +256,6 @@ public class RyykeMasterHit : MasterHit {
 
 		SetObjectColor(hand);
 
-		hand.GetComponent<RemoteProjectileUtil>().hit = this;
-
 		tether_Hand = hand.GetComponent<InstantiatedEntityCleanup>();
 	}
 
