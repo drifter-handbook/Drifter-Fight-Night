@@ -6,8 +6,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [Serializable]
-public enum DrifterType
-{
+public enum DrifterType {
 	None,
 	Random,
 	Sandbag,
@@ -36,6 +35,15 @@ public enum DrifterType
 
 }
 
+
+public enum DrifterMeterState {
+	Normal,
+	Disabled,
+	Positive_Bonus,
+	Negative_Penalty,
+	Meter_Burn
+}
+
 /** 
  * This is the class that will be put into a prefab and instantiated 
  */
@@ -56,6 +64,8 @@ public class Drifter : MonoBehaviour
 	public AnimatorOverrideController[] animOverrides;
 	public Animator sparkle;
 	public PlayerInput playerInputController;
+
+	public const int MAX_METER = 600;
 
 
 	public DrifterType drifterType;
@@ -147,10 +157,19 @@ public class Drifter : MonoBehaviour
 		//gameObject.GetComponent<SyncChargeHost>().setCharge(superCharge);
 	}
 
+	public DrifterMeterState meterState(){
+		if(!CanUseSuper()) return DrifterMeterState.Disabled;
+
+		else if(status.HasStatusEffect(PlayerStatusEffect.METER_BURN)) return DrifterMeterState.Meter_Burn;
+
+		return DrifterMeterState.Normal;
+	}
+
 	//Grants the character additonal charge for their super meter, up to the cap of 5 bars
-	public void gainSuperMeter(int charge) {
-		superCharge += charge;
-		if(superCharge >500) superCharge = 500;
+	public void gainSuperMeter(int charge) {		
+		//Half meter gain when meterburned
+		superCharge += (charge / (status.HasStatusEffect(PlayerStatusEffect.METER_BURN) ?2:1));
+		if(superCharge > MAX_METER) superCharge = MAX_METER;
 	}
 
 
@@ -248,11 +267,7 @@ public class Drifter : MonoBehaviour
 		else if(movement.grounded)PlayAnimation("Idle");
 		else if(movement.ledgeHanging)PlayAnimation("Ledge_Grab");
 		else PlayAnimation("Hang");
-		if(status.HasStatusEffect(PlayerStatusEffect.END_LAG)) status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0);
-		if(status.HasStatusEffect(PlayerStatusEffect.FLATTEN)) status.ApplyStatusEffect(PlayerStatusEffect.FLATTEN,0);
-		if(status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN))  status.ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,0);
-		if(status.HasStatusEffect(PlayerStatusEffect.TUMBLE))  status.ApplyStatusEffect(PlayerStatusEffect.TUMBLE,0);
-		if(status.HasStatusEffect(PlayerStatusEffect.SUPERBLOCKED))  status.ApplyStatusEffect(PlayerStatusEffect.SUPERBLOCKED,0);
+		status.returnToIdle();
 		movement.resetTerminalVelocity();
 		canSpecialCancelFlag = false;
 		listenForSpecialCancel = false;     
@@ -294,6 +309,7 @@ public class Drifter : MonoBehaviour
 		//Unpause the animatior if using a super
 		ToggleAnimator(SuperState);
 		if(SuperState){
+			status.ApplyStatusEffect(PlayerStatusEffect.METER_BURN,300);
 			blockEvent = 10;
 			movement.DropLedge(false,0);
 			CanGrabLedge = false;
@@ -510,6 +526,8 @@ public class Drifter : MonoBehaviour
 			hurtbox.UpdateFrame();
 			masterhit.UpdateFrame();
 		}
+		else 
+			status.ApplyStatusEffect(PlayerStatusEffect.TIMED_SUPERBLOCKED,1);
 		
 		
 	}

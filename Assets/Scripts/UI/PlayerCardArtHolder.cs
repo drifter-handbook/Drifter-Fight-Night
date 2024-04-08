@@ -77,7 +77,7 @@ public class PlayerCardArtHolder : MonoBehaviour
             {
                 playerCards[i].removeToStock(drifters[i].Stocks);
                 playerCards[i].setInspiration(drifters[i].inspirationCharges);
-                playerCards[i].SetCharge(drifters[i].superCharge);
+                playerCards[i].SetCharge(drifters[i].superCharge,drifters[i].meterState());
 
                 //Prolly remove this
                 playerCards[i].SetColor(drifters[i].myColor);

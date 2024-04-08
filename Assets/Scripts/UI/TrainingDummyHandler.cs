@@ -144,8 +144,8 @@ public class TrainingDummyHandler : MonoBehaviour
 		CombatManager.Instance?.UpdateFrame(inputFromGGPO);
 		//Meter Settings
 		if(fillMeter) {
-			Player.SetCharge(500);
-			Dummy.SetCharge(500);
+			Player.SetCharge(Drifter.MAX_METER);
+			Dummy.SetCharge(Drifter.MAX_METER);
 			Player.inspirationCharges = 3;
 		}
 		else if (emptyMeter)  {
@@ -155,8 +155,8 @@ public class TrainingDummyHandler : MonoBehaviour
 		else if(meterReset && meterResetFrames >0){
 			meterResetFrames--;
 			if(meterResetFrames == 0){
-				Player.SetCharge(500);
-				Dummy.SetCharge(500);
+				Player.SetCharge(Drifter.MAX_METER);
+				Dummy.SetCharge(Drifter.MAX_METER);
 				Player.inspirationCharges = 3;
 			}
 		}

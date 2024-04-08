@@ -61,13 +61,14 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 		attackWasCanceled = true;
 		//Clear all flags if the character is dead or stunned by an opponent
 
-		if(drifter.status.canbeKnockedDown() && !drifter.knockedDown && movement.grounded) {
-			if(!drifter.status.HasStatusEffect(PlayerStatusEffect.HITPAUSE)){
+		if(status.canbeKnockedDown() && !drifter.knockedDown && movement.grounded) {
+			if(!status.HasStatusEffect(PlayerStatusEffect.HITPAUSE)){
 				//Determine knockdown duration
 				movement.gravityPaused = true;
 				setTerminalVelocity(20f);
 				rb.gravityScale = 10f;
 				drifter.PlayAnimation("Knockdown_Bounce");
+				if(status.HasStatusEffect(PlayerStatusEffect.SOFT_TUMBLE))status.hkd = false;
 				drifter.status.ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,40);
 				//movement.mainCamera.Shake(6,.33f);
 				//If the victim is in hitpause, set their delayed velocity instead
@@ -85,9 +86,10 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 					resetTerminalVelocity();
 					movement.resetGravity();
 					status.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK,0);
-					status.ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,91);
+					status.ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,status.hkd?91:11);
 					playState("Knockdown");
-					status.ApplyStatusEffect(PlayerStatusEffect.FLATTEN,90);
+					status.ApplyStatusEffect(PlayerStatusEffect.FLATTEN,status.hkd?90:10);
+					status.hkd = true;
 					rb.velocity = new Vector2(movement.Facing * -10f * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f),rb.velocity.y);
 					BounceParticle();
 					playQueuedState();
@@ -368,7 +370,11 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 		}
 		if(movement.grounded && x >0) movement.spawnKickoffDust();
 
-		if((rb.velocity.x * movement.Facing) < 0) {
+		if(x < 0){
+			rb.velocity = new Vector2((rb.velocity.x + x * movement.Facing) * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f),rb.velocity.y);
+		}
+
+		else if((rb.velocity.x * movement.Facing) < 0) {
 			rb.velocity = new Vector2( Mathf.Sign(rb.velocity.x) * (Mathf.Abs(rb.velocity.x) - x) * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f),rb.velocity.y);
 		}
 

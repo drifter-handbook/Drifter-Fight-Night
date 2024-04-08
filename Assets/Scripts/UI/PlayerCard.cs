@@ -18,12 +18,8 @@ public class PlayerCard : MonoBehaviour
 	// public Sprite[] portraits_no_Charge;
 	// public Sprite[] portraits_with_Charge;
 	// public Sprite[] portraits_one_Charge;
-	public Sprite[] levels;
-
-	public RectTransform chargeBar;
-	public RectTransform chargeMask;
-
-	public Image chargeLevels;
+	public Image[] meterPips;
+	public Animator[] meterPipAnimators;
 
 	public Image ribbons;
 
@@ -54,6 +50,9 @@ public class PlayerCard : MonoBehaviour
 		BottomShake = BottomObject.GetComponent<GameObjectShake>();
 		BottomText = BottomObject.GetComponent<Text>();
 
+		meterPipAnimators = new Animator[meterPips.Length];
+		for(int i = 0; i < meterPips.Length; i++)
+			meterPipAnimators[i] =  meterPips[i].gameObject.GetComponent<Animator>();
 	}
 
 	public void addStock() {
@@ -89,7 +88,7 @@ public class PlayerCard : MonoBehaviour
 		newBar.transform.localScale = new Vector3(100, 100, 1);
 		newBar.GetComponent<StatusBar>().status = status;
 		newBar.GetComponent<StatusBar>().initialize(statusEffect,icon,duration);
-		newBar.GetComponent<StatusBar>().UpdateFrame();
+		//newBar.GetComponent<StatusBar>().UpdateFrame();
 		//currentStatusCount++;
 		return newBar;
 
@@ -102,13 +101,22 @@ public class PlayerCard : MonoBehaviour
 
 	}
 
-	public void SetCharge(int charge) {
-		chargeLevels.sprite = levels[(charge/100)];
+	public void SetCharge(int charge, DrifterMeterState meterState) {
 
-		float loc = -(charge/500f) * 65f;
+		for(int i = 0; i < meterPips.Length; i++){
+			float fillPercent = Mathf.Clamp((charge/100f - i),0f,1f);
+			if(fillPercent == 1f) meterPipAnimators[i].Play("Full_Crystal_" + meterState);
+			else meterPipAnimators[i].Play("Partial_Crystal_" + meterState);
 
-		chargeBar.anchoredPosition  =  new Vector2(-1 *loc,4);
-		chargeMask.anchoredPosition  = new Vector2(loc,-4);
+			meterPips[i].fillAmount = fillPercent;
+		}
+
+		// chargeLevels.sprite = levels[(charge/100)];
+
+		// float loc = -(charge/500f) * 65f;
+
+		// chargeBar.anchoredPosition  =  new Vector2(-1 *loc,4);
+		// chargeMask.anchoredPosition  = new Vector2(loc,-4);
 
 	}
 

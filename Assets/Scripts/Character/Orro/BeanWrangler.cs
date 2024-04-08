@@ -212,8 +212,8 @@ public class BeanWrangler : NonplayerHurtboxHandler
 		PlayAnimation(stateName);
 	}
  
-	public override AttackHitType ApplyAttackHit() { 
-		AttackHitType returnCode =  base.ApplyAttackHit();
+	public override void ApplyAttackHit() { 
+		base.ApplyAttackHit();
 		if(percentage > maxPercentage) {
 			alive = false;
 			canAct = false;
@@ -223,7 +223,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
 			rb.velocity = Vector2.zero;
 			delayedVelocity = Vector2.zero;
 		}
-		return returnCode;
+		//return returnCode;
 	}
 
 

@@ -20,7 +20,7 @@ public enum PlayerStatusEffect {
 	INVULN,
 	ARMOUR,
 	EXPOSED,
-	FEATHERWEIGHT,
+	SOFT_TUMBLE,
 	SLOWED,
 	SPEEDUP,
 	DAMAGEUP,
@@ -31,7 +31,7 @@ public enum PlayerStatusEffect {
 	KNOCKBACK,
 	HITPAUSE,
 	GUARDCRUSHED,
-	STANCE,
+	METER_BURN,
 	SLOWMOTION,
 	HIDDEN,
 	TUMBLE,
@@ -40,6 +40,7 @@ public enum PlayerStatusEffect {
 	SUPER_SLOWMOTION,
 	INSPIRATION,
 	SUPERBLOCKED,
+	TIMED_SUPERBLOCKED,
 }
 
 public class PlayerStatusData {
@@ -56,7 +57,7 @@ public class PlayerStatusData {
 	public int duration = 0;
 	//public bool isMashable = false;
 
-	public PlayerStatusData(string statusName, int icon = -1 ,bool remove = true,bool stun = false, bool decrement = true, bool self = false, int channel = 0, bool hasParticle = false) { 
+	public PlayerStatusData(string statusName, int icon = -1 ,bool remove = true, bool stun = false, bool decrement = true, bool self = false, int channel = 0, bool hasParticle = false) { 
 		name = statusName;
 		iconIndex = icon;
 		removeOnHit = remove;
@@ -65,6 +66,14 @@ public class PlayerStatusData {
 		decrementStatus = decrement;
 		this.channel = channel;
 		this.hasParticle = hasParticle;
+	}
+
+	public void removeStatusBar(){
+		if(statusBar != null){
+			GameObject.Destroy(statusBar);
+			statusBar = null;
+		}
+
 	}
 }
 
@@ -85,7 +94,7 @@ public class PlayerStatus : MonoBehaviour {
 		new PlayerStatusData("INVULN",icon: 9, remove: false, self: true)                   					,
 		new PlayerStatusData("ARMOUR",icon: 10, remove: false, self: true)                  					,
 		new PlayerStatusData("EXPOSED",icon: 2,channel: 1)                                  					,
-		new PlayerStatusData("FEATHERWEIGHT",icon: 2,remove: false, channel: 1)             					,
+		new PlayerStatusData("SOFT_TUMBLE", channel:6)             												,
 		new PlayerStatusData("SLOWED",icon: 11,remove: false,channel: 3)                    					,
 		new PlayerStatusData("SPEEDUP",icon: 5,remove: false,self: true, channel: 3)        					,
 		new PlayerStatusData("DAMAGEUP",icon: 6,remove: false,self: true, channel: 4)       					,
@@ -96,15 +105,16 @@ public class PlayerStatus : MonoBehaviour {
 		new PlayerStatusData("KNOCKBACK",remove: false, stun: true)                         					,
 		new PlayerStatusData("HITPAUSE",stun: true, self:true)                              					,
 		new PlayerStatusData("GUARDCRUSHED",icon: 14)                                       					,
-		new PlayerStatusData("STANCE",remove: false,self: true)                             					,
-		new PlayerStatusData("SLOWMOTION",icon: 16, remove: true)                           					,
+		new PlayerStatusData("METER_BURN",icon: 5 ,remove: false)                             					,
+		new PlayerStatusData("SLOWMOTION",icon: 16, remove: true, channel: 7)                           		,
 		new PlayerStatusData("HIDDEN",remove: false)                                        					,
-		new PlayerStatusData("TUMBLE")                                                      					,
+		new PlayerStatusData("TUMBLE", channel:6)                                                      			,
 		new PlayerStatusData("KNOCKDOWN",stun: true)                               								,
 		new PlayerStatusData("FLATTEN")                                                     					,
-		new PlayerStatusData("SUPER_SLOWMOTION",icon: 16, remove: false)                    					,
+		new PlayerStatusData("SUPER_SLOWMOTION",icon: 16, remove: false, channel: 7)                    		,
 		new PlayerStatusData("INSPIRATION", icon: 12, remove: false)                    						,
-		new PlayerStatusData("SUPERBLOCKED", icon: 3, remove: false, decrement: false)      					,
+		new PlayerStatusData("SUPERBLOCKED", icon: 3, remove: false, decrement: false, channel: 7)      		,
+		new PlayerStatusData("TIMED_SUPERBLOCKED", icon: 3, remove: false, channel: 7)      					,
 	};
 
 	Vector2 delayedVelocity;
@@ -119,6 +129,7 @@ public class PlayerStatus : MonoBehaviour {
 	public PlayerCard card;
 	[NonSerialized]
 	public bool isInCombo = false;
+	public bool hkd = true;
 	public Drifter drifter;
 
 	InstantiatedEntityCleanup halo;
@@ -184,8 +195,7 @@ public class PlayerStatus : MonoBehaviour {
 				}
 
 				if(statusDataMap[i].duration <= 0){
-					Destroy(statusDataMap[i].statusBar);
-					statusDataMap[i].statusBar = null;
+					statusDataMap[i].removeStatusBar();
 
 					if(statusDataMap[i].statusEffector != null){
 						statusDataMap[i].statusEffector.GetComponent<ParticleSystemController>().Cleanup();
@@ -193,8 +203,8 @@ public class PlayerStatus : MonoBehaviour {
 					}
 
 				}
-				else if(statusDataMap[i].statusBar != null)
-					statusDataMap[i].statusBar.GetComponent<StatusBar>().UpdateFrame();
+				// else if(statusDataMap[i].statusBar != null)
+				// 	statusDataMap[i].statusBar.GetComponent<StatusBar>().UpdateFrame();
 			}
 		}
 
@@ -215,6 +225,7 @@ public class PlayerStatus : MonoBehaviour {
 	public bool HasSuperBlockingEffect(){
 		return 
 				HasStatusEffect(PlayerStatusEffect.SUPERBLOCKED) ||
+				HasStatusEffect(PlayerStatusEffect.TIMED_SUPERBLOCKED) ||
 				isDead() ||
 				hasSloMoEffect();
 	}
@@ -262,7 +273,7 @@ public class PlayerStatus : MonoBehaviour {
 	}
 	public bool canbeKnockedDown() {
 		if(hasAdditionalStunEffect())return false;
-		return HasStatusEffect(PlayerStatusEffect.TUMBLE);        
+		return HasStatusEffect(PlayerStatusEffect.TUMBLE) || HasStatusEffect(PlayerStatusEffect.SOFT_TUMBLE);        
 	}
 
 	public void saveXVelocity(float p_vel) {
@@ -318,11 +329,25 @@ public class PlayerStatus : MonoBehaviour {
 		drifter.SetAnimationSpeed(1f);
 	}
 
+	//RTI reset
+	public void returnToIdle(){
+		if(HasStatusEffect(PlayerStatusEffect.END_LAG)) ApplyStatusEffect(PlayerStatusEffect.END_LAG,0);
+		if(HasStatusEffect(PlayerStatusEffect.FLATTEN)) ApplyStatusEffect(PlayerStatusEffect.FLATTEN,0);
+		if(HasStatusEffect(PlayerStatusEffect.KNOCKDOWN))  ApplyStatusEffect(PlayerStatusEffect.KNOCKDOWN,0);
+		if(HasStatusEffect(PlayerStatusEffect.TUMBLE))  ApplyStatusEffect(PlayerStatusEffect.TUMBLE,0);
+		if(HasStatusEffect(PlayerStatusEffect.SOFT_TUMBLE))  ApplyStatusEffect(PlayerStatusEffect.SOFT_TUMBLE,0);
+		if(HasStatusEffect(PlayerStatusEffect.SUPERBLOCKED))  ApplyStatusEffect(PlayerStatusEffect.SUPERBLOCKED,0);
+		if(HasStatusEffect(PlayerStatusEffect.TIMED_SUPERBLOCKED))  ApplyStatusEffect(PlayerStatusEffect.TIMED_SUPERBLOCKED,0);
+		hkd = true;
+	}
+
 	//Clears ALL status effects on a given status channel    
 	public void clearStatusChannel(int channel) {
 		for(int i = 0; i < statusDataMap.Length; i++) {
-			if(statusDataMap[i].channel == channel)
+			if(statusDataMap[i].channel == channel){
 				statusDataMap[i].duration = 0;
+				statusDataMap[i].removeStatusBar();
+			}
 		}
 	}
 
@@ -406,8 +431,11 @@ public class PlayerStatus : MonoBehaviour {
 		// //If duration is 0, always clear the status
 		if(duration <= 0 && HasStatusEffect(ef)) {
 			data.duration = 0;
+			data.removeStatusBar();
 			return;
 		}
+
+		if(data.channel != 0)clearStatusChannel(data.channel);
 
 		if(!HasStatusEffect(ef) && data.statusBar == null && !(data.iconIndex < 0))data.statusBar = addStatusBar(ef,duration);
 		if(!HasStatusEffect(ef) && data.statusEffector== null && statusDataMap[(int)ef].hasParticle) data.statusEffector = addStatusEffector(ef);
@@ -418,8 +446,6 @@ public class PlayerStatus : MonoBehaviour {
 			data.duration = duration;
 			return;
 		}
-
-		if(data.channel != 0)clearStatusChannel(data.channel);
 
 		if(ef == PlayerStatusEffect.PARALYZED)drifter.movement.rb.velocity = new Vector2(0,15f);
 
@@ -459,6 +485,8 @@ public class PlayerStatus : MonoBehaviour {
 		for(int i = 0; i < statusDataMap.Length; i++)
 			bw.Write(statusDataMap[i].duration);
 
+		bw.Write(hkd);
+
 		bw.Write(delayedVelocity.x);
 		bw.Write(delayedVelocity.y);
 			
@@ -477,6 +505,8 @@ public class PlayerStatus : MonoBehaviour {
 	public  void Deserialize(BinaryReader br) {
 		for(int i = 0; i < statusDataMap.Length; i++)
 			statusDataMap[i].duration = br.ReadInt32();
+
+		hkd = br.ReadBoolean();
 
 		delayedVelocity.x = br.ReadSingle();
 		delayedVelocity.y = br.ReadSingle();

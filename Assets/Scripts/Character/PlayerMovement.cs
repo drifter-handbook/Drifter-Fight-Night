@@ -137,11 +137,17 @@ public class PlayerMovement : MonoBehaviour
 				//kdbounceVelocity = Vector2.Reflect(prevVelocity,normal) *.65f;
 			}
 
+			//Restitute at higher speeds
 			else if(prevVelocity.magnitude > 35f && !drifter.status.canbeKnockedDown()) {
 				UnityEngine.Debug.Log("Restitution");
 				rb.velocity = Vector2.Reflect(prevVelocity,normal) *.8f;
 				spawnJuiceParticle(col.contacts[0].point, MovementParticleMode.Restitution, Quaternion.Euler(0f,0f, ( (rb.velocity.x < 0)?1:-1 ) * Vector3.Angle(Vector3.up,normal)),false);
 			}
+			// //Soft knockdown on low% ground spike
+			// else if (prevVelocity.magnitude <= 45f && !drifter.status.canbeKnockedDown()){
+			// 	drifter.status.hkd = false;
+			// 	drifter.status.ApplyStatusEffect(PlayerStatusEffect.TUMBLE,60);
+			// }
 		}
 	}
 
@@ -765,30 +771,30 @@ public class PlayerMovement : MonoBehaviour
 				spawnSuperParticle(CancelType.Hyper_Guard_Burst,100,8);	
 			}
 			//Offensive Cancel
-			else if(drifter.status.HasStatusEffect(PlayerStatusEffect.END_LAG) && drifter.superCharge >= 100) {
-				if(drifter.superCharge >= 200 && !drifter.canFeint) {
+			else if(drifter.status.HasStatusEffect(PlayerStatusEffect.END_LAG) && drifter.superCharge >= 200) {
+				if(drifter.superCharge >= 300 && !drifter.canFeint) {
 					drifter.attacks.useSuper();
-					spawnSuperParticle(CancelType.Offensive_Cancel,200,20);		
+					spawnSuperParticle(CancelType.Offensive_Cancel,300,20);		
 				}
 				else if(drifter.canFeint) {
 					drifter.attacks.useSuper();
-					spawnSuperParticle(CancelType.Feint_Cancel,100,8);
+					spawnSuperParticle(CancelType.Feint_Cancel,200,8);
 				}
 			}
 			//Burst/Defensive Cancel
-			else if(!drifter.guarding && drifter.superCharge >= 200 && drifter.status.HasEnemyStunEffect() && !drifter.status.HasStatusEffect(PlayerStatusEffect.GRABBED) && !drifter.status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN)) {
+			else if(!drifter.guarding && drifter.superCharge >= 300 && drifter.status.HasEnemyStunEffect() && !drifter.status.HasStatusEffect(PlayerStatusEffect.GRABBED) && !drifter.status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN)) {
 				drifter.ToggleAnimator(true);
 				hitstun = false;
 				drifter.status.clearStunStatus();
 				//drifter.status.ApplyStatusEffect(PlayerStatusEffect.INVULN,8);
 				drifter.attacks.useSuper();
-				spawnSuperParticle(CancelType.Defensive_Cancel,200,8);
+				spawnSuperParticle(CancelType.Defensive_Cancel,300,8);
 				if(currentJumps+1 < numberOfJumps) currentJumps++;
 				
 			}
-			else if (!drifter.guarding && drifter.superCharge >= 100 && !drifter.status.HasStunEffect()) {
+			else if (!drifter.guarding && drifter.superCharge >= 200 && !drifter.status.HasStunEffect()) {
 				drifter.attacks.useSuper();
-				spawnSuperParticle(CancelType.Time_Cancel,100,8);
+				spawnSuperParticle(CancelType.Time_Cancel,200,8);
 			}
 		}
 

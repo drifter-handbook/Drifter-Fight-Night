@@ -68,10 +68,10 @@ public class Tombstone : NonplayerHurtboxHandler
 	   return this;
 	}
 
-	public override AttackHitType ApplyAttackHit() { 
-		AttackHitType returnCode =  base.ApplyAttackHit();
+	public override void ApplyAttackHit() { 
+		base.ApplyAttackHit();
 		if(percentage >= maxPercentage)breakStone();
-		return returnCode;
+		///return returnCode;
 	}
 
 	void OnTriggerEnter2D(Collider2D collider) {

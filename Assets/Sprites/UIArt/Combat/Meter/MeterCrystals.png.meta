@@ -1,0 +1,1862 @@
+fileFormatVersion: 2
+guid: 4242f53a03143b843938ae70e7cf4389
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: MeterCrystals_0
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 229
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9882db4cc842c3843b7b5a61f6870dcb
+      internalID: -821999119
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_1
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 237
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 74ca253acc6add745b8cfaea90326be5
+      internalID: 2106730063
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_2
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 229
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e5f05c820b543b64e9f57d6365de687d
+      internalID: -1194254922
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_3
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 237
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: deff171aca698c54a8162ab8366273a5
+      internalID: -2013290996
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_4
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 229
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 32b1409aee3da4e40ab465f0f8e21e46
+      internalID: -171227842
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_5
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 237
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 00d3d1bcbedd9c44380d85585a2c57cd
+      internalID: -1171906727
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_6
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 229
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e2f6db8cbd76103458d66ab5e7f52584
+      internalID: 1633649986
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_7
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 237
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c1b5751a13a06df4e9c253bb4ab3afad
+      internalID: -925239969
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_8
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 229
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b6160fa6314ce4643bc898aa0dee93aa
+      internalID: -1836162525
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_9
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 237
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 60634f3d14cb252429a7ad83ddd624f1
+      internalID: 1032809920
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_10
+      rect:
+        serializedVersion: 2
+        x: 123
+        y: 229
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4b911219a8896c845bd696731393ea1d
+      internalID: -30823242
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_11
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 237
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d78a3425920db7046b8af17fa453bfd4
+      internalID: 1318197636
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_12
+      rect:
+        serializedVersion: 2
+        x: 147
+        y: 229
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b98d634e2db06c84a9b693f909986c8c
+      internalID: -399320953
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_13
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 207
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8a118216a7e904d469d0979a9260dfd3
+      internalID: 942970373
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_14
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 215
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e0db90a42115fa646a145b64d17d5d96
+      internalID: 548188247
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_15
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 207
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dde47f2d1d281f54a8ef9bec939bafbe
+      internalID: -1944504093
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_16
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 215
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 38a4d288d226bc74e8dfc319351be01e
+      internalID: -1203166001
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_17
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 207
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8066f6cba21e9a4478d7c29a4000d645
+      internalID: 2026270397
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_18
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 215
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e48546acebd47624fa4ed73df92cbbd6
+      internalID: 81216580
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_19
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 207
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5e7fd73710a97c4439f9b6041f470b5c
+      internalID: -36788762
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_20
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 215
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f6ebd30e5a40b114c8412a540adc449a
+      internalID: 1844905722
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_21
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 207
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 790079edafc0cc24791641674db7ed09
+      internalID: -1546209578
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_22
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 215
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fe1aa9ac4146d9241bed973b4fc805e6
+      internalID: -1810596410
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_23
+      rect:
+        serializedVersion: 2
+        x: 123
+        y: 207
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d755d3820b3455f47a0c3d27938b47ae
+      internalID: 235674611
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_24
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 215
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 43356cbb78a71ad47b1f066ab11f1288
+      internalID: -1132287189
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_25
+      rect:
+        serializedVersion: 2
+        x: 147
+        y: 207
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f99aa901c5f69c646a7fd5632a267d50
+      internalID: -1322362045
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_26
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 185
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7231780e339030e4490d2bff97e1dd0f
+      internalID: -494386059
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_27
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 193
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 707038986c7498347a15e53f7963b105
+      internalID: -2107250095
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_28
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 185
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4f659bb672ad3e943bfee21fbea25e20
+      internalID: -1664535889
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_29
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 193
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 63a8c53a80cfd194ebdc3d1ecb2a0d4c
+      internalID: 625271356
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_30
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 185
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5f8db256aabcba54f987da6451157adb
+      internalID: -2030604651
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_31
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 193
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 81d79df6888ef664e9d5b76b4aa083ad
+      internalID: -131986638
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_32
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 185
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5d24fd361a68c0c4693a65a93b2d3891
+      internalID: 1402370269
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_33
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 193
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9e316a6afed86ba4a8e7914170f07c49
+      internalID: -1525783393
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_34
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 185
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ddfb9febf539a6345ab1ba4886a77211
+      internalID: 1850548327
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_35
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 193
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 24b4b3b1371ab5b4d9fab5d96b22fba0
+      internalID: -1098568994
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_36
+      rect:
+        serializedVersion: 2
+        x: 123
+        y: 185
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a940bc03f7f85e64f8c242d07d4b5cb0
+      internalID: -965120807
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_37
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 193
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2b9c341c77c71364d9d183b1bd917e43
+      internalID: 980456879
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_38
+      rect:
+        serializedVersion: 2
+        x: 147
+        y: 185
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c9be573e1291d7f49824537afa31474a
+      internalID: -549279921
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_39
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 163
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c056430419bbf454aa0b0f1640a680c9
+      internalID: 125324579
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_40
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 171
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f846617bf11206c4ead305f9e8bfc2ae
+      internalID: -1339344364
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_41
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 163
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2b15e539e5a5c3d4a92d63cdeb6440db
+      internalID: -700065288
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_42
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 171
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6b0bd26ebe76b42409a3b4cbe54823de
+      internalID: 756253715
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_43
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 163
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ad2858afab700474b83ef9e63235347a
+      internalID: 1734674308
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_44
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 171
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 655bf53a3c858974a86c7a99337289fb
+      internalID: -727982876
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_45
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 163
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3d5643153c15de6469cfc23b82ff43a8
+      internalID: -1625636510
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_46
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 171
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 71f721649c6555840a43c870ceae3544
+      internalID: 1475770494
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_47
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 163
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 53b549af532c67d4692e66bc87649782
+      internalID: 628795458
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_48
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 171
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fa03720effb4adb4fa88ec103a8b3199
+      internalID: 1150801988
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_49
+      rect:
+        serializedVersion: 2
+        x: 123
+        y: 163
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d1283b650b8bed74c927821a6a2c2d2d
+      internalID: 706684339
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_50
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 171
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 23ff2c81e5e32ce4fa40160c6c803b47
+      internalID: -1227894999
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_51
+      rect:
+        serializedVersion: 2
+        x: 147
+        y: 163
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 39b328ef35debe440bd1e45c42090a99
+      internalID: 1782259120
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_52
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 141
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7b16e6feee6d2ea438e67eb3e6e4fbd8
+      internalID: 612791572
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_53
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 149
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4589bf28d1b5e78449a7d48b62be5a23
+      internalID: 391668475
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_54
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 141
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 35ff7bba85d946d4eac274d3456ad6aa
+      internalID: -149336451
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_55
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 149
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9fa1a40a4dcdaf44ea91dc73cd593e0e
+      internalID: -406289237
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_56
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 141
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bce7837af0242c14fa295bc9e5f1d9eb
+      internalID: -1023297923
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_57
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 149
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1afb5ca9323d6d24f8d1390ab783e6bf
+      internalID: -324964194
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_58
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 141
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4628ee534cf63414080465873b14dc5c
+      internalID: -1855201949
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_59
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 149
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b776781ba062ba448a7a9410e516b528
+      internalID: 1637802907
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_60
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 141
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cce1486ff48ef6e43b50e17929c91b60
+      internalID: 1022606694
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_61
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 149
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 92ffd99ecd597a3478d1240f858f091c
+      internalID: 1104357714
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_62
+      rect:
+        serializedVersion: 2
+        x: 123
+        y: 141
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d28cf8b18bcdf7e45aec18b0f92a9e73
+      internalID: 1708574503
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_63
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 149
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fbcb154af2964704bab2670ac431f6fc
+      internalID: 1259349207
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_64
+      rect:
+        serializedVersion: 2
+        x: 147
+        y: 141
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eaf4ed9be029dd449a6e9cbc97e28d71
+      internalID: -384197148
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_65
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 119
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cb887b849eed62e4e8b339ee6ca4cba0
+      internalID: -1973130203
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_66
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 127
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aafb0b4fabf10dc47aa487261237616e
+      internalID: -556981838
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_67
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 119
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2211c68e793b9a447ae00a177d22ed4e
+      internalID: 944719169
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_68
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 127
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3974180f8d1083842ade962b799fb527
+      internalID: -348177574
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_69
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 119
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e63d9d354c1b9e84080d85db1e45c5ab
+      internalID: 2022248003
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_70
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 127
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e6023c9489682084996b51ca875f0b78
+      internalID: -19261797
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_71
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 119
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a9f45afa280885a4ba954d2cf8c274f3
+      internalID: -1229247120
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_72
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 127
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eeac9aea8753bb049a49143e85945b4f
+      internalID: -1788209941
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_73
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 119
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e1c7866568fff734cbb7745130da0249
+      internalID: 1270986895
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_74
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 127
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9965ae7293bcb1b49a968b5847296ef6
+      internalID: -918001067
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_75
+      rect:
+        serializedVersion: 2
+        x: 123
+        y: 119
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b1dd3c4a3c709434d87adaadea51ba5f
+      internalID: 1734663747
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_76
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 127
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c6caada1d1b5edd40a0bbdfa3cb8ba3a
+      internalID: 22087722
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MeterCrystals_77
+      rect:
+        serializedVersion: 2
+        x: 147
+        y: 119
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 499772874732a2343bfb28c9f51fcbab
+      internalID: -481134472
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      MeterCrystals_3: -2013290996
+      MeterCrystals_15: -1944504093
+      MeterCrystals_22: -1810596410
+      MeterCrystals_65: -1973130203
+      MeterCrystals_54: -149336451
+      MeterCrystals_23: 235674611
+      MeterCrystals_53: 391668475
+      MeterCrystals_35: -1098568994
+      MeterCrystals_17: 2026270397
+      MeterCrystals_37: 980456879
+      MeterCrystals_68: -348177574
+      MeterCrystals_57: -324964194
+      MeterCrystals_28: -1664535889
+      MeterCrystals_39: 125324579
+      MeterCrystals_66: -556981838
+      MeterCrystals_32: 1402370269
+      MeterCrystals_62: 1708574503
+      MeterCrystals_46: 1475770494
+      MeterCrystals_25: -1322362045
+      MeterCrystals_16: -1203166001
+      MeterCrystals_30: -2030604651
+      MeterCrystals_73: 1270986895
+      MeterCrystals_59: 1637802907
+      MeterCrystals_51: 1782259120
+      MeterCrystals_76: 22087722
+      MeterCrystals_40: -1339344364
+      MeterCrystals_4: -171227842
+      MeterCrystals_36: -965120807
+      MeterCrystals_64: -384197148
+      MeterCrystals_70: -19261797
+      MeterCrystals_21: -1546209578
+      MeterCrystals_34: 1850548327
+      MeterCrystals_41: -700065288
+      MeterCrystals_0: -821999119
+      MeterCrystals_43: 1734674308
+      MeterCrystals_75: 1734663747
+      MeterCrystals_5: -1171906727
+      MeterCrystals_47: 628795458
+      MeterCrystals_71: -1229247120
+      MeterCrystals_26: -494386059
+      MeterCrystals_61: 1104357714
+      MeterCrystals_8: -1836162525
+      MeterCrystals_27: -2107250095
+      MeterCrystals_19: -36788762
+      MeterCrystals_7: -925239969
+      MeterCrystals_18: 81216580
+      MeterCrystals_50: -1227894999
+      MeterCrystals_29: 625271356
+      MeterCrystals_11: 1318197636
+      MeterCrystals_63: 1259349207
+      MeterCrystals_10: -30823242
+      MeterCrystals_31: -131986638
+      MeterCrystals_13: 942970373
+      MeterCrystals_9: 1032809920
+      MeterCrystals_60: 1022606694
+      MeterCrystals_33: -1525783393
+      MeterCrystals_74: -918001067
+      MeterCrystals_14: 548188247
+      MeterCrystals_45: -1625636510
+      MeterCrystals_44: -727982876
+      MeterCrystals_67: 944719169
+      MeterCrystals_69: 2022248003
+      MeterCrystals_49: 706684339
+      MeterCrystals_48: 1150801988
+      MeterCrystals_55: -406289237
+      MeterCrystals_72: -1788209941
+      MeterCrystals_2: -1194254922
+      MeterCrystals_6: 1633649986
+      MeterCrystals_42: 756253715
+      MeterCrystals_24: -1132287189
+      MeterCrystals_58: -1855201949
+      MeterCrystals_77: -481134472
+      MeterCrystals_38: -549279921
+      MeterCrystals_1: 2106730063
+      MeterCrystals_20: 1844905722
+      MeterCrystals_52: 612791572
+      MeterCrystals_12: -399320953
+      MeterCrystals_56: -1023297923
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
