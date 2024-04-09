@@ -226,6 +226,8 @@ public class PlayerStatus : MonoBehaviour {
 		return 
 				HasStatusEffect(PlayerStatusEffect.SUPERBLOCKED) ||
 				HasStatusEffect(PlayerStatusEffect.TIMED_SUPERBLOCKED) ||
+				HasStatusEffect(PlayerStatusEffect.TUMBLE) ||
+				//HasStatusEffect(PlayerStatusEffect.SOFT_TUMBLE) ||
 				isDead() ||
 				hasSloMoEffect();
 	}
@@ -401,6 +403,7 @@ public class PlayerStatus : MonoBehaviour {
 	void Respawn(){
 		CreateHalo();
 		//Spawn characters at a slight offset top prevent the ZOOMIES
+		ApplyStatusEffect(PlayerStatusEffect.INVULN, 240);
 		float respawnOffset = (drifter.peerID % 2 - .5f) *.2f * drifter.peerID;
 		UnityEngine.Debug.Log(respawnOffset);
 		drifter.transform.position = new Vector2(respawnOffset, 27f);

@@ -107,6 +107,8 @@ public class PlayerHurtboxHandler : MonoBehaviour {
 			(drifter.entity.paused && attackData.hitType != HitType.BURST) ||
 			//Ignore attack hit if invuln
 			status.HasStatusEffect(PlayerStatusEffect.INVULN) ||
+			status.HasStatusEffect(PlayerStatusEffect.DEAD) ||
+			status.HasStatusEffect(PlayerStatusEffect.BANISHED) ||
 			//Cant be grabbed when planted
 			(status.HasStatusEffect(PlayerStatusEffect.PLANTED) && attackData.StatusEffect == PlayerStatusEffect.GRABBED)
 
@@ -345,7 +347,7 @@ public class PlayerHurtboxHandler : MonoBehaviour {
 					hitbox.parent.GetComponent<Rigidbody2D>().velocity = new Vector2(-Mathf.Sign(forceDir.normalized.x) * attackData.pushBlock, hitbox.parent.GetComponent<Rigidbody2D>().velocity.y);
 
 				//Defeander Pushblock
-					GetComponent<Rigidbody2D>().velocity = new Vector2( (drifter.movement.grounded ? 1f : .5f) * Mathf.Sign(forceDir.normalized.x) * attackData.pushBlock, drifter.movement.grounded ? GetComponent<Rigidbody2D>().velocity.y : 20f);
+					GetComponent<Rigidbody2D>().velocity = new Vector2( (drifter.movement.grounded ? 1f : .5f) * Mathf.Sign(forceDir.normalized.x) * attackData.pushBlock, drifter.movement.grounded ? GetComponent<Rigidbody2D>().velocity.y : attackData.pushBlock);
 
 				//else drifter.movement.spawnJuiceParticle(hitSparkPos, MovementParticleMode.Parry);
 				//put defender in blockstun

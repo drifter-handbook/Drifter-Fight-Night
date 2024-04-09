@@ -213,11 +213,11 @@ public class Drifter : MonoBehaviour
 	public void die(){
 		if(status.isDead()) return;
 		Stocks--;
-        DamageTaken = 0f;
-        superCharge = 200;
-        status.ApplyStatusEffect(PlayerStatusEffect.DEAD, 120);
-        status.ApplyStatusEffect(PlayerStatusEffect.INVULN, 420);
-        transform.position = new Vector2(0f, 150f);
+		DamageTaken = 0f;
+		superCharge = 200;
+		status.ApplyStatusEffect(PlayerStatusEffect.DEAD, 120);
+		//status.ApplyStatusEffect(PlayerStatusEffect.INVULN, 420);
+		transform.position = new Vector2(0f, 150f);
 	}
 
 	//Replaces the animator state transition function
@@ -504,7 +504,7 @@ public class Drifter : MonoBehaviour
 	public void UpdateFrame() {
 
 		if(GameController.Instance.IsPaused)
-            return;
+			return;
 
 		if(cancelTimer >0) {
 			cancelTimer--;
