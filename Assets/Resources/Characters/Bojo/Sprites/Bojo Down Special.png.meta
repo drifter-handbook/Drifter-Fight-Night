@@ -178,7 +178,7 @@ TextureImporter:
         width: 64
         height: 64
       alignment: 9
-      pivot: {x: 0.34375, y: 0}
+      pivot: {x: 0.390625, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -199,7 +199,7 @@ TextureImporter:
         width: 64
         height: 64
       alignment: 9
-      pivot: {x: 0.34375, y: 0}
+      pivot: {x: 0.375, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -218,9 +218,9 @@ TextureImporter:
         x: 128
         y: 384
         width: 64
-        height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        height: 67
+      alignment: 9
+      pivot: {x: 0.4375, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -239,9 +239,9 @@ TextureImporter:
         x: 192
         y: 384
         width: 64
-        height: 64
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        height: 96
+      alignment: 9
+      pivot: {x: 0.4375, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -388,7 +388,7 @@ TextureImporter:
         width: 96
         height: 64
       alignment: 9
-      pivot: {x: 0.3333, y: 0}
+      pivot: {x: 0.33333334, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -409,7 +409,7 @@ TextureImporter:
         width: 96
         height: 64
       alignment: 9
-      pivot: {x: 0.33333, y: 0}
+      pivot: {x: 0.33333334, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -451,7 +451,7 @@ TextureImporter:
         width: 96
         height: 64
       alignment: 9
-      pivot: {x: 0.333333, y: 0}
+      pivot: {x: 0.33333334, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -472,7 +472,7 @@ TextureImporter:
         width: 96
         height: 64
       alignment: 9
-      pivot: {x: 0.3333, y: 0}
+      pivot: {x: 0.36458334, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -480,6 +480,27 @@ TextureImporter:
       bones: []
       spriteID: 7ebb8cab75f399210800000000000000
       internalID: 1340172010147855335
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bojo Down Special_0
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 192
+        width: 96
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0fb6462902ef0654ab222dcbfa25c4bf
+      internalID: -1759876659
       vertices: []
       indices: 
       edges: []
@@ -497,6 +518,7 @@ TextureImporter:
     nameFileIdTable:
       Bojo Down Special_9: 3082251292718099602
       Bojo Down Special_4: 1562856767633813617
+      Bojo Down Special_0: -1759876659
       Bojo Down Special_7: 7361847061875340491
       Bojo Down Special_14: -4223272493227528419
       Bojo Down Special_16: -6957369195242344134
