@@ -69,8 +69,8 @@ public class PlayerMovement : MonoBehaviour
 
 	[NonSerialized]
 	public bool strongLedgeGrab = true;
-	//[NonSerialized]
-	//public int accelerationFrames = 6;
+	[NonSerialized]
+	public bool passThrough = false;
 	[NonSerialized]
 	public float jumpTimer = 30f;
 
@@ -92,7 +92,8 @@ public class PlayerMovement : MonoBehaviour
 	ScreenShake mainCamera;
 
 	PolygonCollider2D frictionCollider;
-	BoxCollider2D BodyCollider; 
+	public Pushbox Pushbox; 
+	PolygonCollider2D pushBoxCollider;
 
 
 	//Component Fields
@@ -101,7 +102,7 @@ public class PlayerMovement : MonoBehaviour
 	Drifter drifter;
 	GameObjectShake shake;
 
-	public GameObject PushBox;
+	//public GameObject PushBox;
  	//GameObject Pusher;
  	GameObject smoketrail;
 
@@ -118,8 +119,9 @@ public class PlayerMovement : MonoBehaviour
 		// status = drifter.status;
 		// animator = drifter.animator;
 
-		BodyCollider = GetComponent<BoxCollider2D>();
+		//Pushbox = GetComponentInChildren<PolygonCollider2D>();
 		frictionCollider = GetComponent<PolygonCollider2D>();
+		pushBoxCollider = Pushbox.gameObject.GetComponent<PolygonCollider2D>();
 
 		baseTerminalVelocity = terminalVelocity;
 
@@ -150,7 +152,7 @@ public class PlayerMovement : MonoBehaviour
 			// }
 		}
 	}
-	
+
 	public void UpdateFrame() {
 
 		if(SuperCancel != null) SuperCancel.GetComponentInChildren<InstantiatedEntityCleanup>().UpdateFrame();
@@ -159,9 +161,9 @@ public class PlayerMovement : MonoBehaviour
 		bool canAct = !drifter.status.HasStunEffect() && !drifter.guarding;// && !drifter.input[0].Guard;
 		bool canGuard = !drifter.status.HasStunEffect() && !jumping && !ledgeHanging;
 		bool moving = drifter.input[0].MoveX != 0;
-		bool hasCollision = !drifter.status.HasStunEffect() && !ledgeHanging;
+		bool hasCollision = !drifter.status.HasEnemyStunEffect() && !ledgeHanging && !passThrough;
 		//Only collide with other players when not using a move or hanging on a ledge
-		PushBox.SetActive(hasCollision);
+		Pushbox.gameObject.layer = (hasCollision ? 14:17);
 
 		if(ledgeGrabLockout > 0){
 			ledgeGrabLockout --;
@@ -230,7 +232,7 @@ public class PlayerMovement : MonoBehaviour
 
 				//Allow player to qucikly change direction with a jump
 				float currentSpeed;
-				if(drifter.input[0].MoveX ==0) currentSpeed = rb.velocity.x;
+				if(drifter.input[0].MoveX ==0 || jumpTimer > 0) currentSpeed = rb.velocity.x;
 				else currentSpeed= calculateSpeedModifiers(grounded?walkSpeed:airSpeed) * Facing;
 
 				rb.velocity = new Vector2(currentSpeed,	jumpSpeed * (drifter.status.hasSloMoEffect() ? .4f : 1f));
@@ -260,6 +262,12 @@ public class PlayerMovement : MonoBehaviour
 			//drifter.PlayAnimation("Jump_End");
 			spawnJuiceParticle(transform.position + particleOffset + new Vector3(0,-1,0), MovementParticleMode.Land);
 		}
+
+		if(grounded && !IsGrounded() && !moving && canAct && !jumping){
+			UnityEngine.Debug.Log("SLID OFF LEDGE");
+			drifter.PlayAnimation("Hang");
+		}
+
 
 		grounded = IsGrounded();
 	   
@@ -509,7 +517,7 @@ public class PlayerMovement : MonoBehaviour
 
 		if(drifter.input[0].MoveX != 0) {
 			currentSpeed = calculateSpeedModifiers(speed);
-			rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x,currentSpeed * (drifter.input[0].MoveX > 0 ? 1 : -1),currentSpeed/airAccelerationTime), rb.velocity.y);
+			rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x,currentSpeed * (drifter.input[0].MoveX > 0 ? 1 : -1),currentSpeed/groundAccelerationTime), rb.velocity.y);
 		}
 		
 	}
@@ -521,12 +529,12 @@ public class PlayerMovement : MonoBehaviour
 
 	//Made it public for streamlining channeled attack cancels
 	public void techParticle() {
-		spawnJuiceParticle(BodyCollider.bounds.center, MovementParticleMode.Tech, Quaternion.Euler(0f,0f,0f),false);
+		spawnJuiceParticle(pushBoxCollider.bounds.center, MovementParticleMode.Tech, Quaternion.Euler(0f,0f,0f),false);
 	}
 
     public void actionCancelParticle() {
     	//UnityEngine.Debug.Log("CANCEL PARTICLE");
-        spawnJuiceParticle(BodyCollider.bounds.center, MovementParticleMode.Cancel, Quaternion.Euler(0f,0f,0f),false);
+        spawnJuiceParticle(pushBoxCollider.bounds.center, MovementParticleMode.Cancel, Quaternion.Euler(0f,0f,0f),false);
     }
 
 	//Updates the direction the player is facing
@@ -581,7 +589,7 @@ public class PlayerMovement : MonoBehaviour
 	
 	public bool IsWallSliding() {
 		RaycastHit2D[] wallHits = new RaycastHit2D[10];
-		int count = Physics2D.RaycastNonAlloc(BodyCollider.bounds.center + new Vector3( BodyCollider.bounds.extents.x * ((Facing > 0)?1:-1),BodyCollider.bounds.extents.y,0), ((Facing > 0)?Vector3.right:Vector3.left),wallHits, 0.35f);
+		int count = Physics2D.RaycastNonAlloc(pushBoxCollider.bounds.center + new Vector3( pushBoxCollider.bounds.extents.x * ((Facing > 0)?1:-1),pushBoxCollider.bounds.extents.y,0), ((Facing > 0)?Vector3.right:Vector3.left),wallHits, 0.35f);
 
 		for (int i = 0; i < count; i++)if (wallHits[i].collider.gameObject.tag == "Ground" && drifter.status.HasGroundFriction())return true;
 
@@ -605,6 +613,7 @@ public class PlayerMovement : MonoBehaviour
 		pauseGravity();
 		jumping = false;
 		dashing = false;
+		passThrough = false;
 		drifter.clearGuardFlags();
 		ledgeHanging = true;
 		if(strongLedgeGrab)drifter.status.ApplyStatusEffect(PlayerStatusEffect.INVULN,150);
@@ -688,7 +697,8 @@ public class PlayerMovement : MonoBehaviour
 			updateFacing();
 			//accelerationFrames = 120;
 			dashing = true;
-			spawnJuiceParticle(BodyCollider.bounds.center + new Vector3(Facing * 1.5f,0), MovementParticleMode.Dash_Ring, Quaternion.Euler(0f,0f,0f), false);
+			passThrough = true;
+			spawnJuiceParticle(pushBoxCollider.bounds.center + new Vector3(Facing * 1.5f,0), MovementParticleMode.Dash_Ring, Quaternion.Euler(0f,0f,0f), false);
 			drifter.status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,480);
 			drifter.PlayAnimation("Dash");
 			drifter.status.ApplyStatusEffect(PlayerStatusEffect.INVULN,10);
@@ -823,9 +833,9 @@ public class PlayerMovement : MonoBehaviour
 		bw.Write(ledgeHanging);
 		bw.Write(strongLedgeGrab);
 		bw.Write(delayedFacingFlip);
+		bw.Write(passThrough);
 
 		//Int
-		//bw.Write(accelerationFrames);
 		bw.Write(dropThroughTime);
 		bw.Write(Facing);
 		bw.Write(currentJumps);
@@ -864,9 +874,9 @@ public class PlayerMovement : MonoBehaviour
 		ledgeHanging = br.ReadBoolean();
 		strongLedgeGrab = br.ReadBoolean();
 		delayedFacingFlip = br.ReadBoolean();
+		passThrough = br.ReadBoolean();
 
 		//Int
-		//accelerationFrames = br.ReadInt32();
 		dropThroughTime = br.ReadInt32();
 		Facing = br.ReadInt32();
 		currentJumps = br.ReadInt32();

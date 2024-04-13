@@ -41,7 +41,7 @@ public class KillBox : MonoBehaviour {
 
 	protected void killPlayer(Collider2D other) {
 
-		if (other.gameObject.tag == "Player" && other.GetType() == typeof(BoxCollider2D))
+		if (other.gameObject.tag == "Player" && other.GetType() == typeof(PolygonCollider2D))
 		{
 			while(Shake==null)Shake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<ScreenShake>();
 			Drifter drifter = other.gameObject?.GetComponent<Drifter>();

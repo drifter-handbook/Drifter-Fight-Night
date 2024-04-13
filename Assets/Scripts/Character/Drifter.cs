@@ -269,6 +269,7 @@ public class Drifter : MonoBehaviour
 		else PlayAnimation("Hang");
 		status.returnToIdle();
 		movement.resetTerminalVelocity();
+		movement.passThrough = false;
 		canSpecialCancelFlag = false;
 		listenForSpecialCancel = false;     
 		knockedDown = false;

@@ -406,6 +406,10 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 		movement.canLandingCancel = true;
 	}
 
+	public void setCrossup(int flag) {
+		movement.passThrough = (flag != 0);
+	}
+
 	public void pauseGravity() {
 		savingVelocity = false;
 		movement.pauseGravity();

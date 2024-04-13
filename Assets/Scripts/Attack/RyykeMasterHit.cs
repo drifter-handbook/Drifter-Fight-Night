@@ -370,6 +370,7 @@ public class RyykeMasterHit : MasterHit {
 	public void W_Down_Dash() {
 		//burrowing = true;
 		//burrowTime = maxBurrowTime;
+		movement.passThrough = true;
 		listenForLedge(true);
 		if(ledgeDetector.IsTouchingGround())setXVelocity(40f);
 		movement.cancelJump();
