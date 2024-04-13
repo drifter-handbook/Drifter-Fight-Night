@@ -67,6 +67,12 @@ MonoBehaviour:
   projectileStrength: -2
   cancelable: 1
   OnHitAnimationState: 
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
+  FlagForDestruction: 0
 --- !u!1 &626732986203311705
 GameObject:
   m_ObjectHideFlags: 0
@@ -119,6 +125,12 @@ MonoBehaviour:
   projectileStrength: -2
   cancelable: 1
   OnHitAnimationState: 
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
+  FlagForDestruction: 0
 --- !u!70 &3171627824841989897
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -202,6 +214,12 @@ MonoBehaviour:
   projectileStrength: -2
   cancelable: 1
   OnHitAnimationState: 
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
+  FlagForDestruction: 0
 --- !u!1 &948784546017497995
 GameObject:
   m_ObjectHideFlags: 0
@@ -253,6 +271,12 @@ MonoBehaviour:
   projectileStrength: -2
   cancelable: 1
   OnHitAnimationState: 
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
+  FlagForDestruction: 0
 --- !u!70 &3244451886575771800
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -337,6 +361,12 @@ MonoBehaviour:
   projectileStrength: -2
   cancelable: 1
   OnHitAnimationState: 
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
+  FlagForDestruction: 0
 --- !u!1 &1306371808821346267
 GameObject:
   m_ObjectHideFlags: 0
@@ -404,6 +434,12 @@ MonoBehaviour:
   projectileStrength: -2
   cancelable: 0
   OnHitAnimationState: Grab_Ground_Success
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
+  FlagForDestruction: 0
 --- !u!1 &3092523760129151376
 GameObject:
   m_ObjectHideFlags: 0
@@ -455,6 +491,12 @@ MonoBehaviour:
   projectileStrength: -2
   cancelable: 1
   OnHitAnimationState: 
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
+  FlagForDestruction: 0
 --- !u!70 &7250771204955656737
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -538,6 +580,12 @@ MonoBehaviour:
   projectileStrength: -2
   cancelable: 1
   OnHitAnimationState: Ground_Side_Pull
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
+  FlagForDestruction: 0
 --- !u!1 &5581216453176714689
 GameObject:
   m_ObjectHideFlags: 0
@@ -589,6 +637,12 @@ MonoBehaviour:
   projectileStrength: -2
   cancelable: 1
   OnHitAnimationState: 
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
+  FlagForDestruction: 0
 --- !u!70 &8000324652183888153
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -656,6 +710,12 @@ MonoBehaviour:
   projectileStrength: -2
   cancelable: 1
   OnHitAnimationState: 
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
+  FlagForDestruction: 0
 --- !u!70 &2810117765393602758
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -739,6 +799,12 @@ MonoBehaviour:
   projectileStrength: -2
   cancelable: 0
   OnHitAnimationState: Grab_Air_Success
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
+  FlagForDestruction: 0
 --- !u!1001 &4254278167421801934
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1126,7 +1192,7 @@ PrefabInstance:
     - target: {fileID: 3106753082241659641, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: groundAccelerationTime
-      value: 48
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3106753082241659643, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}

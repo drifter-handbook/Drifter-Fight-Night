@@ -105,6 +105,8 @@ public class PlayerHurtboxHandler : MonoBehaviour {
 			(!attackData.canHitKnockedDown && status.HasStatusEffect(PlayerStatusEffect.FLATTEN)) ||
 			//Wait until superfreeze is done to register non-super attack hits	
 			(drifter.entity.paused && attackData.hitType != HitType.BURST) ||
+			//Whiff hits on dashing opponents
+			//(drifter.movement.dashing && attackData.hitType == HitType.NORMAL ) || 
 			//Ignore attack hit if invuln
 			status.HasStatusEffect(PlayerStatusEffect.INVULN) ||
 			status.HasStatusEffect(PlayerStatusEffect.DEAD) ||

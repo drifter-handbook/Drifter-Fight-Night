@@ -920,6 +920,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 364774633814311839, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 364774633814311839, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
+        type: 3}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[0].x
       value: 0.7
       objectReference: {fileID: 0}
@@ -1116,7 +1121,7 @@ PrefabInstance:
     - target: {fileID: 3106753082241659641, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
       propertyPath: groundAccelerationTime
-      value: 36
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3106753082241659643, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,
         type: 3}
@@ -1369,7 +1374,6 @@ MonoBehaviour:
   assetPathName: Lady Parhelion
   dashCancelFlag: 0
   jumpFlag: 0
-  Up_W_Grab: {fileID: 0}
 --- !u!4 &8134034190548964144 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8774267968347264039, guid: 03006bf76a5e1274aaf3da8b9c69d8f9,

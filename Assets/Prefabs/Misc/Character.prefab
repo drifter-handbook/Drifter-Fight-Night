@@ -63,7 +63,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 0}
   parent: {fileID: 3106753082241659636}
-  projectilePriority: -2
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
   FlagForDestruction: 0
 --- !u!1 &1853559347
 GameObject:
@@ -128,7 +136,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 0}
   parent: {fileID: 3106753082241659636}
-  projectilePriority: -2
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
   FlagForDestruction: 0
 --- !u!1 &2496518287981053905
 GameObject:
@@ -537,48 +553,63 @@ MonoBehaviour:
   - attack: 4
     attackData: {fileID: 0}
     hasAirVariant: 0
+    hasEmpoweredVariant: 0
   - attack: 8
     attackData: {fileID: 0}
     hasAirVariant: 0
+    hasEmpoweredVariant: 0
   - attack: 13
     attackData: {fileID: 0}
     hasAirVariant: 0
+    hasEmpoweredVariant: 0
   - attack: 11
     attackData: {fileID: 0}
     hasAirVariant: 0
+    hasEmpoweredVariant: 0
   - attack: 10
     attackData: {fileID: 0}
     hasAirVariant: 0
+    hasEmpoweredVariant: 0
   - attack: 9
     attackData: {fileID: 0}
     hasAirVariant: 0
+    hasEmpoweredVariant: 0
   - attack: 12
     attackData: {fileID: 0}
     hasAirVariant: 0
+    hasEmpoweredVariant: 0
   - attack: 16
     attackData: {fileID: 11400000, guid: be94e269e9183e840a9536a046b0df0c, type: 2}
     hasAirVariant: 0
+    hasEmpoweredVariant: 0
   - attack: 5
     attackData: {fileID: 11400000, guid: be94e269e9183e840a9536a046b0df0c, type: 2}
     hasAirVariant: 0
+    hasEmpoweredVariant: 0
   - attack: 7
     attackData: {fileID: 11400000, guid: be94e269e9183e840a9536a046b0df0c, type: 2}
     hasAirVariant: 0
+    hasEmpoweredVariant: 0
   - attack: 6
     attackData: {fileID: 11400000, guid: be94e269e9183e840a9536a046b0df0c, type: 2}
     hasAirVariant: 0
+    hasEmpoweredVariant: 0
   - attack: 1
     attackData: {fileID: 11400000, guid: be94e269e9183e840a9536a046b0df0c, type: 2}
     hasAirVariant: 0
+    hasEmpoweredVariant: 0
   - attack: 2
     attackData: {fileID: 11400000, guid: be94e269e9183e840a9536a046b0df0c, type: 2}
     hasAirVariant: 0
+    hasEmpoweredVariant: 0
   - attack: 3
     attackData: {fileID: 11400000, guid: be94e269e9183e840a9536a046b0df0c, type: 2}
     hasAirVariant: 0
+    hasEmpoweredVariant: 0
   - attack: 14
     attackData: {fileID: 11400000, guid: be94e269e9183e840a9536a046b0df0c, type: 2}
     hasAirVariant: 0
+    hasEmpoweredVariant: 0
   AttackFrameDelay: 0
   W_Neutral_Is_Recovery: 0
   W_Down_Is_Recovery: 0
@@ -687,6 +718,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0c70948fef8b0047aa95727076efea8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hkd: 1
   drifter: {fileID: 5578303729342035337}
 --- !u!114 &7674587741064242540
 MonoBehaviour:
@@ -920,6 +952,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8947606769884354707}
   - component: {fileID: 756852963939903037}
+  - component: {fileID: 1211355236171436157}
   m_Layer: 14
   m_Name: Pushbox
   m_TagString: Pushbox
@@ -951,7 +984,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 7404139115897645622}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: fb13e85e8cd5db74c934ea1d0908ec67, type: 2}
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -968,6 +1001,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.3, y: 0.4}
   m_EdgeRadius: 0
+--- !u!114 &1211355236171436157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7404139115897645622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 374f19dca09ec5243a6e4ad38b855a0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8586563368245397859
 GameObject:
   m_ObjectHideFlags: 0
@@ -1015,7 +1060,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OverrideData: {fileID: 0}
   parent: {fileID: 3106753082241659636}
-  projectilePriority: -2
+  priority: 0
+  projectileStrength: -2
+  cancelable: 1
+  OnHitAnimationState: 
+  isPuppet: 0
+  PuppetOnHitAnimationState: 
+  playOnInvuln: 0
+  playOnBlock: 0
+  entity: {fileID: 0}
   FlagForDestruction: 0
 --- !u!70 &1801323591959772194
 CapsuleCollider2D:

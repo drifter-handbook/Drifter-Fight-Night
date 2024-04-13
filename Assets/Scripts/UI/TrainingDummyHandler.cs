@@ -49,7 +49,8 @@ public class TrainingDummyHandler : MonoBehaviour
 		DASH, 
 		SUPER, 
 		CONTROL, 
-		PLAYBACK 
+		PLAYBACK, 
+		GRAB 
 	}
 
 	public Drifter Dummy;
@@ -339,12 +340,15 @@ public class TrainingDummyHandler : MonoBehaviour
 				BaseAction = DummyAction.SPECIAL;
 				break;
 			case 5:
+				BaseAction = DummyAction.GRAB;
+				break;
+			case 6:
 				BaseAction = DummyAction.CONTROL;
 				clearBuffer();
 				Player.setTrainingDummy(true);
 				//Dummy.setTrainingDummy(false);
 				break;
-			case 6:
+			case 7:
 				BaseAction = DummyAction.PLAYBACK;
 				break;
 			case 0:
@@ -404,6 +408,9 @@ public class TrainingDummyHandler : MonoBehaviour
 				ReactionAction = DummyAction.SUPER;
 				break;
 			case 7:
+				ReactionAction = DummyAction.GRAB;
+				break;
+			case 8:
 				ReactionAction = DummyAction.PLAYBACK;
 				//resetFrames = -1;
 				break;
@@ -505,6 +512,10 @@ public class TrainingDummyHandler : MonoBehaviour
 				break;
 			case DummyAction.SPECIAL:
 				playbackBuffer = new String[]{	"0,0,0,0,1,0,0,0,0:2",
+												"0,0,0,0,0,0,0,0,0:10", null};
+				break;
+			case DummyAction.GRAB:
+				playbackBuffer = new String[]{	"0,0,0,1,1,0,0,0,0:2",
 												"0,0,0,0,0,0,0,0,0:10", null};
 				break;
 			case DummyAction.DASH:

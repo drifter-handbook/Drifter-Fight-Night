@@ -69,8 +69,8 @@ public class PlayerMovement : MonoBehaviour
 
 	[NonSerialized]
 	public bool strongLedgeGrab = true;
-	[NonSerialized]
-	public int accelerationFrames = 6;
+	//[NonSerialized]
+	//public int accelerationFrames = 6;
 	[NonSerialized]
 	public float jumpTimer = 30f;
 
@@ -102,7 +102,7 @@ public class PlayerMovement : MonoBehaviour
 	GameObjectShake shake;
 
 	public GameObject PushBox;
- 	GameObject Pusher;
+ 	//GameObject Pusher;
  	GameObject smoketrail;
 
 
@@ -150,20 +150,7 @@ public class PlayerMovement : MonoBehaviour
 			// }
 		}
 	}
-
-	void OnTriggerStay2D(Collider2D col) {
-		if(col.gameObject.tag == "Pushbox") {
-			Pusher = col.gameObject;
-		}
-	}
-
-	void OnTriggerExit2D(Collider2D col) {
-		if(col.gameObject.tag == "Pushbox") {
-			Pusher = null;
-		}
-	}
-
-
+	
 	public void UpdateFrame() {
 
 		if(SuperCancel != null) SuperCancel.GetComponentInChildren<InstantiatedEntityCleanup>().UpdateFrame();
@@ -183,7 +170,11 @@ public class PlayerMovement : MonoBehaviour
 		}
 
 		//Unpause gravity when hit
-		if(!drifter.status.HasGroundFriction())gravityPaused=false;
+		if(!drifter.status.HasGroundFriction()){
+			gravityPaused= false;
+			dashing= false;
+			jumping = false;
+		}
 
 		//pause attacker during hitpause, and apply hurt animation to defender
 		if(drifter.status.HasStatusEffect(PlayerStatusEffect.HITPAUSE)) {
@@ -234,17 +225,23 @@ public class PlayerMovement : MonoBehaviour
 			jumpTimer += (drifter.status.hasSloMoEffect() ? .4f : 1f);
 
 			//Shorthop
-			if(!drifter.enforceFullDistance && jumpTimer >= 0 && grounded && prevJumpTimer <0 && (!drifter.input[0].Jump || drifter.status.HasStatusEffect(PlayerStatusEffect.END_LAG))) {
-				jumpTimer = fullhopFrames;
-				rb.velocity = new Vector2(rb.velocity.x, jumpSpeed * (drifter.status.hasSloMoEffect() ? .4f : 1f));
-				if(drifter.status.HasStatusEffect(PlayerStatusEffect.END_LAG)) UnityEngine.Debug.Log("JUMP QUEUED A MOVE");
-			}
-			//fullhop
-			else if(jumpTimer >= 0) {
-				rb.velocity = new Vector2(rb.velocity.x, jumpSpeed * (drifter.status.hasSloMoEffect() ? .4f : 1f));
-				if(drifter.status.HasStatusEffect(PlayerStatusEffect.END_LAG)) jumpTimer = fullhopFrames;
-			}
 
+			if(jumpTimer >= 0){
+
+				//Allow player to qucikly change direction with a jump
+				float currentSpeed;
+				if(drifter.input[0].MoveX ==0) currentSpeed = rb.velocity.x;
+				else currentSpeed= calculateSpeedModifiers(grounded?walkSpeed:airSpeed) * Facing;
+
+				rb.velocity = new Vector2(currentSpeed,	jumpSpeed * (drifter.status.hasSloMoEffect() ? .4f : 1f));
+
+				if(!drifter.enforceFullDistance && jumpTimer >= 0 && grounded && prevJumpTimer <0 && (!drifter.input[0].Jump || drifter.status.HasStatusEffect(PlayerStatusEffect.END_LAG))) {
+					jumpTimer = fullhopFrames;
+					if(drifter.status.HasStatusEffect(PlayerStatusEffect.END_LAG)) UnityEngine.Debug.Log("JUMP QUEUED A MOVE");
+				}
+				//fullhop
+				else if(drifter.status.HasStatusEffect(PlayerStatusEffect.END_LAG)) jumpTimer = fullhopFrames;
+			}
 		}
 
 		//Handles jumps
@@ -365,7 +362,7 @@ public class PlayerMovement : MonoBehaviour
 		ContactPoint2D[] contacts = new ContactPoint2D[1];
 		bool groundFrictionPosition = frictionCollider.GetContacts(contacts) >0;
 
-		if(!moving)accelerationFrames = 6;
+		//if(!moving)accelerationFrames = 6;
 		drifter.toggleHidden(drifter.status.HasStatusEffect(PlayerStatusEffect.HIDDEN));
 
 		//Normal walking logic
@@ -375,17 +372,12 @@ public class PlayerMovement : MonoBehaviour
 
 
 			//If just started moving or switched directions
-			if((accelerationFrames == 6 || rb.velocity.x * drifter.input[0].MoveX < 0) && IsGrounded())
-				if(groundFrictionPosition) spawnJuiceParticle(new Vector2(-Facing * 1.5f,0) + contacts[0].point, MovementParticleMode.KickOff);
+			// if((accelerationFrames == 6 || rb.velocity.x * drifter.input[0].MoveX < 0) && IsGrounded())
+			// 	if(groundFrictionPosition) spawnJuiceParticle(new Vector2(-Facing * 1.5f,0) + contacts[0].point, MovementParticleMode.KickOff);
 			
-			
-			if(IsGrounded()) {
-
-				if(!jumping) {
-					//if(drifter.input[0].MoveX !=0 && drifter.input[1].MoveX == 0)
-						drifter.PlayAnimation("Walk", -1, true);
-
-					//Spawn dust clouds as characters walk, every 20 frames
+			if(!jumping) {
+				if(grounded){
+					drifter.PlayAnimation("Walk", -1, true);
 					if(groundFrictionPosition) {
 						if(dustCloudTimer > 15) {
 							spawnJuiceParticle(new Vector2(-Facing * 1.5f,0) + contacts[0].point, MovementParticleMode.WalkDust);
@@ -396,31 +388,13 @@ public class PlayerMovement : MonoBehaviour
 					}
 
 				}
-				if(accelerationFrames < groundAccelerationTime) accelerationFrames ++;
-				else accelerationFrames = (int)groundAccelerationTime;
-
-				currentSpeed = walkSpeed * ((drifter.status.hasSloMoEffect() || Pusher!=null) ? .4f: 1f) * (drifter.status.HasStatusEffect(PlayerStatusEffect.SPEEDUP) ? 1.5f: 1f) * (drifter.input[0].MoveX > 0 ? 1 : -1);
-
-				rb.velocity = new Vector2(Mathf.Lerp(rb.velocity.x,currentSpeed,accelerationFrames/groundAccelerationTime), rb.velocity.y);
-
+				else drifter.PlayAnimation("Hang");
 			}
-			else {
-				if(!jumping)
-					drifter.PlayAnimation("Hang");
 
-				if(accelerationFrames < airAccelerationTime) accelerationFrames ++;
-				else accelerationFrames = (int)airAccelerationTime;
+			currentSpeed = calculateSpeedModifiers(grounded?walkSpeed:airSpeed);
 
-				currentSpeed = airSpeed * ((drifter.status.hasSloMoEffect() || Pusher!=null) ? .4f: 1f) * (drifter.status.HasStatusEffect(PlayerStatusEffect.SPEEDUP) ? 1.5f: 1f) * (drifter.input[0].MoveX > 0 ? 1 : -1);
-
-				rb.velocity = new Vector2(Mathf.Lerp(rb.velocity.x,currentSpeed,accelerationFrames/airAccelerationTime), rb.velocity.y);
-			}
+			rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x,(drifter.input[0].MoveX > 0 ? 1 : -1) * currentSpeed,currentSpeed/(grounded ? groundAccelerationTime : airAccelerationTime)), rb.velocity.y);
 		}
-
-		//Character """collision"""
-		if(Pusher!=null && hasCollision) 
-			rb.AddForce(new Vector2(
-				-1 * Mathf.Sign(Pusher.transform.position.x-PushBox.transform.position.x) * Mathf.Clamp(1/Mathf.Abs(Pusher.transform.position.x-PushBox.transform.position.x),2f,5f), 0), ForceMode2D.Impulse);
 
 		//Guard
 		if(drifter.input[0].Guard && canGuard) {
@@ -431,12 +405,7 @@ public class PlayerMovement : MonoBehaviour
 	  
 		//Disable Guarding
 		else if(!drifter.input[0].Guard && !drifter.status.HasStunEffect() && drifter.guarding) {
-			//drifter.status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,18);
-			//drifter.canSpecialCancelFlag = true;
-			//drifter.listenForSpecialCancel = true;
 			drifter.returnToIdle();
-			//drifter.parrying = true;
-			//drifter.PlayAnimation("Guard_Drop");
 		}
 
 		//Ledgegrabs Stuff
@@ -536,16 +505,17 @@ public class PlayerMovement : MonoBehaviour
 	//Moves the character left or right, based on the speed provided
 	public void move(float speed, bool flipDirection = true) {
 
-		if(accelerationFrames < airAccelerationTime) accelerationFrames ++;
-		else accelerationFrames = (int)airAccelerationTime;
-
 		if(flipDirection)updateFacing();
 
 		if(drifter.input[0].MoveX != 0) {
-			currentSpeed = speed * (drifter.status.hasSloMoEffect() ? .4f: 1f) * (drifter.status.HasStatusEffect(PlayerStatusEffect.SPEEDUP) ? 1.5f: 1f) * (drifter.input[0].MoveX > 0 ? 1 : -1);
-			rb.velocity = new Vector2(Mathf.Lerp(rb.velocity.x,currentSpeed,accelerationFrames/airAccelerationTime), rb.velocity.y);
+			currentSpeed = calculateSpeedModifiers(speed);
+			rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x,currentSpeed * (drifter.input[0].MoveX > 0 ? 1 : -1),currentSpeed/airAccelerationTime), rb.velocity.y);
 		}
 		
+	}
+
+	public float calculateSpeedModifiers(float speed){
+		return  speed * ((drifter.status.hasSloMoEffect()) ? .4f: 1f) * (drifter.status.HasStatusEffect(PlayerStatusEffect.SPEEDUP) ? 1.5f: 1f);
 	}
 	
 
@@ -562,7 +532,7 @@ public class PlayerMovement : MonoBehaviour
 	//Updates the direction the player is facing
 	public void updateFacing() {
 
-		if(Facing != drifter.input[0].MoveX)accelerationFrames = 6;
+		//if(Facing != drifter.input[0].MoveX)accelerationFrames = 6;
 
 		if(drifter.input[0].MoveX > 0) Facing = 1;
 		else if(drifter.input[0].MoveX < 0) Facing = -1;
@@ -716,7 +686,7 @@ public class PlayerMovement : MonoBehaviour
 	public bool dash(bool enforceFullDistance = false) {
 		if(currentDashes > 0 && !dashing) {
 			updateFacing();
-			accelerationFrames = 120;
+			//accelerationFrames = 120;
 			dashing = true;
 			spawnJuiceParticle(BodyCollider.bounds.center + new Vector3(Facing * 1.5f,0), MovementParticleMode.Dash_Ring, Quaternion.Euler(0f,0f,0f), false);
 			drifter.status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,480);
@@ -855,7 +825,7 @@ public class PlayerMovement : MonoBehaviour
 		bw.Write(delayedFacingFlip);
 
 		//Int
-		bw.Write(accelerationFrames);
+		//bw.Write(accelerationFrames);
 		bw.Write(dropThroughTime);
 		bw.Write(Facing);
 		bw.Write(currentJumps);
@@ -896,7 +866,7 @@ public class PlayerMovement : MonoBehaviour
 		delayedFacingFlip = br.ReadBoolean();
 
 		//Int
-		accelerationFrames = br.ReadInt32();
+		//accelerationFrames = br.ReadInt32();
 		dropThroughTime = br.ReadInt32();
 		Facing = br.ReadInt32();
 		currentJumps = br.ReadInt32();
