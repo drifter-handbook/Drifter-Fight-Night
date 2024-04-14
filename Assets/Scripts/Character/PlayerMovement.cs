@@ -164,6 +164,7 @@ public class PlayerMovement : MonoBehaviour
 		bool hasCollision = !drifter.status.HasEnemyStunEffect() && !ledgeHanging && !passThrough;
 		//Only collide with other players when not using a move or hanging on a ledge
 		Pushbox.gameObject.layer = (hasCollision ? 14:17);
+		Pushbox.hasCollision = !moving;
 
 		if(ledgeGrabLockout > 0){
 			ledgeGrabLockout --;
@@ -377,8 +378,6 @@ public class PlayerMovement : MonoBehaviour
 		if (moving && canAct && !ledgeHanging) {
 
 			updateFacing();
-
-
 			//If just started moving or switched directions
 			// if((accelerationFrames == 6 || rb.velocity.x * drifter.input[0].MoveX < 0) && IsGrounded())
 			// 	if(groundFrictionPosition) spawnJuiceParticle(new Vector2(-Facing * 1.5f,0) + contacts[0].point, MovementParticleMode.KickOff);
@@ -392,15 +391,12 @@ public class PlayerMovement : MonoBehaviour
 							dustCloudTimer = 0;
 						}
 						else dustCloudTimer ++;
-						
 					}
-
 				}
 				else drifter.PlayAnimation("Hang");
 			}
 
 			currentSpeed = calculateSpeedModifiers(grounded?walkSpeed:airSpeed);
-
 			rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x,(drifter.input[0].MoveX > 0 ? 1 : -1) * currentSpeed,currentSpeed/(grounded ? groundAccelerationTime : airAccelerationTime)), rb.velocity.y);
 		}
 

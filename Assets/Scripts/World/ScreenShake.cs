@@ -40,11 +40,11 @@ public class ScreenShake : MonoBehaviour
 		//Get cneterpoint once per frame to save on performance.
 		Vector3 centerpoint = CalculateCenter();
 
-		transform.localPosition = Vector3.Lerp(centerpoint,transform.localPosition,Time.deltaTime/1.5f);
+		transform.localPosition = Vector3.MoveTowards(centerpoint,transform.localPosition,.1f);
 		for(int i = 0; i < paralaxLayers.Count; i++)	{
 			//If the paralax layer at index i exists, adjust its position accordingly
 			if(paralaxLayers[i] != null)
-				paralaxLayers[i].transform.localPosition = Vector3.Lerp(centerpoint/(7.5f-1.5f*i),transform.localPosition,Time.deltaTime/1.5f);
+				paralaxLayers[i].transform.localPosition = Vector3.MoveTowards(centerpoint/(7.5f-1.5f*i),transform.localPosition,.1f);
 		}
 		
 
@@ -134,7 +134,7 @@ public class ScreenShake : MonoBehaviour
 
 		}
 
-		return Mathf.Lerp(self.orthographicSize,Mathf.Clamp(scaledZoom *1.7f,15f,30f),Time.deltaTime * 3f);
+		return Mathf.MoveTowards(self.orthographicSize,Mathf.Clamp(scaledZoom *1.7f,15f,30f),.3f);
 	}
 
 	public void zoomEffect(int p_duration, Vector3 p_position, bool p_finalKill) {

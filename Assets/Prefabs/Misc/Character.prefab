@@ -535,7 +535,7 @@ MonoBehaviour:
   walkSpeed: 25
   terminalVelocity: 80
   ledgeHanging: 0
-  Pushbox: {fileID: 1211355236171436157}
+  Pushbox: {fileID: 1655594555056146389}
 --- !u!114 &9142496942411782138
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -924,8 +924,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8947606769884354707}
-  - component: {fileID: 1211355236171436157}
   - component: {fileID: 7114329275640745229}
+  - component: {fileID: 1655594555056146389}
   m_Layer: 14
   m_Name: Pushbox
   m_TagString: Pushbox
@@ -948,19 +948,6 @@ Transform:
   m_Father: {fileID: 3106753082241659643}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1211355236171436157
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7404139115897645622}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 374f19dca09ec5243a6e4ad38b855a0d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hasCollision: 1
 --- !u!60 &7114329275640745229
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -992,6 +979,19 @@ PolygonCollider2D:
       - {x: -3, y: -9}
       - {x: 0, y: -14}
       - {x: 3, y: -9}
+--- !u!114 &1655594555056146389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7404139115897645622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 374f19dca09ec5243a6e4ad38b855a0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hasCollision: 1
 --- !u!1 &8586563368245397859
 GameObject:
   m_ObjectHideFlags: 0
