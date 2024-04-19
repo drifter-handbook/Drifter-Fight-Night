@@ -8,14 +8,14 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
 {
 
 	protected bool takesKnockback = true;
-	public float maxPercentage = 30f;
-	public float _percentage = 0f;
-	public float percentage {
+	public int maxPercentage = 300;
+	public int _percentage = 0;
+	public int percentage {
 		get{ return _percentage;}
 		set {
 			if(_percentage != value) {
 				_percentage = value;
-				healthBar?.updateHealthbar((maxPercentage - _percentage) / maxPercentage);
+				healthBar?.updateHealthbar((maxPercentage - _percentage) / (float)maxPercentage);
 			}
 		}
 	}
@@ -179,8 +179,8 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
 		bw.Write(HitstunDuration);
 		bw.Write(HitPauseDuration);
 		bw.Write(facing);
-
 		bw.Write(percentage);
+		
 		bw.Write(delayedVelocity.x);
 		bw.Write(delayedVelocity.y);
 
@@ -196,8 +196,8 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
 		HitstunDuration = br.ReadInt32();
 		HitPauseDuration = br.ReadInt32();
 		facing = br.ReadInt32();
-
-		percentage  = br.ReadSingle();
+		percentage  = br.ReadInt32();
+		
 		delayedVelocity.x = br.ReadSingle();
 		delayedVelocity.y = br.ReadSingle();
 

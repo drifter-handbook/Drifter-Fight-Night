@@ -23,7 +23,7 @@ public class SingleAttackData : ScriptableObject
     #if UNITY_EDITOR
     [Help("All times are in frames. One game frame is .08333 seconds, or 12 frames/second.", UnityEditor.MessageType.Info)]
     #endif
-    [HideInInspector] public float AttackDamage = 10.0f;
+    [HideInInspector] public int AttackDamage = 100;
     [HideInInspector] public float Knockback = 10.0f;
     [HideInInspector] public float KnockbackScale = .5f;
     [HideInInspector] public float pushBlock = 0f;
@@ -88,7 +88,7 @@ public class SingleAttackData : ScriptableObject
                 EditorGUILayout.LabelField("Hit Data", title);
                 EditorGUILayout.Space();
                 
-                    data.AttackDamage = EditorGUILayout.FloatField("Damage", data.AttackDamage);
+                    data.AttackDamage = EditorGUILayout.IntField("Damage", data.AttackDamage);
                     EditorGUILayout.BeginHorizontal();
                         EditorGUILayout.LabelField("Knockback", GUILayout.MaxWidth(70));
                         data.Knockback = EditorGUILayout.FloatField(data.Knockback, GUILayout.MaxWidth(50));

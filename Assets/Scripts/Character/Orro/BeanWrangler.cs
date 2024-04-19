@@ -74,7 +74,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
 				facing = targetState.Facing;
 				if(!alive) {
 					//Heal bean if he is dead
-					if(percentage > 0) percentage -= .06f;
+					if(percentage > 0) percentage -= 6;
 					if(percentage <= 0)	{
 						percentage = 0;
 						alive = true;
@@ -99,7 +99,7 @@ public class BeanWrangler : NonplayerHurtboxHandler
 				//Bean follows more closely while attatched to not get left behind
 				else {
 					//Tick down beans damage when he is attatched to orro
-					if(percentage > 0) percentage -=.02f;
+					if(percentage > 0) percentage -= 2;
 					//Follow Logic
 					rb.position =  Vector2.Lerp(rb.position,targetState.Pos, .25f * beanMovementDelay / 100f);
 					transform.localScale = new Vector2(targetState.Facing * Mathf.Abs(transform.localScale.x),

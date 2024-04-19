@@ -105,7 +105,9 @@ public class Drifter : MonoBehaviour
 	public AttackHitType lastHitType = AttackHitType.NONE;
 
 	public int Stocks;
-	public float DamageTaken;
+	[NonSerialized]
+	public int MaxDamage = 2600;
+	public int DamageTaken;
 	public int inspirationCharges = 3;
 	
 	private int overrideIndex = 0; 
@@ -137,7 +139,7 @@ public class Drifter : MonoBehaviour
 	public void Awake(){
 		masterhit = GetComponentInChildren<MasterHit>();
 		Stocks = !GameController.Instance.IsTraining ? 4:9999;
-		DamageTaken = 0f;
+		DamageTaken = 0;
 
 		if(animOverrides != null && animOverrides.Length > 0)animOverrides[0] = new AnimatorOverrideController(animator.runtimeAnimatorController);
 	}
@@ -213,11 +215,12 @@ public class Drifter : MonoBehaviour
 	public void die(){
 		if(status.isDead()) return;
 		Stocks--;
-		DamageTaken = 0f;
+		DamageTaken = 0;
 		superCharge = 200;
+		transform.position = new Vector2(0f, 150f);
 		status.ApplyStatusEffect(PlayerStatusEffect.DEAD, 120);
 		//status.ApplyStatusEffect(PlayerStatusEffect.INVULN, 420);
-		transform.position = new Vector2(0f, 150f);
+		
 	}
 
 	//Replaces the animator state transition function
@@ -448,10 +451,11 @@ public class Drifter : MonoBehaviour
 		bw.Write(inspirationCharges);
 		bw.Write(Stocks);
 		bw.Write(superCharge);
+		bw.Write(DamageTaken);
 
 		//Floats
 		bw.Write(animator.speed);
-		bw.Write(DamageTaken);
+		
 
 		//Children
 		entity.Serialize(bw);
@@ -486,11 +490,11 @@ public class Drifter : MonoBehaviour
 		inspirationCharges = br.ReadInt32();
 		Stocks = br.ReadInt32();
 		superCharge = br.ReadInt32();
+		DamageTaken = br.ReadInt32();
 
 		//Floats
 		animator.speed = br.ReadSingle();
-		DamageTaken = br.ReadSingle();
-
+		
 		//Children
 		entity.Deserialize(br);
 		status.Deserialize(br);

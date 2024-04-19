@@ -71,7 +71,7 @@ public class PlayerCardArtHolder : MonoBehaviour
         //For each drifter, update their card
         for (int i = 0; i < drifters.Length; i++)
         {
-            playerCards[i].setPercent(drifters[i].DamageTaken);
+            playerCards[i].setPercent(drifters[i].DamageTaken,drifters[i].MaxDamage);
               
             if (drifters[i] != null)
             {

@@ -163,7 +163,7 @@ public class PlayerStatus : MonoBehaviour {
 					if(statusDataMap[i].decrementStatus)statusDataMap[i].duration--;
 
 					//Damage player if they are on fire
-					if(i == (int)PlayerStatusEffect.BURNING) drifter.DamageTaken += Time.fixedDeltaTime;
+					if(i == (int)PlayerStatusEffect.BURNING) drifter.DamageTaken += 1;
 
 					//Respawn when not dead
 					if(i == (int)PlayerStatusEffect.DEAD && !HasStatusEffect(PlayerStatusEffect.DEAD)) Respawn();
@@ -325,7 +325,6 @@ public class PlayerStatus : MonoBehaviour {
 	public void clearAllStatus() {
 		for(int i = 0; i < statusDataMap.Length; i++)
 			statusDataMap[i].duration = 0;
-
 		grabbingHitboxName = "";
 		grabbingEntity = "";
 		drifter.SetAnimationSpeed(1f);
@@ -430,6 +429,8 @@ public class PlayerStatus : MonoBehaviour {
 	void ApplyStatusEffectFor(PlayerStatusEffect ef, int duration) {
 
 		PlayerStatusData data = statusDataMap[(int)ef];
+
+		if(HasStatusEffect(PlayerStatusEffect.DEAD) || HasStatusEffect(PlayerStatusEffect.BANISHED)) return;
 
 		// //If duration is 0, always clear the status
 		if(duration <= 0 && HasStatusEffect(ef)) {

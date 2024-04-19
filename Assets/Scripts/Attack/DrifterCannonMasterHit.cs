@@ -40,7 +40,7 @@ public class DrifterCannonMasterHit : MasterHit {
 			unpauseGravity();
 		}
 
-		if(listeningForDirection) {
+		if(listeningForDirection && !status.HasStatusEffect(PlayerStatusEffect.HITPAUSE)) {
 			movement.updateFacing();
 			movement.move(10f);
 			rb.velocity = new Vector2(rb.velocity.x,(drifter.input[0].MoveY >0?Mathf.Lerp(20f,rb.velocity.y,.45f):rb.velocity.y));

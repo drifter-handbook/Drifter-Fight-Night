@@ -140,7 +140,7 @@ public class PlayerHurtboxHandler : MonoBehaviour {
 				Drifter attacker = hitbox.parent?.GetComponent<Drifter>();
 				PlayerStatus attackerStatus = attacker?.status;
 
-				float damageDealt = 0f;
+				int damageDealt = 0;
 
 				oldAttacks[attackID] = MAX_ATTACK_DURATION;
 
@@ -151,7 +151,7 @@ public class PlayerHurtboxHandler : MonoBehaviour {
 				Vector2 hitSparkPos = hurtbox.capsule.ClosestPoint(hitbox.parent.transform.position);
 
 			//Freezefame if hit a counter
-				if(hurtbox.gameObject.name == "Counter" &&  attackData.AttackDamage >0f && attackData.hitType!=HitType.GRAB) {
+				if(hurtbox.gameObject.name == "Counter" &&  attackData.AttackDamage > 0 && attackData.hitType!=HitType.GRAB) {
 					Shake?.Darken(25);
 					GraphicalEffectManager.Instance.CreateHitSparks(HitSpark.STAR, hitSparkPos,0, new Vector2(10f, 10f));
 					attackerStatus?.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,30);
@@ -162,25 +162,33 @@ public class PlayerHurtboxHandler : MonoBehaviour {
 
 
 				bool crossUp = (hitbox.parent.transform.localPosition.x > transform.localPosition.x  && drifter.movement.Facing < 0) 
-				|| (hitbox.parent.transform.localPosition.x < transform.localPosition.x  && drifter.movement.Facing > 0 && attackData.AttackDamage > 0f);
+				|| (hitbox.parent.transform.localPosition.x < transform.localPosition.x  && drifter.movement.Facing > 0 && attackData.AttackDamage > 0);
 
 			// apply damage
 				if (drifter != null && status != null) {
 					damageDealt = 
 					//Base Damage + flat damage increases
-					(attackData.AttackDamage + (status.HasStatusEffect(PlayerStatusEffect.DEFENSEDOWN) &&  attackData.AttackDamage >0 ? 1.7f : 0f))
+					(attackData.AttackDamage + (status.HasStatusEffect(PlayerStatusEffect.DEFENSEDOWN) &&  attackData.AttackDamage >0 ? 17 : 0))
 
 					//Blocking damage Reduction
 					//0 chip damage on perfect guard
-					* ((drifter.guarding && attackData.hitType!=HitType.GRAB && !crossUp) ?  .2f : 1f)
+					/ ((drifter.guarding && attackData.hitType!=HitType.GRAB && !crossUp) ?  5 : 1)
 
 					//Defense Buff damage reduction
-					* (status.HasStatusEffect(PlayerStatusEffect.DEFENSEUP) ? 0.7f:1f);
+					/ (status.HasStatusEffect(PlayerStatusEffect.DEFENSEUP) ? 2:1);
 
 					//Attacker damage buff)
 					//  * (attackerStatus.HasStatusEffect(PlayerStatusEffect.DAMAGEUP)?1.5f:1f);
 
-					drifter.DamageTaken += damageDealt;
+
+					//Only chip kill at exactly 1 hp
+					if(drifter.guarding && attackData.hitType!=HitType.GRAB && !crossUp && (drifter.DamageTaken < (drifter.MaxDamage - 1)) && (drifter.DamageTaken + damageDealt > drifter.MaxDamage))
+						drifter.DamageTaken = drifter.MaxDamage - 1;
+					else
+						drifter.DamageTaken += damageDealt;
+
+					//Only kill if the hit dealt damage and isnt a grab
+					if(drifter.DamageTaken >= drifter.MaxDamage && damageDealt > 0 && attackData.StatusEffect != PlayerStatusEffect.GRABBED)drifter.die();
 
 				}
 
@@ -462,13 +470,13 @@ public class PlayerHurtboxHandler : MonoBehaviour {
 		//return returnCode;
 	}
 
-	protected IEnumerator delayHitsparks(AttackFXSystem attackFX, Vector3 position, float angle,float damage, float p_duration)	{
+	protected IEnumerator delayHitsparks(AttackFXSystem attackFX, Vector3 position, float angle,int damage, float p_duration)	{
 		float duration = p_duration/60f;
 		Vector3 hitSparkPos = position;
 		float angleT;
-		float stepSize = duration / ((damage + 2 )/3);
+		float stepSize = duration / ((damage/10 + 2 )/3);
 		
-		for (int i = 0; i < (damage + 2 )/3 ; i++) {
+		for (int i = 0; i < (damage/10 + 2 )/3 ; i++) {
 			angleT = angle + UnityEngine.Random.Range(-45, 45);
 			hitSparkPos += Quaternion.Euler(0, 0, angleT) * new Vector3(-UnityEngine.Random.Range(1, 4), 0, 0);
 			GraphicalEffectManager.Instance.CreateHitSparks(attackFX.GetSpark(), position, angleT, new Vector2(10f, 10f));
@@ -484,19 +492,19 @@ public class PlayerHurtboxHandler : MonoBehaviour {
 		yield break;
 	}
 
-	protected float GetKnockBack(float damageTaken, float weight, bool strong, SingleAttackData attackData) {
+	protected float GetKnockBack(int damageTaken, float weight, bool strong, SingleAttackData attackData) {
 		
-		float effectiveDamage = damageTaken;
+		float effectiveDamage = damageTaken/10f;
 		float effectiveCeiling = attackData.scalingUpperBound;
 
 		//Sets the effective ceiling if both bounds are used.
 		if(attackData.scalingUpperBound >= 0 &&  attackData.scalingLowerBound >= 0) effectiveCeiling = (attackData.scalingUpperBound - attackData.scalingLowerBound);
 
 		//If the drifter is below the damage floor, no scaling. If there is a floor and they are above it, subtract the floor from their damage and use that
-		if(attackData.scalingLowerBound >= 0 && damageTaken < attackData.scalingLowerBound) effectiveDamage = Mathf.Max(0,damageTaken - attackData.scalingLowerBound);
+		if(attackData.scalingLowerBound >= 0 && effectiveDamage < attackData.scalingLowerBound) effectiveDamage = Mathf.Max(0,effectiveDamage - attackData.scalingLowerBound);
 
 		//if there is a ceiling, and the drifter is above that, set their effective damage to the ceiling, minus the floor, if there is one.
-		if(attackData.scalingUpperBound >= 0 && damageTaken > attackData.scalingUpperBound) effectiveDamage = effectiveCeiling;
+		if(attackData.scalingUpperBound >= 0 && effectiveDamage > attackData.scalingUpperBound) effectiveDamage = effectiveCeiling;
 
 
 		return (float)(((effectiveDamage * 125f) / (weight + 100f) *

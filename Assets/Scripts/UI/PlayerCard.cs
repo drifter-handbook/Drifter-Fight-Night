@@ -12,8 +12,8 @@ public class PlayerCard : MonoBehaviour
 	int currInsp = 0;
 	public int drifterIndex;
 
-	public GameObject TopObject;
-	public GameObject BottomObject;
+	public Image HealthBar;
+	//public GameObject BottomObject;
 
 	// public Sprite[] portraits_no_Charge;
 	// public Sprite[] portraits_with_Charge;
@@ -30,25 +30,25 @@ public class PlayerCard : MonoBehaviour
 	public GameObject stockHolder;
 	public GameObject statusHolder;
 
-	Text TopText;
-	Text BottomText;
+	//Text TopText;
+	//Text BottomText;
 
-	GameObjectShake TopShake;
-	GameObjectShake BottomShake;
+	//GameObjectShake TopShake;
+	//GameObjectShake BottomShake;
 
 	int mycolor; 
-	float previousPercent = 0f;
+	int previousPercent = 0;
 
 	const int MAX_STOCKS = 4;
 
 
 	void Awake() {
 
-		TopShake = TopObject.GetComponent<GameObjectShake>();
-		TopText = TopObject.GetComponent<Text>();
+		//TopShake = TopObject.GetComponent<GameObjectShake>();
+		//TopText = TopObject.GetComponent<Text>();
 
-		BottomShake = BottomObject.GetComponent<GameObjectShake>();
-		BottomText = BottomObject.GetComponent<Text>();
+		//BottomShake = BottomObject.GetComponent<GameObjectShake>();
+		//BottomText = BottomObject.GetComponent<Text>();
 
 		meterPipAnimators = new Animator[meterPips.Length];
 		for(int i = 0; i < meterPips.Length; i++)
@@ -161,21 +161,40 @@ public class PlayerCard : MonoBehaviour
 		}
 	}
 
-	public void setPercent(float sentPercent) {
-		if(previousPercent  < sentPercent) {
-			TopShake.Shake(18,(sentPercent - previousPercent)/2f);
-			BottomShake.Shake(18,(sentPercent - previousPercent)/2f);
-		}
+	public void setPercent(int sentPercent, int maxPercent) {
+		// if(previousPercent  < sentPercent) {
+		// 	TopShake.Shake(18,(sentPercent - previousPercent)/2f);
+		// 	BottomShake.Shake(18,(sentPercent - previousPercent)/2f);
+		// }
 		previousPercent = sentPercent;
 
-		float greenVal = Mathf.Max((120f - sentPercent)/120f,0);
-		float blueVal = Mathf.Max((50f - sentPercent)/50f,0);
-		float redVal = Mathf.Max((500f - sentPercent)/500f,.8f);
+		// float greenVal = Mathf.Max((120f - (sentPercent/10f))/120f,0);
+		// float blueVal = Mathf.Max((50f - (sentPercent/10f))/50f,0);
+		// float redVal = Mathf.Max((500f - (sentPercent/10f))/500f,.8f);
 
-		this.BottomText.text = sentPercent.ToString("0.0")+"%";
+		Color color;
 
-		this.TopText.color = new Color(redVal,greenVal,blueVal,1);
-		this.TopText.text = sentPercent.ToString("0.0")+"%";
+		if(sentPercent < 400)
+			color = new Color(151/256f,226/256f,256/256f,1);
+		else if(sentPercent < 800)
+			color = new Color(131/256f,226/256f,106/256f,1);
+		else if(sentPercent < 1200)
+			color = new Color(256/256f,226/256f,66/256f,1);
+		else if(sentPercent < 1600)
+			color = new Color(256/256f,156/256f,66/256f,1);
+		else if(sentPercent < 2400)
+			color = new Color(196/256f,46/256f,76/256f,1);
+		else
+			color = new Color(126/256f,26/256f,76/256f,1);
+
+		HealthBar.color = color;
+
+		HealthBar.fillAmount = (maxPercent - sentPercent)/(float)maxPercent;
+
+		// this.BottomText.text = sentPercent.ToString("0.0")+"%";
+
+		// this.TopText.color = new Color(redVal,greenVal,blueVal,1);
+		// this.TopText.text = sentPercent.ToString("0.0")+"%";
 	}
 
 }

@@ -59,7 +59,7 @@ public class TrainingUIManager : MonoBehaviour
 
             FrameDisplayText.text = text;
             ComboDisplayText.text = combo.ToString("00");
-            DamageDisplayText.text = comboDamage.ToString("0.0");
+            DamageDisplayText.text = comboDamage.ToString("00");
 
             if(!attacker.HasStunEffect() && !defender.HasStunEffect())
                 monitoringFrameAdvantage = false;
