@@ -102,6 +102,8 @@ public class Drifter : MonoBehaviour
 	[NonSerialized]
 	public bool enforceFullDistance = false;
 	[NonSerialized]
+	public bool AirCrippled = false;
+	[NonSerialized]
 	public AttackHitType lastHitType = AttackHitType.NONE;
 
 	public int Stocks;
@@ -263,6 +265,7 @@ public class Drifter : MonoBehaviour
 		movement.jumping = false;
 		movement.dashing = false;
 		movement.canFastFall = true;
+		AirCrippled = false;
 		SetUsingSuper(false);
 		canFeint = true;
 		clearGuardFlags();

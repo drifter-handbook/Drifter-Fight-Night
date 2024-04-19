@@ -22,8 +22,9 @@ public class PlayerMovement : MonoBehaviour
 	public float dashSpeed = 35f;
 	// public float delayedJumpDuration = 0.05f;
 	
-	public float groundAccelerationTime = 36f;
-	public float airAccelerationTime = 48f;
+	public int groundAccelerationTime = 36;
+	public int crippledAirAccelerationTime = 48;
+	public int airAccelerationTime = 24;
 	public float airSpeed = 15f;
 	public float jumpHeight = 20f;
 	public float jumpTime = 1f;
@@ -293,6 +294,7 @@ public class PlayerMovement : MonoBehaviour
 		//come out of hitstun logic
 		if(hitstun && !drifter.status.HasEnemyStunEffect()) {
 			drifter.returnToIdle();
+			drifter.AirCrippled = true;
 			drifter.knockedDown = false;
 			ringTime = 6;
 		}
@@ -396,8 +398,13 @@ public class PlayerMovement : MonoBehaviour
 				else drifter.PlayAnimation("Hang");
 			}
 
+			int accelrationQuotient;
+			if(grounded) accelrationQuotient = groundAccelerationTime;
+			else if(drifter.AirCrippled) accelrationQuotient = crippledAirAccelerationTime;
+			else accelrationQuotient = airAccelerationTime;
+
 			currentSpeed = calculateSpeedModifiers(grounded?walkSpeed:airSpeed);
-			rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x,(drifter.input[0].MoveX > 0 ? 1 : -1) * currentSpeed,currentSpeed/(grounded ? groundAccelerationTime : airAccelerationTime)), rb.velocity.y);
+			rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x,(drifter.input[0].MoveX > 0 ? 1 : -1) * currentSpeed,currentSpeed/accelrationQuotient), rb.velocity.y);
 		}
 
 		//Guard
