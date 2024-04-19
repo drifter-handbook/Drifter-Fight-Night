@@ -175,17 +175,17 @@ public class PlayerCard : MonoBehaviour
 		Color color;
 
 		if(sentPercent < 400)
-			color = new Color(151/256f,226/256f,256/256f,1);
+			color = new Color(151/256f,226/256f,256/256f,.6f);
 		else if(sentPercent < 800)
-			color = new Color(131/256f,226/256f,106/256f,1);
+			color = new Color(131/256f,226/256f,106/256f,.6f);
 		else if(sentPercent < 1200)
-			color = new Color(256/256f,226/256f,66/256f,1);
+			color = new Color(256/256f,226/256f,66/256f,.6f);
 		else if(sentPercent < 1600)
-			color = new Color(256/256f,156/256f,66/256f,1);
+			color = new Color(256/256f,156/256f,66/256f,.6f);
 		else if(sentPercent < 2400)
-			color = new Color(196/256f,46/256f,76/256f,1);
+			color = new Color(196/256f,46/256f,76/256f,.6f);
 		else
-			color = new Color(126/256f,26/256f,76/256f,1);
+			color = new Color(126/256f,26/256f,76/256f,.6f);
 
 		HealthBar.color = color;
 
