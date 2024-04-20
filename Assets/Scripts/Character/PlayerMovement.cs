@@ -237,7 +237,7 @@ public class PlayerMovement : MonoBehaviour
 				//Allow player to qucikly change direction with a jump
 				float currentSpeed;
 				if(drifter.input[0].MoveX ==0 || jumpTimer > 0) currentSpeed = rb.velocity.x;
-				else currentSpeed= calculateSpeedModifiers(grounded?WalkSpeed:airSpeed) * Facing;
+				else currentSpeed= calculateSpeedModifiers(grounded?walkSpeed:airSpeed) * Facing;
 
 				rb.velocity = new Vector2(currentSpeed,	jumpSpeed * (drifter.status.hasSloMoEffect() ? .4f : 1f));
 
