@@ -28,7 +28,7 @@ public class PlayerMovement : MonoBehaviour
 	public float airSpeed = 15f;
 	public float jumpHeight = 20f;
 	public float jumpTime = 1f;
-	public int Weight = 90;
+	//public int Weight = 90;
 	public float ledgeOffset = 1f;
 	public float ledgeClimbOffset = 0f;
 	public Vector3 particleOffset =  Vector3.zero;

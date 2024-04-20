@@ -209,9 +209,8 @@ public class PlayerHurtboxHandler : MonoBehaviour {
 				adjustedAngle:
 				Quaternion.Euler(0, 0, angle) * Vector2.right;
 
-
 			//Calculate knockback magnitude
-				float KB = GetKnockBack(drifter.DamageTaken, drifter.movement.Weight, 
+				float KB = GetKnockBack(drifter.DamageTaken,
 					(status.HasStatusEffect(PlayerStatusEffect.EXPOSED)),
 					attackData);
 
@@ -492,7 +491,7 @@ public class PlayerHurtboxHandler : MonoBehaviour {
 		yield break;
 	}
 
-	protected float GetKnockBack(int damageTaken, float weight, bool strong, SingleAttackData attackData) {
+	protected float GetKnockBack(int damageTaken, bool strong, SingleAttackData attackData) {
 		
 		float effectiveDamage = damageTaken/10f;
 		float effectiveCeiling = attackData.scalingUpperBound;
@@ -507,7 +506,11 @@ public class PlayerHurtboxHandler : MonoBehaviour {
 		if(attackData.scalingUpperBound >= 0 && effectiveDamage > attackData.scalingUpperBound) effectiveDamage = effectiveCeiling;
 
 
-		return (float)(((effectiveDamage * 125f) / (weight + 100f) *
+		effectiveDamage = ((int)effectiveDamage / 40 ) * 40;
+		UnityEngine.Debug.Log("Used percentage of: " +  effectiveDamage);
+
+
+		return (float)(((effectiveDamage * 125f) / 180f *
 			(strong?1.5f:1)) * attackData.KnockbackScale + attackData.Knockback);
 	}
 

@@ -121,7 +121,7 @@ public class NonplayerHurtboxHandler : PlayerHurtboxHandler
 
 
 			//Calculate knockback magnitude
-			float KB = GetKnockBack(percentage, 80, false, attackData);
+			float KB = GetKnockBack(percentage, false, attackData);
 
 			//Calculate hitstun duration
 			HitstunDuration = GetHitStun(null, attackData);

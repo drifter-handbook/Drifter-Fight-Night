@@ -446,6 +446,7 @@ public class Drifter : MonoBehaviour
 		bw.Write(listenForSpecialCancel);
 		bw.Write(sparkleMode);
 		bw.Write(usingSuper);
+		bw.Write(AirCrippled);
 
 		//Ints
 		bw.Write(overrideIndex);
@@ -485,6 +486,7 @@ public class Drifter : MonoBehaviour
 		listenForSpecialCancel = br.ReadBoolean();
 		sparkleMode = br.ReadBoolean();
 		usingSuper = br.ReadBoolean();
+		AirCrippled = br.ReadBoolean();
 
 		//Ints
 		overrideIndex = br.ReadInt32();
