@@ -34,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
 	public Vector3 particleOffset =  Vector3.zero;
 	public float fullhopFrames = 10f;
 	public float walkSpeed = 15f;
-	
+	float currentWalkSpeed;
 
 	//Calculated character properties
 	protected float jumpSpeed;
@@ -127,7 +127,8 @@ public class PlayerMovement : MonoBehaviour
 		baseTerminalVelocity = terminalVelocity;
 
 		baseGravity = rb.gravityScale;
-		jumpSpeed = (jumpHeight / jumpTime + .5f*(rb.gravityScale * jumpTime));		
+		jumpSpeed = (jumpHeight / jumpTime + .5f*(rb.gravityScale * jumpTime));
+		currentWalkSpeed = walkSpeed;		
 	}
 
 	//Restitution
