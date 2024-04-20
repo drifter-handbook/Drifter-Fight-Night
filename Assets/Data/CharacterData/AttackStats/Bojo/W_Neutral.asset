@@ -19,7 +19,7 @@ MonoBehaviour:
   dynamicStun: 0
   firstActiveFrame: 0
   finalFrame: 0
-  HitStun: 15
+  HitStun: 30
   ShieldStun: 5
   HitStop: 15
   hitType: 0
@@ -32,4 +32,4 @@ MonoBehaviour:
   canHitAerial: 1
   canHitKnockedDown: 0
   scalingLowerBound: -1
-  scalingUpperBound: -1
+  scalingUpperBound: 25
