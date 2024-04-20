@@ -115,7 +115,7 @@ public class InstantiatedEntityCleanup : MonoBehaviour{
 		if(pauseBehavior) {
 			if(animator !=null) animator.enabled = true;
 			if(rb != null && dataSaved) {
-				//UnityEngine.Debug.Log(savedVelocity + " : " + gameObject);
+				UnityEngine.Debug.Log(savedVelocity + " : " + gameObject);
 				rb.velocity = savedVelocity;
 				rb.gravityScale = savedGravity;
 				savedVelocity = Vector2.zero;

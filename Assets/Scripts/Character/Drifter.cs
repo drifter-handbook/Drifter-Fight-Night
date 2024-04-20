@@ -260,7 +260,7 @@ public class Drifter : MonoBehaviour
 
 	//Return to idle is called anytime the player regains control
 	public void returnToIdle() {
-		//if(isTrainingDummy()) UnityEngine.Debug.Log("DRIFTER: RETURNING TO IDLE");
+		if(isTrainingDummy()) UnityEngine.Debug.Log("DRIFTER: RETURNING TO IDLE");
 		movement.canLandingCancel = false;
 		movement.jumping = false;
 		movement.dashing = false;

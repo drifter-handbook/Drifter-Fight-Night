@@ -150,7 +150,7 @@ public class PlayerStatus : MonoBehaviour {
 		
 		//Hitpause pauses all other statuses for its duration
 		if(HasStatusEffect(PlayerStatusEffect.HITPAUSE) || HasStatusEffect(PlayerStatusEffect.GRABBED)) {
-			statusDataMap[(int)PlayerStatusEffect.HITPAUSE].duration--;
+			statusDataMap[(int)PlayerStatusEffect.HITPAUSE].duration -= 10;
 			if(!HasStatusEffect(PlayerStatusEffect.HITPAUSE) && !hasSloMoEffect()) {
 				if(delayedVelocity != Vector2.zero)drifter.movement.rb.velocity = delayedVelocity;
 			}
@@ -160,7 +160,9 @@ public class PlayerStatus : MonoBehaviour {
 			for(int i = 0; i < statusDataMap.Length; i++) {
 			//for(int i = 0; i < statusDataMap.Length; i++) {
 				if(HasStatusEffect(i))	{
-					if(statusDataMap[i].decrementStatus)statusDataMap[i].duration--;
+
+					if((i == (int)PlayerStatusEffect.SLOWMOTION || i == (int)PlayerStatusEffect.SUPER_SLOWMOTION)) statusDataMap[i].duration -= 10;
+					else if(statusDataMap[i].decrementStatus)statusDataMap[i].duration -= (hasSloMoEffect()?4:10);
 
 					//Damage player if they are on fire
 					if(i == (int)PlayerStatusEffect.BURNING) drifter.DamageTaken += 1;
@@ -176,7 +178,7 @@ public class PlayerStatus : MonoBehaviour {
 						
 					//Re-apply the saved velocity if the player just lost cringe
 						
-					if((i == (int)PlayerStatusEffect.SLOWMOTION || i == (int)PlayerStatusEffect.SUPER_SLOWMOTION) &&HasEnemyStunEffect())drifter.movement.rb.velocity = delayedVelocity * .2f;
+					if((i == (int)PlayerStatusEffect.SLOWMOTION || i == (int)PlayerStatusEffect.SUPER_SLOWMOTION) && HasEnemyStunEffect() && !HasStatusEffect(PlayerStatusEffect.KNOCKDOWN))drifter.movement.rb.velocity = delayedVelocity * .2f;
 
 					if(i == (int)PlayerStatusEffect.FLATTEN) {
 
@@ -358,22 +360,23 @@ public class PlayerStatus : MonoBehaviour {
 
 	//Gets the remaining duration for a given stats effect
 	public int remainingDuration(PlayerStatusEffect ef) {
-		return statusDataMap[(int)ef].duration;
+		return statusDataMap[(int)ef].duration/10;
 	}
 
 	//Reduces hitstun duration when restituted
 	public void bounce() {
 		if(HasStatusEffect(PlayerStatusEffect.KNOCKBACK)){
-			statusDataMap[(int)PlayerStatusEffect.KNOCKBACK].duration = (int)(statusDataMap[(int)PlayerStatusEffect.KNOCKBACK].duration * .8f);
+			statusDataMap[(int)PlayerStatusEffect.KNOCKBACK].duration = (int)(statusDataMap[(int)PlayerStatusEffect.KNOCKBACK].duration * .08f);
 		}
 	}
 
 	public void AddStatusDuration(PlayerStatusEffect ef, int duration, int cap = -1){
+		int adjustedDuration = duration /10;
 		if(HasStatusEffect(ef)) {
-			if( cap <= 0 || (statusDataMap[(int)ef].duration + duration) <= cap)
-				statusDataMap[(int)ef].duration += duration;
+			if( cap <= 0 || (statusDataMap[(int)ef].duration/10 + duration) <= cap)
+				statusDataMap[(int)ef].duration += duration * 10;
 			else
-				statusDataMap[(int)ef].duration = cap;
+				statusDataMap[(int)ef].duration = cap * 10;
 		}
 	}
 
@@ -447,7 +450,7 @@ public class PlayerStatus : MonoBehaviour {
 		//Ignores hitstun if in superarmour or invuln
 		if(ef == PlayerStatusEffect.DEAD || ef == PlayerStatusEffect.BANISHED){
 			clearAllStatus();
-			data.duration = duration;
+			data.duration = duration * 10;
 			return;
 		}
 
@@ -460,7 +463,7 @@ public class PlayerStatus : MonoBehaviour {
 		//TODO See if this is necessary when plants are reintroduced
 		if((data.isStun && !data.isSelfInflicted && HasStatusEffect(ef)) && ef != PlayerStatusEffect.KNOCKBACK  && ef != PlayerStatusEffect.KNOCKDOWN || (HasStatusEffect(PlayerStatusEffect.PLANTED) && (ef == PlayerStatusEffect.GRABBED))){
 			
-			statusDataMap[(int)PlayerStatusEffect.KNOCKBACK].duration = 30;
+			statusDataMap[(int)PlayerStatusEffect.KNOCKBACK].duration = 300;
 			clearRemoveOnHitStatus();
 			return;
 		}
@@ -469,15 +472,20 @@ public class PlayerStatus : MonoBehaviour {
 		if((ef == PlayerStatusEffect.KNOCKBACK || data.isStun && !data.isSelfInflicted) && duration >0)clearRemoveOnHitStatus();        
 		
 		//save delayed velocity
-		if((ef == PlayerStatusEffect.HITPAUSE || ef == PlayerStatusEffect.CRINGE || ef == PlayerStatusEffect.GRABBED || hasSloMoEffect() || (ef == PlayerStatusEffect.KNOCKBACK &&  hasSloMoEffect())) && drifter.movement.rb.velocity != Vector2.zero) delayedVelocity = drifter.movement.rb.velocity;
+		if(duration != 0 && (ef == PlayerStatusEffect.HITPAUSE || ef == PlayerStatusEffect.CRINGE || ef == PlayerStatusEffect.GRABBED || hasSloMoEffect() || (ef == PlayerStatusEffect.KNOCKBACK &&  hasSloMoEffect())) && drifter.movement.rb.velocity != Vector2.zero) {
+			//if(drifter.entity.dataSaved) delayedVelocity = drifter.entity.savedVelocity;
+			delayedVelocity = drifter.movement.rb.velocity;
+		}
 
 		//Slow down animation speed in slowmo
-		if(ef == PlayerStatusEffect.SLOWMOTION || ef == PlayerStatusEffect.SUPER_SLOWMOTION)
+		if(ef == PlayerStatusEffect.SLOWMOTION || ef == PlayerStatusEffect.SUPER_SLOWMOTION){
 			drifter.SetAnimationSpeed(.4f);
+			drifter.movement.setSlowMoPhysics();
+		}
 
 		if(data.isStun && !data.isSelfInflicted) isInCombo = true;
 
-		data.duration = duration;
+		data.duration = duration * 10;
 
 	}
 

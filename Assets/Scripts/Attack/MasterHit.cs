@@ -90,7 +90,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 					playState("Knockdown");
 					status.ApplyStatusEffect(PlayerStatusEffect.FLATTEN,status.hkd?90:10);
 					status.hkd = true;
-					rb.velocity = new Vector2(movement.Facing * -10f * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f),rb.velocity.y);
+					rb.velocity = new Vector2(movement.Facing * -10f ,rb.velocity.y);
 					BounceParticle();
 					playQueuedState();
 					clearMasterhitVars();

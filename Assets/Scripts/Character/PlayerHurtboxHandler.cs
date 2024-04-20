@@ -244,7 +244,7 @@ public class PlayerHurtboxHandler : MonoBehaviour {
 				}
 				else if (status != null && (attackData.hitType==HitType.GRAB || !drifter.guarding || crossUp) ){
 
-					drifter.knockedDown = false;
+					//drifter.knockedDown = false;
 				//drifter.clearGuardFlags();
 
 					if((attackData.hitType==HitType.GRAB || crossUp) && drifter.guarding && attackData.AttackDamage >0f) {

@@ -797,6 +797,11 @@ public class PlayerMovement : MonoBehaviour
 		rb.gravityScale = baseGravity;
 	}
 
+	public void setSlowMoPhysics() {
+		terminalVelocity = baseTerminalVelocity *.4f;
+		rb.gravityScale = baseGravity * .4f;
+	}
+
 	private void spawnSuperParticle(CancelType mode,int cost,int darkentime) {
 		if(SuperCancel != null)
 			Destroy(SuperCancel.gameObject);
