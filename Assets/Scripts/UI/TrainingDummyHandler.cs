@@ -541,8 +541,9 @@ public class TrainingDummyHandler : MonoBehaviour
 				playbackBuffer = new String[]{	"0,0,0,0,0,0,1,0,0:90", null};
 				break;
 			case DummyAction.JUMP:
-				playbackBuffer = new String[]{	"0,0,1,0,0,0,0,0,0:10",
-												"0,0,0,0,0,0,0,0,0:20", null};
+				playbackBuffer = new String[]{	"0,0,0,0,0,0,0,0,0:1",
+												"0,0,1,0,0,0,0,0,0:2",
+												"0,0,0,0,0,0,0,0,0:30", null};
 				break;
 			case DummyAction.LIGHT:
 				playbackBuffer = new String[]{	"0,0,0,1,0,0,0,0,0:2",
