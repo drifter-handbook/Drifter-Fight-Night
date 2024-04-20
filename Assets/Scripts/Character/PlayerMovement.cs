@@ -34,7 +34,8 @@ public class PlayerMovement : MonoBehaviour
 	public Vector3 particleOffset =  Vector3.zero;
 	public float fullhopFrames = 10f;
 	public float walkSpeed = 15f;
-	float currentWalkSpeed;
+	[NonSerialized]
+	public float currentWalkSpeed;
 
 	//Calculated character properties
 	protected float jumpSpeed;
@@ -236,7 +237,7 @@ public class PlayerMovement : MonoBehaviour
 				//Allow player to qucikly change direction with a jump
 				float currentSpeed;
 				if(drifter.input[0].MoveX ==0 || jumpTimer > 0) currentSpeed = rb.velocity.x;
-				else currentSpeed= calculateSpeedModifiers(grounded?walkSpeed:airSpeed) * Facing;
+				else currentSpeed= calculateSpeedModifiers(grounded?WalkSpeed:airSpeed) * Facing;
 
 				rb.velocity = new Vector2(currentSpeed,	jumpSpeed * (drifter.status.hasSloMoEffect() ? .4f : 1f));
 
@@ -404,7 +405,7 @@ public class PlayerMovement : MonoBehaviour
 			else if(drifter.AirCrippled) accelrationQuotient = crippledAirAccelerationTime;
 			else accelrationQuotient = airAccelerationTime;
 
-			currentSpeed = calculateSpeedModifiers(grounded?walkSpeed:airSpeed);
+			currentSpeed = calculateSpeedModifiers(grounded?currentWalkSpeed:airSpeed);
 			rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x,(drifter.input[0].MoveX > 0 ? 1 : -1) * currentSpeed,currentSpeed/accelrationQuotient), rb.velocity.y);
 		}
 
@@ -846,6 +847,7 @@ public class PlayerMovement : MonoBehaviour
 		bw.Write(currentDashes);
 		bw.Write(ledgeGrabLockout);
 		bw.Write((int)cancelType);
+		bw.Write(currentWalkSpeed);
 
 		//Float
 		bw.Write(terminalVelocity);
@@ -887,6 +889,7 @@ public class PlayerMovement : MonoBehaviour
 		currentDashes = br.ReadInt32();
 		ledgeGrabLockout = br.ReadInt32();
 		cancelType = (CancelType)br.ReadInt32();
+		currentWalkSpeed = br.ReadInt32();
 
 		//Float
 		terminalVelocity = br.ReadSingle();

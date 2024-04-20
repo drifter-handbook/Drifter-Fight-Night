@@ -445,7 +445,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
 	//Dynamically adjust walk speed to match walk cycle animations
 	public void walkCycleSpeedSync(float speed) {
-		movement.walkSpeed = speed;
+		movement.currentWalkSpeed = speed;
 	}
 
 	public void returnToIdle() {
