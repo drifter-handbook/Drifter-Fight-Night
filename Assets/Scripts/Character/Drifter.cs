@@ -516,7 +516,7 @@ public class Drifter : MonoBehaviour
 		if(GameController.Instance.IsPaused)
 			return;
 
-		if(cancelTimer >0) {
+		if(cancelTimer >0 && !status.HasStatusEffect(PlayerStatusEffect.HITPAUSE)) {
 			cancelTimer--;
 			if(cancelTimer <=0) {
 				cancelTimer = 0;
