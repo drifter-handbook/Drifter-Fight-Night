@@ -447,7 +447,7 @@ public class PlayerHurtboxHandler : MonoBehaviour {
 					attacker?.gainSuperMeter(4);
 					break;
 					case AttackHitType.HIT:
-					attacker?.gainSuperMeter((int)damageDealt * 2);
+					attacker?.gainSuperMeter(damageDealt / 5);
 					drifter.gainSuperMeter(5);
 					break;
 					case AttackHitType.BLOCK:
