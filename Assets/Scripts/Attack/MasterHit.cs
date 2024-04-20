@@ -113,9 +113,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 			playQueuedState();
 			clearMasterhitVars();
 		}
-		else if(dacusCancelFlag && attacks.grabPressed())
-		 {
-			status.ApplyStatusEffect(PlayerStatusEffect.INVULN,0);
+		else if(dacusCancelFlag && attacks.grabPressed()) {
 			unpauseGravity();
 			setXVelocity(movement.dashSpeed);
 			movement.updateFacing();
@@ -123,9 +121,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 			clearMasterhitVars();
 
 		}
-		else if(dacusCancelFlag && attacks.specialPressed())
-		 {
-			status.ApplyStatusEffect(PlayerStatusEffect.INVULN,0);
+		else if(dacusCancelFlag && attacks.specialPressed()) {
 			unpauseGravity();
 			setXVelocity(movement.dashSpeed);
 			movement.updateFacing();
@@ -134,7 +130,6 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 
 		}
 		else if(dacusCancelFlag && attacks.lightPressed()) {
-			status.ApplyStatusEffect(PlayerStatusEffect.INVULN,0);
 			unpauseGravity();
 			setXVelocity(movement.dashSpeed);
 			movement.updateFacing();

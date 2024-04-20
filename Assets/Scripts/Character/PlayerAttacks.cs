@@ -275,6 +275,7 @@ public class PlayerAttacks : MonoBehaviour {
 		//drifter.status.ApplyStatusEffect(PlayerStatusEffect.HITPAUSE,0);
 		drifter.gainSuperMeter(5);
 		drifter.movement.jumping = false;
+		drifter.movement.dashing = false;
 		drifter.status?.ApplyStatusEffect(PlayerStatusEffect.END_LAG,480);
 
 		string animationState = AnimatorStates[attackType];

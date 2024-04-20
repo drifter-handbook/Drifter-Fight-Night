@@ -100,13 +100,13 @@ public class PlayerHurtboxHandler : MonoBehaviour {
 			//Whiff ground only moves on aerial opponenets
 			(!attackData.canHitAerial && !drifter.movement.grounded) ||
 			//Whiff grabs and command grabs on jumping opponents
-			((drifter.movement.dashing || status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN)) && attackData.hitType == HitType.GRAB ) || 
+			((drifter.movement.jumping || status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN)) && attackData.hitType == HitType.GRAB ) || 
 			//Whiff non-OTG moves on otg opponents
 			(!attackData.canHitKnockedDown && status.HasStatusEffect(PlayerStatusEffect.FLATTEN)) ||
 			//Wait until superfreeze is done to register non-super attack hits	
 			(drifter.entity.paused && attackData.hitType != HitType.BURST) ||
 			//Whiff hits on dashing opponents
-			//(drifter.movement.dashing && attackData.hitType == HitType.NORMAL ) || 
+			(drifter.movement.dashing && attackData.hitType == HitType.NORMAL) || 
 			//Ignore attack hit if invuln
 			status.HasStatusEffect(PlayerStatusEffect.INVULN) ||
 			status.HasStatusEffect(PlayerStatusEffect.DEAD) ||

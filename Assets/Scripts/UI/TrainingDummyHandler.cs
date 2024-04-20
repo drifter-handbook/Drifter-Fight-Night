@@ -61,6 +61,7 @@ public class TrainingDummyHandler : MonoBehaviour
 	public Dropdown s_Dropdown;
 	public Dropdown b_Dropdown;
 	public Dropdown g_Dropdown;
+	public Dropdown h_Dropdown;
 
 	public GameObject inputList;
 	public Sprite[] images;
@@ -82,6 +83,8 @@ public class TrainingDummyHandler : MonoBehaviour
 	bool emptyMeter = false;
 	bool meterReset = false;
 	int meterResetFrames = 0;
+
+	int fixedHealth = -1;
 
 	//Record & Playback
 	bool recording;
@@ -131,6 +134,10 @@ public class TrainingDummyHandler : MonoBehaviour
 		g_Dropdown.onValueChanged.AddListener(delegate {
 			GamespeedDropdownValueChanged(g_Dropdown);
 		});
+
+		h_Dropdown.onValueChanged.AddListener(delegate {
+			DummyHPValueChanged(h_Dropdown);
+		});
 	}
 
 	public void FixedUpdate(){
@@ -161,6 +168,9 @@ public class TrainingDummyHandler : MonoBehaviour
 				Player.inspirationCharges = 3;
 			}
 		}
+
+		if(fixedHealth > 0 )
+			Dummy.DamageTaken = fixedHealth;
 
 		if(meterReset && Dummy.status.HasEnemyStunEffect())
 			meterResetFrames = 200;
@@ -459,6 +469,34 @@ public class TrainingDummyHandler : MonoBehaviour
 			case 0:
 			default:
 				GameController.Instance.GameSpeed = 1f;
+				break;
+		};
+	}
+
+	void DummyHPValueChanged(Dropdown change) {
+		switch(change.value)
+		{
+			case 1:
+				fixedHealth = 0;
+				break;
+			case 2:
+				fixedHealth = 400;
+				break;
+			case 3:
+				fixedHealth = 800;
+				break;
+			case 4:
+				fixedHealth = 1200;
+				break;
+			case 5:
+				fixedHealth = 1600;
+				break;
+			case 6:
+				fixedHealth = 2000;
+				break;
+			case 0:
+			default:
+				fixedHealth = 0;
 				break;
 		};
 	}

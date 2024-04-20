@@ -108,7 +108,7 @@ public class Drifter : MonoBehaviour
 
 	public int Stocks;
 	[NonSerialized]
-	public int MaxDamage = 2600;
+	public int MaxDamage = 2400;
 	public int DamageTaken;
 	public int inspirationCharges = 3;
 	

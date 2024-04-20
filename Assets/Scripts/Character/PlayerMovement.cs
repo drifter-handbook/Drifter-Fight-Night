@@ -706,7 +706,7 @@ public class PlayerMovement : MonoBehaviour
 			spawnJuiceParticle(pushBoxCollider.bounds.center + new Vector3(Facing * 1.5f,0), MovementParticleMode.Dash_Ring, Quaternion.Euler(0f,0f,0f), false);
 			drifter.status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,480);
 			drifter.PlayAnimation("Dash");
-			drifter.status.ApplyStatusEffect(PlayerStatusEffect.INVULN,10);
+			//drifter.status.ApplyStatusEffect(PlayerStatusEffect.INVULN,10);
 			jumping = false;
 			if(IsGrounded() && enforceFullDistance) {
 				UnityEngine.Debug.Log("FULL DASH DISTANCE ENFORCED");
