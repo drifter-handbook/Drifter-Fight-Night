@@ -507,8 +507,7 @@ public class PlayerHurtboxHandler : MonoBehaviour {
 
 
 		effectiveDamage = ((int)effectiveDamage / 40 ) * 40;
-		UnityEngine.Debug.Log("Used percentage of: " +  effectiveDamage);
-
+		//UnityEngine.Debug.Log("Used percentage of: " +  effectiveDamage);
 
 		return (float)(((effectiveDamage * 125f) / 180f *
 			(strong?1.5f:1)) * attackData.KnockbackScale + attackData.Knockback);

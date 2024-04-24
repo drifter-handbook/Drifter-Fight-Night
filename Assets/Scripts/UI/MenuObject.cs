@@ -7,7 +7,7 @@ public class MenuObject : MonoBehaviour
 
 	//Character Matrix
     GameObject[][] characterRows = new GameObject[3][];
-    MatchmakingUI matchMaker;
+    //MatchmakingUI matchMaker;
 
     public GameObject[] Local;
     public GameObject[] Online;
@@ -26,7 +26,7 @@ public class MenuObject : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-    	matchMaker = GetComponent<MatchmakingUI>();
+    	//matchMaker = GetComponent<MatchmakingUI>();
     }
 
     // Update is called once per frame

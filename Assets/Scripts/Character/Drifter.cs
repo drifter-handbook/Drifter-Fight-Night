@@ -13,7 +13,7 @@ public enum DrifterType {
 	Bojo,
 	Swordfrog,
 	Lady_Parhelion,
-	Spacejam,
+	Marmalade,
 	Orro,
 	Ryyke,
 	Megurin,
@@ -259,8 +259,8 @@ public class Drifter : MonoBehaviour
 	}
 
 	//Return to idle is called anytime the player regains control
-	public void returnToIdle() {
-		if(isTrainingDummy()) UnityEngine.Debug.Log("DRIFTER: RETURNING TO IDLE");
+	public void returnToIdle(bool SetAnimation = true) {
+		//if(isTrainingDummy()) UnityEngine.Debug.Log("DRIFTER: RETURNING TO IDLE");
 		movement.canLandingCancel = false;
 		movement.jumping = false;
 		movement.dashing = false;
@@ -269,10 +269,6 @@ public class Drifter : MonoBehaviour
 		SetUsingSuper(false);
 		canFeint = true;
 		clearGuardFlags();
-		if(movement.grounded && input[0].MoveX !=0)PlayAnimation("Walk");
-		else if(movement.grounded)PlayAnimation("Idle");
-		else if(movement.ledgeHanging)PlayAnimation("Ledge_Grab");
-		else PlayAnimation("Hang");
 		status.returnToIdle();
 		movement.resetTerminalVelocity();
 		movement.passThrough = false;
@@ -284,13 +280,19 @@ public class Drifter : MonoBehaviour
 		lastHitType = AttackHitType.NONE;
 		if(transform.position.z != -1) transform.position = new Vector3(transform.position.x,transform.position.y,-1);
 		masterhit.clearMasterhitVars();
-
-		if(input[0].Guard && !movement.ledgeHanging) {
-			guarding = true;
-			masterhit.listenForActiveCancel();
-			PlayAnimation(movement.hitstun?"Guard":"Guard_Start");
-		}
 		movement.hitstun = false;
+
+		if(SetAnimation){
+			if(input[0].Guard && !movement.ledgeHanging) {
+				guarding = true;
+				masterhit.listenForActiveCancel();
+				PlayAnimation(movement.hitstun?"Guard":"Guard_Start");
+			}
+			else if(movement.grounded && input[0].MoveX !=0)PlayAnimation("Walk");
+			else if(movement.grounded)PlayAnimation("Idle");
+			else if(movement.ledgeHanging)PlayAnimation("Ledge_Grab");
+			else PlayAnimation("Hang");
+		}
 	}
 
 	public void guard(){

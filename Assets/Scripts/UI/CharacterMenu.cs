@@ -139,10 +139,19 @@ public class CharacterMenu : MonoBehaviour {
 	public void initializeCharacterSelect() {
 
 		if(charSelStates == null){
-			UnityEngine.Debug.Log("RESET");
+			
 			charSelStates = new CharacterSelectState[10];
-			GameController.Instance.Peers =  new List<int>();
-			GameController.Instance.removeAllUIPeers();
+			if(GameController.Instance.IsOnline){
+				UnityEngine.Debug.Log("BUILD CCS");
+				foreach(int peer in GameController.Instance.Peers)
+					AddCharSelState(peer,DrifterType.None);
+			}
+			else{
+				UnityEngine.Debug.Log("RESET");
+				GameController.Instance.Peers = new List<int>();
+				GameController.Instance.removeAllUIPeers();
+			}
+			
 		}  
 		else{
 			for(int i = 0 ;i < charSelStates.Length; i++)
@@ -150,7 +159,7 @@ public class CharacterMenu : MonoBehaviour {
 					ConfigureCharSelState(charSelStates[i].PeerID,charSelStates[i].PlayerType);
 		}
 
-		GameController.Instance.EnableJoining();
+		if(!GameController.Instance. IsOnline) GameController.Instance.EnableJoining();
 	}
 
 	public void setCharacterSelectPhase(CharacterMenuState p_phase){
@@ -195,7 +204,7 @@ public class CharacterMenu : MonoBehaviour {
 
 		ConfigureCharSelState(peerID,drifter);
 
-		GameController.Instance.Peers.Add(peerID);
+		//GameController.Instance.Peers.Add(peerID);
 	}
 
 	public void RemoveCharSelState(int peerID) {
@@ -259,7 +268,7 @@ public class CharacterMenu : MonoBehaviour {
 					break;
 				}
 			case CharacterMenuState.TransitionToStageSelect: {
-					GameController.Instance.DisableJoining();
+					if(!GameController.Instance. IsOnline)GameController.Instance.DisableJoining();
 					gameObject.transform.position = new Vector2(0, 18);
 					foreach (CharacterSelectState charSelState in charSelStates) {
 						if(charSelState == null) continue;
@@ -276,7 +285,7 @@ public class CharacterMenu : MonoBehaviour {
 				}
 			case CharacterMenuState.TransitionToCharSelectFromStageSelect: {
 					gameObject.transform.position = Vector2.zero;
-					GameController.Instance.EnableJoining();
+					if(!GameController.Instance. IsOnline) GameController.Instance.EnableJoining();
 					foreach (CharacterSelectState charSelState in charSelStates) {
 						if(charSelState == null) continue;
 						int[] arr = findDrifterMatrixPosition(charSelState.PlayerType);

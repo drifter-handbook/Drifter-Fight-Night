@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1559094768925924024}
   - component: {fileID: 1559094768925924025}
+  - component: {fileID: 3731016707689138338}
+  - component: {fileID: 5939842730743818789}
   m_Layer: 0
   m_Name: PlayerInput
   m_TagString: Untagged
@@ -26,7 +28,8 @@ Transform:
   m_GameObject: {fileID: 1559094768925924026}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.355033, y: 2.6949348, z: -1.2117392}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 10, y: 10, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -106,7 +109,39 @@ MonoBehaviour:
     m_ActionId: 1b7a1d5e-3592-4e45-ac52-fceb73134524
     m_ActionName: PlayerKeyboard/Grab
   m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: Gamepad
+  m_DefaultControlScheme: Keyboard
   m_DefaultActionMap: Controls
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &3731016707689138338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1559094768925924026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e7fe52f823f70341a8a86bfec27d072, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+--- !u!114 &5939842730743818789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1559094768925924026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  _assetId: 4256907868
+  serverOnly: 0
+  visibility: 0
+  hasSpawned: 0

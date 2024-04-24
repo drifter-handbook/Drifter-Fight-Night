@@ -147,9 +147,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 		else if(activeCancelFlag && !drifter.guarding && drifter.input[0].Guard && !drifter.input[1].Guard) {
 			MovementCancelParticle();
 			status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0);
-			status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0);
-			clearMasterhitVars();
-			resetTerminalVelocity();
+			drifter.returnToIdle(false);
 			playState("Guard");
 			drifter.guarding = true;
 			movement.jumping = false;
@@ -160,10 +158,8 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 			if(movement.jump(true)){
 				MovementCancelParticle();
 				status.ApplyStatusEffect(PlayerStatusEffect.ARMOUR,0);
-				status.ApplyStatusEffect(PlayerStatusEffect.END_LAG,0);
-				clearMasterhitVars();
-				resetTerminalVelocity();
-				drifter.clearGuardFlags();
+				drifter.returnToIdle(false);
+				movement.jumping = true;
 				unpauseGravity();
 			}
 			
@@ -448,7 +444,6 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 			UnityEngine.Debug.Log("RTI BLOCKED FOR: " + drifter.gameObject);
 			return;
 		}
-		movement.jumping = false;
 		unpauseGravity();
 		//status.clearVelocity();
 		movement.terminalVelocity = movement.baseTerminalVelocity * (status.HasStatusEffect(PlayerStatusEffect.SLOWMOTION) ? .4f : 1f);

@@ -25,8 +25,8 @@ public class EscapeMenu : UIMenuManager {
                     GameController.Instance.toggleInputSystem(true);
                     InputSystemUIInputModule uiInputModule = GameObject.Find("EventSystem")?.GetComponent<InputSystemUIInputModule>();
                     //Only the player who pressed pause gets menu privs
-                    activePlayerInput = GameController.Instance.controls[i];
-                    uiInputModule.actionsAsset = GameController.Instance.controls[i].actions;
+                    activePlayerInput = GameController.Instance.controls[i].inputObject;
+                    uiInputModule.actionsAsset = GameController.Instance.controls[i].inputObject.actions;
                     TogglePauseMenuPanel();
                     return;
                 }

@@ -13,8 +13,8 @@ using UnityEngine.InputSystem;
 using GameAnalyticsSDK;
 using UnityEngine.EventSystems;
 using System.IO;
-
-
+using SharedGame;
+using Mirror;
 
 public enum ControlGroup
 {
@@ -39,7 +39,8 @@ public class GameController : MonoBehaviour
 		MENU,
 		CHARACTER_SELECT,
 		COMBAT,
-		ENDSCREEN
+		ENDSCREEN,
+		LOBBY
 	}
 
 	public float[] volume = { -1f, -1f, -1f };
@@ -48,8 +49,9 @@ public class GameController : MonoBehaviour
 	[Header("Check box if hosting")]
 
 	public bool IsTraining;
+	public bool IsOnline = false;
 	public BattleStage selectedStage;
-	public GameState gameState = GameState.CHARACTER_SELECT; 
+	public GameState gameState = GameState.MENU; 
 
 	bool clearingPeers = false;
 
@@ -85,15 +87,24 @@ public class GameController : MonoBehaviour
 	
 	[NonSerialized]
 	public PlayerInputManager inputManager;
+
 	public static GameController Instance { get; private set; }
 
-	public Dictionary<int,PlayerInput> controls = new Dictionary<int,PlayerInput>();
+	public Dictionary<int,NetworkControls> controls = new Dictionary<int,NetworkControls>();
+
+	public List<Connections> connections;
 
 	public List<GameObject> NetworkTypePrefabs = new List<GameObject>();
 
 	public List<int> Peers = new List<int>();
 
 	public DFNGameManager GGPO;
+
+	public SteamManager steamManager;
+
+	public NetworkManager networkManager;
+	public UIEffectsManager uiEffectsManager;
+
 
 	void Awake() {
 		if (Instance != null && Instance != this)
@@ -108,14 +119,22 @@ public class GameController : MonoBehaviour
 
 	void Start() {
 		aggregatePrefabs("Assets/Resources/");
-		inputManager.EnableJoining();
+		inputManager.DisableJoining();
+		gameState = GameState.MENU;
+
+		SceneManager.sceneLoaded += OnSceneLoaded;
 	}
+
+    // called second
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode){
+        uiEffectsManager.WipeIn();
+    }
 
 	//-------------------------------------------------------------
 	// START OF USER MANAGEMENT
 	//-------------------------------------------------------------
 
-	public void addUser(PlayerInput playerInput) {
+	public int addUser(NetworkControls playerInput) {
 		UnityEngine.Debug.Log("ADD PEER");
 		int peerID = 0;
 		while (controls.ContainsKey(peerID))
@@ -124,21 +143,25 @@ public class GameController : MonoBehaviour
 		controls.Add(peerID, playerInput);
 
 		if (FindObjectOfType<MainMenuScreensManager>() == null && FindObjectOfType<EndScreenManager>() == null)	{
-			playerInput.SwitchCurrentActionMap("Controls");
+			playerInput.inputObject.SwitchCurrentActionMap("Controls");
 			controlGroup = ControlGroup.Controls;
 			FindObjectOfType<CharacterMenu>()?.AddCharSelState(peerID);
 		}
 
 		else {
 			controlGroup = ControlGroup.UI;
-			playerInput.SwitchCurrentActionMap("UI");
+			playerInput.inputObject.SwitchCurrentActionMap("UI");
 		}
 		
 
 		if(IsTraining) FindObjectOfType<CharacterMenu>()?.AddCharSelState(9,DrifterType.Sandbag);
 
-		playerInput.ActivateInput();
+		playerInput.inputObject.ActivateInput();
 		DontDestroyOnLoad(playerInput);
+
+		Peers.Add(peerID);
+
+		return peerID;
 	}
 
 	public void removeUserByPeer(int peerID) {
@@ -147,7 +170,7 @@ public class GameController : MonoBehaviour
 			return;
 		}
 		
-		controls[peerID].DeactivateInput();
+		controls[peerID].inputObject.DeactivateInput();
 		//inputManager.Un
 		Destroy(controls[peerID].gameObject);
 		controls.Remove(peerID);
@@ -172,7 +195,7 @@ public class GameController : MonoBehaviour
 
 	public void removeAllUIPeers() {
 		foreach (int peer in controls.Keys) {
-			controls[peer].DeactivateInput();
+			controls[peer].inputObject.DeactivateInput();
 			Destroy(controls[peer].gameObject);
 			controls.Remove(peer);
 			Peers.Remove(peer);
@@ -197,8 +220,56 @@ public class GameController : MonoBehaviour
 	//-------------------------------------------------------------
 
 	//Begin a GGPO Local Game
-	public void StartGGPO() {
-		GGPO.StartLocalGame();
+	void StartGGPO() {
+		if(!IsOnline)
+			GGPO.StartLocalGame();
+		else{
+			int peerId = 0;
+			connections = new List<Connections>();
+			foreach(NetworkControls con in controls.Values){
+				if(con.isLocalPlayer)
+					peerId = con.peerId;
+				else
+					connections.Add(con.connection);
+			}
+			GGPO.StartGGPOGame(null,connections,peerId);
+		}
+	}
+
+	public void StartGame(int mode = 0){
+		if(IsOnline && Peers.Count <2) UnityEngine.Debug.Log("NOT ENOUGH PEERS TO START ONLINE GAME");
+        
+        else{
+        	IsTraining = (mode == 2);
+        	GoToCharacterSelect();
+        	StartGGPO();
+        }
+	}
+
+	public void StartHost(){
+		IsOnline = true;
+		steamManager.Host();
+	}
+
+	public void StartClient(){
+		IsOnline = true;
+		//networkManager.StartClient();
+	}
+
+	public void StopHost(){
+		IsOnline = false;
+		networkManager.StopHost();
+	}
+
+	public void StopClient(){
+		IsOnline = false;
+		//networkManager.StopClient();
+	}
+
+	int GetOwnPeer(){
+		
+		UnityEngine.Debug.Log("Could not find own peer");
+		return 0;
 	}
 
 	//End a GGPO Game
@@ -229,8 +300,9 @@ public class GameController : MonoBehaviour
 
 	//Move to Character Select from the main menu or Endgame
 	public void GoToCharacterSelect(){
+		uiEffectsManager.WipeOut();
 		UnityEngine.Debug.Log("LOAD CHARACTER SELECT");
-		removeAllPeers();
+		if(!IsOnline)removeAllPeers();
 		gameState = GameState.CHARACTER_SELECT;
 		SceneManager.LoadScene("Character_Select_Rework");
 	}
@@ -242,14 +314,16 @@ public class GameController : MonoBehaviour
 		StopGGPO();
 		gameState = GameState.MENU;
 		CharacterMenu.Instance?.ResetCharacterSelect();
-		EnableJoining();
+		DisableJoining();
+		if(IsOnline) StopHost();
+		IsOnline = false;
 		SceneManager.LoadScene("MenuScene");
 	}
 
 	public void toggleInputSystem(bool ui) {
 		controlGroup = (ui ? ControlGroup.UI : ControlGroup.Controls);
-		foreach(PlayerInput input in controls.Values) 
-			input.SwitchCurrentActionMap(ui?"UI":"Controls");
+		foreach(NetworkControls input in controls.Values) 
+			input.inputObject.SwitchCurrentActionMap(ui?"UI":"Controls");
 	}
 
 	public void UpdateSFXVolume(float val) {

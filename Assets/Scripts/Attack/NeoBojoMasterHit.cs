@@ -107,6 +107,13 @@ public class NeoBojoMasterHit : MasterHit {
 		power = 0;
 	}
 
+	public void ShortenDash(){
+		if(drifter.input[0].Special){
+			playState("W_Side_Short");
+			drifter.blockEvent = 1;
+		}
+	}
+
 	public void setCentaurPower(int pow) {
 		power = pow; 
 	}

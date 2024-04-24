@@ -65,7 +65,7 @@ public class CombatManager : MonoBehaviour {
 			spawnPoints[peerID % spawnPoints.Count].transform.position, Quaternion.identity, peerID);
 		obj.GetComponent<Drifter>().SetColor(peerID);
 
-		if(GameController.Instance.controls.ContainsKey(peerID))obj.GetComponent<Drifter>().playerInputController = GameController.Instance.controls[peerID];
+		if(GameController.Instance.controls.ContainsKey(peerID))obj.GetComponent<Drifter>().playerInputController = GameController.Instance.controls[peerID].inputObject;
 		obj.GetComponent<Drifter>().SetPeerId(peerID);
 		obj.GetComponent<PlayerMovement>().setFacing(-2 * (peerID % 2) + 1);
 		Drifters[peerID] = obj.GetComponent<Drifter>();
