@@ -36,7 +36,7 @@ public class GameController : MonoBehaviour
 
 	public enum GameState
 	{
-		MENU,
+		MAIN_MENU,
 		CHARACTER_SELECT,
 		COMBAT,
 		ENDSCREEN,
@@ -51,9 +51,12 @@ public class GameController : MonoBehaviour
 	public bool IsTraining;
 	public bool IsOnline = false;
 	public BattleStage selectedStage;
-	public GameState gameState = GameState.MENU; 
+	public GameState gameState = GameState.MAIN_MENU; 
 
 	bool clearingPeers = false;
+
+	int sceneLoadDelay;
+	GameState nexGameState;
 
 	public bool canPause = false;
 	private bool _IsPaused = false;
@@ -98,10 +101,9 @@ public class GameController : MonoBehaviour
 
 	public List<int> Peers = new List<int>();
 
+
 	public DFNGameManager GGPO;
-
 	public SteamManager steamManager;
-
 	public NetworkManager networkManager;
 	public UIEffectsManager uiEffectsManager;
 
@@ -120,7 +122,7 @@ public class GameController : MonoBehaviour
 	void Start() {
 		aggregatePrefabs("Assets/Resources/");
 		inputManager.DisableJoining();
-		gameState = GameState.MENU;
+		gameState = GameState.MAIN_MENU;
 
 		SceneManager.sceneLoaded += OnSceneLoaded;
 	}
@@ -282,9 +284,7 @@ public class GameController : MonoBehaviour
 		UnityEngine.Debug.Log("BEGIN COMBAT");
 		canPause = true;
 		toggleInputSystem(false);
-		gameState = GameState.COMBAT;
-		//GameSpeed = 1f;
-		SceneManager.LoadScene("Combat");
+		LoadSceneAfterWipe(GameState.COMBAT);
 	}
 
 	//Finish a Combat round and move to Endgame
@@ -294,17 +294,14 @@ public class GameController : MonoBehaviour
 
 		//Add delay here
 		//toggleInputSystem(true);
-		gameState = GameState.ENDSCREEN;
-		SceneManager.LoadScene("Endgame");
+		LoadSceneAfterWipe(GameState.ENDSCREEN);
 	}
 
 	//Move to Character Select from the main menu or Endgame
 	public void GoToCharacterSelect(){
-		uiEffectsManager.WipeOut();
 		UnityEngine.Debug.Log("LOAD CHARACTER SELECT");
 		if(!IsOnline)removeAllPeers();
-		gameState = GameState.CHARACTER_SELECT;
-		SceneManager.LoadScene("Character_Select_Rework");
+		LoadSceneAfterWipe(GameState.CHARACTER_SELECT);
 	}
 
 	//Returns to the DFN Main Menu
@@ -312,12 +309,17 @@ public class GameController : MonoBehaviour
 		UnityEngine.Debug.Log("LOAD MAIN MENU");
 		removeAllPeers();
 		StopGGPO();
-		gameState = GameState.MENU;
 		CharacterMenu.Instance?.ResetCharacterSelect();
 		DisableJoining();
 		if(IsOnline) StopHost();
 		IsOnline = false;
-		SceneManager.LoadScene("MenuScene");
+		LoadSceneAfterWipe(GameState.MAIN_MENU);
+	}
+
+	void LoadSceneAfterWipe(GameState state, int delay = 20){
+		sceneLoadDelay = delay;
+		nexGameState = state;
+		uiEffectsManager.WipeOut();
 	}
 
 	public void toggleInputSystem(bool ui) {
@@ -382,7 +384,17 @@ public class GameController : MonoBehaviour
 				break;
 			default:
 				break;
-		 }  
+		 }
+	}
+
+	void FixedUpdate(){
+		if(sceneLoadDelay > 0 ){
+		 	sceneLoadDelay--;
+		 	if(sceneLoadDelay ==0) {
+		 		SceneManager.LoadScene(nexGameState.ToString());
+		 		gameState = nexGameState;
+		 	}
+		 }
 	}
 
 	public void Serialize(BinaryWriter bw) {
