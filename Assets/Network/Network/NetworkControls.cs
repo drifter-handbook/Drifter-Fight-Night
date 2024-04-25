@@ -32,6 +32,8 @@ public class NetworkControls : NetworkBehaviour{
 	public Connections connection;
 	[SyncVar]
 	long input = 0;
+	[SyncVar]
+	public bool Ready = false;
 
 	void Awake(){
 		inputObject = gameObject.GetComponent<PlayerInput>();

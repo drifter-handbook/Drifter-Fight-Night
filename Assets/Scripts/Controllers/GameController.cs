@@ -233,19 +233,16 @@ public class GameController : MonoBehaviour
 					peerId = con.peerId;
 				else
 					connections.Add(con.connection);
+				//con.Ready = false;
 			}
 			GGPO.StartGGPOGame(null,connections,peerId);
 		}
 	}
 
 	public void StartGame(int mode = 0){
-		if(IsOnline && Peers.Count <2) UnityEngine.Debug.Log("NOT ENOUGH PEERS TO START ONLINE GAME");
-        
-        else{
-        	IsTraining = (mode == 2);
-        	GoToCharacterSelect();
-        	StartGGPO();
-        }
+        IsTraining = (mode == 2);
+        GoToCharacterSelect();
+        StartGGPO();
 	}
 
 	public void StartHost(){
@@ -267,6 +264,15 @@ public class GameController : MonoBehaviour
 		IsOnline = false;
 		//networkManager.StopClient();
 	}
+
+	public void ReadyUp(){
+		foreach(NetworkControls con in controls.Values)
+			if(con.isLocalPlayer){
+				con.Ready = ! con.Ready;
+				UnityEngine.Debug.Log("Player " + con.peerId + " is " + (con.Ready?"READY":"NOT READY"));
+			}
+	}
+
 
 	int GetOwnPeer(){
 		
@@ -395,6 +401,12 @@ public class GameController : MonoBehaviour
 		 		gameState = nexGameState;
 		 	}
 		 }
+
+		 if(IsOnline && sceneLoadDelay == 0 && Peers.Count >= 2){
+			foreach(NetworkControls con in controls.Values)
+				if(!con.Ready) return;
+			StartGame(1);
+		}
 	}
 
 	public void Serialize(BinaryWriter bw) {

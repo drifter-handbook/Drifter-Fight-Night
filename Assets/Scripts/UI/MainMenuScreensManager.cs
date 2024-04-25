@@ -108,5 +108,9 @@ public class MainMenuScreensManager : UIMenuManager
 	public void toggleDynamicCamera() {
 		PlayerPrefs.SetInt("dynamicCamera",toggle1.isOn?1:0);
 	}
+
+	public void ReadyUp(){
+		GameController.Instance.ReadyUp();
+	}
   
 }
