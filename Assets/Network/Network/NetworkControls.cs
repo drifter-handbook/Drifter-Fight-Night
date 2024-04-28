@@ -5,6 +5,9 @@ using UnityEngine;
 using Mirror;
 using UnityEngine.InputSystem;
 using SharedGame;
+using System.Net;
+using System.Net.NetworkInformation;
+using System.Net.Sockets;
 
 public class NetworkControls : NetworkBehaviour{
 
@@ -31,19 +34,17 @@ public class NetworkControls : NetworkBehaviour{
 	public Connections connection;
 	[SyncVar]
 	long input = 0;
-	[SyncVar]
+	[SyncVar (hook = nameof(SetReady))]
 	public bool Ready = false;
 
 	void Awake(){
 		inputObject = gameObject.GetComponent<PlayerInput>();
-		peerId = GameController.Instance.addUser(this);
-		if(isLocalPlayer){
-			connection = new Connections() {
-				ip = "local",
-				port = 7777,
-				spectator = false
-			};
-		}
+		SetUpPeer();
+		SetReady(false,false);
+	}
+
+	void Start(){
+		if(isLocalPlayer)SetupConnection();
 	}
 
 	void OnDestroy() {
@@ -74,6 +75,37 @@ public class NetworkControls : NetworkBehaviour{
 				inputsParsed[i].MoveY = -1;
 		}
 		return inputsParsed;
+	}
+
+	[Command]
+	public void ReadyUp(){
+		Ready = ! Ready;
+	}
+
+	[Command]
+	public void SetUpPeer(){
+		peerId = GameController.Instance.addUser(this);
+	}
+
+	void SetReady(bool before, bool after){
+		Ready = after;
+		GameObject.Find("Views").GetComponent<OnlineMenuManager>()?.setPips();
+	}
+
+	[Command]
+	void SetupConnection() {
+    	var host = Dns.GetHostEntry(Dns.GetHostName());
+    	foreach (var ip in host.AddressList)
+        	if (ip.AddressFamily == AddressFamily.InterNetwork){
+            	connection = new Connections() {
+					ip =  ip.ToString(),
+					port = 7777,
+					spectator = false
+				};
+				return;
+        	}
+
+    	throw new Exception("No network adapters with an IPv4 address in the system!");
 	}
 
 	public long getInputs(){

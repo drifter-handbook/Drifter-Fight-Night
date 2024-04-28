@@ -137,11 +137,12 @@ public class GameController : MonoBehaviour
 	//-------------------------------------------------------------
 
 	public int addUser(NetworkControls playerInput) {
-		UnityEngine.Debug.Log("ADD PEER");
+		
 		int peerID = 0;
 		while (controls.ContainsKey(peerID))
 			peerID++;
 		
+		UnityEngine.Debug.Log("ADD PEER " + peerID);
 		controls.Add(peerID, playerInput);
 
 		if (FindObjectOfType<MainMenuScreensManager>() == null && FindObjectOfType<EndScreenManager>() == null)	{
@@ -258,7 +259,7 @@ public class GameController : MonoBehaviour
 	public void ReadyUp(){
 		foreach(NetworkControls con in controls.Values)
 			if(con.isLocalPlayer){
-				con.Ready = ! con.Ready;
+				con.ReadyUp();
 				UnityEngine.Debug.Log("Player " + con.peerId + " is " + (con.Ready?"READY":"NOT READY"));
 			}
 	}
