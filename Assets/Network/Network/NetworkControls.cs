@@ -39,12 +39,12 @@ public class NetworkControls : NetworkBehaviour{
 
 	void Awake(){
 		inputObject = gameObject.GetComponent<PlayerInput>();
-		SetUpPeer();
-		SetReady(false,false);
 	}
 
 	void Start(){
+		//GameObject.Find("Views").GetComponent<OnlineMenuManager>().setPips();
 		if(isLocalPlayer)SetupConnection();
+		SetUpPeer();
 	}
 
 	void OnDestroy() {
@@ -79,7 +79,7 @@ public class NetworkControls : NetworkBehaviour{
 
 	[Command]
 	public void ReadyUp(){
-		Ready = ! Ready;
+		Ready =! Ready;
 	}
 
 	[Command]
@@ -89,7 +89,7 @@ public class NetworkControls : NetworkBehaviour{
 
 	void SetReady(bool before, bool after){
 		Ready = after;
-		GameObject.Find("Views").GetComponent<OnlineMenuManager>()?.setPips();
+		GameObject.Find("Views").GetComponent<OnlineMenuManager>().setPips();
 	}
 
 	[Command]
