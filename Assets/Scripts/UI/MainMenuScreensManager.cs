@@ -4,10 +4,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 
 // Handles the main menu screens before entering character select
-public class MainMenuScreensManager : UIMenuManager
-{
-	public GameObject savedIPObject;
-	public GameObject roomNameObject;
+public class MainMenuScreensManager : UIMenuManager {
 
 	public Toggle toggle1;
 	public Toggle toggle2;
@@ -63,23 +60,10 @@ public class MainMenuScreensManager : UIMenuManager
 		PlayerPrefs.Save();
 	}
 
-	public void saveRoomCode() {
-		PlayerPrefs.SetString("savedIP",savedIPObject.GetComponent<InputField>().text);
-	}
-
 	//0 = online
 	//1 = Local
 	//2 = Training
 	//3 = story?
-
-	// void FixedUpdate(){
-	//     if(startcd > 0){
-	//         startcd--;
-	//         if(startcd ==0)
-	//              StartGame(0);
-	//     }
-	// }
-
 
 	//-------------------------------------------------------------
 	// ONLINE MENU MECHANCIS
@@ -93,24 +77,12 @@ public class MainMenuScreensManager : UIMenuManager
 		GameController.Instance.StopHost();
 	}
 
-	public void StartClient() {
-		GameController.Instance.StopClient();
-	}
-
-	public void StopClient() {
-		GameController.Instance.StartHost();
-	}
-
 	public void StartGame(int mode = 0){
 		GameController.Instance.StartGame(mode);
 	}
 
 	public void toggleDynamicCamera() {
 		PlayerPrefs.SetInt("dynamicCamera",toggle1.isOn?1:0);
-	}
-
-	public void ReadyUp(){
-		GameController.Instance.ReadyUp();
 	}
   
 }

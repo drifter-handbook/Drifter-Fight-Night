@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine.UI;
 using HeathenEngineering.SteamworksIntegration;
 
-public class MainMenuManager : MonoBehaviour {
+public class FriendsManager : MonoBehaviour {
 	[SerializeField] private GameObject joinPrefab;
 	[SerializeField] private Transform joinParent;
 	[SerializeField] private GameObject noLobbies;

@@ -27,7 +27,6 @@ public class NetworkControls : NetworkBehaviour{
 	[NonSerialized]
 	public int peerId;
 	[NonSerialized]
-
 	[SyncVar]
 	public Connections connection;
 	[SyncVar]
@@ -38,7 +37,6 @@ public class NetworkControls : NetworkBehaviour{
 	void Awake(){
 		inputObject = gameObject.GetComponent<PlayerInput>();
 		peerId = GameController.Instance.addUser(this);
-
 		if(isLocalPlayer){
 			connection = new Connections() {
 				ip = "local",
@@ -51,12 +49,6 @@ public class NetworkControls : NetworkBehaviour{
 	void OnDestroy() {
 		GameController.Instance.removeUserByPeer(peerId);
 	}
-
-	// public override void OnStartLocalPlayer(){
-	// 	base.OnStartLocalPlayer();
-	// 	UnityEngine.Debug.Log("LOCAL");
-	// 	UnityEngine.Debug.Log(isLocalPlayer);
-	// }
 
 	public static PlayerInputData[] ParseDrifterInputs(long[] inputsLong) {
 		PlayerInputData[] inputsParsed = new PlayerInputData[inputsLong.Length];

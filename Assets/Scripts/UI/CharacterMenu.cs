@@ -159,7 +159,7 @@ public class CharacterMenu : MonoBehaviour {
 					ConfigureCharSelState(charSelStates[i].PeerID,charSelStates[i].PlayerType);
 		}
 
-		if(!GameController.Instance. IsOnline) GameController.Instance.EnableJoining();
+		if(!GameController.Instance.IsOnline) GameController.Instance.EnableJoining();
 	}
 
 	public void setCharacterSelectPhase(CharacterMenuState p_phase){

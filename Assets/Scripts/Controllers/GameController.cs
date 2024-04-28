@@ -40,7 +40,7 @@ public class GameController : MonoBehaviour
 		CHARACTER_SELECT,
 		COMBAT,
 		ENDSCREEN,
-		LOBBY
+		ONLINE_LOBBY
 	}
 
 	public float[] volume = { -1f, -1f, -1f };
@@ -171,18 +171,18 @@ public class GameController : MonoBehaviour
 			UnityEngine.Debug.Log("PEER ID " + peerID +" ATTEMPTED TO BE REMOVED BUT WAS NOT FOUND");
 			return;
 		}
-		
+		UnityEngine.Debug.Log("REMOVE PEER: " + peerID);
 		controls[peerID].inputObject.DeactivateInput();
+		
 		//inputManager.Un
 		Destroy(controls[peerID].gameObject);
 		controls.Remove(peerID);
-		if (FindObjectOfType<MainMenuScreensManager>() == null && FindObjectOfType<EndScreenManager>() == null) {
-			FindObjectOfType<CharacterMenu>()?.RemoveCharSelState(peerID);
-		}
 		Peers.Remove(peerID);
-		if(!clearingPeers && IsTraining && controls.Count == 0) {
+		if (FindObjectOfType<MainMenuScreensManager>() == null && FindObjectOfType<EndScreenManager>() == null) 
+			FindObjectOfType<CharacterMenu>()?.RemoveCharSelState(peerID);
+		
+		if(!clearingPeers && IsTraining && controls.Count == 0) 
 			EnableJoining();
-		}
 	}
 
 	public void removeAllPeers() {
@@ -250,19 +250,9 @@ public class GameController : MonoBehaviour
 		steamManager.Host();
 	}
 
-	public void StartClient(){
-		IsOnline = true;
-		//networkManager.StartClient();
-	}
-
 	public void StopHost(){
 		IsOnline = false;
 		networkManager.StopHost();
-	}
-
-	public void StopClient(){
-		IsOnline = false;
-		//networkManager.StopClient();
 	}
 
 	public void ReadyUp(){
