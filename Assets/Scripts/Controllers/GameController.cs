@@ -232,11 +232,11 @@ public class GameController : MonoBehaviour
 			foreach(NetworkControls con in controls.Values){
 				if(con.isLocalPlayer)
 					peerId = con.peerId;
-				else
-					connections.Add(new Connections{
-						ip = con.connection,
-						port = 7777,
-						spectator = false});
+				
+				connections.Add(new Connections{
+					ip = con.connection,
+					port = 7777,
+					spectator = false});
 				//con.Ready = false;
 			}
 			GGPO.StartGGPOGame(null,connections,peerId);
@@ -396,7 +396,8 @@ public class GameController : MonoBehaviour
 		 	}
 		 }
 
-		 if(IsOnline && sceneLoadDelay == 0 && Peers.Count >= 2){
+		 //Chekc if ALL peers are ready
+		 if(IsOnline && sceneLoadDelay == 0 && Peers.Count >= 2 && gameState == GameState.ONLINE_LOBBY){
 			foreach(NetworkControls con in controls.Values)
 				if(!con.Ready) return;
 			StartGame(1);
