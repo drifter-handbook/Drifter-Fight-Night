@@ -387,7 +387,7 @@ public class GameController : MonoBehaviour
 		if(sceneLoadDelay > 0 ){
 		 	sceneLoadDelay--;
 		 	if(sceneLoadDelay ==0) {
-		 		if(IsOnline) networkManager.ServerChangeScene(nexGameState.ToString());
+		 		if(IsOnline) changeScene(nexGameState.ToString());
 		 		else SceneManager.LoadScene(nexGameState.ToString());
 		 		gameState = nexGameState;
 		 	}
@@ -398,6 +398,11 @@ public class GameController : MonoBehaviour
 				if(!con.Ready) return;
 			StartGame(1);
 		}
+	}
+
+	[Server]
+	void changeScene(string scene){
+		networkManager.ServerChangeScene(nexGameState.ToString());
 	}
 
 	public void Serialize(BinaryWriter bw) {
