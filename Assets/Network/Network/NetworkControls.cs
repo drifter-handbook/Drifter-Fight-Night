@@ -43,8 +43,10 @@ public class NetworkControls : NetworkBehaviour{
 
 	void Start(){
 		//GameObject.Find("Views").GetComponent<OnlineMenuManager>().setPips();
-		if(isLocalPlayer)SetupConnection();
-		SetUpPeer();
+		if(isLocalPlayer){
+			SetupConnection();
+			SetUpPeer();
+		}
 	}
 
 	void OnDestroy() {
