@@ -233,7 +233,10 @@ public class GameController : MonoBehaviour
 				if(con.isLocalPlayer)
 					peerId = con.peerId;
 				else
-					connections.Add(con.connection);
+					connections.Add(new Connections{
+						ip = con.connection,
+						port = 7777,
+						spectator = false});
 				//con.Ready = false;
 			}
 			GGPO.StartGGPOGame(null,connections,peerId);

@@ -31,7 +31,7 @@ public class NetworkControls : NetworkBehaviour{
 	public int peerId;
 	[NonSerialized]
 	[SyncVar]
-	public Connections connection;
+	public string connection = "local";
 	[SyncVar]
 	long input = 0;
 	[SyncVar (hook = nameof(SetReady))]
@@ -93,20 +93,19 @@ public class NetworkControls : NetworkBehaviour{
 		GameObject.Find("Views").GetComponent<OnlineMenuManager>().setPips();
 	}
 
-	[Command(requiresAuthority = false)]
+	
 	void SetupConnection() {
     	var host = Dns.GetHostEntry(Dns.GetHostName());
     	foreach (var ip in host.AddressList)
         	if (ip.AddressFamily == AddressFamily.InterNetwork){
-            	connection = new Connections() {
-					ip =  ip.ToString(),
-					port = 7777,
-					spectator = false
-				};
+        		populateData(ip.ToString());
 				return;
         	}
-
     	throw new Exception("No network adapters with an IPv4 address in the system!");
+	}
+	[Command(requiresAuthority = false)]
+	void populateData(string connectionData){
+		connection = connectionData;
 	}
 
 	public long getInputs(){
