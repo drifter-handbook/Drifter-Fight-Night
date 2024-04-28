@@ -250,7 +250,7 @@ public class GameController : MonoBehaviour
 	}
 
 	public void StartHost(){
-		IsOnline = true;
+		//IsOnline = true;
 		steamManager.Host();
 	}
 

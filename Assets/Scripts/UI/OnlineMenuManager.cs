@@ -15,6 +15,7 @@ public class OnlineMenuManager : UIMenuManager {
 			objects[i] = GameObject.Find("P" + i).GetComponent<Image>();
 		}
 		GameController.Instance.IsOnline = true;
+		GameController.Instance.gameState = GameController.GameState.ONLINE_LOBBY;
 	}
 
 	public void setPips(){
