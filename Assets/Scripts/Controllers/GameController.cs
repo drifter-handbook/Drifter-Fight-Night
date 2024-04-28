@@ -260,7 +260,6 @@ public class GameController : MonoBehaviour
 		foreach(NetworkControls con in controls.Values)
 			if(con.isLocalPlayer){
 				con.ReadyUp();
-				UnityEngine.Debug.Log("Player " + con.peerId + " is " + (con.Ready?"READY":"NOT READY"));
 			}
 	}
 

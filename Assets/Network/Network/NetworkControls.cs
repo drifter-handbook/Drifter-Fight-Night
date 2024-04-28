@@ -81,6 +81,7 @@ public class NetworkControls : NetworkBehaviour{
 	[Command(requiresAuthority = false)]
 	public void ReadyUp(){
 		Ready =! Ready;
+		UnityEngine.Debug.Log("Player " + peerId + " is " + (Ready?"READY":"NOT READY"));
 	}
 
 	public void SetUpPeer(){
