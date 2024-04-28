@@ -77,12 +77,12 @@ public class NetworkControls : NetworkBehaviour{
 		return inputsParsed;
 	}
 
-	[Command]
+	[Command(requiresAuthority = false)]
 	public void ReadyUp(){
 		Ready =! Ready;
 	}
 
-	[Command]
+	[Command(requiresAuthority = false)]
 	public void SetUpPeer(){
 		peerId = GameController.Instance.addUser(this);
 	}
@@ -92,7 +92,7 @@ public class NetworkControls : NetworkBehaviour{
 		GameObject.Find("Views").GetComponent<OnlineMenuManager>().setPips();
 	}
 
-	[Command]
+	[Command(requiresAuthority = false)]
 	void SetupConnection() {
     	var host = Dns.GetHostEntry(Dns.GetHostName());
     	foreach (var ip in host.AddressList)
