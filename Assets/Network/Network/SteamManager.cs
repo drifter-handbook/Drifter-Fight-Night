@@ -46,9 +46,7 @@ public class SteamManager : Singleton<SteamManager> {
 	private void LobbyJoined(GameLobbyJoinRequested_t data) {
 
 		SteamMatchmaking.JoinLobby(data.m_steamIDLobby);
-		//Dont do this
-		GameController.Instance.IsOnline = true;
-
+		
 	}
 
 	private void LobbyEntered(LobbyEnter_t data) {

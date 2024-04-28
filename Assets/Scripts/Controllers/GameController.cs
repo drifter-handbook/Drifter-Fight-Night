@@ -387,7 +387,8 @@ public class GameController : MonoBehaviour
 		if(sceneLoadDelay > 0 ){
 		 	sceneLoadDelay--;
 		 	if(sceneLoadDelay ==0) {
-		 		SceneManager.LoadScene(nexGameState.ToString());
+		 		if(IsOnline) networkManager.ServerChangeScene(nexGameState.ToString());
+		 		else SceneManager.LoadScene(nexGameState.ToString());
 		 		gameState = nexGameState;
 		 	}
 		 }
