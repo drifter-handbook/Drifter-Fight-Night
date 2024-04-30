@@ -96,7 +96,7 @@ public class NetworkControls : NetworkBehaviour{
 
 	void SetupConnection() {
 		UnityEngine.Debug.Log(connectionToClient.address);
-		
+		populateData(connectionToClient.address);
 		//UnityEngine.Debug.Log(NetworkServer.ListenOnPort);
     // 	var host = Dns.GetHostEntry(Dns.GetHostName());
     // 	foreach (var ip in host.AddressList)
