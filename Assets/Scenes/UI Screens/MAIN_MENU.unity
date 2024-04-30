@@ -17348,6 +17348,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   useNewUpdate: 1
+--- !u!114 &1667383498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 16697205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edd19b423fc9a79439325310c448634d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fairnessRect:
+    serializedVersion: 2
+    x: 0
+    y: -20
+    width: 500
+    height: 100
+  networkRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 500
+    height: 100
+  toggle: 0
+  random: 0
+  _num_players: 2
+  step: 1
 --- !u!1 &1669710825
 GameObject:
   m_ObjectHideFlags: 0

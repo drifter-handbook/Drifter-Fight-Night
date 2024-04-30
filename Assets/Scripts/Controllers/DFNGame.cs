@@ -70,6 +70,7 @@ public struct DFNGame : IGame {
 			return 0;
 	}
 	public void LogInfo(string str){
+		UnityEngine.Debug.Log(str);
 	}
 
 	public void FreeBytes(NativeArray<byte> data) {

@@ -32,7 +32,7 @@ public class NetworkControls : NetworkBehaviour{
 	[NonSerialized]
 	[SyncVar]
 	public string connection = "local";
-	[SyncVar]
+	//[SyncVar]
 	long input = 0;
 	[SyncVar (hook = nameof(SetReady))]
 	public bool Ready = false;
@@ -42,10 +42,9 @@ public class NetworkControls : NetworkBehaviour{
 	}
 
 	void Start(){
-		if(isLocalPlayer){
+		if(isLocalPlayer)
 			SetupConnection();
-		}
-		SetUpPeer();
+		peerId = GameController.Instance.addUser(this);
 	}
 
 	void OnDestroy() {
@@ -84,32 +83,31 @@ public class NetworkControls : NetworkBehaviour{
 		UnityEngine.Debug.Log("Player " + peerId + " is " + (Ready?"READY":"NOT READY"));
 	}
 
-	public void SetUpPeer(){
-		peerId = GameController.Instance.addUser(this);
-	}
-
 	void SetReady(bool before, bool after){
 		Ready = after;
 		GameObject.Find("Views").GetComponent<OnlineMenuManager>().setPips();
 	}
 
 	
-	void SetupConnection() {
-    	var host = Dns.GetHostEntry(Dns.GetHostName());
-    	foreach (var ip in host.AddressList)
-        	if (ip.AddressFamily == AddressFamily.InterNetwork){
-        		populateData(ip.ToString());
-				return;
-        	}
-    	throw new Exception("No network adapters with an IPv4 address in the system!");
-	}
 	[Command(requiresAuthority = false)]
 	void populateData(string connectionData){
 		connection = connectionData;
 	}
 
-	public long getInputs(){
+	void SetupConnection() {
+		UnityEngine.Debug.Log(connectionToClient.address);
+		
+		//UnityEngine.Debug.Log(NetworkServer.ListenOnPort);
+    // 	var host = Dns.GetHostEntry(Dns.GetHostName());
+    // 	foreach (var ip in host.AddressList)
+    //     	if (ip.AddressFamily == AddressFamily.InterNetwork){
+    //     		populateData(ip.ToString());
+				// return;
+    //     	}
+    // 	throw new Exception("No network adapters with an IPv4 address in the system!");
+	}
 
+	public long getInputs(){
 		if(isLocalPlayer || !GameController.Instance.IsOnline){
 			input = 0;
 			InputActionMap playerInputAction = inputObject.currentActionMap;

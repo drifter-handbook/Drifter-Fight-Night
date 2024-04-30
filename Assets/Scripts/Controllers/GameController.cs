@@ -232,14 +232,14 @@ public class GameController : MonoBehaviour
 			foreach(NetworkControls con in controls.Values){
 				if(con.isLocalPlayer)
 					peerId = con.peerId;
-				
+				//UnityEngine.Debug.Log(con.connection);
 				connections.Add(new Connections{
 					ip = con.connection,
 					port = 7777,
 					spectator = false});
 				//con.Ready = false;
 			}
-			GGPO.StartGGPOGame(null,connections,peerId);
+			GGPO.StartGGPOGame(GetComponent<GgpoPerformancePanel>(),connections,peerId);
 		}
 	}
 
@@ -397,7 +397,10 @@ public class GameController : MonoBehaviour
 		 }
 
 		 //Chekc if ALL peers are ready
-		 if(IsOnline && sceneLoadDelay == 0 && Peers.Count >= 2 && gameState == GameState.ONLINE_LOBBY){
+		 if(IsOnline && 
+		 	sceneLoadDelay == 0 &&
+		  	Peers.Count >= 1 && 
+		  	gameState == GameState.ONLINE_LOBBY){
 			foreach(NetworkControls con in controls.Values)
 				if(!con.Ready) return;
 			StartGame(1);
@@ -425,6 +428,7 @@ public class GameController : MonoBehaviour
 				CombatManager.Instance.Serialize(bw);
 				break;
 			case GameState.ENDSCREEN:
+				EndScreenManager.Instance.Serialize(bw);
 				break;
 			default:
 				break;
@@ -447,6 +451,7 @@ public class GameController : MonoBehaviour
 				CombatManager.Instance.Deserialize(br);
 				break;
 			case GameState.ENDSCREEN:
+				EndScreenManager.Instance.Deserialize(br);
 				break;
 			default:
 				break;
