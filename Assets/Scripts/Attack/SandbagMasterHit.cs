@@ -7,7 +7,7 @@ public class SandbagMasterHit : MasterHit
 {
 	bool dust = false;
 
-	InstantiatedEntityCleanup Sandblast;
+	InstantiatedEntityCleanup[] Sandblasts = new InstantiatedEntityCleanup[6];
 	InstantiatedEntityCleanup Sandspear1;
 	InstantiatedEntityCleanup Sandspear2;
 
@@ -26,7 +26,8 @@ public class SandbagMasterHit : MasterHit
 			dustCount +=1;
 		}
 
-		if(Sandblast != null) Sandblast.UpdateFrame();
+		foreach(InstantiatedEntityCleanup Sandblast in Sandblasts)
+			if(Sandblast != null) Sandblast.UpdateFrame();
 		if(Sandspear1 != null) Sandspear1.UpdateFrame();
 		if(Sandspear2 != null) Sandspear2.UpdateFrame();
 
@@ -66,11 +67,15 @@ public class SandbagMasterHit : MasterHit
 	}
 
 	public void Neutral_Special() {
-		if(Sandblast != null) Sandblast.animator.Play("Sandblast_Detonate");
-		CreateSandblast();
+		for(int i = 0; i < Sandblasts.Length; i++){
+			if(Sandblasts[i] == null) {
+				CreateSandblast(i);
+				return;
+			}
+		}
 	}
 
-	void CreateSandblast() {
+	void CreateSandblast(int index) {
 		GameObject proj = GameController.Instance.CreatePrefab("Sandblast", transform.position + new Vector3(1.5f * movement.Facing, 2.5f), transform.rotation,drifter.peerID);
 		proj.transform.localScale = new Vector3(10f * movement.Facing, 10f , 1f);
 		foreach (HitboxCollision hitbox in proj.GetComponentsInChildren<HitboxCollision>(true)) {
@@ -80,9 +85,9 @@ public class SandbagMasterHit : MasterHit
 		}
 
 		SetObjectColor(proj);
-		proj.GetComponent<Rigidbody2D>().velocity = new Vector3(movement.Facing * 25f,0,0);
+		proj.GetComponent<Rigidbody2D>().velocity = new Vector3(movement.Facing * 35f,0,0);
 
-		Sandblast = proj.GetComponent<InstantiatedEntityCleanup>();
+		Sandblasts[index] = proj.GetComponent<InstantiatedEntityCleanup>();
 	}
 
 	public void Ground_Down() {
@@ -130,11 +135,13 @@ public class SandbagMasterHit : MasterHit
 	public override void Serialize(BinaryWriter bw) {
 		base.Serialize(bw);
 
-		if(Sandblast == null)
-			bw.Write(false);
-		else{
-			bw.Write(true);
-			Sandblast.Serialize(bw);
+		for(int i = 0; i < Sandblasts.Length; i++){
+			if(Sandblasts[i] == null)
+				bw.Write(false);
+			else{
+				bw.Write(true);
+				Sandblasts[i].Serialize(bw);
+			}
 		}
 
 		if(Sandspear1 == null || Sandspear2 == null)
@@ -149,13 +156,15 @@ public class SandbagMasterHit : MasterHit
 	//Rolls back the entity to a given frame state
 	public override void Deserialize(BinaryReader br) {
 
-		if(br.ReadBoolean()){
-			if(Sandblast == null) CreateSandblast();
-			Sandblast.Deserialize(br);
-		}
-		else if(Sandblast != null){
-			Destroy(Sandblast.gameObject);
-			Sandblast = null;
+		for(int i = 0; i < Sandblasts.Length; i++){
+			if(br.ReadBoolean()){
+				if(Sandblasts[i] == null)CreateSandblast(i);
+				Sandblasts[i].Deserialize(br);
+			}
+			else if(Sandblasts[i] != null){
+				Destroy(Sandblasts[i].gameObject);
+				Sandblasts[i] = null;
+			}
 		}
 
 		if(br.ReadBoolean()){
