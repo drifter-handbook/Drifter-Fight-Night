@@ -49,6 +49,7 @@ public class GameController : MonoBehaviour
 	[Header("Check box if hosting")]
 
 	public bool IsTraining;
+	public TrainingModeState trainingState =  new TrainingModeState();
 	public bool IsOnline = false;
 	public BattleStage selectedStage;
 	public GameState gameState = GameState.MAIN_MENU; 
@@ -105,6 +106,7 @@ public class GameController : MonoBehaviour
 	public DFNGameManager GGPO;
 	public SteamManager steamManager;
 	public NetworkManager networkManager;
+	
 	public UIEffectsManager uiEffectsManager;
 
 

@@ -194,13 +194,21 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 	}
 
 	public void SpecialCancelParticle() {
-		GraphicalEffectManager.Instance.CreateMovementCancel(movement.gameObject);
+
 		GraphicalEffectManager.Instance.CreateSpecialCancel(drifter.gameObject);
-		//BC drift
-		if(drifter.input[0].MoveY == drifter.input[1].MoveY)
-			rb.velocity = new Vector2(rb.velocity.x,22*drifter.input[0].MoveY);
-		if(drifter.input[0].MoveX == drifter.input[1].MoveX)
-			rb.velocity = new Vector2(22*drifter.input[0].MoveX,rb.velocity.y);
+		if(drifter.input[0].MoveX == 0 && drifter.input[0].MoveY == 0){
+			rb.velocity = new Vector2(Mathf.Cos(75) * movement.Facing ,Mathf.Sin(75));
+		}
+		else{
+			GraphicalEffectManager.Instance.CreateMovementCancel(movement.gameObject);
+			//BC drift
+			if(drifter.input[0].MoveY == drifter.input[1].MoveY && drifter.input[0].MoveX == 0)
+				rb.velocity = new Vector2(rb.velocity.x,22*drifter.input[0].MoveY);
+			else if(drifter.input[0].MoveX == drifter.input[1].MoveX && drifter.input[0].MoveY == 0)
+				rb.velocity = new Vector2(22*drifter.input[0].MoveX,rb.velocity.y);
+			else
+				rb.velocity = new Vector2(22 * drifter.input[0].MoveX * Mathf.Cos(45), 22 * drifter.input[0].MoveY * Mathf.Sin(45));
+		} 
 	}
 
 	//Flag the character to begin listen for a given event

@@ -5,6 +5,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+public class TrainingModeState {
+	public int d_Dropdown_Val = 0;
+	public int t_Dropdown_Val = 0;
+	public int r_Dropdown_Val = 0;
+	public int s_Dropdown_Val = 0;
+	public int b_Dropdown_Val = 0;
+	public int g_Dropdown_Val = 0;
+	public int h_Dropdown_Val = 0;
+}
+
 public class TrainingDummyHandler : MonoBehaviour
 {
 	public enum buttonIcon { 
@@ -66,7 +76,7 @@ public class TrainingDummyHandler : MonoBehaviour
 	public GameObject inputList;
 	public Sprite[] images;
 
-	public GameObject recoridngIndicator;
+	public GameObject recordingIndicator;
 
 	//Input buffer readout
 	GameObject[] frameList = new GameObject[16];
@@ -83,7 +93,6 @@ public class TrainingDummyHandler : MonoBehaviour
 	bool emptyMeter = false;
 	bool meterReset = false;
 	int meterResetFrames = 0;
-
 	int fixedHealth = -1;
 
 	//Record & Playback
@@ -138,6 +147,8 @@ public class TrainingDummyHandler : MonoBehaviour
 		h_Dropdown.onValueChanged.AddListener(delegate {
 			DummyHPValueChanged(h_Dropdown);
 		});
+
+		SetTrainingState(GameController.Instance.trainingState);
 	}
 
 	public void FixedUpdate(){
@@ -323,12 +334,23 @@ public class TrainingDummyHandler : MonoBehaviour
 			Dummy.UpdateFrame();
 			
 		}
-		recoridngIndicator.SetActive(recording);
+		recordingIndicator.SetActive(recording);
 	}
 
 	//Probably should update this to use the standard input reading system
 	public void UpdateFrame(PlayerInputData[] inputs) {
 		inputFromGGPO = inputs;
+	}
+
+	//Stets dropdown states to persist between scene loads
+	void SetTrainingState(TrainingModeState state){
+		d_Dropdown.value = state.d_Dropdown_Val;
+		t_Dropdown.value = state.t_Dropdown_Val;
+		r_Dropdown.value = state.r_Dropdown_Val;
+		s_Dropdown.value = state.s_Dropdown_Val;
+		b_Dropdown.value = state.b_Dropdown_Val;
+		g_Dropdown.value = state.g_Dropdown_Val;
+		h_Dropdown.value = state.h_Dropdown_Val;
 	}
 
 	//Ouput the new value of the Dropdown into Text
@@ -366,6 +388,7 @@ public class TrainingDummyHandler : MonoBehaviour
 				BaseAction = DummyAction.NONE;
 				break;
 		};
+		GameController.Instance.trainingState.d_Dropdown_Val = change.value;
 		setDummyInputSequence(BaseAction);
 	}
 
@@ -391,6 +414,7 @@ public class TrainingDummyHandler : MonoBehaviour
 				ReactionTrigger = DummyTrigger.NONE;
 				break;
 		};
+		GameController.Instance.trainingState.t_Dropdown_Val = change.value;
 	}
 
 	void ReactionDropdownValueChanged(Dropdown change) {
@@ -429,6 +453,7 @@ public class TrainingDummyHandler : MonoBehaviour
 				ReactionAction = DummyAction.NONE;
 				break;
 		};
+		GameController.Instance.trainingState.r_Dropdown_Val = change.value;
 	}
 
 
@@ -452,6 +477,7 @@ public class TrainingDummyHandler : MonoBehaviour
 			default:
 				break;
 		};
+		GameController.Instance.trainingState.s_Dropdown_Val = change.value;
 	}
 
 	void GamespeedDropdownValueChanged(Dropdown change) {
@@ -471,6 +497,7 @@ public class TrainingDummyHandler : MonoBehaviour
 				GameController.Instance.GameSpeed = 1f;
 				break;
 		};
+		GameController.Instance.trainingState.g_Dropdown_Val = change.value;
 	}
 
 	void DummyHPValueChanged(Dropdown change) {
@@ -499,6 +526,7 @@ public class TrainingDummyHandler : MonoBehaviour
 				fixedHealth = 0;
 				break;
 		};
+		GameController.Instance.trainingState.h_Dropdown_Val = change.value;
 	}
 
 	void BufferDropdownValueChanged(Dropdown change) {
@@ -514,6 +542,7 @@ public class TrainingDummyHandler : MonoBehaviour
 				displayInput = true;
 				break;
 		};
+		GameController.Instance.trainingState.b_Dropdown_Val = change.value;
 	}
 
 	//Clears the input buffer readout
