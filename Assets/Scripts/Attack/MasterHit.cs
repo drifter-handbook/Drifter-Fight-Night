@@ -416,6 +416,10 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 	}
 
 	public void unpauseGravity() {
+		if(drifter.blockEvent > 0) {
+			UnityEngine.Debug.Log("GRAVITY UNPAUSE BLOCKED: " + drifter.gameObject);
+			return;
+		}
 		if(savingVelocity)rb.velocity = savedVelocity;
 		savingVelocity = false;
 		movement.resetGravity();
