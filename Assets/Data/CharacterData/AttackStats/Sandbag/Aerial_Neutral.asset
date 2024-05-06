@@ -15,12 +15,12 @@ MonoBehaviour:
   AttackDamage: 60
   Knockback: 30
   KnockbackScale: 0.3
-  pushBlock: 0
-  dynamicStun: 0
-  firstActiveFrame: 0
-  finalFrame: 0
+  pushBlock: 5
+  dynamicStun: 1
+  firstActiveFrame: 10
+  finalFrame: 20
   HitStun: 20
-  ShieldStun: 0
+  ShieldStun: 10
   HitStop: 20
   hitType: 0
   mirrorKnockback: 0
