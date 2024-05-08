@@ -85,7 +85,7 @@ public class SandbagMasterHit : MasterHit
 		}
 
 		SetObjectColor(proj);
-		proj.GetComponent<Rigidbody2D>().velocity = new Vector3(movement.Facing * 35f,0,0);
+		proj.GetComponent<Rigidbody2D>().velocity = new Vector3(movement.Facing * 32f,0,0);
 
 		Sandblasts[index] = proj.GetComponent<InstantiatedEntityCleanup>();
 	}

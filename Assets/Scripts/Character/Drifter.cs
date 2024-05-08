@@ -326,6 +326,7 @@ public class Drifter : MonoBehaviour
 			masterhit.clearMasterhitVars();
 			listenForSpecialCancel = false;
 			canSpecialCancelFlag = false;
+			movement.passThrough = true;
 		}
 	}
 
