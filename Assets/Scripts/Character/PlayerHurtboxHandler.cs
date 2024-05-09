@@ -160,6 +160,7 @@ public class PlayerHurtboxHandler : MonoBehaviour {
 					return;
 				}
 
+				drifter.movement.updateFacing();
 
 				bool crossUp = (hitbox.parent.transform.localPosition.x > transform.localPosition.x  && drifter.movement.Facing < 0) 
 				|| (hitbox.parent.transform.localPosition.x < transform.localPosition.x  && drifter.movement.Facing > 0 && attackData.AttackDamage > 0);
