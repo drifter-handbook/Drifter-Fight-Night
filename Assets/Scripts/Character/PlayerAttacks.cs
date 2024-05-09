@@ -132,9 +132,6 @@ public class PlayerAttacks : MonoBehaviour {
 
 		if(isCancel) drifter.movement.setFacingDelayed((int)drifter.masterhit.checkForDirection(8));
 
-		UnityEngine.Debug.Log(currentUpRecoveries);
-
-
 		if(drifter.input[0].MoveY > 0 && currentUpRecoveries > 0) {
 				StartAttack(DrifterAttackType.W_Up);
 				if(shareRecoveries)

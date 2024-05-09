@@ -201,12 +201,14 @@ public class PlayerHurtboxHandler : MonoBehaviour {
 			//Do we still need all this math?
 			//calculated angle
 
-				float angle = Mathf.Sign(attackData.AngleOfImpact) * Mathf.Atan2(hurtbox.parent.transform.position.y-hitbox.parent.transform.position.y, hurtbox.parent.transform.position.x-hitbox.parent.transform.position.x)*180 / Mathf.PI;
+				float dataAngle = (attackData.AngleOfImpact > -362  ||  hitbox.parent.GetComponent<Rigidbody2D>().velocity != Vector2.zero )? attackData.AngleOfImpact : 75;
 
-				Vector3 adjustedAngle = Quaternion.Euler(0, 0, attackData.AngleOfImpact * facingDir)  * Vector2.right * facingDir;
+				float angle = Mathf.Sign(dataAngle) * Mathf.Atan2(hurtbox.parent.transform.position.y-hitbox.parent.transform.position.y, hurtbox.parent.transform.position.x-hitbox.parent.transform.position.x)*180 / Mathf.PI;
+
+				Vector3 adjustedAngle = Quaternion.Euler(0, 0, dataAngle * facingDir)  * Vector2.right * facingDir;
 
 			//Autolink angle (<-361) sets the knockback angle to send towards the hitbox's centerpoint
-				Vector2 forceDir = Mathf.Abs(attackData.AngleOfImpact) <= 360?
+				Vector2 forceDir = Mathf.Abs(dataAngle) <= 360?
 				adjustedAngle:
 				Quaternion.Euler(0, 0, angle) * Vector2.right;
 
@@ -216,7 +218,7 @@ public class PlayerHurtboxHandler : MonoBehaviour {
 					attackData);
 
 			//Calculate hitstun duration
-				int HitstunDuration = GetHitStun(drifter, attackData);
+				int HitstunDuration = GetHitStun(attackData, !crossUp && drifter.guarding);
 				int HitPauseDuration = attackData.HitStop >=0 ? attackData.HitStop : HitstunDuration;
 
 			//Flags a guradbreak for BIGG HITSPARKS
@@ -248,7 +250,7 @@ public class PlayerHurtboxHandler : MonoBehaviour {
 					//drifter.knockedDown = false;
 				//drifter.clearGuardFlags();
 
-					if((attackData.hitType==HitType.GRAB || crossUp) && drifter.guarding && attackData.AttackDamage >0f) {
+					if((attackData.hitType==HitType.GRAB || crossUp) && drifter.guarding && HitstunDuration >0) {
 					//status.ApplyStatusEffect(PlayerStatusEffect.GUARDBROKEN,5f);
 						HitstunDuration = 60;
 						guardbroken = true;
@@ -269,7 +271,7 @@ public class PlayerHurtboxHandler : MonoBehaviour {
 
 					//If the defender is grounded, use the absolute value of the y component of the velocity
 					//This prevents grounded opponents from getting stuck when spiked on the ground
-						if(attackData.Knockback > 0 && attackData.AngleOfImpact > -361){
+						if(attackData.Knockback > 0 && dataAngle > -361){
 							GetComponent<Rigidbody2D>().velocity = new Vector2(forceDir.normalized.x * KB, drifter.movement.grounded?Mathf.Abs(forceDir.normalized.y * KB): forceDir.normalized.y * KB);
 
 						//Use restitution particle if spiked on the grounde
@@ -277,17 +279,15 @@ public class PlayerHurtboxHandler : MonoBehaviour {
 						}
 
 					//Autolink angle (<361) scales its magnitude with distacne from said point, further scaled with the attacker's velocity
-						else if(attackData.Knockback > 0 && attackData.AngleOfImpact <= -361){
+						else if(attackData.Knockback > 0 && dataAngle <= -361){
 							GetComponent<Rigidbody2D>().velocity = hitbox.parent.GetComponent<Rigidbody2D>().velocity * (1 + attackData.KnockbackScale);
 						}
 
 					//IF there is hitstun to be applied, apply it
-						if(HitstunDuration > 0)	{
-						//Apply a minimum hitstun on burst type attacks
-							if(attackData.hitType != HitType.BURST || HitstunDuration >= status?.remainingDuration(PlayerStatusEffect.KNOCKBACK))
-							status?.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, HitstunDuration);
-
-						}
+					if(HitstunDuration > 0 && status!=null)	
+					//Apply a minimum hitstun on burst type attacks
+						status.ApplyStatusEffect(PlayerStatusEffect.KNOCKBACK, Math.Max(HitstunDuration,status.remainingDuration(PlayerStatusEffect.KNOCKBACK)));
+							
 					}
 
 					if(attackData.StatusEffect != PlayerStatusEffect.PLANTED || drifter.movement.grounded){
@@ -514,9 +514,9 @@ public class PlayerHurtboxHandler : MonoBehaviour {
 			(strong?1.5f:1)) * attackData.KnockbackScale + attackData.Knockback);
 	}
 
-	protected int GetHitStun(Drifter defender, SingleAttackData attackData) {
+	protected int GetHitStun(SingleAttackData attackData, bool blocked) {
 		int adv = attackData.HitStun;
-		if (defender != null && defender.guarding)
+		if (blocked)
 		adv = attackData.ShieldStun;
 		
 		if (attackData.dynamicStun)

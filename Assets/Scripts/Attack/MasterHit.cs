@@ -196,10 +196,7 @@ public abstract class MasterHit : MonoBehaviour, IMasterHit
 	public void SpecialCancelParticle() {
 
 		GraphicalEffectManager.Instance.CreateSpecialCancel(drifter.gameObject);
-		if(drifter.input[0].MoveX == 0 && drifter.input[0].MoveY == 0){
-			rb.velocity = new Vector2(Mathf.Cos(75) * movement.Facing ,Mathf.Sin(75));
-		}
-		else{
+		if(drifter.input[0].MoveX != 0 || drifter.input[0].MoveY != 0){
 			GraphicalEffectManager.Instance.CreateMovementCancel(movement.gameObject);
 			//BC drift
 			if(drifter.input[0].MoveY == drifter.input[1].MoveY && drifter.input[0].MoveX == 0)

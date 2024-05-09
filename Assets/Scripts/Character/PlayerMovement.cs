@@ -299,6 +299,7 @@ public class PlayerMovement : MonoBehaviour
 			drifter.AirCrippled = true;
 			drifter.knockedDown = false;
 			ringTime = 6;
+			canAct = !drifter.status.HasStunEffect() && !drifter.guarding;
 		}
 
 		//Smoke Trail
