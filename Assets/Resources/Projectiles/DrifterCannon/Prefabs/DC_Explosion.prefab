@@ -77,8 +77,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 5380123676018018484, guid: 0d82bf62f7885724e88e885823d9c5cb,
-    type: 3}
+  m_Sprite: {fileID: 563701479, guid: ac534aa53dc83ba44ab4151968afa70d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -160,7 +159,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7003540425311938230}
   - component: {fileID: 232286646524448952}
-  - component: {fileID: 6524529362684198223}
+  - component: {fileID: 6803929556437026280}
   m_Layer: 9
   m_Name: Hitboxes
   m_TagString: Untagged
@@ -207,8 +206,8 @@ MonoBehaviour:
   playOnBlock: 0
   entity: {fileID: 0}
   FlagForDestruction: 0
---- !u!58 &6524529362684198223
-CircleCollider2D:
+--- !u!70 &6803929556437026280
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -217,9 +216,9 @@ CircleCollider2D:
   m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5
+  m_Size: {x: 0.5, y: 1}
+  m_Direction: 1
