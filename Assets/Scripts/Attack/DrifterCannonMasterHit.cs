@@ -12,7 +12,9 @@ public class DrifterCannonMasterHit : MasterHit {
 	protected bool listeningForWallbounce = false;
 	protected bool listeningForDirection = false;
 
-	InstantiatedEntityCleanup explosion;
+	InstantiatedEntityCleanup explosion_side;
+	InstantiatedEntityCleanup explosion_up;
+
 	InstantiatedEntityCleanup[] grenades = new InstantiatedEntityCleanup[6];
 	//Stored in groups of 4
 	//0,1,2,3,0,1,2,3...
@@ -70,7 +72,8 @@ public class DrifterCannonMasterHit : MasterHit {
 		foreach(InstantiatedEntityCleanup grenade in grenades)
 			if(grenade != null) grenade.UpdateFrame();
 
-		if(explosion != null) explosion.UpdateFrame();
+		if(explosion_side != null) explosion_side.UpdateFrame();
+		if(explosion_up != null) explosion_up.UpdateFrame();
 
 	}
 
@@ -85,20 +88,20 @@ public class DrifterCannonMasterHit : MasterHit {
 	}
 
 	public void SairExplosion() {
-		SpawnExplosion(new Vector3(1.9f * movement.Facing,3.3f,0),1);
+		SpawnExplosionSide(new Vector3(1.9f * movement.Facing,3.3f,0),1);
 	}
 
 
 	public void SideWExplosion() {
-		SpawnExplosion(new Vector3(-1.5f * movement.Facing,2.7f,0), -1);
+		SpawnExplosionSide(new Vector3(-1.5f * movement.Facing,2.7f,0),-1);
 	}
 
 	public void UairExplosion() {
-		SpawnExplosion(new Vector3(-.4f* movement.Facing,5.5f,0),1,90 );
+		SpawnExplosionUp(new Vector3(-.2f* movement.Facing,5.5f,0),1);
 	}
 
-	void SpawnExplosion(Vector3 pos, int flip, int direction = 0) {
-		GameObject projectile = GameController.Instance.CreatePrefab("DC_Explosion", transform.position + pos, Quaternion.Euler(0,0,movement.Facing *direction),drifter.peerID);
+	void SpawnExplosionSide(Vector3 pos, int flip) {
+		GameObject projectile = GameController.Instance.CreatePrefab("DC_Explosion", transform.position + pos, Quaternion.Euler(0,0,movement.Facing),drifter.peerID);
 		projectile.transform.localScale = new Vector3(flip * 10f * movement.Facing, 10f , 1f);
 
 		foreach (HitboxCollision hitbox in projectile.GetComponentsInChildren<HitboxCollision>(true)) {
@@ -106,8 +109,21 @@ public class DrifterCannonMasterHit : MasterHit {
 			hitbox.AttackID = attacks.AttackID;
 			hitbox.Facing = movement.Facing;
 	   }
-	   explosion = projectile.GetComponent<InstantiatedEntityCleanup>();
+	   explosion_side = projectile.GetComponent<InstantiatedEntityCleanup>();
 	}
+
+	void SpawnExplosionUp(Vector3 pos, int flip) {
+		GameObject projectile = GameController.Instance.CreatePrefab("DC_Explosion_Up", transform.position + pos, Quaternion.Euler(0,0,movement.Facing),drifter.peerID);
+		projectile.transform.localScale = new Vector3(flip * 10f * movement.Facing, 10f , 1f);
+
+		foreach (HitboxCollision hitbox in projectile.GetComponentsInChildren<HitboxCollision>(true)) {
+			hitbox.parent = drifter.gameObject;
+			hitbox.AttackID = attacks.AttackID;
+			hitbox.Facing = movement.Facing;
+	   }
+	   explosion_up = projectile.GetComponent<InstantiatedEntityCleanup>();
+	}
+
 
 	public void listenForWallBounce() {
 		listeningForWallbounce = true;
@@ -117,17 +133,6 @@ public class DrifterCannonMasterHit : MasterHit {
 		base.clearMasterhitVars();
 		listeningForWallbounce = false;
 		listeningForDirection = false;
-
-		//TODO TEST ME 
-		// if(explosion != null){
-		// 	Destroy(explosion);
-		// 	explosion = null;
-		// }
-		// //Remove lvl 4 ranch on super
-		// if(ranches[ranches.Length -1] != null){
-		// 	Destroy(ranches[ranches.Length -1] );
-		// 	ranches[ranches.Length -1]  = null;
-		// }
 	}
 
 	public void SpawnGrenade() { 
@@ -243,11 +248,18 @@ public class DrifterCannonMasterHit : MasterHit {
 			}
 		}
 
-		if(explosion == null)
+		if(explosion_side == null)
 			bw.Write(false);
 		else{
 			bw.Write(true);
-			explosion.Serialize(bw);
+			explosion_side.Serialize(bw);
+		}
+
+		if(explosion_up == null)
+			bw.Write(false);
+		else{
+			bw.Write(true);
+			explosion_up.Serialize(bw);
 		}
 
 	}
@@ -287,12 +299,21 @@ public class DrifterCannonMasterHit : MasterHit {
 		}
 
 		if(br.ReadBoolean()){
-			if(explosion == null)SpawnExplosion(transform.position,1,0);
-			explosion.Deserialize(br);
+			if(explosion_side == null)SpawnExplosionSide(transform.position,1);
+			explosion_side.Deserialize(br);
 		}
-		else if(explosion != null){
-			Destroy(explosion.gameObject);
-			explosion = null;
+		else if(explosion_side != null){
+			Destroy(explosion_side.gameObject);
+			explosion_side = null;
+		}
+
+		if(br.ReadBoolean()){
+			if(explosion_up == null)SpawnExplosionUp(transform.position,1);
+			explosion_up.Deserialize(br);
+		}
+		else if(explosion_up != null){
+			Destroy(explosion_up.gameObject);
+			explosion_up = null;
 		}
 	}
 
