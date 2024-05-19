@@ -99,14 +99,10 @@ public class PlayerHurtboxHandler : MonoBehaviour {
 			(!attackData.canHitGrounded && drifter.movement.grounded) ||
 			//Whiff ground only moves on aerial opponenets
 			(!attackData.canHitAerial && !drifter.movement.grounded) ||
-			//Whiff grabs and command grabs on jumping opponents
-			((drifter.movement.jumping || status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN)) && attackData.hitType == HitType.GRAB ) || 
 			//Whiff non-OTG moves on otg opponents
 			(!attackData.canHitKnockedDown && status.HasStatusEffect(PlayerStatusEffect.FLATTEN)) ||
 			//Wait until superfreeze is done to register non-super attack hits	
 			(drifter.entity.paused && attackData.hitType != HitType.BURST) ||
-			//Whiff hits on dashing opponents
-			(drifter.movement.dashing && attackData.hitType == HitType.NORMAL) || 
 			//Ignore attack hit if invuln
 			status.HasStatusEffect(PlayerStatusEffect.INVULN) ||
 			status.HasStatusEffect(PlayerStatusEffect.DEAD) ||
@@ -115,6 +111,20 @@ public class PlayerHurtboxHandler : MonoBehaviour {
 			(status.HasStatusEffect(PlayerStatusEffect.PLANTED) && attackData.StatusEffect == PlayerStatusEffect.GRABBED)
 
 			) return;
+		else if( 
+			//Whiff grabs and command grabs on jumping opponents
+			((drifter.movement.jumping || status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN)) && attackData.hitType == HitType.GRAB ) || 
+			//Whiff hits on dashing opponents
+			(drifter.movement.dashing && attackData.hitType == HitType.NORMAL))
+			{
+
+				if(CanHit(attackID)) GraphicalEffectManager.Instance.CreateMovementParticle(MovementParticleMode.Whiff,
+						hitbox.parent.transform.position, 
+						0, new Vector2(drifter.movement.Facing * 1, 1));
+				oldAttacks[attackID] = MAX_ATTACK_DURATION;
+				return;
+			}
+				
 		if(currentHits == null) currentHits = new HitData[128];
 		if(currentHits[attackID] == null || hitbox.priority >= currentHits[attackID].hitbox.priority)
 			currentHits[attackID] = new HitData(hitbox,hurtbox,attackData,attackID);

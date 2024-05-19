@@ -35,7 +35,7 @@ public class DrifterCannonMasterHit : MasterHit {
 		if(listeningForWallbounce && movement.IsWallSliding()) {
 			listeningForWallbounce = false;
 			drifter.PlayAnimation("W_Side_End_Early");
-			rb.velocity = new Vector2(movement.Facing * -15f,30f);
+			rb.velocity = new Vector2(movement.Facing * -10f,15f);
 			if(!jumpGranted && movement.currentJumps <= movement.numberOfJumps -1) movement.currentJumps++;
 			jumpGranted = true;
 			GraphicalEffectManager.Instance.CreateMovementParticle(MovementParticleMode.Restitution,rb.position + new Vector2(movement.Facing * .5f,0), (movement.Facing > 0)?90:-90,Vector3.one);
