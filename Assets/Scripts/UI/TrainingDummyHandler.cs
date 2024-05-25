@@ -15,6 +15,15 @@ public class TrainingModeState {
 	public int h_Dropdown_Val = 0;
 }
 
+public class TrainingModeSnapshot {
+	public int playerHp;
+	public int DummyHp;
+	public int playerMeter;
+	public int DummyMeter;
+	public Vector2 playerPos;
+	public Vector2 DummyPos;
+}
+
 public class TrainingDummyHandler : MonoBehaviour
 {
 	public enum buttonIcon { 
@@ -108,6 +117,8 @@ public class TrainingDummyHandler : MonoBehaviour
 	PlayerInputData prevFrameData = new PlayerInputData();
 
 	PlayerInputData[] inputFromGGPO;
+
+	TrainingModeSnapshot snapshot;
 	
 	public static TrainingDummyHandler Instance { get; private set; }
 
@@ -190,8 +201,18 @@ public class TrainingDummyHandler : MonoBehaviour
 		//Command Button
 		if(Player.input[0].Pause && Player.input[1].Pause && !Player.input[2].Pause){
 			
-			if(Player.input[0].MoveY > 0 && Player.input[0].MoveX ==0)
-				clearBuffer();
+			if(Player.input[0].MoveY > 0 && Player.input[0].MoveX ==0 && snapshot != null){
+
+				Debug.Log("Snapshot Applied");
+
+				Player.DamageTaken = snapshot.playerHp; 
+				Dummy.DamageTaken = snapshot.DummyHp; 
+				Player.superCharge = snapshot.playerMeter;
+				Dummy.superCharge = snapshot.DummyMeter; 
+				Player.transform.position = snapshot.playerPos;
+				Dummy.transform.position = snapshot.DummyPos;
+			}
+				
 			else if(Player.input[0].MoveY < 0 && Player.input[0].MoveX ==0)
 				Dummy.transform.position = new Vector3(0,4);
 			else if(Player.input[0].MoveY <0 && Player.input[0].MoveX < 0){
@@ -211,10 +232,18 @@ public class TrainingDummyHandler : MonoBehaviour
 				Dummy.transform.position = GameObject.Find("SpawnPoint3").transform.position;
 			}
 			// //Record and saved Dummy input for replay
-			// else if(Player.input[0].MoveX == 0 && Player.input[0].MoveY == 0){
-			// 	if(playback)
-			// 		playbackIndex = 0;
-			// }
+			else if(Player.input[0].MoveX == 0 && Player.input[0].MoveY == 0){
+
+				Debug.Log("Snapshot Taken");
+				snapshot = new TrainingModeSnapshot() { 
+					playerHp = Player.DamageTaken, 
+					DummyHp = Dummy.DamageTaken, 
+					playerMeter = Player.superCharge, 
+					DummyMeter = Dummy.superCharge, 
+					playerPos = Player.transform.position, 
+					DummyPos = Dummy.transform.position
+				};
+			}
 		}
 			
 		//Command Button in Dummy mode
