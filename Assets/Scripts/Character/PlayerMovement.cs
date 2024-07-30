@@ -43,7 +43,6 @@ public class PlayerMovement : MonoBehaviour
 	[NonSerialized]
 	public float baseTerminalVelocity;
 
-
 	//Animator State Fields
 	public int Facing { get; set; } = 1;
 	public float terminalVelocity = 25f;
@@ -78,6 +77,9 @@ public class PlayerMovement : MonoBehaviour
 
 	InstantiatedEntityCleanup SuperCancel;
 	CancelType cancelType = CancelType.Feint_Cancel;
+
+	//Universal Constants
+	static float launchGravity = 10f;
 
 	//Situational Iteration variables
 	int ledgeGrabLockout = 0;
@@ -352,7 +354,6 @@ public class PlayerMovement : MonoBehaviour
 			terminalVelocity =  baseTerminalVelocity *.4f;
 		}
 		
-
 		//makes sure gavity is always reset after using a move
 		//TODO make sure this is still necessary
 		else if((!drifter.status.HasStatusEffect(PlayerStatusEffect.END_LAG) || !gravityPaused) && !ledgeHanging && !drifter.status.HasStatusEffect(PlayerStatusEffect.KNOCKDOWN)){
@@ -795,7 +796,7 @@ public class PlayerMovement : MonoBehaviour
 	}
 
 	public void resetGravity() {
-		rb.gravityScale = baseGravity;
+		rb.gravityScale = hitstun ? launchGravity : baseGravity;
 	}
 
 	public void setSlowMoPhysics() {

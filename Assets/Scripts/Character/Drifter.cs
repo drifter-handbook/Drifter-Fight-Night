@@ -270,6 +270,7 @@ public class Drifter : MonoBehaviour
 		canFeint = true;
 		clearGuardFlags();
 		status.returnToIdle();
+		movement.resetGravity();
 		movement.resetTerminalVelocity();
 		movement.passThrough = false;
 		canSpecialCancelFlag = false;
